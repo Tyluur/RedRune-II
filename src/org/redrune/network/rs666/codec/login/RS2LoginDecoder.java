@@ -9,7 +9,7 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.codec.RS2GameDecoder;
 import org.redrune.network.rs666.packet.structure.out.LobbyResponseBuilder;
-import org.redrune.network.rs666.packet.structure.out.LoginResponseBuilder;
+import org.redrune.network.rs666.packet.structure.out.LoginResponseCodeBuilder;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.backend.ReturnCode;
 import org.redrune.utility.io.BufferUtils;
@@ -28,113 +28,130 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 	
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer, LoginState state) throws Exception {
-		if (state == LoginState.LOBBY_FINALIZATION || state == LoginState.LOGIN_FINALIZATION) {
-			session = new NetworkSession(channel);
-			session.getChannel().getPipeline().getContext("handler").setAttachment(session);
-		}
-		switch (state) {
-			case PRE_STAGE:
-				if (BufferUtils.readableBytes(buffer) >= 3) {
-					int loginType = buffer.readByte() & 0xFF;
-					int loginPacketSize = buffer.readShort() & 0xFFFF;
-					if (loginPacketSize != BufferUtils.readableBytes(buffer)) {
-						channel.close();
-						return session;
+		try {
+			if (state == LoginState.LOBBY_FINALIZATION || state == LoginState.LOGIN_FINALIZATION) {
+				session = new NetworkSession(channel);
+				session.getChannel().getPipeline().getContext("handler").setAttachment(session);
+			}
+			switch (state) {
+				case PRE_STAGE:
+					if (BufferUtils.readableBytes(buffer) >= 3) {
+						int loginType = buffer.readByte() & 0xFF;
+						int loginPacketSize = buffer.readShort() & 0xFFFF;
+						if (loginPacketSize != BufferUtils.readableBytes(buffer)) {
+							channel.close();
+							return session;
+						}
+						int clientVersion = buffer.readInt();
+						if (clientVersion != NetworkConstants.REVISION) {
+							channel.close();
+							return session;
+						}
+						if (loginType == 16 || loginType == 18) {
+							checkpoint(LoginState.LOGIN_FINALIZATION);
+						} else if (loginType == 19) {
+							checkpoint(LoginState.LOBBY_FINALIZATION);
+						} else {
+							channel.close();
+							return session;
+						}
 					}
-					int clientVersion = buffer.readInt();
-					if (clientVersion != NetworkConstants.REVISION) {
-						channel.close();
-						return session;
-					}
-					if (loginType == 16 || loginType == 18) {
-						checkpoint(LoginState.LOGIN_FINALIZATION);
-					} else if (loginType == 19) {
-						checkpoint(LoginState.LOBBY_FINALIZATION);
-					} else {
-						channel.close();
-						return session;
-					}
-				}
-				break;
-			case LOBBY_FINALIZATION:
-				if (buffer.readable()) {
-					int rsaHeader = buffer.readByte();
-					if (rsaHeader != 10) {
-						channel.close();
-						return session;
-					}
-					int[] keys = new int[4];
-					for (int i = 0; i < keys.length; i++) {
-						keys[i] = buffer.readInt();
-					}
-					buffer.readLong();
-					String password = BufferUtils.readRS2String(buffer);
-					buffer.readLong(); // client key
-					buffer.readLong(); // other client key
-					byte[] block = new byte[BufferUtils.readableBytes(buffer)];
-					buffer.readBytes(block);
-					ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
-					String username = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
-					decryptedPayload.readByte(); // screen settings?
-					decryptedPayload.readByte();
-					for (int i = 0; i < 24; i++) {
+					break;
+				case LOBBY_FINALIZATION:
+					if (buffer.readable()) {
+						int rsaHeader = buffer.readByte();
+						if (rsaHeader != 10) {
+							channel.close();
+							return session;
+						}
+						int[] keys = new int[4];
+						for (int i = 0; i < keys.length; i++) {
+							keys[i] = buffer.readInt();
+						}
+						buffer.readLong();
+						String password = BufferUtils.readRS2String(buffer);
+						buffer.readLong(); // client key
+						buffer.readLong(); // other client key
+						byte[] block = new byte[BufferUtils.readableBytes(buffer)];
+						buffer.readBytes(block);
+						ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
+						String username = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
+						decryptedPayload.readByte(); // screen settings?
 						decryptedPayload.readByte();
-					}
-					BufferUtils.readRS2String(decryptedPayload); // settings
-					decryptedPayload.readInt();
-					for (int i = 0; i < 34; i++) {
+						for (int i = 0; i < 24; i++) {
+							decryptedPayload.readByte();
+						}
+						BufferUtils.readRS2String(decryptedPayload); // settings
 						decryptedPayload.readInt();
+						for (int i = 0; i < 34; i++) {
+							decryptedPayload.readInt();
+						}
+						
+						// finished decoding
+						
+						session.setInLobby(true);
+						session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
+						
+						Player player = new Player(username, password, session);
+						player.generateTransients();
+						session.write(new LobbyResponseBuilder().build(player));
+						
+						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
 					}
-					
-					session.setInLobby(true);
-					session.write(new LoginResponseBuilder(ReturnCode.SUCCESSFUL).build(null));
-					
-					Player player = new Player(username, password);
-					player.setNetworkSession(session);
-					player.getTransmitter().send(new LobbyResponseBuilder().build(player));
-					session.setPlayer(player);
-					
-					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
-				}
-				return session;
-			case LOGIN_FINALIZATION:
-				if (buffer.readable()) {
-					buffer.readByte();
-					int rsaHeader = buffer.readByte();
-					if (rsaHeader != 10) {
-						channel.close();
-						System.err.println("SEVERE! Invalid RSA header.");
-						return session;
-					}
-					int[] keys = new int[4];
-					for (int i = 0; i < keys.length; i++) {
-						keys[i] = buffer.readInt();
-					}
-					buffer.readLong();
-					String password = BufferUtils.readRS2String(buffer);
-					buffer.readLong(); // client key
-					buffer.readLong(); // other client key
-					byte[] block = new byte[BufferUtils.readableBytes(buffer)];
-					buffer.readBytes(block);
-					ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
-					String name = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
-					decryptedPayload.readByte();
-					decryptedPayload.readByte();
-					decryptedPayload.readShort();
-					decryptedPayload.readShort();
-					decryptedPayload.readByte();
-					for (int i = 0; i < 24; i++) {
+					return session;
+				case LOGIN_FINALIZATION:
+					if (buffer.readable()) {
+						buffer.readByte();
+						int rsaHeader = buffer.readByte();
+						if (rsaHeader != 10) {
+							channel.close();
+							System.err.println("SEVERE! Invalid RSA header.");
+							return session;
+						}
+						int[] keys = new int[4];
+						for (int i = 0; i < keys.length; i++) {
+							keys[i] = buffer.readInt();
+						}
+						buffer.readLong();
+						String password = BufferUtils.readRS2String(buffer);
+						buffer.readLong(); // client key
+						buffer.readLong(); // other client key
+						byte[] block = new byte[BufferUtils.readableBytes(buffer)];
+						buffer.readBytes(block);
+						ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
+						String username = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
 						decryptedPayload.readByte();
+						int mode = decryptedPayload.readByte();
+						int width = decryptedPayload.readShort();
+						int height = decryptedPayload.readShort();
+						int displayMode = decryptedPayload.readByte();
+						for (int i = 0; i < 24; i++) {
+							decryptedPayload.readByte();
+						}
+						BufferUtils.readRS2String(decryptedPayload);
+						decryptedPayload.readInt();
+						decryptedPayload.skipBytes(decryptedPayload.readByte() & 0xff);
+						
+						// finished decoding
+						
+						session.setInLobby(false);
+						session.getClientComponents().setScreenSizeMode(mode);
+						session.getClientComponents().setScreenSizeX(width);
+						session.getClientComponents().setScreenSizeY(height);
+						session.getClientComponents().setDisplayMode(displayMode);
+						session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
+						
+						Player player = new Player(username, password, session);
+						
+						player.register();
+						
+						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
+						return null;
 					}
-					BufferUtils.readRS2String(decryptedPayload);
-					decryptedPayload.readInt();
-					decryptedPayload.skipBytes(decryptedPayload.readByte() & 0xff);
-					session.setInLobby(false);
-					
-					session.write(new LoginResponseBuilder(ReturnCode.INVALID_CREDENTIALS).build(null));
-					return null;
-				}
-				return session;
+					return session;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return session;
 	}

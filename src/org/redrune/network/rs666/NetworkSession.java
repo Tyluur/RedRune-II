@@ -6,6 +6,7 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.node.entity.player.components.ClientComponents;
 
 /**
  * The networkSession connected to the main game
@@ -29,6 +30,12 @@ public final class NetworkSession {
 	private Player player;
 	
 	/**
+	 * The components of the players client
+	 */
+	@Getter
+	private final ClientComponents clientComponents;
+	
+	/**
 	 * If the networkSession is in the lobby
 	 */
 	@Getter
@@ -37,6 +44,7 @@ public final class NetworkSession {
 	
 	public NetworkSession(Channel channel) {
 		this.channel = channel;
+		this.clientComponents = new ClientComponents();
 	}
 	
 	/**
@@ -45,9 +53,13 @@ public final class NetworkSession {
 	 * @param packet
 	 * 		The packet
 	 */
-	public ChannelFuture write(Packet packet) {
-		if (channel != null && channel.isConnected()) {
-			return channel.write(packet);
+	public synchronized ChannelFuture write(Packet packet) {
+		try {
+			if (channel != null && channel.isConnected()) {
+				return channel.write(packet);
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 		return null;
 	}

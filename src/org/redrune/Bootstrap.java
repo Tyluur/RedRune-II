@@ -6,6 +6,7 @@ import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.GameFlags;
 import org.redrune.utility.Misc;
+import org.redrune.utility.backend.MapDataParser;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,7 @@ public class Bootstrap {
 			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
 			Cache.init();
 			IncomingPacketRepository.storeAll();
+			MapDataParser.readAll();
 			NetworkHandler.bind();
 			logger.info("Successfully started " + GameConstants.SERVER_NAME + "!");
 		} catch (Exception e) {

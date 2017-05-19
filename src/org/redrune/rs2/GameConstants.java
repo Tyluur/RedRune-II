@@ -20,4 +20,15 @@ public interface GameConstants {
 	 * The id of the port used for main communications
 	 */
 	int MAIN_PORT_ID = 43594;
+	
+	/**
+	 * The maximum amount of players allowed online
+	 */
+	int PLAYERS_LIMIT = 2048;
+	
+	/**
+	 * The maximum amount of npcs allowed online
+	 */
+	int NPCS_LIMIT = Short.MAX_VALUE;
+	
 }

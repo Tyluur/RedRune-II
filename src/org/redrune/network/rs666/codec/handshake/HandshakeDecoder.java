@@ -1,7 +1,6 @@
 package org.redrune.network.rs666.codec.handshake;
 
 import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
@@ -43,39 +42,38 @@ public final class HandshakeDecoder extends FrameDecoder {
 		} else if (opcode == EMAIL_VERIFICATION) {
 			System.out.println("Received opcode " + opcode);
 			
+			int idk1 = buffer.readShort();
+			int revision = buffer.readShort();
+
+			String email = BufferUtils.readRS2String(buffer);
+			int language = buffer.readByte();
+			
+			System.out.println(idk1 + ", " + revision + ", " + email + ", " + language);
 			response.writeByte(2);
 		} else if (opcode == CREATE_ACCOUNT) {
 			System.out.println("Received opcode " + opcode + ", readableBytes=[ " + buffer.readableBytes() + "]");
 			
-			int[] keys = new int[4];
-			for (int i = 0; i < keys.length; i++) {
-				keys[i] = buffer.readInt();
+			int idk1 = buffer.readShort();
+			int revision = buffer.readShort();
+			
+			String email = BufferUtils.readRS2String(buffer);
+			int idk2 = buffer.readShort();
+			String password = BufferUtils.readRS2String(buffer);
+			int idk3 = buffer.readByte();
+			int idk4 = buffer.readByte();
+			int idk5 = buffer.readByte();
+			String idk6 = null;
+			if (idk5 == 1) {
+				idk6 = BufferUtils.readJagString(buffer);
 			}
 			
-			buffer.readShort();
-			buffer.readShort();
+			int idk7 = buffer.readByte();
+			int idk8 = buffer.readByte();
 			
-			buffer.readByte();
-			for (int i = 0; i < 14; i++) {
-				buffer.readInt();
-			}
-			buffer.readShort();
-			
-			byte[] block = new byte[BufferUtils.readableBytes(buffer)];
-			buffer.readBytes(block);
-			ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
-			String email = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
-			
-			System.out.println("\t" + email);
-			buffer.readShort();
-			System.out.println("\t" + BufferUtils.readRS2String(buffer));
-			buffer.readByte();
-			buffer.readByte();
-			buffer.readByte();
-			
-			System.out.println("Finished reading, bytes=" + buffer.readableBytes());
+			System.out.println(idk1 + ", " + revision + ", " + email + ", " + idk2 + ", " + password + ", " + idk3 + ", " + idk4 + ", " + idk5 + ", " + idk6 + ", " + idk7 + ", " + idk8);
 			
 			response.writeByte(CreationResponse.BUSY_SERVER.getValue());
+			System.out.println("remaining: " + buffer.readableBytes());
 		}
 		return new HandshakePacket(opcode, response.toPacket());
 	}

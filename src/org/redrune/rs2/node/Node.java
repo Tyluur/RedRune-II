@@ -1,5 +1,8 @@
 package org.redrune.rs2.node;
 
+import lombok.Getter;
+import org.redrune.rs2.world.Location;
+
 /**
  * This is the parent class of all game nodes. Nodes are anything in the game which undergoes
  * registration/de-registration and is interactible.
@@ -26,4 +29,13 @@ public abstract class Node {
 	 */
 	public abstract int getSize();
 	
+	/**
+	 * The location of the node
+	 */
+	@Getter
+	private final Location location;
+	
+	protected Node(Location location) {
+		this.location = location;
+	}
 }

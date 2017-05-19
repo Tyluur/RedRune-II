@@ -95,14 +95,13 @@ public class PacketBuilder {
 		int bitOffset = 8 - (bitPosition & 7);
 		bitPosition += numBits;
 		int pos = (bitPosition + 7) / 8;
-		buffer.ensureWritableBytes(pos + 1);
+		buffer.ensureWritableBytes(pos + 1); //pos + 1
 		buffer.writerIndex(pos);
 		byte b;
 		for (; numBits > bitOffset; bitOffset = 8) {
 			b = buffer.getByte(bytePos);
 			buffer.setByte(bytePos, (byte) (b & ~BIT_MASK_OUT[bitOffset]));
-			buffer.setByte(bytePos, (byte) (b | (value >> (numBits - bitOffset)) & BIT_MASK_OUT[bitOffset]));
-			bytePos++;
+			buffer.setByte(bytePos++, (byte) (b | (value >> (numBits - bitOffset)) & BIT_MASK_OUT[bitOffset]));
 			numBits -= bitOffset;
 		}
 		b = buffer.getByte(bytePos);

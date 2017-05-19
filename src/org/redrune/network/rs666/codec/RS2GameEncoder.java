@@ -17,6 +17,10 @@ public final class RS2GameEncoder extends OneToOneEncoder {
 	
 	@Override
 	protected Object encode(ChannelHandlerContext ctx, Channel channel, Object message) throws Exception {
+		if (message instanceof ChannelBuffer) {
+			return ChannelBuffers.copiedBuffer((ChannelBuffer) message);
+		}
+		
 		Packet packetMessage;
 		if (message instanceof PacketBuilder) {
 			packetMessage = ((PacketBuilder) message).toPacket();
@@ -24,15 +28,18 @@ public final class RS2GameEncoder extends OneToOneEncoder {
 			packetMessage = (Packet) message;
 		}
 		if (!packetMessage.isRaw()) {
-			int packetLength = 1 + packetMessage.getLength() + packetMessage.getType().getSize();
-			
+			int packetLength = packetMessage.getBuffer().readableBytes() + 3;
 			ChannelBuffer response = ChannelBuffers.buffer(packetLength);
+			if (packetMessage.getOpcode() > 127) {
+				response.writeByte((byte) 128);
+			}
 			
 			response.writeByte((byte) packetMessage.getOpcode());
 			if (packetMessage.getType() == PacketType.VAR_BYTE) {
-				response.writeByte((byte) packetMessage.getLength());
+				response.writeByte((byte) packetMessage.getBuffer().readableBytes());
 			} else if (packetMessage.getType() == PacketType.VAR_SHORT) {
-				response.writeShort((short) packetMessage.getLength());
+				response.writeByte((byte)(packetMessage.getBuffer().readableBytes() >> 8));
+				response.writeByte((byte) packetMessage.getBuffer().readableBytes());
 			}
 			response.writeBytes(packetMessage.getBuffer());
 			

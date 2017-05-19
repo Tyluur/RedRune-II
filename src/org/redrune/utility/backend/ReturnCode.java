@@ -112,7 +112,7 @@ public enum ReturnCode {
 	INVALID_LOGIN_SERVER(20),
 	
 	/**
-	 * When the player's saved file exists, but is unable to be loaded.
+	 * When the player's saved file created, but is unable to be loaded.
 	 */
 	ERROR_LOADING_PROFILE(24),
 	

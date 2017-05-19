@@ -46,6 +46,7 @@ public final class IncomingPacketRepository {
 	public static void handlePacket(Player player, Packet packet) {
 		IncomingPacketStructure structure = STREAM_DECODER_MAP.get(packet.getOpcode());
 		if (structure == null) {
+			System.out.println("Received packet " + packet.getOpcode() + ", unidentified handler.");
 			return;
 		}
 		structure.read(player, packet);

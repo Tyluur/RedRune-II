@@ -48,6 +48,18 @@ public final class Location {
 	 * 		The x-coordinate.
 	 * @param y
 	 * 		The y-coordinate.
+	 */
+	public Location(int x, int y) {
+		this(x, y, 0);
+	}
+	
+	/**
+	 * Constructs a new {@code Location} {@code Object}.
+	 *
+	 * @param x
+	 * 		The x-coordinate.
+	 * @param y
+	 * 		The y-coordinate.
 	 * @param z
 	 * 		The z-coordinate.
 	 */
@@ -78,18 +90,6 @@ public final class Location {
 	}
 	
 	/**
-	 * Returns a location calculated by increasing this coordinates with the
-	 * given location's coordinates..
-	 *
-	 * @param l
-	 * 		The delta location.
-	 * @return The location.
-	 */
-	public Location transform(Location l) {
-		return locate(x + l.x, y + l.y, z + l.z);
-	}
-	
-	/**
 	 * Constructs a new {@code Location} {@code Object} with modified coordinates
 	 *
 	 * @param x
@@ -101,6 +101,18 @@ public final class Location {
 	 */
 	private Location locate(int x, int y, int z) {
 		return new Location(x, y, z);
+	}
+	
+	/**
+	 * Returns a location calculated by increasing this coordinates with the
+	 * given location's coordinates..
+	 *
+	 * @param l
+	 * 		The delta location.
+	 * @return The location.
+	 */
+	public Location transform(Location l) {
+		return locate(x + l.x, y + l.y, z + l.z);
 	}
 	
 	/**
@@ -175,7 +187,7 @@ public final class Location {
 	 * The region ID of the location you're in.
 	 */
 	
-	public int getRegionID() {
+	public int getRegionId() {
 		return (getRegionY() >> 3) | ((getRegionX() >> 3) << 8);
 	}
 	
