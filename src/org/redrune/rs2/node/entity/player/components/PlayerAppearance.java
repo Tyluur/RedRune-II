@@ -1,12 +1,13 @@
 package org.redrune.rs2.node.entity.player.components;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.redrune.cache.parse.BodyDataParser;
-import org.redrune.cache.parse.NPCDefinitionParser;
+import org.redrune.cache.loaders.ItemDefinitions;
+import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.item.Item;
 import org.redrune.utility.rs.EquipConstants;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The appearance of the player.
@@ -63,7 +64,7 @@ public final class PlayerAppearance {
 	 */
 	public void setDefaultAppearance() {
 		this.look = new int[7];
-		this.bodyParts = new int[BodyDataParser.getBodyData().length];
+		this.bodyParts = new int[ItemDefinitions.getBodyData().length];
 		this.colors = new int[10];
 		setLook(0, 1);
 		setLook(1, 10);
@@ -91,7 +92,7 @@ public final class PlayerAppearance {
 	 * 		The item to draw.
 	 */
 	public void drawItem(int part, Item item) {
-		this.bodyParts[part] = item.getDefinitions().getEquipId() + 0x8000;
+		this.bodyParts[part] = item.getDefinitions().getEquipType() + 0x8000; //TODO verify correction
 	}
 	
 	/**
@@ -244,7 +245,7 @@ public final class PlayerAppearance {
 	public void setNpcId(int npcId) {
 		this.npcId = npcId;
 		if (npcId > 0) {
-			this.renderEmote = NPCDefinitionParser.forId(npcId).getRenderEmote();
+			this.renderEmote = NPCDefinitions.getNPCDefinitions(npcId).getRenderEmote();
 		} else {
 			this.renderEmote = 1426;
 		}

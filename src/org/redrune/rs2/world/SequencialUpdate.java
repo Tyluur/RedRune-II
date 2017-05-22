@@ -1,12 +1,13 @@
 package org.redrune.rs2.world;
 
-import lombok.Getter;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import org.redrune.engine.EngineWorkingSet;
 import org.redrune.rs2.node.InitializingNodeList;
 import org.redrune.rs2.node.entity.player.Player;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import lombok.Getter;
 
 /**
  * The sequence for an update in the world. This occurs on every tick.

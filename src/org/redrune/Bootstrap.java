@@ -1,21 +1,19 @@
 package org.redrune;
 
-import com.google.common.base.Stopwatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.redrune.cache.Cache;
-import org.redrune.cache.parse.BodyDataParser;
-import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.network.NetworkConstants;
-import org.redrune.network.rs666.NetworkHandler;
-import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
+import org.redrune.cache.loaders.BodyDefinitions;
+import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.GameFlags;
 import org.redrune.rs2.system.SystemManager;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.common.base.Stopwatch;
 
 /**
  * The procedure used to initialize the first world, the update server, and the login server.
@@ -49,13 +47,14 @@ public class Bootstrap {
 			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
 			Cache.init();
 			SystemManager.setDefaults();
-			BodyDataParser.loadAll();
-			ItemDefinitionParser.loadEquipIds();
-			IncomingPacketRepository.storeAll();
+			ItemDefinitions.setBodyData(BodyDefinitions.read().partsData);
+			//BodyDataParser.loadAll();
+			//ItemDefinitionParser.loadEquipIds();
+			//IncomingPacketRepository.storeAll();
 			MapDataParser.readAll();
 			SystemManager.start();
-			NetworkHandler.bind();
-			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + NetworkConstants.REVISION + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+			//NetworkHandler.bind();
+			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + 666 + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Unexpected error on initialization - " + e);
 		}

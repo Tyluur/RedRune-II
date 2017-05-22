@@ -7,48 +7,52 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
+import org.redrune.cache.Cache;
+
+import com.alex.store.Store;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
 public class Misc {
-	
+
 	/**
 	 * Checks if a character is valid to use.
 	 *
 	 * @param c
-	 * 		The character.
+	 *            The character.
 	 * @return {@code True} if so.
 	 */
 	public static boolean allowed(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == ' ';
 	}
-	
+
 	/**
 	 * Constructs a logger from the class
 	 *
 	 * @param clazz
-	 * 		The class
+	 *            The class
 	 */
-	public static Logger constructLogger(Class clazz) {
+	public static Logger constructLogger(@SuppressWarnings("rawtypes") Class clazz) {
 		return Logger.getLogger(clazz.getSimpleName());
 	}
-	
+
 	/**
 	 * Collapses a wide array of numbers
 	 *
 	 * @param numbers
-	 * 		The numbers
+	 *            The numbers
 	 */
 	public static int[] arguments(int... numbers) {
 		return numbers;
 	}
-	
+
 	/**
 	 * Gets all of the classes in a directory
 	 *
 	 * @param directory
-	 * 		The directory to iterate through
+	 *            The directory to iterate through
 	 * @return The list of classes
 	 */
 	public static List<Object> getClassesInDirectory(String directory) {
@@ -58,7 +62,8 @@ public class Misc {
 				continue;
 			}
 			try {
-				Object objectEvent = (Class.forName(directory + "." + file.getName().replace(".class", "")).newInstance());
+				Object objectEvent = (Class.forName(directory + "." + file.getName().replace(".class", ""))
+						.newInstance());
 				classes.add(objectEvent);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 				e.printStackTrace();
@@ -66,7 +71,7 @@ public class Misc {
 		}
 		return classes;
 	}
-	
+
 	/**
 	 * Gets all of the sub directories of a folder
 	 */
@@ -84,7 +89,7 @@ public class Misc {
 		String[] directories = file.list((current, name) -> new File(current, name).isDirectory());
 		return Arrays.asList(directories != null ? directories : new String[0]);
 	}
-	
+
 	/**
 	 * Converts an IP-Address as string to Integer.
 	 *
@@ -99,12 +104,12 @@ public class Misc {
 		}
 		return ((ip[0] << 24) | (ip[1] << 16) | (ip[2] << 8) | (ip[3]));
 	}
-	
+
 	/**
 	 * Formats the IP-Address.
 	 *
 	 * @param unformatted
-	 * 		The unformatted IP.
+	 *            The unformatted IP.
 	 * @return The formatted IP.
 	 */
 	public static final String formatIp(String unformatted) {
@@ -113,14 +118,14 @@ public class Misc {
 		ipAddress = ipAddress.substring(0, ipAddress.indexOf(":"));
 		return ipAddress;
 	}
-	
+
 	/**
 	 * Gets the direction the player is running
 	 *
 	 * @param dx
-	 * 		The x direction
+	 *            The x direction
 	 * @param dy
-	 * 		The y direction
+	 *            The y direction
 	 */
 	public static int getRunningDirection(int dx, int dy) {
 		if (dx == -2 && dy == -2) {
@@ -173,14 +178,14 @@ public class Misc {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Gets the direction the player is wlking
 	 *
 	 * @param dx
-	 * 		The x direction
+	 *            The x direction
 	 * @param dy
-	 * 		The y direction
+	 *            The y direction
 	 */
 	public static int getWalkDirection(int dx, int dy) {
 		if (dx < 0 && dy < 0) {
@@ -209,12 +214,12 @@ public class Misc {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Format a player's name for display.
 	 *
 	 * @param name
-	 * 		The name to be formatted.
+	 *            The name to be formatted.
 	 * @return The formatted string.
 	 */
 	public static String formatPlayerNameForDisplay(String name) {
@@ -234,5 +239,58 @@ public class Misc {
 		}
 		return builder.toString();
 	}
-	
+
+	/**
+	 * Returns the interface definitions size.
+	 * 
+	 * @param store
+	 * @return
+	 */
+	public static final int getInterfaceDefinitionsSize(Store store) {
+		return store.getIndexes()[3].getLastArchiveId();
+	}
+
+	/**
+	 * Returns the components size
+	 * 
+	 * @param store
+	 * @param interfaceId
+	 * @return
+	 */
+	public static final int getInterfaceDefinitionsComponentsSize(Store store, int interfaceId) {
+		return store.getIndexes()[3].getLastFileId(interfaceId);
+	}
+
+	public static final int getGraphicDefinitionsSize() {
+		int lastArchiveId = Cache.STORE.getIndexes()[21].getLastArchiveId();
+		return lastArchiveId * 256 + Cache.STORE.getIndexes()[21].getValidFilesCount(lastArchiveId);
+	}
+
+	public static final int getAnimationDefinitionsSize() {
+		int lastArchiveId = Cache.STORE.getIndexes()[20].getLastArchiveId();
+		return lastArchiveId * 128 + Cache.STORE.getIndexes()[20].getValidFilesCount(lastArchiveId);
+	}
+
+	public static final int getObjectDefinitionsSize() {
+		int lastArchiveId = Cache.STORE.getIndexes()[16].getLastArchiveId();
+		return lastArchiveId * 256 + Cache.STORE.getIndexes()[16].getValidFilesCount(lastArchiveId);
+	}
+
+	public static final int getNPCDefinitionsSize() {
+		int lastArchiveId = Cache.STORE.getIndexes()[18].getLastArchiveId();
+		return lastArchiveId * 128 + Cache.STORE.getIndexes()[18].getValidFilesCount(lastArchiveId);
+	}
+
+	public static final int getItemDefinitionsSize() {
+		int lastArchiveId = Cache.STORE.getIndexes()[19].getLastArchiveId();
+		return lastArchiveId * 256 + Cache.STORE.getIndexes()[19].getValidFilesCount(lastArchiveId);
+	}
+
+	public static final int getInterfaceDefinitionsSize() {
+		return Cache.STORE.getIndexes()[3].getLastArchiveId() + 1;
+	}
+
+	public static final int getInterfaceDefinitionsComponentsSize(int interfaceId) {
+		return Cache.STORE.getIndexes()[3].getLastFileId(interfaceId);
+	}
 }

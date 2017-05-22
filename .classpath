@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="org/redrune/cache2/|org/redrune/anetworking/" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="data/dependencies/guava/guava-19.0-sources.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/guava/guava-19.0.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/joda/joda-time-2.9-sources.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/joda/joda-time-2.9.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/lombok/lombok.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/netty/netty-all-4.0.32.Final-sources.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/netty/netty-all-4.0.32.Final.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/apache/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/bouncycastle/bouncycastleEncryption.jar"/>
+	<classpathentry kind="lib" path="data/dependencies/filestore/FileStore.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

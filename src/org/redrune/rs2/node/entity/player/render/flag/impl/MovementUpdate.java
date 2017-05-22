@@ -1,6 +1,6 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.anetworking.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 

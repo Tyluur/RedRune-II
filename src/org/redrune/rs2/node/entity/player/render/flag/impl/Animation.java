@@ -1,11 +1,13 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.anetworking.rs666.packet.PacketBuilder;
+import org.redrune.network.stream.IoWriteEvent;
 import org.redrune.rs2.node.entity.player.render.UpdateMasks;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.utility.backend.Priority;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents an animation update flag.
@@ -85,7 +87,7 @@ public class Animation extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(IoWriteEvent bldr) {
 		if (npc) {
 			bldr.writeLEShortA(id);
 			bldr.writeLEShortA(id);
@@ -94,9 +96,9 @@ public class Animation extends UpdateFlag {
 			bldr.writeByteA(speed << 16);
 		} else {
 			for (int i = 0; i < 4; i++) {
-				bldr.writeShortA(id);
+				bldr.writeA(id);
 			}
-			bldr.writeByte(speed << 16);
+			bldr.write(speed << 16);
 		}
 	}
 	

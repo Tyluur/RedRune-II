@@ -1,16 +1,17 @@
 package org.redrune.rs2.node.entity.player.components;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.redrune.rs2.GameFlags;
-import org.redrune.rs2.world.Location;
-import org.redrune.utility.Misc;
-
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.redrune.rs2.GameFlags;
+import org.redrune.rs2.world.Location;
+import org.redrune.utility.Misc;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

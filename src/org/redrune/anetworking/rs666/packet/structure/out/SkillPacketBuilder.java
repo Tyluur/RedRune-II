@@ -1,0 +1,33 @@
+package org.redrune.network.rs666.packet.structure.out;
+
+import org.redrune.anetworking.rs666.packet.PacketBuilder;
+import org.redrune.anetworking.rs666.packet.structure.OutgoingPacketStructure;
+import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.node.entity.player.components.PlayerSkills;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 5/21/2017
+ */
+public final class SkillPacketBuilder implements OutgoingPacketStructure {
+	
+	/**
+	 * The skill slot id.
+	 */
+	private final int slot;
+	
+	public SkillPacketBuilder(int slot) {
+		this.slot = slot;
+	}
+	
+	@Override
+	public Packet build(Player player) {
+		final PacketBuilder bldr = new PacketBuilder(8);
+		final PlayerSkills skills = player.getSkills();
+		
+		bldr.writeByteC(skills.getLevel(slot));
+		bldr.writeByte(slot);
+		bldr.writeInt2((int) skills.getExperience(slot));
+		return bldr.toPacket();
+	}
+}

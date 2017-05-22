@@ -1,9 +1,9 @@
 package org.redrune.rs2.system;
 
-import org.redrune.utility.Misc;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.redrune.utility.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

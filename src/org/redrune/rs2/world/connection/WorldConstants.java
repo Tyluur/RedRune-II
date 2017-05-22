@@ -4,7 +4,7 @@ package org.redrune.rs2.world.connection;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-interface WorldConstants {
+public interface WorldConstants {
 	
 	/**
 	 * The value for Australia.

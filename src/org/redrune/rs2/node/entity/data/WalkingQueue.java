@@ -1,5 +1,8 @@
 package org.redrune.rs2.node.entity.data;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.impl.TeleportUpdate;
 import org.redrune.rs2.world.Location;
@@ -7,9 +10,6 @@ import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.Directions;
 import org.redrune.utility.rs.Directions.WalkingDirection;
-
-import java.util.Deque;
-import java.util.LinkedList;
 
 /**
  * The entity's walking queue.

@@ -1,6 +1,13 @@
 package org.redrune.utility.backend;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +56,7 @@ public final class MapDataParser {
 				}
 				getMapData().put(area, parts);
 			}
+			in.close();
 		} catch (IOException e) {
 			final File Failedpacked = new File("./data/mapdata/packedKeys.bin");
 			if (Failedpacked.exists()) {

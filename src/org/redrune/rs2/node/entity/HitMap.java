@@ -1,14 +1,15 @@
 package org.redrune.rs2.node.entity;
 
-import lombok.Getter;
-import org.redrune.rs2.node.entity.data.Hit;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.World;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.redrune.rs2.node.entity.data.Hit;
+import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.world.World;
+
+import lombok.Getter;
 
 /**
  * The entity's hit map. This holds the last 2 damages done to this player, a

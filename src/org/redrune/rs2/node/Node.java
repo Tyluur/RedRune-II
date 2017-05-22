@@ -1,8 +1,9 @@
 package org.redrune.rs2.node;
 
+import org.redrune.rs2.world.Location;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.rs2.world.Location;
 
 /**
  * This is the parent class of all game nodes. Nodes are anything in the game which undergoes

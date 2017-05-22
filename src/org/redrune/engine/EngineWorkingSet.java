@@ -1,10 +1,10 @@
 package org.redrune.engine;
 
-import org.redrune.utility.backend.RS2ThreadFactory;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.redrune.utility.backend.RS2ThreadFactory;
 
 /**
  * A working set containing all the main threads, and thread-related factories.

@@ -1,10 +1,11 @@
 package org.redrune.rs2.node.entity.player.components;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.redrune.utility.AttributeKey;
 
-import java.util.concurrent.ConcurrentHashMap;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The class used to store important player variables.

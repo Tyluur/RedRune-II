@@ -1,8 +1,8 @@
 package org.redrune.utility.rs;
 
-import org.redrune.rs2.world.Location;
+import java.awt.Point;
 
-import java.awt.*;
+import org.redrune.rs2.world.Location;
 
 /**
  * Represents the walking and running directions.

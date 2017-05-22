@@ -8,7 +8,6 @@ import lombok.Getter;
  * @author Emperor
  * @author Tyluur <itstyluur@gmail.com>
  */
-@SuppressWarnings("unused")
 public enum ReturnCode {
 	
 	/**

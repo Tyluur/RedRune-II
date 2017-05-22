@@ -1,10 +1,11 @@
 package org.redrune.engine;
 
-import lombok.Setter;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.redrune.rs2.world.SequencialUpdate;
 import org.redrune.rs2.world.World;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import lombok.Setter;
 
 /**
  * The sequencial  protocol that handles all updating.

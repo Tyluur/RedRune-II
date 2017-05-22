@@ -1,9 +1,8 @@
 package org.redrune.rs2.node.entity.player.render;
 
-import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.Packet.PacketType;
-import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
+import java.util.PriorityQueue;
+
+import org.redrune.network.stream.IoWriteEvent;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.entity.player.components.PlayerRenderData;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
@@ -14,8 +13,6 @@ import org.redrune.rs2.world.Location;
 import org.redrune.rs2.world.World;
 import org.redrune.utility.AttributeKey;
 
-import java.util.PriorityQueue;
-
 /**
  * Represents the player rendering outgoing packet.
  *
@@ -23,14 +20,8 @@ import java.util.PriorityQueue;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/17
  */
-public class PlayerRendering implements OutgoingPacketStructure {
+public class PlayerRendering {
 	
-	@Override
-	public Packet build(Player player) {
-		PacketBuilder bldr = new PacketBuilder(112, PacketType.VAR_SHORT);
-		writePlayerRendering(player, bldr);
-		return bldr.toPacket();
-	}
 	
 	/**
 	 * Writes the player rendering on the packet.
@@ -40,11 +31,11 @@ public class PlayerRendering implements OutgoingPacketStructure {
 	 * @param packet
 	 * 		The packet.
 	 */
-	private static void writePlayerRendering(Player player, PacketBuilder packet) {
+	private static void writePlayerRendering(Player player, IoWriteEvent packet) {
 		PlayerRenderData info = player.getRenderData();
 		int skipCount = -1;
-		PacketBuilder flagBased = new PacketBuilder();
-		packet.startBitAccess();
+		IoWriteEvent flagBased = new IoWriteEvent();
+		packet.initBitAccess();
 		for (int i = 0; i < info.localsCount; i++) {
 			int index = info.getLocals()[i];
 			LocalUpdateStage stage = LocalUpdateStage.getStage(player, World.get().getPlayers().get(index));
@@ -59,7 +50,7 @@ public class PlayerRendering implements OutgoingPacketStructure {
 		putSkip(skipCount, packet);
 		skipCount = -1;
 		packet.finishBitAccess();
-		packet.startBitAccess();
+		packet.initBitAccess();
 		for (int i = 0; i < info.globalsCount; i++) {
 			int index = info.getGlobals()[i];
 			GlobalUpdateStage stage = GlobalUpdateStage.getStage(player, World.get().getPlayers().get(index));
@@ -93,7 +84,7 @@ public class PlayerRendering implements OutgoingPacketStructure {
 	 * @param index
 	 * 		The index
 	 */
-	private static void updateLocalPlayer(Player player, Player p, PacketBuilder buffer, LocalUpdateStage stage, PacketBuilder flagBased, int index) {
+	private static void updateLocalPlayer(Player player, Player p, IoWriteEvent buffer, LocalUpdateStage stage, IoWriteEvent flagBased, int index) {
 		buffer.writeBits(1, 1);
 		buffer.writeBits(1, stage.ordinal() == 0 ? 0 : (p.getUpdateMasks().isUpdateRequired() ? 1 : 0));
 		buffer.writeBits(2, stage.ordinal() % 4);
@@ -156,7 +147,7 @@ public class PlayerRendering implements OutgoingPacketStructure {
 	 * @param flagBased
 	 * 		The flag based buffer
 	 */
-	private static void updateGlobalPlayer(Player player, Player p, PacketBuilder buffer, GlobalUpdateStage stage, PacketBuilder flagBased) {
+	private static void updateGlobalPlayer(Player player, Player p, IoWriteEvent buffer, GlobalUpdateStage stage, IoWriteEvent flagBased) {
 		buffer.writeBits(1, 1);
 		buffer.writeBits(2, stage.ordinal());
 		switch (stage) {
@@ -196,7 +187,7 @@ public class PlayerRendering implements OutgoingPacketStructure {
 	 * @param forceSync
 	 * 		If we should force the appearance update mask.
 	 */
-	private static void writeMasks(Player writingFor, Player updatable, PacketBuilder composer, boolean forceSync) {
+	private static void writeMasks(Player writingFor, Player updatable, IoWriteEvent composer, boolean forceSync) {
 		int maskdata = 0;
 		PriorityQueue<UpdateFlag> flags = new PriorityQueue<>(updatable.getUpdateMasks().getFlagQueue());
 		for (UpdateFlag flag : flags) {
@@ -212,12 +203,12 @@ public class PlayerRendering implements OutgoingPacketStructure {
 		if (maskdata > 32768) {
 			maskdata |= 0x200;
 		}
-		composer.writeByte((byte) maskdata);
+		composer.write((byte) maskdata);
 		if (maskdata > 128) {
-			composer.writeByte((byte) (maskdata >> 8));
+			composer.write((byte) (maskdata >> 8));
 		}
 		if (maskdata > 32768) {
-			composer.writeByte((byte) (maskdata >> 16));
+			composer.write((byte) (maskdata >> 16));
 		}
 		while (!flags.isEmpty()) {
 			flags.poll().write(composer);
@@ -232,7 +223,7 @@ public class PlayerRendering implements OutgoingPacketStructure {
 	 * @param packet
 	 * 		The packet to write on.
 	 */
-	private static void putSkip(int skipCount, PacketBuilder packet) {
+	private static void putSkip(int skipCount, IoWriteEvent packet) {
 		if (skipCount > -1) {
 			packet.writeBits(1, 0);
 			if (skipCount == 0) {
