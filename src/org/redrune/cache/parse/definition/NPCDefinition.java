@@ -12,12 +12,39 @@ import java.util.HashMap;
  */
 public final class NPCDefinition {
 	
-	public int[][] anIntArrayArray882;
-	
-	public boolean aBoolean3190;
-	
 	@Getter
 	private int id;
+	
+	@Getter
+	private int renderEmote;
+	
+	@Getter
+	private int size = 1;
+	
+	@Getter
+	private int combatLevel;
+	
+	@Getter
+	private String name;
+	
+	@Getter
+	private byte walkMask;
+	
+	@Getter
+	private boolean visibleOnMap;
+	
+	@Getter
+	private String[] options;
+	
+	@Getter
+	private int[] modelIds;
+	
+	@Getter
+	private byte respawnDirection;
+	
+	public int[][] anIntArrayArray882;
+	
+	private boolean aBoolean3190;
 	
 	private HashMap<Integer, Object> aClass180_832;
 	
@@ -26,10 +53,6 @@ public final class NPCDefinition {
 	private int anInt836;
 	
 	private int anInt837;
-	
-	private byte respawnDirection;
-	
-	private int size = 1;
 	
 	private int[][] anIntArrayArray840;
 	
@@ -42,8 +65,6 @@ public final class NPCDefinition {
 	private int[] anIntArray845;
 	
 	private int anInt846;
-	
-	private int renderEmote;
 	
 	private boolean aBoolean849 = false;
 	
@@ -63,9 +84,6 @@ public final class NPCDefinition {
 	
 	private short[] aShortArray859;
 	
-	@Getter
-	private int combatLevel;
-	
 	private byte[] aByteArray861;
 	
 	private short aShort862;
@@ -74,14 +92,7 @@ public final class NPCDefinition {
 	
 	private int anInt864;
 	
-	@Getter
-	private String name;
-	
 	private short[] aShortArray866;
-	
-	private byte walkMask;
-	
-	private int[] modelIds;
 	
 	private int anInt869;
 	
@@ -111,15 +122,9 @@ public final class NPCDefinition {
 	
 	private int anInt889;
 	
-	@Getter
-	private boolean visibleOnMap;
-	
 	private int[] anIntArray892;
 	
 	private short aShort894;
-	
-	@Getter
-	private String[] options;
 	
 	private short[] aShortArray896;
 	

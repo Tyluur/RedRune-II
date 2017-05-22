@@ -67,10 +67,10 @@ public final class NetworkHandler extends SimpleChannelHandler {
 				return;
 			}
 			NetworkSession session = (NetworkSession) attached;
-		/*	Player player = session.getPlayer();
+			Player player = session.getPlayer();
 			if (player != null) {
-				System.err.println("Channel disconnected; removing player " + player.toString() + " from node worker.");
-			}*/
+				player.deregister();
+			}
 			session.setPlayer(null);
 		} catch (Exception ex) {
 			ex.printStackTrace();

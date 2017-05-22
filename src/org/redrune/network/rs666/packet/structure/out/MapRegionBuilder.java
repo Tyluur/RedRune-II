@@ -7,13 +7,14 @@ import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.world.Location;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.MapDataParser;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public class MapRegionBuilder implements OutgoingPacketStructure {
+public final class MapRegionBuilder implements OutgoingPacketStructure {
 	
 	/**
 	 * If the packet is being sent from a login request
@@ -29,7 +30,7 @@ public class MapRegionBuilder implements OutgoingPacketStructure {
 		PacketBuilder bldr = new PacketBuilder(19, PacketType.VAR_SHORT);
 		Location pos = player.getLocation();
 		if (onLogin) {
-			player.getRenderInformation().enterWorld(bldr);
+			player.getRenderData().enterWorld(bldr);
 		}
 		int regionX = pos.getRegionX();
 		int regionY = pos.getRegionY();
@@ -50,6 +51,8 @@ public class MapRegionBuilder implements OutgoingPacketStructure {
 				MapRegionParser.parseMap(region, mapData);
 			}
 		}
+		player.getDetails().setLastLocation(player.getLocation());
+		player.putAttribute(AttributeKey.MAP_REGION_CHANGED, false);
 		return bldr.toPacket();
 	}
 	

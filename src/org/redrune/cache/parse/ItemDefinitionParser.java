@@ -1,5 +1,6 @@
 package org.redrune.cache.parse;
 
+import org.redrune.cache.Cache;
 import org.redrune.cache.parse.definition.ItemDefinition;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,15 +35,17 @@ public class ItemDefinitionParser {
 		}
 	}
 	
-	// TODO: equip ids
-/*	public static void loadEquipIds() {
+	/**
+	 * Loads all equip ids
+	 */
+	public static void loadEquipIds() {
 		int equipId = 0;
 		for (int i = 0; i < Cache.getAmountOfItems(); i++) {
-			ItemDefinition def = ItemDefinition.forId(i);
-			if (def.maleWornModelId1 >= 0 || def.maleWornModelId2 >= 0) {
+			ItemDefinition def = forId(i);
+			if (def.getMaleWornModelId1() >= 0 || def.getMaleWornModelId2() >= 0) {
 				def.setEquipId(equipId++);
 			}
 		}
-	}*/
+	}
 	
 }

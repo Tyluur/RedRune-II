@@ -30,7 +30,7 @@ public final class NetworkTransmitter {
 		send(new LoginCredentialsBuilder().build(player));
 		send(new MapRegionBuilder(true).build(player));
 		sendMainInterfaces();
-		if (player.getNetworkSession().getClientComponents().getScreenSizeMode() > 1) {
+		if (player.getNetworkSession().getViewComponents().getScreenSizeMode() > 1) {
 			sendFullScreenAMasks();
 		} else {
 			sendFixedAMasks();
@@ -55,7 +55,7 @@ public final class NetworkTransmitter {
 	 * @return A {@code NetworkTransmitter} {@code Object}
 	 */
 	private NetworkTransmitter sendMainInterfaces() {
-		switch (player.getNetworkSession().getClientComponents().getScreenSizeMode()) {
+		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
 			case 0:
 			case 1:
 				send(new GameWindowBuilder(548, 0).build(player));
@@ -127,7 +127,7 @@ public final class NetworkTransmitter {
 	 *
 	 * @return A {@code NetworkTransmitter} {@code Object}
 	 */
-	private NetworkTransmitter sendFullScreenAMasks() {
+	public NetworkTransmitter sendFullScreenAMasks() {
 		send(new AccessMaskBuilder(0, 99, 137, 58, 0, 2046).build(player));
 		send(new AccessMaskBuilder(-1, -1, 746, 39, 0, 2).build(player));
 		send(new AccessMaskBuilder(-1, -1, 884, 11, 0, 2).build(player));
@@ -183,7 +183,7 @@ public final class NetworkTransmitter {
 	 *
 	 * @return A {@code NetworkTransmitter} {@code Object}
 	 */
-	private NetworkTransmitter sendFixedAMasks() {
+	public NetworkTransmitter sendFixedAMasks() {
 		send(new AccessMaskBuilder(0, 99, 137, 58, 0, 2046).build(player));
 		send(new AccessMaskBuilder(-1, -1, 548, 129, 0, 2).build(player));
 		send(new AccessMaskBuilder(-1, -1, 884, 11, 0, 2).build(player));
@@ -231,6 +231,26 @@ public final class NetworkTransmitter {
 		send(new AccessMaskBuilder(-1, -1, 884, 14, 0, 2).build(player));
 		send(new AccessMaskBuilder(0, 0, 747, 17, 0, 2).build(player));
 		send(new AccessMaskBuilder(0, 0, 662, 74, 0, 2).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends an interface to the client
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public NetworkTransmitter sendInterface(int interfaceId) {
+		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
+			case 0:
+			case 1:
+				send(new InterfaceDisplayBuilder(548, 18, interfaceId, false).build(player));
+				return this;
+			case 2:
+			case 3:
+				send(new InterfaceDisplayBuilder(746, 11 /* 9 */, interfaceId, false).build(player));
+				return this;
+		}
 		return this;
 	}
 }

@@ -1,8 +1,9 @@
 package org.redrune.rs2.node.entity.player.components;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.rs2.GameFlags;
-import org.redrune.rs2.node.entity.player.Right;
+import org.redrune.rs2.world.Location;
 import org.redrune.utility.Misc;
 
 import java.util.Comparator;
@@ -15,12 +16,12 @@ import java.util.logging.Logger;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public final class Credentials {
+public final class PlayerDetails {
 	
 	/**
 	 * Constructs a logger
 	 */
-	private static final Logger logger = Misc.constructLogger(Credentials.class);
+	private static final Logger logger = Misc.constructLogger(PlayerDetails.class);
 	
 	/**
 	 * The username of the player
@@ -34,8 +35,24 @@ public final class Credentials {
 	@Getter
 	private final String password;
 	
+	/**
+	 * The set of the rights the player has
+	 */
 	@Getter
-	private final SortedSet<Right> rights;
+	private final SortedSet<PlayerRight> rights;
+	
+	/**
+	 * The player's appearance
+	 */
+	@Getter
+	private final PlayerAppearance appearance;
+	
+	/**
+	 * The last location the player was at
+	 */
+	@Getter
+	@Setter
+	private transient Location lastLocation;
 	
 	/**
 	 * Constructs a new {@code Credentials} {@code Object}
@@ -45,11 +62,12 @@ public final class Credentials {
 	 * @param password
 	 * 		The password
 	 */
-	public Credentials(String username, String password) {
+	public PlayerDetails(String username, String password) {
 		this.username = username;
 		this.password = password;
 		this.rights = new TreeSet<>(Comparator.comparingInt(Enum::ordinal));
-		this.rights.add(GameFlags.debugMode ? Right.OWNER : Right.PLAYER);
+		this.appearance = new PlayerAppearance();
+		this.rights.add(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER);
 	}
 	
 	/**
@@ -58,10 +76,10 @@ public final class Credentials {
 	 *
 	 * @return A {@code Right} instance
 	 */
-	public Right getDominantRight() {
+	public PlayerRight getDominantRight() {
 		if (rights.size() == 0) {
 			logger.log(Level.SEVERE, "Unexpected situation - rights set was empty!");
-			return Right.PLAYER;
+			return PlayerRight.PLAYER;
 		} else {
 			return rights.first();
 		}
@@ -71,7 +89,7 @@ public final class Credentials {
 	 * If there are donator rights in the {@link #rights} set
 	 */
 	public boolean isDonator() {
-		return rights.contains(Right.DONATOR) || rights.contains(Right.EXTREME_DONATOR);
+		return rights.contains(PlayerRight.DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
 	}
 	
 }

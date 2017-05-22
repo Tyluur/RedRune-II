@@ -1,4 +1,4 @@
-package org.redrune.rs2.node.entity.player.render;
+package org.redrune.rs2.node.entity.player.components;
 
 import lombok.Getter;
 import org.redrune.network.rs666.packet.PacketBuilder;
@@ -6,42 +6,48 @@ import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.world.Location;
 import org.redrune.rs2.world.World;
+import org.redrune.utility.AttributeKey;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Holds the player's rendering information.
+ * Holds the player's rendering data.
  *
  * @author Jolt environment v2 development team
  * @author Emperor (converted to Java + NPC information).
  */
-public class RenderInformation {
+public class PlayerRenderData {
 	
 	/**
 	 * Holds the players' hash locations.
 	 */
-	public final int[] hashLocations = new int[2048];
+	@Getter
+	private final int[] hashLocations = new int[2048];
 	
 	/**
 	 * The local player indexes.
 	 */
-	public final short[] locals = new short[2048];
+	@Getter
+	private final short[] locals = new short[2048];
 	
 	/**
 	 * The global player indexes.
 	 */
-	public final short[] globals = new short[2048];
+	@Getter
+	private final short[] globals = new short[2048];
 	
 	/**
 	 * The local players.
 	 */
-	public final boolean[] isLocal = new boolean[2048];
+	@Getter
+	private final boolean[] isLocal = new boolean[2048];
 	
 	/**
 	 * The skipped player indexes.
 	 */
-	public final byte[] skips = new byte[2048];
+	@Getter
+	private final byte[] skips = new byte[2048];
 	
 	/**
 	 * The player.
@@ -87,7 +93,7 @@ public class RenderInformation {
 	 * @param player
 	 * 		The player.
 	 */
-	public RenderInformation(Player player) {
+	public PlayerRenderData(Player player) {
 		this.player = player;
 		this.onFirstCycle = true;
 	}
@@ -111,7 +117,7 @@ public class RenderInformation {
 			}
 			globals[globalsCount++] = index;
 			Player p = World.get().getPlayers().get(index);
-			if (p == null || !p.isCreated()) {
+			if (p == null || !p.isRenderable()) {
 				packet.writeBits(18, 0);
 				continue;
 			}
@@ -137,11 +143,11 @@ public class RenderInformation {
 				globals[globalsCount++] = i;
 			}
 			Player p = World.get().getPlayers().get(i);
-			if (p != null && p.isCreated()) {
+			if (p != null && p.isRenderable()) {
 				hashLocations[i] = p.getLocation().get18BitsHash();
 			}
 		}
-		//		player.getPlayerFlags().setTeleported(false);
+		player.putAttribute(AttributeKey.PLAYER_TELEPORTED, false);
 	}
 	
 	/**

@@ -208,6 +208,22 @@ public class PacketBuilder {
 		return this;
 	}
 	
+	/**
+	 * Puts a smart.
+	 *
+	 * @param val
+	 * 		The value.
+	 * @return This instance for chaining.
+	 */
+	public PacketBuilder writeIntSmart(int val) {
+		if (val >= 32768) {
+			writeInt(val + 32768);
+		} else {
+			writeShort(val);
+		}
+		return this;
+	}
+	
 	public PacketBuilder writeShort(int s) {
 		buffer.writeShort((short) s);
 		return this;
@@ -266,6 +282,24 @@ public class PacketBuilder {
 	
 	public PacketBuilder writeBytes(byte[] b) {
 		buffer.writeBytes(b);
+		return this;
+	}
+	
+	/**
+	 * Writes A-type bytes on the array.
+	 *
+	 * @param data
+	 * 		The byte-array.
+	 * @param offset
+	 * 		The offset.
+	 * @param len
+	 * 		The length.
+	 * @return This OutgoingPacket instance, for chaining.
+	 */
+	public PacketBuilder writeBytesA(byte[] data, int offset, int len) {
+		for (int k = offset; k < len; k++) {
+			buffer.writeByte((byte) (data[k] + 128));
+		}
 		return this;
 	}
 	

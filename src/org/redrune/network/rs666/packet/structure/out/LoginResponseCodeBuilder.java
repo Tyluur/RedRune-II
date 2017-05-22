@@ -10,7 +10,7 @@ import org.redrune.utility.backend.ReturnCode;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public class LoginResponseCodeBuilder implements OutgoingPacketStructure {
+public final class LoginResponseCodeBuilder implements OutgoingPacketStructure {
 	
 	private final ReturnCode returnCode;
 	

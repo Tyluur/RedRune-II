@@ -7,7 +7,7 @@ import lombok.Setter;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public final class ClientComponents {
+public final class PlayerViewComponents {
 	
 	/**
 	 * The mode of the screen

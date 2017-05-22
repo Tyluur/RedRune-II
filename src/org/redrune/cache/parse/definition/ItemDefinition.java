@@ -1,11 +1,12 @@
 package org.redrune.cache.parse.definition;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.cache.CacheConstants;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.rs2.node.entity.player.Skills;
 import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.rs.SkillConstants;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
@@ -22,14 +23,52 @@ public final class ItemDefinition {
 	
 	private static final int[] ITEM_REQS = { 540, 542, 697, 538 };
 	
+	@Getter
 	private int id;
+	
+	@Getter
+	@Setter
+	private int equipId;
+	
+	@Getter
+	private String name = "null";
+	
+	// options
+	@Getter
+	private String[] groundOptions;
+	
+	@Getter
+	private String[] inventoryOptions;
+	
+	// extra information
+	@Getter
+	private int stackable;
+	
+	@Getter
+	private int value;
+	
+	@Getter
+	private boolean membersOnly;
 	
 	private boolean loaded;
 	
 	private int interfaceModelId;
 	
+	// wearing model information
 	@Getter
-	private String name = "null";
+	private int maleWornModelId1 = -1;
+	
+	private int femaleWornModelId1;
+	
+	@Getter
+	private int maleWornModelId2 = -1;
+	
+	private int femaleWornModelId2;
+	
+	// model information
+	private int[] originalModelColors;
+	
+	private int[] modifiedModelColors;
 	
 	// model size information
 	private int modelZoom;
@@ -41,34 +80,6 @@ public final class ItemDefinition {
 	private int modelOffset1;
 	
 	private int modelOffset2;
-	
-	// extra information
-	private int stackable;
-	
-	private int value;
-	
-	private boolean membersOnly;
-	
-	// wearing model information
-	private int maleWornModelId1 = -1;
-	
-	private int femaleWornModelId1;
-	
-	private int maleWornModelId2 = -1;
-	
-	private int femaleWornModelId2;
-	
-	// options
-	@Getter
-	private String[] groundOptions;
-	
-	@Getter
-	private String[] inventoryOptions;
-	
-	// model information
-	private int[] originalModelColors;
-	
-	private int[] modifiedModelColors;
 	
 	private short[] textureColour1;
 	
@@ -177,13 +188,13 @@ public final class ItemDefinition {
 						levelRequirements.put(1, 25);
 						levelRequirements.put(6, 50);
 					} else if (id == 2503) {
-						levelRequirements.put(Skills.DEFENCE, 40);
-						levelRequirements.put(Skills.RANGE, 70);
+						levelRequirements.put(SkillConstants.DEFENCE, 40);
+						levelRequirements.put(SkillConstants.RANGE, 70);
 					} else if (id == 7462) {
-						levelRequirements.put(Skills.DEFENCE, 45);
+						levelRequirements.put(SkillConstants.DEFENCE, 45);
 					} else if (id == 20072) {
-						levelRequirements.put(Skills.ATTACK, 60);
-						levelRequirements.put(Skills.DEFENCE, 60);
+						levelRequirements.put(SkillConstants.ATTACK, 60);
+						levelRequirements.put(SkillConstants.DEFENCE, 60);
 					} else {
 						levelRequirements.put(levelId, levelReq);
 					}
@@ -206,11 +217,30 @@ public final class ItemDefinition {
 					if (levelRequirements == null) {
 						levelRequirements = new HashMap<>();
 					}
-					levelRequirements.put(Skills.SUMMONING, val);
+					levelRequirements.put(SkillConstants.SUMMONING, val);
 					break;
 			}
 		}
 		loaded = true;
+	}
+	
+	private void setDefaultsVariableValules() {
+	
+	}
+	
+	private void setDefaultOptions() {
+		groundOptions = new String[] { null, null, "take", null, null };
+		inventoryOptions = new String[] { null, null, null, null, "drop" };
+	}
+	
+	private void readOpcodeValues(ByteBuffer buffer) {
+		while (true) {
+			int opcode = buffer.get() & 0xFF;
+			if (opcode == 0) {
+				break;
+			}
+			readValues(buffer, opcode);
+		}
 	}
 	
 	private void transferNoteDefinition(ItemDefinition reference, ItemDefinition templateReference) {
@@ -290,56 +320,6 @@ public final class ItemDefinition {
 		if (reference.inventoryOptions != null) {
 			inventoryOptions = reference.inventoryOptions.clone();
 		}
-	}
-	
-	public boolean hasSpecialBar() {
-		if (clientScriptData == null) {
-			return false;
-		}
-		Object specialBar = clientScriptData.get(687);
-		return specialBar != null && specialBar instanceof Integer && (Integer) specialBar == 1;
-	}
-	
-	public int getGroupId() {
-		if (clientScriptData == null) {
-			return 0;
-		}
-		Object specialBar = clientScriptData.get(686);
-		if (specialBar != null && specialBar instanceof Integer) {
-			return (Integer) specialBar;
-		}
-		return 0;
-	}
-	
-	public int getRenderAnimId() {
-		if (clientScriptData == null) {
-			return 1426;
-		}
-		Object animId = clientScriptData.get(644);
-		if (animId != null && animId instanceof Integer) {
-			return (Integer) animId;
-		}
-		return 1426;
-	}
-	
-	public int getQuestId() {
-		if (clientScriptData == null) {
-			return -1;
-		}
-		Object questId = clientScriptData.get(861);
-		if (questId != null && questId instanceof Integer) {
-			return (Integer) questId;
-		}
-		return -1;
-	}
-	
-	private void setDefaultsVariableValules() {
-	
-	}
-	
-	private void setDefaultOptions() {
-		groundOptions = new String[] { null, null, "take", null, null };
-		inventoryOptions = new String[] { null, null, null, null, "drop" };
 	}
 	
 	private void readValues(ByteBuffer buffer, int opcode) {
@@ -500,6 +480,47 @@ public final class ItemDefinition {
 		}
 	}
 	
+	public boolean hasSpecialBar() {
+		if (clientScriptData == null) {
+			return false;
+		}
+		Object specialBar = clientScriptData.get(687);
+		return specialBar != null && specialBar instanceof Integer && (Integer) specialBar == 1;
+	}
+	
+	public int getGroupId() {
+		if (clientScriptData == null) {
+			return 0;
+		}
+		Object specialBar = clientScriptData.get(686);
+		if (specialBar != null && specialBar instanceof Integer) {
+			return (Integer) specialBar;
+		}
+		return 0;
+	}
+	
+	public int getRenderAnimId() {
+		if (clientScriptData == null) {
+			return 1426;
+		}
+		Object animId = clientScriptData.get(644);
+		if (animId != null && animId instanceof Integer) {
+			return (Integer) animId;
+		}
+		return 1426;
+	}
+	
+	public int getQuestId() {
+		if (clientScriptData == null) {
+			return -1;
+		}
+		Object questId = clientScriptData.get(861);
+		if (questId != null && questId instanceof Integer) {
+			return (Integer) questId;
+		}
+		return -1;
+	}
+	
 	/**
 	 * Prints all fields in this class.
 	 */
@@ -543,16 +564,6 @@ public final class ItemDefinition {
 		return field.get(this);
 	}
 	
-	private void readOpcodeValues(ByteBuffer buffer) {
-		while (true) {
-			int opcode = buffer.get() & 0xFF;
-			if (opcode == 0) {
-				break;
-			}
-			readValues(buffer, opcode);
-		}
-	}
-	
 	public HashMap<Integer, Integer> getWearingRequirements() {
 		HashMap<Integer, Integer> skills = new HashMap<>();
 		if (clientScriptData == null) {
@@ -572,7 +583,7 @@ public final class ItemDefinition {
 					nextSkill = (Integer) value;
 				}
 				if (nextLevel != -1 && nextSkill != -1) {
-					if (nextSkill >= Skills.SKILL_NAME.length) {
+					if (nextSkill >= SkillConstants.SKILL_NAME.length) {
 						skills.put(nextLevel, nextSkill);
 					} else {
 						skills.put(nextSkill, nextLevel);
@@ -585,4 +596,11 @@ public final class ItemDefinition {
 		return skills;
 	}
 	
+	public boolean isStackable() {
+		return stackable == 1;
+	}
+	
+	public boolean isNoted() {
+		return noteTemplateId != -1;
+	}
 }

@@ -1,0 +1,72 @@
+package org.redrune.engine;
+
+import lombok.Setter;
+import org.redrune.rs2.world.World;
+import org.redrune.rs2.world.SequencialUpdate;
+
+/**
+ * The sequencial  protocol that handles all updating.
+ *
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 5/21/2017
+ */
+public final class MajorUpdateWorker implements Runnable {
+	
+	/**
+	 * The updating sequence to use.
+	 */
+	private final SequencialUpdate sequence = new SequencialUpdate();
+	
+	/**
+	 * If the major update worker has started.
+	 */
+	@Setter
+	private boolean started;
+	
+	/**
+	 * The start time of a cycle.
+	 */
+	private long start;
+	
+	/**
+	 * Starts the engine
+	 */
+	public void start() {
+		if (started) {
+			return;
+		}
+		setStarted(true);
+		EngineWorkingSet.submitEngineWork(this);
+	}
+	
+	@Override
+	public void run() {
+		while (World.get().isAlive()) {
+			try {
+				start = System.currentTimeMillis();
+				sequence.start();
+				sequence.execute();
+				sequence.end();
+				sleep();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Lets the current thread sleep.
+	 *
+	 * @throws InterruptedException
+	 * 		When the thread is interrupted.
+	 */
+	private void sleep() throws InterruptedException {
+		long duration = 600 - ((System.currentTimeMillis() - start) % 600);
+		if (duration > 0) {
+			Thread.sleep(duration);
+		} else {
+			System.err.println("Updating cycle duration took " + -duration + "ms too long!");
+		}
+	}
+	
+}

@@ -9,7 +9,7 @@ import org.redrune.rs2.node.entity.player.Player;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public class GameWindowBuilder implements OutgoingPacketStructure {
+public final class GameWindowBuilder implements OutgoingPacketStructure {
 	
 	/**
 	 * The pane id.

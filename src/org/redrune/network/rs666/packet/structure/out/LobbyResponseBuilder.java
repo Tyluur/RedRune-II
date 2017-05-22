@@ -23,7 +23,7 @@ public class LobbyResponseBuilder implements OutgoingPacketStructure {
 		builder.writeLong(0);
 		builder.writeByte(0);
 		builder.writeInt(12);
-		builder.writeByte(player.getCredentials().isDonator() ? 0x2 : 0);
+		builder.writeByte(player.getDetails().isDonator() ? 0x2 : 0);
 		builder.writeInt(0);
 		builder.writeByte(0);
 		builder.writeInt(0);
@@ -42,7 +42,7 @@ public class LobbyResponseBuilder implements OutgoingPacketStructure {
 		builder.writeShort(0);
 		builder.writeShort(0);
 		builder.writeByte(0);
-		builder.writeGJString2(player.getCredentials().getUsername());
+		builder.writeGJString2(player.getDetails().getUsername());
 		builder.writeByte(0);
 		builder.writeInt(1);
 		builder.writeByte(1);

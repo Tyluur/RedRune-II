@@ -1,10 +1,13 @@
 package org.redrune;
 
 import org.redrune.cache.Cache;
+import org.redrune.cache.parse.BodyDataParser;
+import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.network.rs666.NetworkHandler;
 import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.GameFlags;
+import org.redrune.rs2.system.SystemManager;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
 
@@ -37,8 +40,11 @@ public class Bootstrap {
 		try {
 			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
 			Cache.init();
+			BodyDataParser.loadAll();
+			ItemDefinitionParser.loadEquipIds();
 			IncomingPacketRepository.storeAll();
 			MapDataParser.readAll();
+			SystemManager.start();
 			NetworkHandler.bind();
 			logger.info("Successfully started " + GameConstants.SERVER_NAME + "!");
 		} catch (Exception e) {

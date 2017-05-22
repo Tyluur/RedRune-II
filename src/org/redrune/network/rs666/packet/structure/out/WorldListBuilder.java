@@ -9,7 +9,7 @@ import org.redrune.rs2.world.connection.WorldList;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public class WorldListBuilder implements OutgoingPacketStructure {
+public final class WorldListBuilder implements OutgoingPacketStructure {
 	
 	@Override
 	public Packet build(Player player) {

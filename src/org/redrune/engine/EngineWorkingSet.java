@@ -25,6 +25,11 @@ public class EngineWorkingSet {
 	private static final Executor LOGIC_SERVICE = Executors.newSingleThreadExecutor(new RS2ThreadFactory("GameLogic"));
 	
 	/**
+	 * The executor used.
+	 */
+	private static final ExecutorService UPDATE_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	
+	/**
 	 * Submits a new js5 task to execute.
 	 *
 	 * @param runnable
@@ -42,5 +47,15 @@ public class EngineWorkingSet {
 	 */
 	public static void submitLogic(Runnable runnable) {
 		LOGIC_SERVICE.execute(runnable);
+	}
+	
+	/**
+	 * This submits work to the {@link #UPDATE_SERVICE} WORKER. This worker is exclusively for game engine.
+	 *
+	 * @param runnable
+	 * 		The work
+	 */
+	public static void submitEngineWork(Runnable runnable) {
+		UPDATE_SERVICE.execute(runnable);
 	}
 }

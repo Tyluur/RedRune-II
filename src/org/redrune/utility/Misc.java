@@ -114,4 +114,125 @@ public class Misc {
 		return ipAddress;
 	}
 	
+	/**
+	 * Gets the direction the player is running
+	 *
+	 * @param dx
+	 * 		The x direction
+	 * @param dy
+	 * 		The y direction
+	 */
+	public static int getRunningDirection(int dx, int dy) {
+		if (dx == -2 && dy == -2) {
+			return 0;
+		}
+		if (dx == -1 && dy == -2) {
+			return 1;
+		}
+		if (dx == 0 && dy == -2) {
+			return 2;
+		}
+		if (dx == 1 && dy == -2) {
+			return 3;
+		}
+		if (dx == 2 && dy == -2) {
+			return 4;
+		}
+		if (dx == -2 && dy == -1) {
+			return 5;
+		}
+		if (dx == 2 && dy == -1) {
+			return 6;
+		}
+		if (dx == -2 && dy == 0) {
+			return 7;
+		}
+		if (dx == 2 && dy == 0) {
+			return 8;
+		}
+		if (dx == -2 && dy == 1) {
+			return 9;
+		}
+		if (dx == 2 && dy == 1) {
+			return 10;
+		}
+		if (dx == -2 && dy == 2) {
+			return 11;
+		}
+		if (dx == -1 && dy == 2) {
+			return 12;
+		}
+		if (dx == 0 && dy == 2) {
+			return 13;
+		}
+		if (dx == 1 && dy == 2) {
+			return 14;
+		}
+		if (dx == 2 && dy == 2) {
+			return 15;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Gets the direction the player is wlking
+	 *
+	 * @param dx
+	 * 		The x direction
+	 * @param dy
+	 * 		The y direction
+	 */
+	public static int getWalkDirection(int dx, int dy) {
+		if (dx < 0 && dy < 0) {
+			return 0;
+		}
+		if (dx == 0 && dy < 0) {
+			return 1;
+		}
+		if (dx > 0 && dy < 0) {
+			return 2;
+		}
+		if (dx < 0 && dy == 0) {
+			return 3;
+		}
+		if (dx > 0 && dy == 0) {
+			return 4;
+		}
+		if (dx < 0 && dy > 0) {
+			return 5;
+		}
+		if (dx == 0 && dy > 0) {
+			return 6;
+		}
+		if (dx > 0 && dy > 0) {
+			return 7;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Format a player's name for display.
+	 *
+	 * @param name
+	 * 		The name to be formatted.
+	 * @return The formatted string.
+	 */
+	public static String formatPlayerNameForDisplay(String name) {
+		final StringBuilder builder = new StringBuilder();
+		name = name.replaceAll("_", " ").toLowerCase();
+		boolean wasSpace = true;
+		for (int i = 0; i < name.length(); i++) {
+			if (wasSpace) {
+				builder.append(("" + name.charAt(i)).toUpperCase());
+				wasSpace = false;
+			} else {
+				builder.append(name.charAt(i));
+			}
+			if (name.charAt(i) == ' ') {
+				wasSpace = true;
+			}
+		}
+		return builder.toString();
+	}
+	
 }

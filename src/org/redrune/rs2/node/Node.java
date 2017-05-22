@@ -1,6 +1,7 @@
 package org.redrune.rs2.node;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.rs2.world.Location;
 
 /**
@@ -33,7 +34,15 @@ public abstract class Node {
 	 * The location of the node
 	 */
 	@Getter
-	private final Location location;
+	@Setter
+	private Location location;
+	
+	/**
+	 * If the entity has been renderable
+	 */
+	@Getter
+	@Setter
+	private transient boolean renderable;
 	
 	protected Node(Location location) {
 		this.location = location;

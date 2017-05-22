@@ -9,6 +9,16 @@ import lombok.Getter;
 public final class Location {
 	
 	/**
+	 * The x direction deltas
+	 */
+	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+	
+	/**
+	 * The y direction deltas
+	 */
+	public static final byte[] DIRECTION_DELTA_Y = new byte[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+	
+	/**
 	 * Represents the viewport sizes.
 	 */
 	public final static int[] VIEWPORT_SIZES = { 104, 120, 136, 168 };
@@ -75,6 +85,19 @@ public final class Location {
 	}
 	
 	/**
+	 * Gets a delta location.
+	 *
+	 * @param l
+	 * 		The location.
+	 * @param o
+	 * 		The other location.
+	 * @return The delta location.
+	 */
+	public static Location getDelta(Location l, Location o) {
+		return new Location(o.x - l.x, o.y - l.y, o.z - l.z);
+	}
+	
+	/**
 	 * Returns a location.
 	 *
 	 * @param diffX
@@ -99,7 +122,7 @@ public final class Location {
 	 * @param z
 	 * 		The z change
 	 */
-	private Location locate(int x, int y, int z) {
+	public static Location locate(int x, int y, int z) {
 		return new Location(x, y, z);
 	}
 	

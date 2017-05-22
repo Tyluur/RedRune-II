@@ -9,7 +9,7 @@ import org.redrune.rs2.node.entity.player.Player;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public class InterfaceDisplayBuilder implements OutgoingPacketStructure {
+public final class InterfaceDisplayBuilder implements OutgoingPacketStructure {
 	
 	/**
 	 * The window id.

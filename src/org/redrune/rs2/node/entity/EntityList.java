@@ -70,8 +70,9 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	
 	/**
 	 * Gets an entity from the list
-	 * @param index The entity
-	 * @return
+	 *
+	 * @param index
+	 * 		The entity
 	 */
 	public T get(int index) {
 		if (index >= entities.length || index == 0) {
@@ -82,8 +83,9 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	
 	/**
 	 * If the list contains an entity
-	 * @param entity The entity
-	 * @return
+	 *
+	 * @param entity
+	 * 		The entity
 	 */
 	public boolean contains(T entity) {
 		return entity.getIndex() != 0 && entities[entity.getIndex() - 1] == entity;
@@ -91,7 +93,6 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	
 	/**
 	 * Gets the size of the entities
-	 * @return
 	 */
 	public int size() {
 		return size;
@@ -99,7 +100,6 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	
 	/**
 	 * Converts the array to a {@code Stream} {@code Object}
-	 * @return
 	 */
 	public Stream<T> stream() {
 		return StreamSupport.stream(spliterator(), false);

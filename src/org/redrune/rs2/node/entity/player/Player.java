@@ -4,14 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
+import org.redrune.network.rs666.packet.structure.out.MapRegionBuilder;
 import org.redrune.rs2.node.entity.Entity;
-import org.redrune.rs2.node.entity.player.components.Credentials;
-import org.redrune.rs2.node.entity.player.render.RenderInformation;
+import org.redrune.rs2.node.entity.player.components.*;
+import org.redrune.rs2.node.entity.player.render.PlayerRendering;
 import org.redrune.rs2.world.Location;
 import org.redrune.rs2.world.World;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.rs.SkillConstants;
 
 /**
- * The player that created in the game.
+ * The player that renderable in the game.
  *
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
@@ -22,7 +25,25 @@ public final class Player extends Entity {
 	 * The credentials of the player
 	 */
 	@Getter
-	private final Credentials credentials;
+	private final PlayerDetails details;
+	
+	/**
+	 * The variables of the player that are saved
+	 */
+	@Getter
+	private final PlayerVariables variables;
+	
+	/**
+	 * The skills of the player
+	 */
+	@Getter
+	private final PlayerSkills skills;
+	
+	/**
+	 * The equipment of the player
+	 */
+	@Getter
+	private final PlayerEquipment equipment = new PlayerEquipment();
 	
 	/**
 	 * The networkSession attached to the player
@@ -41,29 +62,47 @@ public final class Player extends Entity {
 	 * The render information object
 	 */
 	@Getter
-	private transient RenderInformation renderInformation;
+	private transient PlayerRenderData renderData;
 	
 	public Player(String username, String password, NetworkSession session) {
 		super(new Location(3333, 3333));
-		this.credentials = new Credentials(username, password);
+		this.skills = new PlayerSkills();
+		this.details = new PlayerDetails(username, password);
+		this.variables = new PlayerVariables();
 		this.setNetworkSession(session);
 		this.getNetworkSession().setPlayer(this);
 	}
 	
+	/**
+	 * Sends the updating required
+	 */
+	public void sendUpdating() {
+		if (getAttribute(AttributeKey.MAP_REGION_CHANGED, false)) {
+			getTransmitter().send(new MapRegionBuilder(false).build(this));
+		}
+		getTransmitter().send(new PlayerRendering().build(this));
+	}
+	
 	@Override
 	public void register() {
-		generateTransients();
+		registerTransients();
 		World.get().getPlayers().add(this);
+		World.get().getRenderablePlayers().add(this);
 		transmitter.sendLoginComponents();
-		setCreated(true);
+		skills.refreshAll();
+		equipment.sendFullContainer();
+		setRenderable(true);
 		
-		System.out.println(this);
+		System.out.println("Player registered:\t" + this);
 	}
 	
 	@Override
 	public void deregister() {
 		World.get().getPlayers().remove(this);
-		setCreated(false);
+		World.get().getRenderablePlayers().remove(this);
+		setRenderable(false);
+		
+		System.out.println("Player deregistered:\t" + this);
 	}
 	
 	@Override
@@ -71,16 +110,39 @@ public final class Player extends Entity {
 		return 1;
 	}
 	
-	@Override
-	public String toString() {
-		return "[username=" + credentials.getUsername() + ", index=" + getIndex() + ", right=" + credentials.getDominantRight() + "]";
-	}
-	
 	/**
 	 * Generates the transient objects (objects which will not save)
 	 */
-	public void generateTransients() {
+	@Override
+	public void registerTransients() {
+		super.registerTransients();
 		this.transmitter = new NetworkTransmitter(this);
-		this.renderInformation = new RenderInformation(this);
+		this.renderData = new PlayerRenderData(this);
+		this.skills.setPlayer(this);
+		this.equipment.setPlayer(this);
+	}
+	
+	@Override
+	public Player toPlayer() {
+		return this;
+	}
+	
+	@Override
+	public int getHitpoints() {
+		return variables.getHealthPoints();
+	}
+	
+	@Override
+	public int getMaxHitpoints() {
+		return skills.getLevelForXp(SkillConstants.HITPOINTS) * 10;
+	}
+	
+	@Override
+	public void tick() {
+	}
+	
+	@Override
+	public String toString() {
+		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
 	}
 }
