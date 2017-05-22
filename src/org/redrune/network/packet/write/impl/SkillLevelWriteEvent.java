@@ -12,8 +12,8 @@ public class SkillLevelWriteEvent implements PacketWriteEvent<SkillLevelPacket> 
 	@Override
 	public IoWriteEvent encodePacket(SkillLevelPacket context) {
 		IoWriteEvent buffer = IoWriteEvent.create(133);
-		return buffer.writeS(context.getSkills().getSkill().ordinal())
-				.writeIntA((int) context.getSkills().getExperience()).writeA(context.getSkills().getLevel());
+		return buffer.writeS(context.getSkill())
+				.writeIntA((int) context.getExperience()).writeA(context.getLevel());
 	}
 
 }

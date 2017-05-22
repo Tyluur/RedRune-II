@@ -96,7 +96,7 @@ public class Animation extends UpdateFlag {
 			bldr.writeByteA(speed << 16);
 		} else {
 			for (int i = 0; i < 4; i++) {
-				bldr.writeA(id);
+				bldr.writeShortA(id);
 			}
 			bldr.write(speed << 16);
 		}
