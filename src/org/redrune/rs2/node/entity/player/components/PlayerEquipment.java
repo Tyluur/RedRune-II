@@ -29,7 +29,7 @@ public class PlayerEquipment implements EquipConstants {
 	public PlayerEquipment() {
 		items.set(SLOT_HAT, new Item(10828));
 		items.set(SLOT_CHEST, new Item(10551));
-		items.set(SLOT_LEGS, new Item(11724));
+		items.set(SLOT_LEGS, new Item(11726));
 		items.set(SLOT_FEET, new Item(11732));
 	}
 	

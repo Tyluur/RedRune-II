@@ -1,8 +1,10 @@
 package org.redrune;
 
+import com.google.common.base.Stopwatch;
 import org.redrune.cache.Cache;
 import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.NetworkHandler;
 import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
 import org.redrune.rs2.GameConstants;
@@ -11,6 +13,7 @@ import org.redrune.rs2.system.SystemManager;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,8 +28,12 @@ public class Bootstrap {
 	/**
 	 * The logger instance
 	 */
-	private static final Logger logger = Misc.constructLogger(Bootstrap.class);
+	private static final Logger LOGGER = Misc.constructLogger(Bootstrap.class);
 	
+	/**
+	 * The STOPWATCH
+	 */
+	private static final Stopwatch STOPWATCH = Stopwatch.createUnstarted();
 	/**
 	 * The main method executed from the JVM
 	 * @param args Program arguments
@@ -37,18 +44,20 @@ public class Bootstrap {
 			System.err.println("args[0]=[true/false] - debug mode");
 			return;
 		}
+		STOPWATCH.start();
 		try {
 			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
 			Cache.init();
+			SystemManager.setDefaults();
 			BodyDataParser.loadAll();
 			ItemDefinitionParser.loadEquipIds();
 			IncomingPacketRepository.storeAll();
 			MapDataParser.readAll();
 			SystemManager.start();
 			NetworkHandler.bind();
-			logger.info("Successfully started " + GameConstants.SERVER_NAME + "!");
+			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + NetworkConstants.REVISION + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Unexpected error on initialization - " + e);
+			LOGGER.log(Level.SEVERE, "Unexpected error on initialization - " + e);
 		}
 	}
 }

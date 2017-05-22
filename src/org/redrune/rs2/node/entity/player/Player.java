@@ -8,7 +8,9 @@ import org.redrune.network.rs666.packet.structure.out.MapRegionBuilder;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.components.*;
 import org.redrune.rs2.node.entity.player.render.PlayerRendering;
+import org.redrune.rs2.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.SequencialUpdate;
 import org.redrune.rs2.world.World;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.SkillConstants;
@@ -81,16 +83,17 @@ public final class Player extends Entity {
 			getTransmitter().send(new MapRegionBuilder(false).build(this));
 		}
 		getTransmitter().send(new PlayerRendering().build(this));
+		getUpdateMasks().register(new AppearanceUpdate(this));
 	}
 	
 	@Override
 	public void register() {
 		registerTransients();
 		World.get().getPlayers().add(this);
-		World.get().getRenderablePlayers().add(this);
+		SequencialUpdate.getRenderablePlayers().add(this);
 		transmitter.sendLoginComponents();
-		skills.refreshAll();
 		equipment.sendFullContainer();
+		skills.refreshAll();
 		setRenderable(true);
 		
 		System.out.println("Player registered:\t" + this);
@@ -99,7 +102,7 @@ public final class Player extends Entity {
 	@Override
 	public void deregister() {
 		World.get().getPlayers().remove(this);
-		World.get().getRenderablePlayers().remove(this);
+		SequencialUpdate.getRenderablePlayers().remove(this);
 		setRenderable(false);
 		
 		System.out.println("Player deregistered:\t" + this);

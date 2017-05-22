@@ -3,7 +3,10 @@ package org.redrune.network.rs666.packet.structure.in;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
 import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
+import org.redrune.rs2.node.entity.data.Hit;
+import org.redrune.rs2.node.entity.data.Hit.HitSplat;
 import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.node.entity.player.render.flag.impl.HitUpdate;
 import org.redrune.utility.Misc;
 
 /**
@@ -32,6 +35,10 @@ public class CommandHandlerPacketStructure implements IncomingPacketStructure {
 				int id = Integer.parseInt(split[1]);
 				int value = Integer.parseInt(split[2]);
 				player.getTransmitter().send(new VarpPacketBuilder(id, value).build(player));
+				break;
+			case "hits":
+				player.getHitMap().getHitList().add(new Hit(player, 500, HitSplat.ABSORB_DAMAGE));
+				player.getUpdateMasks().register(new HitUpdate(player));
 				break;
 		}
 	}

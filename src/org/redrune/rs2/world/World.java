@@ -3,7 +3,6 @@ package org.redrune.rs2.world;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.rs2.GameConstants;
-import org.redrune.rs2.node.InitializingNodeList;
 import org.redrune.rs2.node.entity.EntityList;
 import org.redrune.rs2.node.entity.player.Player;
 
@@ -27,12 +26,6 @@ public final class World {
 	 */
 	@Getter
 	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
-	
-	/**
-	 * The players that are renderable
-	 */
-	@Getter
-	private final InitializingNodeList<Player> renderablePlayers = new InitializingNodeList<>();
 	
 	/**
 	 * If the world is alive

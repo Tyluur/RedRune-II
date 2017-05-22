@@ -44,12 +44,14 @@ public final class IncomingPacketRepository {
 	 * 		The packet
 	 */
 	public static void handlePacket(Player player, Packet packet) {
-		IncomingPacketStructure structure = STREAM_DECODER_MAP.get(packet.getOpcode());
+		final int opcode = packet.getOpcode();
+		IncomingPacketStructure structure = STREAM_DECODER_MAP.get(opcode);
 		if (structure == null) {
-			System.out.println("Received packet " + packet.getOpcode() + ", unidentified handler.");
+			System.out.println("Received packet " + opcode + ", unidentified handler.");
 			return;
 		}
 		structure.read(player, packet);
+		System.out.println("Read incoming packet: " + opcode);
 	}
 	
 }

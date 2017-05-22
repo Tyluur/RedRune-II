@@ -31,7 +31,22 @@ public enum CreationResponse {
 	/**
 	 * The response code that says the email is invalid
 	 */
-	INVALID_EMAIL(21);
+	INVALID_EMAIL(21),
+	
+	/**
+	 * The response code that says the password is invalid
+	 */
+	INVALID_PASSWORD(30),
+	
+	/**
+	 * The response code that says we can only accept letters and numbers in the password
+	 */
+	NOT_LETTERS_AND_NUMBERS(31),
+	
+	/**
+	 * The response code that says the password is too similar to the email
+	 */
+	TOO_SIMILAR(32);
 	
 	/**
 	 * The value.
@@ -48,4 +63,4 @@ public enum CreationResponse {
 	CreationResponse(int value) {
 		this.value = (byte) value;
 	}
-	}
+}

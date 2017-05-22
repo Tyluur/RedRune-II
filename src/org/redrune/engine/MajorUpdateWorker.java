@@ -1,8 +1,10 @@
 package org.redrune.engine;
 
 import lombok.Setter;
-import org.redrune.rs2.world.World;
 import org.redrune.rs2.world.SequencialUpdate;
+import org.redrune.rs2.world.World;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The sequencial  protocol that handles all updating.
@@ -18,6 +20,11 @@ public final class MajorUpdateWorker implements Runnable {
 	private final SequencialUpdate sequence = new SequencialUpdate();
 	
 	/**
+	 * The amount of ticks that have passed
+	 */
+	private final AtomicInteger ticks = new AtomicInteger(0);
+	
+	/**
 	 * If the major update worker has started.
 	 */
 	@Setter
@@ -28,17 +35,6 @@ public final class MajorUpdateWorker implements Runnable {
 	 */
 	private long start;
 	
-	/**
-	 * Starts the engine
-	 */
-	public void start() {
-		if (started) {
-			return;
-		}
-		setStarted(true);
-		EngineWorkingSet.submitEngineWork(this);
-	}
-	
 	@Override
 	public void run() {
 		while (World.get().isAlive()) {
@@ -47,6 +43,7 @@ public final class MajorUpdateWorker implements Runnable {
 				sequence.start();
 				sequence.execute();
 				sequence.end();
+				ticks.addAndGet(1);
 				sleep();
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -67,6 +64,25 @@ public final class MajorUpdateWorker implements Runnable {
 		} else {
 			System.err.println("Updating cycle duration took " + -duration + "ms too long!");
 		}
+	}
+	
+	/**
+	 * Starts the engine
+	 */
+	public void start() {
+		if (started) {
+			return;
+		}
+		
+		setStarted(true);
+		EngineWorkingSet.submitEngineWork(this);
+	}
+	
+	/**
+	 * Gets the amount of ticks that have passed successfully
+	 */
+	public int getTicksElapsed() {
+		return ticks.get();
 	}
 	
 }

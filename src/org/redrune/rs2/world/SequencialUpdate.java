@@ -1,5 +1,6 @@
 package org.redrune.rs2.world;
 
+import lombok.Getter;
 import org.redrune.engine.EngineWorkingSet;
 import org.redrune.rs2.node.InitializingNodeList;
 import org.redrune.rs2.node.entity.player.Player;
@@ -16,10 +17,15 @@ import java.util.concurrent.TimeUnit;
 public final class SequencialUpdate {
 	
 	/**
+	 * The players that are renderable
+	 */
+	@Getter
+	private static final InitializingNodeList<Player> renderablePlayers = new InitializingNodeList<>();
+	
+	/**
 	 * Starts the sequence
 	 */
 	public void start() {
-		System.out.println(getRenderablePlayers());
 		for (Player player : getRenderablePlayers()) {
 			player.tick();
 			player.getWalkingQueue().updateMovement();
@@ -58,14 +64,7 @@ public final class SequencialUpdate {
 			player.getRenderData().updateInformation();
 			player.getHitMap().getHitList().clear();
 		}
-		World.get().getRenderablePlayers().sync();
-	}
-	
-	/**
-	 * Gets the list of renderable players
-	 */
-	private InitializingNodeList<Player> getRenderablePlayers() {
-		return World.get().getRenderablePlayers();
+		renderablePlayers.sync();
 	}
 	
 }

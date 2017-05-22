@@ -317,4 +317,8 @@ public class PacketBuilder {
 		}
 	}
 	
+	public void writeByte5(long value) {
+		writeByte((byte) (value >> 32));
+		writeInt((int) (value));
+	}
 }

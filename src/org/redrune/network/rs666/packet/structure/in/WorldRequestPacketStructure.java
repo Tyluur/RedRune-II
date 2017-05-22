@@ -19,6 +19,10 @@ public class WorldRequestPacketStructure implements IncomingPacketStructure {
 	
 	@Override
 	public void read(Player player, Packet packet) {
+		long serverKey = packet.readLong();
+		boolean containsInformation = packet.readByte() == 1;
+		boolean containsStatus = packet.readByte() == 1;
+		System.out.println(serverKey + ", " + containsInformation + ", " + containsStatus);
 		if (player.getNetworkSession().isInLobby()) {
 			player.getTransmitter().send(new WorldListBuilder().build(player));
 		}
