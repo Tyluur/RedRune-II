@@ -1,10 +1,10 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
-public class IgnoresListPacket implements PacketEvent {
+public class IgnoresListPacket implements PacketContext {
 
 	private final Ignore ignore;
 

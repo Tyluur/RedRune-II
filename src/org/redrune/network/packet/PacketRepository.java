@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 import org.redrune.network.packet.event.impl.InterfacePacket;
 import org.redrune.network.packet.event.impl.KeepAlivePacket;
 import org.redrune.network.packet.read.PacketReadEvent;
@@ -24,12 +24,12 @@ public class PacketRepository {
 
 	private static final Map<int[], PacketReadEvent> DECODING_PACKETS = new HashMap<int[], PacketReadEvent>(112);
 
-	private static final Map<Class<?>, PacketWriteEvent<? extends PacketEvent>> ENCODING_PACKETS = new HashMap<Class<?>, PacketWriteEvent<? extends PacketEvent>>(
+	private static final Map<Class<?>, PacketWriteEvent<? extends PacketContext>> ENCODING_PACKETS = new HashMap<Class<?>, PacketWriteEvent<? extends PacketContext>>(
 			160);
 
 	@SuppressWarnings("unchecked")
-	public static IoWriteEvent writePacket(PacketEvent context) {
-		PacketWriteEvent<PacketEvent> packet = (PacketWriteEvent<PacketEvent>) ENCODING_PACKETS.get(context.getClass());
+	public static IoWriteEvent writePacket(PacketContext context) {
+		PacketWriteEvent<PacketContext> packet = (PacketWriteEvent<PacketContext>) ENCODING_PACKETS.get(context.getClass());
 		if (packet != null) {
 			return packet.encodePacket(context);
 		}

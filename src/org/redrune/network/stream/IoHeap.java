@@ -4,13 +4,13 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * IoHeap.java
- * @author Chryonic
- * May 22, 2017 | RedRune
+ *
+ * @author Chryonic May 22, 2017 | RedRune
  */
 public interface IoHeap {
-
-	public boolean isRaw();
-
-	public ByteBuf getBuffer();
-
+	
+	boolean isRaw();
+	
+	ByteBuf getBuffer();
+	
 }

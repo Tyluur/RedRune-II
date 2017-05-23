@@ -1,6 +1,6 @@
 package org.redrune.network.packet.event;
 
-public class GlobalStringPacket implements PacketEvent {
+public class GlobalStringPacket implements PacketContext {
 
 	private final int id;
 

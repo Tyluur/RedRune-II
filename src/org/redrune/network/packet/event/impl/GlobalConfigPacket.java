@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class GlobalConfigPacket implements PacketEvent {
+public class GlobalConfigPacket implements PacketContext {
 
 	private final int id;
 

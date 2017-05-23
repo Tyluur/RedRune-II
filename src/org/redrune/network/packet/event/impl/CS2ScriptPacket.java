@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class CS2ScriptPacket implements PacketEvent {
+public class CS2ScriptPacket implements PacketContext {
 
 	private final int scriptId;
 

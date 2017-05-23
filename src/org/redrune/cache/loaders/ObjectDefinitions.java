@@ -654,7 +654,7 @@ public class ObjectDefinitions {
 		if (def == null) {
 			def = new ObjectDefinitions();
 			def.id = id;
-			byte[] data = Cache.STORE.getIndexes()[16].getFile(getArchiveId(id), id & 0xff);
+			byte[] data = Cache.store.getIndexes()[16].getFile(getArchiveId(id), id & 0xff);
 			if (data == null) {
 				System.out.println("Failed loading Object " + id + ".");
 			} else {

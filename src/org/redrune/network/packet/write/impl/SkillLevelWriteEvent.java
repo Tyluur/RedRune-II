@@ -8,12 +8,14 @@ import org.redrune.network.stream.IoWriteEvent;
 
 @PacketHeader(packet = PacketType.STANDARD)
 public class SkillLevelWriteEvent implements PacketWriteEvent<SkillLevelPacket> {
-
+	
 	@Override
 	public IoWriteEvent encodePacket(SkillLevelPacket context) {
-		IoWriteEvent buffer = IoWriteEvent.create(133);
-		return buffer.writeS(context.getSkill())
-				.writeIntA((int) context.getExperience()).writeA(context.getLevel());
+		IoWriteEvent buffer = IoWriteEvent.create(8);
+		buffer.writeByteC(context.getLevel());
+		buffer.write(context.getSkill());
+		buffer.writeInt2(context.getExperience());
+		return buffer;
 	}
-
+	
 }

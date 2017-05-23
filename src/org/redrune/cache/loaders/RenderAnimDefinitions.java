@@ -64,7 +64,7 @@ public class RenderAnimDefinitions {
 		if (emoteId == -1) {
 			return null;
 		}
-		byte[] data = Cache.STORE.getIndexes()[2].getFile(32, emoteId);
+		byte[] data = Cache.store.getIndexes()[2].getFile(32, emoteId);
 		defs = new RenderAnimDefinitions();
 		if (data != null) {
 			defs.readValueLoop(new InputStream(data));

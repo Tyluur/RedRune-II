@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class PlayerOnChildPacket implements PacketEvent {
+public class PlayerOnChildPacket implements PacketContext {
 
 	private final int interfaceId;
 

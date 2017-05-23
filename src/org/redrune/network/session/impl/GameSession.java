@@ -7,7 +7,7 @@ import org.redrune.network.protocol.game.msg.GameResponseEvent;
 import org.redrune.network.session.Session;
 import org.redrune.network.stream.IoWriteEvent;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.utility.isaac.IsaacRandomPair;
+import org.redrune.utility.backend.isaac.IsaacRandomPair;
 
 import io.netty.channel.Channel;
 

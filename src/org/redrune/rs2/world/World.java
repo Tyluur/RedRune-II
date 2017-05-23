@@ -1,13 +1,12 @@
 package org.redrune.rs2.world;
 
-import java.util.Optional;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.node.entity.EntityList;
 import org.redrune.rs2.node.entity.player.Player;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Optional;
 
 /**
  * Contains all the collections and data to handle a world.
@@ -26,7 +25,7 @@ public final class World {
 	 * The list of all players in the world
 	 */
 	@Getter
-	private final EntityList<Player> players = new EntityList<Player>(GameConstants.PLAYERS_LIMIT);
+	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT);
 	
 	/**
 	 * If the world is alive

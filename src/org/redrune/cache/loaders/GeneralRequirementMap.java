@@ -18,7 +18,7 @@ public final class GeneralRequirementMap {
 		if (script != null) {
 			return script;
 		}
-		byte[] data = Cache.STORE.getIndexes()[2].getFile(26, scriptId);
+		byte[] data = Cache.store.getIndexes()[2].getFile(26, scriptId);
 		script = new GeneralRequirementMap();
 		if (data != null) {
 			script.readValueLoop(new InputStream(data));

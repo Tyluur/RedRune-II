@@ -1,9 +1,9 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 import org.redrune.rs2.node.entity.player.Player;
 
-public class LogoutPacket implements PacketEvent {
+public class LogoutPacket implements PacketContext {
 
 	private final Player player;
 

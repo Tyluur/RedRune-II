@@ -19,10 +19,10 @@ public final class VarBitDefinitions {
 	public static final void main(String[] args) throws IOException {
 		Cache.init();
 		System.out.println(
-				"There are currently: " + Cache.STORE.getIndexes()[22].getLastArchiveId() * 0x3ff + " bitConfigs.");
+				"There are currently: " + Cache.store.getIndexes()[22].getLastArchiveId() * 0x3ff + " bitConfigs.");
 		// List<BitConfigDefinitions> configs = new
 		// ArrayList<BitConfigDefinitions>();
-		for (int i = 0; i < Cache.STORE.getIndexes()[22].getLastArchiveId() * 0x3ff; i++) {
+		for (int i = 0; i < Cache.store.getIndexes()[22].getLastArchiveId() * 0x3ff; i++) {
 			VarBitDefinitions cd = getClientVarpBitDefinitions(i);
 			if (cd.baseVar == 563) {
 				System.out.println("BitConfig: " + i + ", from bitshift:" + cd.startBit + ", till bitshift: "
@@ -36,7 +36,7 @@ public final class VarBitDefinitions {
 		if (script != null) {
 			return script;
 		}
-		byte[] data = Cache.STORE.getIndexes()[22].getFile(id >>> 1416501898, id & 0x3ff);
+		byte[] data = Cache.store.getIndexes()[22].getFile(id >>> 1416501898, id & 0x3ff);
 		script = new VarBitDefinitions();
 		script.id = id;
 		if (data != null) {

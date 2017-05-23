@@ -262,35 +262,35 @@ public class Misc {
 	}
 
 	public static final int getGraphicDefinitionsSize() {
-		int lastArchiveId = Cache.STORE.getIndexes()[21].getLastArchiveId();
-		return lastArchiveId * 256 + Cache.STORE.getIndexes()[21].getValidFilesCount(lastArchiveId);
+		int lastArchiveId = Cache.store.getIndexes()[21].getLastArchiveId();
+		return lastArchiveId * 256 + Cache.store.getIndexes()[21].getValidFilesCount(lastArchiveId);
 	}
 
 	public static final int getAnimationDefinitionsSize() {
-		int lastArchiveId = Cache.STORE.getIndexes()[20].getLastArchiveId();
-		return lastArchiveId * 128 + Cache.STORE.getIndexes()[20].getValidFilesCount(lastArchiveId);
+		int lastArchiveId = Cache.store.getIndexes()[20].getLastArchiveId();
+		return lastArchiveId * 128 + Cache.store.getIndexes()[20].getValidFilesCount(lastArchiveId);
 	}
 
 	public static final int getObjectDefinitionsSize() {
-		int lastArchiveId = Cache.STORE.getIndexes()[16].getLastArchiveId();
-		return lastArchiveId * 256 + Cache.STORE.getIndexes()[16].getValidFilesCount(lastArchiveId);
+		int lastArchiveId = Cache.store.getIndexes()[16].getLastArchiveId();
+		return lastArchiveId * 256 + Cache.store.getIndexes()[16].getValidFilesCount(lastArchiveId);
 	}
 
 	public static final int getNPCDefinitionsSize() {
-		int lastArchiveId = Cache.STORE.getIndexes()[18].getLastArchiveId();
-		return lastArchiveId * 128 + Cache.STORE.getIndexes()[18].getValidFilesCount(lastArchiveId);
+		int lastArchiveId = Cache.store.getIndexes()[18].getLastArchiveId();
+		return lastArchiveId * 128 + Cache.store.getIndexes()[18].getValidFilesCount(lastArchiveId);
 	}
 
 	public static final int getItemDefinitionsSize() {
-		int lastArchiveId = Cache.STORE.getIndexes()[19].getLastArchiveId();
-		return lastArchiveId * 256 + Cache.STORE.getIndexes()[19].getValidFilesCount(lastArchiveId);
+		int lastArchiveId = Cache.store.getIndexes()[19].getLastArchiveId();
+		return lastArchiveId * 256 + Cache.store.getIndexes()[19].getValidFilesCount(lastArchiveId);
 	}
 
 	public static final int getInterfaceDefinitionsSize() {
-		return Cache.STORE.getIndexes()[3].getLastArchiveId() + 1;
+		return Cache.store.getIndexes()[3].getLastArchiveId() + 1;
 	}
 
 	public static final int getInterfaceDefinitionsComponentsSize(int interfaceId) {
-		return Cache.STORE.getIndexes()[3].getLastFileId(interfaceId);
+		return Cache.store.getIndexes()[3].getLastFileId(interfaceId);
 	}
 }

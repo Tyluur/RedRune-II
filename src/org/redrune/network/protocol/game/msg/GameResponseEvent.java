@@ -1,7 +1,7 @@
 package org.redrune.network.protocol.game.msg;
 
 import org.redrune.network.stream.IoWriteEvent;
-import org.redrune.utility.isaac.IsaacRandomPair;
+import org.redrune.utility.backend.isaac.IsaacRandomPair;
 
 /**
  * GameResponseEvent.java

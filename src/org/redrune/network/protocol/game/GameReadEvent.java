@@ -8,7 +8,7 @@ import org.redrune.network.protocol.ProtocolThrottle.ProtocolRequest;
 import org.redrune.network.protocol.game.msg.GameRequestEvent;
 import org.redrune.network.session.impl.GameSession.GameEvent;
 import org.redrune.network.stream.IoReadEvent;
-import org.redrune.utility.isaac.IsaacRandomPair;
+import org.redrune.utility.backend.isaac.IsaacRandomPair;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

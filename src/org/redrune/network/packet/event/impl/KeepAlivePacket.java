@@ -1,13 +1,13 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
 /**
  * KeepAlivePacket.java
  * @author Chryonic
  * May 22, 2017 | RedRune
  */
-public class KeepAlivePacket implements PacketEvent {
+public class KeepAlivePacket implements PacketContext {
 
 	private final int ping;
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.redrune.cache.Cache;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.backend.BufferUtils;
 
 import com.alex.io.InputStream;
 
@@ -43,7 +43,7 @@ public final class ClientScriptMap {
 		if (script != null) {
 			return script;
 		}
-		byte[] data = Cache.STORE.getIndexes()[17].getFile(scriptId >>> 0xba9ed5a8, scriptId & 0xff);
+		byte[] data = Cache.store.getIndexes()[17].getFile(scriptId >>> 0xba9ed5a8, scriptId & 0xff);
 		script = new ClientScriptMap();
 		if (data != null) {
 			script.readValueLoop(new InputStream(data));

@@ -1,32 +1,12 @@
 package org.redrune.network.packet;
 
-import org.redrune.network.packet.event.impl.GamePanePacket;
-import org.redrune.network.packet.event.impl.GlobalConfigPacket;
-import org.redrune.network.packet.event.impl.InterfacePacket;
-import org.redrune.network.packet.event.impl.KeepAlivePacket;
-import org.redrune.network.packet.event.impl.LogoutPacket;
-import org.redrune.network.packet.event.impl.MessagePacket;
-import org.redrune.network.packet.event.impl.PlayerUpdatePacket;
-import org.redrune.network.packet.event.impl.RegionPacket;
-import org.redrune.network.packet.event.impl.RunEnergyPacket;
-import org.redrune.network.packet.event.impl.SkillLevelPacket;
-import org.redrune.network.packet.event.impl.WorldListPacket;
-import org.redrune.network.packet.write.impl.GamePaneWriteEvent;
-import org.redrune.network.packet.write.impl.GlobalConfigWriteEvent;
-import org.redrune.network.packet.write.impl.InterfaceWriteEvent;
-import org.redrune.network.packet.write.impl.KeepAliveWriteEvent;
-import org.redrune.network.packet.write.impl.LogoutWriteEvent;
-import org.redrune.network.packet.write.impl.MessageWriteEvent;
-import org.redrune.network.packet.write.impl.PlayerUpdateWriteEvent;
-import org.redrune.network.packet.write.impl.RegionWriteEvent;
-import org.redrune.network.packet.write.impl.RunEnergyWriteEvent;
-import org.redrune.network.packet.write.impl.SkillLevelWriteEvent;
-import org.redrune.network.packet.write.impl.WorldListWriteEvent;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.redrune.network.packet.event.impl.*;
+import org.redrune.network.packet.write.impl.*;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.entity.player.components.PlayerRight;
 import org.redrune.rs2.node.item.Item;
-
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.redrune.rs2.node.item.ItemsContainer;
 
 /**
  * PacketSender.java
@@ -82,7 +62,7 @@ public class PacketSender {
 	}
 
 	public void sendPlayerUpdate() {
-		player.writePacket(PlayerUpdateWriteEvent.class, new PlayerUpdatePacket(player));
+		//player.writePacket(PlayerUpdateWriteEvent.class, new PlayerUpdatePacket(player));
 	}
 
 	public void sendNPCUpdate() {
@@ -101,17 +81,17 @@ public class PacketSender {
 //		player.writePacket(MinimapFlagWriteEvent.class, new MinimapFlagPacket(255, 255));
 	}
 
-	public void sendSkillLevel(int skills) {
-		player.writePacket(SkillLevelWriteEvent.class, new SkillLevelPacket(skills));
+	public void sendSkillLevel(int skillId) {
+		player.writePacket(SkillLevelWriteEvent.class, new SkillLevelPacket(skillId, (int) player.getSkills().getExperience(skillId), player.getSkills().getLevel(skillId)));
 	}
 
 	public void sendRunEnergy() {
-		player.writePacket(RunEnergyWriteEvent.class, new RunEnergyPacket(player));
+		//player.writePacket(RunEnergyWriteEvent.class, new RunEnergyPacket(player));
 	}
-
-//	public void sendItems(int opcode, ItemContainer<Item> items) {
+	
+	public void sendItems(int opcode, ItemsContainer<Item> items) {
 //		player.writePacket(ItemWriteEvent.class, new ItemPacket(opcode, items));
-//	}
+	}
 
 	public void sendItems(int opcode, Item[] items) {
 //		player.writePacket(ItemWriteEvent.class, new ItemPacket(opcode, items));
@@ -121,9 +101,9 @@ public class PacketSender {
 //		player.writePacket(ItemWriteEvent.class, new ItemPacket(opcode, key, items));
 	}
 
-//	public void sendUpdateItems(int opcode, ItemContainer<Item> items, int... slots) {
+	public void sendUpdateItems(int opcode, ItemsContainer<Item> items, int... slots) {
 //		player.writePacket(ItemUpdateWriteEvent.class, new ItemUpdatePacket(opcode, items, slots));
-//	}
+	}
 
 	public void sendUpdateItems(int opcode, Item[] items, int... slots) {
 //		player.writePacket(ItemUpdateWriteEvent.class, new ItemUpdatePacket(opcode, items, slots));
@@ -147,7 +127,7 @@ public class PacketSender {
 	}
 
 	public void sendLogout(boolean toLobby) {
-		player.writePacket(LogoutWriteEvent.class, new LogoutPacket(player, toLobby));
+//		player.writePacket(LogoutWriteEvent.class, new LogoutPacket(player, toLobby));
 	}
 
 	public void sendSound(int soundId, int soundDelay, int effectId) {

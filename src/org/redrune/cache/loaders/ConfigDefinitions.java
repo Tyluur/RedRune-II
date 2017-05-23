@@ -31,7 +31,7 @@ public final class ConfigDefinitions {
 		if (script != null) {
 			return script;
 		}
-		byte[] data = Cache.STORE.getIndexes()[22].getFile(id >>> 1416501898, id & 0x3ff);
+		byte[] data = Cache.store.getIndexes()[22].getFile(id >>> 1416501898, id & 0x3ff);
 		script = new ConfigDefinitions();
 		if (data != null) {
 			script.readValueLoop(new InputStream(data));

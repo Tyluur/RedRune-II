@@ -11,7 +11,7 @@ public class PlayerUpdateWriteEvent implements PacketWriteEvent<PlayerUpdatePack
 
 	@Override
 	public IoWriteEvent encodePacket(PlayerUpdatePacket context) {
-		return context.getPlayer().getPlayerRendering().processPlayerUpdate();
+		return null;
 	}
 
 }

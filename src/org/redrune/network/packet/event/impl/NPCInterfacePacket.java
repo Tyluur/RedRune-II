@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class NPCInterfacePacket implements PacketEvent {
+public class NPCInterfacePacket implements PacketContext {
 
 	private final int npcIndex;
 

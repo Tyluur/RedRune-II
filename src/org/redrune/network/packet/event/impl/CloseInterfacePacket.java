@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class CloseInterfacePacket implements PacketEvent {
+public class CloseInterfacePacket implements PacketContext {
 
 	private final int windowId;
 

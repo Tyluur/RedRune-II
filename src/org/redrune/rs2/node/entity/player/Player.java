@@ -2,7 +2,7 @@ package org.redrune.rs2.node.entity.player;
 
 import org.redrune.network.packet.PacketRepository;
 import org.redrune.network.packet.PacketSender;
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 import org.redrune.network.protocol.login.LoginReadEvent.LoginRequest;
 import org.redrune.network.session.Session;
 import org.redrune.network.session.impl.GameSession;
@@ -14,7 +14,6 @@ import org.redrune.rs2.node.entity.player.components.PlayerRenderData;
 import org.redrune.rs2.node.entity.player.components.PlayerSkills;
 import org.redrune.rs2.node.entity.player.components.PlayerVariables;
 import org.redrune.rs2.node.entity.player.components.managers.InterfaceManager;
-import org.redrune.rs2.node.entity.player.render.PlayerRendering;
 import org.redrune.rs2.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.rs2.world.Location;
 import org.redrune.rs2.world.SequencialUpdate;
@@ -99,7 +98,7 @@ public final class Player extends Entity {
 		if (getAttribute(AttributeKey.MAP_REGION_CHANGED, false)) {
 			getPacketSender().sendRegion(true);
 		}
-		getPacketSender().sendPlayerUpdate();
+//		getPacketSender().sendPlayerUpdate();
 //		getTransmitter().send(new PlayerRendering().build(this));
 		getUpdateMasks().register(new AppearanceUpdate(this));
 	}
@@ -244,7 +243,7 @@ public final class Player extends Entity {
 		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
 	}
 	
-	public void writePacket(Class<?> clazz, PacketEvent event) {
+	public void writePacket(Class<?> clazz, PacketContext event) {
 		session.write(clazz, PacketRepository.writePacket(event));
 	}
 }

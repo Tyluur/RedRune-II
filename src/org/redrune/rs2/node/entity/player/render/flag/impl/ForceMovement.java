@@ -1,6 +1,6 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import org.redrune.anetworking.rs666.packet.PacketBuilder;
+import org.redrune.network.stream.IoWriteEvent;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.rs2.world.Location;
@@ -34,7 +34,7 @@ public final class ForceMovement extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(IoWriteEvent bldr) {
         Location myLocation = entity.getLocation();
         Location fromLocation = entity.getLocation(); //Is this even needed?
         Location toLocation = Location.locate(movement[0], movement[1], 0);
@@ -79,7 +79,7 @@ public final class ForceMovement extends UpdateFlag {
             distanceToY = fromLocation.getY() - toLocation.getY();
         }
         bldr.writeByteS(positiveFromX ? distfromx : -distfromx);
-        bldr.writeByte(positiveFromY ? distfromy : -distfromy);
+        bldr.write(positiveFromY ? distfromy : -distfromy);
         bldr.writeByteS(positiveToX ? distanceToX : -distanceToX);
         bldr.writeByteS(positiveToY ? distanceToY : -distanceToY);
         bldr.writeShort(movement[2]);

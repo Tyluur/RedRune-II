@@ -1,6 +1,6 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 import org.redrune.rs2.node.entity.player.components.PlayerRight;
 
 /**
@@ -8,7 +8,7 @@ import org.redrune.rs2.node.entity.player.components.PlayerRight;
  * @author Chryonic
  * May 22, 2017 | RedRune
  */
-public class ReceivePrivateMessagePacket implements PacketEvent {
+public class ReceivePrivateMessagePacket implements PacketContext {
 
 	private final String username;
 

@@ -1,12 +1,11 @@
 package org.redrune.network.session.impl;
 
-import org.redrune.network.protocol.Protocol;
+import io.netty.channel.Channel;
+import org.redrune.network.NetworkConstants;
 import org.redrune.network.protocol.ProtocolResponse;
 import org.redrune.network.protocol.handshake.msg.HSRequestEvent;
 import org.redrune.network.protocol.handshake.msg.HSResponseEvent;
 import org.redrune.network.session.Session;
-
-import io.netty.channel.Channel;
 
 /**
  * HandshakeSession.java
@@ -23,8 +22,8 @@ public class HandshakeSession extends Session {
 	public void throttleRequest(Object context) {
 		if (context instanceof HSRequestEvent) {
 			HSRequestEvent request = (HSRequestEvent) context;
-			if (request.getMajor() != Protocol.REVISION || request.getMinor() != Protocol.SUB_REVISION
-					|| !request.getKey().equals(Protocol.PREFETCH_KEY)) {
+			System.out.println(request.getMajor());
+			if (request.getMajor() != NetworkConstants.REVISION) {
 				channel.writeAndFlush(new HSResponseEvent(ProtocolResponse.OUT_OF_DATE));
 			} else {
 				channel.writeAndFlush(new HSResponseEvent(ProtocolResponse.SUCCESSFUL_CONNECTION));

@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class PlayerOptionPacket implements PacketEvent {
+public class PlayerOptionPacket implements PacketContext {
 
 	private final String option;
 

@@ -38,7 +38,7 @@ public enum ProtocolResponse {
 
 	private final int clientId;
 
-	private ProtocolResponse(int clientId) {
+	ProtocolResponse(int clientId) {
 		this.clientId = clientId;
 	}
 

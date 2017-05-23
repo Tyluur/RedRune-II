@@ -1,8 +1,8 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
-public class InterfacePacket implements PacketEvent {
+public class InterfacePacket implements PacketContext {
 
 	private final int paneId;
 

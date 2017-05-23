@@ -100,7 +100,7 @@ public class BodyDefinitions {
     public static BodyDefinitions read() {
         BodyDefinitions data = new BodyDefinitions();
         try {
-            byte[] buff = Cache.STORE.getIndexes()[28].getArchive(6).getData();
+            byte[] buff = Cache.store.getIndexes()[28].getArchive(6).getData();
             InputStream reader = new InputStream(buff);
             data.parse(reader);
             return data;

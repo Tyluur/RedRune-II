@@ -1,9 +1,9 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 import org.redrune.rs2.node.entity.player.components.PlayerRight;
 
-public class ChatPacket implements PacketEvent {
+public class ChatPacket implements PacketContext {
 
 	private final String message;
 

@@ -1,19 +1,19 @@
 package org.redrune;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.common.base.Stopwatch;
 import org.redrune.cache.Cache;
 import org.redrune.cache.loaders.BodyDefinitions;
 import org.redrune.cache.loaders.ItemDefinitions;
+import org.redrune.network.NetworkInitializer;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.GameFlags;
 import org.redrune.rs2.system.SystemManager;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
 
-import com.google.common.base.Stopwatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The procedure used to initialize the first world, the update server, and the login server.
@@ -53,6 +53,8 @@ public class Bootstrap {
 			//IncomingPacketRepository.storeAll();
 			MapDataParser.readAll();
 			SystemManager.start();
+			NetworkInitializer.connect("localhost", 43594);
+			
 			//NetworkHandler.bind();
 			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + 666 + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		} catch (Exception e) {

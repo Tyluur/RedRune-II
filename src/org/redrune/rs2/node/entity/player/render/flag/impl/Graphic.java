@@ -1,6 +1,6 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import org.redrune.anetworking.rs666.packet.PacketBuilder;
+import org.redrune.network.stream.IoWriteEvent;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 
 /**
@@ -63,7 +63,7 @@ public class Graphic extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(IoWriteEvent bldr) {
 		if (npc) {
 			bldr.writeLEShortA(id);
 			bldr.writeLEInt(height << 16);

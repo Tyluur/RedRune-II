@@ -1,6 +1,6 @@
 package org.redrune.network.packet.event.impl;
 
-import org.redrune.network.packet.event.PacketEvent;
+import org.redrune.network.packet.event.PacketContext;
 
 import lombok.Getter;
 
@@ -9,7 +9,7 @@ import lombok.Getter;
  * @author Chryonic
  * May 22, 2017 | RedRune
  */
-public class SkillLevelPacket implements PacketEvent {
+public class SkillLevelPacket implements PacketContext {
 	
 	@Getter
 	private final int skill;

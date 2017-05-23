@@ -1,5 +1,7 @@
 package org.redrune.network.protocol.filetransfer.msg;
 
+import lombok.Getter;
+
 /**
  * FTRequestEvent.java
  * @author Chryonic
@@ -7,28 +9,19 @@ package org.redrune.network.protocol.filetransfer.msg;
  */
 public class FTRequestEvent {
 
+	@Getter
 	private final int container;
 
+	@Getter
 	private final int archive;
 
+	@Getter
 	private final boolean priority;
 
 	public FTRequestEvent(int container, int archive, boolean priority) {
 		this.container = container;
 		this.archive = archive;
 		this.priority = priority;
-	}
-
-	public int getContainer() {
-		return container;
-	}
-
-	public int getArchive() {
-		return archive;
-	}
-
-	public boolean isPriority() {
-		return priority;
 	}
 
 }

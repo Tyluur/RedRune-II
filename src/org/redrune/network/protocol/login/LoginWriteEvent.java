@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.redrune.network.protocol.ProtocolResponse;
 import org.redrune.network.protocol.login.msg.LoginResponseEvent;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.backend.BufferUtils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

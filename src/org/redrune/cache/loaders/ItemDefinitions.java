@@ -160,7 +160,7 @@ public final class ItemDefinitions {
 	}
 
 	private final void loadItemDefinitions() {
-		byte[] data = Cache.STORE.getIndexes()[Constants.ITEM_DEFINITIONS_INDEX].getFile(getArchiveId(), getFileId());
+		byte[] data = Cache.store.getIndexes()[Constants.ITEM_DEFINITIONS_INDEX].getFile(getArchiveId(), getFileId());
 		if (data == null) {
 			// System.out.println("Failed loading Item " + id+".");
 			return;

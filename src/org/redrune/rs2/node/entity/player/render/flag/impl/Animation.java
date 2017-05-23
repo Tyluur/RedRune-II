@@ -1,13 +1,11 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import org.redrune.anetworking.rs666.packet.PacketBuilder;
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.network.stream.IoWriteEvent;
 import org.redrune.rs2.node.entity.player.render.UpdateMasks;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.utility.backend.Priority;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Represents an animation update flag.

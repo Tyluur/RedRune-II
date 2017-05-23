@@ -184,7 +184,7 @@ public class IComponentDefinitions {
 		if (icomponentsdefs[id] == null) {
 			icomponentsdefs[id] = new IComponentDefinitions[Misc.getInterfaceDefinitionsComponentsSize(id)];
 			for (int i = 0; i < icomponentsdefs[id].length; i++) {
-				byte[] data = Cache.STORE.getIndexes()[3].getFile(id, i);
+				byte[] data = Cache.store.getIndexes()[3].getFile(id, i);
 				if (data != null) {
 					IComponentDefinitions defs = icomponentsdefs[id][i] = new IComponentDefinitions();
 					defs.ihash = i + (id << 16);
