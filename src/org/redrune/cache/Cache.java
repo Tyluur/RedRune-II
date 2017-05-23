@@ -1,54 +1,88 @@
 package org.redrune.cache;
 
-import com.alex.io.OutputStream;
-import com.alex.store.Store;
-import com.alex.util.whirlpool.Whirlpool;
-import lombok.Getter;
 import org.redrune.rs2.GameConstants;
+import org.redrune.utility.Misc;
 
-import java.io.IOException;
+import java.util.logging.Logger;
 
-public final class Cache {
-
-	@Getter
-	public static Store store;
-
-	private Cache() {
-
-	}
-
-	public static void init() throws IOException {
-		store = new Store(GameConstants.CACHE_PATH);
-	}
-
-	public static byte[] generateUkeysFile() {
-		OutputStream stream = new OutputStream();
-		stream.writeByte(store.getIndexes().length);
-		for (int index = 0; index < store.getIndexes().length; index++) {
-			if (store.getIndexes()[index] == null) {
-				stream.writeInt(0);
-				stream.writeInt(0);
-				stream.writeBytes(new byte[64]);
-				continue;
-			}
-			stream.writeInt(store.getIndexes()[index].getCRC());
-			stream.writeInt(store.getIndexes()[index].getTable().getRevision());
-			stream.writeBytes(store.getIndexes()[index].getWhirlpool());
+/**
+ * The cache loading class
+ *
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 5/19/17
+ */
+public class Cache {
+	
+	/**
+	 * The instance of the logger
+	 */
+	private static final Logger logger = Misc.constructLogger(Cache.class);
+	
+	/**
+	 * Initializes the cache
+	 */
+	public static void init() {
+		try {
+			CacheManager.load(GameConstants.CACHE_PATH);
+			logger.info("Cache loaded! [items=" + getAmountOfItems() + ", interfaces=" + getAmountOfInterfaces() + ", npcs=" + getAmountOfNpcs() + ", objects=" + getAmountOfObjects() + ", anims=" + getAmountOfAnimations() + ", graphics=" + getAmountOfGraphics() + "]");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
-		byte[] archive = new byte[stream.getOffset()];
-		stream.setOffset(0);
-		stream.getBytes(archive, 0, archive.length);
-		OutputStream hashStream = new OutputStream(65);
-		hashStream.writeByte(0);
-		hashStream.writeBytes(Whirlpool.getHash(archive, 0, archive.length));
-		byte[] hash = new byte[hashStream.getOffset()];
-		hashStream.setOffset(0);
-		hashStream.getBytes(hash, 0, hash.length);
-		stream.writeBytes(hash);
-		archive = new byte[stream.getOffset()];
-		stream.setOffset(0);
-		stream.getBytes(archive, 0, archive.length);
-		return archive;
 	}
-
+	
+	/**
+	 * Gets the amount of items
+	 *
+	 * @return An {@code Integer} {@code Object}
+	 */
+	public static int getAmountOfItems() {
+		return CacheManager.cacheCFCount(CacheConstants.ITEMDEF_IDX_ID);
+	}
+	
+	/**
+	 * Gets the amount of interfaces
+	 *
+	 * @return An {@code Integer} {@code Object}
+	 */
+	public static int getAmountOfInterfaces() {
+		return CacheManager.containerCount(CacheConstants.INTERFACEDEF_IDX_ID);
+	}
+	
+	/**
+	 * Gets the amount of npcs
+	 *
+	 * @return An {@code Integer} {@code Object}
+	 */
+	public static int getAmountOfNpcs() {
+		return CacheManager.cacheCFCount2(CacheConstants.NPCDEF_IDX_ID);
+	}
+	
+	/**
+	 * Gets the amount of objects
+	 *
+	 * @return An {@code Integer} {@code Object}
+	 */
+	public static int getAmountOfObjects() {
+		return CacheManager.cacheCFCount(CacheConstants.OBJECTDEF_IDX_ID);
+	}
+	
+	/**
+	 * Gets the amount of animations
+	 *
+	 * @return An {@code Integer} {@code Object}
+	 */
+	public static int getAmountOfAnimations() {
+		return CacheManager.cacheCFCount2(CacheConstants.ANIM_IDX_ID);
+	}
+	
+	/**
+	 * Gets the amount of gfxes
+	 *
+	 * @return An {@code Integer} {@code Object}
+	 */
+	public static int getAmountOfGraphics() {
+		return CacheManager.cacheCFCount(CacheConstants.GFX_IDX_ID);
+	}
+	
 }

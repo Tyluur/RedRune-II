@@ -1,7 +1,7 @@
 package org.redrune.rs2.node.entity;
 
-import java.util.concurrent.ConcurrentHashMap;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.rs2.node.Node;
 import org.redrune.rs2.node.entity.data.WalkingQueue;
 import org.redrune.rs2.node.entity.npc.NPC;
@@ -10,8 +10,7 @@ import org.redrune.rs2.node.entity.player.render.UpdateMasks;
 import org.redrune.rs2.world.Location;
 import org.redrune.utility.AttributeKey;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

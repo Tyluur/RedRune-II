@@ -1,6 +1,6 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import org.redrune.network.stream.IoWriteEvent;
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.data.Hit;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
@@ -30,7 +30,7 @@ public class HitUpdate extends UpdateFlag {
 	// TODO: implement interactingWith (colored if we are fighting the guy hitting us or smomeshit)
 	
 	@Override
-	public void write(IoWriteEvent bldr) {
+	public void write(PacketBuilder bldr) {
 		final int size = entity.getHitMap().getHitList().size();
 		bldr.writeByteA(size); //Amount of hits
 		if (size == 0) {
@@ -74,7 +74,7 @@ public class HitUpdate extends UpdateFlag {
 			if (entity.isNPC()) {
 				bldr.writeByteA(hpBarPercentage);
 			} else {
-				bldr.write(hpBarPercentage);
+				bldr.writeByte(hpBarPercentage);
 			}
 		}
 	}

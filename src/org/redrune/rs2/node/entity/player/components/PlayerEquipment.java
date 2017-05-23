@@ -1,12 +1,12 @@
 package org.redrune.rs2.node.entity.player.components;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.redrune.network.rs666.packet.structure.out.ContainerPacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.item.Item;
 import org.redrune.rs2.node.item.ItemsContainer;
 import org.redrune.utility.rs.EquipConstants;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -37,6 +37,6 @@ public class PlayerEquipment implements EquipConstants {
 	 * Sends the full container of items
 	 */
 	public void sendFullContainer() {
-		player.getPacketSender().sendItems(94, items.toArray());//(new ContainerPacketBuilder(94, items.toArray(), false).build(player));
+		player.getTransmitter().send(new ContainerPacketBuilder(94, items.toArray(), false).build(player));
 	}
 }

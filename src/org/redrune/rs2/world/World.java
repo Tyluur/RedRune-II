@@ -25,7 +25,7 @@ public final class World {
 	 * The list of all players in the world
 	 */
 	@Getter
-	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT);
+	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
 	
 	/**
 	 * If the world is alive

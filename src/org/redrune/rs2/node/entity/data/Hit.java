@@ -1,10 +1,9 @@
 package org.redrune.rs2.node.entity.data;
 
-import org.redrune.rs2.node.entity.Entity;
-import org.redrune.rs2.node.entity.player.Player;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.rs2.node.entity.Entity;
+import org.redrune.rs2.node.entity.player.Player;
 
 /**
  * Represents a damage to hit.

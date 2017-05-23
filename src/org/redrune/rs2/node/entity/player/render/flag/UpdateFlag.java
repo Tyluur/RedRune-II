@@ -1,6 +1,6 @@
 package org.redrune.rs2.node.entity.player.render.flag;
 
-import org.redrune.network.stream.IoWriteEvent;
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.player.render.UpdateMasks;
 
 /**
@@ -16,7 +16,7 @@ public abstract class UpdateFlag implements Comparable<UpdateFlag> {
 	 * @param packet
 	 * 		The packet packet.
 	 */
-	public abstract void write(IoWriteEvent packet);
+	public abstract void write(PacketBuilder packet);
 	
 	/**
 	 * Gets the mask data.

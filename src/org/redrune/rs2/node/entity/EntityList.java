@@ -1,140 +1,165 @@
 package org.redrune.rs2.node.entity;
 
-import java.util.AbstractCollection;
-import java.util.HashSet;
+import org.redrune.rs2.node.entity.npc.NPC;
+import org.redrune.rs2.node.entity.player.Player;
+
 import java.util.Iterator;
-import java.util.Set;
+import java.util.NoSuchElementException;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-@SuppressWarnings("unchecked")
-public class EntityList<T extends Entity> extends AbstractCollection<T> {
-
-	private static final int MIN_VALUE = 1;
-	public Object[] entities;
-	public Set<Integer> indicies = new HashSet<Integer>();
-	public int curIndex = MIN_VALUE;
-	public int capacity;
-	private final Object lock = new Object();
-
-	public EntityList(int capacity) {
-		entities = new Object[capacity];
-		this.capacity = capacity;
+public class EntityList<T extends Entity> implements Iterable<T> {
+	
+	/**
+	 * The array of entities
+	 */
+	private T[] entities;
+	
+	/**
+	 * The lowest free index available
+	 */
+	private int lowestFreeIndex;
+	
+	/**
+	 * The size of entities
+	 */
+	private int size;
+	
+	@SuppressWarnings("unchecked")
+	public EntityList(int capacity, boolean player) {
+		entities = (T[]) (player ? new Player[capacity] : new NPC[capacity]);
 	}
-
-	@Override
+	
+	/**
+	 * Adds an entity to the list
+	 *
+	 * @param entity
+	 * 		The entity
+	 */
 	public boolean add(T entity) {
-		synchronized (lock) {
-			add(entity, curIndex);
+		synchronized (this) {
+			entity.setIndex(lowestFreeIndex + 1);
+			entities[lowestFreeIndex] = entity;
+			size++;
+			for (int i = lowestFreeIndex + 1; i < entities.length; i++) {
+				if (entities[i] == null) {
+					lowestFreeIndex = i;
+					break;
+				}
+			}
 			return true;
 		}
 	}
-
+	
+	/**
+	 * Removes an entity to the list
+	 *
+	 * @param entity
+	 * 		The entity
+	 */
 	public void remove(T entity) {
-		synchronized (lock) {
-			entities[entity.getIndex()] = null;
-			indicies.remove(entity.getIndex());
-			decreaseIndex();
+		synchronized (this) {
+			int listIndex = entity.getIndex() - 1;
+			entities[listIndex] = null;
+			size--;
+			if (listIndex < lowestFreeIndex) {
+				lowestFreeIndex = listIndex;
+			}
 		}
 	}
-
-	public T remove(int index) {
-		synchronized (lock) {
-			Object temp = entities[index];
-			entities[index] = null;
-			indicies.remove(index);
-			decreaseIndex();
-			return (T) temp;
-		}
-	}
-
+	
+	/**
+	 * Gets an entity from the list
+	 *
+	 * @param index
+	 * 		The entity
+	 */
 	public T get(int index) {
-		synchronized (lock) {
-			if (index >= entities.length)
-				return null;
-			return (T) entities[index];
+		if (index >= entities.length || index == 0) {
+			return null;
 		}
+		return entities[index - 1];
 	}
-
-	public void add(T entity, int index) {
-		if (entities[curIndex] != null) {
-			increaseIndex();
-			add(entity, curIndex);
-		} else {
-			entities[curIndex] = entity;
-			entity.setIndex(index);
-			indicies.add(curIndex);
-			increaseIndex();
-		}
+	
+	/**
+	 * If the list contains an entity
+	 *
+	 * @param entity
+	 * 		The entity
+	 */
+	public boolean contains(T entity) {
+		return entity.getIndex() != 0 && entities[entity.getIndex() - 1] == entity;
 	}
-
+	
+	/**
+	 * Gets the size of the entities
+	 */
+	public int size() {
+		return size;
+	}
+	
+	/**
+	 * Converts the array to a {@code Stream} {@code Object}
+	 */
+	public Stream<T> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+	
 	@Override
 	public Iterator<T> iterator() {
-		synchronized (lock) {
-			return new EntityListIterator<T>(entities, indicies, this);
-		}
+		return new EntityIterator();
 	}
-
-	public void increaseIndex() {
-		curIndex++;
-		if (curIndex >= capacity) {
-			curIndex = MIN_VALUE;
-		}
-	}
-
-	public void decreaseIndex() {
-		curIndex--;
-		if (curIndex <= capacity)
-			curIndex = MIN_VALUE;
-	}
-
-	public boolean contains(T entity) {
-		return indexOf(entity) > -1;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public class EntityListIterator<E extends Entity> implements Iterator<E> {
-
-		private Integer[] indicies;
-		private Object[] entities;
-		private EntityList entityChamber;
-		private int curIndex = 0;
-
-		public EntityListIterator(Object[] entities, Set<Integer> indicies, EntityList entityChamber) {
-			this.entities = entities;
-			this.indicies = indicies.toArray(new Integer[indicies.size()]);
-			this.entityChamber = entityChamber;
-		}
-
+	
+	private final class EntityIterator implements Iterator<T> {
+		
+		/**
+		 * The previous index of this iterator.
+		 */
+		private int previousIndex = -1;
+		
+		/**
+		 * The current index of this iterator.
+		 */
+		private int index = 0;
+		
 		@Override
 		public boolean hasNext() {
-			return indicies.length != curIndex;
+			for (int i = index; i < entities.length; i++) {
+				if (entities[i] != null) {
+					index = i;
+					return true;
+				}
+			}
+			return false;
 		}
-
+		
 		@Override
-		public E next() {
-			Object temp = entities[indicies[curIndex]];
-			curIndex++;
-			return (E) temp;
+		public T next() {
+			T entity = null;
+			for (int i = index; i < entities.length; i++) {
+				if (entities[i] != null) {
+					entity = entities[i];
+					index = i;
+					break;
+				}
+			}
+			if (entity == null) {
+				throw new NoSuchElementException();
+			}
+			previousIndex = index;
+			index++;
+			return entity;
 		}
-
+		
 		@Override
 		public void remove() {
-			if (curIndex >= 1) {
-				entityChamber.remove(indicies[curIndex - 1]);
+			if (previousIndex == -1) {
+				throw new IllegalStateException();
 			}
+			EntityList.this.remove(entities[previousIndex]);
+			previousIndex = -1;
 		}
+		
 	}
-
-	public int indexOf(T entity) {
-		for (int index : indicies) {
-			if (entities[index].equals(entity)) {
-				return index;
-			}
-		}
-		return -1;
-	}
-
-	@Override
-	public int size() {
-		return indicies.size();
-	}
+	
 }

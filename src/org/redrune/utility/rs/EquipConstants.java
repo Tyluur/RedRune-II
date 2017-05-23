@@ -1,6 +1,6 @@
 package org.redrune.utility.rs;
 
-import org.redrune.cache.loaders.ItemDefinitions;
+import org.redrune.cache.parse.definition.ItemDefinition;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -34,7 +34,7 @@ public interface EquipConstants {
 	 * @param def
 	 * 		The definitions
 	 */
-	static boolean isFullBody(ItemDefinitions def) {
+	static boolean isFullBody(ItemDefinition def) {
 		String weapon = def.getName();
 		for (String name : FULL_BODY) {
 			if (weapon.contains(name)) {
@@ -50,7 +50,7 @@ public interface EquipConstants {
 	 * @param def
 	 * 		The definitions
 	 */
-	static boolean isFullHat(ItemDefinitions def) {
+	static boolean isFullHat(ItemDefinition def) {
 		String weapon = def.getName();
 		for (String name : FULL_HAT) {
 			if (weapon.endsWith(name)) {
@@ -66,7 +66,7 @@ public interface EquipConstants {
 	 * @param def
 	 * 		The definitions
 	 */
-	static boolean isFullMask(ItemDefinitions def) {
+	static boolean isFullMask(ItemDefinition def) {
 		String weapon = def.getName();
 		for (String name : FULL_MASK) {
 			if (weapon.endsWith(name)) {

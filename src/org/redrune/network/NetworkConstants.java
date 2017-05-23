@@ -16,11 +16,6 @@ public interface NetworkConstants extends GameConstants {
 	int REVISION = 666;
 	
 	/**
-	 * Client sub revision
-	 */
-	int SUB_REVISION = 1;
-	
-	/**
 	 * The opcode that symbolizes a js5 request
 	 */
 	int JS5_REQUEST = 15;
@@ -72,9 +67,4 @@ public interface NetworkConstants extends GameConstants {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 211-220
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 221-230
 			0, 0, 0, 0, 0, 0, 0, 0, 0, }; // 231-240
-	
-	/**
-	 * The login token string
-	 */
-	String LOGIN_TOKEN = "wwGlrZHF5gKN6D3mDdihco3oPeYN2KFybL9hUUFqOvk";
 }

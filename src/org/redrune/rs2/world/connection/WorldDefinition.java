@@ -7,7 +7,7 @@ import lombok.Getter;
  *
  * @author Dementhium development team.
  */
-public class WorldDefinition {
+class WorldDefinition {
 	
 	/**
 	 * The activity for this world.

@@ -1,10 +1,10 @@
 package org.redrune.rs2.node.item;
 
-import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.rs2.node.Node;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.cache.parse.definition.ItemDefinition;
+import org.redrune.rs2.node.Node;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -31,7 +31,7 @@ public class Item extends Node {
 	 */
 	@Getter
 	@Setter
-	private transient ItemDefinitions definitions;
+	private transient ItemDefinition definitions;
 	
 	protected Item() {
 		super(null);
@@ -45,7 +45,7 @@ public class Item extends Node {
 	 */
 	public Item(int id) {
 		this(id, 1);
-		this.definitions = ItemDefinitions.getItemDefinitions(id);
+		this.definitions = ItemDefinitionParser.forId(id);
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class Item extends Node {
 	public Item(int id, int amount) {
 		super(null);
 		this.id = (short) id;
-		this.definitions = ItemDefinitions.getItemDefinitions(id);
+		this.definitions = ItemDefinitionParser.forId(id);
 		this.amount = amount;
 	}
 	

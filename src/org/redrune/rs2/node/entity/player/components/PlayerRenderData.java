@@ -1,17 +1,15 @@
 package org.redrune.rs2.node.entity.player.components;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.redrune.network.stream.IoWriteEvent;
-import org.redrune.rs2.GameConstants;
+import lombok.Getter;
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.world.Location;
 import org.redrune.rs2.world.World;
 import org.redrune.utility.AttributeKey;
 
-import lombok.Getter;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Holds the player's rendering data.
@@ -103,29 +101,29 @@ public class PlayerRenderData {
 	/**
 	 * Updates the player's map region packet with player information.
 	 *
-	 * @param buffer
+	 * @param packet
 	 * 		The packet.
 	 */
-	public void enterWorld(IoWriteEvent buffer) {
+	public void enterWorld(PacketBuilder packet) {
 		int myIndex = player.getIndex();
 		locals[localsCount++] = (short) myIndex;
 		isLocal[myIndex] = true;
 		hashLocations[myIndex] = 0;
-		buffer.initBitAccess();
-		buffer.writeBits(30, player.getLocation().get30BitsHash());
-		for (short index = 1; index < GameConstants.PLAYERS_LIMIT; index++) {
+		packet.startBitAccess();
+		packet.writeBits(30, player.getLocation().get30BitsHash());
+		for (short index = 1; index < 2048; index++) {
 			if (index == myIndex) {
 				continue;
 			}
 			globals[globalsCount++] = index;
 			Player p = World.get().getPlayers().get(index);
 			if (p == null || !p.isRenderable()) {
-				buffer.writeBits(18, 0);
+				packet.writeBits(18, 0);
 				continue;
 			}
-			buffer.writeBits(18, p.getLocation().get18BitsHash());
+			packet.writeBits(18, p.getLocation().get18BitsHash());
 		}
-		buffer.finishBitAccess();
+		packet.finishBitAccess();
 	}
 	
 	/**
@@ -137,7 +135,7 @@ public class PlayerRenderData {
 		added = 0;
 		onFirstCycle = false;
 		lastLocation = player.getLocation();
-		for (short i = 1; i < GameConstants.PLAYERS_LIMIT; i++) {
+		for (short i = 1; i < 2048; i++) {
 			skips[i] >>= 1;
 			if (isLocal[i]) {
 				locals[localsCount++] = i;

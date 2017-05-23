@@ -1,10 +1,11 @@
 package org.redrune.rs2.node.entity.player.components;
 
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.utility.rs.SkillConstants;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.network.rs666.packet.structure.out.SkillPacketBuilder;
+import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
+import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.utility.rs.SkillConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -105,18 +106,14 @@ public class PlayerSkills implements SkillConstants {
 	 * 		The skill
 	 */
 	private void updateSkill(int skill) {
-		player.getPacketSender().sendSkillLevel(skill);
+		player.getTransmitter().send(new SkillPacketBuilder(skill).build(player));
 	}
 	
 	/**
 	 * Updates the experience counter with the amount of experience we've obtained
 	 */
 	private void updateExperienceCounter() {
-		/**
-		 * removed the packet; TODO
-		 */
-//		player.getPacketSender().se
-//		player.getPackets().send(new VarpPacketBuilder(1801, (int) (counterExperience * 10D)).build(player));
+		player.getTransmitter().send(new VarpPacketBuilder(1801, (int) (counterExperience * 10D)).build(player));
 	}
 	
 	/**

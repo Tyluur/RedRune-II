@@ -1,16 +1,15 @@
 package org.redrune.rs2.node.entity.player.render;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-
+import lombok.Getter;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.rs2.node.entity.player.render.flag.impl.HitUpdate;
 import org.redrune.rs2.node.entity.player.render.flag.impl.MovementUpdate;
 import org.redrune.utility.backend.Priority;
 
-import lombok.Getter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Represents an Entity's update masks.

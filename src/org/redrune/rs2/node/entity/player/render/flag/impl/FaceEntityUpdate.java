@@ -1,6 +1,6 @@
 package org.redrune.rs2.node.entity.player.render.flag.impl;
 
-import org.redrune.network.stream.IoWriteEvent;
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 
 /**
@@ -31,7 +31,7 @@ public class FaceEntityUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(IoWriteEvent bldr) {
+	public void write(PacketBuilder bldr) {
 		if (npc) {
 			bldr.writeLEShortA(index);
 		} else {
