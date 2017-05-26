@@ -1,12 +1,14 @@
 package org.redrune.rs2.node.entity.data;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.impl.TeleportUpdate;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
-import org.redrune.utility.rs.Directions;
-import org.redrune.utility.rs.Directions.WalkingDirection;
+import org.redrune.rs2.world.map.Directions;
+import org.redrune.rs2.world.map.Directions.WalkingDirection;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -21,67 +23,9 @@ import java.util.LinkedList;
 public class WalkingQueue {
 	
 	/**
-	 * Represents a single point to walk.
-	 *
-	 * @author Mystic Flow
-	 * @author Graham
-	 */
-	public static class Point {
-		
-		/**
-		 * The x-coordinate.
-		 */
-		private final int x;
-		
-		/**
-		 * The y-coordinate.
-		 */
-		private final int y;
-		
-		/**
-		 * The direction.
-		 */
-		private final WalkingDirection direction;
-		
-		/**
-		 * Constructs a new {@code Point} {@code Object}.
-		 *
-		 * @param x
-		 * 		The x-coordinate.
-		 * @param y
-		 * 		The y-coordinate.
-		 * @param direction
-		 * 		The walking direction.
-		 */
-		private Point(int x, int y, WalkingDirection direction) {
-			this.x = x;
-			this.y = y;
-			this.direction = direction;
-		}
-		
-		/**
-		 * Gets the x-coordinate of this point.
-		 *
-		 * @return The x-coordinate.
-		 */
-		public int getX() {
-			return x;
-		}
-		
-		/**
-		 * Gets the y-coordinate of this point.
-		 *
-		 * @return The y-coordinate.
-		 */
-		public int getY() {
-			return y;
-		}
-	}
-	
-	/**
 	 * The walking queue.
 	 */
-	private final Deque<Point> walkingQueue = new LinkedList<Point>();
+	private final Deque<Point> walkingQueue = new LinkedList<>();
 	
 	/**
 	 * The entity.
@@ -91,22 +35,29 @@ public class WalkingQueue {
 	/**
 	 * The current walking direction.
 	 */
+	@Getter
+	@Setter
 	private int walkDir = -1;
 	
 	/**
 	 * The current running direction.
 	 */
+	@Getter
+	@Setter
 	private int runDir = -1;
 	
 	/**
 	 * If the entity is running (set to true when holding the ctrl button +
 	 * click).
 	 */
+	@Setter
 	private boolean running = false;
 	
 	/**
 	 * The last location this entity walked on.
 	 */
+	@Getter
+	@Setter
 	private Location footPrint;
 	
 	/**
@@ -143,7 +94,7 @@ public class WalkingQueue {
 		}
 		int walkDirection = -1;
 		int runDirection = -1;
-		if (isRunningBoth()) {
+		if (isRunning()) {
 			runPoint = walkingQueue.poll();
 		}
 		if (walkPoint != null) {
@@ -192,13 +143,6 @@ public class WalkingQueue {
 		this.walkDir = walkDirection;
 		this.runDir = runDirection;
 	}
-
-	/*
-	 * public double getEnergyDrainRate(Player player) { return
-	 * player.getProperties().getCarriedWeight(player) == 0 ? 0 : (int)
-	 * Math.ceil(7.6 - ((player.getSkills() .getLevel(Skills.AGILITY) / 99D) *
-	 * (int) player.getProperties() .getCarriedWeight(player))); }
-	 */
 	
 	/**
 	 * Checks if the player is teleporting, if so does the teleporting and
@@ -224,6 +168,23 @@ public class WalkingQueue {
 			return true;
 		}
 		return false;
+	}
+
+	/*
+	 * public double getEnergyDrainRate(Player player) { return
+	 * player.getProperties().getCarriedWeight(player) == 0 ? 0 : (int)
+	 * Math.ceil(7.6 - ((player.getSkills() .getLevel(Skills.AGILITY) / 99D) *
+	 * (int) player.getProperties() .getCarriedWeight(player))); }
+	 */
+	
+	/**
+	 * Checks if the entity is running.
+	 *
+	 * @return {@code True} if a ctrl + click action was performed, <br> the player has the run option enabled or the
+	 * NPC is a familiar, <p> {@code false} if not.
+	 */
+	public boolean isRunning() {
+		return running || (entity.isPlayer() && entity.toPlayer().getVariables().isRunToggled()) || (entity.isNPC());
 	}
 	
 	/**
@@ -267,6 +228,18 @@ public class WalkingQueue {
 	}
 	
 	/**
+	 * Resets the walking queue.
+	 *
+	 * @param running
+	 * 		The running flag (ctrl + click action).
+	 */
+	public void reset(boolean running) {
+		walkingQueue.clear();
+		walkingQueue.add(new Point(entity.getLocation().getX(), entity.getLocation().getY(), null));
+		this.running = running;
+	}
+	
+	/**
 	 * Adds a path to the walking queue.
 	 *
 	 * @param x
@@ -275,6 +248,19 @@ public class WalkingQueue {
 	 * 		The last y-coordinate of the path.
 	 */
 	public void addPath(int x, int y) {
+		/*
+		 * The RuneScape client will not send all the points in the queue. It just sends places where the direction changes.
+		 *
+		 * For instance, walking from a route like this:
+		 *
+		 * <code> ***** * * ***** </code>
+		 *
+		 * Only the places marked with X will be sent:
+		 *
+		 * <code> X***X * * X***X </code>
+		 *
+		 * This code will 'fill in' these points and then add them to the queue.
+		 */
 		Point point = walkingQueue.peekLast();
 		int diffX = 0, diffY = 0;
 		if (point != null) {
@@ -317,16 +303,6 @@ public class WalkingQueue {
 	}
 	
 	/**
-	 * Checks if the entity is running.
-	 *
-	 * @return {@code True} if a ctrl + click action was performed, <br> the player has the run option enabled or the
-	 * NPC is a familiar, <p> {@code false} if not.
-	 */
-	public boolean isRunningBoth() {
-		return running || (entity.isPlayer() && entity.toPlayer().getVariables().isRunToggled());
-	}
-	
-	/**
 	 * Resets the walking queue.
 	 */
 	public void reset() {
@@ -334,67 +310,52 @@ public class WalkingQueue {
 	}
 	
 	/**
-	 * Resets the walking queue.
+	 * Represents a single point to walk.
 	 *
-	 * @param running
-	 * 		The running flag (ctrl + click action).
+	 * @author Mystic Flow
+	 * @author Graham
 	 */
-	public void reset(boolean running) {
-		walkingQueue.clear();
-		walkingQueue.add(new Point(entity.getLocation().getX(), entity.getLocation().getY(), null));
-		this.running = running;
-	}
-	
-	/**
-	 * Gets the current walking direction.
-	 *
-	 * @return The walk direction.
-	 */
-	public int getWalkDir() {
-		return walkDir;
-	}
-	
-	/**
-	 * Gets the current run direction.
-	 *
-	 * @return The run direction.
-	 */
-	public int getRunDir() {
-		return runDir;
-	}
-	
-	/**
-	 * Sets the running flag (when ctrl + click action performed).
-	 *
-	 * @param running
-	 * 		If the player will be running this path.
-	 */
-	public void setRunning(boolean running) {
-		this.running = running;
-	}
-	
-	/**
-	 * Checks if the player is running.
-	 *
-	 * @return {@code True} if so.
-	 */
-	public boolean isRunning() {
-		return running;
-	}
-	
-	/**
-	 * @return the footPrint
-	 */
-	public Location getFootPrint() {
-		return footPrint;
-	}
-	
-	/**
-	 * @param footPrint
-	 * 		the footPrint to set
-	 */
-	public void setFootPrint(Location footPrint) {
-		this.footPrint = footPrint;
+	public static class Point {
+		
+		/**
+		 * The x-coordinate.
+		 */
+		private final int x;
+		
+		/**
+		 * The y-coordinate.
+		 */
+		private final int y;
+		
+		/**
+		 * The direction.
+		 */
+		private final WalkingDirection direction;
+		
+		/**
+		 * Constructs a new {@code Point} {@code Object}.
+		 *
+		 * @param x
+		 * 		The x-coordinate.
+		 * @param y
+		 * 		The y-coordinate.
+		 * @param direction
+		 * 		The walking direction.
+		 */
+		private Point(int x, int y, WalkingDirection direction) {
+			this.x = x;
+			this.y = y;
+			this.direction = direction;
+		}
+		
+		/**
+		 * Gets the x-coordinate of this point.
+		 *
+		 * @return The x-coordinate.
+		 */
+		public int getX() {
+			return x;
+		}
 	}
 	
 }

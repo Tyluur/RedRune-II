@@ -14,8 +14,6 @@ import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.backend.ReturnCode;
 import org.redrune.utility.io.BufferUtils;
 
-import java.util.Arrays;
-
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
@@ -65,83 +63,10 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					break;
 				case LOBBY_FINALIZATION:
 					if (buffer.readable()) {
-						short rsaLength = buffer.readShort();
-						if (rsaLength < 0 || BufferUtils.readableBytes(buffer) < rsaLength) {
-							channel.close();
-							return session;
-						}
-						byte[] rsaBuffer = new byte[rsaLength];
-						for (int i = 0; i < rsaLength; i++) {
-							rsaBuffer[i] = buffer.readByte();
-						}
-						ChannelBuffer rsaBlock = ChannelBuffers.wrappedBuffer(rsaBuffer);
-						byte rsaMagic = rsaBlock.readByte();
-						if (rsaMagic != 10) {
-							session.write(new LoginResponseCodeBuilder(ReturnCode.BAD_SESSION_ID).build(null));
-							channel.close();
-							return session;
-						}
-						int[] isaac = new int[4];
-						for (int i = 0; i < 4; i++) {
-							isaac[i] = rsaBlock.readInt();
-						}
-						long vHash = rsaBlock.readLong();
-						if (vHash != 0L) {
-							session.write(new LoginResponseCodeBuilder(ReturnCode.BAD_SESSION_ID).build(null));
-							channel.close();
-							return session;
-						}
-						String password = BufferUtils.readRS2String(rsaBlock);
-						long[] serverSeeds = new long[2];
-						for (int i = 0; i < 2; i++) {
-							serverSeeds[i] = rsaBlock.readLong();
-						}
-						
-						// after rsaBlock there goes xteaBlock , which needs to be decrypted.
-						int xteaBlockLength = BufferUtils.readableBytes(buffer);
-						byte[] xteaBuffer = new byte[xteaBlockLength];
-						for (int i = 0; i < xteaBlockLength; i++) {
-							xteaBuffer[i] = buffer.readByte();
-						}
-						ChannelBuffer xteaPacket = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(isaac, xteaBuffer, 0, xteaBlockLength));
-						
-						String username = BufferUtils.readRS2String(xteaPacket);
-						
-						byte gameID = xteaPacket.readByte(); // game ID (0 for runescape)
-						byte langID = xteaPacket.readByte(); // language id.
-						
-						byte[] userId = new byte[24];
-						for (int i = 0; i < 24; i++) // that's the content of random.dat , which is generated depending on user's hardware and software.
-						{
-							userId[i] = xteaPacket.readByte();
-						}
-						
-						String settings = BufferUtils.readRS2String(xteaPacket);// settings are only used when sending login block
-						
-						int affliateID = xteaPacket.readInt(); // this is used when showing adverts.
-						
-						int[] cacheCRCS = new int[36];
-						for (int i = 0; i < 36; i++) {
-							cacheCRCS[i] = xteaPacket.readInt();
-						}
-						// finished decoding
-						
-						session.setInLobby(true);
-						session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
-						
-						Player player = new Player(username, password, session);
-						player.registerTransients();
-						session.write(new LobbyResponseBuilder().build(player));
-						
-						System.out.println(settings + ", " + Arrays.toString(userId));
-						
-						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
-						return session;
-					/*
-						
 						int rsaHeader = buffer.readByte();
 						if (rsaHeader != 10) {
 							channel.close();
+							System.err.println("SEVERE! Invalid RSA header.");
 							return session;
 						}
 						int[] keys = new int[4];
@@ -155,7 +80,7 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 						byte[] block = new byte[BufferUtils.readableBytes(buffer)];
 						buffer.readBytes(block);
 						ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
-						String username = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
+						String name = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
 						decryptedPayload.readByte(); // screen settings?
 						decryptedPayload.readByte();
 						for (int i = 0; i < 24; i++) {
@@ -172,11 +97,12 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 						session.setInLobby(true);
 						session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 						
-						Player player = new Player(username, password, session);
+						Player player = new Player(name, password, session);
 						player.registerTransients();
 						session.write(new LobbyResponseBuilder().build(player));
 						
-						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));*/
+						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
+						return session;
 					}
 					return session;
 				case LOGIN_FINALIZATION:

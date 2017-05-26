@@ -35,7 +35,7 @@ public final class PlayerVariables {
 	 */
 	@Getter
 	@Setter
-	private int prayerPoints;
+	private int prayerPoints = 10;
 	
 	/**
 	 * The amount of run energy the player has
@@ -49,7 +49,7 @@ public final class PlayerVariables {
 	 */
 	@Getter
 	@Setter
-	private boolean runToggled = false;
+	private boolean runToggled = true;
 	
 	/**
 	 * Gets an attribute and returns the default value if it doesn't exist

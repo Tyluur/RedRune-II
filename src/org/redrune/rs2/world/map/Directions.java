@@ -1,6 +1,4 @@
-package org.redrune.utility.rs;
-
-import org.redrune.rs2.world.Location;
+package org.redrune.rs2.world.map;
 
 import java.awt.*;
 

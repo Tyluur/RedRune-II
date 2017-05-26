@@ -1,4 +1,4 @@
-package org.redrune.rs2.world.connection;
+package org.redrune.rs2.world.list;
 
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;

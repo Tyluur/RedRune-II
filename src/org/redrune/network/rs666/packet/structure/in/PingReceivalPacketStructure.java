@@ -2,15 +2,14 @@ package org.redrune.network.rs666.packet.structure.in;
 
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
-import org.redrune.network.rs666.packet.structure.out.WorldListBuilder;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 5/18/2017
+ * @since 5/26/2017
  */
-public class WorldRequestPacketStructure implements IncomingPacketStructure {
+public class PingReceivalPacketStructure implements IncomingPacketStructure {
 	
 	@Override
 	public int[] bindings() {
@@ -19,8 +18,6 @@ public class WorldRequestPacketStructure implements IncomingPacketStructure {
 	
 	@Override
 	public void read(Player player, Packet packet) {
-		if (player.getNetworkSession().isInLobby()) {
-			player.getTransmitter().send(new WorldListBuilder().build(player));
-		}
+		player.getNetworkSession().ping();
 	}
 }

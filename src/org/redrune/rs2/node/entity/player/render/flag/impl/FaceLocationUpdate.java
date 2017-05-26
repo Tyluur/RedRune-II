@@ -3,7 +3,7 @@ package org.redrune.rs2.node.entity.player.render.flag.impl;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 
 /**
  * Represents the face location update mask.
@@ -39,7 +39,7 @@ public class FaceLocationUpdate extends UpdateFlag {
 		if (location != null) {
 			this.location = location;
 		} else {
-			this.location = Location.locate(0, 0, 0);
+			this.location = Location.create(0, 0, 0);
 		}
 		this.npc = entity.isNPC();
 		this.currentLocation = entity.getLocation();

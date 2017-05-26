@@ -9,6 +9,8 @@ package org.redrune.utility;
  */
 public enum AttributeKey {
 	
+	COST_VALUE,
+	
 	MAP_REGION_CHANGED,
 	
 	TELEPORT_LOCATION,

@@ -20,7 +20,6 @@ public final class RS2GameEncoder extends OneToOneEncoder {
 		if (message instanceof ChannelBuffer) {
 			return ChannelBuffers.copiedBuffer((ChannelBuffer) message);
 		}
-		
 		Packet packetMessage;
 		if (message instanceof PacketBuilder) {
 			packetMessage = ((PacketBuilder) message).toPacket();
@@ -33,7 +32,6 @@ public final class RS2GameEncoder extends OneToOneEncoder {
 			if (packetMessage.getOpcode() > 127) {
 				response.writeByte((byte) 128);
 			}
-			
 			response.writeByte((byte) packetMessage.getOpcode());
 			if (packetMessage.getType() == PacketType.VAR_BYTE) {
 				response.writeByte((byte) packetMessage.getBuffer().readableBytes());

@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.rs2.world.World;
 import org.redrune.utility.AttributeKey;
 

@@ -3,6 +3,7 @@ package org.redrune.rs2.world;
 import lombok.Getter;
 import org.redrune.engine.EngineWorkingSet;
 import org.redrune.rs2.node.InitializingNodeList;
+import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
 
 import java.util.concurrent.CountDownLatch;
@@ -26,10 +27,19 @@ public final class SequencialUpdate {
 	 * Starts the sequence
 	 */
 	public void start() {
+		World.get().getScheduler().pulse();
 		for (Player player : getRenderablePlayers()) {
 			player.tick();
 			player.getWalkingQueue().updateMovement();
 			player.getUpdateMasks().prepare(player);
+		}
+		for (NPC npc : World.get().getNpcs()) {
+			if (npc == null || !npc.isRenderable()) {
+				continue;
+			}
+			npc.tick();
+			npc.getWalkingQueue().updateMovement();
+			npc.getUpdateMasks().prepare(npc);
 		}
 	}
 	
@@ -63,6 +73,13 @@ public final class SequencialUpdate {
 			player.getUpdateMasks().finish();
 			player.getRenderData().updateInformation();
 			player.getHitMap().getHitList().clear();
+		}
+		for (NPC npc : World.get().getNpcs()) {
+			if (npc == null || !npc.isRenderable()) {
+				continue;
+			}
+			npc.getUpdateMasks().finish();
+			npc.getHitMap().getHitList().clear();
 		}
 		renderablePlayers.sync();
 	}

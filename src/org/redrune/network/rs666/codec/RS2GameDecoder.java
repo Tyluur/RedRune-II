@@ -33,11 +33,11 @@ public class RS2GameDecoder extends FrameDecoder {
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
 		if (buffer.readable()) {
 			int opcode = buffer.readUnsignedByte();
-			int length = NetworkConstants.PACKET_SIZES[opcode];
 			if (opcode < 0) {
 				buffer.discardReadBytes();
 				return null;
 			}
+			int length = NetworkConstants.PACKET_SIZES[opcode];
 			if (length == -1 && buffer.readable()) {
 				length = buffer.readUnsignedByte();
 			}

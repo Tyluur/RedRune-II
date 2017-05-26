@@ -6,7 +6,7 @@ import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.MapDataParser;
 

@@ -51,7 +51,6 @@ public final class IncomingPacketRepository {
 			return;
 		}
 		structure.read(player, packet);
-		System.out.println("Read incoming packet: " + opcode);
 	}
 	
 }

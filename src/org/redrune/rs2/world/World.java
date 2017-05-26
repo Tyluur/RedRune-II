@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.node.entity.EntityList;
+import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.task.Scheduler;
+import org.redrune.rs2.world.map.Location;
 
 import java.util.Optional;
 
@@ -28,18 +31,46 @@ public final class World {
 	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
 	
 	/**
+	 * The {@code EntityList} of all npcs that exist.
+	 */
+	@Getter
+	private final EntityList<NPC> npcs = new EntityList<>(GameConstants.NPCS_LIMIT, false);
+	
+	/**
+	 * The task scheduler.
+	 */
+	@Getter
+	private final Scheduler scheduler;
+	
+	/**
 	 * If the world is alive
 	 */
 	@Getter
 	@Setter
 	private boolean isAlive;
 	
-	public World() {
+	/**
+	 * Constructs a new world object
+	 */
+	private World() {
+		this.scheduler = new Scheduler();
+		addNPC(50, Location.create(3333, 3333, 0));
 		setAlive(true);
 	}
 	
-	/** The {@code EntityList} of all npcs that exist. */
-	//private static final EntityList<NPC> npcs = new EntityList<>(GameConstants.NPCS_LIMIT, false);
+	/**
+	 * Adds an npc to the world
+	 *
+	 * @param id
+	 * 		The id of the npc
+	 * @param location
+	 * 		The location of the npc
+	 */
+	public void addNPC(int id, Location location) {
+		final NPC npc = new NPC(id, location);
+		npc.register();
+		npcs.add(npc);
+	}
 	
 	/**
 	 * Gets the singleton instance

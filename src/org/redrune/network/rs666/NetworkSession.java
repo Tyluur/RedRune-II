@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.redrune.network.rs666.packet.Packet;
+import org.redrune.network.rs666.packet.structure.out.PingPacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.entity.player.components.PlayerViewComponents;
 
@@ -42,6 +43,11 @@ public final class NetworkSession {
 	@Setter
 	private boolean inLobby;
 	
+	/**
+	 * The ping count
+	 */
+	private byte pingCount;
+	
 	public NetworkSession(Channel channel) {
 		this.channel = channel;
 		this.viewComponents = new PlayerViewComponents();
@@ -64,4 +70,14 @@ public final class NetworkSession {
 		return null;
 	}
 	
+	/**
+	 * Handles receiving a ping
+	 */
+	public void ping() {
+		pingCount++;
+		if (pingCount >= 5) {
+			pingCount = 0;
+			write(new PingPacketBuilder().build(null));
+		}
+	}
 }

@@ -3,7 +3,7 @@ package org.redrune.rs2.node.entity.player.components;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.rs2.GameFlags;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.Misc;
 
 import java.util.Comparator;

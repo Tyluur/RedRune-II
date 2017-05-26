@@ -7,7 +7,7 @@ import org.redrune.rs2.node.entity.data.WalkingQueue;
 import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.entity.player.render.UpdateMasks;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.AttributeKey;
 
 import java.util.concurrent.ConcurrentHashMap;

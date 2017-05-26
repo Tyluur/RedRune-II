@@ -2,6 +2,7 @@ package org.redrune.network.rs666;
 
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.out.*;
+import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.node.entity.player.Player;
 
 /**
@@ -35,6 +36,11 @@ public final class NetworkTransmitter {
 		} else {
 			sendFixedAMasks();
 		}
+		send(new VarpPacketBuilder(173, player.getVariables().isRunToggled() ? 1 : 0).build(player));
+		send(new VarpPacketBuilder(1240, player.getVariables().getHealthPoints() * 2).build(player));
+		send(new VarpPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
+		send(new RunEnergyBuilder(player.getVariables().getRunEnergy()).build(player));
+		send(new MessageBuilder("Welcome to " + GameConstants.SERVER_NAME + ".").build(player));
 		return this;
 	}
 	

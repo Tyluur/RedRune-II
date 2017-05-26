@@ -1,4 +1,4 @@
-package org.redrune.rs2.world;
+package org.redrune.rs2.world.map;
 
 import lombok.Getter;
 
@@ -109,7 +109,7 @@ public final class Location {
 	 * @return The location.
 	 */
 	public Location transform(int diffX, int diffY, int diffZ) {
-		return locate(x + diffX, y + diffY, z + diffZ);
+		return create(x + diffX, y + diffY, z + diffZ);
 	}
 	
 	/**
@@ -122,7 +122,7 @@ public final class Location {
 	 * @param z
 	 * 		The z change
 	 */
-	public static Location locate(int x, int y, int z) {
+	public static Location create(int x, int y, int z) {
 		return new Location(x, y, z);
 	}
 	
@@ -135,7 +135,7 @@ public final class Location {
 	 * @return The location.
 	 */
 	public Location transform(Location l) {
-		return locate(x + l.x, y + l.y, z + l.z);
+		return create(x + l.x, y + l.y, z + l.z);
 	}
 	
 	/**

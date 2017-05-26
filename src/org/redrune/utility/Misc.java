@@ -1,10 +1,10 @@
 package org.redrune.utility;
 
+import com.google.common.base.Preconditions;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 /**
@@ -235,4 +235,56 @@ public class Misc {
 		return builder.toString();
 	}
 	
+	/**
+	 * Optimizes the text for a chat message
+	 *
+	 * @param text
+	 * 		The text
+	 */
+	public static String optimizeText(String text) {
+		StringBuilder sb = new StringBuilder();
+		char buf[] = text.toCharArray();
+		boolean wasSpace = false;
+		boolean firstChar = false;
+		boolean lastEndMark = false;
+		for (char c : buf) {
+			if (!firstChar) {
+				if (c != ' ') {
+					firstChar = true;
+					wasSpace = c == ':' || c == ';';
+					sb.append(Character.toUpperCase(c));
+				}
+				continue;
+			}
+			if (!wasSpace && Character.isUpperCase(c)) {
+				c = Character.toLowerCase(c);
+			}
+			if (lastEndMark) {
+				c = Character.toUpperCase(c);
+			}
+			sb.append(c);
+			wasSpace = c == ' ' || c == ':' || c == ';';
+			lastEndMark = c == '.' || c == '!' || c == '?';
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * Polls every element within the specified {@link Queue} and performs the specified {@link Consumer} event for
+	 * each element.
+	 *
+	 * @param queue
+	 * 		The {@link Queue} to poll elements from. Must not be {@code null}.
+	 * @param consumer
+	 * 		The {@link Consumer} to execute for each polled element. Must not be {@code null}.
+	 */
+	public static <T> void pollAll(Queue<T> queue, Consumer<T> consumer) {
+		Preconditions.checkNotNull(queue, "Queue may not be null");
+		Preconditions.checkNotNull(consumer, "Consumer may not be null");
+		
+		T element;
+		while ((element = queue.poll()) != null) {
+			consumer.accept(element);
+		}
+	}
 }

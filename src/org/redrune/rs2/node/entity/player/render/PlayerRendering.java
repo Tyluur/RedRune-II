@@ -10,7 +10,7 @@ import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.rs2.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.rs2.node.entity.player.render.update.GlobalUpdateStage;
 import org.redrune.rs2.node.entity.player.render.update.LocalUpdateStage;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.rs2.world.World;
 import org.redrune.utility.AttributeKey;
 

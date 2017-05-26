@@ -6,12 +6,14 @@ import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
 import org.redrune.network.rs666.packet.structure.out.MapRegionBuilder;
 import org.redrune.rs2.node.entity.Entity;
+import org.redrune.rs2.node.entity.npc.render.NPCRendering;
 import org.redrune.rs2.node.entity.player.components.*;
 import org.redrune.rs2.node.entity.player.render.PlayerRendering;
 import org.redrune.rs2.node.entity.player.render.flag.impl.AppearanceUpdate;
-import org.redrune.rs2.world.Location;
 import org.redrune.rs2.world.SequencialUpdate;
 import org.redrune.rs2.world.World;
+import org.redrune.rs2.world.map.Location;
+import org.redrune.rs2.world.map.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.SkillConstants;
 
@@ -82,6 +84,7 @@ public final class Player extends Entity {
 		if (getAttribute(AttributeKey.MAP_REGION_CHANGED, false)) {
 			getTransmitter().send(new MapRegionBuilder(false).build(this));
 		}
+		getTransmitter().send(new NPCRendering().build(this));
 		getTransmitter().send(new PlayerRendering().build(this));
 		getUpdateMasks().register(new AppearanceUpdate(this));
 	}
@@ -91,6 +94,7 @@ public final class Player extends Entity {
 		registerTransients();
 		World.get().getPlayers().add(this);
 		SequencialUpdate.getRenderablePlayers().add(this);
+		RegionManager.getRegion(getLocation().getX(), getLocation().getY()).addEntity(this);
 		transmitter.sendLoginComponents();
 		equipment.sendFullContainer();
 		skills.refreshAll();
@@ -103,6 +107,7 @@ public final class Player extends Entity {
 	public void deregister() {
 		World.get().getPlayers().remove(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
+		RegionManager.getRegion(getLocation().getX(), getLocation().getY()).removeEntity(this);
 		setRenderable(false);
 		
 		System.out.println("Player deregistered:\t" + this);
@@ -142,10 +147,12 @@ public final class Player extends Entity {
 	
 	@Override
 	public void tick() {
+	
 	}
 	
 	@Override
 	public String toString() {
 		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
 	}
+	
 }

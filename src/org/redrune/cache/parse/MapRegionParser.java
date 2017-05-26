@@ -4,6 +4,9 @@ import org.redrune.cache.CacheContainer;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.stream.ByteInputStream;
 import org.redrune.cache.stream.RSInputStream;
+import org.redrune.rs2.node.object.GameObject;
+import org.redrune.rs2.world.map.Location;
+import org.redrune.rs2.world.map.region.RegionBuilder;
 import org.redrune.utility.io.BufferUtils;
 
 import java.io.ByteArrayInputStream;
@@ -83,8 +86,7 @@ public class MapRegionParser {
 									height--;
 								}
 								if (height >= 0 && height <= 3) {
-									// TODO: add clipping
-									//									RegionBuilder.addClipping(x + localX, y + localY, height, 0x200000);
+									RegionBuilder.addClipping(x + localX, y + localY, height, 0x200000);
 								}
 							}
 						}
@@ -115,11 +117,7 @@ public class MapRegionParser {
 							height--;
 						}
 						if (height >= 0 && height <= 3) {
-							// TODO: ADD Objects
-							//RegionBuilder.addObject(new GameObject(objectId, x + localX, y + localY, height, type, rotation), true);
-							
-							// addObject(out, objectId, localX, localY, height,
-							// type, rotation);
+							RegionBuilder.addObject(new GameObject(objectId, type, rotation, Location.create(x + localX, y + localY, height)), true);
 						}
 					}
 				}

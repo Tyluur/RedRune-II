@@ -1,8 +1,7 @@
-package org.redrune.rs2.node.entity.player.render.flag.impl;
+package org.redrune.rs2.node.entity.npc.render.flag.impl;
 
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.utility.Misc;
 
 /**
  * Represents the rename NPC update mask.
@@ -28,7 +27,7 @@ public class RenameNPCUpdate extends UpdateFlag {
 	
 	@Override
 	public void write(PacketBuilder bldr) {
-		bldr.writeRS2String(Misc.formatPlayerNameForDisplay(name));
+		bldr.writeRS2String(name);
 	}
 	
 	@Override

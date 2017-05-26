@@ -1,4 +1,4 @@
-package org.redrune.rs2.world.connection;
+package org.redrune.rs2.world.list;
 
 import lombok.Getter;
 

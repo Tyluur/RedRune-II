@@ -3,7 +3,7 @@ package org.redrune.rs2.node.entity.player.render.flag.impl;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.rs2.world.Location;
+import org.redrune.rs2.world.map.Location;
 
 /**
  * Handles the force movement update flag.
@@ -37,7 +37,7 @@ public final class ForceMovement extends UpdateFlag {
 	public void write(PacketBuilder bldr) {
         Location myLocation = entity.getLocation();
         Location fromLocation = entity.getLocation(); //Is this even needed?
-        Location toLocation = Location.locate(movement[0], movement[1], 0);
+        Location toLocation = Location.create(movement[0], movement[1], 0);
         int distfromx = 0;
         int distfromy = 0;
         boolean positiveFromX = false;

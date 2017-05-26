@@ -4,7 +4,6 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.Misc;
-import org.redrune.utility.io.BufferUtils;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -27,30 +26,43 @@ public class InputDevicePacketStructure implements IncomingPacketStructure {
 	 */
 	private static final int KEYPRESS = 89;
 	
+	/**
+	 * The opcode for window focusing
+	 */
+	private static final int WINDOW_FOCUS = 60;
+	
+	/**
+	 * This opcode is unknown at this point
+	 */
+	private static final int UNKNOWN_STREAM = 21;
+	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(88, 36, 89);
+		return Misc.arguments(MOUSE_MOTION, MOUSE_CLICK, KEYPRESS, WINDOW_FOCUS, UNKNOWN_STREAM);
 	}
 	
 	@Override
 	@SuppressWarnings("unused")
 	public void read(Player player, Packet packet) {
-		if (packet.getOpcode() == MOUSE_CLICK) {
-			int clickData = packet.readLEShortA();
-			int timePassed = clickData & 0x7FFF;
+		final int opcode = packet.getOpcode();
+		if (opcode == MOUSE_CLICK) {
+			short clickData = (short) packet.readLEShortA();
+			short timePassed = (short) (clickData & 0x7FFF);
 			boolean leftClick = (clickData >> 15) == 0;
 			int positionData = packet.readLEInt();
-			int screenClickX = positionData >> 16;
-			int screenClickY = positionData & 0xFFFF;
-		} else if (packet.getOpcode() == MOUSE_MOTION) {
+			short screenClickX = (short) (positionData >> 16);
+			short screenClickY = (short) (positionData & 0xFFFF);
+		} else if (opcode == MOUSE_MOTION) {
 			packet.readByte();
-		} else if (packet.getOpcode() == KEYPRESS) {
-			int byte1 = packet.readByte();
-			int idk2 = packet.readByte();
-			int idk3 = packet.readShort();
-			
-			System.out.println(idk2 + ", " + idk3);
-			System.out.println(BufferUtils.readableBytes(packet.getBuffer()));
+		} else if (opcode == KEYPRESS) {
+			while (packet.remaining() >= 3) {
+				byte keyId = packet.readByte();
+				short timePassed = (short) packet.readShort();
+			}
+		} else if (opcode == WINDOW_FOCUS) {
+			boolean focus = packet.readByte() == 1;
+		} else if (opcode == UNKNOWN_STREAM) {
+			final int unknown = packet.readShort();
 		}
 	}
 }

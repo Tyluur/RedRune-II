@@ -1,0 +1,30 @@
+[Core]
++	Item equipment
++	Fix walking queue system (the bug where running is randomly set to false around corners)
++	Prayer management
++	
+
+[Wrappers/Systems]
++	Interface system to handle displaying interfaces
+	-	Support for not being able to open new interfaces when one is already opened
+	-	Support for seeing what interfaces we have opened at the moment [chatbox/inventory/screen]
+	-	Support for opening/closing tabs
+		-	Support for which tab is currently your settings tab for example [audio change]
+	-	Enumerated basic interfaces list for login configuration
++	Action system
+	-	These occur every tick, will be used for handling skilling/combat/resting/etc (similar to matrix)
++	Widget interaction system
++	Command system
++	Event system
+	-	Used to handle events such as executing a command, picking up an item, equipping an item, starting an npc interaction
+	-	This is so that all of these interactions pass through the same sort of filter for each node.
+	
+[Data]
++	Item examines
++	NPC examines
++	Object examines
+
+[Module]
+- Groovy based module system -
++	Scripts transfered from module directory will apply to ingame content
++	These are for interface interactions, npc interactions, item interactions, object interactions, and dialogues
