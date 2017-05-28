@@ -4,7 +4,7 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.node.entity.player.components.PlayerSkills;
+import org.redrune.rs2.node.entity.player.data.PlayerSkills;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

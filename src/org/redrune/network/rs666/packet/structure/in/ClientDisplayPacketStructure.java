@@ -35,7 +35,7 @@ public class ClientDisplayPacketStructure implements IncomingPacketStructure {
 		player.getNetworkSession().getViewComponents().setDisplayMode(displayMode);
 		if (send) {
 			player.getTransmitter().sendLoginComponents();
-			player.getTransmitter().sendInterface(742);
+			player.getInterfaceManager().showScreenInterface(742, true);
 			if (screenSizeMode < 2) {
 				player.getTransmitter().sendFixedAMasks();
 			} else {

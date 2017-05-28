@@ -2,9 +2,7 @@ package org.redrune.network.rs666.packet.structure.in;
 
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
-import org.redrune.network.rs666.packet.structure.out.MessageBuilder;
-import org.redrune.network.rs666.packet.structure.out.RunEnergyBuilder;
-import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
+import org.redrune.network.rs666.packet.structure.out.*;
 import org.redrune.rs2.node.entity.data.Hit;
 import org.redrune.rs2.node.entity.data.Hit.HitSplat;
 import org.redrune.rs2.node.entity.player.Player;
@@ -17,6 +15,7 @@ import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.Priority;
+import org.redrune.utility.rs.GameTab;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -40,6 +39,21 @@ public class CommandHandlerPacketStructure implements IncomingPacketStructure {
 		String[] args = command.toLowerCase().split(" ");
 		String name = args[0];
 		switch(name) {
+			case "item":
+				player.getInventory().addItem(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+				break;
+			case "sendtab":
+				player.getInterfaceManager().sendTab(GameTab.OPTIONS, 743);
+				break;
+			case "toggletab":
+				player.getInterfaceManager().toggleTab(GameTab.valueOf(args[1].toUpperCase()));
+				break;
+			case "closeinter":
+				player.getTransmitter().send(new CloseInterfaceBuilder(Integer.parseInt(args[1]), Integer.parseInt(args[2])).build(player));
+				break;
+			case "idbg":
+				player.getTransmitter().send(new InterfaceDisplayBuilder(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), true).build(player));
+				break;
 			case "dbg":
 				player.getTransmitter().send(new RunEnergyBuilder(100).build(player));
 				break;

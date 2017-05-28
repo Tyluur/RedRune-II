@@ -4,6 +4,7 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.out.*;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
  * This class handles the transmission of all important packets directly to the client.
@@ -30,17 +31,14 @@ public final class NetworkTransmitter {
 	public NetworkTransmitter sendLoginComponents() {
 		send(new LoginCredentialsBuilder().build(player));
 		send(new MapRegionBuilder(true).build(player));
-		sendMainInterfaces();
-		if (player.getNetworkSession().getViewComponents().getScreenSizeMode() > 1) {
-			sendFullScreenAMasks();
-		} else {
-			sendFixedAMasks();
-		}
+		player.getInterfaceManager().sendInterfaceConfiguration();
+		
 		send(new VarpPacketBuilder(173, player.getVariables().isRunToggled() ? 1 : 0).build(player));
 		send(new VarpPacketBuilder(1240, player.getVariables().getHealthPoints() * 2).build(player));
 		send(new VarpPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
 		send(new RunEnergyBuilder(player.getVariables().getRunEnergy()).build(player));
-		send(new MessageBuilder("Welcome to " + GameConstants.SERVER_NAME + ".").build(player));
+		sendDefaultConfigs();
+		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ".", false);
 		return this;
 	}
 	
@@ -56,75 +54,76 @@ public final class NetworkTransmitter {
 	}
 	
 	/**
-	 * Sends all interfaces to the client
-	 *
-	 * @return A {@code NetworkTransmitter} {@code Object}
+	 * Sends the default game configs
 	 */
-	private NetworkTransmitter sendMainInterfaces() {
-		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
-			case 0:
-			case 1:
-				send(new GameWindowBuilder(548, 0).build(player));
-				send(new InterfaceDisplayBuilder(548, 67, 751, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 192, 752, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 16, 754, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 182, 748, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 184, 749, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 185, 750, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 187, 747, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 14, 745, true).build(player));
-				send(new InterfaceDisplayBuilder(752, 9, 137, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 203, 884, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 205, 320, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 206, 190, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 204, 1056, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 207, 679, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 208, 387, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 209, 271, true).build(player));
-				//				send(new InterfaceDisplayBuilder(548, 210, player.getSettings().getSpellBook(), true).build(player));
-				send(new InterfaceDisplayBuilder(548, 204, 1056, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 212, 550, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 213, 1109, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 214, 1110, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 215, 261, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 216, 590, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 217, 187, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 218, 34, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 221, 182, true).build(player));
-				send(new InterfaceDisplayBuilder(548, 203, 884, true).build(player));
-				break;
-			case 2:
-			case 3:
-				send(new GameWindowBuilder(746, 0).build(player));
-				send(new InterfaceDisplayBuilder(746, 18, 751, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 71, 752, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 72, 754, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 176, 748, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 177, 749, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 178, 750, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 179, 747, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 14, 745, true).build(player));
-				send(new InterfaceDisplayBuilder(752, 9, 137, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 89, 884, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 91, 320, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 92, 190, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 90, 1056, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 93, 679, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 94, 387, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 95, 271, true).build(player));
-				//				send(new InterfaceDisplayBuilder(746, 96, player.getSettings().getSpellBook(), true).build(player));
-				send(new InterfaceDisplayBuilder(746, 90, 1056, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 98, 550, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 99, 1109, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 100, 1110, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 101, 261, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 102, 590, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 103, 187, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 104, 34, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 107, 182, true).build(player));
-				send(new InterfaceDisplayBuilder(746, 89, 884, true).build(player));
-				break;
-		}
+	public NetworkTransmitter sendDefaultConfigs() {
+		send(new InterfaceDisplayModificationBuilder(34, 13, false).build(player));
+		send(new InterfaceDisplayModificationBuilder(34, 3, false).build(player));
+		send(new VarpPacketBuilder(281, 1000).build(player));// Tutorial-completed-config
+		send(new CS2ConfigBuilder(168, 4).build(player));
+		send(new CS2ConfigBuilder(1273, 1).build(player));
+		send(new CS2ConfigBuilder(1000, 1).build(player));
+		send(new CS2ConfigBuilder(232, 0).build(player));
+		send(new CS2ConfigBuilder(233, 0).build(player));
+		send(new CS2ConfigBuilder(234, 0).build(player));
+		send(new CS2ConfigBuilder(1423, 44).build(player));// tasklist-total
+		send(new CS2ConfigBuilder(1424, 8).build(player));// tasklist-
+		send(new CS2ConfigBuilder(822, 0).build(player));
+		send(new CS2ConfigBuilder(181, 0).build(player));
+		send(new CS2ConfigBuilder(823, 0).build(player));
+		send(new CS2ConfigBuilder(1027, 1).build(player));
+		send(new CS2ConfigBuilder(1034, 2).build(player));
+		send(new CS2ConfigBuilder(245, 0).build(player));
+		send(new CS2ConfigBuilder(1000, 66).build(player));
+		send(new CS2ConfigBuilder(1428, 0).build(player));
+		send(new CS2ConfigBuilder(629, -1).build(player));
+		send(new CS2ConfigBuilder(630, -1).build(player));
+		send(new CS2ConfigBuilder(627, -1).build(player));
+		send(new CS2ConfigBuilder(628, -1).build(player));
+		send(new CS2ConfigBuilder(1416, 0).build(player));
+		send(new CS2ConfigBuilder(1469, 51).build(player));
+		send(new CS2ConfigBuilder(1470, 50).build(player));
+		send(new CS2ConfigBuilder(1471, 50).build(player));
+		send(new CS2ConfigBuilder(1472, 20).build(player));
+		send(new CS2ConfigBuilder(1473, 56).build(player));
+		send(new CS2ConfigBuilder(1474, 60).build(player));
+		send(new CS2ConfigBuilder(1475, 49).build(player));
+		send(new CS2ConfigBuilder(1476, 24).build(player));
+		send(new CS2ConfigBuilder(1477, 22).build(player));
+		send(new CS2ConfigBuilder(1478, 32).build(player));
+		send(new CS2ConfigBuilder(1479, 50).build(player));
+		send(new CS2ConfigBuilder(1480, 14).build(player));
+		send(new CS2ConfigBuilder(1481, 37).build(player));
+		send(new CS2ConfigBuilder(1482, 30).build(player));
+		send(new CS2ConfigBuilder(1483, 44).build(player));
+		send(new CS2ConfigBuilder(1484, 31).build(player));
+		send(new CS2ConfigBuilder(1485, 4).build(player));
+		send(new CS2ConfigBuilder(1486, 64).build(player));
+		send(new CS2ConfigBuilder(1487, 18).build(player));
+		send(new CS2ConfigBuilder(1488, 8).build(player));
+		send(new CS2ConfigBuilder(1489, 10).build(player));
+		send(new CS2ConfigBuilder(1490, 3).build(player));
+		send(new CS2ConfigBuilder(1491, 15).build(player));
+		send(new CS2ConfigBuilder(1492, 18).build(player));
+		send(new CS2ConfigBuilder(1493, 6).build(player));
+		send(new CS2ConfigBuilder(1000, 66).build(player));
+		send(new CS2ConfigBuilder(1413, 1).build(player));
+		send(new CS2ConfigBuilder(1416, 0).build(player));
+		send(new CS2ConfigBuilder(695, 0).build(player));
+		send(new CS2ConfigBuilder(695, 0).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends a message
+	 *
+	 * @param text
+	 * 		The text of the message
+	 * @param filterable
+	 * 		If the message should be filterable.
+	 */
+	public NetworkTransmitter sendMessage(String text, boolean filterable) {
+		send(new MessageBuilder(filterable ? 109 : 0, text).build(player));
 		return this;
 	}
 	
@@ -134,53 +133,53 @@ public final class NetworkTransmitter {
 	 * @return A {@code NetworkTransmitter} {@code Object}
 	 */
 	public NetworkTransmitter sendFullScreenAMasks() {
-		send(new AccessMaskBuilder(0, 99, 137, 58, 0, 2046).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 39, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 11, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 12, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 13, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 41, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 42, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 300, 190, 18, 0, 14).build(player));
-		send(new AccessMaskBuilder(0, 11, 190, 15, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 40, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 43, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 27, 679, 0, 69, 0x457d8e).build(player));
-		send(new AccessMaskBuilder(28, 55, 679, 0, 32, 0).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 44, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 45, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 30, 271, 8, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 46, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 47, 0, 0).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 40, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 48, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 49, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 600, 1109, 5, 0, 1024).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 50, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 200, 1110, 11, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 600, 1110, 16, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 600, 1110, 14, 0, 1024).build(player));
-		send(new AccessMaskBuilder(0, 600, 1110, 5, 0, 1024).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 51, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 52, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 93, 590, 8, 0, 6).build(player));
-		send(new AccessMaskBuilder(0, 11, 590, 13, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 53, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 2033, 187, 1, 0, 26).build(player));
-		send(new AccessMaskBuilder(0, 11, 187, 9, 36, 6).build(player));
-		send(new AccessMaskBuilder(12, 23, 187, 9, 0, 4).build(player));
-		send(new AccessMaskBuilder(24, 24, 187, 9, 32, 0).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 54, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 29, 34, 9, 40, 30).build(player));
-		send(new AccessMaskBuilder(0, 0, 747, 17, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 0, 662, 74, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 746, 39, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 11, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 12, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 13, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 14, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 0, 747, 17, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 0, 662, 74, 0, 2).build(player));
+		send(new AccessMaskBuilder(137, 58, 0, 2046, 0, 99).build(player));
+		send(new AccessMaskBuilder(746, 39, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 11, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 12, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 13, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 41, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 42, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(190, 18, 0, 14, 0, 300).build(player));
+		send(new AccessMaskBuilder(190, 15, 0, 2, 0, 11).build(player));
+		send(new AccessMaskBuilder(746, 40, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 43, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 69, 0x457d8e, 0, 27).build(player));
+		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 32, 0, 28, 55).build(player));
+		send(new AccessMaskBuilder(746, 44, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 45, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+		send(new AccessMaskBuilder(746, 46, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 47, 0, 0, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 40, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 48, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 49, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(1109, 5, 0, 1024, 0, 600).build(player));
+		send(new AccessMaskBuilder(746, 50, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(1110, 11, 0, 2, 0, 200).build(player));
+		send(new AccessMaskBuilder(1110, 16, 0, 2, 0, 600).build(player));
+		send(new AccessMaskBuilder(1110, 14, 0, 1024, 0, 600).build(player));
+		send(new AccessMaskBuilder(1110, 5, 0, 1024, 0, 600).build(player));
+		send(new AccessMaskBuilder(746, 51, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(746, 52, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(590, 8, 0, 6, 0, 93).build(player));
+		send(new AccessMaskBuilder(590, 13, 0, 2, 0, 11).build(player));
+		send(new AccessMaskBuilder(746, 53, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(187, 1, 0, 26, 0, 2033).build(player));
+		send(new AccessMaskBuilder(187, 9, 36, 6, 0, 11).build(player));
+		send(new AccessMaskBuilder(187, 9, 0, 4, 12, 23).build(player));
+		send(new AccessMaskBuilder(187, 9, 32, 0, 24, 24).build(player));
+		send(new AccessMaskBuilder(746, 54, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(34, 9, 40, 30, 0, 29).build(player));
+		send(new AccessMaskBuilder(747, 17, 0, 2, 0, 0).build(player));
+		send(new AccessMaskBuilder(662, 74, 0, 2, 0, 0).build(player));
+		send(new AccessMaskBuilder(746, 39, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 11, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 12, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 13, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 14, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(747, 17, 0, 2, 0, 0).build(player));
+		send(new AccessMaskBuilder(662, 74, 0, 2, 0, 0).build(player));
 		return this;
 	}
 	
@@ -190,73 +189,53 @@ public final class NetworkTransmitter {
 	 * @return A {@code NetworkTransmitter} {@code Object}
 	 */
 	public NetworkTransmitter sendFixedAMasks() {
-		send(new AccessMaskBuilder(0, 99, 137, 58, 0, 2046).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 129, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 11, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 12, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 13, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 131, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 132, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 300, 190, 18, 0, 14).build(player));
-		send(new AccessMaskBuilder(0, 11, 190, 15, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 130, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 133, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 27, 679, 0, 69, 0x457d8e).build(player));
-		send(new AccessMaskBuilder(28, 55, 679, 0, 32, 0).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 134, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 135, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 30, 271, 8, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 136, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 99, 0, 0).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 130, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 100, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 101, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 600, 1109, 5, 0, 1024).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 102, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 200, 1110, 11, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 600, 1110, 16, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 600, 1110, 14, 0, 1024).build(player));
-		send(new AccessMaskBuilder(0, 600, 1110, 5, 0, 1024).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 103, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 104, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 93, 590, 8, 0, 6).build(player));
-		send(new AccessMaskBuilder(0, 11, 590, 13, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 105, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 2033, 187, 1, 0, 26).build(player));
-		send(new AccessMaskBuilder(0, 11, 187, 9, 36, 6).build(player));
-		send(new AccessMaskBuilder(12, 23, 187, 9, 0, 4).build(player));
-		send(new AccessMaskBuilder(24, 24, 187, 9, 32, 0).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 106, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 29, 34, 9, 40, 30).build(player));
-		send(new AccessMaskBuilder(0, 0, 747, 17, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 0, 662, 74, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 548, 129, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 11, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 12, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 13, 0, 2).build(player));
-		send(new AccessMaskBuilder(-1, -1, 884, 14, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 0, 747, 17, 0, 2).build(player));
-		send(new AccessMaskBuilder(0, 0, 662, 74, 0, 2).build(player));
-		return this;
-	}
-	
-	/**
-	 * Sends an interface to the client
-	 *
-	 * @param interfaceId
-	 * 		The id of the interface
-	 */
-	public NetworkTransmitter sendInterface(int interfaceId) {
-		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
-			case 0:
-			case 1:
-				send(new InterfaceDisplayBuilder(548, 18, interfaceId, false).build(player));
-				return this;
-			case 2:
-			case 3:
-				send(new InterfaceDisplayBuilder(746, 11 /* 9 */, interfaceId, false).build(player));
-				return this;
-		}
+		send(new AccessMaskBuilder(137, 58, 0, 2046, 0, 99).build(player));
+		send(new AccessMaskBuilder(548, 129, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 11, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 12, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 13, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 131, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 132, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(190, 18, 0, 14, 0, 300).build(player));
+		send(new AccessMaskBuilder(190, 15, 0, 2, 0, 11).build(player));
+		send(new AccessMaskBuilder(548, 130, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 133, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 69, 0x457d8e, 0, 27).build(player));
+		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 32, 0, 28, 55).build(player));
+		send(new AccessMaskBuilder(548, 134, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 135, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+		send(new AccessMaskBuilder(548, 136, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 99, 0, 0, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 130, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 100, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 101, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(1109, 5, 0, 1024, 0, 600).build(player));
+		send(new AccessMaskBuilder(548, 102, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(1110, 11, 0, 2, 0, 200).build(player));
+		send(new AccessMaskBuilder(1110, 16, 0, 2, 0, 600).build(player));
+		send(new AccessMaskBuilder(1110, 14, 0, 1024, 0, 600).build(player));
+		send(new AccessMaskBuilder(1110, 5, 0, 1024, 0, 600).build(player));
+		send(new AccessMaskBuilder(548, 103, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(548, 104, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(590, 8, 0, 6, 0, 93).build(player));
+		send(new AccessMaskBuilder(590, 13, 0, 2, 0, 11).build(player));
+		send(new AccessMaskBuilder(548, 105, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(187, 1, 0, 26, 0, 2033).build(player));
+		send(new AccessMaskBuilder(187, 9, 36, 6, 0, 11).build(player));
+		send(new AccessMaskBuilder(187, 9, 0, 4, 12, 23).build(player));
+		send(new AccessMaskBuilder(187, 9, 32, 0, 24, 24).build(player));
+		send(new AccessMaskBuilder(548, 106, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(34, 9, 40, 30, 0, 29).build(player));
+		send(new AccessMaskBuilder(747, 17, 0, 2, 0, 0).build(player));
+		send(new AccessMaskBuilder(662, 74, 0, 2, 0, 0).build(player));
+		send(new AccessMaskBuilder(548, 129, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 11, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 12, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 13, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(884, 14, 0, 2, -1, -1).build(player));
+		send(new AccessMaskBuilder(747, 17, 0, 2, 0, 0).build(player));
+		send(new AccessMaskBuilder(662, 74, 0, 2, 0, 0).build(player));
 		return this;
 	}
 }

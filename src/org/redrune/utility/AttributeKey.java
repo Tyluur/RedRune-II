@@ -8,14 +8,18 @@ package org.redrune.utility;
  * @since 5/21/2017
  */
 public enum AttributeKey {
-	
+	// MISC ATTRIBUTES
 	COST_VALUE,
 	
+	SKILL_MENU,
+	
+	// UPDATING ATTRIBUTES
 	MAP_REGION_CHANGED,
 	
 	TELEPORT_LOCATION,
 	
-	PLAYER_TELEPORTED
+	PLAYER_TELEPORTED,
 	
 	;
+	
 }

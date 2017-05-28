@@ -1,11 +1,11 @@
-package org.redrune.rs2.node.entity.player.components;
+package org.redrune.rs2.node.entity.player.data;
 
 import lombok.Getter;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.map.Location;
 import org.redrune.rs2.world.World;
+import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.AttributeKey;
 
 import java.util.LinkedList;

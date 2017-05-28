@@ -34,7 +34,6 @@ public class GameObject extends Node {
 	/**
 	 * The object's definition.
 	 */
-	@Getter
 	@Setter
 	private ObjectDefinition definitions;
 	

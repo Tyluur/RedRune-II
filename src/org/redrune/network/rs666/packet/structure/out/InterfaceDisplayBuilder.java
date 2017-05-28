@@ -19,31 +19,43 @@ public final class InterfaceDisplayBuilder implements OutgoingPacketStructure {
 	/**
 	 * The interface id.
 	 */
-	private final int interfaceId;
+	private final int childId;
 	
 	/**
 	 * The child id.
 	 */
-	private final int childId;
+	private final int interfaceId;
 	
 	/**
 	 * If the interface is an overlay.
 	 */
-	private boolean walkable;
+	private boolean transparent;
 	
-	public InterfaceDisplayBuilder(int windowId, int interfaceId, int childId, boolean walkable) {
+	/**
+	 * Constructs a new interface display builder
+	 *
+	 * @param windowId
+	 * 		The window id of the interface
+	 * @param childId
+	 * 		The child id of the interface (where to display it)
+	 * @param interfaceId
+	 * 		The id of the interface
+	 * @param transparent
+	 * 		If we should display the interface as transparent
+	 */
+	public InterfaceDisplayBuilder(int windowId, int childId, int interfaceId, boolean transparent) {
 		this.windowId = windowId;
-		this.interfaceId = interfaceId;
 		this.childId = childId;
-		this.walkable = walkable;
+		this.interfaceId = interfaceId;
+		this.transparent = transparent;
 	}
 	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(139);
-		bldr.writeByteS(walkable ? 1 : 0);
-		bldr.writeShortA(childId);
-		bldr.writeInt(windowId << 16 | interfaceId);
+		bldr.writeByteS(transparent ? 1 : 0);
+		bldr.writeShortA(interfaceId);
+		bldr.writeInt(windowId << 16 | childId);
 		return bldr.toPacket();
 	}
 }

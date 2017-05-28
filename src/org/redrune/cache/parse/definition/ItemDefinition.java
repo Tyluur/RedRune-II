@@ -6,7 +6,8 @@ import org.redrune.cache.CacheConstants;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.utility.io.BufferUtils;
-import org.redrune.utility.rs.SkillConstants;
+import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
@@ -58,6 +59,7 @@ public final class ItemDefinition {
 	@Getter
 	private int maleWornModelId1 = -1;
 	
+	@Getter
 	private int femaleWornModelId1;
 	
 	@Getter
@@ -602,5 +604,40 @@ public final class ItemDefinition {
 	
 	public boolean isNoted() {
 		return noteTemplateId != -1;
+	}
+	
+	public boolean isWearItem() {
+		if (inventoryOptions == null) {
+			return false;
+		}
+		for (String option : inventoryOptions) {
+			if (option == null) {
+				continue;
+			}
+			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
+				// TODO this return equipSlot != -1;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isWearItem(boolean male) {
+		if (inventoryOptions == null) {
+			return false;
+		}
+		if (EquipConstants.getItemSlot(id) != EquipConstants.SLOT_RING && EquipConstants.getItemSlot(id) != EquipConstants.SLOT_ARROWS && EquipConstants.getItemSlot(id) != EquipConstants.SLOT_AURA && (male ? getMaleWornModelId1() == -1 : getFemaleWornModelId1() == -1)) {
+			return false;
+		}
+		for (String option : inventoryOptions) {
+			if (option == null) {
+				continue;
+			}
+			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
+				// TODO this return equipSlot != -1;
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -1,4 +1,4 @@
-package org.redrune.utility.rs;
+package org.redrune.utility.rs.constant;
 
 /**
  * All constants that are important for skill levelling are stored in this class
@@ -6,6 +6,7 @@ package org.redrune.utility.rs;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017
  */
+@SuppressWarnings("unused")
 public interface SkillConstants {
 	
 	/**

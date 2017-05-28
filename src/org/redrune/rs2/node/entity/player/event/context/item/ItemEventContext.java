@@ -1,0 +1,37 @@
+package org.redrune.rs2.node.entity.player.event.context.item;
+
+import lombok.Getter;
+import org.redrune.rs2.node.entity.player.event.EventContext;
+import org.redrune.rs2.node.item.Item;
+import org.redrune.utility.rs.InteractionOption;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 5/27/2017
+ */
+public class ItemEventContext implements EventContext {
+	
+	/**
+	 * The item
+	 */
+	@Getter
+	private final Item item;
+	
+	/**
+	 * The slot id of the item
+	 */
+	@Getter
+	private final int slotId;
+	
+	/**
+	 * The option clicked on the item
+	 */
+	@Getter
+	private final InteractionOption option;
+	
+	public ItemEventContext(Item item, int slotId, InteractionOption option) {
+		this.item = item;
+		this.slotId = slotId;
+		this.option = option;
+	}
+}

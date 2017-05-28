@@ -7,7 +7,7 @@ import org.jboss.netty.channel.ChannelFuture;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.out.PingPacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.node.entity.player.components.PlayerViewComponents;
+import org.redrune.rs2.node.entity.player.data.PlayerViewComponents;
 
 /**
  * The networkSession connected to the main game
@@ -16,6 +16,12 @@ import org.redrune.rs2.node.entity.player.components.PlayerViewComponents;
  * @since 5/18/2017
  */
 public final class NetworkSession {
+	
+	/**
+	 * The components of the players client
+	 */
+	@Getter
+	private final PlayerViewComponents viewComponents;
 	
 	/**
 	 * The channel instance.
@@ -29,12 +35,6 @@ public final class NetworkSession {
 	@Getter
 	@Setter
 	private Player player;
-	
-	/**
-	 * The components of the players client
-	 */
-	@Getter
-	private final PlayerViewComponents viewComponents;
 	
 	/**
 	 * If the networkSession is in the lobby
@@ -54,6 +54,17 @@ public final class NetworkSession {
 	}
 	
 	/**
+	 * Handles receiving a ping
+	 */
+	public void ping() {
+		pingCount++;
+		if (pingCount >= 5) {
+			pingCount = 0;
+			write(new PingPacketBuilder().build(null));
+		}
+	}
+	
+	/**
 	 * Writes a packet to the channel
 	 *
 	 * @param packet
@@ -68,16 +79,5 @@ public final class NetworkSession {
 			t.printStackTrace();
 		}
 		return null;
-	}
-	
-	/**
-	 * Handles receiving a ping
-	 */
-	public void ping() {
-		pingCount++;
-		if (pingCount >= 5) {
-			pingCount = 0;
-			write(new PingPacketBuilder().build(null));
-		}
 	}
 }

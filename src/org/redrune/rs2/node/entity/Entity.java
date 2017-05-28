@@ -8,7 +8,6 @@ import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.entity.player.render.UpdateMasks;
 import org.redrune.rs2.world.map.Location;
-import org.redrune.utility.AttributeKey;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +33,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	/**
 	 * The map of temporary attributes
 	 */
-	private transient ConcurrentHashMap<AttributeKey, Object> attributes;
+	private transient ConcurrentHashMap<Object, Object> attributes;
 	
 	/**
 	 * The instance of the update masks
@@ -115,7 +114,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The return type
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(AttributeKey key, T defaultValue) {
+	public <T> T getAttribute(Object key, T defaultValue) {
 		T value = (T) attributes.get(key);
 		if (value == null) {
 			return defaultValue;
@@ -132,7 +131,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The return type
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(AttributeKey key) {
+	public <T> T getAttribute(Object key) {
 		return (T) attributes.get(key);
 	}
 	
@@ -144,7 +143,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * @param value
 	 * 		The value
 	 */
-	public <T> T putAttribute(AttributeKey key, T value) {
+	public <T> T putAttribute(Object key, T value) {
 		attributes.put(key, value);
 		return value;
 	}
@@ -158,7 +157,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The return type
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T removeAttribute(AttributeKey key) {
+	public <T> T removeAttribute(Object key) {
 		return (T) attributes.remove(key);
 	}
 	
@@ -174,7 +173,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The return type
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T removeAttribute(AttributeKey key, T defaultValue) {
+	public <T> T removeAttribute(Object key, T defaultValue) {
 		T value = (T) attributes.remove(key);
 		if (value == null) {
 			return defaultValue;

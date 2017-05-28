@@ -1,0 +1,11 @@
+5/27/17
++   Designed a module system for handling all node interactions, as well as interface interactions, in one class.
++   Designed an interface management system for checking the interfaces the player has open
+	-   We can also hide/show a tab with a simple method call
++   Designed an event system for executing events procedurally, such as item equipping, object interaction, and more.
++   Completed item equipping and unequipping using the aforementioned systems.
++   Completed skill tab guides (with perfect submenus as well)
+
+[MEDIA]
+[img]http://i.imgur.com/Ulzjezt.gif[/img]
+[img]http://i.imgur.com/KAu2cuJ.gif[/img]

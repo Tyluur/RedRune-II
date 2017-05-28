@@ -1,7 +1,10 @@
 package org.redrune.rs2.system;
 
 import org.redrune.engine.MajorUpdateWorker;
+import org.redrune.network.rs666.NetworkHandler;
 import org.redrune.utility.backend.OutLogger;
+
+import java.io.IOException;
 
 /**
  * Manages all system operations.
@@ -31,7 +34,8 @@ public class SystemManager {
 	/**
 	 * Starts the worker
 	 */
-	public static void start() {
+	public static void start() throws IOException {
+		NetworkHandler.bind();
 		MAJOR_UPDATE_WORKER.start();
 		Runtime.getRuntime().addShutdownHook(FINALIZATION);
 	}

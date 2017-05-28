@@ -1,4 +1,4 @@
-package org.redrune.rs2.node.entity.player.components;
+package org.redrune.rs2.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.item.Item;
-import org.redrune.utility.rs.EquipConstants;
+import org.redrune.utility.rs.constant.EquipConstants;
 
 /**
  * The appearance of the player.
@@ -83,37 +83,11 @@ public final class PlayerAppearance {
 	}
 	
 	/**
-	 * Draws an item on a body part.
-	 *
-	 * @param part
-	 * 		The body part.
-	 * @param item
-	 * 		The item to draw.
+	 * @param look
+	 * 		the look to set
 	 */
-	public void drawItem(int part, Item item) {
-		this.bodyParts[part] = item.getDefinitions().getEquipId() + 0x8000;
-	}
-	
-	/**
-	 * Draws clothing on a body part.
-	 *
-	 * @param part
-	 * 		The body part.
-	 * @param clothesId
-	 * 		The clothes id.
-	 */
-	public void drawClothes(int part, int clothesId) {
-		this.bodyParts[part] = clothesId + 0x100;
-	}
-	
-	/**
-	 * Clears a body part.
-	 *
-	 * @param part
-	 * 		The part to clear.
-	 */
-	public void clearBodyPart(int part) {
-		this.bodyParts[part] = 0;
+	public void setLook(int slot, int look) {
+		this.look[slot] = look;
 	}
 	
 	/**
@@ -215,6 +189,47 @@ public final class PlayerAppearance {
 	}
 	
 	/**
+	 * Draws an item on a body part.
+	 *
+	 * @param part
+	 * 		The body part.
+	 * @param item
+	 * 		The item to draw.
+	 */
+	public void drawItem(int part, Item item) {
+		this.bodyParts[part] = item.getDefinitions().getEquipId() + 0x8000;
+	}
+	
+	/**
+	 * Clears a body part.
+	 *
+	 * @param part
+	 * 		The part to clear.
+	 */
+	public void clearBodyPart(int part) {
+		this.bodyParts[part] = 0;
+	}
+	
+	/**
+	 * Draws clothing on a body part.
+	 *
+	 * @param part
+	 * 		The body part.
+	 * @param clothesId
+	 * 		The clothes id.
+	 */
+	public void drawClothes(int part, int clothesId) {
+		this.bodyParts[part] = clothesId + 0x100;
+	}
+	
+	/**
+	 * @return the look
+	 */
+	public int getLook(int i) {
+		return look[i];
+	}
+	
+	/**
 	 * Sets a colour.
 	 *
 	 * @param slot
@@ -248,21 +263,6 @@ public final class PlayerAppearance {
 		} else {
 			this.renderEmote = 1426;
 		}
-	}
-	
-	/**
-	 * @return the look
-	 */
-	public int getLook(int i) {
-		return look[i];
-	}
-	
-	/**
-	 * @param look
-	 * 		the look to set
-	 */
-	public void setLook(int slot, int look) {
-		this.look[slot] = look;
 	}
 	
 }

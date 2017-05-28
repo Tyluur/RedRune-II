@@ -1,4 +1,4 @@
-package org.redrune.rs2.node.entity.player.components;
+package org.redrune.rs2.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,10 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 5/21/2017
  */
 public final class PlayerVariables {
-	
-	public PlayerVariables() {
-		setHealthPoints(100);
-	}
 	
 	/**
 	 * The map of saved attributes
@@ -50,6 +46,10 @@ public final class PlayerVariables {
 	@Getter
 	@Setter
 	private boolean runToggled = true;
+	
+	public PlayerVariables() {
+		setHealthPoints(100);
+	}
 	
 	/**
 	 * Gets an attribute and returns the default value if it doesn't exist

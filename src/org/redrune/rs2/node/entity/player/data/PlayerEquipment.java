@@ -1,4 +1,4 @@
-package org.redrune.rs2.node.entity.player.components;
+package org.redrune.rs2.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import org.redrune.network.rs666.packet.structure.out.ContainerPacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.rs2.node.item.Item;
 import org.redrune.rs2.node.item.ItemsContainer;
-import org.redrune.utility.rs.EquipConstants;
+import org.redrune.utility.rs.constant.EquipConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -27,16 +27,31 @@ public class PlayerEquipment implements EquipConstants {
 	private transient Player player;
 	
 	public PlayerEquipment() {
-		items.set(SLOT_HAT, new Item(10828));
-		items.set(SLOT_CHEST, new Item(10551));
-		items.set(SLOT_LEGS, new Item(11726));
-		items.set(SLOT_FEET, new Item(11732));
+	
 	}
 	
 	/**
 	 * Sends the full container of items
 	 */
-	public void sendFullContainer() {
+	public void sendContainer() {
 		player.getTransmitter().send(new ContainerPacketBuilder(94, items.toArray(), false).build(player));
 	}
+	
+	/**
+	 * Gets an item in the slot
+	 *
+	 * @param slot
+	 * 		The slot
+	 */
+	public Item getItem(int slot) {
+		return items.get(slot);
+	}
+	
+	/**
+	 * Checks that the player is equipping a shield
+	 */
+	public boolean hasShield() {
+		return items.get(5) != null;
+	}
+	
 }

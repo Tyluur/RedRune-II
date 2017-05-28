@@ -44,6 +44,12 @@ public abstract class Node {
 	@Setter
 	private transient boolean renderable;
 	
+	/**
+	 * The construction of a new {@code Node} instance
+	 *
+	 * @param location
+	 * 		The location of the node.
+	 */
 	protected Node(Location location) {
 		this.location = location;
 	}

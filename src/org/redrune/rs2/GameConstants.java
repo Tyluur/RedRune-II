@@ -1,5 +1,7 @@
 package org.redrune.rs2;
 
+import org.redrune.rs2.world.map.Location;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
@@ -30,5 +32,10 @@ public interface GameConstants {
 	 * The maximum amount of npcs allowed online
 	 */
 	int NPCS_LIMIT = Short.MAX_VALUE;
+	
+	/**
+	 * The home location
+	 */
+	Location HOME_LOCATION = new Location(3092, 3503);
 	
 }

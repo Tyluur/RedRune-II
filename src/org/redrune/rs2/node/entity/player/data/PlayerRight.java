@@ -1,4 +1,4 @@
-package org.redrune.rs2.node.entity.player.components;
+package org.redrune.rs2.node.entity.player.data;
 
 import lombok.Getter;
 

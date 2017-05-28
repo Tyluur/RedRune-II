@@ -1,23 +1,17 @@
-package org.redrune.rs2.node.entity.player.components;
+package org.redrune.rs2.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.network.rs666.packet.structure.out.SkillPacketBuilder;
 import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.utility.rs.SkillConstants;
+import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
 public class PlayerSkills implements SkillConstants {
-	
-	/**
-	 * The player who owns this class
-	 */
-	@Setter
-	private transient Player player;
 	
 	/**
 	 * The array of levels the player has in the skills
@@ -35,6 +29,12 @@ public class PlayerSkills implements SkillConstants {
 	@Getter
 	@Setter
 	private double counterExperience;
+	
+	/**
+	 * The player who owns this class
+	 */
+	@Setter
+	private transient Player player;
 	
 	/**
 	 * Constructs a new {@code PlayerSkills} {@code Object}

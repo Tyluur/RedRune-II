@@ -53,7 +53,11 @@ public class Misc {
 	 */
 	public static List<Object> getClassesInDirectory(String directory) {
 		List<Object> classes = new ArrayList<>();
-		for (File file : new File("./bin/" + directory.replace(".", "/")).listFiles()) {
+		final File[] files = new File(String.format("./bin/%s", directory.replace(".", "/"))).listFiles();
+		if (files == null) {
+			return classes;
+		}
+		for (File file : files) {
 			if (file.getName().contains("$") || file.getName().contains("dropbox")) {
 				continue;
 			}

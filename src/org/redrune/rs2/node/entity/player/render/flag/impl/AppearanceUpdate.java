@@ -4,7 +4,7 @@ import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.node.entity.player.components.PlayerAppearance;
+import org.redrune.rs2.node.entity.player.data.PlayerAppearance;
 import org.redrune.rs2.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.utility.Misc;
 
@@ -49,7 +49,7 @@ public class AppearanceUpdate extends UpdateFlag {
 		playerUpdate.writeByte(1); // title
 		playerUpdate.writeByte(-1); //skull icon
 		playerUpdate.writeByte(1); //Headicon.
-		playerUpdate.writeByte(0);// TODO:refactor
+		playerUpdate.writeByte(0);
 		if (appearance.getNpcId() == -1) {
 			for (int i = 0; i < BodyDataParser.getBodyData().length; i++) {
 				if (BodyDataParser.getBodyData()[i] != 1) {
