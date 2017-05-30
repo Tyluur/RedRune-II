@@ -54,9 +54,7 @@ public class CacheManager {
 		mainFileBuffer.rewind();
 		byte[] mainFileData = new byte[bufferPosition];
 		mainFileBuffer.get(mainFileData).rewind().position(bufferPosition);
-		mainFileBuffer.put((byte) 10).put(Whirlpool.whirlpool(mainFileData, 5, mainFileData.length - 5)); // TODO
-																											// Fix
-																											// this
+		mainFileBuffer.put((byte) 10).put(Whirlpool.whirlpool(mainFileData, 5, mainFileData.length - 5));                                                                                // this
 		versionTable = mainFileBuffer.array();
 	}
 
@@ -77,6 +75,37 @@ public class CacheManager {
 		int id = informationTables[cache].findName(name);
 		return id;
 	}
+	
+	public static FileStore getFileStore(int cache) {
+		if (cache == 255) {
+			return fs255;
+		}
+		return fileStores[cache];
+	}
+	
+	public static Packet generateFile(int container, int file, int opcode) {
+		byte[] cacheFile = getFile(container, file);
+		int compression = cacheFile[0] & 0xFF;
+		int length = BufferUtils.readInt(1, cacheFile);
+		int attributes = compression;
+		boolean priority = opcode == 1;
+		if (!priority) {
+			attributes |= 0x80;
+		}
+		PacketBuilder outBuffer = new PacketBuilder();
+		outBuffer.writeByte((byte) container);
+		outBuffer.writeShort((short) file);
+		outBuffer.writeByte((byte) attributes);
+		outBuffer.writeInt(length);
+		int realLength = compression != 0 ? length + 4 : length;
+		for (int offset = 5; offset < realLength + 5; offset++) {
+			if (outBuffer.position() % 512 == 0) {
+				outBuffer.writeByte((byte) 255);
+			}
+			outBuffer.writeByte(cacheFile[offset]);
+		}
+		return outBuffer.toPacket();
+	}
 
 	public static byte[] getFile(int cache, int id) {
 		if (cache == 255 && id == 255) {
@@ -87,12 +116,22 @@ public class CacheManager {
 		}
 		return fileStores[cache].get(id);
 	}
-
-	public static FileStore getFileStore(int cache) {
-		if (cache == 255) {
-			return fs255;
+	
+	public static byte[] getData(int cache, int main, int child) throws IOException {
+		try {
+			if (!loadArchive(cache, main)) {
+				throw new IOException("Data not available");
+			}
+			if (archiveFiles[cache].length < main) {
+				main = archiveFiles[cache].length;
+			}
+			// Main.logger.info(cache + ",  " + main + ", " + child);
+			// if (archiveFiles[cache][main].length >= 88)
+			// main = 87;
+			return (byte[]) archiveFiles[cache][main][child];
+		} catch (Exception e) {
 		}
-		return fileStores[cache];
+		return (byte[]) archiveFiles[cache][main][child];
 	}
 
 	public static boolean loadArchive(int cache, int main) {
@@ -182,62 +221,22 @@ public class CacheManager {
 		return true;
 	}
 
-	public static Packet generateFile(int container, int file, int opcode) {
-		byte[] cacheFile = getFile(container, file);
-		int compression = cacheFile[0] & 0xFF;
-		int length = BufferUtils.readInt(1, cacheFile);
-		int attributes = compression;
-		boolean priority = opcode == 1;
-		if (!priority) {
-			attributes |= 0x80;
-		}
-		PacketBuilder outBuffer = new PacketBuilder();
-		outBuffer.writeByte((byte) container);
-		outBuffer.writeShort((short) file);
-		outBuffer.writeByte((byte) attributes);
-		outBuffer.writeInt(length);
-		int realLength = compression != 0 ? length + 4 : length;
-		for (int offset = 5; offset < realLength + 5; offset++) {
-			if (outBuffer.position() % 512 == 0) {
-				outBuffer.writeByte((byte) 255);
-			}
-			outBuffer.writeByte(cacheFile[offset]);
-		}
-		return outBuffer.toPacket();
-	}
-
-	public static byte[] getData(int cache, int main, int child) throws IOException {
-		try {
-			if (!loadArchive(cache, main))
-				throw new IOException("Data not available");
-			if (archiveFiles[cache].length < main) {
-				main = archiveFiles[cache].length;
-			}
-			// Main.logger.info(cache + ",  " + main + ", " + child);
-			// if (archiveFiles[cache][main].length >= 88)
-			// main = 87;
-			return (byte[]) archiveFiles[cache][main][child];
-		} catch (Exception e) {
-		}
-		return (byte[]) archiveFiles[cache][main][child];
-	}
-
-	public static int containerCount(int cache) {
-		return archiveFiles[cache].length;
-	}
-
 	public static int cacheCFCount(int cache) {
 		int lastcontainer = containerCount(cache) - 1;
 		return 256 * lastcontainer + getRealContainerChildCount(cache, lastcontainer);
+	}
+	
+	public static int containerCount(int cache) {
+		return archiveFiles[cache].length;
+	}
+	
+	public static int getRealContainerChildCount(int cache, int lastcontainer) {
+		return informationTables[cache].getEntry_real_sub_count()[lastcontainer];
 	}
 
 	public static int cacheCFCount2(int cache) {
 		int lastcontainer = containerCount(cache) - 1;
 		return 128 * lastcontainer + getRealContainerChildCount(cache, lastcontainer);
-	}
-
-	public static int getRealContainerChildCount(int cache, int lastcontainer) {
-		return informationTables[cache].getEntry_real_sub_count()[lastcontainer];
 	}
 
 	public static int getContainerChildCount(int cache, int lastcontainer) {

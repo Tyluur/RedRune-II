@@ -4,6 +4,8 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
 import org.redrune.network.rs666.packet.structure.out.PublicChatBuilder;
 import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.node.entity.player.event.context.CommandEventContext;
+import org.redrune.rs2.node.entity.player.event.impl.CommandEvent;
 import org.redrune.rs2.world.World;
 import org.redrune.utility.Misc;
 import org.redrune.utility.io.BufferUtils;
@@ -48,6 +50,10 @@ public class CommunicationsPacketStructure implements IncomingPacketStructure {
 			return;
 		}
 		String text = Misc.optimizeText(BufferUtils.decompressHuffman(packet, length));
+		if (text.startsWith("::")) {
+			player.getManager().getEvents().addEvent(new CommandEvent(new CommandEventContext(text.replaceFirst("::", "").split(" "))));
+			return;
+		}
 		for (Player p : World.get().getPlayers()) {
 			if (p == null || p.getLocation().getRegionId() != player.getLocation().getRegionId()) {
 				continue;

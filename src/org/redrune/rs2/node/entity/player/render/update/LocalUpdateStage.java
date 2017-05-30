@@ -32,10 +32,10 @@ public enum LocalUpdateStage {
 			return REMOVE_PLAYER;
 		} else if (otherPlayer.getAttribute(AttributeKey.PLAYER_TELEPORTED, false)) {
 			return TELEPORTED;
-		} else if (otherPlayer.getWalkingQueue().getWalkDir() != -1) {
-			return WALKING;
 		} else if (otherPlayer.getWalkingQueue().getRunDir() != -1) {
 			return RUNNING;
+		} else if (otherPlayer.getWalkingQueue().getWalkDir() != -1) {
+			return WALKING;
 		}
 		return otherPlayer.getUpdateMasks().isUpdateRequired() ? NO_UPDATE : null;
 	}

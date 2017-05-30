@@ -6,8 +6,8 @@ import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.node.entity.EntityList;
 import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.task.Scheduler;
 import org.redrune.rs2.world.map.Location;
+import org.redrune.rs2.world.task.Scheduler;
 
 import java.util.Optional;
 

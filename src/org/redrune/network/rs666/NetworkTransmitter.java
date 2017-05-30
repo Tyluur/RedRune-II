@@ -1,6 +1,8 @@
 package org.redrune.network.rs666;
 
 import org.redrune.network.rs666.packet.Packet;
+import org.redrune.network.rs666.packet.input.InputResponse;
+import org.redrune.network.rs666.packet.input.InputType;
 import org.redrune.network.rs666.packet.structure.out.*;
 import org.redrune.rs2.GameConstants;
 import org.redrune.rs2.node.entity.player.Player;
@@ -31,12 +33,8 @@ public final class NetworkTransmitter {
 	public NetworkTransmitter sendLoginComponents() {
 		send(new LoginCredentialsBuilder().build(player));
 		send(new MapRegionBuilder(true).build(player));
-		player.getInterfaceManager().sendInterfaceConfiguration();
-		
-		send(new VarpPacketBuilder(173, player.getVariables().isRunToggled() ? 1 : 0).build(player));
-		send(new VarpPacketBuilder(1240, player.getVariables().getHealthPoints() * 2).build(player));
-		send(new VarpPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
-		send(new RunEnergyBuilder(player.getVariables().getRunEnergy()).build(player));
+		player.getManager().getInterfaces().sendLogin();
+		player.sendSettings();
 		sendDefaultConfigs();
 		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ".", false);
 		return this;
@@ -57,8 +55,8 @@ public final class NetworkTransmitter {
 	 * Sends the default game configs
 	 */
 	public NetworkTransmitter sendDefaultConfigs() {
-		send(new InterfaceDisplayModificationBuilder(34, 13, false).build(player));
-		send(new InterfaceDisplayModificationBuilder(34, 3, false).build(player));
+		send(new InterfaceChangeBuilder(34, 13, false).build(player));
+		send(new InterfaceChangeBuilder(34, 3, false).build(player));
 		send(new VarpPacketBuilder(281, 1000).build(player));// Tutorial-completed-config
 		send(new CS2ConfigBuilder(168, 4).build(player));
 		send(new CS2ConfigBuilder(1273, 1).build(player));
@@ -122,8 +120,12 @@ public final class NetworkTransmitter {
 	 * @param filterable
 	 * 		If the message should be filterable.
 	 */
-	public NetworkTransmitter sendMessage(String text, boolean filterable) {
-		send(new MessageBuilder(filterable ? 109 : 0, text).build(player));
+	public NetworkTransmitter sendMessage(String text, boolean... filterable) {
+		// messages should only be filtered if this is sent as NetworkTransmitter#sendMessage("hi", true);
+		// otherwise the parameter is unneeded...
+		
+		boolean shouldFilter = filterable.length != 0 && filterable[0];
+		send(new MessageBuilder(shouldFilter ? 109 : 0, text).build(player));
 		return this;
 	}
 	
@@ -236,6 +238,38 @@ public final class NetworkTransmitter {
 		send(new AccessMaskBuilder(884, 14, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(747, 17, 0, 2, 0, 0).build(player));
 		send(new AccessMaskBuilder(662, 74, 0, 2, 0, 0).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends the packet to reset the minimap flag location
+	 */
+	public NetworkTransmitter sendMinimapFlagReset() {
+		send(new MinimapFlagBuilder(255, 255).build(player));
+		return this;
+	}
+	
+	/**
+	 * Closes the input box that is opened from {@link #requestInput(InputResponse, InputType, String)}
+	 */
+	public NetworkTransmitter closeInputBox() {
+		send(new CS2ScriptBuilder(1548, 0).build(player));
+		return this;
+	}
+	
+	/**
+	 * This requests input from the client
+	 *
+	 * @param response
+	 * 		The response
+	 * @param type
+	 * 		The type of input to expect
+	 * @param title
+	 * 		The title to send on the input text
+	 */
+	public NetworkTransmitter requestInput(InputResponse response, InputType type, String title) {
+		player.putAttribute("input_" + type.name().toLowerCase(), response);
+		send(new CS2ScriptBuilder(type.getScriptId(), "s", title).build(player));
 		return this;
 	}
 }

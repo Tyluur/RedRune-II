@@ -3,8 +3,8 @@ package org.redrune.network.rs666.packet.structure.in;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
 import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.map.path.PathFactory;
-import org.redrune.rs2.world.map.path.finder.DefaultPathFinder;
+import org.redrune.rs2.node.entity.player.event.context.WalkEventContext;
+import org.redrune.rs2.node.entity.player.event.impl.WalkEvent;
 import org.redrune.utility.Misc;
 
 /**
@@ -32,7 +32,6 @@ public class WalkPacketStructure implements IncomingPacketStructure {
 		int y = packet.readLEShort();
 		boolean running = packet.readByteC() == 1;
 		int x = packet.readLEShortA();
-		player.getWalkingQueue().reset(running);
-		PathFactory.get().doPath(new DefaultPathFinder(), player, x, y);
+		player.getManager().getEvents().executeEvent(player, new WalkEvent(new WalkEventContext(x, y, running)));
 	}
 }

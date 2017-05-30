@@ -1,4 +1,4 @@
-package org.redrune.rs2.task;
+package org.redrune.rs2.world.task;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;

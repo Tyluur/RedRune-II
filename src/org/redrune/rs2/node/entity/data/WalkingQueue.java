@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.player.render.flag.impl.TeleportUpdate;
+import org.redrune.rs2.world.map.Directions;
+import org.redrune.rs2.world.map.Directions.WalkingDirection;
 import org.redrune.rs2.world.map.Location;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
-import org.redrune.rs2.world.map.Directions;
-import org.redrune.rs2.world.map.Directions.WalkingDirection;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -84,9 +84,6 @@ public class WalkingQueue {
 		Point walkPoint = walkingQueue.poll();
 		Point runPoint = null;
 		if (walkPoint == null) {
-			/*if (entity.isPlayer()) {
-				entity.toPlayer().getSettings().increaseRunEnergy(0.264);
-			}*/
 			return;
 		}
 		if (walkPoint.direction == null) {
@@ -100,7 +97,7 @@ public class WalkingQueue {
 		if (walkPoint != null) {
 			walkDirection = isPlayer ? walkPoint.direction.intValue() : walkPoint.direction.npcIntValue();
 		}
-		if (runPoint != null) {
+		if (runPoint != null && this.walkDir == -1) {
 			runDirection = isPlayer ? runPoint.direction.intValue() : runPoint.direction.npcIntValue();
 		}
 		if (isPlayer && updateRegion(walkPoint, runPoint)) {
@@ -127,18 +124,10 @@ public class WalkingQueue {
 				diffX += nextXDiff;
 				diffY += nextYDiff;
 			}
-			if (entity.isPlayer()) {
-				// entity.toPlayer().getSettings().decreaseRunEnergy(1.5);
-				// entity.toPlayer().getSettings().decreaseRunEnergy(getEnergyDrainRate(entity.toPlayer())
-				// <= 0 ? 1.5 : getEnergyDrainRate(entity.toPlayer()));
-			}
-		} else if (entity.isPlayer()) {
-			//	entity.toPlayer().getSettings().increaseRunEnergy(0.264);
 		}
 		if (diffX != 0 || diffY != 0) {
 			footPrint = entity.getLocation();
 			entity.setLocation(entity.getLocation().transform(diffX, diffY, 0));
-			//Main.getWorkingSet().submitLogic(new AreaUpdateTick(entity));
 		}
 		this.walkDir = walkDirection;
 		this.runDir = runDirection;
@@ -170,13 +159,6 @@ public class WalkingQueue {
 		return false;
 	}
 
-	/*
-	 * public double getEnergyDrainRate(Player player) { return
-	 * player.getProperties().getCarriedWeight(player) == 0 ? 0 : (int)
-	 * Math.ceil(7.6 - ((player.getSkills() .getLevel(Skills.AGILITY) / 99D) *
-	 * (int) player.getProperties() .getCarriedWeight(player))); }
-	 */
-	
 	/**
 	 * Checks if the entity is running.
 	 *
@@ -184,7 +166,7 @@ public class WalkingQueue {
 	 * NPC is a familiar, <p> {@code false} if not.
 	 */
 	public boolean isRunning() {
-		return running || (entity.isPlayer() && entity.toPlayer().getVariables().isRunToggled()) || (entity.isNPC());
+		return entity.isNPC() || running || (entity.isPlayer() && entity.toPlayer().getVariables().isRunToggled());
 	}
 	
 	/**

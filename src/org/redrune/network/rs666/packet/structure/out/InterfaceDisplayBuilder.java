@@ -14,12 +14,12 @@ public final class InterfaceDisplayBuilder implements OutgoingPacketStructure {
 	/**
 	 * The window id.
 	 */
-	private final int windowId;
+	private final int paneId;
 	
 	/**
 	 * The interface id.
 	 */
-	private final int childId;
+	private final int componentId;
 	
 	/**
 	 * The child id.
@@ -34,18 +34,18 @@ public final class InterfaceDisplayBuilder implements OutgoingPacketStructure {
 	/**
 	 * Constructs a new interface display builder
 	 *
-	 * @param windowId
-	 * 		The window id of the interface
-	 * @param childId
-	 * 		The child id of the interface (where to display it)
+	 * @param paneId
+	 * 		The pane id of the interface
+	 * @param componentId
+	 * 		The component id of the interface (where to display it)
 	 * @param interfaceId
 	 * 		The id of the interface
 	 * @param transparent
 	 * 		If we should display the interface as transparent
 	 */
-	public InterfaceDisplayBuilder(int windowId, int childId, int interfaceId, boolean transparent) {
-		this.windowId = windowId;
-		this.childId = childId;
+	public InterfaceDisplayBuilder(int paneId, int componentId, int interfaceId, boolean transparent) {
+		this.paneId = paneId;
+		this.componentId = componentId;
 		this.interfaceId = interfaceId;
 		this.transparent = transparent;
 	}
@@ -55,7 +55,7 @@ public final class InterfaceDisplayBuilder implements OutgoingPacketStructure {
 		PacketBuilder bldr = new PacketBuilder(139);
 		bldr.writeByteS(transparent ? 1 : 0);
 		bldr.writeShortA(interfaceId);
-		bldr.writeInt(windowId << 16 | childId);
+		bldr.writeInt(paneId << 16 | componentId);
 		return bldr.toPacket();
 	}
 }

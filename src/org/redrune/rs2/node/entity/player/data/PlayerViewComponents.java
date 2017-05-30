@@ -37,4 +37,11 @@ public final class PlayerViewComponents {
 	@Setter
 	private int displayMode;
 	
+	/**
+	 * If the player is using the fixed client mode.
+	 */
+	public boolean usingFixedMode() {
+		return screenSizeMode <= 1;
+	}
+	
 }

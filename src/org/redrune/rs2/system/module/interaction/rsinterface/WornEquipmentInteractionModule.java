@@ -25,11 +25,11 @@ public class WornEquipmentInteractionModule implements InterfaceInteractionModul
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (componentId == 39) { // stats
-		
+			player.getManager().getInterfaces().sendInterface(667, false);
 		} else if (componentId == 42) { // prices
-		
+			player.getManager().getInterfaces().sendInterface(206, false);
 		} else if (componentId == 45) { // ikod
-		
+			player.getManager().getInterfaces().sendInterface(17, false);
 		} else {
 			// only thing left is removal of items
 			Optional<SlotAction> optional = SlotAction.getSlotAction(componentId);
@@ -37,7 +37,7 @@ public class WornEquipmentInteractionModule implements InterfaceInteractionModul
 				return true;
 			}
 			SlotAction action = optional.get();
-			player.getEventManager().addEvent(new ItemRemovalEvent(new ItemRemovalContext(action.getEquipmentSlot())));
+			player.getManager().getEvents().addEvent(new ItemRemovalEvent(new ItemRemovalContext(action.getEquipmentSlot())));
 		}
 		return true;
 	}

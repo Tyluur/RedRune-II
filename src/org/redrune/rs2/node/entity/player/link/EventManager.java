@@ -42,7 +42,7 @@ public class EventManager {
 	 */
 	public void executeEvent(Player player, Event event) {
 		try {
-			postExecute(player, event);
+			sendPreExecuteFlags(player, event);
 			event.run(player);
 			if (event.getStackPolicy() == StackPolicy.NONE) {
 				actionsToProcess.clear();
@@ -60,7 +60,7 @@ public class EventManager {
 	 * @param action
 	 * 		The action
 	 */
-	private void postExecute(Player player, Event action) {
+	private void sendPreExecuteFlags(Player player, Event action) {
 		final boolean stopWalk = action.getWalkablePolicy() == WalkablePolicy.RESET;
 		final boolean stopInterfaces = action.getInterfacePolicy() == InterfacePolicy.CLOSE;
 		final boolean stopActions = action.getActionPolicy() == ActionPolicy.RESET;
@@ -70,10 +70,12 @@ public class EventManager {
 			player.getUpdateMasks().register(new Animation(-1));
 		}
 		if (stopInterfaces) {
-			player.getInterfaceManager().closeScreenInterface();
+			player.getTransmitter().closeInputBox();
+			player.getManager().getInterfaces().closeScreenInterface();
 		}
 		if (stopWalk) {
 			player.getWalkingQueue().reset();
+			player.getTransmitter().sendMinimapFlagReset();
 		}
 		if (stopActions) {
 			// TODO: stop actions from being done
@@ -93,8 +95,14 @@ public class EventManager {
 			
 			for (Iterator<Event> iterator = actionsToProcess.iterator(); iterator.hasNext(); ) {
 				Event event = iterator.next();
-				postExecute(player, event);
-				event.run(player);
+				sendPreExecuteFlags(player, event);
+				try {
+					event.run(player);
+				} catch (Exception e) {
+					iterator.remove();
+					e.printStackTrace();
+					break;
+				}
 				if (event.getStackPolicy() == StackPolicy.NONE) {
 					actionsToProcess.clear();
 					break;

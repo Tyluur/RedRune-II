@@ -7,7 +7,7 @@ import org.redrune.rs2.node.entity.player.event.EventContext;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/28/2017
  */
-public class ItemRemovalContext implements EventContext {
+public final class ItemRemovalContext implements EventContext {
 	
 	/**
 	 * The slot id of the item to remove

@@ -15,32 +15,32 @@ public class CloseInterfaceBuilder implements OutgoingPacketStructure {
 	/**
 	 * The window id.
 	 */
-	private final int windowId;
+	private final int paneId;
 	
 	/**
 	 * The child id.
 	 */
-	private final int childId;
+	private final int componentId;
 	
 	/**
-	 * Constructs a new close interface builder. The window id is the window the interface is displayed on. Most likely
+	 * Constructs a new close interface builder. The pane id is the pane the interface is displayed on. Most likely
 	 * {@link InterfaceConstants#SCREEN_FIXED_WINDOW_ID}. The child id is the child id
 	 * that the interface was displayed on. The actual interface id is irrelevant when closing.
 	 *
-	 * @param windowId
-	 * 		The windowId
-	 * @param childId
-	 * 		The child if
+	 * @param paneId
+	 * 		The paneId
+	 * @param componentId
+	 * 		The component id to close the interface on
 	 */
-	public CloseInterfaceBuilder(int windowId, int childId) {
-		this.windowId = windowId;
-		this.childId = childId;
+	public CloseInterfaceBuilder(int paneId, int componentId) {
+		this.paneId = paneId;
+		this.componentId = componentId;
 	}
 	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(29);
-		bldr.writeInt2(windowId << 16 | childId);
+		bldr.writeInt2(paneId << 16 | componentId);
 		return bldr.toPacket();
 	}
 }

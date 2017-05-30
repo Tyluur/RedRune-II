@@ -1,9 +1,13 @@
 package org.redrune.rs2.system.module.interaction.rsinterface;
 
+import org.redrune.network.rs666.packet.input.InputType;
 import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
 import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.rs2.node.entity.player.data.PlayerSkills;
+import org.redrune.rs2.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.rs2.system.module.type.InterfaceInteractionModule;
 import org.redrune.utility.Misc;
+import org.redrune.utility.rs.constant.SkillConstants;
 
 import static org.redrune.utility.AttributeKey.SKILL_MENU;
 
@@ -256,12 +260,62 @@ public class SkillTabInteractionModule implements InterfaceInteractionModule {
 			if (skillMenu != -1) {
 				player.putAttribute(SKILL_MENU, skillMenu);
 			}
-		/*	if (getSkillId(componentId) != -1) {
-		// TODO: this		handleSkillSetting(player, getSkillId(componentId));
+			if (getSkillId(componentId) != -1) {
+				handleSkillSetting(player, getSkillId(componentId));
 				return true;
-			}*/
-			player.getInterfaceManager().showScreenInterface(lvlupSkill != -1 ? 741 : 499, true);
+			}
+			player.getManager().getInterfaces().sendInterface(lvlupSkill != -1 ? 741 : 499, true);
 		}
 		return true;
+	}
+	
+	/**
+	 * Gets the component id of a skill
+	 *
+	 * @param componentId
+	 * 		The component id
+	 */
+	private static int getSkillId(int componentId) {
+		switch (componentId) {
+			case 200:
+				return SkillConstants.ATTACK;
+			case 11:
+				return SkillConstants.STRENGTH;
+			case 28:
+				return SkillConstants.DEFENCE;
+			case 52:
+				return SkillConstants.RANGE;
+		/*	case 76:
+				return Skills.PRAYER;*/
+			case 93:
+				return SkillConstants.MAGIC;
+			case 193:
+				return SkillConstants.HITPOINTS;
+			default:
+				return -1;
+		}
+	}
+	
+	/**
+	 * Handles the skill level setting
+	 *
+	 * @param player
+	 * 		The player
+	 * @param skillId
+	 * 		The id of the skill to set a level to
+	 */
+	private void handleSkillSetting(Player player, int skillId) {
+		player.getTransmitter().requestInput(input -> {
+			Integer level = Integer.valueOf(input);
+			if (level <= 0) {
+				level = 1;
+			} else if (level > 99) {
+				level = 99;
+			}
+			int exp = PlayerSkills.getXPForLevel(level);
+			player.getSkills().setLevel(skillId, level);
+			player.getSkills().setXp(skillId, exp);
+			player.getUpdateMasks().register(new AppearanceUpdate(player));
+		}, InputType.INTEGER, "Enter your desired level in " + SkillConstants.SKILL_NAME[skillId].toLowerCase() + ".");
 	}
 }

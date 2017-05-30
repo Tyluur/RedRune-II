@@ -42,6 +42,11 @@ public final class AccessMaskBuilder implements OutgoingPacketStructure {
 	private final int max;
 	
 	/**
+	 * The mask flag
+	 */
+	private final int maskFlag;
+	
+	/**
 	 * Constructs a new {@code AccessMaskBuilder} {@code Object}.
 	 *
 	 * @param interfaceId
@@ -64,13 +69,26 @@ public final class AccessMaskBuilder implements OutgoingPacketStructure {
 		this.childId = childId;
 		this.interfaceId2 = interfaceId2;
 		this.childId2 = childId2;
+		this.maskFlag = interfaceId2 << 16 | childId2;
 	}
+	
+	public AccessMaskBuilder(int interfaceId, int childId, int min, int max, int maskFlag) {
+		this.interfaceId = interfaceId;
+		this.childId = childId;
+		this.min = min;
+		this.max = max;
+		this.maskFlag = maskFlag;
+		
+		// unused because mask flag is not generated from these two when we already have it.
+		this.interfaceId2 = this.childId2 = -1;
+	}
+	
 	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(42);
 		bldr.writeLEShort(min);
-		bldr.writeLEInt(interfaceId2 << 16 | childId2);
+		bldr.writeLEInt(maskFlag);
 		bldr.writeInt1(interfaceId << 16 | childId);
 		bldr.writeLEShort(max);
 		return bldr.toPacket();

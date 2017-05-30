@@ -43,7 +43,7 @@ public final class MajorUpdateWorker implements Runnable {
 				sequence.start();
 				sequence.execute();
 				sequence.end();
-				ticks.addAndGet(1);
+				ticks.set(ticks.get() + 1);
 				sleep();
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -73,7 +73,6 @@ public final class MajorUpdateWorker implements Runnable {
 		if (started) {
 			return;
 		}
-		
 		setStarted(true);
 		EngineWorkingSet.submitEngineWork(this);
 	}

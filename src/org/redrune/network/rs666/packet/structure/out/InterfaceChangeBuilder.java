@@ -9,7 +9,7 @@ import org.redrune.rs2.node.entity.player.Player;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-public class InterfaceDisplayModificationBuilder implements OutgoingPacketStructure {
+public class InterfaceChangeBuilder implements OutgoingPacketStructure {
 	
 	/**
 	 * The interface id.
@@ -19,7 +19,7 @@ public class InterfaceDisplayModificationBuilder implements OutgoingPacketStruct
 	/**
 	 * The child id.
 	 */
-	private final int childId;
+	private final int componentId;
 	
 	/**
 	 * If we should hide the child.
@@ -31,14 +31,14 @@ public class InterfaceDisplayModificationBuilder implements OutgoingPacketStruct
 	 *
 	 * @param interfaceId
 	 * 		The id of the interface
-	 * @param childId
+	 * @param componentId
 	 * 		The child id of the interface
 	 * @param hide
 	 * 		If we should hide the child
 	 */
-	public InterfaceDisplayModificationBuilder(int interfaceId, int childId, boolean hide) {
+	public InterfaceChangeBuilder(int interfaceId, int componentId, boolean hide) {
 		this.interfaceId = interfaceId;
-		this.childId = childId;
+		this.componentId = componentId;
 		this.hide = hide;
 	}
 	
@@ -46,7 +46,7 @@ public class InterfaceDisplayModificationBuilder implements OutgoingPacketStruct
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(102);
 		bldr.writeByte(hide ? 1 : 0);
-		bldr.writeInt(interfaceId << 16 | childId);
+		bldr.writeInt(interfaceId << 16 | componentId);
 		return bldr.toPacket();
 	}
 }

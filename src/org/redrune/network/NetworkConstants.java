@@ -67,4 +67,39 @@ public interface NetworkConstants extends GameConstants {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 211-220
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 221-230
 			0, 0, 0, 0, 0, 0, 0, 0, 0, }; // 231-240
+	
+	/**
+	 * The packet id for the first click on the item
+	 */
+	int FIRST_PACKET_ID = 85;
+	
+	/**
+	 * The packet id for equipping items (second click)
+	 */
+	int EQUIP_PACKET_ID = 7, SECOND_PACKET_ID = 7;
+	
+	/**
+	 * The packet id for operating items/third click
+	 */
+	int OPERATE_PACKET_ID = 66, THIRD_PACKET_ID = 66;
+	
+	/**
+	 * The packet id for the fourth item click
+	 */
+	int FOURTH_PACKET_ID = 84;
+	
+	/**
+	 * The packet id for the drop option
+	 */
+	int DROP_PACKET_ID = 40;
+	
+	/**
+	 * The packet id for the examine option
+	 */
+	int EXAMINE_PACKET_ID = 54;
+	
+	/**
+	 * The packet id for the last click option
+	 */
+	int LAST_PACKET_ID = 11;
 }

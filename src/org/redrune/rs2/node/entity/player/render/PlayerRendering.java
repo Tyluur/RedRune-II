@@ -113,9 +113,11 @@ public class PlayerRendering implements OutgoingPacketStructure {
 				player.getRenderData().getIsLocal()[index] = false;
 				break;
 			case WALKING:
+				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
 				buffer.writeBits(3, p.getWalkingQueue().getWalkDir());
 				break;
 			case RUNNING:
+				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
 				buffer.writeBits(4, p.getWalkingQueue().getRunDir());
 				break;
 			case TELEPORTED:

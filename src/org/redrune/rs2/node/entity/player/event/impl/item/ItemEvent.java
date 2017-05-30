@@ -21,10 +21,12 @@ public class ItemEvent extends Event<ItemEventContext> {
 	
 	public ItemEvent(ItemEventContext context) {
 		super(context);
-		setInterfacePolicy(InterfacePolicy.CLOSE);
-		if (context.getOption().equals(InteractionOption.DROP)) {
-			setWalkablePolicy(WalkablePolicy.RESET);
-			setAnimationPolicy(AnimationPolicy.RESET);
+		if (getContext().getOption() != InteractionOption.EXAMINE) {
+			setInterfacePolicy(InterfacePolicy.CLOSE);
+			if (context.getOption().equals(InteractionOption.DROP)) {
+				setWalkablePolicy(WalkablePolicy.RESET);
+				setAnimationPolicy(AnimationPolicy.RESET);
+			}
 		}
 	}
 	
@@ -32,9 +34,17 @@ public class ItemEvent extends Event<ItemEventContext> {
 	public void run(Player player) {
 		if (getContext().getOption().equals(InteractionOption.SECOND_OPTION)) {
 			handleItemEquipping(player);
+		} else if (getContext().getOption().equals(InteractionOption.EXAMINE)) {
+			handleItemExamining(player);
 		}
 	}
 	
+	/**
+	 * Handles the equipping of an item
+	 *
+	 * @param player
+	 * 		The player
+	 */
 	private void handleItemEquipping(Player player) {
 		Item item = getContext().getItem();
 		int slotId = getContext().getSlotId();
@@ -121,5 +131,15 @@ public class ItemEvent extends Event<ItemEventContext> {
 			player.getCombatDefinitions().desecreaseSpecialAttack(0);
 		}*/
 		//		ItemConstants.handleItemEquip(player, item2);
+	}
+	
+	/**
+	 * The examining of an item is sent here
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	private void handleItemExamining(Player player) {
+		player.getTransmitter().sendMessage("Item examine to send: " + getContext().getItem(), true);
 	}
 }

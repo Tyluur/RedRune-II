@@ -11,39 +11,25 @@ import org.redrune.utility.rs.constant.InterfaceConstants;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 5/27/2017
+ * @since 5/29/2017
  */
-public final class InterfaceManager implements InterfaceConstants {
+public class InterfaceManager implements InterfaceConstants {
 	
 	/**
-	 * The map of the player's tabs. The key id is the child id of the tab. The value is the interface id of the tab.
+	 * The bindings that store the data of the currently active interfaces. The key is the component id that an
+	 * interface is drawn on. The values are an integer array. array[0] = interfaceId, array[1] = paneId.
 	 */
-	private final Map<Integer, Integer> gameTabs = new HashMap<>();
+	private final Map<Integer, int[]> interfaceBindings = new HashMap<>();
 	
 	/**
-	 * The id of the window pane
+	 * The pane to draw the components on
 	 */
-	@Getter
 	@Setter
-	private int windowPaneId = -1;
-	
-	/**
-	 * The id of the interface that is opened
-	 */
 	@Getter
-	@Setter
-	private int screenInterfaceId = -1;
-	
-	/**
-	 * The id of the interface that is on the chatbox
-	 */
-	@Getter
-	@Setter
-	private int chatboxInterfaceId = -1;
+	private int paneId;
 	
 	/**
 	 * The player that owns this manager
@@ -51,12 +37,9 @@ public final class InterfaceManager implements InterfaceConstants {
 	@Setter
 	private transient Player player;
 	
-	/**
-	 * Sends the main interface configuration
-	 */
-	public void sendInterfaceConfiguration() {
-		sendMainInterfaces();
-		if (isFixed()) {
+	public void sendLogin() {
+		sendMainComponents();
+		if (usingFixedMode()) {
 			player.getTransmitter().sendFixedAMasks();
 		} else {
 			player.getTransmitter().sendFullScreenAMasks();
@@ -64,197 +47,221 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
-	 * Sends all interfaces to the client
+	 * Sends the main components
 	 */
-	private void sendMainInterfaces() {
+	private InterfaceManager sendMainComponents() {
+		if (usingFixedMode()) {
+			sendWindowPane(SCREEN_FIXED_WINDOW_ID);
+			sendInterface(67, 751);
+			sendInterface(192, CHATBOX_WINDOW_ID);
+			sendInterface(16, 754);
+			sendInterface(182, 748);
+			sendInterface(184, 749);
+			sendInterface(185, 750);
+			sendInterface(187, 747);
+			sendInterface(14, 745);
+		} else {
+			sendWindowPane(SCREEN_RESIZABLE_WINDOW_ID);
+			sendInterface(18, 751);
+			sendInterface(71, CHATBOX_WINDOW_ID);
+			sendInterface(72, 754);
+			sendInterface(176, 748);
+			sendInterface(177, 749);
+			sendInterface(178, 750);
+			sendInterface(179, 747);
+			sendInterface(14, 745);
+		}
 		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
 			case 0:
 			case 1:
-				sendWindowPane(SCREEN_FIXED_WINDOW_ID);
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 67, 751, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 192, CHATBOX_WINDOW_ID, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 16, 754, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 182, 748, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 184, 749, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 185, 750, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 187, 747, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_FIXED_WINDOW_ID, 14, 745, true).build(player));
 				break;
 			case 2:
 			case 3:
-				sendWindowPane(SCREEN_RESIZABLE_WINDOW_ID);
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 18, 751, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 71, CHATBOX_WINDOW_ID, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 72, 754, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 176, 748, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 177, 749, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 178, 750, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 179, 747, true).build(player));
-				player.getTransmitter().send(new InterfaceDisplayBuilder(SCREEN_RESIZABLE_WINDOW_ID, 14, 745, true).build(player));
 				break;
 		}
-		player.getTransmitter().send(new InterfaceDisplayBuilder(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID, true).build(player));
-		sendAllTabs();
+		sendInterface(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID).sendDefaultTabs();
+		return this;
 	}
 	
 	/**
-	 * If the display mode is on fixed
+	 * Sends the default tabs.
 	 */
-	private boolean isFixed() {
-		return player.getNetworkSession().getViewComponents().getDisplayMode() <= 1;
+	public InterfaceManager sendDefaultTabs() {
+		for (GameTab data : GameTab.values()) {
+			sendInterface(usingFixedMode() ? data.getFixedChildId() : data.getResizedChildId(), data.getInterfaceId());
+		}
+		return this;
+	}
+	
+	/**
+	 * If we have an interface open
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public boolean hasInterfaceOpen(int interfaceId) {
+		if (interfaceId == paneId) {
+			return true;
+		}
+		for (int[] values : interfaceBindings.values()) {
+			if (values[0] == interfaceId) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 * Sends a window pane
 	 *
-	 * @param windowPaneId
-	 * 		The id of the window pane
+	 * @param paneId
+	 * 		The id of the pane
 	 */
-	public void sendWindowPane(int windowPaneId) {
-		player.getTransmitter().send(new GameWindowBuilder(this.windowPaneId = windowPaneId, 0).build(player));
+	public InterfaceManager sendWindowPane(int paneId) {
+		player.getTransmitter().send(new GameWindowBuilder(this.paneId = paneId, 0).build(player));
+		return this;
 	}
 	
 	/**
-	 * Sends all tabs
-	 */
-	public void sendAllTabs() {
-		gameTabs.clear();
-		boolean fixed = isFixed();
-		for (GameTab data : GameTab.values()) {
-			storeTab(data, fixed);
-		}
-		pushAllTabs();
-	}
-	
-	/**
-	 * Stores the tabs data into the map.
-	 *
-	 * @param tab
-	 * 		The tab
-	 * @param fixed
-	 * 		If the player is on fixed mode
-	 */
-	private void storeTab(GameTab tab, boolean fixed) {
-		gameTabs.put(fixed ? tab.getFixedChildId() : tab.getResizedChildId(), tab.getInterfaceId());
-	}
-	
-	/**
-	 * Pushes all the stored tab data out to the network transmitter
-	 */
-	private void pushAllTabs() {
-		boolean fixed = isFixed();
-		for (Entry<Integer, Integer> entry : gameTabs.entrySet()) {
-			Integer childId = entry.getKey();
-			Integer interfaceId = entry.getValue();
-			player.getTransmitter().send(new InterfaceDisplayBuilder(fixed ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID, childId, interfaceId, true).build(player));
-		}
-	}
-	
-	/**
-	 * Toggles the visibility of a tab
-	 *
-	 * @param tab
-	 * 		The tab
-	 */
-	public void toggleTab(GameTab tab) {
-		int childId = isFixed() ? tab.getFixedChildId() : tab.getResizedChildId();
-		boolean opened = gameTabs.containsKey(childId);
-		if (opened) {
-			closeTab(tab);
-		} else {
-			openTab(tab);
-		}
-	}
-	
-	/**
-	 * Closes a game tab
-	 *
-	 * @param tab
-	 * 		The game tab
-	 */
-	public void closeTab(GameTab tab) {
-		int childId = isFixed() ? tab.getFixedChildId() : tab.getResizedChildId();
-		gameTabs.remove(childId);
-		player.getTransmitter().send(new CloseInterfaceBuilder(isFixed() ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID, childId).build(player));
-	}
-	
-	/**
-	 * Opens a game tab
-	 *
-	 * @param tab
-	 * 		The game tab
-	 */
-	public void openTab(GameTab tab) {
-		int childId = isFixed() ? tab.getFixedChildId() : tab.getResizedChildId();
-		gameTabs.put(childId, tab.getInterfaceId());
-		player.getTransmitter().send(new InterfaceDisplayBuilder(isFixed() ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID, childId, tab.getInterfaceId(), true).build(player));
-	}
-	
-	/**
-	 * Sends a tab on an existing interface id
-	 *
-	 * @param tab
-	 * 		The tab
-	 * @param interfaceId
-	 * 		The interface id
-	 */
-	public void sendTab(GameTab tab, int interfaceId) {
-		final int childId = isFixed() ? tab.getFixedChildId() : tab.getResizedChildId();
-		gameTabs.put(childId, interfaceId);
-		player.getTransmitter().send(new InterfaceDisplayBuilder(isFixed() ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID, childId, interfaceId, true).build(player));
-	}
-	
-	/**
-	 * Handles the closing of a screen interface
-	 */
-	public void closeScreenInterface() {
-		setScreenInterfaceId(-1);
-		player.getTransmitter().send(new CloseInterfaceBuilder(isFixed() ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID, isFixed() ? DISPLAY_FIXED_CHILD_ID : DISPLAY_RESIZABLE_CHILD_ID).build(player));
-	}
-	
-	/**
-	 * If the player has the interface visible
-	 *
-	 * @param interfaceId
-	 * 		The id of the interface
-	 */
-	public boolean hasInterfaceVisible(int interfaceId) {
-		return interfaceId == windowPaneId || screenInterfaceId == interfaceId || chatboxInterfaceId == interfaceId || gameTabs.containsValue(interfaceId);
-	}
-	
-	/**
-	 * Shows a screen interface
+	 * Sends a regular screen interface
 	 *
 	 * @param interfaceId
 	 * 		The id of the interface
 	 * @param force
-	 * 		If the interface should be forced to be displayed, taking priority over the currently opened interface, if
-	 * 		there is one.
+	 * 		If we should force the interface to be shown (this means if we have a screen interface open, and force = false,
+	 * 		it will not be shown)
 	 */
-	public void showScreenInterface(int interfaceId, boolean force) {
-		if (!force) {
-			if (screenInterfaceId != -1) {
-				player.getTransmitter().sendMessage("You need to close the interface you have open before doing this.", false);
-				return;
-			}
+	public InterfaceManager sendInterface(int interfaceId, boolean force) {
+		if (!force && getScreenInterface() != -1) {
+			player.getTransmitter().sendMessage("You need to close the interface you have open before doing this.", false);
+			return this;
 		}
-		player.getTransmitter().send(new InterfaceDisplayBuilder(isFixed() ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID, isFixed() ? DISPLAY_FIXED_CHILD_ID : DISPLAY_RESIZABLE_CHILD_ID, screenInterfaceId = interfaceId, false).build(player));
+		return sendInterface(getScreenPaneId(usingFixedMode()), getScreenComponentId(usingFixedMode()), interfaceId);
 	}
 	
 	/**
-	 * Sends an interface over the chatbox
+	 * Gets the current interface that we are displaying on the screen
+	 */
+	public int getScreenInterface() {
+		int componentId = getScreenComponentId(usingFixedMode());
+		int[] values = interfaceBindings.get(componentId);
+		if (values == null) {
+			return -1;
+		} else {
+			return values[0];
+		}
+	}
+	
+	/**
+	 * Sends an interface on the specified component id
 	 *
+	 * @param paneId
+	 * 		The pane id to draw the interface on
+	 * @param componentId
+	 * 		The component id that the interface will be drawn on.
 	 * @param interfaceId
-	 * 		The id of the chatbox
+	 * 		The id of the interface
 	 */
-	public void sendChatboxInterface(int interfaceId) {
-		player.getTransmitter().send(new InterfaceDisplayBuilder(CHATBOX_WINDOW_ID, 9, this.chatboxInterfaceId = interfaceId, true).build(player));
+	public InterfaceManager sendInterface(int paneId, int componentId, int interfaceId) {
+		if (interfaceBindings.get(componentId) != null) {
+			closeInterface(paneId, componentId);
+		}
+		interfaceBindings.put(componentId, new int[] { interfaceId, paneId });
+		flushComponent(componentId);
+		return this;
 	}
 	
 	/**
-	 * Closes the interface on the chatbox and sends the original chatbox interface
+	 * Gets the pane id for the mode we're on
+	 *
+	 * @param usingFixedMode
+	 * 		If we are on fixed mode
 	 */
-	public void closeChatboxInterface() {
-		player.getTransmitter().send(new InterfaceDisplayBuilder(CHATBOX_WINDOW_ID, 9, this.chatboxInterfaceId = REGULAR_CHATBOX_INTERFACE_ID, true).build(player));
+	private static int getScreenPaneId(boolean usingFixedMode) {
+		return usingFixedMode ? SCREEN_FIXED_WINDOW_ID : SCREEN_RESIZABLE_WINDOW_ID;
 	}
+	
+	/**
+	 * If the player is using the fixed client mode.
+	 */
+	public boolean usingFixedMode() {
+		return player.getNetworkSession().getViewComponents().usingFixedMode();
+	}
+	
+	/**
+	 * Gets the component id of the screen
+	 *
+	 * @param fixedMode
+	 * 		If we are using fixed mode.
+	 */
+	private static int getScreenComponentId(boolean fixedMode) {
+		return fixedMode ? DISPLAY_FIXED_CHILD_ID : DISPLAY_RESIZABLE_CHILD_ID;
+	}
+	
+	/**
+	 * Closes an interface
+	 *
+	 * @param paneId
+	 * 		The pane the interface is on
+	 * @param componentId
+	 * 		The component the interface is on
+	 */
+	public InterfaceManager closeInterface(int paneId, int componentId) {
+		interfaceBindings.remove(componentId);
+		player.getTransmitter().send(new CloseInterfaceBuilder(paneId, componentId).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends the interface to the client, using the component key to get the other data to send.
+	 *
+	 * @param componentId
+	 * 		The component key
+	 */
+	private InterfaceManager flushComponent(int componentId) {
+		int[] values = interfaceBindings.get(componentId);
+		if (values == null) {
+			return this;
+		}
+		boolean notTransparent = componentId == getScreenComponentId(usingFixedMode());
+		player.getTransmitter().send(new InterfaceDisplayBuilder(values[1], componentId, values[0], !notTransparent).build(player));
+		return this;
+	}
+	
+	/**
+	 * Closes the interface we have open on the screen
+	 */
+	public InterfaceManager closeScreenInterface() {
+		int componentId = getScreenComponentId(usingFixedMode());
+		int[] values = interfaceBindings.get(componentId);
+		if (values == null) {
+			return this;
+		}
+		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
+	}
+	
+	/**
+	 * Sends an interface on a tab
+	 *
+	 * @param tab
+	 * 		The tab to send it on
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public InterfaceManager sendTab(GameTab tab, int interfaceId) {
+		return sendInterface(usingFixedMode() ? tab.getFixedChildId() : tab.getResizedChildId(), interfaceId);
+	}
+	
+	/**
+	 * Sends an interface on the specified component id
+	 *
+	 * @param componentId
+	 * 		The component id that the interface will be drawn on.
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public InterfaceManager sendInterface(int componentId, int interfaceId) {
+		return sendInterface(getScreenPaneId(usingFixedMode()), componentId, interfaceId);
+	}
+	
 }

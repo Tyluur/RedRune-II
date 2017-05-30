@@ -3,6 +3,9 @@ package org.redrune.rs2.node;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.rs2.world.map.Location;
+import org.redrune.rs2.world.map.region.Region;
+
+import java.util.Optional;
 
 /**
  * This is the parent class of all game nodes. Nodes are anything in the game which undergoes
@@ -52,5 +55,17 @@ public abstract class Node {
 	 */
 	protected Node(Location location) {
 		this.location = location;
+	}
+	
+	/**
+	 * Constructs a regional optional for the {@code Location} the node is in.
+	 */
+	public Optional<Region> regionalOptional() {
+		Region region = Region.forCoords(location.getX(), location.getY());
+		if (region == null) {
+			return Optional.empty();
+		} else {
+			return Optional.of(region);
+		}
 	}
 }

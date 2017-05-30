@@ -23,7 +23,7 @@ public class InterfaceClickPacketStructure implements IncomingPacketStructure {
 	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(85, 7, 66, 11, 48, 17, 84, 40, 25, 8);
+		return Misc.arguments(85, 7, 66, 11, 48, 17, 84, 40, 25, 8, 54);
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class InterfaceClickPacketStructure implements IncomingPacketStructure {
 			logger.log(Level.SEVERE, "Unable to handle interface post-decoding!");
 			return;
 		}
-		if (!player.getInterfaceManager().hasInterfaceVisible(interfaceId)) {
+		if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {
 			logger.log(Level.SEVERE, "Interface " + interfaceId + " was not existent in the player's mapping of opened interface.");
 			return;
 		}

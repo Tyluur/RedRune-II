@@ -23,7 +23,8 @@ public enum GameTab {
 	OPTIONS(261, 215, 101),
 	EMOTES(590, 216, 102),
 	MUSIC_PLAYER(187, 217, 103),
-	NOTES(34, 218, 104),;
+	NOTES(34, 218, 104),
+	LOGOUT(182, 221, 107);
 	
 	/**
 	 * The interface id of the tab

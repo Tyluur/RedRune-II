@@ -1,5 +1,6 @@
 package org.redrune.rs2.world.map.region;
 
+import lombok.Getter;
 import org.redrune.rs2.node.entity.Entity;
 import org.redrune.rs2.node.entity.npc.NPC;
 import org.redrune.rs2.node.entity.player.Player;
@@ -7,6 +8,7 @@ import org.redrune.rs2.node.object.GameObject;
 import org.redrune.rs2.world.map.Location;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +51,11 @@ public class Region {
 	private final List<NPC>[] npcs = new LinkedList[4];
 	
 	/**
+	 * The id of the region
+	 */
+	private final int id;
+	
+	/**
 	 * The clipping masks of this region.
 	 */
 	private int[][][] clippingMasks = new int[4][][];
@@ -76,6 +83,7 @@ public class Region {
 	/**
 	 * A list of game objects on this region.
 	 */
+	@Getter
 	private List<GameObject> objects;
 	
 	/**
@@ -101,11 +109,17 @@ public class Region {
 			players[i] = new LinkedList<>();
 			npcs[i] = new LinkedList<>();
 		}
+		this.id = Location.create(x, y, 0).getRegionId();
 	}
 	
 	@Override
 	public int hashCode() {
 		return x << 8 | y;
+	}
+	
+	@Override
+	public String toString() {
+		return "[id=" + id + ", players=" + Arrays.toString(players) + ", npcs=" + Arrays.toString(npcs) + "]";
 	}
 	
 	public static boolean isPassable(Location l) {
@@ -297,7 +311,7 @@ public class Region {
 	 */
 	public void addObject(GameObject object) {
 		if (objects == null) {
-			objects = new ArrayList<GameObject>();
+			objects = new ArrayList<>();
 		}
 		objects.add(object);
 	}
@@ -312,5 +326,24 @@ public class Region {
 		if (objects != null) {
 			objects.remove(oldObj);
 		}
+	}
+	
+	/**
+	 * Gets a game object from the objects list.
+	 *
+	 * @param id
+	 * 		The object id.
+	 * @return The game object, or null if the list didn't contain this object.
+	 */
+	public GameObject getGameObject(int id) {
+		if (objects == null) {
+			return null;
+		}
+		for (GameObject object : objects) {
+			if (object.getId() == id) {
+				return object;
+			}
+		}
+		return null;
 	}
 }

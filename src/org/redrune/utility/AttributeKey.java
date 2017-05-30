@@ -20,6 +20,16 @@ public enum AttributeKey {
 	
 	PLAYER_TELEPORTED,
 	
+	// saved vars
+	
+	FILTERING_PROFANITY,
+	
+	MOUSE_BUTTONS,
+	
+	CHAT_EFFECTS,
+	
+	ACCEPTING_AID,
+	
 	;
 	
 }

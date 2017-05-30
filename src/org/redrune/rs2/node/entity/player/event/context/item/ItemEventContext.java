@@ -9,7 +9,7 @@ import org.redrune.utility.rs.InteractionOption;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-public class ItemEventContext implements EventContext {
+public final class ItemEventContext implements EventContext {
 	
 	/**
 	 * The item
