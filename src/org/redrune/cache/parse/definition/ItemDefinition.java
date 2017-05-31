@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.redrune.cache.CacheConstants;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.BufferUtils;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 

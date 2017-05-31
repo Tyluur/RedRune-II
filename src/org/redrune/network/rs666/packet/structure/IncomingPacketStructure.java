@@ -1,7 +1,7 @@
 package org.redrune.network.rs666.packet.structure;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.rs2.node.entity.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

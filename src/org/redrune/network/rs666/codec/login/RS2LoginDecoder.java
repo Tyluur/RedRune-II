@@ -5,14 +5,14 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.codec.RS2GameDecoder;
 import org.redrune.network.rs666.packet.structure.out.LobbyResponseBuilder;
 import org.redrune.network.rs666.packet.structure.out.LoginResponseCodeBuilder;
-import org.redrune.rs2.node.entity.player.Player;
+import org.redrune.utility.BufferUtils;
 import org.redrune.utility.backend.ReturnCode;
-import org.redrune.utility.io.BufferUtils;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

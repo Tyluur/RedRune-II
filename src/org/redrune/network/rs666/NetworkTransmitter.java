@@ -1,11 +1,11 @@
 package org.redrune.network.rs666;
 
+import org.redrune.game.GameConstants;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.input.InputResponse;
 import org.redrune.network.rs666.packet.input.InputType;
 import org.redrune.network.rs666.packet.structure.out.*;
-import org.redrune.rs2.GameConstants;
-import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
@@ -32,7 +32,8 @@ public final class NetworkTransmitter {
 	 */
 	public NetworkTransmitter sendLoginComponents() {
 		send(new LoginCredentialsBuilder().build(player));
-		send(new MapRegionBuilder(true).build(player));
+		
+		player.loadMapRegions();
 		player.getManager().getInterfaces().sendLogin();
 		player.sendSettings();
 		sendDefaultConfigs();
@@ -268,7 +269,7 @@ public final class NetworkTransmitter {
 	 * 		The title to send on the input text
 	 */
 	public NetworkTransmitter requestInput(InputResponse response, InputType type, String title) {
-		player.putAttribute("input_" + type.name().toLowerCase(), response);
+		player.putAttribute(type.getName(), response);
 		send(new CS2ScriptBuilder(type.getScriptId(), "s", title).build(player));
 		return this;
 	}

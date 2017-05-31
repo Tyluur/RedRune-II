@@ -2,7 +2,7 @@ package org.redrune.network.rs666.packet;
 
 import lombok.Getter;
 import org.jboss.netty.buffer.ChannelBuffer;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.BufferUtils;
 
 /**
  * @author 'Mystic Flow

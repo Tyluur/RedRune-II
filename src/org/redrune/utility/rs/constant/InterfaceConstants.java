@@ -12,9 +12,9 @@ public interface InterfaceConstants extends InterfaceRepository {
 	int SCREEN_FIXED_WINDOW_ID = 548;
 	
 	/**
-	 * The child id that regular interfaces are displayed on (using fixed mode).
+	 * The id of the resizable screen window
 	 */
-	int DISPLAY_FIXED_CHILD_ID = 18;
+	int SCREEN_RESIZABLE_WINDOW_ID = 746;
 	
 	/**
 	 * The window id of the chatbox interface
@@ -22,19 +22,29 @@ public interface InterfaceConstants extends InterfaceRepository {
 	int CHATBOX_WINDOW_ID = 752;
 	
 	/**
-	 * The interface id of the regular chatbox
+	 * The child id that regular interfaces are displayed on (using fixed mode).
 	 */
-	int REGULAR_CHATBOX_INTERFACE_ID = 137;
-	
-	/**
-	 * The id of the resizable screen window
-	 */
-	int SCREEN_RESIZABLE_WINDOW_ID = 746;
+	int DISPLAY_FIXED_CHILD_ID = 18;
 	
 	/**
 	 * The child id that regular interfaces are displayed on (using resizable mode).
 	 */
 	int DISPLAY_RESIZABLE_CHILD_ID = 11;
+	
+	/**
+	 * The interface id of the regular chatbox
+	 */
+	int REGULAR_CHATBOX_INTERFACE_ID = 137;
+	
+	/**
+	 * The component id of the chatbox in fixed mode
+	 */
+	int FIXED_CHATBOX_COMPONENT_ID = 192;
+	
+	/**
+	 * The component id of the chatbox in resizable mode
+	 */
+	int RESIZABLE_CHATBOX_COMPONENT_ID = 71;
 	
 	/**
 	 * The id of the inventory interface

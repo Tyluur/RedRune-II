@@ -1,13 +1,12 @@
 package org.redrune.network.rs666.packet.structure.out;
 
 import org.redrune.cache.parse.MapRegionParser;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.map.Location;
-import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.MapDataParser;
 
 /**
@@ -38,21 +37,16 @@ public final class MapRegionBuilder implements OutgoingPacketStructure {
 		bldr.writeLEShort(regionY);
 		bldr.writeLEShortA(regionX);
 		bldr.writeByteS(0); //Scene graph size index.
-		for (int sectorX = (regionX - 6) >> 3; sectorX <= (regionX + 6) >> 3; sectorX++) {
-			for (int sectorY = (regionY - 6) >> 3; sectorY <= (regionY + 6) >> 3; sectorY++) {
-				int region = sectorY | (sectorX << 8);
-				int[] mapData = MapDataParser.getMapData().get(region);
-				if (mapData == null) {
-					mapData = new int[4];
-				}
-				for (int i = 0; i < 4; i++) {
-					bldr.writeInt(mapData[i]);
-				}
-				MapRegionParser.parseMap(region, mapData);
+		for (int regionId : player.getMapRegionsIds()) {
+			int[] mapData = MapDataParser.getMapData().get(regionId);
+			if (mapData == null) {
+				mapData = new int[4];
 			}
+			for (int i = 0; i < 4; i++) {
+				bldr.writeInt(mapData[i]);
+			}
+			MapRegionParser.parseMap(regionId, mapData);
 		}
-		player.getDetails().setLastLocation(player.getLocation());
-		player.putAttribute(AttributeKey.MAP_REGION_CHANGED, false);
 		return bldr.toPacket();
 	}
 	

@@ -1,10 +1,10 @@
 package org.redrune.network.rs666.packet.structure.in;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.input.InputResponse;
 import org.redrune.network.rs666.packet.input.InputType;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
-import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.Misc;
 
 /**
@@ -36,7 +36,7 @@ public class InputPacketStructure implements IncomingPacketStructure {
 	@Override
 	public void read(Player player, Packet packet) {
 		InputType type = packet.getOpcode() == INPUT_INTEGER ? InputType.INTEGER : packet.getOpcode() == INPUT_STRING ? InputType.NAME : InputType.LONG_TEXT;
-		InputResponse response = player.getAttribute("input_" + type.name().toLowerCase());
+		InputResponse response = player.getAttribute(type.getName());
 		if (response == null) {
 			System.out.println("Expected to receive input (type=" + type + "), with no attribute stored.");
 			return;

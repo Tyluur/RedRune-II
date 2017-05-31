@@ -3,7 +3,7 @@ package org.redrune.network.rs666.packet;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.redrune.network.rs666.packet.Packet.PacketType;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.BufferUtils;
 
 /**
  * @author 'Mystic Flow
@@ -39,12 +39,8 @@ public class PacketBuilder {
 		this.type = type;
 	}
 	
-	public void writeBytes(ChannelBuffer other) {
+	public PacketBuilder writeBytes(ChannelBuffer other) {
 		buffer.writeBytes(other);
-	}
-	
-	public PacketBuilder writeInt(int i) {
-		buffer.writeInt(i);
 		return this;
 	}
 	
@@ -208,6 +204,11 @@ public class PacketBuilder {
 		return this;
 	}
 	
+	public PacketBuilder writeShort(int s) {
+		buffer.writeShort((short) s);
+		return this;
+	}
+	
 	/**
 	 * Puts a smart.
 	 *
@@ -224,8 +225,8 @@ public class PacketBuilder {
 		return this;
 	}
 	
-	public PacketBuilder writeShort(int s) {
-		buffer.writeShort((short) s);
+	public PacketBuilder writeInt(int i) {
+		buffer.writeInt(i);
 		return this;
 	}
 	

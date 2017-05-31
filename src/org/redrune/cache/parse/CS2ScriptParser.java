@@ -1,7 +1,7 @@
 package org.redrune.cache.parse;
 
 import org.redrune.cache.CacheManager;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;

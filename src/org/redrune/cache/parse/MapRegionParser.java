@@ -4,10 +4,10 @@ import org.redrune.cache.CacheContainer;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.stream.ByteInputStream;
 import org.redrune.cache.stream.RSInputStream;
-import org.redrune.rs2.node.object.GameObject;
-import org.redrune.rs2.world.map.Location;
-import org.redrune.rs2.world.map.region.RegionBuilder;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.object.GameObject;
+import org.redrune.game.world.region.RegionBuilder;
+import org.redrune.utility.BufferUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;

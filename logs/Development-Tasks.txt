@@ -1,0 +1,33 @@
+[Core]
++	Distance events
++	Action system
+	-	For events like bone burial, skilling, and perhaps combat (?)
++	Region system
+	-	Object spawning/removal needs to be seamless
+	-   Floor items management
++	Item equipment
+	-   Storing the item slot id/item equip type into the definitions on load.
+	-   Check //TODO in the item definitions class
++	Command system
+
+[Wrappers/Systems]
++	Dialogue system
+	-	Level up message as part of this
++	Lock system
+	-	Lock npc interaction, player interaction, item interaction, object interaction, or movement
++	Shop system
+	-	Support for currencies such as points or different item ids
++	Prayer management
+	-	Bonuses can be checked via [ player.getManagers().getPrayers().isOn(Prayers.TURMOIL) ]
+	
+[Data]
++	Item examines
++	NPC examines
++	Object examines
+
+[Unfinished]
++	Fix walking queue system (the bug where running is randomly set to false around corners)
++	Parse interface definitions
++	Hit#interactingWith
++	Finish region clipping
++	Item equip slot/equip type storing

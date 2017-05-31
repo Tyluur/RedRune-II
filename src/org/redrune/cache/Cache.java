@@ -1,6 +1,6 @@
 package org.redrune.cache;
 
-import org.redrune.rs2.GameConstants;
+import org.redrune.game.GameConstants;
 import org.redrune.utility.Misc;
 
 import java.util.logging.Logger;

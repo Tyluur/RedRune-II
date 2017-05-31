@@ -1,9 +1,9 @@
 package org.redrune.network.rs666.packet.structure.out;
 
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.list.WorldList;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.world.list.WorldList;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

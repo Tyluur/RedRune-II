@@ -29,4 +29,12 @@ public enum InputType {
 	InputType(int scriptId) {
 		this.scriptId = scriptId;
 	}
+	
+	/**
+	 * Gets the attribute key name
+	 */
+	public String getName() {
+		return "input_" + name().toLowerCase();
+	}
+	
 }

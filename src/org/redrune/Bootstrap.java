@@ -4,12 +4,12 @@ import com.google.common.base.Stopwatch;
 import org.redrune.cache.Cache;
 import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.GameConstants;
+import org.redrune.game.GameFlags;
+import org.redrune.game.module.ModuleRepository;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
-import org.redrune.rs2.GameConstants;
-import org.redrune.rs2.GameFlags;
-import org.redrune.rs2.system.SystemManager;
-import org.redrune.rs2.system.module.ModuleRepository;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
 

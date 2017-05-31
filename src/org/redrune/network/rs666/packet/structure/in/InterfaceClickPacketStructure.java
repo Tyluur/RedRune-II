@@ -1,10 +1,10 @@
 package org.redrune.network.rs666.packet.structure.in;
 
 import org.redrune.cache.Cache;
+import org.redrune.game.module.ModuleRepository;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.system.module.ModuleRepository;
 import org.redrune.utility.Misc;
 
 import java.util.logging.Level;

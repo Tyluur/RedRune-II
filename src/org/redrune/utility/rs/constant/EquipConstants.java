@@ -2,7 +2,7 @@ package org.redrune.utility.rs.constant;
 
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.cache.parse.definition.ItemDefinition;
-import org.redrune.rs2.node.item.Item;
+import org.redrune.game.node.item.Item;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

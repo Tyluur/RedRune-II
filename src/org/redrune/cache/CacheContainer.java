@@ -2,7 +2,7 @@ package org.redrune.cache;
 
 import org.redrune.cache.bzip.BZ2Decompressor;
 import org.redrune.cache.bzip.GZIPDecompressor;
-import org.redrune.utility.io.BufferUtils;
+import org.redrune.utility.BufferUtils;
 
 import java.io.IOException;
 

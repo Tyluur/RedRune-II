@@ -7,8 +7,8 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.redrune.network.rs666.codec.js5.JS5Decoder;
 import org.redrune.network.rs666.codec.login.RS2LoginDecoder;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.utility.BufferUtils;
 import org.redrune.utility.backend.CreationResponse;
-import org.redrune.utility.io.BufferUtils;
 
 import static org.redrune.network.NetworkConstants.*;
 

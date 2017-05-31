@@ -1,6 +1,6 @@
 package org.redrune.network;
 
-import org.redrune.rs2.GameConstants;
+import org.redrune.game.GameConstants;
 
 /**
  * All network constants are stored here.

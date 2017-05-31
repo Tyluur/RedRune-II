@@ -2,7 +2,9 @@ package org.redrune.utility;
 
 import com.google.common.base.Preconditions;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -289,6 +291,81 @@ public class Misc {
 		T element;
 		while ((element = queue.poll()) != null) {
 			consumer.accept(element);
+		}
+	}
+	
+	/**
+	 * Getting the text in the file as a formatted {@code String} {@code Object}
+	 *
+	 * @param location
+	 * 		The location of the file
+	 */
+	public static String getText(String location) {
+		File file = new File(location);
+		if (!file.exists()) {
+			throw new IllegalStateException("File doesn't exist:\t" + file.getAbsolutePath());
+		}
+		StringBuilder text = new StringBuilder();
+		for (String fileText : getFileText(location)) {
+			text.append(fileText).append("\n");
+		}
+		return text.toString();
+	}
+	
+	/**
+	 * Gets the text from a file.
+	 *
+	 * @param file
+	 * 		The location of the file.
+	 * @return A list of the text in the file. Different lines are separated by different list indexes.
+	 */
+	public static List<String> getFileText(String file) {
+		List<String> text = new ArrayList<>();
+		File realFile = new File(file);
+		if (!realFile.exists()) {
+			return text;
+		}
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals("") || line.equals(" ")) {
+					continue;
+				}
+				text.add(line);
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return text;
+	}
+	
+	public static int getMoveDirection(int xOffset, int yOffset) {
+		if (xOffset < 0) {
+			if (yOffset < 0) {
+				return 5;
+			} else if (yOffset > 0) {
+				return 0;
+			} else {
+				return 3;
+			}
+		} else if (xOffset > 0) {
+			if (yOffset < 0) {
+				return 7;
+			} else if (yOffset > 0) {
+				return 2;
+			} else {
+				return 4;
+			}
+		} else {
+			if (yOffset < 0) {
+				return 6;
+			} else if (yOffset > 0) {
+				return 1;
+			} else {
+				return -1;
+			}
 		}
 	}
 }

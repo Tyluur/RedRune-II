@@ -4,10 +4,10 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.codec.handshake.HandshakePacket;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
-import org.redrune.rs2.node.entity.player.Player;
 import org.redrune.utility.Misc;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import static org.redrune.rs2.GameConstants.MAIN_PORT_ID;
+import static org.redrune.game.GameConstants.MAIN_PORT_ID;
 
 /**
  * This is the network handler for the main game protocol. This initializes the main game server and the update server.

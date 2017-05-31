@@ -1,10 +1,10 @@
 package org.redrune.network.rs666.packet.structure.out;
 
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.data.PlayerSkills;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.node.entity.player.data.PlayerSkills;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

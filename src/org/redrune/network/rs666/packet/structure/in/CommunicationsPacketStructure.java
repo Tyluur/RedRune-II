@@ -1,14 +1,14 @@
 package org.redrune.network.rs666.packet.structure.in;
 
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.event.context.CommandEventContext;
+import org.redrune.game.node.entity.player.event.impl.CommandEvent;
+import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.IncomingPacketStructure;
 import org.redrune.network.rs666.packet.structure.out.PublicChatBuilder;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.node.entity.player.event.context.CommandEventContext;
-import org.redrune.rs2.node.entity.player.event.impl.CommandEvent;
-import org.redrune.rs2.world.World;
+import org.redrune.utility.BufferUtils;
 import org.redrune.utility.Misc;
-import org.redrune.utility.io.BufferUtils;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

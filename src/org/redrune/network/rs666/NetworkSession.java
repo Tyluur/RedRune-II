@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.data.PlayerViewComponents;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.structure.out.PingPacketBuilder;
-import org.redrune.rs2.node.entity.player.Player;
-import org.redrune.rs2.node.entity.player.data.PlayerViewComponents;
 
 /**
  * The networkSession connected to the main game
