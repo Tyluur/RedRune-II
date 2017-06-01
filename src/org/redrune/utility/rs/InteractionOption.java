@@ -6,14 +6,11 @@ package org.redrune.utility.rs;
  */
 public enum InteractionOption {
 	
+	ATTACK_OPTION,
 	FIRST_OPTION,
 	SECOND_OPTION,
 	THIRD_OPTION,
 	FOURTH_OPTION,
-	FIFTH_OPTION,
-	SIXTH_OPTION,
-	SEVENTH_OPTION,
-	EIGHTH_OPTION,
 	DROP,
 	EXAMINE
 }

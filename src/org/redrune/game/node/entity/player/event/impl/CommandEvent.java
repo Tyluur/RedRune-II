@@ -1,27 +1,12 @@
 package org.redrune.game.node.entity.player.event.impl;
 
-import org.redrune.core.system.SystemManager;
-import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitSplat;
+import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.node.entity.player.event.context.CommandEventContext;
-import org.redrune.game.node.entity.player.render.flag.impl.Animation;
-import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
-import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
-import org.redrune.game.node.entity.player.render.flag.impl.HitUpdate;
-import org.redrune.game.world.World;
-import org.redrune.network.rs666.packet.structure.out.*;
-import org.redrune.utility.AttributeKey;
-import org.redrune.utility.backend.Priority;
-import org.redrune.utility.rs.constant.Directions.Direction;
-
-import java.util.Arrays;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -44,9 +29,13 @@ public class CommandEvent extends Event<CommandEventContext> {
 	
 	@Override
 	public void run(Player player) {
-		final String[] args = getContext().getArguments();
+		CommandRepository.processEntry(player, getContext().getArguments(), getContext().isConsole());
+/*		final String[] args = getContext().getArguments();
 		String name = args[0];
 		switch (name) {
+			case "invinter":
+				player.getManager().getInterfaces().sendInventoryInterface(Integer.parseInt(args[1]));
+				break;
 			case "chatboxinter":
 				player.getManager().getInterfaces().sendChatboxInterface(Integer.parseInt(args[1]));
 				break;
@@ -58,7 +47,7 @@ public class CommandEvent extends Event<CommandEventContext> {
 				int end = Integer.parseInt(args[2]);
 				boolean on = Boolean.parseBoolean(args[3]);
 				for (int i = start; i <= end; i++) {
-					player.getTransmitter().send(new VarpPacketBuilder(i, on ? 1 : 0).build(player));
+					player.getTransmitter().send(new ConfigPacketBuilder(i, on ? 1 : 0).build(player));
 				}
 				System.out.println("Finished config loop! stopped at " + end);
 				break;
@@ -81,13 +70,26 @@ public class CommandEvent extends Event<CommandEventContext> {
 			case "inter":
 				player.getManager().getInterfaces().sendInterface(Integer.parseInt(args[1]), true);
 				break;
-			case "dbg":
-				player.getTransmitter().send(new RunEnergyBuilder(100).build(player));
+			case "dbi":
+				int interId = Integer.parseInt(args[1]);
+				int length = Cache.getAmountOfComponents(interId);
+				for (int i = 0; i < length; i++) {
+					player.getManager().getInterfaces().sendInterfaceText(interId, i, "" + i);
+				}
+				player.getManager().getInterfaces().sendInterface(interId, true);
 				break;
-			case "varp":
+			case "dbg":
+				player.getTransmitter().send(new CS2ConfigBuilder(Integer.parseInt(args[1]), Integer.parseInt(args[2])).build(player));
+				break;
+			case "interstring":
+				player.getManager().getInterfaces().sendInterfaceText(Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3]);
+				player.getManager().getInterfaces().sendInterface(Integer.parseInt(args[1]), true);
+				System.out.println(Cache.getAmountOfComponents(Integer.parseInt(args[1])));
+				break;
+			case "config":
 				int id = Integer.parseInt(args[1]);
 				int value = Integer.parseInt(args[2]);
-				player.getTransmitter().send(new VarpPacketBuilder(id, value).build(player));
+				player.getTransmitter().send(new ConfigPacketBuilder(id, value).build(player));
 				break;
 			case "hits":
 				player.getHitMap().getHitList().add(new Hit(player, 500, HitSplat.ABSORB_DAMAGE));
@@ -103,15 +105,11 @@ public class CommandEvent extends Event<CommandEventContext> {
 				player.getUpdateMasks().register(MODERN_ANIM);
 				player.getUpdateMasks().register(MODERN_GRAPHIC);
 				
-				SystemManager.getScheduler().schedule(new ScheduledTask(3, 1, false) {
-					@Override
-					public void execute() {
-						player.getUpdateMasks().register(new Animation(-1));
-						player.getUpdateMasks().register(new Graphic(-1));
-						player.putAttribute(AttributeKey.TELEPORT_LOCATION, Location.create(Integer.parseInt(args[1]), Integer.parseInt(args[2]), 0));
-						System.out.println("pulse");
-					}
-				});
+				SystemManager.getScheduler().schedule(new ScheduledTask(3, 1, false, () -> {
+					player.getUpdateMasks().register(new Animation(-1));
+					player.getUpdateMasks().register(new Graphic(-1));
+					player.putAttribute(AttributeKey.TELEPORT_LOCATION, Location.create(Integer.parseInt(args[1]), Integer.parseInt(args[2]), 0));
+				}));
 				break;
 			case "xtele":
 				try {
@@ -144,6 +142,6 @@ public class CommandEvent extends Event<CommandEventContext> {
 			default:
 				System.out.println("Unhandled command: " + Arrays.toString(args));
 				break;
-		}
+		}*/
 	}
 }

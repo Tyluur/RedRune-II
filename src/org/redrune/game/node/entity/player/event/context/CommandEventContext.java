@@ -15,7 +15,14 @@ public final class CommandEventContext implements EventContext {
 	@Getter
 	private final String[] arguments;
 	
-	public CommandEventContext(String[] arguments) {
+	/**
+	 * If the command was sent over the console
+	 */
+	@Getter
+	private final boolean console;
+	
+	public CommandEventContext(String[] arguments, boolean console) {
 		this.arguments = arguments;
+		this.console = console;
 	}
 }

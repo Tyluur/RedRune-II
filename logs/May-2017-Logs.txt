@@ -1,3 +1,26 @@
+5/31/17
++   Added destination events (interacting with nodes from a distance)
++   Added npc interaction packet decoding (attack/all right click options/examine)
++   Fixed npcs not being able to face players.
++   Updated our task systems to use @FunctionalInterface (using the apollo scheduled task system, the execute method wasn't up-to-date)
++   Created a banking system with support for tabs, insertion, swapping (100%)
+	-   This came with the addition of BitConfig packet sending (for tab ids)
+	-   This came with the support of inventory interfaces in the interface manager
++   Created a command module system very dynamic and easy to understand & implement
+	-   Package of the command will set the right required for it
+	-   Arguments (the command name [i.e ::npc or ::spawn] is set in the class
+	-   Getting the parameters of the command is seamless & validated properly
++   Added an interaction system (the npc faces you while you're interacting with it until somebody else interacts with it, unless you stop interacting with it)
++   Added a method to check the amount of components an interface will have (used to debug interfaces)
++   Added some newly identified outgoing packets
++   Added support for npc interaction to the interaction module
+
+MEDIA
+[img]http://i.imgur.com/ttC5yeI.gif[/img]
+[img]http://i.imgur.com/hvlOBMo.gif[/img]
+[img]http://i.imgur.com/oBIlxXv.png[/img]
+[img]http://i.imgur.com/KFXJzD2.png[/img]
+
 5/30/17
 +   Added support for chatbox interfaces to the interface manager
 +   Progressed further on our region management system

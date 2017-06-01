@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerNote;
-import org.redrune.network.rs666.packet.structure.out.AccessMaskBuilder;
-import org.redrune.network.rs666.packet.structure.out.CS2StringBuilder;
-import org.redrune.network.rs666.packet.structure.out.InterfaceChangeBuilder;
-import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.CS2StringBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.InterfaceChangeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +42,8 @@ public final class NoteManager {
 		player.getTransmitter().send(new InterfaceChangeBuilder(34, 3, false).build(player));
 		player.getTransmitter().send(new InterfaceChangeBuilder(34, 8, false).build(player));
 		player.getTransmitter().send(new InterfaceChangeBuilder(34, 44, false).build(player));
-		player.getTransmitter().send(new VarpPacketBuilder(1437, 1).build(player)); // unlocks add notes
-		player.getTransmitter().send(new VarpPacketBuilder(1439, -1).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(1437, 1).build(player)); // unlocks add notes
+		player.getTransmitter().send(new ConfigPacketBuilder(1439, -1).build(player));
 		refresh();
 	}
 	
@@ -54,8 +54,8 @@ public final class NoteManager {
 		for (int i = 0; i < 30; i++) {
 			player.getTransmitter().send(new CS2StringBuilder(149 + i, notes.size() <= i ? "" : notes.get(i).getText()).build(player));
 		}
-		player.getTransmitter().send(new VarpPacketBuilder(1440, getPrimaryColour(this)).build(player));
-		player.getTransmitter().send(new VarpPacketBuilder(1441, getSecondaryColour(this)).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(1440, getPrimaryColour(this)).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(1441, getSecondaryColour(this)).build(player));
 	}
 	
 	/**
@@ -159,7 +159,7 @@ public final class NoteManager {
 			return;
 		}
 		player.putAttribute("CURRENT_NOTE", id);
-		player.getTransmitter().send(new VarpPacketBuilder(1439, id).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(1439, id).build(player));
 	}
 	
 	/**
@@ -175,9 +175,9 @@ public final class NoteManager {
 		}
 		notes.get(id).setColour(colour);
 		if (id < 16) {
-			player.getTransmitter().send(new VarpPacketBuilder(1440, getPrimaryColour(this)).build(player));
+			player.getTransmitter().send(new ConfigPacketBuilder(1440, getPrimaryColour(this)).build(player));
 		} else {
-			player.getTransmitter().send(new VarpPacketBuilder(1441, getSecondaryColour(this)).build(player));
+			player.getTransmitter().send(new ConfigPacketBuilder(1441, getSecondaryColour(this)).build(player));
 		}
 		return true;
 	}
@@ -226,7 +226,7 @@ public final class NoteManager {
 	 */
 	public void removeCurrentNote() {
 		player.removeAttribute("CURRENT_NOTE");
-		player.getTransmitter().send(new VarpPacketBuilder(1439, -1).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(1439, -1).build(player));
 	}
 	
 	/**

@@ -82,7 +82,7 @@ public class GameObject extends Node {
 	
 	@Override
 	public int getSize() {
-		return getDefinitions().getSizeX();
+		return Math.max(getDefinitions().getSizeX(), getDefinitions().getSizeY());
 	}
 	
 	/**
@@ -93,6 +93,11 @@ public class GameObject extends Node {
 			setDefinitions(ObjectDefinitionParser.forId(id));
 		}
 		return definitions;
+	}
+	
+	@Override
+	public GameObject toGameObject() {
+		return this;
 	}
 	
 	@Override

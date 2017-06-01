@@ -1,5 +1,9 @@
 package org.redrune.utility.rs.constant;
 
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.outgoing.impl.CS2ScriptBuilder;
+import org.redrune.utility.Misc;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
@@ -32,6 +36,16 @@ public interface InterfaceConstants extends InterfaceRepository {
 	int DISPLAY_RESIZABLE_CHILD_ID = 11;
 	
 	/**
+	 * The child id for inventory interfaces on fixed mode
+	 */
+	int INVENTORY_FIXED_CHILD_ID = 198;
+	
+	/**
+	 * The child id for inventory interfaces on resizable mode
+	 */
+	int INVENTORY_RESIZABLE_CHILD_ID = 86;
+	
+	/**
 	 * The interface id of the regular chatbox
 	 */
 	int REGULAR_CHATBOX_INTERFACE_ID = 137;
@@ -55,4 +69,37 @@ public interface InterfaceConstants extends InterfaceRepository {
 	 * The id of the equipment interface
 	 */
 	int EQUIPMENT_INTERFACE_ID = 387;
+	
+	/**
+	 * Sends the quest interface to the player with the parameterized title and
+	 * list of messages. The messages will be formatted to never overlap one
+	 * line, but to go to the next one if it passes the limit of characters on a
+	 * line.
+	 *
+	 * @param player
+	 * 		The player
+	 * @param title
+	 * 		The title of the quest interface
+	 * @param messageList
+	 * 		The list of messages to send. a {@code String} {@code Array} {@code Object}
+	 */
+	static void sendQuestScroll(Player player, String title, String... messageList) {
+		final int interfaceId = 275;
+		final int endLine = 309;
+		
+		Misc.clearInterface(player, interfaceId);
+		
+		int startLine = 16;
+		for (String message : messageList) {
+			if (startLine > endLine) {
+				break;
+			}
+			player.getManager().getInterfaces().sendInterfaceText(interfaceId, startLine, message);
+			startLine++;
+		}
+		
+		player.getTransmitter().send(new CS2ScriptBuilder(1207, messageList.length).build(player));
+		player.getManager().getInterfaces().sendInterfaceText(interfaceId, 2, title);
+		player.getManager().getInterfaces().sendInterface(interfaceId, true);
+	}
 }

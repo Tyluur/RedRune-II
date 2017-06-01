@@ -7,7 +7,7 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.codec.handshake.HandshakePacket;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
+import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.Misc;
 
 import java.io.IOException;

@@ -10,13 +10,18 @@ import lombok.Getter;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/26/2017
  */
-public abstract class ScheduledTask {
+public class ScheduledTask {
 	
 	/**
 	 * The maximum amount of pulses that can be ran on this task
 	 */
 	@Getter
 	private final int maxPulses;
+	
+	/**
+	 * The task to execute.
+	 */
+	private final Runnable task;
 	
 	/**
 	 * The delay between executions of the task, in pulses.
@@ -50,8 +55,8 @@ public abstract class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than or equal to zero.
 	 */
-	public ScheduledTask(int delay, boolean immediate) {
-		this(delay, 0, immediate);
+	public ScheduledTask(int delay, boolean immediate, Runnable task) {
+		this(delay, 0, immediate, task);
 	}
 	
 	/**
@@ -66,10 +71,11 @@ public abstract class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than or equal to zero.
 	 */
-	public ScheduledTask(int delay, int maxPulses, boolean immediate) {
+	public ScheduledTask(int delay, int maxPulses, boolean immediate, Runnable task) {
 		setDelay(delay);
 		this.pulses = immediate ? 0 : delay;
 		this.maxPulses = maxPulses;
+		this.task = task;
 	}
 	
 	/**
@@ -102,19 +108,14 @@ public abstract class ScheduledTask {
 	}
 	
 	/**
-	 * Pulses this task: updates the delay and calls {@link #execute()} if necessary.
+	 * Pulses this task: updates the delay and calls {@link Runnable#run()} )} if necessary.
 	 */
 	final void pulse() {
 		if (running && --pulses <= 0) {
-			execute();
+			task.run();
 			pulseCount++;
 			pulses = delay;
 		}
 	}
-	
-	/**
-	 * Executes this task.
-	 */
-	public abstract void execute();
 	
 }

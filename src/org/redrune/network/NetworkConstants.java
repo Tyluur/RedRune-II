@@ -89,6 +89,16 @@ public interface NetworkConstants extends GameConstants {
 	int FOURTH_PACKET_ID = 84;
 	
 	/**
+	 * The packet id for the fifth option
+	 */
+	int FIFTH_PACKET_ID = 48;
+	
+	/**
+	 * The packet id for the sixth option
+	 */
+	int SIXTH_PACKET_ID = 17;
+	
+	/**
 	 * The packet id for the drop option
 	 */
 	int DROP_PACKET_ID = 40;

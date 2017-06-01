@@ -3,8 +3,8 @@ package org.redrune.game.node.entity.player.data;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.structure.out.SkillPacketBuilder;
-import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.SkillPacketBuilder;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
@@ -113,7 +113,7 @@ public class PlayerSkills implements SkillConstants {
 	 * Updates the experience counter with the amount of experience we've obtained
 	 */
 	private void updateExperienceCounter() {
-		player.getTransmitter().send(new VarpPacketBuilder(1801, (int) (counterExperience * 10D)).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(1801, (int) (counterExperience * 10D)).build(player));
 	}
 	
 	/**

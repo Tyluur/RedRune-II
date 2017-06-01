@@ -1,6 +1,9 @@
 package org.redrune.utility;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.redrune.cache.Cache;
+import org.redrune.game.node.entity.player.Player;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -368,4 +371,54 @@ public class Misc {
 			}
 		}
 	}
+	
+	/**
+	 * Gets the entry of an array at a slot, if there is nothing, it will return null. If the slot is too small/big it
+	 * will return null
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K> K getArrayEntry(K[] array, int slot) {
+		if (slot >= array.length || slot < 0) {
+			return null;
+		}
+		return array[slot];
+	}
+	
+	/**
+	 * Gets the class type from a character string
+	 *
+	 * @param characters
+	 * 		The characters
+	 */
+	public static Class getClassType(String characters) {
+		if (isDigit(characters)) {
+			return Integer.class;
+		} else if (isBoolean(characters)) {
+			return Boolean.class;
+		} else {
+			return String.class;
+		}
+	}
+	
+	/**
+	 * Checks if the characters are numbers
+	 */
+	public static boolean isDigit(String characters) {
+		return NumberUtils.isDigits(characters);
+	}
+	
+	/**
+	 * Checks if the characters are a boolean
+	 */
+	public static boolean isBoolean(String characters) {
+		return "true".equals(characters) || "false".equals(characters);
+	}
+	
+	public static void clearInterface(Player player, int interfaceId) {
+		int componentLength = Cache.getAmountOfComponents(interfaceId);
+		for (int i = 0; i < componentLength; i++) {
+			player.getManager().getInterfaces().sendInterfaceText(interfaceId, i, "");
+		}
+	}
+	
 }

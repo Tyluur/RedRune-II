@@ -5,9 +5,8 @@ import lombok.Setter;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.data.WalkingQueue;
-import org.redrune.game.node.entity.npc.NPC;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
+import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
 import org.redrune.game.world.region.Region;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -87,42 +86,6 @@ public abstract class Entity extends Node implements EntityDetails {
 		this.attributes = new ConcurrentHashMap<>();
 		this.walkingQueue = new WalkingQueue(this);
 		this.mapRegionsIds = new CopyOnWriteArrayList<>();
-	}
-	
-	/**
-	 * Verifies if this entity is a player
-	 *
-	 * @return A {@code Boolean} flag
-	 */
-	public boolean isPlayer() {
-		return toPlayer() != null;
-	}
-	
-	/**
-	 * Converts this entity to a {@code Player} {@code Object}
-	 *
-	 * @return A {@code Player}
-	 */
-	public Player toPlayer() {
-		return null;
-	}
-	
-	/**
-	 * Verifies if this entity is an npc
-	 *
-	 * @return A {@code Boolean} flag
-	 */
-	public boolean isNPC() {
-		return toNPC() != null;
-	}
-	
-	/**
-	 * Converts this entity to a {@code NPC} {@code Object}
-	 *
-	 * @return A {@code NPC}
-	 */
-	public NPC toNPC() {
-		return null;
 	}
 	
 	/**
@@ -235,4 +198,28 @@ public abstract class Entity extends Node implements EntityDetails {
 		return Math.abs(lastMapRegionX - regionX) >= size || Math.abs(lastMapRegionY - regionY) >= size;
 	}
 	
+	/**
+	 * Turns this entity to the locked on entity.
+	 *
+	 * @param lockon
+	 * 		The locked on entity.
+	 * @return {@code True}.
+	 */
+	public boolean turnTo(Entity lockon) {
+		int index = lockon == null ? -1 : lockon.getClientIndex();
+		updateMasks.register(new FaceEntityUpdate(index, isNPC()));
+		return true;
+	}
+	
+	/**
+	 * Gets the client index of the entity.
+	 *
+	 * @return The client index.
+	 */
+	public int getClientIndex() {
+		if (isPlayer()) {
+			return index + 0x8000;
+		}
+		return index;
+	}
 }

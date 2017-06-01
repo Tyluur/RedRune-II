@@ -2,10 +2,12 @@ package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.structure.out.CloseInterfaceBuilder;
-import org.redrune.network.rs666.packet.structure.out.GameWindowBuilder;
-import org.redrune.network.rs666.packet.structure.out.InterfaceDisplayBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.CloseInterfaceBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.GameWindowBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.InterfaceDisplayBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.InterfaceStringBuilder;
 import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
@@ -37,6 +39,16 @@ public class InterfaceManager implements InterfaceConstants {
 	 */
 	@Setter
 	private transient Player player;
+	
+	/**
+	 * Gets the component id of the screen
+	 *
+	 * @param fixedMode
+	 * 		If we are using fixed mode.
+	 */
+	private static int getInventoryComponentId(boolean fixedMode) {
+		return fixedMode ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID;
+	}
 	
 	public void sendLogin() {
 		sendMainComponents();
@@ -87,7 +99,7 @@ public class InterfaceManager implements InterfaceConstants {
 	/**
 	 * Sends the default tabs.
 	 */
-	public InterfaceManager sendDefaultTabs() {
+	private InterfaceManager sendDefaultTabs() {
 		for (GameTab data : GameTab.values()) {
 			sendInterface(usingFixedMode() ? data.getFixedChildId() : data.getResizedChildId(), data.getInterfaceId());
 		}
@@ -144,6 +156,9 @@ public class InterfaceManager implements InterfaceConstants {
 	 * 		The id of the interface
 	 */
 	public InterfaceManager sendInterface(int paneId, int componentId, int interfaceId) {
+		if (interfaceId >= Cache.getAmountOfInterfaces()) {
+			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
+		}
 		if (interfaceBindings.get(componentId) != null) {
 			closeInterface(paneId, componentId);
 		}
@@ -247,6 +262,27 @@ public class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
+	 * Sends text on an interface
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 * @param componentId
+	 * 		The component id
+	 * @param text
+	 * 		The text
+	 */
+	public InterfaceManager sendInterfaceText(int interfaceId, int componentId, String text) {
+		if (interfaceId >= Cache.getAmountOfInterfaces()) {
+			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
+		}
+		if (componentId >= Cache.getAmountOfComponents(interfaceId)) {
+			throw new IllegalStateException("Unable to send text on component " + componentId + " using interface " + interfaceId);
+		}
+		player.getTransmitter().send(new InterfaceStringBuilder(interfaceId, componentId, text).build(player));
+		return this;
+	}
+	
+	/**
 	 * Gets the chatbox interface id
 	 */
 	public int getChatboxInterface() {
@@ -256,6 +292,18 @@ public class InterfaceManager implements InterfaceConstants {
 			}
 		}
 		return -1;
+	}
+	
+	/**
+	 * Gets  the id of the inventory interface
+	 */
+	public int getInventoryInterface() {
+		int[] values = interfaceBindings.get(getInventoryComponentId(usingFixedMode()));
+		if (values == null) {
+			return -1;
+		} else {
+			return values[0];
+		}
 	}
 	
 	/**
@@ -270,6 +318,10 @@ public class InterfaceManager implements InterfaceConstants {
 			System.out.println("Closed the chatbox interface");
 			closeChatboxInterface();
 		}
+		if (getInventoryInterface() != -1) {
+			System.out.println("Closed the inventory interface");
+			closeInventoryInterface();
+		}
 		return this;
 	}
 	
@@ -278,6 +330,18 @@ public class InterfaceManager implements InterfaceConstants {
 	 */
 	public InterfaceManager closeScreenInterface() {
 		int componentId = getScreenComponentId(usingFixedMode());
+		int[] values = interfaceBindings.get(componentId);
+		if (values == null) {
+			return this;
+		}
+		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
+	}
+	
+	/**
+	 * Closes the inventory interface
+	 */
+	public InterfaceManager closeInventoryInterface() {
+		int componentId = getInventoryComponentId(usingFixedMode());
 		int[] values = interfaceBindings.get(componentId);
 		if (values == null) {
 			return this;
@@ -309,4 +373,13 @@ public class InterfaceManager implements InterfaceConstants {
 		return sendInterface(getScreenPaneId(usingFixedMode()), componentId, interfaceId);
 	}
 	
+	/**
+	 * Sends the inventory interface
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public InterfaceManager sendInventoryInterface(int interfaceId) {
+		return sendInterface(usingFixedMode() ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID, interfaceId);
+	}
 }

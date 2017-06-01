@@ -94,4 +94,9 @@ public class Item extends Node {
 	public int getSize() {
 		return 1;
 	}
+	
+	@Override
+	public Item toItem() {
+		return this;
+	}
 }

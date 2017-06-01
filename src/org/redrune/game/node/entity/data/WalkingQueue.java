@@ -281,6 +281,14 @@ public class WalkingQueue {
 	}
 	
 	/**
+	 * If we're moving - this depends on whether the {@link #walkingQueue} has points in it and our run/walk directions
+	 * are n/a
+	 */
+	public boolean isMoving() {
+		return walkDir != -1 || runDir != -1 || !walkingQueue.isEmpty();
+	}
+	
+	/**
 	 * Represents a single point to walk.
 	 *
 	 * @author Mystic Flow

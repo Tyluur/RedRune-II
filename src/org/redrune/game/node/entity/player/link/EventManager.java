@@ -1,10 +1,12 @@
 package org.redrune.game.node.entity.player.link;
 
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.*;
 import org.redrune.game.node.entity.player.render.flag.impl.Animation;
-import org.redrune.network.rs666.packet.input.InputType;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.rs.input.InputType;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -76,11 +78,16 @@ public class EventManager {
 			player.getManager().getInterfaces().closeAllInterfaces();
 		}
 		if (stopWalk) {
+			player.setInteractionTask(null);
 			player.getWalkingQueue().reset();
-			player.getTransmitter().sendMinimapFlagReset();
 		}
 		if (stopActions) {
 			// TODO: stop actions from being done
+		}
+		player.turnTo(null);
+		NPC interactingNPC = player.getAttribute(AttributeKey.INTERACTING_NPC);
+		if (interactingNPC != null) {
+			interactingNPC.endPlayerInteraction(player);
 		}
 	}
 	

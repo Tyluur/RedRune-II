@@ -6,8 +6,10 @@ import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.module.type.ItemInteractionModule;
 import org.redrune.game.module.type.NPCInteractionModule;
 import org.redrune.game.module.type.ObjectInteractionModule;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
+import org.redrune.utility.rs.InteractionOption;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,6 +114,36 @@ public class ModuleRepository {
 	 */
 	private static List<InterfaceInteractionModule> getInterfaceModules(int interfaceId) {
 		return INTERFACE_MODULES.stream().filter(module -> ArrayUtils.contains(module.interfaceSubscriptionIds(), interfaceId)).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Handles the interaction with an npc by looping through all modules and finding which one will handle this.
+	 *
+	 * @param player
+	 * 		The player interacting.
+	 * @param npc
+	 * 		The npc interacting with.
+	 * @param option
+	 * 		The option clicked on the npc.
+	 * @return {@code True} if successfully interacted.
+	 */
+	public static boolean handle(Player player, NPC npc, InteractionOption option) {
+		for (NPCInteractionModule module : getNPCModules(npc.getId())) {
+			if (module.handle(player, npc, option)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Gets the npc modules for an nc
+	 *
+	 * @param npcId
+	 * 		The id of the interface
+	 */
+	private static List<NPCInteractionModule> getNPCModules(int npcId) {
+		return NPC_MODULES.stream().filter(module -> ArrayUtils.contains(module.npcSubscriptionIds(), npcId)).collect(Collectors.toList());
 	}
 	
 }

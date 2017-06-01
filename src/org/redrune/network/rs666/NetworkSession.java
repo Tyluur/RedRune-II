@@ -7,7 +7,7 @@ import org.jboss.netty.channel.ChannelFuture;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerViewComponents;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.structure.out.PingPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.PingPacketBuilder;
 
 /**
  * The networkSession connected to the main game

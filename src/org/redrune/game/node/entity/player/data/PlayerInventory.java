@@ -6,7 +6,7 @@ import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
-import org.redrune.network.rs666.packet.structure.out.ContainerPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -74,6 +74,20 @@ public class PlayerInventory {
 		items.remove(new Item(itemId, amount));
 		sendContainer();
 		return true;
+	}
+	
+	/**
+	 * Delets an item from the slot
+	 *
+	 * @param slot
+	 * 		The slot
+	 * @param item
+	 * 		The item
+	 */
+	public void deleteItem(int slot, Item item) {
+		Item[] itemsBefore = items.getItemsCopy();
+		items.remove(slot, item);
+		sendContainer();
 	}
 	
 	/**

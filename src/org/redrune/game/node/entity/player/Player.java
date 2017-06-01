@@ -10,12 +10,13 @@ import org.redrune.game.node.entity.player.render.PlayerRendering;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.world.SequencialUpdate;
 import org.redrune.game.world.World;
+import org.redrune.game.world.path.NodeInteractionTask;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
-import org.redrune.network.rs666.packet.structure.out.MapRegionBuilder;
-import org.redrune.network.rs666.packet.structure.out.RunEnergyBuilder;
-import org.redrune.network.rs666.packet.structure.out.VarpPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.MapRegionBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.RunEnergyBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -34,6 +35,12 @@ public final class Player extends Entity {
 	private final PlayerDetails details;
 	
 	/**
+	 * The skills of the player
+	 */
+	@Getter
+	private final PlayerSkills skills;
+	
+	/**
 	 * The inventory of the player
 	 */
 	@Getter
@@ -46,10 +53,10 @@ public final class Player extends Entity {
 	private final PlayerEquipment equipment;
 	
 	/**
-	 * The skills of the player
+	 * The bank of the player
 	 */
 	@Getter
-	private final PlayerSkills skills;
+	private final PlayerBank bank;
 	
 	/**
 	 * The manager instance
@@ -82,6 +89,13 @@ public final class Player extends Entity {
 	@Getter
 	private transient PlayerRenderData renderData;
 	
+	/**
+	 * The path event
+	 */
+	@Getter
+	@Setter
+	private transient NodeInteractionTask interactionTask;
+	
 	public Player(String username, String password, NetworkSession session) {
 		super(GameConstants.HOME_LOCATION);
 		this.skills = new PlayerSkills();
@@ -90,6 +104,7 @@ public final class Player extends Entity {
 		this.inventory = new PlayerInventory();
 		this.variables = new PlayerVariables();
 		this.manager = new PlayerManager();
+		this.bank = new PlayerBank();
 		
 		this.setNetworkSession(session);
 		this.getNetworkSession().setPlayer(this);
@@ -99,8 +114,6 @@ public final class Player extends Entity {
 	public void register() {
 		registerTransients();
 		
-		setRenderable(true);
-		
 		World.get().getPlayers().add(this);
 		
 		transmitter.sendLoginComponents();
@@ -108,6 +121,10 @@ public final class Player extends Entity {
 		inventory.sendContainer();
 		skills.refreshAll();
 		manager.getNotes().sendLoginConfiguration();
+		
+		// renderable must be after this because of map region building...
+		
+		setRenderable(true);
 		
 		SequencialUpdate.getRenderablePlayers().add(this);
 		getUpdateMasks().register(new AppearanceUpdate(this));
@@ -132,6 +149,11 @@ public final class Player extends Entity {
 		return 1;
 	}
 	
+	@Override
+	public Player toPlayer() {
+		return this;
+	}
+	
 	/**
 	 * Generates the transient objects (objects which will not save)
 	 */
@@ -143,14 +165,11 @@ public final class Player extends Entity {
 		this.transmitter = new NetworkTransmitter(this);
 		this.renderData = new PlayerRenderData(this);
 		
+		// actual player things
 		this.skills.setPlayer(this);
 		this.equipment.setPlayer(this);
 		this.inventory.setPlayer(this);
-	}
-	
-	@Override
-	public Player toPlayer() {
-		return this;
+		this.bank.setPlayer(this);
 	}
 	
 	@Override
@@ -172,6 +191,9 @@ public final class Player extends Entity {
 	@Override
 	public void tick() {
 		manager.getEvents().process(this);
+		if (interactionTask != null && interactionTask.process(this)) {
+			setInteractionTask(null);
+		}
 	}
 	
 	@Override
@@ -192,13 +214,14 @@ public final class Player extends Entity {
 	 */
 	public void sendSettings() {
 		//		getTransmitter().send(new VarpPacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));s));
-		getTransmitter().send(new VarpPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
-		getTransmitter().send(new VarpPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
-		getTransmitter().send(new VarpPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, false) ? 1 : 0).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, false) ? 1 : 0).build(this));
 		
-		getTransmitter().send(new VarpPacketBuilder(173, getVariables().isRunToggled() ? 1 : 0).build(this));
-		getTransmitter().send(new VarpPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
-		getTransmitter().send(new VarpPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(173, getVariables().isRunToggled() ? 1 : 0).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
 		getTransmitter().send(new RunEnergyBuilder(getVariables().getRunEnergy()).build(this));
 	}
+	
 }

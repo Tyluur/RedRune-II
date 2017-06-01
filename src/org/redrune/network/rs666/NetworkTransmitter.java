@@ -3,10 +3,10 @@ package org.redrune.network.rs666;
 import org.redrune.game.GameConstants;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.input.InputResponse;
-import org.redrune.network.rs666.packet.input.InputType;
-import org.redrune.network.rs666.packet.structure.out.*;
+import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.rs.constant.InterfaceConstants;
+import org.redrune.utility.rs.input.InputResponse;
+import org.redrune.utility.rs.input.InputType;
 
 /**
  * This class handles the transmission of all important packets directly to the client.
@@ -37,7 +37,7 @@ public final class NetworkTransmitter {
 		player.getManager().getInterfaces().sendLogin();
 		player.sendSettings();
 		sendDefaultConfigs();
-		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ".", false);
+		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!", false);
 		return this;
 	}
 	
@@ -58,7 +58,7 @@ public final class NetworkTransmitter {
 	public NetworkTransmitter sendDefaultConfigs() {
 		send(new InterfaceChangeBuilder(34, 13, false).build(player));
 		send(new InterfaceChangeBuilder(34, 3, false).build(player));
-		send(new VarpPacketBuilder(281, 1000).build(player));// Tutorial-completed-config
+		send(new ConfigPacketBuilder(281, 1000).build(player));// Tutorial-completed-config
 		send(new CS2ConfigBuilder(168, 4).build(player));
 		send(new CS2ConfigBuilder(1273, 1).build(player));
 		send(new CS2ConfigBuilder(1000, 1).build(player));
@@ -127,6 +127,17 @@ public final class NetworkTransmitter {
 		
 		boolean shouldFilter = filterable.length != 0 && filterable[0];
 		send(new MessageBuilder(shouldFilter ? 109 : 0, text).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends a message over to the console
+	 *
+	 * @param message
+	 * 		The message
+	 */
+	public NetworkTransmitter sendConsoleMessage(String message) {
+		send(new MessageBuilder(99, message).build(player));
 		return this;
 	}
 	
@@ -246,7 +257,7 @@ public final class NetworkTransmitter {
 	 * Sends the packet to reset the minimap flag location
 	 */
 	public NetworkTransmitter sendMinimapFlagReset() {
-		send(new MinimapFlagBuilder(255, 255).build(player));
+		send(new MinimapFlagResetBuilder(255, 255).build(player));
 		return this;
 	}
 	
@@ -273,4 +284,5 @@ public final class NetworkTransmitter {
 		send(new CS2ScriptBuilder(type.getScriptId(), "s", title).build(player));
 		return this;
 	}
+	
 }

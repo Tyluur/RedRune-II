@@ -2,6 +2,10 @@ package org.redrune.game.node;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 
@@ -61,4 +65,69 @@ public abstract class Node {
 	public Region getRegion() {
 		return RegionManager.getRegion(location.getRegionId());
 	}
+	
+	/**
+	 * Verifies if this entity is a player
+	 *
+	 * @return A {@code Boolean} flag
+	 */
+	public boolean isPlayer() {
+		return toPlayer() != null;
+	}
+	
+	/**
+	 * Converts this node to a {@code Player} {@code Object}
+	 *
+	 * @return A {@code Player}
+	 */
+	public Player toPlayer() {
+		return null;
+	}
+	
+	/**
+	 * Verifies if this node is an npc
+	 *
+	 * @return A {@code Boolean} flag
+	 */
+	public boolean isNPC() {
+		return toNPC() != null;
+	}
+	
+	/**
+	 * Converts this entity to a {@code NPC} {@code Object}
+	 *
+	 * @return A {@code NPC}
+	 */
+	public NPC toNPC() {
+		return null;
+	}
+	
+	/**
+	 * Checks if this node is an item
+	 */
+	public boolean isItem() {
+		return toItem() != null;
+	}
+	
+	/**
+	 * Converts this node to a {@code Item} {@code Object}
+	 */
+	public Item toItem() {
+		return null;
+	}
+	
+	/**
+	 * Checks if this node is a game object
+	 */
+	public boolean isGameObject() {
+		return toGameObject() != null;
+	}
+	
+	/**
+	 * Converts this node to a {@code GameObject} {@code Object}
+	 */
+	public GameObject toGameObject() {
+		return null;
+	}
+	
 }

@@ -67,12 +67,12 @@ public class PathFactory {
 		int destX = destination.getViewportX(base, 0);
 		int destY = destination.getViewportY(base, 0);
 		PathState state = pathFinder.findPath(entity, entity.getLocation(), srcX, srcY, destX, destY, entity.getLocation().getPlane(), 0, entity.getWalkingQueue().isRunning(), ignoreLastStep, moveNear);
-		if (state != null && addToWalking) {
-			entity.getWalkingQueue().reset();
-			for (Position step : state.getPoints()) {
-				entity.getWalkingQueue().addPath(step.getX(), step.getY());
-				//				System.out.println("Adding point " + step + " to the queue");
-			}
+		if (state == null || !addToWalking) {
+			return state;
+		}
+		entity.getWalkingQueue().reset();
+		for (Position step : state.getPoints()) {
+			entity.getWalkingQueue().addPath(step.getX(), step.getY());
 		}
 		return state;
 	}

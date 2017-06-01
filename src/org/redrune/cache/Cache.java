@@ -85,4 +85,14 @@ public class Cache {
 		return CacheManager.cacheCFCount(CacheConstants.GFX_IDX_ID);
 	}
 	
+	/**
+	 * Gets the amount of components an interface has
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public static int getAmountOfComponents(int interfaceId) {
+		return CacheManager.getContainerChildCount(CacheConstants.INTERFACEDEF_IDX_ID, interfaceId);
+	}
+	
 }

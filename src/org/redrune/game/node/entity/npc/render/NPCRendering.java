@@ -8,7 +8,7 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.structure.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
 
 import java.util.Iterator;
 import java.util.List;

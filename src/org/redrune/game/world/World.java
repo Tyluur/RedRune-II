@@ -70,7 +70,8 @@ public final class World {
 	 * 		The {@code NPCSpawn} object
 	 */
 	public World addSpawn(NPCSpawn spawn) {
-		return addNPC(spawn.getNpcId(), spawn.getTile(), spawn.getDirection());
+		addNPC(spawn.getNpcId(), spawn.getTile(), spawn.getDirection());
+		return this;
 	}
 	
 	/**
@@ -81,11 +82,11 @@ public final class World {
 	 * @param location
 	 * 		The location of the npc
 	 */
-	public World addNPC(int id, Location location, Direction direction) {
+	public NPC addNPC(int id, Location location, Direction direction) {
 		final NPC npc = new NPC(id, location, direction);
 		npc.register();
 		npcs.add(npc);
-		return this;
+		return npc;
 	}
 	
 	/**

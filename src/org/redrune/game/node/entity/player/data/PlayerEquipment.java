@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
-import org.redrune.network.rs666.packet.structure.out.ContainerPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
 import org.redrune.utility.rs.constant.EquipConstants;
 
 /**

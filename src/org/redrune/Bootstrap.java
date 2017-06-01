@@ -8,8 +8,9 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.game.module.ModuleRepository;
+import org.redrune.game.module.command.CommandRepository;
 import org.redrune.network.NetworkConstants;
-import org.redrune.network.rs666.packet.structure.IncomingPacketRepository;
+import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
 
@@ -59,6 +60,7 @@ public class Bootstrap {
 			ItemDefinitionParser.loadEquipIds();
 			IncomingPacketRepository.storeAll();
 			ModuleRepository.registerAllModules();
+			CommandRepository.populate();
 			MapDataParser.readAll();
 			
 			// finalization

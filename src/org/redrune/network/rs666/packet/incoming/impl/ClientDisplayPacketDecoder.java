@@ -1,0 +1,46 @@
+package org.redrune.network.rs666.packet.incoming.impl;
+
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.Packet;
+import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.Misc;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 5/21/2017
+ */
+public class ClientDisplayPacketDecoder implements IncomingPacketDecoder {
+	
+	@Override
+	public int[] bindings() {
+		return Misc.arguments(34);
+	}
+	
+	@Override
+	public void read(Player player, Packet packet) {
+		int screenSizeMode = packet.readByte();
+		int screenSizeX = packet.readShort();
+		int screenSizeY = packet.readShort();
+		int displayMode = packet.readByte();
+		if (screenSizeMode < 0 || screenSizeMode > 3) {
+			return;
+		}
+		boolean send = false;
+		if (screenSizeMode != player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
+			send = true;
+		}
+		player.getNetworkSession().getViewComponents().setScreenSizeMode(screenSizeMode);
+		player.getNetworkSession().getViewComponents().setScreenSizeX(screenSizeX);
+		player.getNetworkSession().getViewComponents().setScreenSizeY(screenSizeY);
+		player.getNetworkSession().getViewComponents().setDisplayMode(displayMode);
+		if (send) {
+			player.getManager().getInterfaces().sendLogin();
+			player.getManager().getInterfaces().sendInterface(742, true);
+			if (screenSizeMode < 2) {
+				player.getTransmitter().sendFixedAMasks();
+			} else {
+				player.getTransmitter().sendFullScreenAMasks();
+			}
+		}
+	}
+}

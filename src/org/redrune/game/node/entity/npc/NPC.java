@@ -6,7 +6,9 @@ import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.Directions.Direction;
 
 /**
@@ -93,12 +95,39 @@ public class NPC extends Entity {
 	}
 	
 	@Override
+	public NPC toNPC() {
+		return this;
+	}
+	
+	@Override
 	public String toString() {
 		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + ", renderable=" + isRenderable() + "]";
 	}
 	
-	@Override
-	public NPC toNPC() {
-		return this;
+	/**
+	 * Starts an interaction with the player by facing them
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public void startPlayerInteraction(Player player) {
+		putAttribute(AttributeKey.INTERACTING_PLAYER, player);
+		player.putAttribute(AttributeKey.INTERACTING_NPC, this);
+		
+		turnTo(player);
+	}
+	
+	/**
+	 * Ends the interaction with the player. If we're still interacting with them it will stop facing them. If we have
+	 * moved onto somebody else, it will not update.
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public void endPlayerInteraction(Player player) {
+		Player interactingWith = getAttribute(AttributeKey.INTERACTING_PLAYER, null);
+		if (interactingWith.equals(player)) {
+			turnTo(null);
+		}
 	}
 }

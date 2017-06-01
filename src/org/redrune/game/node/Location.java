@@ -80,6 +80,15 @@ public final class Location {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Location) {
+			Location location = (Location) obj;
+			return location.getX() == x && location.getY() == y && location.getPlane() == plane;
+		}
+		return super.equals(obj);
+	}
+	
+	@Override
 	public String toString() {
 		return "[x=" + x + ", y=" + y + ", plane=" + plane + "]";
 	}
@@ -320,5 +329,4 @@ public final class Location {
 		int deltaX = location.x - x, deltaY = location.y - y;
 		return deltaX <= distance && deltaX >= -distance && deltaY <= distance && deltaY >= -distance;
 	}
-	
 }

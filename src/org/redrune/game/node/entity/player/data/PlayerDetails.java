@@ -59,6 +59,7 @@ public final class PlayerDetails {
 		this.rights = new TreeSet<>(Comparator.comparingInt(Enum::ordinal));
 		this.appearance = new PlayerAppearance();
 		this.rights.add(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER);
+		this.rights.add(PlayerRight.PLAYER);
 	}
 	
 	/**
@@ -81,6 +82,21 @@ public final class PlayerDetails {
 	 */
 	public boolean isDonator() {
 		return rights.contains(PlayerRight.DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
+	}
+	
+	/**
+	 * If the {@link #rights} set has any of these parameters, this is true
+	 *
+	 * @param rights
+	 * 		The rights
+	 */
+	public boolean rightsContains(PlayerRight... rights) {
+		for (PlayerRight right : rights) {
+			if (this.rights.contains(right)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

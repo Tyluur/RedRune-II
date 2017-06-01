@@ -2,6 +2,7 @@ package org.redrune.game.world.region;
 
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.utility.rs.constant.ClippingFlags;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,9 +16,121 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RegionManager {
 	
 	/**
+	 * The direction deltas, different from the ones in {@link Location}.
+	 */
+	public static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
+	
+	/**
+	 * The direction deltas, different from the ones in {@link Location}.
+	 */
+	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+	
+	/**
 	 * The region mapping.
 	 */
 	private static final Map<Integer, Region> REGION_CACHE = new ConcurrentHashMap<>();
+	
+	/**
+	 * When an entity enters a new region, we must add them to the new region, remove them from the previous one as
+	 * well.
+	 *
+	 * @param entity
+	 * 		The entity.
+	 */
+	// TODO: multi-zone support
+	// TODO: region-music support
+	public static void updateEntityRegion(Entity entity) {
+		if (!entity.isRenderable()) {
+			entity.getRegion().removeEntity(entity);
+			return;
+		}
+		int regionId = entity.getRegion().getId();
+		int lastRegionId = entity.getLastRegion() == null ? 0 : entity.getLastRegion().getId();
+		
+		// change of region
+		if (lastRegionId != regionId) {
+			if (lastRegionId > 0) {
+				getRegion(lastRegionId).removeEntity(entity);
+			}
+			Region region = getRegion(regionId);
+			region.addEntity(entity);
+			entity.setLastRegion(entity.getRegion());
+		}
+		// this is where we would check if we are in a multi zone
+	}
+	
+	/**
+	 * Gets a new region by the id
+	 *
+	 * @param regionId
+	 * 		The id of the region
+	 */
+	public static Region getRegion(int regionId) {
+		return REGION_CACHE.computeIfAbsent(regionId, Region::new);
+	}
+	
+	/**
+	 * Checks if a tile is free
+	 *
+	 * @param plane
+	 * 		The plane of the tile
+	 * @param x
+	 * 		The x
+	 * @param y
+	 * 		The y
+	 * @param size
+	 * 		The size of the node checking.
+	 */
+	public static boolean isTileFree(int plane, int x, int y, int dir, int size) {
+		return isTileFree(plane, x, y, DIRECTION_DELTA_X[dir], DIRECTION_DELTA_Y[dir], size);
+	}
+	
+	/**
+	 * Checks if a tile is free
+	 *
+	 * @param plane
+	 * 		The plane of the tile
+	 * @param x
+	 * 		The x
+	 * @param y
+	 * 		The y
+	 * @param xOffset
+	 * 		The x offset, based on direction
+	 * @param yOffset
+	 * 		The y offset, based on direction
+	 * @param size
+	 * 		The size of the node checking.
+	 */
+	public static boolean isTileFree(int plane, int x, int y, int xOffset, int yOffset, int size) {
+		if (size == 1) {
+			int mask = getClippingMask(x + xOffset, y + yOffset, plane);
+			if (xOffset == -1 && yOffset == 0) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST)) == 0;
+			}
+			if (xOffset == 1 && yOffset == 0) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_WEST)) == 0;
+			}
+			if (xOffset == 0 && yOffset == -1) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH)) == 0;
+			}
+			if (xOffset == 0 && yOffset == 1) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH)) == 0;
+			}
+			if (xOffset == -1 && yOffset == -1) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH | ClippingFlags.WALLOBJ_EAST | ClippingFlags.CORNEROBJ_NORTHEAST)) == 0 && (getClippingMask(x - 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST)) == 0 && (getClippingMask(x, y - 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH)) == 0;
+			}
+			if (xOffset == 1 && yOffset == -1) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH | ClippingFlags.WALLOBJ_WEST | ClippingFlags.CORNEROBJ_NORTHWEST)) == 0 && (getClippingMask(x + 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_WEST)) == 0 && (getClippingMask(x, y - 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH)) == 0;
+			}
+			if (xOffset == -1 && yOffset == 1) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST | ClippingFlags.WALLOBJ_SOUTH | ClippingFlags.CORNEROBJ_SOUTHEAST)) == 0 && (getClippingMask(x - 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST)) == 0 && (getClippingMask(x, y + 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH)) == 0;
+			}
+			if (xOffset == 1 && yOffset == 1) {
+				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH | ClippingFlags.WALLOBJ_WEST | ClippingFlags.CORNEROBJ_SOUTHWEST)) == 0 && (getClippingMask(x + 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_WEST)) == 0 && (getClippingMask(x, y + 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH)) == 0;
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * Gets the clipping mask for the given coordinates.
@@ -61,45 +174,6 @@ public class RegionManager {
 	static Region getRegion(int x, int y) {
 		int regionId = Location.getRegionId(x, y);
 		return REGION_CACHE.computeIfAbsent(regionId, k -> new Region(regionId));
-	}
-	
-	/**
-	 * When an entity enters a new region, we must add them to the new region, remove them from the previous one as
-	 * well.
-	 *
-	 * @param entity
-	 * 		The entity.
-	 */
-	// TODO: multi-zone support
-	// TODO: region-music support
-	public static void updateEntityRegion(Entity entity) {
-		if (!entity.isRenderable()) {
-			entity.getRegion().removeEntity(entity);
-			return;
-		}
-		int regionId = entity.getRegion().getId();
-		int lastRegionId = entity.getLastRegion() == null ? 0 : entity.getLastRegion().getId();
-		
-		// change of region
-		if (lastRegionId != regionId) {
-			if (lastRegionId > 0) {
-				getRegion(lastRegionId).removeEntity(entity);
-			}
-			Region region = getRegion(regionId);
-			region.addEntity(entity);
-			entity.setLastRegion(entity.getRegion());
-		}
-		// this is where we would check if we are in a multi zone
-	}
-	
-	/**
-	 * Gets a new region by the id
-	 *
-	 * @param regionId
-	 * 		The id of the region
-	 */
-	public static Region getRegion(int regionId) {
-		return REGION_CACHE.computeIfAbsent(regionId, Region::new);
 	}
 	
 }
