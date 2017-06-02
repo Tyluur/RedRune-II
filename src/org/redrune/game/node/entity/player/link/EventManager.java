@@ -4,7 +4,6 @@ import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.*;
-import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.input.InputType;
 
@@ -15,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-public class EventManager {
+public final class EventManager {
 	
 	/**
 	 * The actions that are waiting to be added to the list of processing actions
@@ -25,7 +24,7 @@ public class EventManager {
 	/**
 	 * The actions that are about to be processed
 	 */
-	private final List<Event> actionsToProcess = Collections.synchronizedList(new ArrayList<>());
+	private final List<Event> eventsToProcess = Collections.synchronizedList(new ArrayList<>());
 	
 	/**
 	 * Adds an event to be processed
@@ -45,49 +44,15 @@ public class EventManager {
 	 */
 	public void executeEvent(Player player, Event event) {
 		try {
-			sendPreExecuteFlags(player, event);
+			if (!sendPreExecuteFlags(player, event)) {
+				return;
+			}
 			event.run(player);
 			if (event.getStackPolicy() == StackPolicy.NONE) {
-				actionsToProcess.clear();
+				eventsToProcess.clear();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Handles the policies before the event is executed
-	 *
-	 * @param player
-	 * 		The player
-	 * @param action
-	 * 		The action
-	 */
-	private void sendPreExecuteFlags(Player player, Event action) {
-		final boolean stopWalk = action.getWalkablePolicy() == WalkablePolicy.RESET;
-		final boolean stopInterfaces = action.getInterfacePolicy() == InterfacePolicy.CLOSE;
-		final boolean stopActions = action.getActionPolicy() == ActionPolicy.RESET;
-		final boolean stopAnimation = action.getAnimationPolicy() == AnimationPolicy.RESET;
-		
-		if (stopAnimation) {
-			player.getUpdateMasks().register(new Animation(-1));
-		}
-		if (stopInterfaces) {
-			Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
-			player.getTransmitter().closeInputBox();
-			player.getManager().getInterfaces().closeAllInterfaces();
-		}
-		if (stopWalk) {
-			player.setInteractionTask(null);
-			player.getWalkingQueue().reset();
-		}
-		if (stopActions) {
-			// TODO: stop actions from being done
-		}
-		player.turnTo(null);
-		NPC interactingNPC = player.getAttribute(AttributeKey.INTERACTING_NPC);
-		if (interactingNPC != null) {
-			interactingNPC.endPlayerInteraction(player);
 		}
 	}
 	
@@ -99,12 +64,15 @@ public class EventManager {
 	 */
 	public void process(Player player) {
 		try {
-			actionsToProcess.addAll(eventQueue);
+			eventsToProcess.addAll(eventQueue);
 			eventQueue.clear();
 			
-			for (Iterator<Event> iterator = actionsToProcess.iterator(); iterator.hasNext(); ) {
+			for (Iterator<Event> iterator = eventsToProcess.iterator(); iterator.hasNext(); ) {
 				Event event = iterator.next();
-				sendPreExecuteFlags(player, event);
+				if (!sendPreExecuteFlags(player, event)) {
+					iterator.remove();
+					continue;
+				}
 				try {
 					event.run(player);
 				} catch (Exception e) {
@@ -113,7 +81,7 @@ public class EventManager {
 					break;
 				}
 				if (event.getStackPolicy() == StackPolicy.NONE) {
-					actionsToProcess.clear();
+					eventsToProcess.clear();
 					break;
 				} else {
 					iterator.remove();
@@ -122,6 +90,47 @@ public class EventManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Handles the policies before the event is executed
+	 *
+	 * @param player
+	 * 		The player
+	 * @param event
+	 * 		The event
+	 */
+	private boolean sendPreExecuteFlags(Player player, Event event) {
+		final boolean stopWalk = event.getWalkablePolicy() == WalkablePolicy.RESET;
+		final boolean stopInterfaces = event.getInterfacePolicy() == InterfacePolicy.CLOSE;
+		final boolean stopActions = event.getActionPolicy() == ActionPolicy.RESET;
+		final boolean stopAnimation = event.getAnimationPolicy() == AnimationPolicy.RESET;
+		
+		if (!event.canStart(player)) {
+			return false;
+		}
+		
+		if (stopAnimation) {
+			player.sendAnimation(-1);
+		}
+		if (stopInterfaces) {
+			Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
+			player.getTransmitter().closeInputBox();
+			player.getManager().getInterfaces().closeAllInterfaces();
+		}
+		if (stopWalk) {
+			player.setInteractionTask(null);
+			player.getWalkingQueue().reset();
+		}
+		if (stopActions) {
+			player.getManager().getActions().forceStop();
+		}
+		player.turnTo(null);
+		NPC interactingNPC = player.getAttribute(AttributeKey.INTERACTING_NPC);
+		if (interactingNPC != null) {
+			interactingNPC.endPlayerInteraction(player);
+		}
+		return true;
 	}
 	
 }

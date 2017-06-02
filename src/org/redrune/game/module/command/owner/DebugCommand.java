@@ -1,15 +1,9 @@
 package org.redrune.game.module.command.owner;
 
-import org.redrune.core.system.SystemManager;
-import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
-import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.impl.Animation;
-import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
-import org.redrune.utility.AttributeKey;
-import org.redrune.utility.backend.Priority;
+import org.redrune.game.world.region.RegionManager;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -27,7 +21,11 @@ public class DebugCommand extends CommandModule {
 	public void handle(Player player, String[] args, boolean console) {
 		try {
 			
-			Animation MODERN_ANIM = new Animation(8939, 0, false, Priority.HIGHEST);
+			for (int i = 0; i < 100; i++) {
+				RegionManager.addFloorItem(4151, 1, 10, player.getLocation(), player.getDetails().getUsername());
+			}
+	
+	/*		Animation MODERN_ANIM = new Animation(8939, 0, false, Priority.HIGHEST);
 			Graphic MODERN_GRAPHIC = new Graphic(1576, 0, 0, false);
 			
 			player.getUpdateMasks().register(MODERN_ANIM);
@@ -38,7 +36,7 @@ public class DebugCommand extends CommandModule {
 				player.getUpdateMasks().register(new Graphic(-1));
 				player.putAttribute(AttributeKey.TELEPORT_LOCATION, Location.create(Integer.parseInt(args[1]), Integer.parseInt(args[2]), 0));
 			}));
-			
+			*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

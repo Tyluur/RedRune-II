@@ -6,6 +6,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
 import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ContainerUpdateBuilder;
 import org.redrune.utility.rs.constant.EquipConstants;
 
 /**
@@ -35,6 +36,27 @@ public class PlayerEquipment implements EquipConstants {
 	 */
 	public void sendContainer() {
 		player.getTransmitter().send(new ContainerPacketBuilder(94, items.toArray(), false).build(player));
+	}
+	
+	/**
+	 * Refreshes an array of slots
+	 *
+	 * @param slots
+	 * 		The slots
+	 */
+	public void refresh(int... slots) {
+		if (slots != null) {
+			player.getTransmitter().send(new ContainerUpdateBuilder(94, items.toArray(), slots).build(player));
+		}
+	}
+	
+	/**
+	 * Refreshes all the slots
+	 */
+	public void refreshAll() {
+		for (int i = 0; i < 15; i++) {
+			refresh(i);
+		}
 	}
 	
 	/**

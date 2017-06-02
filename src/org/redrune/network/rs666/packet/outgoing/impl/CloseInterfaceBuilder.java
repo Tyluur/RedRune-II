@@ -3,14 +3,14 @@ package org.redrune.network.rs666.packet.outgoing.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-public class CloseInterfaceBuilder implements OutgoingPacketStructure {
+public class CloseInterfaceBuilder implements OutgoingPacketBuilder {
 	
 	/**
 	 * The window id.

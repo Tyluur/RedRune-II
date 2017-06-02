@@ -1,6 +1,7 @@
 package org.redrune.game.node.entity.player.render;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.game.node.entity.player.render.flag.impl.HitUpdate;
@@ -32,6 +33,7 @@ public class UpdateMasks {
 	/**
 	 * The mask data.
 	 */
+	@Getter
 	private int maskData = 0;
 	
 	/**
@@ -42,7 +44,16 @@ public class UpdateMasks {
 	/**
 	 * The current animation priority.
 	 */
+	@Getter
+	@Setter
 	private Priority animationPriority;
+	
+	/**
+	 * The time the last animation ended
+	 */
+	@Getter
+	@Setter
+	private long lastAnimationEndTime = -1;
 	
 	/**
 	 * Prepares the outgoing packet for updating.
@@ -120,27 +131,4 @@ public class UpdateMasks {
 		return (maskData & data) != 0;
 	}
 	
-	/**
-	 * Gets the mask data.
-	 *
-	 * @return The mask data.
-	 */
-	public int getMaskData() {
-		return maskData;
-	}
-	
-	/**
-	 * @return the animationPriority
-	 */
-	public Priority getAnimationPriority() {
-		return animationPriority;
-	}
-	
-	/**
-	 * @param animationPriority
-	 * 		the animationPriority to set
-	 */
-	public void setAnimationPriority(Priority animationPriority) {
-		this.animationPriority = animationPriority;
-	}
 }

@@ -37,7 +37,7 @@ public class WornEquipmentInteractionModule implements InterfaceInteractionModul
 				return true;
 			}
 			SlotAction action = optional.get();
-			player.getManager().getEvents().addEvent(new ItemRemovalEvent(new ItemRemovalContext(action.getEquipmentSlot())));
+			player.getManager().getEvents().executeEvent(player, new ItemRemovalEvent(new ItemRemovalContext(action.getEquipmentSlot())));
 		}
 		return true;
 	}

@@ -1,10 +1,11 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
-import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.context.NodeInteractionEventContext;
-import org.redrune.game.node.entity.player.event.impl.NodeInteractionEvent;
+import org.redrune.game.node.entity.player.event.context.NPCEventContext;
+import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
+import org.redrune.game.node.entity.player.event.impl.NPCEvent;
+import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
@@ -50,24 +51,19 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 		if (npc == null || !npc.isRenderable()) {
 			return;
 		}
-		
-		if (packet.getOpcode() != LAST_NPC_OPTION) {
-			InteractionOption option = getOptionByOpcode(packet.getOpcode());
-			if (option == null) {
-				LOGGER.severe("Unable to identify interaction option for opcode " + packet.getOpcode());
-				return;
-			}
+		InteractionOption option = getOptionByOpcode(packet.getOpcode());
+		if (option == null) {
+			LOGGER.severe("Unable to identify interaction option for opcode " + packet.getOpcode());
+			return;
+		}
+		if (option != InteractionOption.EXAMINE) {
 			player.getWalkingQueue().reset(forceRun);
-			player.getManager().getEvents().addEvent(new NodeInteractionEvent(new NodeInteractionEventContext(npc, () -> {
-				player.turnTo(npc);
-				npc.startPlayerInteraction(player);
-				
-				ModuleRepository.handle(player, npc, option);
-				player.getTransmitter().sendMessage("option=" + option + ", " + npc, true);
-			})));
+			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(npc, () -> player.getManager().getEvents().executeEvent(player, new NPCEvent(new NPCEventContext(npc, option))))));
 		} else {
+			player.getTransmitter().sendMessage(npc.toString(), true);
 			// TODO: npc examine click
 		}
+		
 	}
 	
 	/**
@@ -88,6 +84,8 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				return InteractionOption.THIRD_OPTION;
 			case FOURTH_NPC_OPTION:
 				return InteractionOption.FOURTH_OPTION;
+			case LAST_NPC_OPTION:
+				return InteractionOption.EXAMINE;
 			default:
 				return null;
 		}

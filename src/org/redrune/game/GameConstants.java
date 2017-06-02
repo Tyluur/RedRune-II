@@ -38,4 +38,19 @@ public interface GameConstants {
 	 */
 	Location HOME_LOCATION = new Location(3092, 3503);
 	
+	/**
+	 * The experience multiplier for combat skills
+	 */
+	int COMBAT_EXPERIENCE_MULTIPLIER = 75;
+	
+	/**
+	 * The experience multiplier for non-combat skills (excluding prayer)
+	 */
+	int SKILL_EXPERIENCE_MULTIPLIER = 15;
+	
+	/**
+	 * The experience multiplier for prayer
+	 */
+	int PRAYER_EXPERIENCE_MULTIPLIER = 5;
+	
 }

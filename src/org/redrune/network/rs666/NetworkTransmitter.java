@@ -37,7 +37,7 @@ public final class NetworkTransmitter {
 		player.getManager().getInterfaces().sendLogin();
 		player.sendSettings();
 		sendDefaultConfigs();
-		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!", false);
+		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!");
 		return this;
 	}
 	
@@ -119,7 +119,7 @@ public final class NetworkTransmitter {
 	 * @param text
 	 * 		The text of the message
 	 * @param filterable
-	 * 		If the message should be filterable.
+	 * 		If the message should be filterable. If this parameter is empty or false, messages won't be filtered.
 	 */
 	public NetworkTransmitter sendMessage(String text, boolean... filterable) {
 		// messages should only be filtered if this is sent as NetworkTransmitter#sendMessage("hi", true);

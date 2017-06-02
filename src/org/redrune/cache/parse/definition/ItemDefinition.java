@@ -141,8 +141,8 @@ public final class ItemDefinition {
 		try {
 			is = CacheManager.getData(CacheConstants.ITEMDEF_IDX_ID, id >>> 8, id & 0xFF);
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("Item " + id + " doesn't exist in the cache!");
+			e.printStackTrace();
 		}
 		if (is != null) {
 			try {
@@ -190,13 +190,13 @@ public final class ItemDefinition {
 						levelRequirements.put(1, 25);
 						levelRequirements.put(6, 50);
 					} else if (id == 2503) {
-						levelRequirements.put(SkillConstants.DEFENCE, 40);
-						levelRequirements.put(SkillConstants.RANGE, 70);
+						levelRequirements.put((int) SkillConstants.DEFENCE, 40);
+						levelRequirements.put((int) SkillConstants.RANGE, 70);
 					} else if (id == 7462) {
-						levelRequirements.put(SkillConstants.DEFENCE, 45);
+						levelRequirements.put((int) SkillConstants.DEFENCE, 45);
 					} else if (id == 20072) {
-						levelRequirements.put(SkillConstants.ATTACK, 60);
-						levelRequirements.put(SkillConstants.DEFENCE, 60);
+						levelRequirements.put((int) SkillConstants.ATTACK, 60);
+						levelRequirements.put((int) SkillConstants.DEFENCE, 60);
 					} else {
 						levelRequirements.put(levelId, levelReq);
 					}
@@ -219,7 +219,7 @@ public final class ItemDefinition {
 					if (levelRequirements == null) {
 						levelRequirements = new HashMap<>();
 					}
-					levelRequirements.put(SkillConstants.SUMMONING, val);
+					levelRequirements.put((int) SkillConstants.SUMMONING, val);
 					break;
 			}
 		}

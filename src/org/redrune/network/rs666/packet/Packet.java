@@ -132,7 +132,7 @@ public class Packet {
 		int b2 = buffer.readByte() & 0xFF;
 		int b3 = buffer.readByte() & 0xFF;
 		int b4 = buffer.readByte() & 0xFF;
-		return ((b2 << 24) & 0xFF) | ((b1 << 16) & 0xFF) | ((b4 << 8) & 0xFF) | (b3 & 0xFF);
+		return (b2 << 24 | b1 << 16 | b4 << 8 | b3);
 	}
 	
 	/**

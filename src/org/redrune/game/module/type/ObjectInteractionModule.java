@@ -17,7 +17,7 @@ public interface ObjectInteractionModule extends InteractionModule {
 	int[] objectSubscriptionIds();
 	
 	/**
-	 * Hanadles the interaction with the module
+	 * Handles the interaction with the module
 	 *
 	 * @param player
 	 * 		The player interacting

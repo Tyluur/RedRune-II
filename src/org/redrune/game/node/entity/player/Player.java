@@ -118,7 +118,7 @@ public final class Player extends Entity {
 		
 		transmitter.sendLoginComponents();
 		equipment.sendContainer();
-		inventory.sendContainer();
+		inventory.initialize();
 		skills.refreshAll();
 		manager.getNotes().sendLoginConfiguration();
 		
@@ -176,6 +176,7 @@ public final class Player extends Entity {
 	public void loadMapRegions() {
 		super.loadMapRegions();
 		getTransmitter().send(new MapRegionBuilder(!isRenderable()).build(this));
+		getRegion().handleRegionEntry(this);
 	}
 	
 	@Override
@@ -190,7 +191,15 @@ public final class Player extends Entity {
 	
 	@Override
 	public void tick() {
+		checkInteractionTask();
 		manager.getEvents().process(this);
+		manager.getActions().process();
+	}
+	
+	/**
+	 * Checks if the interaction task should be removed, after processing it.
+	 */
+	public void checkInteractionTask() {
 		if (interactionTask != null && interactionTask.process(this)) {
 			setInteractionTask(null);
 		}

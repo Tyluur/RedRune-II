@@ -20,12 +20,12 @@ public class EngineWorkingSet {
 	private static final ExecutorService CACHE_SERVICE_POOL = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new RS2ThreadFactory("JS5-Worker"));
 	
 	/**
-	 * The LOGIC_SERVICE worker.
+	 * The logic worker.
 	 */
 	private static final Executor LOGIC_SERVICE = Executors.newSingleThreadExecutor(new RS2ThreadFactory("GameLogic"));
 	
 	/**
-	 * The executor used.
+	 * The executor used for the update server
 	 */
 	private static final ExecutorService UPDATE_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	

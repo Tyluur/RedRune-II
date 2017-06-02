@@ -1,23 +1,33 @@
 package org.redrune.game.node.entity.player.event.impl.item;
 
+import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.node.entity.player.event.context.item.ItemEventContext;
+import org.redrune.game.node.entity.player.link.LockManager.LockType;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
 public class ItemEvent extends Event<ItemEventContext> {
+	
+	@Override
+	public boolean canStart(Player player) {
+		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
+	}
 	
 	public ItemEvent(ItemEventContext context) {
 		super(context);
@@ -32,11 +42,43 @@ public class ItemEvent extends Event<ItemEventContext> {
 	
 	@Override
 	public void run(Player player) {
-		if (getContext().getOption().equals(InteractionOption.SECOND_OPTION)) {
+		if (ModuleRepository.handle(player, getContext().getItem(), getContext().getSlotId(), getContext().getOption())) {
+			return;
+		}
+		if (getContext().getOption().equals(InteractionOption.FIRST_OPTION)) {
+			handleItemUsage(player);
+		} else if (getContext().getOption().equals(InteractionOption.SECOND_OPTION)) {
 			handleItemEquipping(player);
 		} else if (getContext().getOption().equals(InteractionOption.EXAMINE)) {
 			handleItemExamining(player);
+		} else if (getContext().getOption().equals(InteractionOption.DROP)) {
+			handleItemDrop(player);
 		}
+	}
+	
+	/**
+	 * Handles the dropping of an item
+	 *
+	 * @param player
+	 * 		The player dropping the item
+	 */
+	private void handleItemDrop(Player player) {
+		final Item item = getContext().getItem();
+		if (!Objects.equals(player.getInventory().getItems().get(getContext().getSlotId()), item)) {
+			return;
+		}
+		player.getInventory().deleteItem(getContext().getSlotId(), item);
+		RegionManager.addFloorItem(item.getId(), item.getAmount(), 180, player.getLocation(), player.getDetails().getUsername());
+	}
+	
+	/**
+	 * Handles the usage of items
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	private void handleItemUsage(Player player) {
+	
 	}
 	
 	/**
@@ -125,8 +167,10 @@ public class ItemEvent extends Event<ItemEventContext> {
 		}
 		Item item2 = new Item(item.getId(), oldAmt + item.getAmount());
 		player.getEquipment().getItems().set(targetSlot, item2);
+		player.getEquipment().refresh(targetSlot, targetSlot == 3 ? 5 : 3);
 		player.getEquipment().sendContainer();
-		player.getInventory().sendContainer();
+		player.getInventory().refreshAll();
+		player.getUpdateMasks().register(new AppearanceUpdate(player));
 		/*if (targetSlot == 3) {
 			player.getCombatDefinitions().desecreaseSpecialAttack(0);
 		}*/

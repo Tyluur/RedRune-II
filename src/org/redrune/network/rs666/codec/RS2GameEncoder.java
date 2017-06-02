@@ -20,30 +20,35 @@ public final class RS2GameEncoder extends OneToOneEncoder {
 		if (message instanceof ChannelBuffer) {
 			return ChannelBuffers.copiedBuffer((ChannelBuffer) message);
 		}
-		Packet packetMessage;
+		Packet packet;
 		if (message instanceof PacketBuilder) {
-			packetMessage = ((PacketBuilder) message).toPacket();
+			packet = ((PacketBuilder) message).toPacket();
 		} else {
-			packetMessage = (Packet) message;
+			packet = (Packet) message;
 		}
-		if (!packetMessage.isRaw()) {
-			int packetLength = packetMessage.getBuffer().readableBytes() + 3;
+		if (!packet.isRaw()) {
+			int packetLength = packet.getBuffer().readableBytes() + 4;
 			ChannelBuffer response = ChannelBuffers.buffer(packetLength);
-			if (packetMessage.getOpcode() > 127) {
-				response.writeByte((byte) 128);
+			final int opcode = packet.getOpcode();
+			if (opcode >= 128) {
+				response.writeByte(128);
+				response.writeByte(opcode);
+			} else {
+				response.writeByte(opcode);
 			}
-			response.writeByte((byte) packetMessage.getOpcode());
-			if (packetMessage.getType() == PacketType.VAR_BYTE) {
-				response.writeByte((byte) packetMessage.getBuffer().readableBytes());
-			} else if (packetMessage.getType() == PacketType.VAR_SHORT) {
-				response.writeByte((byte)(packetMessage.getBuffer().readableBytes() >> 8));
-				response.writeByte((byte) packetMessage.getBuffer().readableBytes());
+			if (packet.getType() == PacketType.VAR_BYTE) {
+				response.writeByte(packet.getBuffer().readableBytes());
+			} else if (packet.getType() == PacketType.VAR_SHORT) {
+				if (packetLength > 65535) {
+					throw new IllegalStateException("Could not send a packet with " + packetLength + " bytes within 16 bits.");
+				}
+				response.writeByte((byte) (packet.getBuffer().readableBytes() >> 8));
+				response.writeByte((byte) packet.getBuffer().readableBytes());
 			}
-			response.writeBytes(packetMessage.getBuffer());
-			
+			response.writeBytes(packet.getBuffer());
 			return response;
 		}
-		return packetMessage.getBuffer();
+		return packet.getBuffer();
 	}
 	
 }

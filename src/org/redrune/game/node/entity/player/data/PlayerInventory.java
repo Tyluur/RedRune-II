@@ -6,7 +6,10 @@ import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
+import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ContainerUpdateBuilder;
+import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -31,6 +34,22 @@ public class PlayerInventory {
 	}
 	
 	/**
+	 * Initializes the inventory container
+	 */
+	public void initialize() {
+		player.getTransmitter().send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 0, 27, 4554126).build(player));
+		player.getTransmitter().send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 28, 55, 2097152).build(player));
+		sendContainer();
+	}
+	
+	/**
+	 * Sends the container items
+	 */
+	private void sendContainer() {
+		player.getTransmitter().send(new ContainerPacketBuilder(93, items.toArray(), false).build(player));
+	}
+	
+	/**
 	 * Adds an item to the container
 	 *
 	 * @param itemId
@@ -42,21 +61,51 @@ public class PlayerInventory {
 		if (itemId < 0 || amount < 0 || itemId > Cache.getAmountOfItems()) {
 			return false;
 		}
+		Item[] itemsBefore = items.getItemsCopy();
 		if (!items.add(new Item(itemId, amount))) {
 			items.add(new Item(itemId, items.getFreeSlots()));
 			player.getTransmitter().sendMessage("Not enough space in your inventory.", true);
-			sendContainer();
+			refreshItems(itemsBefore);
 			return false;
 		}
-		sendContainer();
+		refreshItems(itemsBefore);
 		return true;
 	}
 	
 	/**
-	 * Sends the container items
+	 * Refreshes the items
+	 *
+	 * @param itemsBefore
+	 * 		The items array
 	 */
-	public void sendContainer() {
-		player.getTransmitter().send(new ContainerPacketBuilder(93, items.toArray(), false).build(player));
+	private void refreshItems(Item[] itemsBefore) {
+		int[] changedSlots = new int[itemsBefore.length];
+		int count = 0;
+		for (int index = 0; index < itemsBefore.length; index++) {
+			if (itemsBefore[index] != items.getItems()[index]) {
+				changedSlots[count++] = index;
+			}
+		}
+		int[] finalChangedSlots = new int[count];
+		System.arraycopy(changedSlots, 0, finalChangedSlots, 0, count);
+		refresh(finalChangedSlots);
+	}
+	
+	/**
+	 * Refreshes the items in the slots
+	 *
+	 * @param slots
+	 * 		The slots
+	 */
+	private void refresh(int... slots) {
+		player.getTransmitter().send(new ContainerUpdateBuilder(93, items.toArray(), slots).build(player));
+	}
+	
+	/**
+	 * Refreshes all the items
+	 */
+	public void refreshAll() {
+		refresh(items.toArray().length);
 	}
 	
 	/**
@@ -71,8 +120,9 @@ public class PlayerInventory {
 		if (itemId < 0 || amount < 0 || itemId > Cache.getAmountOfItems()) {
 			return false;
 		}
+		Item[] itemsBefore = items.getItemsCopy();
 		items.remove(new Item(itemId, amount));
-		sendContainer();
+		refreshItems(itemsBefore);
 		return true;
 	}
 	
@@ -87,7 +137,7 @@ public class PlayerInventory {
 	public void deleteItem(int slot, Item item) {
 		Item[] itemsBefore = items.getItemsCopy();
 		items.remove(slot, item);
-		sendContainer();
+		refreshItems(itemsBefore);
 	}
 	
 	/**
@@ -97,8 +147,9 @@ public class PlayerInventory {
 	 * 		The slot
 	 */
 	public void deleteSlotItem(int slotId) {
+		Item[] itemsBefore = items.getItemsCopy();
 		items.set(slotId, null);
-		sendContainer();
+		refreshItems(itemsBefore);
 	}
 	
 	/**
@@ -110,11 +161,12 @@ public class PlayerInventory {
 	 * 		The slot the item is going to
 	 */
 	public void switchItem(int fromSlot, int toSlot) {
+		Item[] itemsBefore = items.getItemsCopy();
 		Item fromItem = items.get(fromSlot);
 		Item toItem = items.get(toSlot);
 		items.set(fromSlot, toItem);
 		items.set(toSlot, fromItem);
-		sendContainer();
+		refreshItems(itemsBefore);
 	}
 	
 	/**

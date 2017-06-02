@@ -9,10 +9,7 @@ import org.redrune.game.world.path.finder.DefaultPathFinder;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.Misc;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -61,12 +58,19 @@ public class NodeInteractionTask {
 	 * 		The player whose path event this is
 	 */
 	public boolean process(Player player) {
+		final boolean moving = player.getWalkingQueue().isMoving();
 		if (state == null) {
 			targetTile = generateTargetTile(Location.create(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane()));
+			
+			// we're already at the location
+			if (targetTile != null && arrived(player) && !moving) {
+				task.run();
+				return true;
+			}
+			
 			state = PathFactory.get().doPath(new DefaultPathFinder(), player, targetTile.getX(), targetTile.getY());
 			return false;
 		} else {
-			final boolean moving = player.getWalkingQueue().isMoving();
 			if (moving && node.isNPC()) {
 				player.turnTo(node.toNPC());
 			}
@@ -94,7 +98,7 @@ public class NodeInteractionTask {
 	 */
 	private Location generateTargetTile(Location startLocation) {
 		if (node instanceof NPC || node instanceof GameObject) {
-			final boolean isBanker = node.toNPC().getDefinitions().getName().toLowerCase().contains("banker");
+			final boolean isBanker = node.isNPC() && node.toNPC().getDefinitions().getName().toLowerCase().contains("banker");
 			int size = node.isNPC() && isBanker ? 2 : node.getSize();
 			
 			// adds the tiles around the npc
@@ -143,8 +147,9 @@ public class NodeInteractionTask {
 			// sorts the tiles based on distance.
 			surroundingTiles.sort(Comparator.comparingInt(o -> o.getDistance(startLocation)));
 			
+			// TODO fuck this bullshit we need a prooper pf system
 			// make sure we're not interaction thru a wall
-			if (!isBanker) {
+			if (!isBanker && !node.isGameObject()) {
 				for (Iterator<Location> iterator = surroundingTiles.iterator(); iterator.hasNext(); ) {
 					Location loc = iterator.next();
 					
@@ -163,7 +168,11 @@ public class NodeInteractionTask {
 					}
 				}
 			}
-			
+		/*
+			for (Location loc : surroundingTiles) {
+				RegionManager.addFloorItem(14484, 1, 10, loc, null);
+			}
+			*/
 			if (surroundingTiles.isEmpty()) {
 				surroundingTiles.add(node.getLocation());
 			}
@@ -198,14 +207,14 @@ public class NodeInteractionTask {
 	 */
 	private boolean arrived(Player player) {
 		if (node.isItem()) {
-			return player.getLocation().equals(targetTile);
+			return Objects.equals(player.getLocation(), targetTile);
 		} else if (node.isNPC()) {
 			if (node.toNPC().getDefinitions().getName().toLowerCase().contains("banker")) {
 				return targetTile.getDistance(player.getLocation()) <= 2;
 			}
 			return targetTile.equals(player.getLocation());
 		}
-		return player.getLocation().equals(targetTile);
+		return Objects.equals(player.getLocation(), targetTile);
 	}
 	
 }

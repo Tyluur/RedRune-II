@@ -11,6 +11,7 @@ public enum InteractionOption {
 	SECOND_OPTION,
 	THIRD_OPTION,
 	FOURTH_OPTION,
+	FIFTH_OPTION,
 	DROP,
 	EXAMINE
 }

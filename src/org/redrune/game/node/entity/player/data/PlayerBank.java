@@ -52,10 +52,6 @@ public final class PlayerBank {
 	public PlayerBank() {
 		this.bankTabs = new Item[1][0];
 		this.details = new PlayerBankDetails();
-		addItem(14484, 1, false);
-		addItem(11694, 1, false);
-		addItem(995, 1000, false);
-		addItem(6585, 1000, false);
 	}
 	
 	/**
@@ -643,8 +639,8 @@ public final class PlayerBank {
 	 * 		The slots
 	 */
 	private void refreshItems(int[] slots) {
-		player.getTransmitter().send(new ContainerPacketBuilder(95, getContainerCopy()).build(player));
-		// TODO: player.getTransmitter().send(new ContainerUpdateBuilder(95, getContainerCopy(), slots).build(player));
+//		player.getTransmitter().send(new ContainerPacketBuilder(95, getContainerCopy()).build(player));
+		player.getTransmitter().send(new ContainerUpdateBuilder(95, getContainerCopy(), slots).build(player));
 	}
 	
 	/**

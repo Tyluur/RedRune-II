@@ -10,18 +10,13 @@ import lombok.Getter;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/26/2017
  */
-public class ScheduledTask {
+public abstract class ScheduledTask {
 	
 	/**
 	 * The maximum amount of pulses that can be ran on this task
 	 */
 	@Getter
 	private final int maxPulses;
-	
-	/**
-	 * The task to execute.
-	 */
-	private final Runnable task;
 	
 	/**
 	 * The delay between executions of the task, in pulses.
@@ -55,8 +50,8 @@ public class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than or equal to zero.
 	 */
-	public ScheduledTask(int delay, boolean immediate, Runnable task) {
-		this(delay, 0, immediate, task);
+	public ScheduledTask(int delay, boolean immediate) {
+		this(delay, 0, immediate);
 	}
 	
 	/**
@@ -71,11 +66,10 @@ public class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than or equal to zero.
 	 */
-	public ScheduledTask(int delay, int maxPulses, boolean immediate, Runnable task) {
+	public ScheduledTask(int delay, int maxPulses, boolean immediate) {
 		setDelay(delay);
 		this.pulses = immediate ? 0 : delay;
 		this.maxPulses = maxPulses;
-		this.task = task;
 	}
 	
 	/**
@@ -86,7 +80,7 @@ public class ScheduledTask {
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than zero.
 	 */
-	public final void setDelay(int delay) {
+	private void setDelay(int delay) {
 		Preconditions.checkArgument(delay >= 0, "Delay cannot be less than 0.");
 		this.delay = delay;
 	}
@@ -103,7 +97,7 @@ public class ScheduledTask {
 	/**
 	 * Stops the task.
 	 */
-	public void stop() {
+	protected void stop() {
 		running = false;
 	}
 	
@@ -112,10 +106,15 @@ public class ScheduledTask {
 	 */
 	final void pulse() {
 		if (running && --pulses <= 0) {
-			task.run();
+			getTask().run();
 			pulseCount++;
 			pulses = delay;
 		}
 	}
+	
+	/**
+	 * The task to execute
+	 */
+	public abstract Runnable getTask();
 	
 }

@@ -3,6 +3,7 @@ package org.redrune.utility.repository.npc.spawn;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.game.world.World;
 import org.redrune.utility.Misc;
 
@@ -42,7 +43,7 @@ public class NPCSpawnRepository {
 		if (spawns == null) {
 			return;
 		}
-		spawns.forEach(World.get()::addSpawn);
+		EngineWorkingSet.submitLogic(() -> spawns.forEach(World.get()::addSpawn));
 	}
 	
 	/**

@@ -28,17 +28,59 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public void read(Player player, Packet packet) {
-		int clickData = packet.readLEInt();
-		int interfaceId = clickData & 0xFFF;
-		int componentId = clickData >> 16;
-		int itemId = packet.readShortA();
-		int slotId = packet.readShortA();
-		if (itemId == 65535) {
-			itemId = -1;
+		try {
+			switch (packet.getOpcode()) {
+				case 8:
+					decodeDialoguePacket(player, packet);
+					break;
+				default:
+					int clickData = packet.readLEInt();
+					int interfaceId = clickData & 0xFFF;
+					int componentId = clickData >> 16;
+					int itemId = packet.readShortA();
+					int slotId = packet.readShortA();
+					if (itemId == 65535) {
+						itemId = -1;
+					}
+					if (slotId == 65535) {
+						slotId = -1;
+					}
+					if (interfaceId > Cache.getAmountOfInterfaces()) {
+						logger.log(Level.SEVERE, "Unable to handle interface post-decoding!");
+						return;
+					}
+					if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {
+						logger.log(Level.SEVERE, "Interface " + interfaceId + " was not existent in the player's mapping of opened interface.");
+						return;
+					}
+					if (ModuleRepository.handle(player, interfaceId, componentId, itemId, slotId, packet.getOpcode())) {
+						return;
+					}
+					StringBuilder bldr = new StringBuilder("[interfaceId=" + interfaceId + ", componentId=" + componentId + "");
+					bldr.append(itemId == -1 ? "" : ", itemId=" + itemId + "");
+					bldr.append(slotId == -1 ? "" : ", slotId=" + slotId + "");
+					bldr.append(", packetId=").append(packet.getOpcode()).append("]");
+					System.out.println(bldr.toString());
+					break;
+			}
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Error reading packet: " + packet.getOpcode(), e);
 		}
-		if (slotId == 65535) {
-			slotId = -1;
-		}
+	}
+	
+	/**
+	 * Decodes an incoming dialogue
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void decodeDialoguePacket(Player player, Packet packet) {
+		int interfaceHash = packet.readInt2();
+		packet.readLEShortA();
+		int interfaceId = interfaceHash >> 16;
+		int componentId = interfaceHash & 0xFF;
 		if (interfaceId > Cache.getAmountOfInterfaces()) {
 			logger.log(Level.SEVERE, "Unable to handle interface post-decoding!");
 			return;
@@ -47,13 +89,9 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 			logger.log(Level.SEVERE, "Interface " + interfaceId + " was not existent in the player's mapping of opened interface.");
 			return;
 		}
-		if (ModuleRepository.handle(player, interfaceId, componentId, itemId, slotId, packet.getOpcode())) {
+		if (ModuleRepository.handle(player, interfaceId, componentId, -1, -1, packet.getOpcode())) {
 			return;
 		}
-		StringBuilder bldr = new StringBuilder("[interfaceId=" + interfaceId + ", componentId=" + componentId + "");
-		bldr.append(itemId == -1 ? "" : ", itemId=" + itemId + "");
-		bldr.append(slotId == -1 ? "" : ", slotId=" + slotId + "");
-		bldr.append(", packetId=").append(packet.getOpcode()).append("]");
-		System.out.println(bldr.toString());
+		System.out.println("[interfaceId=" + interfaceId + ", componentId=" + componentId + "" + ", packetId=" + packet.getOpcode() + "]");
 	}
 }

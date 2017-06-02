@@ -338,4 +338,8 @@ public class BufferUtils {
 		}
 		return "Cabbage";
 	}
+	
+	public static int read24BitInt(ByteBuffer buffer) {
+		return (buffer.get() << 16) + (buffer.get() << 8) + (buffer.get());
+	}
 }

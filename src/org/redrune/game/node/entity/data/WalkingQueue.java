@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.entity.player.render.flag.impl.TeleportUpdate;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
@@ -80,6 +81,10 @@ public class WalkingQueue {
 		if (updateTeleport()) {
 			return;
 		}
+		if (entity.isPlayer() && entity.toPlayer().getManager().getLocks().isLocked(LockType.MOVEMENT)) {
+			walkingQueue.clear();
+			return;
+		}
 		this.walkDir = -1;
 		this.runDir = -1;
 		Point walkPoint = walkingQueue.poll();
@@ -87,7 +92,6 @@ public class WalkingQueue {
 		if (walkPoint == null) {
 			return;
 		}
-		
 		if (walkPoint.direction == null) {
 			walkPoint = walkingQueue.poll();
 		}

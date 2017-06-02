@@ -5,15 +5,13 @@ import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
-
-import java.util.Arrays;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/31/2017
  */
-public class ContainerUpdateBuilder implements OutgoingPacketStructure {
+public class ContainerUpdateBuilder implements OutgoingPacketBuilder {
 	
 	/**
 	 * The key of the container.
@@ -45,7 +43,6 @@ public class ContainerUpdateBuilder implements OutgoingPacketStructure {
 	 * @param slots
 	 * 		The slots
 	 */
-	// TODO: fix this
 	public ContainerUpdateBuilder(int key, Item[] items, int... slots) {
 		this(key, items, key < 0, slots);
 	}
@@ -73,32 +70,31 @@ public class ContainerUpdateBuilder implements OutgoingPacketStructure {
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(141, PacketType.VAR_SHORT);
 		
-		bldr.writeShort(key);
-		bldr.writeByte(split ? 1 : 0);
-		
-		System.out.println(split + ", " + Arrays.toString(items) + ", " + Arrays.toString(slots));
-		
-		if (slots != null) {
-			for (int i = 0; i < items.length; i++) {
-				if (i >= items.length) {
-					System.out.println("Skipped " + i);
-					continue;
-				}
-				Item item = items[i];
-				if (item != null) {
-					bldr.writeSmart(i);
-					bldr.writeShort(item.getId() + 1);
-					bldr.writeByte(item.getAmount() > 254 ? 255 : item.getAmount());
-					if (item.getAmount() > 254) {
-						bldr.writeInt(item.getAmount());
+		try {
+			bldr.writeShort(key);
+			bldr.writeByte(split ? 1 : 0);
+			
+			if (slots != null) {
+				for (int i = 0; i < items.length; i++) {
+					if (i >= items.length) {
+						continue;
 					}
-					System.out.println("wrote item:\t" + item);
-				} else {
-					bldr.writeSmart(i);
-					bldr.writeShort(0); //id
-					System.out.println("Wrote nothing on slot " + i);
+					Item item = items[i];
+					if (item != null) {
+						bldr.writeSmart(i);
+						bldr.writeShort(item.getId() + 1);
+						bldr.writeByte(item.getAmount() > 254 ? 255 : item.getAmount());
+						if (item.getAmount() > 254) {
+							bldr.writeInt(item.getAmount());
+						}
+					} else {
+						bldr.writeSmart(i);
+						bldr.writeShort(0);
+					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return bldr.toPacket();
 	}

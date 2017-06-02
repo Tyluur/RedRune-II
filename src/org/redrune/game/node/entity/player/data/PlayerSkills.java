@@ -2,10 +2,15 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.GameConstants;
+import org.redrune.game.content.skills.LevelUp;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.SkillPacketBuilder;
 import org.redrune.utility.rs.constant.SkillConstants;
+
+import java.util.Map;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -29,6 +34,12 @@ public class PlayerSkills implements SkillConstants {
 	@Getter
 	@Setter
 	private double counterExperience;
+	
+	/**
+	 * The levels the player has advanced
+	 */
+	@Setter
+	private transient Map<Short, Integer> levelsAdvanced;
 	
 	/**
 	 * The player who owns this class
@@ -90,48 +101,65 @@ public class PlayerSkills implements SkillConstants {
 	}
 	
 	/**
-	 * Refreshes all skill components
-	 */
-	public void refreshAll() {
-		for (int skill = 0; skill < level.length; skill++) {
-			updateSkill(skill);
-		}
-		updateExperienceCounter();
-	}
-	
-	/**
-	 * Updates the skill details in the client for the parameterized skill
+	 * Adds experience to the skill with multiplier effects
 	 *
-	 * @param skill
-	 * 		The skill
+	 * @param skillId
+	 * 		The id of the skill
+	 * @param experience
+	 * 		The amount of exp to add
 	 */
-	private void updateSkill(int skill) {
-		player.getTransmitter().send(new SkillPacketBuilder(skill).build(player));
+	public void addExperienceWithMultiplier(short skillId, double experience) {
+		switch (skillId) {
+			case ATTACK:
+			case STRENGTH:
+			case DEFENCE:
+			case MAGIC:
+			case RANGE:
+			case HITPOINTS:
+				experience = experience * GameConstants.COMBAT_EXPERIENCE_MULTIPLIER;
+				break;
+			case PRAYER:
+				experience = experience * GameConstants.PRAYER_EXPERIENCE_MULTIPLIER;
+				break;
+			default:
+				experience = experience * GameConstants.SKILL_EXPERIENCE_MULTIPLIER;
+				break;
+		}
+		trackExperienceChange(skillId, experience);
 	}
 	
 	/**
-	 * Updates the experience counter with the amount of experience we've obtained
+	 * Tracks experience change in a skillId
+	 *
+	 * @param skillId
+	 * 		The skill's id number
+	 * @param experience
+	 * 		The amount of experience gained
 	 */
-	private void updateExperienceCounter() {
-		player.getTransmitter().send(new ConfigPacketBuilder(1801, (int) (counterExperience * 10D)).build(player));
-	}
-	
-	/**
-	 * Gets the combat level in a skill
-	 */
-	public int getCombatLevel() {
-		int attack = getLevelForXp(0);
-		int defence = getLevelForXp(1);
-		int strength = getLevelForXp(2);
-		int hp = getLevelForXp(3);
-		int prayer = getLevelForXp(5);
-		int ranged = getLevelForXp(4);
-		int magic = getLevelForXp(6);
-		double base = 0.25 * (defence + hp + Math.floor(prayer / 2));
-		double meleeC = 0.325 * (attack + strength);
-		double rangeC = 0.325 * (Math.floor(ranged / 2) + ranged);
-		double mageC = 0.325 * (Math.floor(magic / 2) + magic);
-		return (int) Math.floor(base + Math.max(meleeC, Math.max(rangeC, mageC)));
+	private void trackExperienceChange(int skillId, double experience) {
+		if (player.getVariables().isExperienceLocked()) {
+			return;
+		}
+		int oldLevel = getLevelForXp(skillId);
+		double oldExp = getExperience(skillId);
+		this.experience[skillId] += experience;
+		counterExperience += experience;
+		updateExperienceCounter();
+		if (this.experience[skillId] > MAXIMUM_EXP) {
+			this.experience[skillId] = MAXIMUM_EXP;
+		}
+		int newLevel = getLevelForXp(skillId);
+		double newExp = getExperience(skillId);
+		int levelDiff = newLevel - oldLevel;
+		if (newLevel > oldLevel) {
+			level[skillId] += levelDiff;
+			LevelUp.sendCongratulations(player, skillId);
+			if (skillId == SUMMONING || (skillId >= ATTACK && skillId <= MAGIC)) {
+				player.getUpdateMasks().register(new AppearanceUpdate(player));
+			}
+			addLevelsAdvanced((short) skillId, levelDiff);
+		}
+		updateSkill(skillId);
 	}
 	
 	/**
@@ -156,6 +184,85 @@ public class PlayerSkills implements SkillConstants {
 	}
 	
 	/**
+	 * Gets the amount of experience in a skillId
+	 *
+	 * @param skillId
+	 * 		The id of the skillId
+	 */
+	public double getExperience(int skillId) {
+		return experience[skillId];
+	}
+	
+	/**
+	 * Updates the experience counter with the amount of experience we've obtained
+	 */
+	private void updateExperienceCounter() {
+		player.getTransmitter().send(new ConfigPacketBuilder(1801, (int) (counterExperience * 10D)).build(player));
+	}
+	
+	/**
+	 * Adds levels advanced information for the skill
+	 *
+	 * @param skillId
+	 * 		The id of the skill
+	 */
+	private void addLevelsAdvanced(short skillId, int levelsAdvanced) {
+		Integer amount = this.levelsAdvanced.get(skillId);
+		if (amount == null) {
+			amount = levelsAdvanced;
+		} else {
+			amount = amount + levelsAdvanced;
+		}
+		this.levelsAdvanced.put(skillId, amount);
+	}
+	
+	/**
+	 * Updates the skill details in the client for the parameterized skill
+	 *
+	 * @param skill
+	 * 		The skill
+	 */
+	private void updateSkill(int skill) {
+		player.getTransmitter().send(new SkillPacketBuilder(skill).build(player));
+	}
+	
+	/**
+	 * Refreshes all skill components
+	 */
+	public void refreshAll() {
+		for (int skill = 0; skill < level.length; skill++) {
+			updateSkill(skill);
+		}
+		updateExperienceCounter();
+	}
+	
+	/**
+	 * Resets the experience counter data
+	 */
+	public void resetExperienceCounter() {
+		counterExperience = 0;
+		updateExperienceCounter();
+	}
+	
+	/**
+	 * Gets the combat level in a skill
+	 */
+	public int getCombatLevel() {
+		int attack = getLevelForXp(0);
+		int defence = getLevelForXp(1);
+		int strength = getLevelForXp(2);
+		int hp = getLevelForXp(3);
+		int prayer = getLevelForXp(5);
+		int ranged = getLevelForXp(4);
+		int magic = getLevelForXp(6);
+		double base = 0.25 * (defence + hp + Math.floor(prayer / 2));
+		double meleeC = 0.325 * (attack + strength);
+		double rangeC = 0.325 * (Math.floor(ranged / 2) + ranged);
+		double mageC = 0.325 * (Math.floor(magic / 2) + magic);
+		return (int) Math.floor(base + Math.max(meleeC, Math.max(rangeC, mageC)));
+	}
+	
+	/**
 	 * Gets the summoning additive combat level
 	 */
 	public int getSummoningCombatLevel() {
@@ -170,16 +277,6 @@ public class PlayerSkills implements SkillConstants {
 	 */
 	public int getLevel(int skillId) {
 		return level[skillId];
-	}
-	
-	/**
-	 * Gets the amount of experience in a skillId
-	 *
-	 * @param skillId
-	 * 		The id of the skillId
-	 */
-	public double getExperience(int skillId) {
-		return experience[skillId];
 	}
 	
 	/**
@@ -206,6 +303,26 @@ public class PlayerSkills implements SkillConstants {
 	public void setLevel(int skillId, int newLevel) {
 		level[skillId] = (short) newLevel;
 		updateSkill(skillId);
+	}
+	
+	/**
+	 * Gets the amount of levels the player has advanced since opening their skill guide
+	 *
+	 * @param skillId
+	 * 		The id of the skill
+	 * @param reset
+	 * 		If we should reset the levels advanced
+	 */
+	public int getLevelsAdvanced(short skillId, boolean reset) {
+		Integer amount = levelsAdvanced.get(skillId);
+		if (amount == null) {
+			return 0;
+		} else {
+			if (reset) {
+				levelsAdvanced.remove(skillId);
+			}
+			return amount;
+		}
 	}
 	
 }

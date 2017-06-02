@@ -3,7 +3,7 @@ package org.redrune.network.rs666.packet.outgoing.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.Misc;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public class LobbyResponseBuilder implements OutgoingPacketStructure {
+public class LobbyResponseBuilder implements OutgoingPacketBuilder {
 	
 	@Override
 	public Packet build(Player player) {

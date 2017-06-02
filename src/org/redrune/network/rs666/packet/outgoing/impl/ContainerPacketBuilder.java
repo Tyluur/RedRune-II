@@ -5,13 +5,13 @@ import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017
  */
-public class ContainerPacketBuilder implements OutgoingPacketStructure {
+public class ContainerPacketBuilder implements OutgoingPacketBuilder {
 	
 	/**
 	 * The key of the container.

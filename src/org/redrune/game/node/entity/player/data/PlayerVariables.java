@@ -47,6 +47,13 @@ public final class PlayerVariables {
 	@Setter
 	private boolean runToggled = false;
 	
+	/**
+	 * If the experience is locked
+	 */
+	@Getter
+	@Setter
+	private boolean experienceLocked = false;
+	
 	public PlayerVariables() {
 		setHealthPoints(100);
 	}

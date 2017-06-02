@@ -4,13 +4,13 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/31/2017
  */
-public class BlackCS2ScriptBuilder implements OutgoingPacketStructure {
+public class BlackCS2ScriptBuilder implements OutgoingPacketBuilder {
 	
 	/**
 	 * The id of the script

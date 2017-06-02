@@ -112,11 +112,11 @@ public final class NoteManager {
 	 */
 	public boolean add(String text) {
 		if (notes.size() >= 30) {
-			player.getTransmitter().sendMessage("You may only have 30 notes!", true);
+			player.getTransmitter().sendMessage("You may only have 30 notes!");
 			return false;
 		}
 		if (text.length() > 50) {
-			player.getTransmitter().sendMessage("You can only enter notes up to 50 characters!", true);
+			player.getTransmitter().sendMessage("You can only enter notes up to 50 characters!");
 			return false;
 		}
 		player.getTransmitter().send(new CS2StringBuilder(149 + notes.size(), text).build(player));

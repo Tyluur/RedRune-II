@@ -6,14 +6,14 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.backend.MapDataParser;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public final class MapRegionBuilder implements OutgoingPacketStructure {
+public final class MapRegionBuilder implements OutgoingPacketBuilder {
 	
 	/**
 	 * If the packet is being sent from a login request

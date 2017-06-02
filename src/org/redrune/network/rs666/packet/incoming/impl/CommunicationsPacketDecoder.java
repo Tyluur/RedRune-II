@@ -51,7 +51,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		}
 		String text = Misc.optimizeText(BufferUtils.decompressHuffman(packet, length));
 		if (text.startsWith("::")) {
-			player.getManager().getEvents().addEvent(new CommandEvent(new CommandEventContext(text.replaceFirst("::", "").split(" "), false)));
+			player.getManager().getEvents().executeEvent(player, new CommandEvent(new CommandEventContext(text.replaceFirst("::", "").split(" "), false)));
 			return;
 		}
 		for (Player p : World.get().getPlayers()) {

@@ -1,8 +1,10 @@
 package org.redrune.core.task;
 
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.utility.Misc;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * A class which manages {@link ScheduledTask}s.
@@ -28,16 +30,26 @@ public final class Scheduler {
 		try {
 			Misc.pollAll(pending, active::add);
 			
-			for (Iterator<ScheduledTask> iterator = active.iterator(); iterator.hasNext();) {
-				ScheduledTask task = iterator.next();
-				task.pulse();
-				
-				final boolean shouldRemove = (task.getMaxPulses() > 0 && task.getMaxPulses() == task.getPulseCount()) || !task.isRunning();
-				if (shouldRemove) {
-					iterator.remove();
+			CountDownLatch latch = new CountDownLatch(active.size());
+			
+			// the work is done in a separate thread.
+			for (final Iterator<ScheduledTask> iterator = active.iterator(); iterator.hasNext(); ) {
+				final ScheduledTask task = iterator.next();
+				try {
+					EngineWorkingSet.submitLogic(() -> {
+						task.pulse();
+						latch.countDown();
+					});
+					final boolean shouldRemove = (task.getMaxPulses() > 0 && task.getMaxPulses() == task.getPulseCount()) || !task.isRunning();
+					if (shouldRemove) {
+						iterator.remove();
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Exception e) {
+			latch.await();
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
@@ -45,11 +57,13 @@ public final class Scheduler {
 	/**
 	 * Schedules a new task.
 	 *
-	 * @param task The task to schedule.
-	 * @return {@code true} if the task was added successfully.
+	 * @param task
+	 * 		The task to schedule.
 	 */
-	public boolean schedule(ScheduledTask task) {
-		return pending.add(task);
+	public void schedule(ScheduledTask task) {
+		if (!pending.add(task)) {
+			throw new IllegalStateException("Unable to add task " + task.getClass().getSimpleName() + " to the pending queue.");
+		}
 	}
 	
 }

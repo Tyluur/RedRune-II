@@ -1,5 +1,6 @@
 package org.redrune.game.module.interaction.rsinterface;
 
+import org.redrune.game.content.skills.LevelUp;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerSkills;
@@ -256,7 +257,7 @@ public class SkillTabInteractionModule implements InterfaceInteractionModule {
 					break;
 			}
 			if (lvlupSkill != -1) {
-				//TODO: this LevelUp.switchFlash(player, lvlupSkill, false);
+				LevelUp.switchFlash(player, lvlupSkill, false);
 			}
 			if (skillMenu != -1) {
 				player.putAttribute(SKILL_MENU, skillMenu);
@@ -264,6 +265,9 @@ public class SkillTabInteractionModule implements InterfaceInteractionModule {
 			if (getSkillId(componentId) != -1) {
 				handleSkillSetting(player, getSkillId(componentId));
 				return true;
+			}
+			if (lvlupSkill != -1) {
+				player.getManager().getInterfaces().sendInterfaceText(741, 4, "You have just advanced " + player.getSkills().getLevelsAdvanced((short) lvlupSkill, true) + " " + SkillConstants.SKILL_NAME[lvlupSkill] + " levels!");
 			}
 			player.getManager().getInterfaces().sendInterface(lvlupSkill != -1 ? 741 : 499, true);
 		}

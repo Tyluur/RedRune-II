@@ -64,7 +64,7 @@ public class CommandRepository {
 		String name = args[0];
 		CommandModule command = COMMAND_MODULES.get(name);
 		if (command == null) {
-			player.getTransmitter().sendMessage("Could not find command by name '" + name + "' - try again...");
+			CommandModule.sendResponse(player, "Could not find command by name '" + name + "' - try again...", console);
 			return;
 		}
 		// verifying parameters

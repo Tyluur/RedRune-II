@@ -8,7 +8,7 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketStructure;
+import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.PriorityQueue;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/26/2017
  */
-public class NPCRendering implements OutgoingPacketStructure {
+public class NPCRendering implements OutgoingPacketBuilder {
 	
 	@Override
 	public Packet build(Player player) {

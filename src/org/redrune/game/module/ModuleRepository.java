@@ -8,6 +8,8 @@ import org.redrune.game.module.type.NPCInteractionModule;
 import org.redrune.game.module.type.ObjectInteractionModule;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.InteractionOption;
 
@@ -144,6 +146,68 @@ public class ModuleRepository {
 	 */
 	private static List<NPCInteractionModule> getNPCModules(int npcId) {
 		return NPC_MODULES.stream().filter(module -> ArrayUtils.contains(module.npcSubscriptionIds(), npcId)).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Handles the interaction with an item
+	 *
+	 * @param player
+	 * 		The player
+	 * @param item
+	 * 		The item we're interacting with
+	 * @param slotId
+	 * 		The slot id in the inventory the item was clicked on
+	 * @param option
+	 * 		The option we clicked  @return {@code True} if successfully interacted.
+	 */
+	public static boolean handle(Player player, Item item, int slotId, InteractionOption option) {
+		for (ItemInteractionModule module : getItemModules(item.getId())) {
+			if (module.handle(player, item, slotId, option)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Gets the npc modules for an nc
+	 *
+	 * @param itemId
+	 * 		The id of the interface
+	 */
+	private static List<ItemInteractionModule> getItemModules(int itemId) {
+		return ITEM_MODULES.stream().filter(module -> ArrayUtils.contains(module.itemSubscriptionIds(), itemId)).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Handles the interaction with the module
+	 *
+	 * @param player
+	 * 		The player interacting
+	 * @param object
+	 * 		The object interacting with
+	 * @param option
+	 * 		The option clicked on the object
+	 * @return {@code True} if the interaction was successful
+	 */
+	public static boolean handle(Player player, GameObject object, InteractionOption option) {
+		for (ObjectInteractionModule module : getObjectModules(object.getId())) {
+			if (module.handle(player, object, option)) {
+				System.out.println(module);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Gets the npc modules for an nc
+	 *
+	 * @param objectId
+	 * 		The id of the object
+	 */
+	private static List<ObjectInteractionModule> getObjectModules(int objectId) {
+		return OBJECT_MODULES.stream().filter(module -> ArrayUtils.contains(module.objectSubscriptionIds(), objectId)).collect(Collectors.toList());
 	}
 	
 }

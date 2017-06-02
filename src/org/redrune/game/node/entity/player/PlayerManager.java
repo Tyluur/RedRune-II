@@ -2,9 +2,9 @@ package org.redrune.game.node.entity.player;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.player.link.EventManager;
-import org.redrune.game.node.entity.player.link.InterfaceManager;
-import org.redrune.game.node.entity.player.link.NoteManager;
+import org.redrune.game.node.entity.player.link.*;
+
+import java.util.HashMap;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -32,6 +32,20 @@ public final class PlayerManager {
 	@Setter
 	private transient EventManager events;
 	
+	/**
+	 * The lock manager object
+	 */
+	@Getter
+	@Setter
+	private transient LockManager locks;
+	
+	/**
+	 * The action manager object
+	 */
+	@Getter
+	@Setter
+	private ActionManager actions;
+	
 	PlayerManager() {
 		this.notes = new NoteManager();
 	}
@@ -45,9 +59,13 @@ public final class PlayerManager {
 	void registerTransients(Player player) {
 		this.setEvents(new EventManager());
 		this.setInterfaces(new InterfaceManager());
+		this.setActions(new ActionManager());
+		this.setLocks(new LockManager());
 		
 		this.interfaces.setPlayer(player);
 		this.notes.setPlayer(player);
+		this.actions.setPlayer(player);
+		player.getSkills().setLevelsAdvanced(new HashMap<>());
 	}
 	
 }

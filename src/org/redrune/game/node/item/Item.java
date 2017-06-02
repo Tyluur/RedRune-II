@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.cache.parse.definition.ItemDefinition;
+import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 
 /**
@@ -33,8 +34,16 @@ public class Item extends Node {
 	@Setter
 	private transient ItemDefinition definitions;
 	
-	protected Item() {
-		super(null);
+	/**
+	 * Constructs an item with a location. This is only to be used for floor item child class management
+	 *
+	 * @param location
+	 * 		The location of the item
+	 */
+	public Item(Location location) {
+		super(location);
+		this.id = -1;
+		this.amount = -1;
 	}
 	
 	/**
@@ -45,7 +54,6 @@ public class Item extends Node {
 	 */
 	public Item(int id) {
 		this(id, 1);
-		this.definitions = ItemDefinitionParser.forId(id);
 	}
 	
 	/**
@@ -59,13 +67,13 @@ public class Item extends Node {
 	public Item(int id, int amount) {
 		super(null);
 		this.id = (short) id;
-		this.definitions = ItemDefinitionParser.forId(id);
 		this.amount = amount;
+		this.definitions = ItemDefinitionParser.forId(id);
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		return o.getClass() == Item.class && ((Item) o).id == id;
+		return o.getClass() == Item.class && ((Item) o).id == id && ((Item) o).getAmount() == amount;
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import org.redrune.game.node.entity.player.event.EventContext;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/31/2017
  */
-public class NodeInteractionEventContext implements EventContext {
+public class NodeReachEventContext implements EventContext {
 	
 	/**
 	 * The node we are travelling to
@@ -22,7 +22,7 @@ public class NodeInteractionEventContext implements EventContext {
 	@Getter
 	private final Runnable task;
 	
-	public NodeInteractionEventContext(Node node, Runnable task) {
+	public NodeReachEventContext(Node node, Runnable task) {
 		this.node = node;
 		this.task = task;
 	}

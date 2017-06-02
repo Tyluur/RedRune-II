@@ -102,6 +102,6 @@ public class GameObject extends Node {
 	
 	@Override
 	public String toString() {
-		return "[name=" + getDefinitions().getName() + ", options=" + Arrays.toString(getDefinitions().getOptions()) + ", type=" + type + ", rotation=" + rotation + "]";
+		return "[id=" + id + ", name=" + getDefinitions().getName() + ", options=" + Arrays.toString(getDefinitions().getOptions()) + ", type=" + type + ", rotation=" + rotation + "]";
 	}
 }

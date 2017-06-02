@@ -116,7 +116,7 @@ public class Animation extends UpdateFlag {
 			return false;
 		}
 		if (updateMasks.get(getMaskData())) {
-			if (updateMasks.getAnimationPriority().ordinal() > priority.ordinal()) {
+			if (updateMasks.getAnimationPriority() != null && updateMasks.getAnimationPriority().ordinal() > priority.ordinal()) {
 				return false;
 			}
 			updateMasks.setAnimationPriority(priority);

@@ -10,7 +10,7 @@ import org.redrune.network.rs666.packet.PacketBuilder;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public interface OutgoingPacketStructure {
+public interface OutgoingPacketBuilder {
 	
 	/**
 	 * The building of the packet is handled in this method. The {@code PacketBuilder} is converted to a {@code Packet}

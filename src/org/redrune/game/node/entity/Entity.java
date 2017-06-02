@@ -2,12 +2,17 @@ package org.redrune.game.node.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.parse.AnimationDefinitionParser;
+import org.redrune.cache.parse.definition.AnimationDefinition;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.data.WalkingQueue;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
+import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
+import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
 import org.redrune.game.world.region.Region;
+import org.redrune.utility.backend.Priority;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -212,11 +217,64 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Sends an animation mask
+	 *
+	 * @param animationId
+	 * 		The id of the animation
+	 */
+	public void sendAnimation(int animationId) {
+		updateMasks.register(new Animation(animationId, 0, isNPC()));
+		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
+		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
+		if (definition != null) {
+			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
+		}
+	}
+	
+	/**
+	 * Sends an animation mask
+	 *
+	 * @param animationId
+	 * 		The id of the animation
+	 * @param speed
+	 * 		The speed of the animation
+	 * @param priority
+	 * 		The priority of the animation
+	 */
+	public void sendAnimation(int animationId, int speed, Priority priority) {
+		updateMasks.register(new Animation(animationId, speed, isNPC(), priority));
+	}
+	
+	/**
+	 * Sends a graphic mask
+	 *
+	 * @param graphicsId
+	 * 		The id of the graphic
+	 */
+	public void sendGraphics(int graphicsId) {
+		updateMasks.register(new Graphic(graphicsId, 0, 0, isNPC()));
+	}
+	
+	/**
+	 * Sends a graphics mask
+	 *
+	 * @param graphicsId
+	 * 		The id of the graphic
+	 * @param height
+	 * 		The height to send the graphic
+	 * @param speed
+	 * 		The speed to send the graphic
+	 */
+	public void sendGraphics(int graphicsId, int height, int speed) {
+		updateMasks.register(new Graphic(graphicsId, height, speed, isNPC()));
+	}
+	
+	/**
 	 * Gets the client index of the entity.
 	 *
 	 * @return The client index.
 	 */
-	public int getClientIndex() {
+	private int getClientIndex() {
 		if (isPlayer()) {
 			return index + 0x8000;
 		}

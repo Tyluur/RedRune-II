@@ -12,6 +12,16 @@ import org.redrune.game.node.entity.player.event.EventPolicy.*;
 public abstract class Event<T extends EventContext> {
 	
 	/**
+	 * If the event can be executed, defaults to true.
+	 *
+	 * @param player
+	 * 		The player executing the event
+	 */
+	public boolean canStart(Player player) {
+		return true;
+	}
+	
+	/**
 	 * Handles the running of the event
 	 *
 	 * @param player

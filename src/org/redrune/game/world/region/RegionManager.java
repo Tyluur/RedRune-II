@@ -2,6 +2,7 @@ package org.redrune.game.world.region;
 
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.item.FloorItem;
 import org.redrune.utility.rs.constant.ClippingFlags;
 
 import java.util.Map;
@@ -18,12 +19,12 @@ public class RegionManager {
 	/**
 	 * The direction deltas, different from the ones in {@link Location}.
 	 */
-	public static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
+	private static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
 	
 	/**
 	 * The direction deltas, different from the ones in {@link Location}.
 	 */
-	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+	private static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
 	
 	/**
 	 * The region mapping.
@@ -174,6 +175,45 @@ public class RegionManager {
 	static Region getRegion(int x, int y) {
 		int regionId = Location.getRegionId(x, y);
 		return REGION_CACHE.computeIfAbsent(regionId, k -> new Region(regionId));
+	}
+	
+	/**
+	 * Adds a public floor item
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param targetTicks
+	 * 		The ticks until the next item phase is hit
+	 * @param location
+	 * 		The location of the item
+	 */
+	public static void addPublicFloorItem(int itemId, int itemAmount, int targetTicks, Location location) {
+		addFloorItem(itemId, itemAmount, targetTicks, location, null);
+	}
+	
+	/**
+	 * Adds a floor item to the region
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param targetTicks
+	 * 		The ticks until the next item phase is hit
+	 * @param location
+	 * 		The location of the item
+	 * @param ownerUsername
+	 * 		The name of the user who owns the item
+	 */
+	public static void addFloorItem(int itemId, int itemAmount, int targetTicks, Location location, String ownerUsername) {
+		Region region = getRegion(location.getRegionId());
+		FloorItem item = new FloorItem(ownerUsername, targetTicks, itemId, itemAmount, location);
+		if (!region.addFloorItemToList(item)) {
+			throw new IllegalStateException("Unable to add floor item to region list.");
+		}
+		region.handleAddition(item);
 	}
 	
 }

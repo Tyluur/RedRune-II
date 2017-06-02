@@ -27,6 +27,6 @@ public class CommandHandlerPacketDecoder implements IncomingPacketDecoder {
 		packet.readUnsignedByte();
 		String command = packet.readRS2String();
 		String[] args = command.toLowerCase().split(" ");
-		player.getManager().getEvents().addEvent(new CommandEvent(new CommandEventContext(args, true)));
+		player.getManager().getEvents().executeEvent(player, new CommandEvent(new CommandEventContext(args, true)));
 	}
 }

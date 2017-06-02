@@ -19,7 +19,7 @@ import java.util.Map.Entry;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/29/2017
  */
-public class InterfaceManager implements InterfaceConstants {
+public final class InterfaceManager implements InterfaceConstants {
 	
 	/**
 	 * The bindings that store the data of the currently active interfaces. The key is the component id that an
@@ -57,6 +57,7 @@ public class InterfaceManager implements InterfaceConstants {
 		} else {
 			player.getTransmitter().sendFullScreenAMasks();
 		}
+		EmoteManager.sendUnlockConfigs(player);
 	}
 	
 	/**
@@ -218,8 +219,7 @@ public class InterfaceManager implements InterfaceConstants {
 	 * Closes the chatbox interface and sends the regular one
 	 */
 	public InterfaceManager closeChatboxInterface() {
-		closeInterface(CHATBOX_WINDOW_ID, 13);
-		return sendInterface(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID).sendDefaultTabs();
+		return closeInterface(CHATBOX_WINDOW_ID, 13);
 	}
 	
 	/**

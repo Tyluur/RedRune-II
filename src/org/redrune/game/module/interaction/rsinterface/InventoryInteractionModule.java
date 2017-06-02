@@ -28,26 +28,37 @@ public class InventoryInteractionModule implements InterfaceInteractionModule {
 		if (item == null) {
 			return true;
 		}
+		InteractionOption option = getOption(packetId);
+		if (option == null) {
+			System.out.println("Unable to find interaction option for packet: " + packetId);
+			return true;
+		}
+		player.getManager().getEvents().executeEvent(player, new ItemEvent(new ItemEventContext(item, slotId, option)));
+		return true;
+	}
+	
+	/**
+	 * Gets the {@code InteractionOption} {code Object} by the packet id
+	 *
+	 * @param packetId
+	 * 		The id of the packet
+	 */
+	private InteractionOption getOption(int packetId) {
 		switch (packetId) {
 			case NetworkConstants.FIRST_PACKET_ID:
-				player.getManager().getEvents().addEvent(new ItemEvent(new ItemEventContext(item, slotId, InteractionOption.FIRST_OPTION)));
-				break;
+				return InteractionOption.FIRST_OPTION;
 			case NetworkConstants.EQUIP_PACKET_ID:
-				player.getManager().getEvents().addEvent(new ItemEvent(new ItemEventContext(item, slotId, InteractionOption.SECOND_OPTION)));
-				break;
+				return InteractionOption.SECOND_OPTION;
 			case NetworkConstants.OPERATE_PACKET_ID:
-				player.getManager().getEvents().addEvent(new ItemEvent(new ItemEventContext(item, slotId, InteractionOption.THIRD_OPTION)));
-				break;
+				return InteractionOption.THIRD_OPTION;
 			case NetworkConstants.FOURTH_PACKET_ID:
-				player.getManager().getEvents().addEvent(new ItemEvent(new ItemEventContext(item, slotId, InteractionOption.FOURTH_OPTION)));
-				break;
+				return InteractionOption.FOURTH_OPTION;
 			case NetworkConstants.DROP_PACKET_ID:
-				player.getManager().getEvents().addEvent(new ItemEvent(new ItemEventContext(item, slotId, InteractionOption.DROP)));
-				break;
+				return InteractionOption.DROP;
 			case NetworkConstants.EXAMINE_PACKET_ID:
-				player.getManager().getEvents().addEvent(new ItemEvent(new ItemEventContext(item, slotId, InteractionOption.EXAMINE)));
-				break;
+				return InteractionOption.EXAMINE;
+			default:
+				return null;
 		}
-		return true;
 	}
 }
