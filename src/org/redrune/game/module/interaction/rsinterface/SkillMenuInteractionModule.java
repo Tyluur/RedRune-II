@@ -24,7 +24,7 @@ public class SkillMenuInteractionModule implements InterfaceInteractionModule {
 		if (componentId >= 10 && componentId <= 25) {
 			player.getTransmitter().send(new ConfigPacketBuilder(965, ((componentId - 10) * 1024) + skillMenu).build(player));
 		} else if (componentId == 29) {
-			//		TODO:	player.stopAll();
+			//
 		}
 		return true;
 	}

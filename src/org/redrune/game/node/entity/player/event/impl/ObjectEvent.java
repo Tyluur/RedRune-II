@@ -33,7 +33,7 @@ public class ObjectEvent extends Event<ObjectEventContext> {
 		player.getUpdateMasks().register(new FaceLocationUpdate(player, getContext().getObject().getLocation()));
 		
 		if (!ModuleRepository.handle(player, getContext().getObject(), getContext().getOption())) {
-			player.getTransmitter().sendMessage("Nothing interesting happens...");
+			player.getTransmitter().sendMessage("Nothing interesting happens.");
 		}
 	}
 }

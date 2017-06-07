@@ -329,4 +329,17 @@ public final class Location {
 		int deltaX = location.x - x, deltaY = location.y - y;
 		return deltaX <= distance && deltaX >= -distance && deltaY <= distance && deltaY >= -distance;
 	}
+	
+	public int getLocalX(Location lastRegion) {
+		return x - ((lastRegion.getRegionX() - (VIEWPORT_SIZES[plane] >> 4)) * 8);
+	}
+	
+	public int getLocalY(Location lastRegion) {
+		return y - ((lastRegion.getRegionY() - (VIEWPORT_SIZES[plane] >> 4)) * 8);
+	}
+	
+	public static Location GetDelta(Location from, Location to) {
+		return Location.create((short) (to.x - from.x), (short) (to.y - from.y), (byte) (to.plane - from.plane));
+	}
+	
 }

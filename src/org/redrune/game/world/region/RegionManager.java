@@ -3,10 +3,12 @@ package org.redrune.game.world.region;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.item.FloorItem;
-import org.redrune.utility.rs.constant.ClippingFlags;
+import org.redrune.game.node.object.GameObject;
+import org.redrune.game.world.route.Flags;
 
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -32,6 +34,11 @@ public class RegionManager {
 	private static final Map<Integer, Region> REGION_CACHE = new ConcurrentHashMap<>();
 	
 	/**
+	 * The set of regions that couldn't be loaded
+	 */
+	public static final Set<Integer> BROKEN_REGIONS = new HashSet<>();
+	
+	/**
 	 * When an entity enters a new region, we must add them to the new region, remove them from the previous one as
 	 * well.
 	 *
@@ -45,8 +52,8 @@ public class RegionManager {
 			entity.getRegion().removeEntity(entity);
 			return;
 		}
-		int regionId = entity.getRegion().getId();
-		int lastRegionId = entity.getLastRegion() == null ? 0 : entity.getLastRegion().getId();
+		int regionId = entity.getRegion().getRegionId();
+		int lastRegionId = entity.getLastRegion() == null ? 0 : entity.getLastRegion().getRegionId();
 		
 		// change of region
 		if (lastRegionId != regionId) {
@@ -106,28 +113,28 @@ public class RegionManager {
 		if (size == 1) {
 			int mask = getClippingMask(x + xOffset, y + yOffset, plane);
 			if (xOffset == -1 && yOffset == 0) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST)) == 0;
 			}
 			if (xOffset == 1 && yOffset == 0) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_WEST)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_WEST)) == 0;
 			}
 			if (xOffset == 0 && yOffset == -1) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH)) == 0;
 			}
 			if (xOffset == 0 && yOffset == 1) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH)) == 0;
 			}
 			if (xOffset == -1 && yOffset == -1) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH | ClippingFlags.WALLOBJ_EAST | ClippingFlags.CORNEROBJ_NORTHEAST)) == 0 && (getClippingMask(x - 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST)) == 0 && (getClippingMask(x, y - 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) == 0 && (getClippingMask(x - 1, y, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST)) == 0 && (getClippingMask(x, y - 1, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH)) == 0;
 			}
 			if (xOffset == 1 && yOffset == -1) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH | ClippingFlags.WALLOBJ_WEST | ClippingFlags.CORNEROBJ_NORTHWEST)) == 0 && (getClippingMask(x + 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_WEST)) == 0 && (getClippingMask(x, y - 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_NORTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) == 0 && (getClippingMask(x + 1, y, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_WEST)) == 0 && (getClippingMask(x, y - 1, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH)) == 0;
 			}
 			if (xOffset == -1 && yOffset == 1) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST | ClippingFlags.WALLOBJ_SOUTH | ClippingFlags.CORNEROBJ_SOUTHEAST)) == 0 && (getClippingMask(x - 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_EAST)) == 0 && (getClippingMask(x, y + 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) == 0 && (getClippingMask(x - 1, y, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST)) == 0 && (getClippingMask(x, y + 1, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH)) == 0;
 			}
 			if (xOffset == 1 && yOffset == 1) {
-				return (mask & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH | ClippingFlags.WALLOBJ_WEST | ClippingFlags.CORNEROBJ_SOUTHWEST)) == 0 && (getClippingMask(x + 1, y, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_WEST)) == 0 && (getClippingMask(x, y + 1, plane) & (ClippingFlags.FLOOR_BLOCKSWALK | ClippingFlags.FLOORDECO_BLOCKSWALK | ClippingFlags.OBJ | ClippingFlags.WALLOBJ_SOUTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) == 0 && (getClippingMask(x + 1, y, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_WEST)) == 0 && (getClippingMask(x, y + 1, plane) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH)) == 0;
 			}
 		}
 		return false;
@@ -216,4 +223,22 @@ public class RegionManager {
 		region.handleAddition(item);
 	}
 	
+	/**
+	 * Finds the objects to delete in the region
+	 *
+	 * @param region
+	 * 		The region
+	 */
+	public static CopyOnWriteArraySet<GameObject> findDeletedObjects(Region region) {
+		Optional<List<GameObject>> optional = RegionDeletion.getObjectsToDelete(region.getRegionId());
+		if (!optional.isPresent()) {
+			return new CopyOnWriteArraySet<>();
+		} else {
+			// the objects that were found to be deleted
+			List<GameObject> foundObjects = optional.get();
+			CopyOnWriteArraySet<GameObject> objectList = new CopyOnWriteArraySet<>();
+			objectList.addAll(foundObjects);
+			return objectList;
+		}
+	}
 }

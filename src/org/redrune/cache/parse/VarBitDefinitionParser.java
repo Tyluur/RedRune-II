@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public class VarBitDefinitionParser {
+public final class VarBitDefinitionParser {
 	
 	/**
 	 * The cached map of varbit definitions

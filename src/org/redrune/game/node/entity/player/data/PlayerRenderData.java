@@ -106,6 +106,7 @@ public class PlayerRenderData {
 	 */
 	public void enterWorld(PacketBuilder packet) {
 		int myIndex = player.getIndex();
+		lastLocation = player.getLocation();
 		locals[localsCount++] = (short) myIndex;
 		isLocal[myIndex] = true;
 		hashLocations[myIndex] = 0;

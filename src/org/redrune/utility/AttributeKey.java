@@ -11,6 +11,8 @@ public enum AttributeKey {
 	// MISC ATTRIBUTES
 	COST_VALUE,
 	
+	LAST_DIALOGUE_MESSAGE,
+	
 	INTERACTING_PLAYER,
 	
 	INTERACTING_NPC,
@@ -33,7 +35,6 @@ public enum AttributeKey {
 	CHAT_EFFECTS,
 	
 	ACCEPTING_AID,
-	
 	;
 	
 }

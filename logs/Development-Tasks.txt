@@ -1,14 +1,8 @@
 [Core]
-+	Region system
-	-	Object spawning/removal needs to be seamless
-+	Item equipment
-	-   Storing the item slot id/item equip type into the definitions on load.
-	-   Check //TODO in the item definitions class
-
-[Wrappers/Systems]
-+	Dialogue system
 +	Shop system
 	-	Support for currencies such as points or different item ids
+
+[Wrappers/Systems]
 +	Prayer management
 	-	Bonuses can be checked via [ player.getManagers().getPrayers().isOn(Prayers.TURMOIL) ]
 
@@ -19,7 +13,5 @@
 
 [Unfinished]
 +	Fix walking queue system (the bug where running is randomly set to false around corners)
-+	Parse interface definitions
 +	Hit#interactingWith
-+	Item equip slot/equip type storing
 +	https://www.rune-server.ee/runescape-development/rs-503-client-server/informative-threads/365286-interface-component-settings-k-access-masks-100-a.html implement

@@ -9,6 +9,7 @@ import org.redrune.utility.BufferUtils;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -54,6 +55,14 @@ public final class ItemDefinition {
 	private boolean loaded;
 	
 	private int interfaceModelId;
+	
+	@Getter
+	@Setter
+	private int equipSlot;
+	
+	@Getter
+	@Setter
+	private int equipType;
 	
 	// wearing model information
 	@Getter
@@ -134,24 +143,11 @@ public final class ItemDefinition {
 		return loaded;
 	}
 	
-	public void loadItemDefinition() {
+	public void loadItemDefinition() throws IOException {
 		setDefaultsVariableValules();
 		setDefaultOptions();
-		byte[] is = null;
-		try {
-			is = CacheManager.getData(CacheConstants.ITEMDEF_IDX_ID, id >>> 8, id & 0xFF);
-		} catch (Exception e) {
-			System.out.println("Item " + id + " doesn't exist in the cache!");
-			e.printStackTrace();
-		}
-		if (is != null) {
-			try {
-				readOpcodeValues(ByteBuffer.wrap(is));
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Error while reading " + id);
-			}
-		}
+		byte[] is = CacheManager.getData(CacheConstants.ITEMDEF_IDX_ID, id >>> 8, id & 0xFF);
+		readOpcodeValues(ByteBuffer.wrap(is));
 		if (noteTemplateId != -1) // done
 		{
 			transferNoteDefinition(ItemDefinitionParser.forId(noteId), ItemDefinitionParser.forId(noteTemplateId));
@@ -615,8 +611,7 @@ public final class ItemDefinition {
 				continue;
 			}
 			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
-				// TODO this return equipSlot != -1;
-				return true;
+				return equipSlot != -1;
 			}
 		}
 		return false;
@@ -634,8 +629,7 @@ public final class ItemDefinition {
 				continue;
 			}
 			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
-				// TODO this return equipSlot != -1;
-				return true;
+				return equipSlot != -1;
 			}
 		}
 		return false;

@@ -46,11 +46,11 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 						slotId = -1;
 					}
 					if (interfaceId > Cache.getAmountOfInterfaces()) {
-						logger.log(Level.SEVERE, "Unable to handle interface post-decoding!");
+						logger.log(Level.SEVERE, "Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ")");
 						return;
 					}
 					if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {
-						logger.log(Level.SEVERE, "Interface " + interfaceId + " was not existent in the player's mapping of opened interface.");
+						logger.log(Level.SEVERE, "Interface " + interfaceId + ", [" + componentId + "] was not existent in the player's mapping of opened interface.");
 						return;
 					}
 					if (ModuleRepository.handle(player, interfaceId, componentId, itemId, slotId, packet.getOpcode())) {
@@ -82,16 +82,17 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 		int interfaceId = interfaceHash >> 16;
 		int componentId = interfaceHash & 0xFF;
 		if (interfaceId > Cache.getAmountOfInterfaces()) {
-			logger.log(Level.SEVERE, "Unable to handle interface post-decoding!");
+			logger.log(Level.SEVERE, "Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ")");
 			return;
 		}
 		if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {
-			logger.log(Level.SEVERE, "Interface " + interfaceId + " was not existent in the player's mapping of opened interface.");
+			logger.log(Level.SEVERE, "Interface " + interfaceId + ", [" + componentId + "] was not existent in the player's mapping of opened interface.");
 			return;
 		}
 		if (ModuleRepository.handle(player, interfaceId, componentId, -1, -1, packet.getOpcode())) {
 			return;
 		}
+		player.getManager().getDialogues().handleOption(interfaceId, componentId);
 		System.out.println("[interfaceId=" + interfaceId + ", componentId=" + componentId + "" + ", packetId=" + packet.getOpcode() + "]");
 	}
 }

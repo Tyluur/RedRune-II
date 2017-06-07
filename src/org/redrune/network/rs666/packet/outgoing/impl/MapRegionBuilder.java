@@ -1,8 +1,8 @@
 package org.redrune.network.rs666.packet.outgoing.impl;
 
-import org.redrune.cache.parse.MapRegionParser;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
@@ -38,14 +38,14 @@ public final class MapRegionBuilder implements OutgoingPacketBuilder {
 		bldr.writeLEShortA(regionX);
 		bldr.writeByteS(0); //Scene graph size index.
 		for (int regionId : player.getMapRegionsIds()) {
-			int[] mapData = MapDataParser.getMapData().get(regionId);
-			if (mapData == null) {
-				mapData = new int[4];
+			int[] keys = MapDataParser.getMapData().get(regionId);
+			if (keys == null) {
+				keys = new int[4];
 			}
 			for (int i = 0; i < 4; i++) {
-				bldr.writeInt(mapData[i]);
+				bldr.writeInt(keys[i]);
 			}
-			MapRegionParser.parseMap(regionId, mapData);
+			RegionManager.getRegion(regionId).loadLandscape(keys);
 		}
 		return bldr.toPacket();
 	}

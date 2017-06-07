@@ -8,8 +8,6 @@ import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.node.entity.player.event.context.WalkEventContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
-import org.redrune.game.world.path.PathFactory;
-import org.redrune.game.world.path.finder.DefaultPathFinder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -38,7 +36,26 @@ public class WalkEvent extends Event<WalkEventContext> {
 	
 	@Override
 	public void run(Player player) {
+		int[] bufferX = getContext().getBufferX();
+		int[] bufferY = getContext().getBufferY();
+		int steps = getContext().getSteps();
 		player.getWalkingQueue().reset(getContext().isRunning());
-		PathFactory.get().doPath(new DefaultPathFinder(), player, getContext().getX(), getContext().getY());
+		int last = -1;
+		for (int i = steps - 1; i >= 0; i--) {
+			if (bufferX[i] == 0 || bufferY[i] == 0) {
+				break;
+			}
+			System.out.println("Adding [" + bufferX[i] + "," + bufferY[i] + "]");
+			player.getWalkingQueue().addPath(bufferX[i], bufferY[i]);
+			last = i;
+		}
+		/*
+		if (last != -1) {
+				WorldTile tile = new WorldTile(bufferX[last], bufferY[last], player.getPlane());
+				player.getPackets().sendMinimapFlag(tile.getXInScene(player), tile.getYInScene(player));
+			} else {
+				player.getPackets().sendResetMinimapFlag();
+			}
+		 */
 	}
 }

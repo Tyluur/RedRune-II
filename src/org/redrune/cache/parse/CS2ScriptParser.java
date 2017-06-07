@@ -1,31 +1,28 @@
 package org.redrune.cache.parse;
 
-import org.redrune.cache.CacheManager;
-import org.redrune.utility.BufferUtils;
+import org.redrune.cache.parse.definition.CS2ScriptDefinition;
+import org.redrune.utility.Misc;
 
-import java.nio.ByteBuffer;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author `Discardedx2
  */
-public class CS2ScriptParser {
+public final class CS2ScriptParser {
 	
 	/**
 	 * The definitions mapping.
 	 */
-	private static final Map<Integer, CS2ScriptParser> DEFINITIONS = new HashMap<>();
+	private static final Map<Integer, CS2ScriptDefinition> DEFINITIONS = new HashMap<>();
 	
-	private String defaultString;
-	
-	private char valueType;
-	
-	private char keyType;
-	
-	private int defaultInteger;
-	
-	private Map<Integer, Object> settings;
+	/**
+	 * The instance of the logger
+	 */
+	private static final Logger LOGGER = Misc.constructLogger(CS2ScriptParser.class);
 	
 	/**
 	 * The client script setting definitions.
@@ -34,120 +31,19 @@ public class CS2ScriptParser {
 	 * 		The client script id.
 	 * @return The definitions.
 	 */
-	public static CS2ScriptParser forId(int id) {
-		CS2ScriptParser def = DEFINITIONS.get(id);
+	public static CS2ScriptDefinition forId(int id) {
+		CS2ScriptDefinition def = DEFINITIONS.get(id);
 		if (def != null) {
 			return def;
 		}
 		try {
-			byte[] data = CacheManager.getData(17, id >>> 8, id & 0xFF);
-			def = decode(ByteBuffer.wrap(data));
-			DEFINITIONS.put(id, def);
-			return def;
-		} catch (Throwable e) {
-			//e.printStackTrace();
+			def = def.load(id);
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "Unable to parse CS2 definitions for id " + id, e);
+			return null;
 		}
-		return null;
-	}
-	
-	/**
-	 * @param buffer
-	 * 		The buffer which contains information for the file.
-	 * @return a new CachedSettingDefinition
-	 */
-	private static CS2ScriptParser decode(ByteBuffer buffer) {
-		CS2ScriptParser def = new CS2ScriptParser();
-		def.settings = new HashMap<>();
-		while (true) {
-			int opcode = buffer.get() & 0xFF;
-			if (opcode == 0) {
-				break;
-			} else if (opcode == 1) {
-				def.keyType = BufferUtils.getCPCharacter(buffer);
-			} else if (opcode == 2) {
-				def.valueType = BufferUtils.getCPCharacter(buffer);
-			} else if (opcode == 3) {
-				def.defaultString = BufferUtils.readRS2String(buffer);
-			} else if (opcode == 4) {
-				def.defaultInteger = buffer.getInt();
-			} else if (opcode == 5 || opcode == 6) {
-				int range = buffer.getShort() & 0xFFFF;
-				for (int offset = 0; offset < range; offset++) {
-					int settingIdentifier = buffer.getInt();
-					Object data;
-					if (opcode == 5) {
-						data = BufferUtils.readRS2String(buffer);
-						//System.out.println(settingIdentifier + ", " + data);
-					} else {
-						data = buffer.getInt();
-					}
-					def.settings.put(settingIdentifier, data);
-				}
-			} else if (opcode == 7) {
-				buffer.getShort();
-				int length = buffer.getShort() & 0xFF;
-				for (int i_5_ = 0; length > i_5_; i_5_++) {
-					int key = (buffer.getShort() & 0xFF);
-					def.settings.put(key, BufferUtils.readRS2String(buffer));
-					//System.out.println(key + ", " + def.settings.get(key));
-				}
-			} else if (opcode == 8) {
-				buffer.getShort();
-				int length = buffer.getShort() & 0xFF;
-				for (int i_8_ = 0; i_8_ < length; i_8_++) {
-					def.settings.put((buffer.getShort() & 0xFF), buffer.getInt());
-				}
-			} else {
-				System.out.println("Opcode: " + opcode);
-			}
-		}
+		DEFINITIONS.put(id, def);
 		return def;
 	}
 	
-	public int getDefaultInteger() {
-		return defaultInteger;
-	}
-	
-	public String getDefaultString() {
-		return defaultString;
-	}
-	
-	public char getKeyType() {
-		return keyType;
-	}
-	
-	public Map<Integer, Object> getSettings() {
-		return settings;
-	}
-	
-	public char getValueType() {
-		return valueType;
-	}
-	
-	public int getKey(Object o) {
-		for (int i : settings.keySet()) {
-			if (settings.get(i).equals(o)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	public int getIntValue(int musicIndex) {
-		for (int i : settings.keySet()) {
-			if (settings.get(i).equals(musicIndex)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	public String getStringValue(int musicIndex) {
-		for (Object i : settings.keySet()) {
-			if (settings.get(i).equals(musicIndex)) {
-				return (String) i;
-			}
-		}
-		return null;
-	}
 }

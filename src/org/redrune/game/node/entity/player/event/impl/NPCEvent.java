@@ -1,5 +1,6 @@
 package org.redrune.game.node.entity.player.event.impl;
 
+import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
@@ -37,9 +38,13 @@ public class NPCEvent extends Event<NPCEventContext> {
 		player.turnTo(npc);
 		npc.startPlayerInteraction(player);
 		
+		if (option == InteractionOption.FIRST_OPTION && DialogueRepository.handleNPC(player, npc)) {
+			return;
+		}
 		if (ModuleRepository.handle(player, npc, option)) {
 			return;
 		}
+		player.getTransmitter().sendMessage("Nothing interesting happens.");
 		// TODO npc dialogues next
 	}
 }

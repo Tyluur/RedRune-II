@@ -1,9 +1,16 @@
 package org.redrune.cache.parse;
 
+import com.google.common.base.Stopwatch;
 import org.redrune.cache.Cache;
 import org.redrune.cache.parse.definition.ItemDefinition;
+import org.redrune.utility.Misc;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -15,6 +22,62 @@ public class ItemDefinitionParser {
 	 * The map of definitions
 	 */
 	private static final ConcurrentHashMap<Integer, ItemDefinition> ITEM_DEFINITIONS = new ConcurrentHashMap<>();
+	
+	/**
+	 * The text in the equip data file, cached for ease of access
+	 */
+	private static final Map<Integer, Integer[]> EQUIPMENT_DATA = new ConcurrentHashMap<>();
+	
+	/**
+	 * The instance of the logger
+	 */
+	private static final Logger LOGGER = Misc.constructLogger(ItemDefinitionParser.class);
+	
+	/**
+	 * The location of the file with equip data
+	 */
+	private static final String EQUIP_DATA_FILE = "./data/repository/equipment_data.txt";
+	
+	/**
+	 * Caches all the equipment data
+	 */
+	private static void cacheData() {
+		for (String txt : Misc.getFileText(EQUIP_DATA_FILE)) {
+			txt = txt.trim().toLowerCase();
+			if (txt.startsWith("/")) {
+				continue;
+			}
+			String[] stringSplit = txt.split(":");
+			String[] digitSplit = stringSplit[1].split(",");
+			Integer slot = Integer.parseInt(digitSplit[0]);
+			Integer type = Integer.parseInt(digitSplit[1]);
+			EQUIPMENT_DATA.put(Integer.parseInt(stringSplit[0]), new Integer[] { slot, type });
+		}
+	}
+	
+	/**
+	 * Loads all equip ids, slots, and equipment types
+	 */
+	public static void loadEquipmentConfiguration() {
+		Stopwatch watch = Stopwatch.createStarted();
+		if (EQUIPMENT_DATA.isEmpty()) {
+			cacheData();
+		}
+		int equipId = 0;
+		for (int itemId = 0; itemId < Cache.getAmountOfItems(); itemId++) {
+			ItemDefinition def = forId(itemId);
+			if (def.getMaleWornModelId1() >= 0 || def.getMaleWornModelId2() >= 0) {
+				def.setEquipId(equipId++);
+			}
+			Integer[] equipmentData = EQUIPMENT_DATA.get(itemId);
+			if (equipmentData == null) {
+				continue;
+			}
+			def.setEquipSlot(equipmentData[0]);
+			def.setEquipType(equipmentData[1]);
+		}
+		LOGGER.info("Successfully loaded " + EQUIPMENT_DATA.size() + " equipment data and all equipment slots in " + watch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+	}
 	
 	/**
 	 * Gets the definitions of an item by the id
@@ -29,23 +92,18 @@ public class ItemDefinitionParser {
 			return definitions;
 		} else {
 			ItemDefinition def = new ItemDefinition(itemId);
-			def.loadItemDefinition();
+			try {
+				def.loadItemDefinition();
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "Unable to parse item definitions, error:", e);
+			}
 			ITEM_DEFINITIONS.put(itemId, def);
 			return def;
 		}
 	}
 	
-	/**
-	 * Loads all equip ids
-	 */
-	public static void loadEquipIds() {
-		int equipId = 0;
-		for (int i = 0; i < Cache.getAmountOfItems(); i++) {
-			ItemDefinition def = forId(i);
-			if (def.getMaleWornModelId1() >= 0 || def.getMaleWornModelId2() >= 0) {
-				def.setEquipId(equipId++);
-			}
-		}
+	public static void loadEquipData() {
+	
 	}
 	
 }

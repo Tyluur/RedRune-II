@@ -7,41 +7,47 @@ import org.redrune.cache.stream.RSInputStream;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.RegionBuilder;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.BufferUtils;
+import org.redrune.utility.Misc;
 
 import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author 'Mystic Flow <Steven@rune-server.org>
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public class MapRegionParser {
+public final class MapRegionParser {
 	
-	private static Set<Integer> loaded = new HashSet<>();
+	/**
+	 * The instance of the logger
+	 */
+	private static final Logger LOGGER = Misc.constructLogger(MapRegionParser.class);
 	
-	private static Set<Integer> broken = new HashSet<>();
-	
-	public static boolean parseMap(final int area, final int[] keys) {
-		if (broken.contains(area)) {
-			return false;
-		}
-		if (loaded.contains(area)) {
-			return true;
-		}
-		loaded.add(area);
-		int regionX = area >> 8;
-		int regionY = area & 0xFF;
+	/**
+	 * Parses the map and returns the list of objects in it
+	 *
+	 * @param regionId
+	 * 		The id of the map
+	 * @param keys
+	 * 		The xtea keys of the map
+	 */
+	public static List<GameObject> parseMap(final int regionId, final int[] keys) {
+		List<GameObject> objectList = new ArrayList<>();
+		int regionX = regionId >> 8;
+		int regionY = regionId & 0xFF;
 		try {
 			byte[] landscapeMap = CacheManager.getByName(5, "m" + regionX + "_" + regionY);
 			byte[] objectMap = CacheManager.getByName(5, "l" + regionX + "_" + regionY);
 			if (landscapeMap == null && objectMap == null) {
-				System.out.println("Map [" + (regionX << 6) + ", " + (regionY << 6) + "] was not found in the cache!");
-				return true;
+				LOGGER.info("Map [" + (regionX << 6) + ", " + (regionY << 6) + "] was not found in the cache!");
+				return objectList;
 			}
 			RSInputStream str2 = null;
 			ByteInputStream str1 = null;
@@ -94,7 +100,6 @@ public class MapRegionParser {
 				}
 			}
 			str2.close();
-			// out.writeByte(-5);//End of landscape parsing.
 			if (str1 != null) {
 				int objectId = -1;
 				int incr;
@@ -117,29 +122,17 @@ public class MapRegionParser {
 							height--;
 						}
 						if (height >= 0 && height <= 3) {
-							RegionBuilder.addObject(new GameObject(objectId, type, rotation, Location.create(x + localX, y + localY, height)), true);
+							objectList.add(new GameObject(objectId, type, rotation, Location.create(x + localX, y + localY, height)));
 						}
 					}
 				}
 			}
-			return true;
+			return objectList;
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error while loading region " + area + ", " + e.getMessage() + ", " + e.getCause() + ", " + e.toString());
-			broken.add(area);
-			return false;
+			LOGGER.log(Level.SEVERE, "Unable to parse region " + regionId + " with keys " + Arrays.toString(keys), e);
+			RegionManager.BROKEN_REGIONS.add(regionId);
+			return objectList;
 		}
 	}
 	
-	public static void addClipping(DataOutputStream out, int type, int x, int y, int z, int shift) {
-		try {
-			out.writeByte(type);
-			out.writeByte(x);
-			out.writeByte(y);
-			out.writeByte(z);
-			out.writeInt(shift);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

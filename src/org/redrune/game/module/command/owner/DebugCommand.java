@@ -3,7 +3,7 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.region.RegionManager;
+import org.redrune.game.node.object.GameObject;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -20,11 +20,8 @@ public class DebugCommand extends CommandModule {
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
 		try {
-			
-			for (int i = 0; i < 100; i++) {
-				RegionManager.addFloorItem(4151, 1, 10, player.getLocation(), player.getDetails().getUsername());
-			}
-	
+			player.getRegion().spawnObject(new GameObject(intParam(args, 1), intParam(args, 2), intParam(args, 3), player.getLocation()), false);
+//			player.getManager().getDialogues().startDialogue(new BankerNPCDialogue(), 45);
 	/*		Animation MODERN_ANIM = new Animation(8939, 0, false, Priority.HIGHEST);
 			Graphic MODERN_GRAPHIC = new Graphic(1576, 0, 0, false);
 			

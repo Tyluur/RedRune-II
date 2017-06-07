@@ -1,8 +1,11 @@
 package org.redrune.game.world.region;
 
+import org.redrune.cache.parse.ObjectDefinitionParser;
 import org.redrune.cache.parse.definition.ObjectDefinition;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.rs.constant.RegionConstants;
+
+import java.util.Optional;
 
 /**
  * A region constructing aid class.
@@ -15,15 +18,20 @@ import org.redrune.utility.rs.constant.RegionConstants;
 public class RegionBuilder {
 	
 	/**
+	 * The slots of the objects, based on the type
+	 */
+	public static final int[] OBJECT_SLOTS = new int[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
+	
+	/**
 	 * Adds an object on the map (clipping & instance on location).
 	 *
 	 * @param object
 	 * 		The object to add.
-	 * @param ignoreObjects
-	 * 		If the object should be ignored.
+	 * @param defaultObject
+	 * 		If the object is a default cache object
 	 * @return The old game object.
 	 */
-	public static GameObject addObject(GameObject object, boolean ignoreObjects) {
+	public static GameObject addObject(GameObject object, boolean defaultObject) {
 		ObjectDefinition def = object.getDefinitions();
 		if (def == null) {
 			return null;
@@ -50,8 +58,8 @@ public class RegionBuilder {
 				addClippingForVariableObject(object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType(), object.getRotation(), def.isSolid(), !def.isClippingFlag());
 			}
 		}
-		if (!ignoreObjects) {
-			removeObject(object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+		if (!defaultObject) {
+			removeObject(-1, object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
 		}
 		addGameObject(object);
 		return object;
@@ -67,7 +75,7 @@ public class RegionBuilder {
 		region.getClippingMasks()[z][localX][localY] |= shift;
 	}
 	
-	private static void addClippingForSolidObject(int x, int y, int height, int xLength, int yLength, boolean flag, boolean flag2) {
+	static void addClippingForSolidObject(int x, int y, int height, int xLength, int yLength, boolean flag, boolean flag2) {
 		int clipping = 256;
 		if (flag) {
 			clipping |= 0x20000;
@@ -82,7 +90,7 @@ public class RegionBuilder {
 		}
 	}
 	
-	private static void addClippingForVariableObject(int x, int y, int z, int type, int direction, boolean flag, boolean flag2) {
+	public static void addClippingForVariableObject(int x, int y, int z, int type, int direction, boolean flag, boolean flag2) {
 		if (type == 0) {
 			if (direction == 0) {
 				addClipping(x, y, z, 128);
@@ -230,37 +238,38 @@ public class RegionBuilder {
 		}
 	}
 	
-	public static GameObject removeObject(int x, int y, int height, int type) {
-/*		Region region = RegionManager.getRegion(x, y);
-		GameObject oldObj = region.getGameObjectType(type);
-		reigon.removeObject(oldObj);
-		if (oldObj != null) {
-			ObjectDefinition def = ObjectDefinitionParser.forId(oldObj.getId());
-			int xLength;
-			int yLength;
-			if (oldObj.getRotation() != 1 && oldObj.getRotation() != 3) {
-				xLength = def.getSizeX();
-				yLength = def.getSizeY();
-			} else {
-				xLength = def.getSizeY();
-				yLength = def.getSizeX();
+	public static GameObject removeObject(int objectId, int x, int y, int height, int type) {
+		Region region = RegionManager.getRegion(x, y);
+		Optional<GameObject> optional = region.findAnyGameObject(objectId, x, y, height, type);
+		if (!optional.isPresent()) {
+			return null;
+		}
+		GameObject object = optional.get();
+		region.deleteObject(object);
+		ObjectDefinition def = ObjectDefinitionParser.forId(object.getId());
+		int xLength;
+		int yLength;
+		if (object.getRotation() != 1 && object.getRotation() != 3) {
+			xLength = def.getSizeX();
+			yLength = def.getSizeY();
+		} else {
+			xLength = def.getSizeY();
+			yLength = def.getSizeX();
+		}
+		if (object.getType() == 22) {
+			if (def.getActionCount() == 1) {
+				removeClipping(x, y, height, 0x200000);
 			}
-			if (oldObj.getType() == 22) {
-				if (def.getActionCount() == 1) {
-					removeClipping(x, y, height, 0x200000);
-				}
-			} else if (oldObj.getType() >= 9 && oldObj.getType() <= 11) {
-				if (def.getActionCount() != 0) {
-					removeClippingForSolidObject(x, y, height, xLength, yLength, def.isSolid(), !def.isClippingFlag());
-				}
-			} else if (oldObj.getType() >= 0 && oldObj.getType() <= 3) {
-				if (def.getActionCount() != 0) {
-					removeClippingForVariableObject(x, y, height, oldObj.getType(), oldObj.getRotation(), def.isSolid(), !def.isClippingFlag());
-				}
+		} else if (object.getType() >= 9 && object.getType() <= 11) {
+			if (def.getActionCount() != 0) {
+				removeClippingForSolidObject(x, y, height, xLength, yLength, def.isSolid(), !def.isClippingFlag());
+			}
+		} else if (object.getType() >= 0 && object.getType() <= 3) {
+			if (def.getActionCount() != 0) {
+				removeClippingForVariableObject(x, y, height, object.getType(), object.getRotation(), def.isSolid(), !def.isClippingFlag());
 			}
 		}
-		return oldObj;*/
-		return null;
+		return object;
 	}
 	
 	/**
@@ -270,10 +279,10 @@ public class RegionBuilder {
 	 * 		The game object.
 	 */
 	private static void addGameObject(GameObject object) {
-		object.getRegion().addObject(object);
+		object.getRegion().addDefaultObject(object);
 	}
 	
-	private static void removeClippingForSolidObject(int x, int y, int height, int xLength, int yLength, boolean flag, boolean flag2) {
+	static void removeClippingForSolidObject(int x, int y, int height, int xLength, int yLength, boolean flag, boolean flag2) {
 		int clipping = 256;
 		if (flag) {
 			clipping |= 0x20000;

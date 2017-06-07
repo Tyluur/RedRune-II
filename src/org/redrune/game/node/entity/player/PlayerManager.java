@@ -44,7 +44,14 @@ public final class PlayerManager {
 	 */
 	@Getter
 	@Setter
-	private ActionManager actions;
+	private transient ActionManager actions;
+	
+	/**
+	 * The dialogue manager object
+	 */
+	@Getter
+	@Setter
+	private transient DialogueManager dialogues;
 	
 	PlayerManager() {
 		this.notes = new NoteManager();
@@ -61,6 +68,7 @@ public final class PlayerManager {
 		this.setInterfaces(new InterfaceManager());
 		this.setActions(new ActionManager());
 		this.setLocks(new LockManager());
+		this.setDialogues(new DialogueManager(player));
 		
 		this.interfaces.setPlayer(player);
 		this.notes.setPlayer(player);

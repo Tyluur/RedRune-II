@@ -317,6 +317,7 @@ public final class InterfaceManager implements InterfaceConstants {
 		if (getChatboxInterface() != -1) {
 			System.out.println("Closed the chatbox interface");
 			closeChatboxInterface();
+			player.getManager().getDialogues().end();
 		}
 		if (getInventoryInterface() != -1) {
 			System.out.println("Closed the inventory interface");

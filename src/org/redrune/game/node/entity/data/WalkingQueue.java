@@ -56,11 +56,11 @@ public class WalkingQueue {
 	private boolean running = false;
 	
 	/**
-	 * The last location this entity walked on.
+	 * If the entity moved
 	 */
 	@Getter
 	@Setter
-	private Location footPrint;
+	private boolean moved = false;
 	
 	/**
 	 * Constructs a new {@code WalkingQueue} {@code Object}.
@@ -70,7 +70,6 @@ public class WalkingQueue {
 	 */
 	public WalkingQueue(Entity entity) {
 		this.entity = entity;
-		this.footPrint = entity.getLocation();
 	}
 	
 	/**
@@ -133,7 +132,6 @@ public class WalkingQueue {
 			}
 		}
 		if (diffX != 0 || diffY != 0) {
-			footPrint = entity.getLocation();
 			entity.setLocation(entity.getLocation().transform(diffX, diffY, 0));
 			RegionManager.updateEntityRegion(entity);
 		}
@@ -153,7 +151,6 @@ public class WalkingQueue {
 	private boolean updateTeleport() {
 		if (entity.getAttribute(AttributeKey.TELEPORT_LOCATION) != null) {
 			reset(false);
-			footPrint = entity.getAttribute(AttributeKey.TELEPORT_LOCATION);
 			entity.setLocation(entity.getAttribute(AttributeKey.TELEPORT_LOCATION));
 			RegionManager.updateEntityRegion(entity);
 			entity.removeAttribute(AttributeKey.TELEPORT_LOCATION);
@@ -223,19 +220,6 @@ public class WalkingQueue {
 	 * 		The last y-coordinate of the path.
 	 */
 	public void addPath(int x, int y) {
-		/*
-		 * The RuneScape client will not send all the points in the queue. It just sends places where the direction changes.
-		 *
-		 * For instance, walking from a route like this:
-		 *
-		 * <code> ***** * * ***** </code>
-		 *
-		 * Only the places marked with X will be sent:
-		 *
-		 * <code> X***X * * X***X </code>
-		 *
-		 * This code will 'fill in' these points and then add them to the queue.
-		 */
 		Point point = walkingQueue.peekLast();
 		int diffX = 0, diffY = 0;
 		if (point != null) {

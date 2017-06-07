@@ -13,6 +13,7 @@ import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.AttributeKey;
+import org.redrune.utility.rs.constant.Directions.DirectionUtilities;
 
 import java.util.PriorityQueue;
 
@@ -113,12 +114,14 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 				player.getRenderData().getIsLocal()[index] = false;
 				break;
 			case WALKING:
-				//				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
-				buffer.writeBits(3, p.getWalkingQueue().getWalkDir());
+				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
+				Location walkDelta = Location.GetDelta(p.getRenderData().getLastLocation(), p.getLocation());
+				buffer.writeBits(3, DirectionUtilities.ThreeBitsMovementType[walkDelta.getX() + 1][walkDelta.getY() + 1]);
 				break;
 			case RUNNING:
-				//				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
-				buffer.writeBits(4, p.getWalkingQueue().getRunDir());
+				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
+				Location runDelta = Location.GetDelta(p.getRenderData().getLastLocation(), p.getLocation());
+				buffer.writeBits(4, DirectionUtilities.FourBitsMovementType[runDelta.getX() + 2][runDelta.getY() + 2]);
 				break;
 			case TELEPORTED:
 				Location delta = Location.getDelta(p.getRenderData().getLastLocation(), p.getLocation());

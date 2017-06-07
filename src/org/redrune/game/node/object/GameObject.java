@@ -40,6 +40,13 @@ public class GameObject extends Node {
 	private ObjectDefinition definitions;
 	
 	/**
+	 * The type of object this is
+	 */
+	@Getter
+	@Setter
+	private ObjectType spawnType;
+	
+	/**
 	 * Constructs a regular object with a 0 rotation and type 10.
 	 *
 	 * @param id
@@ -103,5 +110,29 @@ public class GameObject extends Node {
 	@Override
 	public String toString() {
 		return "[id=" + id + ", name=" + getDefinitions().getName() + ", options=" + Arrays.toString(getDefinitions().getOptions()) + ", type=" + type + ", rotation=" + rotation + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof GameObject)) {
+			return false;
+		}
+		GameObject o = (GameObject) obj;
+		return o.id == id && o.type == type && o.rotation == rotation && o.getLocation().equals(getLocation()) && o.getSpawnType() == spawnType;
+	}
+	
+	/**
+	 * The type of objects that objects can be
+	 */
+	public enum ObjectType {
+		/**
+		 * The object was generated from the cache
+		 */
+		CACHE,
+		
+		/**
+		 * The object was generated from the server
+		 */
+		SERVER
 	}
 }

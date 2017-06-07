@@ -9,7 +9,7 @@ import org.redrune.cache.stream.RSInputStream;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ObjectDefinitionParser {
+public final class ObjectDefinitionParser {
 	
 	/**
 	 * The map of all object definitions, with the key being the id of the object
@@ -33,6 +33,7 @@ public class ObjectDefinitionParser {
 			is = (CacheManager.getData(CacheConstants.OBJECTDEF_IDX_ID, objectId >>> 8, objectId & 0xff));
 		} catch (Exception e) {
 			System.out.println("Could not grab object " + objectId);
+			e.printStackTrace();
 		}
 		objectDef = new ObjectDefinition();
 		objectDef.setId(objectId);
@@ -41,6 +42,7 @@ public class ObjectDefinitionParser {
 				objectDef.readValueLoop(new RSInputStream(new RSByteArrayInputStream(is)));
 			} catch (IOException e) {
 				System.out.println("Could not load object " + objectId);
+				e.printStackTrace();
 			}
 		}
 		objectDef.method3287();

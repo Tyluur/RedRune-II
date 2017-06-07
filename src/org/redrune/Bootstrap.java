@@ -7,8 +7,10 @@ import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
+import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.module.command.CommandRepository;
+import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.Misc;
@@ -57,9 +59,11 @@ public class Bootstrap {
 			// loading the actual important data
 			Cache.init();
 			BodyDataParser.loadAll();
-			ItemDefinitionParser.loadEquipIds();
+			ItemDefinitionParser.loadEquipmentConfiguration();
 			IncomingPacketRepository.storeAll();
 			ModuleRepository.registerAllModules();
+			RegionDeletion.prepare();
+			DialogueRepository.loadSubscriptions();
 			CommandRepository.populate();
 			MapDataParser.readAll();
 			
@@ -67,7 +71,7 @@ public class Bootstrap {
 			SystemManager.start();
 			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + NetworkConstants.REVISION + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Unexpected error on initialization - " + e);
+			LOGGER.log(Level.SEVERE, "Unexpected error on initialization", e);
 		}
 	}
 	

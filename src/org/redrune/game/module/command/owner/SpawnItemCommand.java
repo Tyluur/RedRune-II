@@ -8,7 +8,7 @@ import org.redrune.game.node.entity.player.Player;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/31/2017
  */
-@CommandManifest(description = "Spawns an item by its id", types = { Integer.class, Integer.class })
+@CommandManifest(description = "Spawns an item by its id", types = { Integer.class })
 public class SpawnItemCommand extends CommandModule {
 	
 	@Override
@@ -18,6 +18,7 @@ public class SpawnItemCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.getInventory().addItem(intParam(args, 1), intParam(args, 2));
+		final Integer amount = args.length == 3 ? intParam(args, 2) : 1;
+		player.getInventory().addItem(intParam(args, 1), amount);
 	}
 }

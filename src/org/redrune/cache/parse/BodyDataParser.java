@@ -8,6 +8,7 @@ import org.redrune.cache.stream.RSInputStream;
 import org.redrune.utility.Misc;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017
  */
-public class BodyDataParser {
+public final class BodyDataParser {
 	
 	/**
 	 * The instance of the logger
@@ -30,9 +31,13 @@ public class BodyDataParser {
 	private static int[] bodyData;
 	
 	public static void loadAll() {
-		final BodyData read = BodyDataParser.read();
+		BodyData read = null;
+		try {
+			read = BodyDataParser.read();
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Unable to parse body data!", e);
+		}
 		if (read == null) {
-			logger.log(Level.SEVERE, "Unable to parse body data!");
 			return;
 		}
 		setBodyData(read.getPartsData());
@@ -43,17 +48,12 @@ public class BodyDataParser {
 	 *
 	 * @return The body data object, or null if it failed.
 	 */
-	public static BodyData read() {
+	public static BodyData read() throws IOException {
 		BodyData data = new BodyData();
-		try {
-			byte[] buff = CacheManager.getData(28, 6, 0);
-			RSInputStream reader = new RSInputStream(new ByteArrayInputStream(buff));
-			data.parse(reader);
-			reader.close();
-			return data;
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return null;
-		}
+		byte[] buff = CacheManager.getData(28, 6, 0);
+		RSInputStream reader = new RSInputStream(new ByteArrayInputStream(buff));
+		data.parse(reader);
+		reader.close();
+		return data;
 	}
 }

@@ -130,6 +130,7 @@ public class CacheManager {
 			// main = 87;
 			return (byte[]) archiveFiles[cache][main][child];
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return (byte[]) archiveFiles[cache][main][child];
 	}

@@ -32,7 +32,7 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 		boolean forceRun = packet.readByte() == 1;
 		int packetId = packet.getOpcode();
 		
-		Optional<GameObject> optional = player.getRegion().findGameObject(id, x, y, player.getLocation().getPlane());
+		Optional<GameObject> optional = player.getRegion().findAnyGameObject(id, x, y, player.getLocation().getPlane(), -1);
 		if (!optional.isPresent()) {
 			return;
 		}
@@ -46,7 +46,7 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, option))))));
 		} else {
 			// TODO object examines
-			player.getTransmitter().sendMessage("" + object.toString(), true);
+			player.getTransmitter().sendMessage("Examining: [" +object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + "], " + object.getType() + ", " + object.getRotation(), true);
 		}
 	}
 	

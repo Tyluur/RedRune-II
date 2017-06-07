@@ -3,6 +3,8 @@ package org.redrune.network.rs666.packet.incoming.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.WalkEventContext;
 import org.redrune.game.node.entity.player.event.impl.WalkEvent;
+import org.redrune.game.world.route.RouteFinder;
+import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.Misc;
@@ -32,6 +34,10 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		int y = packet.readLEShort();
 		boolean running = packet.readByteC() == 1;
 		int x = packet.readLEShortA();
-		player.getManager().getEvents().executeEvent(player, new WalkEvent(new WalkEventContext(x, y, running)));
+		
+		int calculatedSteps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), player.getSize(), new FixedTileStrategy(x, y), true);
+		int[] bufferX = RouteFinder.getLastPathBufferX();
+		int[] bufferY = RouteFinder.getLastPathBufferY();
+		player.getManager().getEvents().executeEvent(player, new WalkEvent(new WalkEventContext(x, y, bufferX, bufferY, running, calculatedSteps)));
 	}
 }
