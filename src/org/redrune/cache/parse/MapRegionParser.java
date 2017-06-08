@@ -92,7 +92,7 @@ public final class MapRegionParser {
 									height--;
 								}
 								if (height >= 0 && height <= 3) {
-									RegionBuilder.addClipping(x + localX, y + localY, height, 0x200000);
+									RegionBuilder.addClipping(x, y, height, 0x200000);
 								}
 							}
 						}

@@ -58,6 +58,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			player.getTransmitter().sendFullScreenAMasks();
 		}
 		EmoteManager.sendUnlockConfigs(player);
+		player.getManager().getPrayers().sendLoginConfigurations();
 	}
 	
 	/**

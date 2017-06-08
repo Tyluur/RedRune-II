@@ -1,7 +1,8 @@
 package org.redrune.utility;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.math.NumberUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 
@@ -15,6 +16,11 @@ import java.util.logging.Logger;
  * @since 5/18/2017
  */
 public class Misc {
+	
+	/**
+	 * The gson instance
+	 */
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	
 	/**
 	 * Checks if a character is valid to use.
@@ -403,7 +409,13 @@ public class Misc {
 	 * Checks if the characters are numbers
 	 */
 	public static boolean isDigit(String characters) {
-		return NumberUtils.isDigits(characters);
+		Integer digit;
+		try {
+			digit = Integer.parseInt(characters);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 	/**
@@ -516,5 +528,27 @@ public class Misc {
 			return 15;
 		}
 		return -1;
+	}
+	
+	/**
+	 * Saves data using gson
+	 *
+	 * @param file
+	 * 		The file to save to
+	 * @param data
+	 * 		The data to save
+	 */
+	public static void saveData(File file, Object data) {
+		try (Writer writer = new FileWriter(file.getAbsolutePath())) {
+			GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping();
+			Gson gson = builder.create();
+			gson.toJson(data, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Gson getGSON() {
+		return GSON;
 	}
 }

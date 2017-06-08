@@ -37,7 +37,7 @@ public class NodeReachEvent extends Event<NodeReachEventContext> {
 	
 	@Override
 	public void run(Player player) {
-		player.setInteractionTask(new NodeInteractionTask(getContext().getNode(), getContext().getTask()));
+		player.setInteractionTask(new NodeInteractionTask(getContext().getNode(), getContext().getTask(), getContext().getNode().isGameObject() || getContext().getNode().isNPC()));
 		player.checkInteractionTask();
 	}
 }

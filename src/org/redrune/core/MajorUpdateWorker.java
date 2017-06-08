@@ -1,7 +1,6 @@
 package org.redrune.core;
 
 import lombok.Setter;
-import org.redrune.game.world.SequencialUpdate;
 import org.redrune.game.world.World;
 
 import java.util.concurrent.atomic.AtomicInteger;

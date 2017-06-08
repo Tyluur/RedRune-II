@@ -1,11 +1,11 @@
-package org.redrune.game.world;
+package org.redrune.core;
 
 import lombok.Getter;
-import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
 import org.redrune.game.node.InitializingNodeList;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.World;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -27,21 +27,21 @@ public final class SequencialUpdate {
 	/**
 	 * Starts the sequence
 	 */
-	public void start() {
+	void start() {
 		try {
 			SystemManager.getScheduler().pulse();
 			for (Player player : getRenderablePlayers()) {
-				player.tick();
-				player.getWalkingQueue().updateMovement();
+				player.getMovement().processMovement();
 				player.getUpdateMasks().prepare(player);
+				player.tick();
 			}
 			for (NPC npc : World.get().getNpcs()) {
 				if (npc == null || !npc.isRenderable()) {
 					continue;
 				}
-				npc.tick();
-				npc.getWalkingQueue().updateMovement();
+				npc.getMovement().processMovement();
 				npc.getUpdateMasks().prepare(npc);
+				npc.tick();
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public final class SequencialUpdate {
 	/**
 	 * Executes the updating part of the sequence
 	 */
-	public void execute() {
+	void execute() {
 		final CountDownLatch latch = new CountDownLatch(getRenderablePlayers().size());
 		for (Player player : getRenderablePlayers()) {
 			EngineWorkingSet.submitEngineWork(() -> {
@@ -73,7 +73,7 @@ public final class SequencialUpdate {
 	/**
 	 * Finishes the sequence
 	 */
-	public void end() {
+	void end() {
 		try {
 			for (Player player : getRenderablePlayers()) {
 				player.getUpdateMasks().finish();

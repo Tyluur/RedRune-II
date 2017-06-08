@@ -262,6 +262,19 @@ public final class NetworkTransmitter {
 	}
 	
 	/**
+	 * Sends the minimap flag
+	 *
+	 * @param localX
+	 * 		The x to send
+	 * @param localY
+	 * 		The y to send
+	 */
+	public NetworkTransmitter sendMinimapFlag(int localX, int localY) {
+		send(new MinimapFlagBuilder(localX, localY).build(player));
+		return this;
+	}
+	
+	/**
 	 * Closes the input box that is opened from {@link #requestInput(InputResponse, InputType, String)}
 	 */
 	public NetworkTransmitter closeInputBox() {
@@ -284,5 +297,4 @@ public final class NetworkTransmitter {
 		send(new CS2ScriptBuilder(type.getScriptId(), "s", title).build(player));
 		return this;
 	}
-	
 }

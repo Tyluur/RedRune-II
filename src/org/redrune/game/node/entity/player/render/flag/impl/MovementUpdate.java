@@ -23,7 +23,7 @@ public class MovementUpdate extends UpdateFlag {
 	 * 		The player.
 	 */
 	public MovementUpdate(Player player) {
-		if (player.getWalkingQueue().getRunDir() != -1) {
+		if (player.getMovement().getNextRunDirection() != -1) {
 			type = 2;
 		} else {
 			type = 1;

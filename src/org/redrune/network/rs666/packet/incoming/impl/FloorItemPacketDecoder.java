@@ -47,7 +47,7 @@ public class FloorItemPacketDecoder implements IncomingPacketDecoder{
 				player.getTransmitter().sendMessage("Oops! You're too late!");
 				return;
 			}
-			player.getWalkingQueue().reset(forceRun);
+			player.getMovement().reset(forceRun);
 			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(item, () -> player.getManager().getEvents().executeEvent(player, new FloorItemPickupEvent(new FloorItemPickupContext(item))))));
 		} else {
 			// TODO: lighting a fire right click

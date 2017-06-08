@@ -1,3 +1,17 @@
+6/7/17 {
+	+   Fixed some walking bugs and finished the path finding updates
+	+   Rewrote the movement system
+	+   Added the minimap flag packet
+	+   Added profanity filter toggling (havent implemented yet)
+	+   Created a prayer system with full support for both books & toggling
+	+   Added item bonuses via json loading
+
+	[IMG]http://i.imgur.com/mQhSjqW.png[/IMG]
+	[IMG]http://i.imgur.com/ugGh52c.gif[/IMG]
+	[IMG]http://i.imgur.com/Js0py8K.png[/IMG]
+	[IMG]http://i.imgur.com/inmX6PH.gif[/IMG]
+
+
 6/6/17 {
 	+   Read all equipment slots/types from file
 	+   Added object spawning/removal
@@ -13,27 +27,27 @@
 }
 
 6/1/17 {
-+   Fixed an issue with encoding packets that had an id greater than the max byte value
-	-  Added the container update packet
-+   Added skill leveling up
-	-   This shows level up flashing in your skill tab as well
-	-   This shows a dialogue for levelling up as well
-+   Added item module support
-+   Added an action system for skilling and other implementations
-+   Added prayer training via bone burial as a result of the item modules & action system
-+   Added player locking (stopping players from interacting with npcs/objects/items/walking for x time)
-	-   This is important so you can't do actions over and over (i.e spam burying bones)
-+   Added accurate level advancing information into the skill menu
-+   Finished floor item management (items that are public by default are supported as well)
-	-   When you enter a new area you will see the items on that floor
-+   Added cache animation decoding
-+   Added a system to perform emotes from the emote tab
-	-   Also unlocked a lot of default emotes using configs
-	-   You also can't perform an emote if ur last emote is still playing.
-+   Added object interactions (all options including examine are decoded)
+	+   Fixed an issue with encoding packets that had an id greater than the max byte value
+		-  Added the container update packet
+	+   Added skill leveling up
+		-   This shows level up flashing in your skill tab as well
+		-   This shows a dialogue for levelling up as well
+	+   Added item module support
+	+   Added an action system for skilling and other implementations
+	+   Added prayer training via bone burial as a result of the item modules & action system
+	+   Added player locking (stopping players from interacting with npcs/objects/items/walking for x time)
+		-   This is important so you can't do actions over and over (i.e spam burying bones)
+	+   Added accurate level advancing information into the skill menu
+	+   Finished floor item management (items that are public by default are supported as well)
+		-   When you enter a new area you will see the items on that floor
+	+   Added cache animation decoding
+	+   Added a system to perform emotes from the emote tab
+		-   Also unlocked a lot of default emotes using configs
+		-   You also can't perform an emote if ur last emote is still playing.
+	+   Added object interactions (all options including examine are decoded)
 
-MEDIA
-[img]http://i.imgur.com/VY5FDR1.png[/img]
-[IMG]http://i.imgur.com/ndz767L.gif[/IMG]
-[IMG]http://i.imgur.com/XlGdZEH.gif[/IMG]
+	MEDIA
+	[img]http://i.imgur.com/VY5FDR1.png[/img]
+	[IMG]http://i.imgur.com/ndz767L.gif[/IMG]
+	[IMG]http://i.imgur.com/XlGdZEH.gif[/IMG]
 }

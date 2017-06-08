@@ -66,13 +66,13 @@ public class PathFactory {
 		int srcY = entity.getLocation().getViewportY(0);
 		int destX = destination.getViewportX(base, 0);
 		int destY = destination.getViewportY(base, 0);
-		PathState state = pathFinder.findPath(entity, entity.getLocation(), srcX, srcY, destX, destY, entity.getLocation().getPlane(), 0, entity.getWalkingQueue().isRunning(), ignoreLastStep, moveNear);
+		PathState state = pathFinder.findPath(entity, entity.getLocation(), srcX, srcY, destX, destY, entity.getLocation().getPlane(), 0, entity.getMovement().isRunning(), ignoreLastStep, moveNear);
 		if (state == null || !addToWalking) {
 			return state;
 		}
-		entity.getWalkingQueue().reset();
+		//entity.getWalkingQueue().reset();
 		for (Position step : state.getPoints()) {
-			entity.getWalkingQueue().addPath(step.getX(), step.getY());
+			//entity.getWalkingQueue().addPath(step.getX(), step.getY());
 		}
 		return state;
 	}
@@ -105,9 +105,9 @@ public class PathFactory {
 	 */
 	public void doPath(Entity entity, PathState state) {
 		if (state != null) {
-			entity.getWalkingQueue().reset();
+			//entity.getWalkingQueue().reset();
 			for (Position step : state.getPoints()) {
-				entity.getWalkingQueue().addPoint(step.getX(), step.getY());
+			//	entity.getWalkingQueue().addPoint(step.getX(), step.getY());
 			}
 		}
 	}

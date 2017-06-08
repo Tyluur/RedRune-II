@@ -57,7 +57,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 			return;
 		}
 		if (option != InteractionOption.EXAMINE) {
-			player.getWalkingQueue().reset(forceRun);
+			player.getMovement().reset(forceRun);
 			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(npc, () -> player.getManager().getEvents().executeEvent(player, new NPCEvent(new NPCEventContext(npc, option))))));
 		} else {
 			player.getTransmitter().sendMessage(npc.toString(), true);

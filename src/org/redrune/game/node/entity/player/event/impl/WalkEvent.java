@@ -1,5 +1,6 @@
 package org.redrune.game.node.entity.player.event.impl;
 
+import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
@@ -39,23 +40,20 @@ public class WalkEvent extends Event<WalkEventContext> {
 		int[] bufferX = getContext().getBufferX();
 		int[] bufferY = getContext().getBufferY();
 		int steps = getContext().getSteps();
-		player.getWalkingQueue().reset(getContext().isRunning());
+		player.getMovement().reset(getContext().isRunning());
 		int last = -1;
 		for (int i = steps - 1; i >= 0; i--) {
-			if (bufferX[i] == 0 || bufferY[i] == 0) {
+			if (!player.getMovement().addWalkSteps(bufferX[i], bufferY[i], 25, true)) {
 				break;
 			}
-			System.out.println("Adding [" + bufferX[i] + "," + bufferY[i] + "]");
-			player.getWalkingQueue().addPath(bufferX[i], bufferY[i]);
 			last = i;
 		}
-		/*
+		
 		if (last != -1) {
-				WorldTile tile = new WorldTile(bufferX[last], bufferY[last], player.getPlane());
-				player.getPackets().sendMinimapFlag(tile.getXInScene(player), tile.getYInScene(player));
-			} else {
-				player.getPackets().sendResetMinimapFlag();
-			}
-		 */
+			Location tile = new Location(bufferX[last], bufferY[last], player.getLocation().getPlane());
+			player.getTransmitter().sendMinimapFlag(tile.getLocalX(player.getLastLoadedLocation()), tile.getLocalY(player.getLastLoadedLocation()));
+		} else {
+			player.getTransmitter().sendMinimapFlagReset();
+		}
 	}
 }

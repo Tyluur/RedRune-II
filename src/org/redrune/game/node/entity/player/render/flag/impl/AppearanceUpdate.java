@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.NPCDefinitionParser;
+import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
@@ -44,15 +45,16 @@ public class AppearanceUpdate extends UpdateFlag {
 		if (!appearance.isMale()) {
 			bitSet |= 0x1;
 		}
-		if (appearance.getNpcId() != -1) {
-			bitSet |= (NPCDefinitionParser.forId(appearance.getNpcId()).getSize() - 1) << 3;
+		final NPCDefinition definition = appearance.getNpcId() > 0 ? NPCDefinitionParser.forId(appearance.getNpcId()) : null;
+		if (appearance.getNpcId() != -1 && definition != null) {
+			bitSet |= (definition.getSize() - 1) << 3;
 		}
 		playerUpdate.writeByte(bitSet);
-		playerUpdate.writeByte(1); // title
-		playerUpdate.writeByte(-1); //skull icon
-		playerUpdate.writeByte(1); //Headicon.
+		playerUpdate.writeByte(0); // title
+		playerUpdate.writeByte(player.getVariables().getSkullIcon().getId()); //skull icon
+		playerUpdate.writeByte(player.getManager().getPrayers().getIcon().getId());
 		playerUpdate.writeByte(0);
-		if (appearance.getNpcId() == -1) {
+		if (definition == null || appearance.getNpcId() == -1) {
 			for (int i = 0; i < BodyDataParser.getBodyData().length; i++) {
 				if (BodyDataParser.getBodyData()[i] != 1) {
 					int d = appearance.getBodyPart(i);

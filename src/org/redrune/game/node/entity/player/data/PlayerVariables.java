@@ -2,7 +2,10 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.utility.AttributeKey;
+import org.redrune.utility.rs.constant.HeadIcons.SkullIcon;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,6 +56,12 @@ public final class PlayerVariables {
 	@Getter
 	@Setter
 	private boolean experienceLocked = false;
+	
+	/**
+	 * The skull icon
+	 */
+	@Getter
+	private SkullIcon skullIcon = SkullIcon.NONE;
 	
 	public PlayerVariables() {
 		setHealthPoints(100);
@@ -147,4 +156,18 @@ public final class PlayerVariables {
 		return value;
 	}
 	
+	/**
+	 * Sets a player's skull icon
+	 *
+	 * @param player
+	 * 		The player
+	 * @param skullIcon
+	 * 		The icon
+	 */
+	public void setSkullIcon(Player player, SkullIcon skullIcon) {
+		this.skullIcon = skullIcon;
+		if (player != null) {
+			player.getUpdateMasks().register(new AppearanceUpdate(player));
+		}
+	}
 }

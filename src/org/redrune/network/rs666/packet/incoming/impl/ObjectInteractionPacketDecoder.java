@@ -34,6 +34,7 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 		
 		Optional<GameObject> optional = player.getRegion().findAnyGameObject(id, x, y, player.getLocation().getPlane(), -1);
 		if (!optional.isPresent()) {
+			System.out.println(id + ", " + x + ", " + y + ": N/A");
 			return;
 		}
 		GameObject object = optional.get();
@@ -42,11 +43,11 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 			throw new IllegalStateException("Unexpected packet id " + packetId + ", could not find option.");
 		}
 		if (option != InteractionOption.EXAMINE) {
-			player.getWalkingQueue().reset(forceRun);
+			player.getMovement().reset(forceRun);
 			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, option))))));
 		} else {
 			// TODO object examines
-			player.getTransmitter().sendMessage("Examining: [" +object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + "], " + object.getType() + ", " + object.getRotation(), true);
+			player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + "], " + object.getType() + ", " + object.getRotation(), true);
 		}
 	}
 	

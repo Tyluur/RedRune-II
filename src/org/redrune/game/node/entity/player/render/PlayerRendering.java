@@ -8,12 +8,13 @@ import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.entity.player.render.update.GlobalUpdateStage;
 import org.redrune.game.node.entity.player.render.update.LocalUpdateStage;
 import org.redrune.game.world.World;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.rs.constant.Directions.DirectionUtilities;
+import org.redrune.utility.Misc;
 
 import java.util.PriorityQueue;
 
@@ -95,9 +96,11 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 	 * 		The index
 	 */
 	private static void updateLocalPlayer(Player player, Player p, PacketBuilder buffer, LocalUpdateStage stage, PacketBuilder flagBased, int index) {
-		buffer.writeBits(1, 1);
-		buffer.writeBits(1, stage.ordinal() == 0 ? 0 : (p.getUpdateMasks().isUpdateRequired() ? 1 : 0));
-		buffer.writeBits(2, stage.ordinal() % 4);
+		if (stage != LocalUpdateStage.WALKING && stage != LocalUpdateStage.RUNNING) {
+			buffer.writeBits(1, 1);
+			buffer.writeBits(1, stage.ordinal() == 0 ? 0 : (p.getUpdateMasks().isUpdateRequired() ? 1 : 0));
+			buffer.writeBits(2, stage.ordinal() % 4);
+		}
 		switch (stage) {
 			case REMOVE_PLAYER:
 				if (p != null) {
@@ -114,14 +117,30 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 				player.getRenderData().getIsLocal()[index] = false;
 				break;
 			case WALKING:
-				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
-				Location walkDelta = Location.GetDelta(p.getRenderData().getLastLocation(), p.getLocation());
-				buffer.writeBits(3, DirectionUtilities.ThreeBitsMovementType[walkDelta.getX() + 1][walkDelta.getY() + 1]);
-				break;
 			case RUNNING:
-				System.out.println("Writing " + stage + " for " + p + ", walk=" + p.getWalkingQueue().getWalkDir() + ", run=" + p.getWalkingQueue().getRunDir());
-				Location runDelta = Location.GetDelta(p.getRenderData().getLastLocation(), p.getLocation());
-				buffer.writeBits(4, DirectionUtilities.FourBitsMovementType[runDelta.getX() + 2][runDelta.getY() + 2]);
+				int dx = RegionManager.DIRECTION_DELTA_X[p.getMovement().getNextWalkDirection()];
+				int dy = RegionManager.DIRECTION_DELTA_Y[p.getMovement().getNextWalkDirection()];
+				boolean running;
+				int opcode;
+				boolean needUpdate = p.getUpdateMasks().isUpdateRequired();
+				if (p.getMovement().getNextRunDirection() != -1) {
+					dx += RegionManager.DIRECTION_DELTA_X[p.getMovement().getNextRunDirection()];
+					dy += RegionManager.DIRECTION_DELTA_Y[p.getMovement().getNextRunDirection()];
+					opcode = Misc.getPlayerRunningDirection(dx, dy);
+					if (opcode == -1) {
+						running = false;
+						opcode = Misc.getPlayerWalkingDirection(dx, dy);
+					} else {
+						running = true;
+					}
+				} else {
+					running = false;
+					opcode = Misc.getPlayerWalkingDirection(dx, dy);
+				}
+				buffer.writeBits(1, 1);
+				buffer.writeBits(1, needUpdate ? 1 : 0);
+				buffer.writeBits(2, running ? 2 : 1);
+				buffer.writeBits(running ? 4 : 3, opcode);
 				break;
 			case TELEPORTED:
 				Location delta = Location.getDelta(p.getRenderData().getLastLocation(), p.getLocation());

@@ -20,11 +20,6 @@ import java.util.List;
 public class NPCSpawnRepository {
 	
 	/**
-	 * The gson instance
-	 */
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	
-	/**
 	 * The location that data will be stored
 	 */
 	private static final String DATA_LOCATION = "./data/repository/npc/regions/";
@@ -68,7 +63,7 @@ public class NPCSpawnRepository {
 		if (!file.exists()) {
 			return null;
 		}
-		return GSON.fromJson(Misc.getText(file.getAbsolutePath()), new TypeToken<List<NPCSpawn>>() {
+		return Misc.getGSON().fromJson(Misc.getText(file.getAbsolutePath()), new TypeToken<List<NPCSpawn>>() {
 		}.getType());
 	}
 	

@@ -3,6 +3,7 @@ package org.redrune.game.node.entity.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.link.*;
+import org.redrune.game.node.entity.player.link.prayer.PrayerManager;
 
 import java.util.HashMap;
 
@@ -17,6 +18,12 @@ public final class PlayerManager {
 	 */
 	@Getter
 	private final NoteManager notes;
+	
+	/**
+	 * The prayer manager
+	 */
+	@Getter
+	private final PrayerManager prayers;
 	
 	/**
 	 * The interface manager of the player
@@ -55,6 +62,7 @@ public final class PlayerManager {
 	
 	PlayerManager() {
 		this.notes = new NoteManager();
+		this.prayers = new PrayerManager();
 	}
 	
 	/**
@@ -73,6 +81,7 @@ public final class PlayerManager {
 		this.interfaces.setPlayer(player);
 		this.notes.setPlayer(player);
 		this.actions.setPlayer(player);
+		this.prayers.setPlayer(player);
 		player.getSkills().setLevelsAdvanced(new HashMap<>());
 	}
 	

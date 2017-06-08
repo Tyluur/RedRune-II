@@ -78,8 +78,8 @@ public class NPCRendering implements OutgoingPacketBuilder {
 	 * 		The buffer.
 	 */
 	private static void updateNPCMovement(NPC npc, PacketBuilder buf) {
-		if (npc.getWalkingQueue().getRunDir() == -1) {
-			if (npc.getWalkingQueue().getWalkDir() == -1) {
+		if (npc.getMovement().getNextRunDirection() == -1) {
+			if (npc.getMovement().getNextWalkDirection() == -1) {
 				if (npc.getUpdateMasks().isUpdateRequired()) {
 					buf.writeBits(1, 1);
 					buf.writeBits(2, 0);
@@ -89,15 +89,15 @@ public class NPCRendering implements OutgoingPacketBuilder {
 			} else {
 				buf.writeBits(1, 1);
 				buf.writeBits(2, 1);
-				buf.writeBits(3, npc.getWalkingQueue().getWalkDir());
+				buf.writeBits(3, npc.getMovement().getNextWalkDirection());
 				buf.writeBits(1, npc.getUpdateMasks().isUpdateRequired() ? 1 : 0);
 			}
 		} else {
 			buf.writeBits(1, 1);
 			buf.writeBits(2, 2);
 			buf.writeBits(1, 1);
-			buf.writeBits(3, npc.getWalkingQueue().getWalkDir());
-			buf.writeBits(3, npc.getWalkingQueue().getRunDir());
+			buf.writeBits(3, npc.getMovement().getNextWalkDirection());
+			buf.writeBits(3, npc.getMovement().getNextRunDirection());
 			buf.writeBits(1, npc.getUpdateMasks().isUpdateRequired() ? 1 : 0);
 		}
 	}

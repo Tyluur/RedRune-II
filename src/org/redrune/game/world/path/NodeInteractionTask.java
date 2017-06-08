@@ -1,15 +1,18 @@
 package org.redrune.game.world.path;
 
+import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.object.GameObject;
-import org.redrune.game.world.path.finder.DefaultPathFinder;
-import org.redrune.game.world.region.RegionManager;
-import org.redrune.utility.Misc;
-
-import java.util.*;
+import org.redrune.game.node.item.FloorItem;
+import org.redrune.game.world.route.RouteFinder;
+import org.redrune.game.world.route.RouteStrategy;
+import org.redrune.game.world.route.strategy.EntityStrategy;
+import org.redrune.game.world.route.strategy.FixedTileStrategy;
+import org.redrune.game.world.route.strategy.FloorItemStrategy;
+import org.redrune.game.world.route.strategy.ObjectStrategy;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -28,15 +31,14 @@ public class NodeInteractionTask {
 	private final Runnable task;
 	
 	/**
-	 * The tile we will be travelling to. This is not the same as the {@link #node}'s location because we will
-	 * travel to the best location for the node interaction.
+	 * Whether we also run on alternative.
 	 */
-	private Location targetTile;
+	private final boolean alternative;
 	
 	/**
-	 * The path state
+	 * Contains last route strategies.
 	 */
-	private PathState state = null;
+	private RouteStrategy[] last;
 	
 	/**
 	 * Constructs a new path event
@@ -45,10 +47,13 @@ public class NodeInteractionTask {
 	 * 		The node
 	 * @param task
 	 * 		The task to execute
+	 * @param alternative
+	 * 		If we should run alternative
 	 */
-	public NodeInteractionTask(Node node, Runnable task) {
+	public NodeInteractionTask(Node node, Runnable task, boolean alternative) {
 		this.node = node;
 		this.task = task;
+		this.alternative = alternative;
 	}
 	
 	/**
@@ -58,163 +63,138 @@ public class NodeInteractionTask {
 	 * 		The player whose path event this is
 	 */
 	public boolean process(Player player) {
-		final boolean moving = player.getWalkingQueue().isMoving();
-		if (state == null) {
-			targetTile = generateTargetTile(Location.create(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane()));
-			
-			// we're already at the location
-			if (targetTile != null && arrived(player) && !moving) {
-				task.run();
-				return true;
-			}
-			
-			state = PathFactory.get().doPath(new DefaultPathFinder(), player, targetTile.getX(), targetTile.getY());
-			return false;
-		} else {
-			if (moving && node.isNPC()) {
-				player.turnTo(node.toNPC());
-			}
-			if (!state.isRouteFound() && !moving) {
-				player.getTransmitter().sendMessage("You couldn't reach that.");
-				return true;
-			}
-			if (arrived(player)) {
-				if (moving) {
-					return false;
-				}
-				task.run();
-				return true;
-			} else {
-				return !moving;
-			}
+		if (!simpleCheck(player)) {
+			player.getTransmitter().sendMessage("You can't reach that.");
+			player.getTransmitter().sendMinimapFlagReset();
+			return true;
 		}
-	}
-	
-	/**
-	 * Generates the target tile
-	 *
-	 * @param startLocation
-	 * 		The start location for this task
-	 */
-	private Location generateTargetTile(Location startLocation) {
-		if (node instanceof NPC || node instanceof GameObject) {
-			final boolean isBanker = node.isNPC() && node.toNPC().getDefinitions().getName().toLowerCase().contains("banker");
-			int size = node.isNPC() && isBanker ? 2 : node.getSize();
-			
-			// adds the tiles around the npc
-			List<Location> surroundingTiles = new ArrayList<>();
-			for (int diffX = -size; diffX <= size; diffX++) {
-				if (diffX == 0) {
+		
+		if (node.isNPC()) {
+			player.turnTo(node.toNPC());
+		}
+		
+		RouteStrategy[] strategies = generateStrategies();
+		if (last != null && match(strategies, last) && player.getMovement().isMoving()) {
+			return false;
+		} else if (last != null && match(strategies, last) && !player.getMovement().isMoving()) {
+			for (int i = 0; i < strategies.length; i++) {
+				RouteStrategy strategy = strategies[i];
+				int steps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), player.getSize(), strategy, i == (strategies.length - 1));
+				if (steps == -1) {
 					continue;
+				}
+				if ((!RouteFinder.lastIsAlternative() && steps <= 0) || alternative) {
+					if (alternative) {
+						player.getTransmitter().sendMinimapFlagReset();
+					}
+					if (!player.getMovement().isMoving()) {
+						executeTask();
+					}
+					return true;
+				}
+			}
+			
+			player.getTransmitter().sendMessage("You can't reach that.");
+			player.getTransmitter().sendMinimapFlagReset();
+			return true;
+		} else {
+			last = strategies;
+			
+			for (int i = 0; i < strategies.length; i++) {
+				RouteStrategy strategy = strategies[i];
+				int steps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), player.getSize(), strategy, i == (strategies.length - 1));
+				if (steps == -1) {
+					continue;
+				}
+				if ((!RouteFinder.lastIsAlternative() && steps <= 0)) {
+					if (alternative) {
+						player.getTransmitter().sendMinimapFlagReset();
+					}
+					if (!player.getMovement().isMoving()) {
+						executeTask();
+					}
+					return true;
+				}
+				int[] bufferX = RouteFinder.getLastPathBufferX();
+				int[] bufferY = RouteFinder.getLastPathBufferY();
+				
+				Location last = new Location(bufferX[0], bufferY[0], player.getLocation().getPlane());
+				player.getMovement().resetWalkSteps();
+				player.getTransmitter().sendMinimapFlag(last.getLocalX(player.getLastLoadedLocation()), last.getLocalY(player.getLastLoadedLocation()));
+				for (int step = steps - 1; step >= 0; step--) {
+					if (!player.getMovement().addWalkSteps(bufferX[step], bufferY[step], 25, true)) {
+						break;
+					}
 				}
 				
-				final Location location = node.getLocation().transform(diffX, 0, 0);
-				if (!surroundingTiles.contains(location)) {
-					surroundingTiles.add(location);
-				}
-			}
-			for (int diffY = -size; diffY <= size; diffY++) {
-				if (diffY == 0) {
-					continue;
-				}
-				final Location location = node.getLocation().transform(0, diffY, 0);
-				if (!surroundingTiles.contains(location)) {
-					surroundingTiles.add(location);
-				}
+				return false;
 			}
 			
-			// removes tiles the player cant access
-			for (Iterator<Location> iterator = surroundingTiles.iterator(); iterator.hasNext(); ) {
-				Location loc = iterator.next();
-				if (loc.equals(startLocation)) {
-					return loc;
-				}
-				// the direction, used to find the mask based on the location
-				final int xOffset = startLocation.getX() - loc.getX();
-				final int yOffset = startLocation.getY() - loc.getY();
-				int dir = Misc.getMoveDirection(xOffset, yOffset);
-				if (dir == -1) {
-					//					System.out.println("REMOVED LOCATION[1]: " + loc + "\t,dir=" + dir + ",xOffset=" + xOffset + ",yOffset=" + yOffset);
-					iterator.remove();
-					continue;
-				}
-				if (!RegionManager.isTileFree(loc.getPlane(), loc.getX(), loc.getY(), dir, 1)) {
-					//					System.out.println("REMOVED LOCATION[2]: " + loc + "\t,dir=" + dir + ",xOffset=" + xOffset + ",yOffset=" + yOffset);
-					iterator.remove();
-				}
-			}
-			
-			// sorts the tiles based on distance.
-			surroundingTiles.sort(Comparator.comparingInt(o -> o.getDistance(startLocation)));
-			
-			// TODO fuck this bullshit we need a prooper pf system
-			// make sure we're not interaction thru a wall
-			if (!isBanker && !node.isGameObject()) {
-				for (Iterator<Location> iterator = surroundingTiles.iterator(); iterator.hasNext(); ) {
-					Location loc = iterator.next();
-					
-					// the direction, used to find the mask based on the location
-					final int xOffset = node.getLocation().getX() - loc.getX();
-					final int yOffset = node.getLocation().getY() - loc.getY();
-					int dir = Misc.getMoveDirection(xOffset, yOffset);
-					if (dir == -1) {
-						//					System.out.println("REMOVED LOCATION[3]: " + loc + "\t,dir=" + dir + ",xOffset=" + xOffset + ",yOffset=" + yOffset);
-						iterator.remove();
-						continue;
-					}
-					if (!RegionManager.isTileFree(loc.getPlane(), loc.getX(), loc.getY(), dir, 1)) {
-						//					System.out.println("REMOVED LOCATION[4]: " + loc + "\t,dir=" + dir + ",xOffset=" + xOffset + ",yOffset=" + yOffset);
-						iterator.remove();
-					}
-				}
-			}
-		/*
-			for (Location loc : surroundingTiles) {
-				RegionManager.addFloorItem(14484, 1, 10, loc, null);
-			}
-			*/
-			if (surroundingTiles.isEmpty()) {
-				surroundingTiles.add(node.getLocation());
-			}
-			
-	/*		List<NPC> npcs = new ArrayList<>();
-			for (Location loc : surroundingTiles) {
-				System.out.println(loc);
-				npcs.add(World.get().addNPC(1, loc, Direction.NORTH));
-			}
-			
-			SystemManager.getScheduler().schedule(new ScheduledTask(5, 1, false, () -> {
-				for (NPC npc : npcs) {
-					npc.deregister();
-				}
-			}));*/
-			
-			//			System.out.println("target tile: " + surroundingTiles.get(0));
-/*			if (surroundingTiles.size() > 1) {
-				System.out.println("others: " + surroundingTiles.subList(1, surroundingTiles.size()));
-			}*/
-			return surroundingTiles.get(0);
-		} else {
-			return node.getLocation();
+			player.getTransmitter().sendMessage("You can't reach that.");
+			player.getTransmitter().sendMinimapFlagReset();
+			return true;
 		}
 	}
 	
 	/**
-	 * Checks if the player arrived at the destination
+	 * Executes the task
+	 */
+	private void executeTask() {
+		SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, true) {
+			@Override
+			public Runnable getTask() {
+				return task;
+			}
+		});
+	}
+	
+	/**
+	 * Checks that the node is a node we can travel to with a strategy, and then that we are on the same tile as them
 	 *
 	 * @param player
-	 * 		The player
+	 * 		The player travelling
 	 */
-	private boolean arrived(Player player) {
-		if (node.isItem()) {
-			return Objects.equals(player.getLocation(), targetTile);
-		} else if (node.isNPC()) {
-			if (node.toNPC().getDefinitions().getName().toLowerCase().contains("banker")) {
-				return targetTile.getDistance(player.getLocation()) <= 2;
-			}
-			return targetTile.equals(player.getLocation());
+	private boolean simpleCheck(Player player) {
+		if (!node.isPlayer() && !node.isNPC() && !node.isGameObject() && !node.isItem()) {
+			throw new RuntimeException(node + " is not instanceof any reachable entity.");
 		}
-		return Objects.equals(player.getLocation(), targetTile);
+		return player.getLocation().getPlane() == node.getLocation().getPlane();
+	}
+	
+	/**
+	 * Generates strategies to travel to the node
+	 */
+	private RouteStrategy[] generateStrategies() {
+		if (node.isPlayer() || node.isNPC()) {
+			return new RouteStrategy[] { new EntityStrategy((Entity) node) };
+		} else if (node.isGameObject()) {
+			return new RouteStrategy[] { new ObjectStrategy(node.toGameObject()) };
+		} else if (node.isItem()) {
+			FloorItem item = (FloorItem) node.toItem();
+			return new RouteStrategy[] { new FixedTileStrategy(item.getLocation().getX(), item.getLocation().getY()), new FloorItemStrategy(item) };
+		} else {
+			throw new RuntimeException(node + " is not instanceof any reachable entity.");
+		}
+	}
+	
+	/**
+	 * Checks that the two strategies match
+	 *
+	 * @param strategies
+	 * 		The strategy
+	 * @param routeStrategies
+	 * 		The second strategy
+	 */
+	private boolean match(RouteStrategy[] strategies, RouteStrategy[] routeStrategies) {
+		if (strategies.length != routeStrategies.length) {
+			return false;
+		}
+		for (int i = 0; i < strategies.length; i++) {
+			if (!strategies[i].equals(routeStrategies[i])) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }

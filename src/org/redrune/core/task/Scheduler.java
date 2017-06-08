@@ -1,10 +1,8 @@
 package org.redrune.core.task;
 
-import org.redrune.core.EngineWorkingSet;
 import org.redrune.utility.Misc;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * A class which manages {@link ScheduledTask}s.
@@ -30,25 +28,14 @@ public final class Scheduler {
 		try {
 			Misc.pollAll(pending, active::add);
 			
-			CountDownLatch latch = new CountDownLatch(active.size());
-			
-			// the work is done in a separate thread.
 			for (final Iterator<ScheduledTask> iterator = active.iterator(); iterator.hasNext(); ) {
 				final ScheduledTask task = iterator.next();
-				try {
-					EngineWorkingSet.submitLogic(() -> {
-						task.pulse();
-						latch.countDown();
-					});
-					final boolean shouldRemove = (task.getMaxPulses() > 0 && task.getMaxPulses() == task.getPulseCount()) || !task.isRunning();
-					if (shouldRemove) {
-						iterator.remove();
-					}
-				} catch (Throwable e) {
-					e.printStackTrace();
+				task.pulse();
+				final boolean shouldRemove = (task.getMaxPulses() > 0 && task.getMaxPulses() == task.getPulseCount()) || !task.isRunning();
+				if (shouldRemove) {
+					iterator.remove();
 				}
 			}
-			latch.await();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

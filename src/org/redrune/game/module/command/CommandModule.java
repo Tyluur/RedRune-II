@@ -118,6 +118,25 @@ public abstract class CommandModule {
 	}
 	
 	/**
+	 * Gets a completed version of a string array
+	 *
+	 * @param array
+	 * 		The array
+	 * @param index
+	 * 		The index to start at
+	 */
+	protected String getCompleted(String[] array, int index) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = index; i < array.length; i++) {
+			if (i == array.length - 1 || array[i + 1].startsWith("+")) {
+				return sb.append(array[i]).toString();
+			}
+			sb.append(array[i]).append(" ");
+		}
+		return "null";
+	}
+	
+	/**
 	 * Removes the underscores from the name and replaces them with spaces
 	 *
 	 * @param unformattedUsername

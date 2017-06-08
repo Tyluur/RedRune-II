@@ -6,7 +6,6 @@ import org.redrune.cache.parse.AnimationDefinitionParser;
 import org.redrune.cache.parse.definition.AnimationDefinition;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.data.WalkingQueue;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
@@ -48,10 +47,10 @@ public abstract class Entity extends Node implements EntityDetails {
 	private transient UpdateMasks updateMasks;
 	
 	/**
-	 * The entity's walking queue.
+	 * The travel manager
 	 */
 	@Getter
-	private transient WalkingQueue walkingQueue;
+	private transient EntityMovement movement;
 	
 	/**
 	 * The region ids we are in
@@ -89,7 +88,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	public void registerTransients() {
 		this.updateMasks = new UpdateMasks();
 		this.attributes = new ConcurrentHashMap<>();
-		this.walkingQueue = new WalkingQueue(this);
+		this.movement = new EntityMovement(this);
 		this.mapRegionsIds = new CopyOnWriteArrayList<>();
 	}
 	

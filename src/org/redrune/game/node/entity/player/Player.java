@@ -8,12 +8,13 @@ import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
 import org.redrune.game.node.entity.player.render.PlayerRendering;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
-import org.redrune.game.world.SequencialUpdate;
+import org.redrune.core.SequencialUpdate;
 import org.redrune.game.world.World;
 import org.redrune.game.world.path.NodeInteractionTask;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
+import org.redrune.network.rs666.packet.outgoing.impl.ConfigFilePacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.MapRegionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.RunEnergyBuilder;
@@ -194,6 +195,7 @@ public final class Player extends Entity {
 		checkInteractionTask();
 		manager.getEvents().process(this);
 		manager.getActions().process();
+		manager.getPrayers().process();
 	}
 	
 	/**
@@ -222,7 +224,7 @@ public final class Player extends Entity {
 	 * Sends the settings to the client
 	 */
 	public void sendSettings() {
-		//		getTransmitter().send(new VarpPacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));s));
+		getTransmitter().send(new ConfigFilePacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, false) ? 1 : 0).build(this));

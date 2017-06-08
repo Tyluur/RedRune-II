@@ -12,6 +12,5 @@
 +	Object examines
 
 [Unfinished]
-+	Fix walking queue system (the bug where running is randomly set to false around corners)
 +	Hit#interactingWith
 +	https://www.rune-server.ee/runescape-development/rs-503-client-server/informative-threads/365286-interface-component-settings-k-access-masks-100-a.html implement

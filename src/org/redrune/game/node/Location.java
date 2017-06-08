@@ -63,6 +63,12 @@ public final class Location {
 		this(x, y, 0);
 	}
 	
+	public Location(Location other) {
+		this.x = other.x;
+		this.y = other.y;
+		this.plane = other.plane;
+	}
+	
 	/**
 	 * Constructs a new {@code Location} {@code Object}.
 	 *
@@ -90,7 +96,7 @@ public final class Location {
 	
 	@Override
 	public String toString() {
-		return "[x=" + x + ", y=" + y + ", plane=" + plane + "]";
+		return "[x=" + x + ", y=" + y + ", plane=" + plane + ", id=" + getRegionId() + "]";
 	}
 	
 	/**
@@ -341,5 +347,4 @@ public final class Location {
 	public static Location GetDelta(Location from, Location to) {
 		return Location.create((short) (to.x - from.x), (short) (to.y - from.y), (byte) (to.plane - from.plane));
 	}
-	
 }

@@ -486,7 +486,6 @@ public class Region {
 			spawnedObjects.add(object);
 			object.setSpawnType(ObjectType.SERVER);
 		}
-		System.out.println(spawnedObjects);
 		clipObjectTerritory(object);
 		if (!defaultObject) {
 			players.forEach(this::refreshAllObjects);

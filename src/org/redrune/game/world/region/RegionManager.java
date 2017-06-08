@@ -21,12 +21,12 @@ public class RegionManager {
 	/**
 	 * The direction deltas, different from the ones in {@link Location}.
 	 */
-	private static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
+	public static final byte[] DIRECTION_DELTA_Y = new byte[] { 1, 1, 1, 0, 0, -1, -1, -1 };
 	
 	/**
 	 * The direction deltas, different from the ones in {@link Location}.
 	 */
-	private static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
 	
 	/**
 	 * The region mapping.

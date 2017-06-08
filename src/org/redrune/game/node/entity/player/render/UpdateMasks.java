@@ -66,7 +66,7 @@ public class UpdateMasks {
 			if (e.toPlayer().getDetails().getAppearance() != null) {
 				e.toPlayer().getDetails().getAppearance().prepareBodyData(e.toPlayer());
 			}
-			if (e.getWalkingQueue().getWalkDir() != -1 || e.getWalkingQueue().getRunDir() != -1) {
+			if (e.getMovement().getNextWalkDirection() != -1 || e.getMovement().getNextRunDirection() != -1) {
 				register(new MovementUpdate(e.toPlayer()));
 			}
 		}

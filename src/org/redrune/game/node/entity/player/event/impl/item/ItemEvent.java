@@ -48,7 +48,7 @@ public class ItemEvent extends Event<ItemEventContext> {
 		if (getContext().getOption().equals(InteractionOption.FIRST_OPTION)) {
 			handleItemUsage(player);
 		} else if (getContext().getOption().equals(InteractionOption.SECOND_OPTION)) {
-			handleItemEquipping(player);
+			handleItemEquipping(player, getContext().getItem(), getContext().getSlotId());
 		} else if (getContext().getOption().equals(InteractionOption.EXAMINE)) {
 			handleItemExamining(player);
 		} else if (getContext().getOption().equals(InteractionOption.DROP)) {
@@ -87,10 +87,7 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 * @param player
 	 * 		The player
 	 */
-	private void handleItemEquipping(Player player) {
-		Item item = getContext().getItem();
-		int slotId = getContext().getSlotId();
-		
+	public static void handleItemEquipping(Player player, Item item, int slotId) {
 		if (item.getDefinitions().isNoted() || !item.getDefinitions().isWearItem(player.getDetails().getAppearance().isMale()) && item.getId() != 4084) {
 			player.getTransmitter().sendMessage("You can't wear that.", true);
 			return;

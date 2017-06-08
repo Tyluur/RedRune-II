@@ -35,9 +35,14 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		boolean running = packet.readByteC() == 1;
 		int x = packet.readLEShortA();
 		
+		// finished reading
+		
 		int calculatedSteps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), player.getSize(), new FixedTileStrategy(x, y), true);
 		int[] bufferX = RouteFinder.getLastPathBufferX();
 		int[] bufferY = RouteFinder.getLastPathBufferY();
+		
+		// found path, lets walk/run...
+		
 		player.getManager().getEvents().executeEvent(player, new WalkEvent(new WalkEventContext(x, y, bufferX, bufferY, running, calculatedSteps)));
 	}
 }

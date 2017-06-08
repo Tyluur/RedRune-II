@@ -25,7 +25,7 @@ public class WornEquipmentInteractionModule implements InterfaceInteractionModul
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (componentId == 39) { // stats
-			player.getManager().getInterfaces().sendInterface(667, false);
+			BonusesInterfaceInteractionModule.show(player);
 		} else if (componentId == 42) { // prices
 			player.getManager().getInterfaces().sendInterface(206, false);
 		} else if (componentId == 45) { // ikod

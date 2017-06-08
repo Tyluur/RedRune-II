@@ -4,6 +4,7 @@ import org.redrune.cache.Cache;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.outgoing.impl.InterfaceChangeBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -24,6 +25,10 @@ public class DebugInterfaceCommand extends CommandModule {
 		for (int index = 0; index < length; index++) {
 			player.getManager().getInterfaces().sendInterfaceText(interId, index, "" + index);
 		}
+		for (int index = 0; index < length; index++) {
+			player.getTransmitter().send(new InterfaceChangeBuilder(interId, index, false).build(player));
+		}
 		player.getManager().getInterfaces().sendInterface(interId, true);
+		player.getTransmitter().sendMessage("Interface #"+ interId + " has " + length + " component length");
 	}
 }

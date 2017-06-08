@@ -120,12 +120,13 @@ public final class EventManager {
 		}
 		if (stopWalk) {
 			player.setInteractionTask(null);
-			player.getWalkingQueue().reset();
+			player.getMovement().resetWalkSteps();
 		}
 		if (stopActions) {
 			player.getManager().getActions().forceStop();
 		}
 		player.turnTo(null);
+		
 		NPC interactingNPC = player.getAttribute(AttributeKey.INTERACTING_NPC);
 		if (interactingNPC != null) {
 			interactingNPC.endPlayerInteraction(player);
