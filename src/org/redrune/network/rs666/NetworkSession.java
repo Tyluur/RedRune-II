@@ -9,6 +9,8 @@ import org.redrune.game.node.entity.player.data.PlayerViewComponents;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.outgoing.impl.PingPacketBuilder;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * The networkSession connected to the main game
  *
@@ -48,6 +50,11 @@ public final class NetworkSession {
 	 */
 	private byte pingCount;
 	
+	/**
+	 * The queue of packets
+	 */
+	private ConcurrentLinkedQueue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
+	
 	public NetworkSession(Channel channel) {
 		this.channel = channel;
 		this.viewComponents = new PlayerViewComponents();
@@ -72,12 +79,33 @@ public final class NetworkSession {
 	 */
 	public synchronized ChannelFuture write(Packet packet) {
 		try {
-			if (channel != null && channel.isConnected()) {
-				return channel.write(packet);
+			if (player != null && player.isRenderable()) {
+				packetQueue.add(packet);
+				return null;
+			} else {
+				if (channel != null && channel.isConnected()) {
+					return channel.write(packet);
+				}
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Flushes all of the packets
+	 */
+	public void flushPackets() {
+		try {
+			Packet packet;
+			while ((packet = packetQueue.poll()) != null) {
+				if (channel != null && channel.isConnected()) {
+					channel.write(packet);
+				}
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 }

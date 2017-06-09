@@ -36,7 +36,7 @@ public class ItemDefinitionParser {
 	/**
 	 * The location of the file with equip data
 	 */
-	private static final String EQUIP_DATA_FILE = "./data/repository/equipment_data.txt";
+	private static final String EQUIP_DATA_FILE = "./data/repository/item/equipment_data.txt";
 	
 	/**
 	 * Caches all the equipment data

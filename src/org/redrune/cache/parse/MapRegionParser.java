@@ -6,7 +6,7 @@ import org.redrune.cache.stream.ByteInputStream;
 import org.redrune.cache.stream.RSInputStream;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.object.GameObject;
-import org.redrune.game.world.region.RegionBuilder;
+import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.BufferUtils;
 import org.redrune.utility.Misc;
@@ -40,6 +40,7 @@ public final class MapRegionParser {
 	 */
 	public static List<GameObject> parseMap(final int regionId, final int[] keys) {
 		List<GameObject> objectList = new ArrayList<>();
+		Region region = RegionManager.getRegion(regionId);
 		int regionX = regionId >> 8;
 		int regionY = regionId & 0xFF;
 		try {
@@ -92,7 +93,7 @@ public final class MapRegionParser {
 									height--;
 								}
 								if (height >= 0 && height <= 3) {
-									RegionBuilder.addClipping(x, y, height, 0x200000);
+									region.forceGetRegionMap().addUnwalkable(height, x, y);
 								}
 							}
 						}

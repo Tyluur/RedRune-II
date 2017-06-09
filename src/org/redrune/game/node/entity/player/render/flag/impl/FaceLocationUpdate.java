@@ -36,13 +36,9 @@ public class FaceLocationUpdate extends UpdateFlag {
 	 * 		The location to face.
 	 */
 	public FaceLocationUpdate(Entity entity, Location location) {
-		if (location != null) {
-			this.location = location;
-		} else {
-			this.location = Location.create(0, 0, 0);
-		}
-		this.npc = entity.isNPC();
 		this.currentLocation = entity.getLocation();
+		this.npc = entity.isNPC();
+		this.location = location;
 	}
 	
 	@Override

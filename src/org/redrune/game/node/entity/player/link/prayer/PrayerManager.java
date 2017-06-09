@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
+import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.CS2ConfigBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.utility.rs.constant.BonusConstants;
@@ -29,6 +30,11 @@ public final class PrayerManager {
 	private final CopyOnWriteArraySet<Prayer> activePrayers = new CopyOnWriteArraySet<>();
 	
 	/**
+	 * The set of quick prayers
+	 */
+	private final CopyOnWriteArraySet<Prayer> quickPrayers = new CopyOnWriteArraySet<>();
+	
+	/**
 	 * The book the player is using
 	 */
 	private PrayerBook book = PrayerBook.REGULAR;
@@ -40,9 +46,9 @@ public final class PrayerManager {
 	private transient Player player;
 	
 	/**
-	 * If quick prayers are being used
+	 * If quick prayers are being set
 	 */
-	private transient boolean usingQuickPrayer;
+	private transient boolean settingQuickPrayers;
 	
 	/**
 	 * The id of the head icon
@@ -60,7 +66,7 @@ public final class PrayerManager {
 	 */
 	public void sendLoginConfigurations() {
 		this.nextDrain = new long[30];
-		player.getTransmitter().send(new CS2ConfigBuilder(181, usingQuickPrayer ? 1 : 0).build(player));
+		player.getTransmitter().send(new CS2ConfigBuilder(181, settingQuickPrayers ? 1 : 0).build(player));
 		player.getTransmitter().send(new ConfigPacketBuilder(1584, book == PrayerBook.CURSES ? 1 : 0).build(player));
 		setBook(PrayerBook.CURSES);
 	}
@@ -85,6 +91,7 @@ public final class PrayerManager {
 	 * 		The slot clicked
 	 */
 	public void handlePrayerSettings(int componentId, int slotId) {
+		System.out.println("componentId = [" + componentId + "], slotId = [" + slotId + "]");
 		if (componentId == 8) {
 			Optional<Prayer> optional = Prayer.findPrayerBySlot(slotId, book);
 			if (!optional.isPresent()) {
@@ -118,6 +125,28 @@ public final class PrayerManager {
 			}
 			refreshActivatedConfigs();
 			updateHeadIcon();
+		} else if (componentId == 42) {
+			Optional<Prayer> optional = Prayer.findPrayerBySlot(slotId, book);
+			if (!optional.isPresent()) {
+				System.out.println("Unable to find prayer... [" + componentId + "," + slotId + "]");
+				return;
+			}
+			Prayer prayer = optional.get();
+			if (player.getSkills().getLevelForXp(SkillConstants.PRAYER) < prayer.getPrayerLevelRequired()) {
+				player.getTransmitter().sendMessage("You need a prayer level of " + prayer.getPrayerLevelRequired() + " to use " + prayer.getName() + ".", false);
+				return;
+			}
+			if (!prayer.canActivate(player)) {
+				return;
+			}
+			// TODO: finish this
+		} else if (componentId == 43) {
+			settingQuickPrayers = false;
+			player.getTransmitter().send(new CS2ConfigBuilder(181, settingQuickPrayers ? 1 : 0).build(player));
+			if (settingQuickPrayers) {
+				player.getTransmitter().send(new CS2ConfigBuilder(168, 6).build(player));
+			}
+			sendAccessMasks();
 		}
 	}
 	
@@ -194,10 +223,9 @@ public final class PrayerManager {
 		for (Prayer prayer : activePrayers) {
 			value += prayer.getActivationConfig();
 		}
-		
-		int configId = book == PrayerBook.CURSES ? (usingQuickPrayer ? 1587 : 1582) : (usingQuickPrayer ? 1397 : 1395);
+		int configId = book == PrayerBook.CURSES ? (settingQuickPrayers ? 1587 : 1582) : (settingQuickPrayers ? 1397 : 1395);
 		player.getTransmitter().send(new ConfigPacketBuilder(configId, value).build(player));
-		//		System.out.println("config=" + configId + ":value=" + value);
+		//System.out.println("config=" + configId + ":value=" + value);
 	}
 	
 	/**
@@ -356,6 +384,13 @@ public final class PrayerManager {
 	}
 	
 	/**
+	 * Gets the amount of quick prayers we have
+	 */
+	public int getQuickPrayersCount() {
+		return quickPrayers.size();
+	}
+	
+	/**
 	 * Drains the prayer by the amount
 	 *
 	 * @param amount
@@ -386,4 +421,54 @@ public final class PrayerManager {
 		player.getTransmitter().send(new ConfigPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
 	}
 	
+	/**
+	 * Toggles the quick prayer setting
+	 */
+	public void toggleQuickPrayers() {
+		if (getPrayerPoints() <= 0) {
+			player.getTransmitter().sendMessage("You have ran out of prayer points.");
+			return;
+		}
+		if (getPrayersActiveCount() != 0) {
+			activePrayers.forEach(this::deactivatePrayer);
+			updateHeadIcon();
+			refreshActivatedConfigs();
+			return;
+		}
+		if (getQuickPrayersCount() == 0) {
+			player.getTransmitter().sendMessage("You have no quick prayers to activate.");
+			return;
+		}
+		quickPrayers.forEach(prayer -> {
+			prayer.activate(player);
+			resetDrainPrayer(prayer.getSlotId());
+			refreshActivatedConfigs();
+			updateHeadIcon();
+		});
+		System.out.println("Activated Prayers: " + quickPrayers);
+	}
+	
+	/**
+	 * Handles the select quick prayers button
+	 */
+	public void selectQuickPrayers() {
+		settingQuickPrayers = !settingQuickPrayers;
+		player.getTransmitter().send(new CS2ConfigBuilder(181, settingQuickPrayers ? 1 : 0).build(player));
+		if (settingQuickPrayers) // switchs tab to prayer
+		{
+			player.getTransmitter().send(new CS2ConfigBuilder(168, 6).build(player));
+		}
+		sendAccessMasks();
+	}
+	
+	/**
+	 * Sends the prayer book access masks
+	 */
+	private void sendAccessMasks() {
+		if (settingQuickPrayers) {
+			player.getTransmitter().send(new AccessMaskBuilder(271, 42, 0, 2, 0, 29).build(player));
+		} else {
+			player.getTransmitter().send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+		}
+	}
 }

@@ -20,6 +20,9 @@ public abstract class UpdateFlag implements Comparable<UpdateFlag> {
 	
 	@Override
 	public int compareTo(UpdateFlag flag) {
+		if (flag == null) {
+			return -1;
+		}
 		if (flag.getOrdinal() == getOrdinal()) {
 			return 0;
 		}

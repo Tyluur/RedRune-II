@@ -13,6 +13,7 @@ import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -50,7 +51,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 		
 		for (Integer regionId : player.getMapRegionsIds()) {
 			Region region = RegionManager.getRegion(regionId);
-			List<NPC> npcs = region.getNpcs();
+			CopyOnWriteArraySet<NPC> npcs = region.getNpcs();
 			for (NPC npc : npcs) {
 				if (localNpcs.size() >= 255) {
 					break;

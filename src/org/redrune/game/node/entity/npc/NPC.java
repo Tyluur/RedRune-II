@@ -118,6 +118,14 @@ public class NPC extends Entity {
 	}
 	
 	/**
+	 * Gets the middle world tile
+	 */
+	public Location getMiddleWorldTile() {
+		int size = getSize();
+		return new Location(getLocation().getCoordFaceX(size), getLocation().getCoordFaceY(size), getLocation().getPlane());
+	}
+	
+	/**
 	 * Ends the interaction with the player. If we're still interacting with them it will stop facing them. If we have
 	 * moved onto somebody else, it will not update.
 	 *

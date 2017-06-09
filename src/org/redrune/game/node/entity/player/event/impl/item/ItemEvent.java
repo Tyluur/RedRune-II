@@ -1,5 +1,8 @@
 package org.redrune.game.node.entity.player.event.impl.item;
 
+import org.redrune.core.EngineWorkingSet;
+import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
@@ -11,12 +14,16 @@ import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
+import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -48,11 +55,66 @@ public class ItemEvent extends Event<ItemEventContext> {
 		if (getContext().getOption().equals(InteractionOption.FIRST_OPTION)) {
 			handleItemUsage(player);
 		} else if (getContext().getOption().equals(InteractionOption.SECOND_OPTION)) {
-			handleItemEquipping(player, getContext().getItem(), getContext().getSlotId());
+			handleQueuedItemEquipping(player);
 		} else if (getContext().getOption().equals(InteractionOption.EXAMINE)) {
-			handleItemExamining(player);
+			handleItemExamining(player, getContext().getItem());
 		} else if (getContext().getOption().equals(InteractionOption.DROP)) {
 			handleItemDrop(player);
+		}
+	}
+	
+	/**
+	 * Handles the equipping of items (queued)
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	private void handleQueuedItemEquipping(Player player) {
+		Queue<Integer> queue = player.getAttribute("equip_queue");
+		boolean startTask = false;
+		if (queue == null) {
+			queue = new LinkedBlockingQueue<>();
+			startTask = true;
+		}
+		if (!queue.contains(getContext().getSlotId())) {
+			queue.add(getContext().getSlotId());
+		}
+		player.putAttribute("equip_queue", queue);
+		
+		if (!startTask) {
+			return;
+		}
+		boolean shorter = false;
+		long lastEndTime = SystemManager.getUpdateWorker().getLastEndTime();
+		long difference = System.currentTimeMillis() - lastEndTime;
+		if (difference > 400) {
+			shorter = true;
+		}
+		
+		Runnable runnable = () -> {
+			Queue<Integer> equipQueue = player.getAttribute("equip_queue");
+			if (equipQueue == null) {
+				return;
+			}
+			Integer slotId;
+			while ((slotId = equipQueue.poll()) != null) {
+				Item item = player.getInventory().getItems().get(slotId);
+				if (item == null) {
+					continue;
+				}
+				handleItemEquipping(player, item, slotId);
+			}
+			player.removeAttribute("equip_queue");
+		};
+		if (shorter) {
+			EngineWorkingSet.getScheduledExecutorService().schedule(runnable, 300, TimeUnit.MILLISECONDS);
+		} else {
+			SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, false) {
+				@Override
+				public Runnable getTask() {
+					return runnable;
+				}
+			});
 		}
 	}
 	
@@ -180,7 +242,12 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 * @param player
 	 * 		The player
 	 */
-	private void handleItemExamining(Player player) {
-		player.getTransmitter().sendMessage("Item examine to send: " + getContext().getItem(), true);
+	public static void handleItemExamining(Player player, Item item) {
+		String examine = ItemRepository.getExamine(item.getId());
+		if (examine != null) {
+			player.getTransmitter().sendMessage(examine, true);
+		} else {
+			player.getTransmitter().sendMessage("It's a " + item.getName().toLowerCase() + ".", true);
+		}
 	}
 }

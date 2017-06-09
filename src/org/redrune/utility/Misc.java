@@ -548,6 +548,18 @@ public class Misc {
 		}
 	}
 	
+	public static void writeTextToFile(String file, String text, boolean append) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, append))) {
+			writer.write(text);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static final int getFaceDirection(int xOffset, int yOffset) {
+		return ((int) (Math.atan2(-xOffset, -yOffset) * 2607.5945876176133)) & 0x3fff;
+	}
+	
 	public static Gson getGSON() {
 		return GSON;
 	}

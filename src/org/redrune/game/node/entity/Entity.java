@@ -11,6 +11,7 @@ import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
 import org.redrune.game.world.region.Region;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.Priority;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -216,6 +217,16 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Moves to a location
+	 *
+	 * @param location
+	 * 		The location
+	 */
+	public void moveTo(Location location) {
+		putAttribute(AttributeKey.TELEPORT_LOCATION, location);
+	}
+	
+	/**
 	 * Sends an animation mask
 	 *
 	 * @param animationId
@@ -278,5 +289,12 @@ public abstract class Entity extends Node implements EntityDetails {
 			return index + 0x8000;
 		}
 		return index;
+	}
+	
+	/**
+	 * If we are dead
+	 */
+	public boolean isDead() {
+		return getHitpoints() <= 0;
 	}
 }

@@ -2,6 +2,9 @@ package org.redrune.game.node.entity.player.event.impl.item;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
+import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
+import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
+import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.context.item.FloorItemPickupContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.item.FloorItem;
@@ -27,6 +30,9 @@ public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 	 */
 	public FloorItemPickupEvent(FloorItemPickupContext context) {
 		super(context);
+		setInterfacePolicy(InterfacePolicy.CLOSE);
+		setActionPolicy(ActionPolicy.RESET);
+		setAnimationPolicy(AnimationPolicy.RESET);
 	}
 	
 	@Override
@@ -35,7 +41,6 @@ public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 		Optional<FloorItem> optional = player.getRegion().getFloorItem(floorItem.getId(), floorItem.getLocation().getX(), floorItem.getLocation().getY(), floorItem.getLocation()
 		.getPlane());
 		if (!optional.isPresent()) {
-			player.getTransmitter().sendMessage("Oops! You're too late!");
 			return;
 		}
 		FloorItem found = optional.get();

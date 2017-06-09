@@ -36,6 +36,7 @@ public class RegionDeletion {
 	 * Prepares the {@link #OBJECT_DELETE_MAP} of objects to delete
 	 */
 	public static void prepare() {
+		int count = 0;
 		for (String line : Misc.getFileText(DELETE_FILE_LOCATION)) {
 			line = line.trim();
 			if (line.startsWith("/")) {
@@ -49,8 +50,9 @@ public class RegionDeletion {
 			Integer type = Integer.parseInt(split[4]);
 			GameObject object = new GameObject(id, type, 0, Location.create(x, y, z));
 			enterData(object);
+			count++;
 		}
-		LOGGER.info("Loaded " + OBJECT_DELETE_MAP.size() + " objects to delete.");
+		LOGGER.info("Loaded " + count + " objects to delete.");
 	}
 	
 	/**
@@ -60,7 +62,7 @@ public class RegionDeletion {
 	 * 		The object
 	 */
 	private static void enterData(GameObject object) {
-		List<GameObject> objectList = OBJECT_DELETE_MAP.get(object.getId());
+		List<GameObject> objectList = OBJECT_DELETE_MAP.get(object.getLocation().getRegionId());
 		if (objectList == null) {
 			objectList = new ArrayList<>();
 		}
@@ -74,11 +76,21 @@ public class RegionDeletion {
 	 * @param regionId
 	 * 		The id of the region
 	 */
-	static Optional<List<GameObject>> getObjectsToDelete(int regionId) {
+	public static Optional<List<GameObject>> getObjectsToDelete(int regionId) {
 		final List<GameObject> value = OBJECT_DELETE_MAP.get(regionId);
 		if (value == null) {
 			return Optional.empty();
 		}
 		return Optional.of(value);
+	}
+	
+	/**
+	 * Dumps an object to the deleted file
+	 *
+	 * @param object
+	 * 		The object
+	 */
+	public static void dumpObject(GameObject object) {
+		Misc.writeTextToFile(DELETE_FILE_LOCATION, object.getId() + " " + object.getLocation().getX() + " " + object.getLocation().getY() + " " + object.getLocation().getPlane() + " " + object.getType() + " // " + object.getDefinitions().getName() + "\n", true);
 	}
 }

@@ -2,6 +2,8 @@ package org.redrune.game.world.route;
 
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
+import org.redrune.game.world.region.RegionMap;
+import org.redrune.utility.rs.constant.RegionConstants;
 
 /**
  * Walking route finder working on third flag range, designed for walking
@@ -527,11 +529,21 @@ public class WalkRouteFinder {
 			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
 				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
 				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
+				
 				Region region = RegionManager.getRegion(transmitRegionX << 8 | transmitRegionY);
-				int[][] masks = region.getClippingMasks()[z];
-				for (int fillX = startX; fillX < endX; fillX++) {
-					for (int fillY = startY; fillY < endY; fillY++) {
-						clip[fillX - graphBaseX][fillY - graphBaseY] = masks[fillX & 0x3F][fillY & 0x3F];
+				RegionMap map = region.getMap();
+				if (map == null || !region.allLoaded() || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
+					for (int fillX = startX; fillX < endX; fillX++) {
+						for (int fillY = startY; fillY < endY; fillY++) {
+							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;
+						}
+					}
+				} else {
+					int[][] masks = map.getMasks()[z];
+					for (int fillX = startX; fillX < endX; fillX++) {
+						for (int fillY = startY; fillY < endY; fillY++) {
+							clip[fillX - graphBaseX][fillY - graphBaseY] = masks[fillX & 0x3F][fillY & 0x3F];
+						}
 					}
 				}
 			}

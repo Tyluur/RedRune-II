@@ -43,4 +43,16 @@ public interface Action {
 	 */
 	void stop(Player player);
 	
+	/**
+	 * Sets the delay
+	 *
+	 * @param player
+	 * 		The player
+	 * @param delay
+	 * 		The delay
+	 */
+	default void setDelay(Player player, int delay) {
+		player.getManager().getActions().setDelay(delay);
+	}
+	
 }

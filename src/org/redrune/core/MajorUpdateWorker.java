@@ -1,12 +1,13 @@
 package org.redrune.core;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.world.World;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * The sequencial  protocol that handles all updating.
+ * The sequential protocol that handles all updating.
  *
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017
@@ -34,6 +35,13 @@ public final class MajorUpdateWorker implements Runnable {
 	 */
 	private long start;
 	
+	/**
+	 * The last time we finished
+	 */
+	@Getter
+	@Setter
+	private long lastEndTime;
+	
 	@Override
 	public void run() {
 		while (World.get().isAlive()) {
@@ -60,6 +68,7 @@ public final class MajorUpdateWorker implements Runnable {
 		long duration = 600 - ((System.currentTimeMillis() - start) % 600);
 		if (duration > 0) {
 			Thread.sleep(duration);
+			setLastEndTime(System.currentTimeMillis());
 		} else {
 			System.err.println("Updating cycle duration took " + -duration + "ms too long!");
 		}

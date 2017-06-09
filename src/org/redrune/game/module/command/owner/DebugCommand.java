@@ -3,8 +3,6 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.CS2StringBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.InterfaceChangeBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -20,21 +18,10 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		int end = intParam(args, 2);
-		for (int i = intParam(args, 1); i <= end; i++) {
-			player.getTransmitter().send(new InterfaceChangeBuilder(667, i, false).build(player));
-		}
-		String completed = getCompleted(args, 3);
-		String[] split = completed.split(",");
-		for (String itself : split) {
-			int number = Integer.parseInt(itself);
-			player.getTransmitter().send(new CS2StringBuilder(number, "g" + number + "<br><br><br>").build(player));
-		}
-		player.getManager().getInterfaces().sendInterface(667, true);
-		System.out.println("Finished with " + completed);
-		
+//		System.out.println(RegionDeletion.getObjectsToDelete(player.getRegion().getRegionId()));
+		player.getNetworkSession().getChannel().close();
+//		System.out.println(player.getRegion().getPlayers());
 		//			player.getManager().getPrayers().setIcon(PrayerIcon.valueOf(args[1].toUpperCase()));
-		//			player.getNetworkSession().getChannel().close();
 		//			player.getManager().getDialogues().startDialogue(new BankerNPCDialogue(), 45);
 	/*		Animation MODERN_ANIM = new Animation(8939, 0, false, Priority.HIGHEST);
 			Graphic MODERN_GRAPHIC = new Graphic(1576, 0, 0, false);

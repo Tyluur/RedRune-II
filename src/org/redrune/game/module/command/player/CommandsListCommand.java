@@ -39,7 +39,9 @@ public class CommandsListCommand extends CommandModule {
 		PlayerRight lastRight = null;
 		
 		for (CommandModule command : commandModules) {
-			if (command.consoleUsageOnly()) {
+			// skips commands that are only for console
+			// or commands with no manifest [only i should know about these]
+			if (command.consoleUsageOnly() || command.getManifest() == null) {
 				continue;
 			}
 			CommandManifest manifest = command.getManifest();

@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.CloseInterfaceBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.GameWindowBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.InterfaceDisplayBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.InterfaceStringBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
@@ -134,6 +131,17 @@ public final class InterfaceManager implements InterfaceConstants {
 	 */
 	public InterfaceManager sendWindowPane(int paneId) {
 		player.getTransmitter().send(new GameWindowBuilder(this.paneId = paneId, 0).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends a window pane
+	 *
+	 * @param paneId
+	 * 		The id of the pane
+	 */
+	public InterfaceManager sendWindowPane(int paneId, int subWindowId) {
+		player.getTransmitter().send(new GameWindowBuilder(this.paneId = paneId, subWindowId).build(player));
 		return this;
 	}
 	
@@ -383,5 +391,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	 */
 	public InterfaceManager sendInventoryInterface(int interfaceId) {
 		return sendInterface(usingFixedMode() ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID, interfaceId);
+	}
+	
+	/**
+	 * Opens the world map
+	 */
+	public InterfaceManager openWorldMap() {
+		sendWindowPane(755);
+		int posHash = player.getLocation().getX() << 14 | player.getLocation().getY();
+		player.getTransmitter().send(new CS2ConfigBuilder(622, posHash).build(player));
+		player.getTransmitter().send(new CS2ConfigBuilder(674, posHash).build(player));
+		return this;
 	}
 }

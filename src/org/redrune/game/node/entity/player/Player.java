@@ -2,15 +2,16 @@ package org.redrune.game.node.entity.player;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.core.SequencialUpdate;
 import org.redrune.game.GameConstants;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
 import org.redrune.game.node.entity.player.render.PlayerRendering;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
-import org.redrune.core.SequencialUpdate;
 import org.redrune.game.world.World;
-import org.redrune.game.world.path.NodeInteractionTask;
+import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
@@ -20,6 +21,9 @@ import org.redrune.network.rs666.packet.outgoing.impl.MapRegionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.RunEnergyBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.rs.input.InputType;
+
+import java.util.Arrays;
 
 /**
  * The player that renderable in the game.
@@ -227,12 +231,49 @@ public final class Player extends Entity {
 		getTransmitter().send(new ConfigFilePacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
-		getTransmitter().send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, false) ? 1 : 0).build(this));
+		getTransmitter().send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true) ? 1 : 0).build(this));
 		
 		getTransmitter().send(new ConfigPacketBuilder(173, getVariables().isRunToggled() ? 1 : 0).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
 		getTransmitter().send(new RunEnergyBuilder(getVariables().getRunEnergy()).build(this));
+	}
+	
+	/**
+	 * Stops specified events
+	 *
+	 * @param actions
+	 * 		If we should stop actions
+	 * @param travel
+	 * 		If we should stop travels
+	 * @param interfaces
+	 * 		If we should stop interfaces
+	 * @param animations
+	 * 		If we should stop animations
+	 */
+	public void stop(boolean actions, boolean travel, boolean interfaces, boolean animations) {
+		if (animations) {
+			sendAnimation(-1);
+		}
+		if (interfaces) {
+			Arrays.stream(InputType.values()).forEach(type -> removeAttribute(type.getName()));
+			getTransmitter().closeInputBox();
+			getManager().getInterfaces().closeAllInterfaces();
+		}
+		if (travel) {
+			setInteractionTask(null);
+			getMovement().resetWalkSteps();
+			getTransmitter().sendMinimapFlagReset();
+		}
+		if (actions) {
+			getManager().getActions().forceStop();
+		}
+		turnTo(null);
+		
+		NPC interactingNPC = getAttribute(AttributeKey.INTERACTING_NPC);
+		if (interactingNPC != null) {
+			interactingNPC.endPlayerInteraction(this);
+		}
 	}
 	
 }

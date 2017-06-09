@@ -16,6 +16,11 @@ import java.io.IOException;
 public class SystemManager {
 	
 	/**
+	 * Gets the amount of processors on the computer
+	 */
+	public static final int PROCESSOR_COUNT = Runtime.getRuntime().availableProcessors();
+	
+	/**
 	 * The update worker instance
 	 */
 	private static final MajorUpdateWorker MAJOR_UPDATE_WORKER = new MajorUpdateWorker();
@@ -51,5 +56,12 @@ public class SystemManager {
 	 */
 	public static Scheduler getScheduler() {
 		return SCHEDULER;
+	}
+	
+	/**
+	 * Gets the update worker
+	 */
+	public static MajorUpdateWorker getUpdateWorker() {
+		return MAJOR_UPDATE_WORKER;
 	}
 }

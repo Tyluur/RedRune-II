@@ -1,6 +1,8 @@
 package org.redrune.game.node.entity;
 
 import lombok.Getter;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.render.flag.impl.TeleportUpdate;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
@@ -62,6 +64,7 @@ public class EntityMovement {
 				}
 			}
 		}
+		RegionManager.updateEntityRegion(entity);
 		if (entity.needsMapUpdate()) {
 			entity.loadMapRegions();
 		}
@@ -146,26 +149,7 @@ public class EntityMovement {
 		int myX = lastTile[0];
 		int myY = lastTile[1];
 		int stepCount = 0;
-		stepCount++;
-		if (myX < destX) {
-			myX++;
-		} else if (myX > destX) {
-			myX--;
-		}
-		if (myY < destY) {
-			myY++;
-		} else if (myY > destY) {
-			myY--;
-		}
-		if (!addWalkStep(myX, myY, lastTile[0], lastTile[1], check)) {
-			return false;
-		}
-		if (stepCount == maxStepsCount) {
-			return true;
-		}
-		lastTile[0] = myX;
-		lastTile[1] = myY;
-		while (lastTile[0] != destX || lastTile[1] != destY) {
+		while (true) {
 			stepCount++;
 			if (myX < destX) {
 				myX++;
@@ -185,8 +169,10 @@ public class EntityMovement {
 			}
 			lastTile[0] = myX;
 			lastTile[1] = myY;
+			if (lastTile[0] == destX && lastTile[1] == destY) {
+				return true;
+			}
 		}
-		return true;
 	}
 	
 	/**
@@ -220,13 +206,64 @@ public class EntityMovement {
 		if (dir == -1) {
 			return false;
 		}
-		if (check) {
-			if (!RegionManager.isTileFree(entity.getLocation().getPlane(), lastX, lastY, dir, entity.getSize())) {
-				return false;
-			}
+		if (check && !RegionManager.isTileFree(entity.getLocation().getPlane(), lastX, lastY, dir, entity.getSize())) {
+			return false;
 		}
 		walkSteps.add(new int[] { dir, nextX, nextY });
 		return true;
+	}
+	
+	/**
+	 * Checks if a projectile can travel to the tile
+	 *
+	 * @param tile
+	 * 		The tile
+	 * @param checkClose
+	 * 		If we should check close-by tiles
+	 * @param size
+	 * 		The size of the projectile
+	 */
+	public boolean clippedProjectile(Location tile, boolean checkClose, int size) {
+		int myX = entity.getLocation().getX();
+		int myY = entity.getLocation().getY();
+		if (entity.isNPC() && size == 1) {
+			NPC n = (NPC) entity;
+			Location thist = n.getMiddleWorldTile();
+			myX = thist.getX();
+			myY = thist.getY();
+		}
+		int destX = tile.getX();
+		int destY = tile.getY();
+		int lastTileX = myX;
+		int lastTileY = myY;
+		while (true) {
+			if (myX < destX) {
+				myX++;
+			} else if (myX > destX) {
+				myX--;
+			}
+			if (myY < destY) {
+				myY++;
+			} else if (myY > destY) {
+				myY--;
+			}
+			int dir = Misc.getMoveDirection(myX - lastTileX, myY - lastTileY);
+			if (dir == -1) {
+				return false;
+			}
+			if (checkClose) {
+				if (!RegionManager.isTileFree(entity.getLocation().getPlane(), lastTileX, lastTileY, dir, size)) {
+					return false;
+				}
+			} else if (!RegionManager.checkProjectileStep(entity.getLocation().getPlane(), lastTileX, lastTileY, dir, size)) {
+				return false;
+			}
+			lastTileX = myX;
+			lastTileY = myY;
+			if (lastTileX == destX && lastTileY == destY) {
+				return true;
+			}
+		}
 	}
 	
 	/**
@@ -262,4 +299,15 @@ public class EntityMovement {
 		return "[walk=" + nextWalkDirection + ", run=" + nextRunDirection + ", steps=" + walkSteps + "]";
 	}
 	
+	/**
+	 * Adds walk steps with -1 max steps and checking tiles.
+	 *
+	 * @param destX
+	 * 		The x
+	 * @param destY
+	 * 		The y
+	 */
+	public boolean addWalkSteps(final int destX, final int destY) {
+		return addWalkSteps(destX, destY, -1, true);
+	}
 }

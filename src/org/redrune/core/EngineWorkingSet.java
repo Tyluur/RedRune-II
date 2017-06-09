@@ -1,10 +1,12 @@
 package org.redrune.core;
 
+import org.redrune.core.system.SystemManager;
 import org.redrune.utility.backend.RS2ThreadFactory;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * A working set containing all the main threads, and thread-related factories.
@@ -27,7 +29,12 @@ public class EngineWorkingSet {
 	/**
 	 * The executor used for the update server
 	 */
-	private static final ExecutorService UPDATE_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	private static final ExecutorService UPDATE_SERVICE = Executors.newFixedThreadPool(SystemManager.PROCESSOR_COUNT);
+	
+	/**
+	 * The scheduled executor service
+	 */
+	private static ScheduledExecutorService scheduledExecutorService;
 	
 	/**
 	 * Submits a new js5 task to execute.
@@ -57,5 +64,15 @@ public class EngineWorkingSet {
 	 */
 	public static void submitEngineWork(Runnable runnable) {
 		UPDATE_SERVICE.execute(runnable);
+	}
+	
+	/**
+	 * Gets the scheduled executor service
+	 */
+	public static ScheduledExecutorService getScheduledExecutorService() {
+		if (scheduledExecutorService == null) {
+			scheduledExecutorService = SystemManager.PROCESSOR_COUNT >= 6 ? Executors.newScheduledThreadPool(SystemManager.PROCESSOR_COUNT >= 12 ? 4 : 2, new RS2ThreadFactory("Scheduled-Worker")) : Executors.newSingleThreadScheduledExecutor(new RS2ThreadFactory("Scheduled-Worker"));
+		}
+		return scheduledExecutorService;
 	}
 }

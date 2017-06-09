@@ -7,8 +7,6 @@ import org.redrune.cache.parse.definition.ObjectDefinition;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 
-import java.util.Arrays;
-
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/26/2017
@@ -109,7 +107,15 @@ public class GameObject extends Node {
 	
 	@Override
 	public String toString() {
-		return "[id=" + id + ", name=" + getDefinitions().getName() + ", options=" + Arrays.toString(getDefinitions().getOptions()) + ", type=" + type + ", rotation=" + rotation + "]";
+		StringBuilder bldr = new StringBuilder();
+		bldr.append("[id=").append(id).append(", ");
+		if (getDefinitions().getName() != null &&!getDefinitions().getName().equals("null")) {
+			bldr.append("name=").append(getDefinitions().getName()).append(", ");
+		}
+		bldr.append("location=").append(getLocation()).append(", ");
+		bldr.append("type=").append(type).append(", ");
+		bldr.append("rotation=").append(rotation).append("]");
+		return bldr.toString();
 	}
 	
 	@Override

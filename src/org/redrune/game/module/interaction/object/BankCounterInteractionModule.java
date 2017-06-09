@@ -13,7 +13,7 @@ public class BankCounterInteractionModule implements ObjectInteractionModule {
 	
 	@Override
 	public int[] objectSubscriptionIds() {
-		return arguments(42378, 42217, 42337);
+		return arguments(42378, 42217, 42377);
 	}
 	
 	@Override

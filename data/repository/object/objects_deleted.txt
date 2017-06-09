@@ -1,1 +1,36 @@
 45071 3082 3496 0 10 // small sacks
+61354 3091 3506 0 10 // null 
+42380 3090 3495 0 10 // Bench
+// edgeville men room
+43035 3095 3510 0 11 // Crate
+26982 3096 3511 0 10 // Ladder
+42390 3096 3513 0 10 // Shelves
+42391 3097 3513 0 10 // Shelves
+45099 3098 3513 0 10 // Small sacks
+43035 3100 3513 0 10 // Crate
+43019 3099 3512 0 11 // Crate
+43019 3100 3512 0 10 // Crate
+42381 3094 3510 0 10 // Barrel
+43035 3092 3511 0 10 // Crate
+43035 3091 3511 0 10 // Crate
+43019 3091 3510 0 11 // Crate
+42607 3091 3508 0 10 // Barrel
+43754 3093 3507 0 10 // Table
+45099 3094 3507 0 10 // Small sacks
+42397 3096 3507 0 10 // Shelves
+42392 3098 3507 0 10 // Shelves
+42390 3097 3507 0 10 // Shelves
+43019 3099 3507 0 10 // Crate
+43035 3100 3507 0 10 // Crate
+43019 3100 3508 0 11 // Crate
+42389 3093 3513 0 10 // Shelves
+42605 3091 3513 0 10 // stack of crates in back
+37258 3093 3511 0 0 // rightmost wall piece
+37256 3092 3511 0 0 // middle wall piece
+37256 3091 3511 0 0 // leftmost wall piece
+37259 3094 3513 0 0 // northern wall piece
+42382 3091 3507 0 10 // Barrel
+// Outside men room
+61347 3093 3506 0 10 // stack of shit
+61355 3097 3506 0 10 // small crate
+61356 3098 3506 0 10 // big crate

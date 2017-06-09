@@ -8,13 +8,12 @@ import lombok.Getter;
  * @author Emperor
  * @author Tyluur <itstyluur@gmail.com>
  */
-@SuppressWarnings("unused")
 public enum ReturnCode {
 	
 	/**
 	 * An unexpected server response occured.
 	 */
-	UNEXPECTED_RESPONSE(0),
+	AD_COUNTDOWN_THEN_END(0),
 	
 	/**
 	 * Could not display advertisement video, logging in in x seconds.
@@ -79,7 +78,7 @@ public enum ReturnCode {
 	/**
 	 * Could not login.
 	 */
-	COULD_NOT_LOGIN(13),
+	BETA_TESTERS_ONLY(13),
 	
 	/**
 	 * The server is currently updating.
@@ -110,6 +109,16 @@ public enum ReturnCode {
 	 * The login server connected to is invalid.
 	 */
 	INVALID_LOGIN_SERVER(20),
+	
+	/**
+	 * The login was malformed
+	 */
+	MALFORMED_LOGIN_PACKET(22),
+	
+	/**
+	 * We couldn't get a reply
+	 */
+	NO_REPLY_FROM_LOGIN_SERVER(23),
 	
 	/**
 	 * When the player's saved file created, but is unable to be loaded.

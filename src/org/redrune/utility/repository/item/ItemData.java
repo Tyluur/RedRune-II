@@ -1,6 +1,7 @@
 package org.redrune.utility.repository.item;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -12,9 +13,14 @@ public final class ItemData {
 	 * The bonuses of the item
 	 */
 	@Getter
-	private final int[] bonuses;
+	@Setter
+	private int[] bonuses;
 	
-	public ItemData(int[] bonuses) {
-		this.bonuses = bonuses;
-	}
+	/**
+	 * The examine information of the item
+	 */
+	@Getter
+	@Setter
+	private String examine;
+	
 }

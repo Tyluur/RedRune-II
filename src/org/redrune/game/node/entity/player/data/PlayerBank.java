@@ -55,19 +55,6 @@ public final class PlayerBank {
 	}
 	
 	/**
-	 * Gets the item
-	 *
-	 * @param slot
-	 * 		The slot details
-	 */
-	private Item getItem(int[] slot) {
-		if (slot == null) {
-			return null;
-		}
-		return bankTabs[slot[0]][slot[1]];
-	}
-	
-	/**
 	 * Gets the start slot
 	 *
 	 * @param tabId
@@ -99,26 +86,6 @@ public final class PlayerBank {
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * Gets the real slot
-	 *
-	 * @param slot
-	 * 		The slot
-	 */
-	private int[] getRealSlot(int slot) {
-		for (int tab = 1; tab < bankTabs.length; tab++) {
-			if (slot >= bankTabs[tab].length) {
-				slot -= bankTabs[tab].length;
-			} else {
-				return new int[] { tab, slot };
-			}
-		}
-		if (slot >= bankTabs[0].length) {
-			return null;
-		}
-		return new int[] { 0, slot };
 	}
 	
 	/**
@@ -374,6 +341,49 @@ public final class PlayerBank {
 		System.arraycopy(bankTabs, 0, tabs, 0, slot);
 		tabs[slot] = new Item[0];
 		bankTabs = tabs;
+	}
+	
+	/**
+	 * Gets the item in the slot
+	 *
+	 * @param bankSlot
+	 * 		The slot
+	 */
+	public Item getItemInSlot(int bankSlot) {
+		return getItem(getRealSlot(bankSlot));
+	}
+	
+	/**
+	 * Gets the item
+	 *
+	 * @param slot
+	 * 		The slot details
+	 */
+	private Item getItem(int[] slot) {
+		if (slot == null) {
+			return null;
+		}
+		return bankTabs[slot[0]][slot[1]];
+	}
+	
+	/**
+	 * Gets the real slot
+	 *
+	 * @param slot
+	 * 		The slot
+	 */
+	private int[] getRealSlot(int slot) {
+		for (int tab = 1; tab < bankTabs.length; tab++) {
+			if (slot >= bankTabs[tab].length) {
+				slot -= bankTabs[tab].length;
+			} else {
+				return new int[] { tab, slot };
+			}
+		}
+		if (slot >= bankTabs[0].length) {
+			return null;
+		}
+		return new int[] { 0, slot };
 	}
 	
 	/**
@@ -639,7 +649,7 @@ public final class PlayerBank {
 	 * 		The slots
 	 */
 	private void refreshItems(int[] slots) {
-//		player.getTransmitter().send(new ContainerPacketBuilder(95, getContainerCopy()).build(player));
+		//		player.getTransmitter().send(new ContainerPacketBuilder(95, getContainerCopy()).build(player));
 		player.getTransmitter().send(new ContainerUpdateBuilder(95, getContainerCopy(), slots).build(player));
 	}
 	

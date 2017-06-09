@@ -1,9 +1,5 @@
-package org.redrune.game.world.path;
+package org.redrune.game.node;
 
-import org.redrune.core.system.SystemManager;
-import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.node.Location;
-import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.FloorItem;
@@ -88,7 +84,7 @@ public class NodeInteractionTask {
 						player.getTransmitter().sendMinimapFlagReset();
 					}
 					if (!player.getMovement().isMoving()) {
-						executeTask();
+						executeTask(player);
 					}
 					return true;
 				}
@@ -111,7 +107,7 @@ public class NodeInteractionTask {
 						player.getTransmitter().sendMinimapFlagReset();
 					}
 					if (!player.getMovement().isMoving()) {
-						executeTask();
+						executeTask(player);
 					}
 					return true;
 				}
@@ -138,14 +134,30 @@ public class NodeInteractionTask {
 	
 	/**
 	 * Executes the task
+	 *
+	 * @param player
+	 * 		The player executing it
 	 */
-	private void executeTask() {
-		SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, true) {
-			@Override
-			public Runnable getTask() {
-				return task;
+	private void executeTask(Player player) {
+		boolean skipClip = false;
+		final boolean clippedProjectile = player.getMovement().clippedProjectile(node.getLocation(), node.isGameObject(), 1);
+		if (node.isNPC() && node.toNPC().getDefinitions().getName().equalsIgnoreCase("Banker")) {
+			skipClip = true;
+		} else if (node.isGameObject()) {
+			final String name = node.toGameObject().getDefinitions().getName().toLowerCase();
+			if (name.equalsIgnoreCase("counter") || name.contains("bank")) {
+				skipClip = true;
 			}
-		});
+		} else if (node.isItem()) {
+			skipClip = true;
+		}
+		if (skipClip) {
+			task.run();
+		} else if (!clippedProjectile) {
+			player.getTransmitter().sendMessage("You can't reach that.");
+		} else {
+			task.run();
+		}
 	}
 	
 	/**

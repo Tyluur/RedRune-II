@@ -43,6 +43,11 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 	 */
 	private static final int INVENTORY_INTERFACE_ID = 670;
 	
+	/**
+	 * The bonus labels
+	 */
+	private static final String[] BONUS_LABELS = new String[] { "Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range", "Summoning", "Absorb Melee", "Absorb Magic", "Absorb Ranged", "Strength", "Ranged Str", "Prayer", "Magic Damage" };
+	
 	@Override
 	public int[] interfaceSubscriptionIds() {
 		return arguments(INTERFACE_ID, INVENTORY_INTERFACE_ID);
@@ -71,7 +76,7 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 					showStats(player, item);
 					return true;
 				} else if (packetId == NetworkConstants.EXAMINE_PACKET_ID) {
-					// todo item examines
+					ItemEvent.handleItemExamining(player, item);
 					return true;
 				}
 			} else if (componentId == 65) {
@@ -92,7 +97,7 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 					showStats(player, item);
 					return true;
 				} else if (packetId == NetworkConstants.EXAMINE_PACKET_ID) {
-					// todo item examines
+					ItemEvent.handleItemExamining(player, item);
 					return true;
 				}
 			}
@@ -108,10 +113,15 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 	 * 		The player
 	 */
 	public static void show(Player player) {
-		player.getTransmitter().send(new AccessMaskBuilder(INTERFACE_ID, 7, 0, 15, 1538).build(player));
-		player.getTransmitter().send(new AccessMaskBuilder(INVENTORY_INTERFACE_ID, 0, 0, 28, 1538).build(player));
-		player.getManager().getInterfaces().sendInterface(INTERFACE_ID, true).sendInventoryInterface(INVENTORY_INTERFACE_ID);
-		refresh(player);
+		// sent twice because of the bank glitch
+		for (int i = 0; i < 2; i++) {
+			player.stop(true, true, true, true);
+			player.getTransmitter().send(new AccessMaskBuilder(INTERFACE_ID, 7, 0, 15, 1538).build(player));
+			player.getTransmitter().send(new AccessMaskBuilder(INVENTORY_INTERFACE_ID, 0, 0, 28, 1538).build(player));
+			player.getTransmitter().send(new InterfaceChangeBuilder(INTERFACE_ID, 49, true).build(player));
+			player.getManager().getInterfaces().sendInterface(INTERFACE_ID, true).sendInventoryInterface(INVENTORY_INTERFACE_ID);
+			refresh(player);
+		}
 	}
 	
 	/**
@@ -138,27 +148,28 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 	 * 		The item
 	 */
 	private static void showStats(Player player, Item item) {
-		player.getTransmitter().send(new InterfaceChangeBuilder(INTERFACE_ID, 52, false).build(player));
-		
 		int[] bonuses = ItemRepository.getBonuses(item.getId());
 		if (bonuses == null) {
 			bonuses = new int[18];
 		}
-		String text = "";
-		for (int i = 0; i < 7; i++) {
-			text += "stats will be here yabish<br>";
+		StringBuilder attack = new StringBuilder();
+		attack.append("Attack Bonuses<br><br>");
+		StringBuilder defence = new StringBuilder();
+		defence.append("Defence Bonuses<br><br>");
+		StringBuilder other = new StringBuilder();
+		other.append("Other Bonuses<br><br>");
+		for (int i = 0; i < bonuses.length; i++) {
+			int bonus = bonuses[i];
+			String label = BONUS_LABELS[i];
+			StringBuilder bldr = (i <= 4 ? attack : i <= 13 ? defence : other);
+			String sign = bonus > 0 ? "+" : "";
+			
+			bldr.append(label).append(": ").append(sign).append(bonus).append(label.contains("Absorb") ? "%" : "").append(i == bonuses.length - 1 ? "" : "<br>");
 		}
-		String text2 = "";
-		for (int i = 0; i < 7; i++) {
-			text2 += "these are dem secondaries<br>";
-		}
-		
 		player.getTransmitter().send(new CS2StringBuilder(321, "Stats for " + item.getName()).build(player));
-		player.getTransmitter().send(new CS2StringBuilder(323, "323: " + text2).build(player));
-		player.getTransmitter().send(new CS2StringBuilder(324, "324:" + text).build(player));
-		player.getTransmitter().send(new CS2StringBuilder(325, "325:" + text2).build(player));
-		player.getTransmitter().send(new CS2StringBuilder(326, "326" + text2).build(player));
-		player.getManager().getInterfaces().sendInterface(667, true);
+		player.getTransmitter().send(new CS2StringBuilder(323, attack.toString()).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(324, defence.toString()).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(325, other.toString()).build(player));
 	}
 	
 }

@@ -175,4 +175,24 @@ public class PlayerInventory {
 	public boolean hasFreeSlots() {
 		return items.getFreeSlot() != -1;
 	}
+	
+	/**
+	 * Gets the item that has the id
+	 *
+	 * @param itemId
+	 * 		The id we want
+	 * @param item1
+	 * 		The item to check
+	 * @param item2
+	 * 		The second item to check
+	 */
+	public Item getItem(int itemId, Item item1, Item item2) {
+		if (item1.getId() == itemId) {
+			return item1;
+		} else if (item2.getId() == itemId) {
+			return item2;
+		} else {
+			return null;
+		}
+	}
 }

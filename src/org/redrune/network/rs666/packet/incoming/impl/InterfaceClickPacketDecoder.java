@@ -3,6 +3,9 @@ package org.redrune.network.rs666.packet.incoming.impl;
 import org.redrune.cache.Cache;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.event.context.item.ItemOnItemContext;
+import org.redrune.game.node.entity.player.event.impl.item.ItemOnItemEvent;
+import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.Misc;
@@ -23,7 +26,7 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(85, 7, 66, 11, 48, 17, 84, 40, 25, 8, 54);
+		return Misc.arguments(85, 7, 66, 11, 48, 17, 84, 40, 25, 8, 54, 26);
 	}
 	
 	@Override
@@ -32,6 +35,9 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 			switch (packet.getOpcode()) {
 				case 8:
 					decodeDialoguePacket(player, packet);
+					break;
+				case 26:
+					decodeItemOnItemPacket(player, packet);
 					break;
 				default:
 					int clickData = packet.readLEInt();
@@ -66,6 +72,38 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error reading packet: " + packet.getOpcode(), e);
 		}
+	}
+	
+	/**
+	 * Decodes the packet that is sent when two items are used together
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void decodeItemOnItemPacket(Player player, Packet packet) {
+		int usedWithId = packet.readLEShortA();
+		int usedWithSlot = packet.readLEShortA();
+		int usedSlot = packet.readLEShortA();
+		int hash1 = packet.readLEInt();
+		int hash2 = packet.readLEInt();
+		int usedId = packet.readShortA();
+		
+		Item itemUsed = player.getInventory().getItems().get(usedSlot);
+		if (itemUsed == null) {
+			return;
+		}
+		Item usedWith = player.getInventory().getItems().get(usedWithSlot);
+		if (usedWith == null) {
+			return;
+		}
+		if (usedId != itemUsed.getId() || usedWithId != usedWith.getId()) {
+			System.out.println("Error in parsing item on item...");
+			return;
+		}
+		
+		player.getManager().getEvents().executeEvent(player, new ItemOnItemEvent(new ItemOnItemContext(usedSlot, usedWithSlot)));
 	}
 	
 	/**

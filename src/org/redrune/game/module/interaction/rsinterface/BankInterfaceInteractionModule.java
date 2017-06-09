@@ -2,6 +2,8 @@ package org.redrune.game.module.interaction.rsinterface;
 
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
+import org.redrune.game.node.item.Item;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.rs.input.InputResponse;
 import org.redrune.utility.rs.input.InputType;
@@ -50,7 +52,11 @@ public class BankInterfaceInteractionModule implements InterfaceInteractionModul
 						player.getBank().withdrawItemButOne(slotId);
 						return true;
 					case EXAMINE_PACKET_ID:
-						// todo item examines
+						Item item = player.getBank().getItemInSlot(slotId);
+						if (item == null) {
+							return true;
+						}
+						ItemEvent.handleItemExamining(player, item);
 						return true;
 				}
 			} else if (componentId == 15) {
@@ -105,7 +111,11 @@ public class BankInterfaceInteractionModule implements InterfaceInteractionModul
 					player.getBank().depositItem(slotId, Integer.MAX_VALUE, true);
 					return true;
 				case EXAMINE_PACKET_ID:
-					// TODO item examines
+					Item item = player.getInventory().getItems().get(slotId);
+					if (item == null) {
+						return true;
+					}
+					ItemEvent.handleItemExamining(player, item);
 					return true;
 			}
 		}

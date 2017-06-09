@@ -9,16 +9,6 @@ import lombok.Getter;
 public final class Location {
 	
 	/**
-	 * The x direction deltas
-	 */
-	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
-	
-	/**
-	 * The y direction deltas
-	 */
-	public static final byte[] DIRECTION_DELTA_Y = new byte[] { -1, -1, -1, 0, 0, 1, 1, 1 };
-	
-	/**
 	 * Represents the viewport sizes.
 	 */
 	public final static int[] VIEWPORT_SIZES = { 104, 120, 136, 168 };
@@ -347,4 +337,29 @@ public final class Location {
 	public static Location GetDelta(Location from, Location to) {
 		return Location.create((short) (to.x - from.x), (short) (to.y - from.y), (byte) (to.plane - from.plane));
 	}
+	
+	public int getXInRegion() {
+		return x & 0x3F;
+	}
+	
+	public int getYInRegion() {
+		return y & 0x3F;
+	}
+	
+	public int getCoordFaceX(int sizeX) {
+		return getCoordFaceX(sizeX, -1, -1);
+	}
+	
+	public int getCoordFaceX(int sizeX, int sizeY, int rotation) {
+		return x + ((rotation == 1 || rotation == 3 ? sizeY : sizeX) - 1) / 2;
+	}
+	
+	public int getCoordFaceY(int sizeY) {
+		return getCoordFaceY(-1, sizeY, -1);
+	}
+	
+	public int getCoordFaceY(int sizeX, int sizeY, int rotation) {
+		return y + ((rotation == 1 || rotation == 3 ? sizeX : sizeY) - 1) / 2;
+	}
+	
 }

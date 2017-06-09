@@ -13,10 +13,10 @@ public enum LoginState {
 	/**
 	 * The entering lobby state.
 	 */
-	LOBBY_FINALIZATION,
+	LOBBY_ENTRANCE,
 	
 	/**
 	 * The logging in state.
 	 */
-	LOGIN_FINALIZATION,
+	GAME_ENTRANCE,
 }

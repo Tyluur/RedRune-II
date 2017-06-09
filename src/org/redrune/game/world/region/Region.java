@@ -2,7 +2,6 @@ package org.redrune.game.world.region;
 
 import lombok.Getter;
 import org.redrune.cache.parse.MapRegionParser;
-import org.redrune.cache.parse.ObjectDefinitionParser;
 import org.redrune.cache.parse.definition.ObjectDefinition;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.impl.FloorItemTask;
@@ -20,7 +19,8 @@ import org.redrune.network.rs666.packet.outgoing.impl.ObjectRemovalBuilder;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
 import org.redrune.utility.rs.constant.RegionConstants;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -33,26 +33,16 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class Region {
 	
 	/**
-	 * The player synchronization lock.
-	 */
-	private final Object playerLock = new Object();
-	
-	/**
-	 * The npc synchronization lock.
-	 */
-	private final Object npcLock = new Object();
-	
-	/**
 	 * A list of players in this region.
 	 */
-	@SuppressWarnings("unchecked")
-	private final SortedSet<Player> players;
+	@Getter
+	private final CopyOnWriteArraySet<Player> players;
 	
 	/**
 	 * A list of NPCs in this region.
 	 */
-	@SuppressWarnings("unchecked")
-	private final List<NPC> npcs;
+	@Getter
+	private final CopyOnWriteArraySet<NPC> npcs;
 	
 	/**
 	 * The id of the region
@@ -61,25 +51,20 @@ public class Region {
 	private final int regionId;
 	
 	/**
-	 * The base x-coordinate of this region.
+	 * The map of the region
 	 */
 	@Getter
-	private final int x;
+	private RegionMap map;
 	
 	/**
-	 * The base y-coordinate of this region.
+	 * The clipped only map
 	 */
-	@Getter
-	private final int y;
-	
-	/**
-	 * The clipping masks of this region.
-	 */
-	private final int[][][] clippingMasks = new int[4][][];
+	private RegionMap clipedOnlyMap;
 	
 	/**
 	 * If all the spawns have been loaded.
 	 */
+	@Getter
 	private final boolean[] loadedFlags;
 	
 	/**
@@ -119,11 +104,9 @@ public class Region {
 	 */
 	public Region(int regionId) {
 		this.regionId = regionId;
-		this.x = (regionId >> 8) * 64;
-		this.y = (regionId & 0xff) * 64;
 		this.floorItems = new CopyOnWriteArrayList<>();
-		this.players = new TreeSet<>(Comparator.comparingInt(Entity::getIndex));
-		this.npcs = new ArrayList<>();
+		this.players = new CopyOnWriteArraySet<>();
+		this.npcs = new CopyOnWriteArraySet<>();
 		this.loadedFlags = new boolean[2];
 		
 		this.defaultObjects = new CopyOnWriteArrayList<>();
@@ -145,13 +128,74 @@ public class Region {
 	 */
 	public void loadLandscape(int[] keys) {
 		if (RegionManager.BROKEN_REGIONS.contains(regionId)) {
+			System.out.println("Broken region #" + regionId);
+			return;
+		}
+		if (RegionManager.LOADED_REGIONS.contains(regionId)) {
 			return;
 		}
 		List<GameObject> defaultObjects = MapRegionParser.parseMap(regionId, keys);
+		RegionManager.LOADED_REGIONS.add(regionId);
 		if (defaultObjects.isEmpty()) {
 			return;
 		}
-		defaultObjects.forEach(object -> spawnObject(object, true));
+		final int regionX = (regionId >> 8) * 64;
+		final int regionY = (regionId & 0xff) * 64;
+		defaultObjects.forEach(object -> spawnObject(object, new int[] { object.getLocation().getX() - regionX, object.getLocation().getY() - regionY }));
+	}
+	
+	/**
+	 * Gets the region map, if it isn't set we create a new one that isn't clipped only
+	 */
+	public RegionMap forceGetRegionMap() {
+		if (map == null) {
+			map = new RegionMap(regionId, false);
+		}
+		return map;
+	}
+	
+	/**
+	 * Gets the clipped only region map, if it isn't set we create a new oen that isn't clipped only
+	 */
+	public RegionMap forceGetRegionMapClipedOnly() {
+		if (clipedOnlyMap == null) {
+			clipedOnlyMap = new RegionMap(regionId, true);
+		}
+		return clipedOnlyMap;
+	}
+	
+	/**
+	 * Gets the mask
+	 *
+	 * @param plane
+	 * 		The plane
+	 * @param localX
+	 * 		The local x
+	 * @param localY
+	 * 		The local y
+	 */
+	public int getMask(int plane, int localX, int localY) {
+		if (map == null || !allLoaded()) {
+			return -1; // cliped tile
+		}
+		return map.getMasks()[plane][localX][localY];
+	}
+	
+	/**
+	 * Gets the clipped only mask
+	 *
+	 * @param plane
+	 * 		The plane
+	 * @param localX
+	 * 		The local x
+	 * @param localY
+	 * 		The local y
+	 */
+	public int getMaskClipedOnly(int plane, int localX, int localY) {
+		if (clipedOnlyMap == null || !allLoaded()) {
+			return -1; // cliped tile
+		}
+		return clipedOnlyMap.getMasks()[plane][localX][localY];
 	}
 	
 	/**
@@ -162,14 +206,10 @@ public class Region {
 	 */
 	public void addEntity(Entity entity) {
 		if (entity.isPlayer()) {
-			synchronized (playerLock) {
-				players.add(entity.toPlayer());
-			}
+			players.add(entity.toPlayer());
 		} else if (entity.isNPC()) {
-			synchronized (npcLock) {
-				if (!npcs.contains(entity.toNPC())) {
-					npcs.add(entity.toNPC());
-				}
+			if (!npcs.contains(entity.toNPC())) {
+				npcs.add(entity.toNPC());
 			}
 		}
 		if (entity.isPlayer()) {
@@ -181,18 +221,30 @@ public class Region {
 	 * Loads all the region's spawns
 	 */
 	private void loadRegionSpawns() {
-		checkSpawns();
+		checkNPCSpawns();
+		checkObjectSpawns();
 	}
 	
 	/**
 	 * Checks for all spawns to be done
 	 */
-	private void checkSpawns() {
+	private void checkNPCSpawns() {
 		if (loadedFlags[RegionConstants.LOADED_NPCS_FLAG]) {
 			return;
 		}
 		loadedFlags[RegionConstants.LOADED_NPCS_FLAG] = true;
 		NPCSpawnRepository.loadSpawns(regionId);
+	}
+	
+	/**
+	 * Checks the object spawns
+	 */
+	private void checkObjectSpawns() {
+		if (loadedFlags[RegionConstants.LOADED_OBJECTS_FLAG]) {
+			return;
+		}
+		loadedFlags[RegionConstants.LOADED_OBJECTS_FLAG] = true;
+		// TODO: load object spawns
 	}
 	
 	/**
@@ -203,56 +255,9 @@ public class Region {
 	 */
 	public void removeEntity(Entity entity) {
 		if (entity.isPlayer()) {
-			synchronized (playerLock) {
-				players.remove(entity.toPlayer());
-			}
+			players.remove(entity.toPlayer());
 		} else if (entity.isNPC()) {
-			synchronized (npcLock) {
-				npcs.remove(entity.toNPC());
-			}
-		}
-	}
-	
-	/**
-	 * Sets the clipping flag.
-	 *
-	 * @param x
-	 * 		The local x coordinate.
-	 * @param y
-	 * 		The local y coordinate.
-	 * @param z
-	 * 		The height.
-	 * @param flag
-	 * 		The flag to set.
-	 */
-	public void setClippingFlag(int x, int y, int z, int flag) {
-		clippingMasks[z][x][y] = flag;
-	}
-	
-	/**
-	 * Gets the clipping masks in this region.
-	 *
-	 * @return The clipping masks.
-	 */
-	public synchronized int[][][] getClippingMasks() {
-		return clippingMasks;
-	}
-	
-	/**
-	 * @return the players
-	 */
-	public SortedSet<Player> getPlayers() {
-		synchronized (playerLock) {
-			return players;
-		}
-	}
-	
-	/**
-	 * @return the npcs
-	 */
-	public List<NPC> getNpcs() {
-		synchronized (npcLock) {
-			return npcs;
+			npcs.remove(entity.toNPC());
 		}
 	}
 	
@@ -262,7 +267,7 @@ public class Region {
 	 * @param object
 	 * 		The object to add.
 	 */
-	void addDefaultObject(GameObject object) {
+	private void addDefaultObject(GameObject object) {
 		object.setSpawnType(ObjectType.CACHE);
 		defaultObjects.add(object);
 	}
@@ -319,7 +324,7 @@ public class Region {
 	 * 		The type of the object
 	 * @return The game object, or null if the list didn't contain this object.
 	 */
-	public Optional<GameObject> findDefaultGameObject(int objectId, int x, int y, int plane, int type) {
+	private Optional<GameObject> findDefaultGameObject(int objectId, int x, int y, int plane, int type) {
 		return defaultObjects.stream().filter(object -> {
 			if (objectId == -1) {
 				if (type == -1) {
@@ -430,7 +435,7 @@ public class Region {
 	 * @param player
 	 * 		The player
 	 */
-	public void refreshAllObjects(Player player) {
+	private void refreshAllObjects(Player player) {
 		deletedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
 		removedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
 		spawnedObjects.forEach(object -> player.getTransmitter().send(new ObjectAdditionBuilder(object).build(player)));
@@ -442,12 +447,13 @@ public class Region {
 	 * @param item
 	 * 		The floor item
 	 */
-	public void removeFloorItem(FloorItem item) {
+	public boolean removeFloorItem(FloorItem item) {
 		if (!floorItems.contains(item)) {
-			return;
+			return false;
 		}
 		floorItems.remove(item);
 		players.stream().filter(player -> player != null && player.getLocation().getPlane() == item.getLocation().getPlane() && player.isRenderable()).forEach(player -> player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player)));
+		return true;
 	}
 	
 	/**
@@ -461,35 +467,45 @@ public class Region {
 	}
 	
 	/**
+	 * Spawns an object
+	 *
+	 * @param object
+	 * 		The object
+	 */
+	public void spawnObject(GameObject object) {
+		spawnObject(object, null);
+	}
+	
+	/**
 	 * Spawns an object into the region
 	 *
 	 * @param object
 	 * 		The object
-	 * @param defaultObject
+	 * @param defaultObjectData
 	 * 		If the object is as default game object
 	 */
-	public void spawnObject(GameObject object, boolean defaultObject) {
+	private void spawnObject(GameObject object, int[] defaultObjectData) {
+		boolean defaultObject = defaultObjectData != null;
 		if (defaultObject) {
 			if (deleteListContains(object)) {
-//				System.out.println("Unable to spawn or clip " + object);
 				return;
 			}
 			addDefaultObject(object);
+			clip(object, defaultObjectData[0], defaultObjectData[1]);
+			return;
 		} else {
 			Optional<GameObject> spawnedOptional = findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
 			if (spawnedOptional.isPresent()) {
 				final GameObject spawned = spawnedOptional.get();
 				spawnedObjects.remove(spawned);
 				removedObjects.add(spawned);
-				unclipObjectTerritory(spawned);
+				unclip(spawned, spawned.getLocation().getXInRegion(), spawned.getLocation().getY());
 			}
 			spawnedObjects.add(object);
 			object.setSpawnType(ObjectType.SERVER);
 		}
-		clipObjectTerritory(object);
-		if (!defaultObject) {
-			players.forEach(this::refreshAllObjects);
-		}
+		clip(object, object.getLocation().getXInRegion(), object.getLocation().getYInRegion());
+		players.forEach(this::refreshAllObjects);
 	}
 	
 	/**
@@ -526,92 +542,135 @@ public class Region {
 	}
 	
 	/**
-	 * Unclips the territory of an object
+	 * Clips an object
 	 *
 	 * @param object
 	 * 		The object
+	 * @param localX
+	 * 		The local x of the object
+	 * @param localY
+	 * 		The local y of the object
 	 */
-	private void unclipObjectTerritory(GameObject object) {
-		ObjectDefinition def = ObjectDefinitionParser.forId(object.getId());
-		int xLength;
-		int yLength;
-		if (object.getRotation() != 1 && object.getRotation() != 3) {
-			xLength = def.getSizeX();
-			yLength = def.getSizeY();
-		} else {
-			xLength = def.getSizeY();
-			yLength = def.getSizeX();
+	private void clip(GameObject object, int localX, int localY) {
+		if (map == null) {
+			map = new RegionMap(regionId, false);
 		}
-		if (object.getType() == 22) {
-			if (def.getActionCount() == 1) {
-				RegionBuilder.removeClipping(x, y, object.getLocation().getPlane(), 0x200000);
-			}
-		} else if (object.getType() >= 9 && object.getType() <= 11) {
-			if (def.getActionCount() != 0) {
-				RegionBuilder.removeClippingForSolidObject(x, y, object.getLocation().getPlane(), xLength, yLength, def.isSolid(), !def.isClippingFlag());
-			}
-		} else if (object.getType() >= 0 && object.getType() <= 3) {
-			if (def.getActionCount() != 0) {
-				RegionBuilder.removeClippingForVariableObject(x, y, object.getLocation().getPlane(), object.getType(), object.getRotation(), def.isSolid(), !def.isClippingFlag());
-			}
+		if (clipedOnlyMap == null) {
+			clipedOnlyMap = new RegionMap(regionId, true);
 		}
-	}
-	
-	/**
-	 * Clips the territory an object will be in
-	 *
-	 * @param object
-	 * 		The object
-	 */
-	private void clipObjectTerritory(GameObject object) {
-		ObjectDefinition def = object.getDefinitions();
-		if (def == null) {
+		int plane = object.getLocation().getPlane();
+		int type = object.getType();
+		int rotation = object.getRotation();
+		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
 			return;
 		}
-		int xLength;
-		int yLength;
-		if (object.getRotation() == 1 || object.getRotation() == 3) {
-			xLength = def.getSizeX();
-			yLength = def.getSizeY();
-		} else {
-			xLength = def.getSizeY();
-			yLength = def.getSizeX();
+		ObjectDefinition objectDefinition = object.getDefinitions();
+		if (type == 22 ? objectDefinition.getActionCount() != 1 : objectDefinition.getActionCount() == 0) {
+			return;
 		}
-		if (object.getType() == 22) {
-			if (def.getActionCount() == 1) {
-				RegionBuilder.addClipping(object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), 0x200000);
+		if (type >= 0 && type <= 3) {
+			if (!objectDefinition.isClippingFlag()) {
+				map.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
 			}
-		} else if (object.getType() >= 9 && object.getType() <= 11) {
-			if (def.getActionCount() != 0) {
-				RegionBuilder.addClippingForSolidObject(object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), xLength, yLength, def.isSolid(), !def.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
 			}
-		} else if (object.getType() >= 0 && object.getType() <= 3) {
-			if (def.getActionCount() != 0) {
-				RegionBuilder.addClippingForVariableObject(object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType(), object.getRotation(), def.isSolid(), !def.isClippingFlag());
+		} else if (type >= 9 && type <= 21) {
+			int sizeX;
+			int sizeY;
+			if (rotation != 1 && rotation != 3) {
+				sizeX = objectDefinition.getSizeX();
+				sizeY = objectDefinition.getSizeY();
+			} else {
+				sizeX = objectDefinition.getSizeY();
+				sizeY = objectDefinition.getSizeX();
 			}
+			map.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type == 22) {
+			map.addFloor(plane, localX, localY);
 		}
 	}
 	
 	/**
-	 * Deletes an object
+	 * Unclips a game object
+	 *
+	 * @param object
+	 * 		The object
+	 * @param localX
+	 * 		The local x of the object
+	 * @param localY
+	 * 		The local y of the object
+	 */
+	public void unclip(GameObject object, int localX, int localY) {
+		if (map == null) {
+			map = new RegionMap(regionId, false);
+		}
+		if (clipedOnlyMap == null) {
+			clipedOnlyMap = new RegionMap(regionId, true);
+		}
+		int plane = object.getLocation().getPlane();
+		int type = object.getType();
+		int rotation = object.getRotation();
+		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
+			return;
+		}
+		ObjectDefinition objectDefinition = object.getDefinitions();
+		
+		if (type == 22 ? objectDefinition.getActionCount() != 1 : objectDefinition.getActionCount() == 0) {
+			return;
+		}
+		if (type >= 0 && type <= 3) {
+			map.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type >= 9 && type <= 21) {
+			int sizeX;
+			int sizeY;
+			if (rotation != 1 && rotation != 3) {
+				sizeX = objectDefinition.getSizeX();
+				sizeY = objectDefinition.getSizeY();
+			} else {
+				sizeX = objectDefinition.getSizeY();
+				sizeY = objectDefinition.getSizeX();
+			}
+			map.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type == 22) {
+			map.removeFloor(plane, localX, localY);
+		}
+	}
+	
+	/**
+	 * Removes an object
 	 *
 	 * @param object
 	 * 		The object
 	 */
-	public void deleteObject(GameObject object) {
-		if (!removeDefaultObject(object)) {
-			removedObjects.add(object);
+	public void removeObject(GameObject object) {
+		if (object.getSpawnType() == ObjectType.SERVER) {
+			spawnedObjects.remove(object);
 		}
-		
+		removedObjects.add(object);
+		unclip(object, object.getLocation().getXInRegion(), object.getLocation().getYInRegion());
+		players.forEach(this::refreshAllObjects);
 	}
 	
 	/**
-	 * Removes a game object from the {@link #defaultObjects} list
-	 *
-	 * @param oldObj
-	 * 		The object to remove.
+	 * Checks if all the data has loaded
 	 */
-	public boolean removeDefaultObject(GameObject oldObj) {
-		return defaultObjects.remove(oldObj);
+	public boolean allLoaded() {
+		for (boolean flag : loadedFlags) {
+			if (!flag) {
+				return false;
+			}
+		}
+		return true;
 	}
+	
 }

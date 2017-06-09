@@ -35,12 +35,23 @@ public final class ItemRepository {
 	}
 	
 	/**
+	 * Gets the examine of an item
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 */
+	public static String getExamine(int itemId) {
+		ItemData data = getItemData(itemId);
+		return data == null ? null : data.getExamine();
+	}
+	
+	/**
 	 * Gets the item data using caching to increase efficiency
 	 *
 	 * @param itemId
 	 * 		The id of the item
 	 */
-	public static ItemData getItemData(int itemId) {
+	private static ItemData getItemData(int itemId) {
 		ItemData data = DATA_MAP.get(itemId);
 		boolean add = false;
 		if (data == null) {

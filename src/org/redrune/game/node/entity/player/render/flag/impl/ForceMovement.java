@@ -12,6 +12,8 @@ import org.redrune.network.rs666.packet.PacketBuilder;
  */
 public final class ForceMovement extends UpdateFlag {
 	
+	public static final int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
+	
 	/**
 	 * The entity.
 	 */

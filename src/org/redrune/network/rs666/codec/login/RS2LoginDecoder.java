@@ -29,7 +29,7 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer, LoginState state) throws Exception {
 		try {
-			if (state == LoginState.LOBBY_FINALIZATION || state == LoginState.LOGIN_FINALIZATION) {
+			if (state == LoginState.LOBBY_ENTRANCE || state == LoginState.GAME_ENTRANCE) {
 				session = new NetworkSession(channel);
 				session.getChannel().getPipeline().getContext("handler").setAttachment(session);
 			}
@@ -52,16 +52,16 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 							return session;
 						}
 						if (loginType == 16 || loginType == 18) {
-							checkpoint(LoginState.LOGIN_FINALIZATION);
+							checkpoint(LoginState.GAME_ENTRANCE);
 						} else if (loginType == 19) {
-							checkpoint(LoginState.LOBBY_FINALIZATION);
+							checkpoint(LoginState.LOBBY_ENTRANCE);
 						} else {
 							channel.close();
 							return session;
 						}
 					}
 					break;
-				case LOBBY_FINALIZATION:
+				case LOBBY_ENTRANCE:
 					if (buffer.readable()) {
 						int rsaHeader = buffer.readByte();
 						if (rsaHeader != 10) {
@@ -105,7 +105,7 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 						return session;
 					}
 					return session;
-				case LOGIN_FINALIZATION:
+				case GAME_ENTRANCE:
 					if (buffer.readable()) {
 						buffer.readByte();
 						int rsaHeader = buffer.readByte();
@@ -156,8 +156,8 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					}
 					return session;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 		return session;
 	}

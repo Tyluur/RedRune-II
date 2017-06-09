@@ -1,5 +1,6 @@
 package org.redrune.game.module.interaction.rsinterface;
 
+import org.redrune.game.content.dialogue.impl.misc.WorldMapDialogue;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
@@ -23,10 +24,38 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		switch (interfaceId) {
+			case SCREEN_FIXED_WINDOW_ID:
+			case SCREEN_RESIZABLE_WINDOW_ID:
+				if (componentId == 179) {
+					player.getManager().getDialogues().startDialogue(new WorldMapDialogue());
+					return true;
+				} else if (componentId == 0) {
+					if (packetId == NetworkConstants.FIRST_PACKET_ID) {
+						return true;
+					} else if (packetId == NetworkConstants.DROP_PACKET_ID) {
+						player.getSkills().resetExperienceCounter();
+						return true;
+					}
+				}
+				break;
 			case RUN_ORB_INTERACE_ID:
-				if (componentId == 1 && packetId == NetworkConstants.FIRST_PACKET_ID) {
-					player.getVariables().setRunToggled(!player.getVariables().isRunToggled());
-					player.sendSettings();
+				if (componentId == 1) {
+					if (packetId == NetworkConstants.FIRST_PACKET_ID) {
+						player.getVariables().setRunToggled(!player.getVariables().isRunToggled());
+						player.sendSettings();
+						return true;
+					}
+				}
+				break;
+			case PRAYER_ORB_INTERFACE_ID:
+				if (componentId == 1) {
+					if (packetId == NetworkConstants.FIRST_PACKET_ID) {
+						player.getManager().getPrayers().toggleQuickPrayers();
+						return true;
+					} else if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+						player.getManager().getPrayers().selectQuickPrayers();
+						return true;
+					}
 				}
 				break;
 			case CHAT_SETUP_INTERFACE_ID:
@@ -45,18 +74,18 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 					case 4:
 						player.getVariables().putAttribute(AttributeKey.CHAT_EFFECTS, !player.getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true));
 						player.sendSettings();
-						break;
+						return true;
 					case 5:
 						player.getManager().getInterfaces().sendTab(GameTab.OPTIONS, CHAT_SETUP_INTERFACE_ID);
-						break;
+						return true;
 					case 6:
 						player.getVariables().putAttribute(AttributeKey.MOUSE_BUTTONS, player.getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 1 : 0);
 						player.sendSettings();
-						break;
+						return true;
 					case 7:
-						player.getVariables().putAttribute(AttributeKey.ACCEPTING_AID, !player.getVariables().getAttribute(AttributeKey.ACCEPTING_AID, false));
+						player.getVariables().putAttribute(AttributeKey.ACCEPTING_AID, !player.getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true));
 						player.sendSettings();
-						break;
+						return true;
 					case 14:
 						player.getManager().getInterfaces().sendInterface(742, false);
 						return true;

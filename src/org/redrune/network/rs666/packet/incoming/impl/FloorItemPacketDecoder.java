@@ -1,11 +1,13 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
+import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.event.context.item.FloorItemPickupContext;
 import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.node.entity.player.event.impl.item.FloorItemPickupEvent;
 import org.redrune.game.node.item.FloorItem;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 
@@ -36,15 +38,14 @@ public class FloorItemPacketDecoder implements IncomingPacketDecoder{
 			int itemId = packet.readShort();
 			int x = packet.readShort();
 			boolean forceRun = packet.readByte() == 1;
+			int regionId = Location.getRegionId(x, y);
 			
-			Optional<FloorItem> optional = player.getRegion().getFloorItem(itemId, x, y, player.getLocation().getPlane());
+			Optional<FloorItem> optional = RegionManager.getRegion(regionId).getFloorItem(itemId, x, y, player.getLocation().getPlane());
 			if (!optional.isPresent()) {
-				player.getTransmitter().sendMessage("Oops! You're too late!");
 				return;
 			}
 			FloorItem item = optional.get();
 			if (!item.isRenderable()) {
-				player.getTransmitter().sendMessage("Oops! You're too late!");
 				return;
 			}
 			player.getMovement().reset(forceRun);

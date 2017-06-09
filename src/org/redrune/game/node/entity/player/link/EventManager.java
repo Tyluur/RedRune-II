@@ -1,11 +1,8 @@
 package org.redrune.game.node.entity.player.link;
 
-import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.*;
-import org.redrune.utility.AttributeKey;
-import org.redrune.utility.rs.input.InputType;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -99,38 +96,17 @@ public final class EventManager {
 	 * 		The player
 	 * @param event
 	 * 		The event
+	 * 	@return True if we should start the event
 	 */
 	private boolean sendPreExecuteFlags(Player player, Event event) {
 		final boolean stopWalk = event.getWalkablePolicy() == WalkablePolicy.RESET;
 		final boolean stopInterfaces = event.getInterfacePolicy() == InterfacePolicy.CLOSE;
 		final boolean stopActions = event.getActionPolicy() == ActionPolicy.RESET;
 		final boolean stopAnimation = event.getAnimationPolicy() == AnimationPolicy.RESET;
-		
 		if (!event.canStart(player)) {
 			return false;
 		}
-		
-		if (stopAnimation) {
-			player.sendAnimation(-1);
-		}
-		if (stopInterfaces) {
-			Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
-			player.getTransmitter().closeInputBox();
-			player.getManager().getInterfaces().closeAllInterfaces();
-		}
-		if (stopWalk) {
-			player.setInteractionTask(null);
-			player.getMovement().resetWalkSteps();
-		}
-		if (stopActions) {
-			player.getManager().getActions().forceStop();
-		}
-		player.turnTo(null);
-		
-		NPC interactingNPC = player.getAttribute(AttributeKey.INTERACTING_NPC);
-		if (interactingNPC != null) {
-			interactingNPC.endPlayerInteraction(player);
-		}
+		player.stop(stopActions, stopWalk, stopInterfaces, stopAnimation);
 		return true;
 	}
 	

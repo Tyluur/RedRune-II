@@ -79,6 +79,7 @@ public final class SequencialUpdate {
 				player.getUpdateMasks().finish();
 				player.getRenderData().updateInformation();
 				player.getHitMap().getHitList().clear();
+				player.getNetworkSession().flushPackets();
 			}
 			for (NPC npc : World.get().getNpcs()) {
 				if (npc == null || !npc.isRenderable()) {

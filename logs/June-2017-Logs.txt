@@ -1,3 +1,31 @@
+6/8/17 {
+	+   Added item bonus viewing in the equipment stats interface
+	+   Added wilderness ditch hopping
+	+   Added item on item packet decoding.
+	+   Added firemaking
+	+   Fixed a couple more region system flaws (almost finished now)
+	+   Added a lot of item examines
+	+   Added keyboard shortcuts
+		-   ESC = close interfaces
+		-   1,2,3,4,5 = dialogue options
+		-   Spacebar = next dialogue
+	+   Updated switches to be more realistic (not yet perfect)
+	+   Fixed clipping for falador bar
+	+   Added world map
+	+   Started edgeville redesign
+	+   Got a start on quick prayers
+
+	MEDIA
+
+	[IMG]http://i.imgur.com/mtpq6zR.png[/IMG]
+	[IMG]http://i.imgur.com/1l46r0N.gif[/IMG]
+	[IMG]http://i.imgur.com/klzbS5b.png[/IMG]
+	[IMG]http://i.imgur.com/IFTiJS2.png[/IMG]
+	[IMG]http://i.imgur.com/fwUwujX.png[/IMG]
+	[IMG]http://i.imgur.com/J95Bgxi.png[/IMG]
+	[IMG]http://i.imgur.com/KcX18Jt.png[/IMG]
+}
+
 6/7/17 {
 	+   Fixed some walking bugs and finished the path finding updates
 	+   Rewrote the movement system

@@ -8,7 +8,7 @@ import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
-import org.redrune.game.world.path.NodeInteractionTask;
+import org.redrune.game.node.NodeInteractionTask;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

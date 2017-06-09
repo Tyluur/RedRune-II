@@ -193,7 +193,6 @@ public class ModuleRepository {
 	public static boolean handle(Player player, GameObject object, InteractionOption option) {
 		for (ObjectInteractionModule module : getObjectModules(object.getId())) {
 			if (module.handle(player, object, option)) {
-				System.out.println(module);
 				return true;
 			}
 		}

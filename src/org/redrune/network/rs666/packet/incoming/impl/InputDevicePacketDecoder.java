@@ -58,11 +58,52 @@ public class InputDevicePacketDecoder implements IncomingPacketDecoder {
 			while (packet.remaining() >= 3) {
 				byte keyId = packet.readByte();
 				short timePassed = (short) packet.readShort();
+				fireKeyListeners(player, keyId);
 			}
 		} else if (opcode == WINDOW_FOCUS) {
 			boolean focus = packet.readByte() == 1;
 		} else if (opcode == UNKNOWN_STREAM) {
 			final int unknown = packet.readShort();
+		}
+	}
+	
+	/**
+	 * Fires the event listeners for the key pressed
+	 *
+	 * @param player
+	 * 		The player
+	 * @param keyId
+	 * 		The id of the key pressed
+	 */
+	private void fireKeyListeners(Player player, byte keyId) {
+		int chatboxId = player.getManager().getInterfaces().getChatboxInterface();
+		boolean threeOptionDialogue = chatboxId == 230;
+		switch (keyId) {
+			case 13: // esc
+				player.stop(false, false, true, false);
+				break;
+			case 16: // 1
+				player.getManager().getDialogues().handleOption(chatboxId, threeOptionDialogue ? 2 : 1);
+				break;
+			case 17: // 2
+				player.getManager().getDialogues().handleOption(chatboxId, threeOptionDialogue ? 3 : 2);
+				break;
+			case 18: // 3
+				player.getManager().getDialogues().handleOption(chatboxId, threeOptionDialogue ? 4 : 3);
+				break;
+			case 19: // 4
+				player.getManager().getDialogues().handleOption(chatboxId, 4);
+				break;
+			case 20: // 5
+				player.getManager().getDialogues().handleOption(chatboxId, 5);
+				break;
+			case 83: // space
+				if (chatboxId != -1) {
+					player.getManager().getDialogues().handleOption(chatboxId, -1);
+				}
+				break;
+			default:
+				break;
 		}
 	}
 }
