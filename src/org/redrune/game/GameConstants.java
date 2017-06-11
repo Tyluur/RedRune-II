@@ -19,11 +19,6 @@ public interface GameConstants {
 	String CACHE_PATH = "./data/cache/";
 	
 	/**
-	 * The id of the port used for main communications
-	 */
-	int MAIN_PORT_ID = 43594;
-	
-	/**
 	 * The maximum amount of players allowed online
 	 */
 	int PLAYERS_LIMIT = 2048;

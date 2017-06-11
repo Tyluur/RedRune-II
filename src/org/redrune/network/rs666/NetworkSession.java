@@ -10,6 +10,7 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.outgoing.impl.PingPacketBuilder;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The networkSession connected to the main game
@@ -18,6 +19,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @since 5/18/2017
  */
 public final class NetworkSession {
+	
+	/**
+	 * The uid generator
+	 */
+	private static final AtomicLong UID_GENERATOR = new AtomicLong(1);
+	
+	/**
+	 * The uid of the session
+	 */
+	@Getter
+	private final long uid;
 	
 	/**
 	 * The components of the players client
@@ -58,6 +70,8 @@ public final class NetworkSession {
 	public NetworkSession(Channel channel) {
 		this.channel = channel;
 		this.viewComponents = new PlayerViewComponents();
+		// thread-safe uid generation. we'll never have more than the max long connections anyways
+		this.uid = UID_GENERATOR.getAndIncrement();
 	}
 	
 	/**
@@ -79,7 +93,7 @@ public final class NetworkSession {
 	 */
 	public synchronized ChannelFuture write(Packet packet) {
 		try {
-			if (player != null && player.isRenderable()) {
+			if (player != null && player.isRenderable() && !player.getNetworkSession().isInLobby()) {
 				packetQueue.add(packet);
 				return null;
 			} else {

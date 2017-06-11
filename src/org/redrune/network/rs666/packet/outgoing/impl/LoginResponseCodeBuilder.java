@@ -12,16 +12,23 @@ import org.redrune.utility.backend.ReturnCode;
  */
 public final class LoginResponseCodeBuilder implements OutgoingPacketBuilder {
 	
-	private final ReturnCode returnCode;
+	/**
+	 * The value of the login response
+	 */
+	private final int value;
+	
+	public LoginResponseCodeBuilder(int value) {
+		this.value = value;
+	}
 	
 	public LoginResponseCodeBuilder(ReturnCode returnCode) {
-		this.returnCode = returnCode;
+		this.value = returnCode.getValue();
 	}
 	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder builder = new PacketBuilder();
-		builder.writeByte(returnCode.getValue());
+		builder.writeByte(value);
 		return builder.toPacket();
 	}
 }

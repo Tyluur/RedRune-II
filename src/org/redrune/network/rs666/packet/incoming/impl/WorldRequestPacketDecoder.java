@@ -19,8 +19,11 @@ public class WorldRequestPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public void read(Player player, Packet packet) {
+	/*	long serverKey = packet.readLong();
+		boolean containsInformation = packet.readByte() == 1;
+		boolean containsStatus = packet.readByte() == 1;*/
 		if (player.getNetworkSession().isInLobby()) {
-			player.getTransmitter().send(new WorldListBuilder().build(player));
+			player.getTransmitter().send(new WorldListBuilder(true, true).build(player));
 		}
 	}
 }

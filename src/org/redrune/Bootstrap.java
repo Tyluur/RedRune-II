@@ -48,12 +48,14 @@ public class Bootstrap {
 		if (args.length == 0) {
 			System.err.println("Unexpected end of JVM arguments!");
 			System.err.println("args[0]=[true/false] - debug mode");
+			System.err.println("args[1]=[integer] - worldId");
 			return;
 		}
 		try {
 			// startup necessities
 			Bootstrap.STOPWATCH.start();
 			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
+			GameFlags.worldId = Integer.parseInt(args[1]);
 			SystemManager.setDefaults();
 			
 			// loading the actual important data
@@ -69,9 +71,10 @@ public class Bootstrap {
 			
 			// finalization
 			SystemManager.start();
-			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + NetworkConstants.REVISION + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + NetworkConstants.REVISION + " [World " + GameFlags.worldId + "] in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Unexpected error on initialization", e);
+			System.exit(1);
 		}
 	}
 	
@@ -81,4 +84,5 @@ public class Bootstrap {
 	public static Stopwatch getStopwatch() {
 		return STOPWATCH;
 	}
+	
 }

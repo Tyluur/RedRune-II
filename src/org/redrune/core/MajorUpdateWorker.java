@@ -7,7 +7,7 @@ import org.redrune.game.world.World;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * The sequential protocol that handles all updating.
+ * The worker for all game sequence operations.
  *
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017

@@ -3,8 +3,6 @@
 	-	Support for currencies such as points or different item ids
 
 [Wrappers/Systems]
-+	Prayer management
-	-	Bonuses can be checked via [ player.getManagers().getPrayers().isOn(Prayers.TURMOIL) ]
 
 [Data]
 +	Item examines

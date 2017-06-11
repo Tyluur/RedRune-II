@@ -18,7 +18,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 	
 	@Override
 	public int[] interfaceSubscriptionIds() {
-		return Misc.arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID);
+		return Misc.arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, LOGOUT_INTERFACE_ID);
 	}
 	
 	@Override
@@ -65,6 +65,9 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 						return true;
 				}
 				break;
+			case LOGOUT_INTERFACE_ID:
+				player.logout(componentId == 6);
+				return true;
 			case OPTIONS_INTERFACE_ID:
 				switch (componentId) {
 					case 3:

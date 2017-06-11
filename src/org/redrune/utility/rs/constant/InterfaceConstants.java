@@ -71,6 +71,11 @@ public interface InterfaceConstants extends InterfaceRepository {
 	int EQUIPMENT_INTERFACE_ID = 387;
 	
 	/**
+	 * The id of the logout interface
+	 */
+	int LOGOUT_INTERFACE_ID = 182;
+	
+	/**
 	 * Sends the quest interface to the player with the parameterized title and
 	 * list of messages. The messages will be formatted to never overlap one
 	 * line, but to go to the next one if it passes the limit of characters on a

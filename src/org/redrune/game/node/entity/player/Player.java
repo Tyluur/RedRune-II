@@ -13,12 +13,12 @@ import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.world.World;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.world.region.RegionManager;
+import org.redrune.network.RS2MasterCommunication;
+import org.redrune.network.master.packet.out.client.build.ClientSessionDisconnectionBuilder;
+import org.redrune.network.master.packet.out.client.context.ClientSessionDisconnectionContext;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigFilePacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.MapRegionBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.RunEnergyBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
 import org.redrune.utility.rs.input.InputType;
@@ -145,6 +145,7 @@ public final class Player extends Entity {
 		World.get().getPlayers().remove(this);
 		RegionManager.updateEntityRegion(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
+		RS2MasterCommunication.writeMasterPacket(new ClientSessionDisconnectionBuilder(new ClientSessionDisconnectionContext(networkSession.getUid(), networkSession.isInLobby(), getDetails().getUsername())).build());
 		
 		System.out.println("Player deregistered:\t" + this);
 	}
@@ -213,7 +214,26 @@ public final class Player extends Entity {
 	
 	@Override
 	public String toString() {
-		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
+		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + ", lobby=" + networkSession.isInLobby() + "]";
+	}
+	
+	/**
+	 * Logs the player out
+	 *
+	 * @param lobby
+	 * 		If they should be sent to the lobby
+	 */
+	public void logout(boolean lobby) {
+		transmitter.send(new LogoutBuilder(lobby).build(this));
+	}
+	
+	/**
+	 * Removes the player from the lobby
+	 */
+	public void leaveLobby() {
+		RS2MasterCommunication.writeMasterPacket(new ClientSessionDisconnectionBuilder(new ClientSessionDisconnectionContext(networkSession.getUid(), networkSession.isInLobby(), getDetails().getUsername())).build());
+		
+		System.out.println("Player deregistered:\t" + this);
 	}
 	
 	/**

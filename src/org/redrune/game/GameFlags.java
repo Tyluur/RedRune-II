@@ -13,4 +13,9 @@ public class GameFlags {
 	 */
 	public static boolean debugMode;
 	
+	/**
+	 * The id of the world that will be ran
+	 */
+	public static int worldId;
+	
 }

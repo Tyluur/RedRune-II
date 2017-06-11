@@ -1,34 +1,17 @@
-Node
-	-> Entity
-		-> Player
-		-> NPC
-	-> GameObject
-	-> Item
-		-> FloorItem
-
 LoginServer
+	1.
+		Connection to the server is set up at boot
+	2.
+		When a login request is received from any world:
+			->  It is placed in a queue
+			->  The queue is handled in a separate worker
+			->  The queue checks the correct login response to send
+			->  Player files are stored in txt json files, so the worlds can parse those themselves
+				-   We don't need to send them over the network
+
 	Request Received
 		->  Polled from the worker thread
 		->  Sends back a response
 			*   Already online
 			*   Took too long
 		->  The player file must be received from the network
-
-
-Command
-
-	package commands.mod {
-
-		@CommandParameters({ String.class, Integer.class })
-		class MuteCommand {
-
-
-
-			@Override
-			void handle(String[] args) {
-
-			}
-
-		}
-
-	}

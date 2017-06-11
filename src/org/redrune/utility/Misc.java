@@ -7,6 +7,8 @@ import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -17,21 +19,12 @@ import java.util.logging.Logger;
  */
 public class Misc {
 	
+	public static final char[] VALID_CHARS = { '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+	
 	/**
 	 * The gson instance
 	 */
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	
-	/**
-	 * Checks if a character is valid to use.
-	 *
-	 * @param c
-	 * 		The character.
-	 * @return {@code True} if so.
-	 */
-	public static boolean allowed(char c) {
-		return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == ' ';
-	}
 	
 	/**
 	 * Constructs a logger from the class
@@ -560,7 +553,52 @@ public class Misc {
 		return ((int) (Math.atan2(-xOffset, -yOffset) * 2607.5945876176133)) & 0x3fff;
 	}
 	
+	public static boolean invalidAccountName(String name) {
+		return name.length() < 2 || name.length() > 12 || name.startsWith("_") || name.endsWith("_") || name.contains("__") || containsInvalidCharacter(name);
+	}
+	
+	private static boolean containsInvalidCharacter(String name) {
+		for (char c : name.toCharArray()) {
+			if (containsInvalidCharacter(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean containsInvalidCharacter(char c) {
+		for (char vc : VALID_CHARS) {
+			if (vc == c) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public static Gson getGSON() {
 		return GSON;
+	}
+	
+	public static boolean portIsOpen(String ip, int port) {
+		try {
+			Socket socket = new Socket();
+			socket.connect(new InetSocketAddress(ip, port));
+			socket.close();
+			return true;
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Checks if the amount of time necessary has passed
+	 *
+	 * @param eventTime
+	 * 		The time the certain event happened
+	 * @param timeToCheck
+	 * 		The amount of time that should have elapsed
+	 */
+	public static boolean timeHasPassed(long eventTime, long timeToCheck) {
+		return eventTime == -1 || System.currentTimeMillis() - eventTime >= timeToCheck;
 	}
 }

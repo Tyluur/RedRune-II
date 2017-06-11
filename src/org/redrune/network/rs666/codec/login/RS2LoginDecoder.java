@@ -5,11 +5,13 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
-import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.GameFlags;
 import org.redrune.network.NetworkConstants;
+import org.redrune.network.RS2MasterCommunication;
+import org.redrune.network.master.packet.out.client.build.ClientLoginResponseBuilder;
+import org.redrune.network.master.packet.out.client.context.ClientLoginResponseContext;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.codec.RS2GameDecoder;
-import org.redrune.network.rs666.packet.outgoing.impl.LobbyResponseBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.LoginResponseCodeBuilder;
 import org.redrune.utility.BufferUtils;
 import org.redrune.utility.backend.ReturnCode;
@@ -32,6 +34,7 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 			if (state == LoginState.LOBBY_ENTRANCE || state == LoginState.GAME_ENTRANCE) {
 				session = new NetworkSession(channel);
 				session.getChannel().getPipeline().getContext("handler").setAttachment(session);
+				RS2MasterCommunication.getNetworkSessions().add(session);
 			}
 			switch (state) {
 				case PRE_STAGE:
@@ -93,15 +96,15 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 						}
 						
 						// finished decoding
+						if (!RS2MasterCommunication.loginServerOnline()) {
+							session.getChannel().write(new LoginResponseCodeBuilder(ReturnCode.LOGIN_SERVER_OFFLINE).build(null));
+							return session;
+						}
 						
 						session.setInLobby(true);
-						session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
-						
-						Player player = new Player(name, password, session);
-						player.registerTransients();
-						session.write(new LobbyResponseBuilder().build(player));
-						
 						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
+						
+						RS2MasterCommunication.writeMasterPacket(new ClientLoginResponseBuilder(new ClientLoginResponseContext(session.getUid(), name, password, session.isInLobby(), GameFlags.worldId)).build());
 						return session;
 					}
 					return session;
@@ -145,14 +148,16 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 						session.getViewComponents().setScreenSizeX(width);
 						session.getViewComponents().setScreenSizeY(height);
 						session.getViewComponents().setDisplayMode(displayMode);
-						session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 						
-						Player player = new Player(username, password, session);
-						
-						player.register();
+						if (!RS2MasterCommunication.loginServerOnline()) {
+							session.getChannel().write(new LoginResponseCodeBuilder(ReturnCode.LOGIN_SERVER_OFFLINE).build(null));
+							return session;
+						}
 						
 						ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
-						return null;
+						
+						RS2MasterCommunication.writeMasterPacket(new ClientLoginResponseBuilder(new ClientLoginResponseContext(session.getUid(), username, password, session.isInLobby(), GameFlags.worldId)).build());
+						return session;
 					}
 					return session;
 			}

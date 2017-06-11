@@ -11,8 +11,17 @@ import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
  */
 public final class WorldListBuilder implements OutgoingPacketBuilder {
 	
+	private final boolean worldConfiguration;
+	
+	private final boolean worldStatus;
+	
+	public WorldListBuilder(boolean worldConfiguration, boolean worldStatus) {
+		this.worldConfiguration = worldConfiguration;
+		this.worldStatus = worldStatus;
+	}
+	
 	@Override
 	public Packet build(Player player) {
-		return WorldList.getData(true, true).toPacket();
+		return WorldList.getData(worldConfiguration, worldStatus).toPacket();
 	}
 }
