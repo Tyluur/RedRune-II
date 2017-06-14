@@ -231,8 +231,8 @@ public class PacketBuilder {
 	}
 	
 	public PacketBuilder writeMediumInt(int i) {
-		buffer.writeByte((byte) (i >> 16));
-		buffer.writeByte((byte) (i >> 8));
+		buffer.writeByte((byte)((i << 16) & 0xFF));
+		buffer.writeByte((byte)((i << 8) & 0xFF));
 		buffer.writeByte((byte) i);
 		return this;
 	}

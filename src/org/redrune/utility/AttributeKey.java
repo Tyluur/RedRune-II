@@ -35,6 +35,16 @@ public enum AttributeKey {
 	CHAT_EFFECTS,
 	
 	ACCEPTING_AID,
-	;
 	
+	LAST_LONGIN_STAMP,
+	
+	// game bar status
+	
+	FILTER,
+	PUBLIC,
+	PRIVATE,
+	FRIENDS,
+	CLAN,
+	TRADE,
+	ASSIST,;
 }

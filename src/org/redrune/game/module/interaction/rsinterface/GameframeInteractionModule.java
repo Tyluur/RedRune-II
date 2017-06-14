@@ -7,6 +7,7 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.GameTab;
+import org.redrune.utility.rs.constant.GameBarStatus;
 
 import static org.redrune.utility.rs.constant.InterfaceConstants.*;
 
@@ -18,7 +19,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 	
 	@Override
 	public int[] interfaceSubscriptionIds() {
-		return Misc.arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, LOGOUT_INTERFACE_ID);
+		return Misc.arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, LOGOUT_INTERFACE_ID, GAMEFRAME_INTERFACE_ID);
 	}
 	
 	@Override
@@ -97,7 +98,70 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 						return true;
 				}
 				break;
+			case GAMEFRAME_INTERFACE_ID:
+				if (componentId == 31) {
+					// game
+					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.FILTER, GameBarStatus.NO_FILTER);
+						return true;
+					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.FILTER, GameBarStatus.FILTER);
+						return true;
+					}
+				} else if (componentId == 8) {
+					// friends
+					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.FRIENDS, GameBarStatus.ON);
+						return true;
+					} else if (packetId == NetworkConstants.THIRD_PACKET_ID) {
+						updateGameBar(player, AttributeKey.FRIENDS, GameBarStatus.FRIENDS);
+						return true;
+					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.FRIENDS, GameBarStatus.OFF);
+						return true;
+					}
+				} else if (componentId == 22) {
+					//clan
+					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.ON);
+						return true;
+					} else if (packetId == NetworkConstants.THIRD_PACKET_ID) {
+						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.FRIENDS);
+						return true;
+					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.OFF);
+						return true;
+					}
+				} else if (componentId == 16) {
+					// assist
+					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.ON);
+						return true;
+					} else if (packetId == NetworkConstants.THIRD_PACKET_ID) {
+						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.FRIENDS);
+						return true;
+					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.OFF);
+						return true;
+					}
+				}
+				break;
 		}
 		return false;
+	}
+	
+	/**
+	 * Updates the game bar
+	 *
+	 * @param player
+	 * 		The player
+	 * @param bar
+	 * 		The bar
+	 * @param status
+	 * 		The status of the bar
+	 */
+	private void updateGameBar(Player player, AttributeKey bar, GameBarStatus status) {
+		player.getVariables().putAttribute(bar, status);
+		player.getManager().getInterfaces().sendGameBar();
 	}
 }

@@ -47,6 +47,9 @@ public class MasterServerTasks extends ScheduledTask {
 		};
 	}
 	
+	/**
+	 * Handles the login queue
+	 */
 	private void handleLoginQueue() {
 		LoginData data;
 		while ((data = LOGIN_DATA_QUEUE.poll()) != null) {
@@ -55,8 +58,6 @@ public class MasterServerTasks extends ScheduledTask {
 				System.out.println("Unable to find session by uid: " + data.getUid());
 				continue;
 			}
-			final String username = data.getUsername();
-			final String password = data.getPassword();
 			final boolean lobby = session.isInLobby();
 			final int code = data.getCode();
 			session.write(new LoginResponseCodeBuilder(code).build(null));
@@ -64,13 +65,21 @@ public class MasterServerTasks extends ScheduledTask {
 			if (code != ReturnCode.SUCCESSFUL.getValue()) {
 				return;
 			}
+			// the player file text we just received
+			String text = data.getFileText();
+			// the player, constructed from json file text
+			Player player = Misc.constructPlayer(text);
+			if (player == null) {
+				System.out.println("Unable to parse player '" + data.getUsername() + "' file's text.");
+				continue;
+			}
+			session.sync(player);
+			
 			if (lobby) {
-				Player player = new Player(username, password, session);
 				player.registerTransients();
-				
 				session.write(new LobbyResponseBuilder().build(player));
+				player.getManager().getInterfaces().sendLobbyLogin();
 			} else {
-				Player player = new Player(username, password, session);
 				player.register();
 			}
 		}

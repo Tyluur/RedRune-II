@@ -1,8 +1,13 @@
 [Core]
 +	Shop system
 	-	Support for currencies such as points or different item ids
++	Combat
+	-	Plan out the design
 
 [Wrappers/Systems]
++	Clan chat
++	Friends chat [multiworld stuff + lobby stuff]
++   Censor system [by word that contains a censor-activating flag]
 
 [Data]
 +	Item examines
@@ -11,4 +16,6 @@
 
 [Unfinished]
 +	Hit#interactingWith
-+	https://www.rune-server.ee/runescape-development/rs-503-client-server/informative-threads/365286-interface-component-settings-k-access-masks-100-a.html implement
++	Master Server
+	-	When the client disconnects, what about the players that are stored in the list??? find out what world was d/ced and PURGE!@!! PURGE!@!@!@#!@
+	-	Flag in server params to run the master server

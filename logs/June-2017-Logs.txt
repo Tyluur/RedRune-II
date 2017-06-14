@@ -1,17 +1,27 @@
+6/13/17 {
+	+	Added private messaging from different worlds
+	
+	
+	MEDIA
+	
+	[IMG]http://i.imgur.com/Qaf9h5F.png[/IMG]
+}
+
+
 6/10/17 {
-+   Added the logout packet
-	-   This sends the player to the lobby or to login screen based on what button was clicked
-+   Wrote a master server [login server] from scratch for multi-world support
-	-   This basically makes it so different worlds can communicate
-	-   We have support for one player being logged into one world at a time
-	-   The master server also verifies that the worlds are online every 10 seconds
-	-   The master server updates the lobby world selection screen with world info as well
-+   Implemented the master server successfully and multi-world support is good!
+	+   Added the logout packet
+		-   This sends the player to the lobby or to login screen based on what button was clicked
+	+   Wrote a master server [login server] from scratch for multi-world support
+		-   This basically makes it so different worlds can communicate
+		-   We have support for one player being logged into one world at a time
+		-   The master server also verifies that the worlds are online every 10 seconds
+		-   The master server updates the lobby world selection screen with world info as well
+	+   Implemented the master server successfully and multi-world support is good!
 
-MEDIA
+	MEDIA
 
-[IMG]http://i.imgur.com/tp2lLbR.png[/IMG]
-[img]http://i.imgur.com/HMhIjbG.png[/img]
+	[IMG]http://i.imgur.com/tp2lLbR.png[/IMG]
+	[img]http://i.imgur.com/HMhIjbG.png[/img]
 }
 
 6/8/17 {

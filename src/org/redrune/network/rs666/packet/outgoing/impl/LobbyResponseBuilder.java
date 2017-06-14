@@ -1,13 +1,14 @@
 package org.redrune.network.rs666.packet.outgoing.impl;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -34,7 +35,9 @@ public class LobbyResponseBuilder implements OutgoingPacketBuilder {
 		builder.writeShort(1); // recovery questions, 0 - not set,
 		// otherwise goes bitencoded date.
 		builder.writeShort(0); // unread messages
-		long lastLogin = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1337);
+		
+		// leave the cast because of json boxing.
+		long lastLogin = ((Number) player.getVariables().getAttribute(AttributeKey.LAST_LONGIN_STAMP, System.currentTimeMillis())).longValue();
 		
 		long now = System.currentTimeMillis();
 		long jag = 1014753880308L;
@@ -42,7 +45,11 @@ public class LobbyResponseBuilder implements OutgoingPacketBuilder {
 		long since_log = (now - lastLogin) / 1000 / 60 / 60 / 24;
 		
 		builder.writeShort((int) (since_jag - since_log)); // last logged in date
-		builder.writeInt(Misc.IPAddressToNumber(Misc.formatIp(player.getNetworkSession().getChannel().getRemoteAddress().toString()))); // last login ip
+		String lastIp = player.getDetails().getLastIp();
+		if (lastIp == null) {
+			lastIp = Misc.getIpAddress(player.getNetworkSession().getChannel());
+		}
+		builder.writeInt(Misc.IPAddressToNumber(lastIp)); // last login ip
 		builder.writeByte(3);
 		// 0 - no email
 		// 1 - pending parental confirmation
@@ -56,7 +63,7 @@ public class LobbyResponseBuilder implements OutgoingPacketBuilder {
 		builder.writeByte(0); // unused in client
 		builder.writeInt(player.getDetails().getUsername().startsWith("#") ? 0 : 1);
 		builder.writeByte(1); // dunno (bool)
-		builder.writeShort(1); // current world id
+		builder.writeShort(GameFlags.worldId); // current world id
 		builder.writeGJString2("127.0.0.1");
 		
 		PacketBuilder lobbyResponse = new PacketBuilder();

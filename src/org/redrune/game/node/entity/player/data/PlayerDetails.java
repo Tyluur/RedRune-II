@@ -1,6 +1,7 @@
 package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.game.GameFlags;
 import org.redrune.utility.Misc;
 
@@ -28,12 +29,6 @@ public final class PlayerDetails {
 	private final String username;
 	
 	/**
-	 * The password of the player
-	 */
-	@Getter
-	private final String password;
-	
-	/**
 	 * The set of the rights the player has
 	 */
 	@Getter
@@ -46,16 +41,27 @@ public final class PlayerDetails {
 	private final PlayerAppearance appearance;
 	
 	/**
+	 * The password of the player
+	 */
+	@Getter
+	@Setter
+	private String password;
+	
+	/**
+	 * The last ip address the player last from
+	 */
+	@Getter
+	@Setter
+	private String lastIp;
+	
+	/**
 	 * Constructs a new {@code Credentials} {@code Object}
 	 *
 	 * @param username
 	 * 		The username
-	 * @param password
-	 * 		The password
 	 */
-	public PlayerDetails(String username, String password) {
+	public PlayerDetails(String username) {
 		this.username = username;
-		this.password = password;
 		this.rights = new TreeSet<>(Comparator.comparingInt(Enum::ordinal));
 		this.appearance = new PlayerAppearance();
 		this.rights.add(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER);

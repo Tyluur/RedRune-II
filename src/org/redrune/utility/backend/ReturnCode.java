@@ -111,6 +111,11 @@ public enum ReturnCode {
 	INVALID_LOGIN_SERVER(20),
 	
 	/**
+	 * The username logged out recently
+	 */
+	LOGGED_OUT_RECENTLY(21),
+	
+	/**
 	 * The login was malformed
 	 */
 	MALFORMED_LOGIN_PACKET(22),

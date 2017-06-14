@@ -14,6 +14,11 @@ import org.redrune.network.master.server.MasterServerHandler;
 public class ServerStatisticsRequestReader implements MasterPacketReader {
 	
 	@Override
+	public int getId() {
+		return STATISTICS_REQUEST_CLIENT_PACKET;
+	}
+	
+	@Override
 	public void read(Channel channel, MasterPacket unusedPacket) {
 		int size = MasterServerHandler.getRepository().getWorldCount();
 		

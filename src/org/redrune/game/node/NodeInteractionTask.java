@@ -139,25 +139,7 @@ public class NodeInteractionTask {
 	 * 		The player executing it
 	 */
 	private void executeTask(Player player) {
-		boolean skipClip = false;
-		final boolean clippedProjectile = player.getMovement().clippedProjectile(node.getLocation(), node.isGameObject(), 1);
-		if (node.isNPC() && node.toNPC().getDefinitions().getName().equalsIgnoreCase("Banker")) {
-			skipClip = true;
-		} else if (node.isGameObject()) {
-			final String name = node.toGameObject().getDefinitions().getName().toLowerCase();
-			if (name.equalsIgnoreCase("counter") || name.contains("bank")) {
-				skipClip = true;
-			}
-		} else if (node.isItem()) {
-			skipClip = true;
-		}
-		if (skipClip) {
-			task.run();
-		} else if (!clippedProjectile) {
-			player.getTransmitter().sendMessage("You can't reach that.");
-		} else {
-			task.run();
-		}
+		task.run();
 	}
 	
 	/**

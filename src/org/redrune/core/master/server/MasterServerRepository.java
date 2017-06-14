@@ -1,7 +1,9 @@
 package org.redrune.core.master.server;
 
 import lombok.Getter;
+import org.jboss.netty.channel.Channel;
 import org.redrune.core.master.MasterPlayer;
+import org.redrune.network.master.MasterPacket;
 import org.redrune.utility.Misc;
 
 import java.util.Map;
@@ -28,7 +30,7 @@ public class MasterServerRepository {
 	private final Map<Integer, MasterWorld> worldMap;
 	
 	/**
-	 * The update workr
+	 * The update work
 	 */
 	@Getter
 	private final MasterUpdateWorker updateWorker;
@@ -42,10 +44,16 @@ public class MasterServerRepository {
 		this.lobbyPlayers = new CopyOnWriteArraySet<>();
 		this.worldMap = new ConcurrentHashMap<>();
 		this.updateWorker = new MasterUpdateWorker(this);
-		
-		// adding worlds
-		addWorld(1);
-		addWorld(2);
+	}
+	
+	/**
+	 * Checks if a world is verified
+	 *
+	 * @param worldId
+	 * 		The id of the world
+	 */
+	public boolean isWorldVerified(int worldId) {
+		return worldMap.containsKey(worldId);
 	}
 	
 	/**
@@ -53,9 +61,14 @@ public class MasterServerRepository {
 	 *
 	 * @param worldId
 	 * 		The id of the world to add
+	 * @param channel
+	 * 		The channel of the world
 	 */
-	private MasterWorld addWorld(int worldId) {
-		return this.worldMap.put(worldId, new MasterWorld(worldId));
+	public void addWorld(int worldId, Channel channel) {
+		final MasterWorld world = new MasterWorld(worldId);
+		world.setChannel(channel);
+		worldMap.put(worldId, world);
+		setWorldOnline(worldId, isWorldOnline(worldId));
 	}
 	
 	/**
@@ -69,7 +82,6 @@ public class MasterServerRepository {
 				return true;
 			}
 		}
-		System.out.println(worldMap.entrySet());
 		// if the player is in a world
 		for (Entry<Integer, MasterWorld> entry : worldMap.entrySet()) {
 			if (entry.getValue().getPlayers().stream().anyMatch(player -> player.getUsername().equalsIgnoreCase(username))) {
@@ -85,10 +97,12 @@ public class MasterServerRepository {
 	 * @param uid
 	 * 		The uid of the player's session
 	 * @param username
-	 * 		The username of the player
+	 * 		The players name
+	 * @param worldId
+	 * 		The id of the world the player is in
 	 */
-	public boolean addLobbyPlayer(long uid, String username) {
-		return lobbyPlayers.add(new MasterPlayer(uid, username));
+	public boolean addLobbyPlayer(long uid, String username, int worldId) {
+		return lobbyPlayers.add(new MasterPlayer(uid, username, worldId));
 	}
 	
 	/**
@@ -107,7 +121,7 @@ public class MasterServerRepository {
 			return false;
 		}
 		MasterWorld world = worldMap.get(worldId);
-		return world.getPlayers().add(new MasterPlayer(uid, username));
+		return world.getPlayers().add(new MasterPlayer(uid, username, worldId));
 	}
 	
 	/**
@@ -131,23 +145,6 @@ public class MasterServerRepository {
 	 */
 	public void removeLobbyPlayer(String username) {
 		lobbyPlayers.removeIf(player -> player.getUsername().equalsIgnoreCase(username));
-	}
-	
-	/**
-	 * Gets the amount of players in a world
-	 *
-	 * @param worldId
-	 * 		The id of the world
-	 */
-	public int getPlayerCount(int worldId) {
-		if (!isWorldOnline(worldId)) {
-			return 0;
-		}
-		if (!worldMap.containsKey(worldId)) {
-			return 0;
-		}
-		MasterWorld world = worldMap.get(worldId);
-		return world.getPlayers().size();
 	}
 	
 	/**
@@ -191,5 +188,129 @@ public class MasterServerRepository {
 	 */
 	public MasterWorld getWorld(int worldId) {
 		return worldMap.get(worldId);
+	}
+	
+	/**
+	 * Gets the world the player is on
+	 *
+	 * @param username
+	 * 		The name of the player
+	 * @return 0 if lobby, -1 if offline.
+	 */
+	public int getWorldId(String username) {
+		Optional<MasterPlayer> optional = lobbyPlayers.stream().filter(player -> player.getUsername().equalsIgnoreCase(username)).findFirst();
+		// the user is in the lobby
+		if (optional.isPresent()) {
+			return 0;
+		}
+		// if the player is in a world
+		for (Entry<Integer, MasterWorld> entry : worldMap.entrySet()) {
+			if (entry.getValue().getPlayers().stream().anyMatch(player -> player.getUsername().equalsIgnoreCase(username))) {
+				return entry.getKey();
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Writes a packet to the world
+	 *
+	 * @param worldId
+	 * 		The world
+	 * @param packet
+	 * 		The packet
+	 */
+	public boolean writeToWorld(int worldId, MasterPacket packet) {
+		try {
+			MasterWorld world = worldMap.get(worldId);
+			if (world == null) {
+				logger.severe("Unable to write packet to world " + worldId);
+				System.out.println(lobbyPlayers);
+				System.out.println(worldMap);
+				return false;
+			}
+			Channel channel = world.getChannel();
+			if (channel == null || !channel.isWritable() || !channel.isConnected()) {
+				logger.severe("World #" + worldId + " has invalid channel!");
+				return false;
+			}
+			channel.write(packet);
+			System.out.println("Writing packet to world # " + worldId + " [" + packet.getOpcode() + "]");
+			System.out.println("Channel info: " + Misc.printChannel(channel));
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	/**
+	 * Writes a packet to the users world
+	 *
+	 * @param username
+	 * 		The username of the user
+	 * @param packet
+	 * 		The player
+	 */
+	public boolean writeToUser(String username, MasterPacket packet) {
+		int worldId = -1;
+		for (MasterPlayer player : lobbyPlayers) {
+			if (player.getUsername().equals(username)) {
+				worldId = player.getWorldId();
+				break;
+			}
+		}
+		for (MasterWorld world : worldMap.values()) {
+			for (MasterPlayer player : world.getPlayers()) {
+				if (player.getUsername().equals(username)) {
+					worldId = player.getWorldId();
+					break;
+				}
+			}
+		}
+		if (worldId == -1) {
+			logger.severe("Unable to find world of '" + username + "'.");
+			logger.info(worldMap.toString());
+			logger.info(lobbyPlayers.toString());
+			return false;
+		}
+		writeToWorld(worldId, packet);
+		return true;
+	}
+	
+	/**
+	 * Writes a packet to all the active worlds
+	 *
+	 * @param packet
+	 * 		The packet to write
+	 */
+	public boolean writeToAllWorlds(MasterPacket packet) {
+		for (Integer worldId : worldMap.keySet()) {
+			if (!writeToWorld(worldId, packet)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Gets the uid of a user
+	 *
+	 * @param username
+	 * 		The username of the user
+	 */
+	public long getUid(String username) {
+		for (MasterPlayer player : lobbyPlayers) {
+			if (player.getUsername().equals(username)) {
+				return player.getUid();
+			}
+		}
+		for (MasterWorld world : worldMap.values()) {
+			for (MasterPlayer player : world.getPlayers()) {
+				if (player.getUsername().equals(username)) {
+					return player.getUid();
+				}
+			}
+		}
+		return -1;
 	}
 }

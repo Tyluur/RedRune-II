@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.AnimationDefinitionParser;
 import org.redrune.cache.parse.definition.AnimationDefinition;
+import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
@@ -27,7 +28,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * The {@code HitMap} {@code Object} instance for this entity
 	 */
 	@Getter
-	private final HitMap hitMap = new HitMap(this);
+	private transient HitMap hitMap;
 	
 	/**
 	 * The index of the entity
@@ -87,6 +88,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Registers all transient variables
 	 */
 	public void registerTransients() {
+		this.hitMap = new HitMap(this);
 		this.updateMasks = new UpdateMasks();
 		this.attributes = new ConcurrentHashMap<>();
 		this.movement = new EntityMovement(this);
@@ -296,5 +298,12 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public boolean isDead() {
 		return getHitpoints() <= 0;
+	}
+	
+	/**
+	 * Gets the world the entity is on
+	 */
+	public int getWorld() {
+		return GameFlags.worldId;
 	}
 }

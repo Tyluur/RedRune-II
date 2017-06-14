@@ -1,12 +1,17 @@
 package org.redrune.network.master.client;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
+import org.redrune.game.GameFlags;
+import org.redrune.network.RS2MasterCommunication;
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.MasterPacket;
 import org.redrune.network.master.MasterSession;
-import org.redrune.network.master.client.packet.MasterClientPacketManager;
+import org.redrune.network.master.packet.out.client.build.ClientVerificationPacketBuilder;
+import org.redrune.network.master.packet.out.client.context.ClientVerificationPacketContext;
 import org.redrune.utility.Misc;
 
 import java.net.InetSocketAddress;
@@ -23,6 +28,16 @@ import static org.redrune.network.master.MasterConstants.*;
 public class MasterClientHandler extends SimpleChannelHandler {
 	
 	/**
+	 * The logger
+	 */
+	private static final Logger LOGGER = Misc.constructLogger(MasterClientHandler.class);
+	
+	/**
+	 * The packet manager
+	 */
+	private static final MasterClientPacketManager PACKET_MANAGER = new MasterClientPacketManager("org.redrune.network.master.packet.in.client");
+	
+	/**
 	 * The channel
 	 */
 	@Getter
@@ -35,9 +50,11 @@ public class MasterClientHandler extends SimpleChannelHandler {
 	private static boolean connected;
 	
 	/**
-	 * The logger
+	 * If we are verified
 	 */
-	private static final Logger LOGGER = Misc.constructLogger(MasterClientHandler.class);
+	@Getter
+	@Setter
+	private static boolean verified;
 	
 	/**
 	 * Starts the client connection
@@ -74,12 +91,12 @@ public class MasterClientHandler extends SimpleChannelHandler {
 		if (packet == null) {
 			return;
 		}
-		MasterClientPacketManager.read(ctx.getChannel(), packet);
+		PACKET_MANAGER.read(ctx.getChannel(), packet);
 	}
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
-	
+		e.getCause().printStackTrace();
 	}
 	
 	@Override
@@ -87,6 +104,7 @@ public class MasterClientHandler extends SimpleChannelHandler {
 		session = new MasterSession(ctx.getChannel());
 		LOGGER.info("Master client was connected to the master server successfully [PORT " + PORT + "]!");
 		connected = true;
+		RS2MasterCommunication.writeMasterPacket(new ClientVerificationPacketBuilder(new ClientVerificationPacketContext(GameFlags.worldId, MasterConstants.PASSWORD)).build());
 	}
 	
 	@Override

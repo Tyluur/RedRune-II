@@ -3,6 +3,7 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.outgoing.impl.PrivateMessageReceiveBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -18,8 +19,9 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
+		player.getTransmitter().send(new PrivateMessageReceiveBuilder(args[1], args[2], intParam(args, 3)).build(player));
+//		player.getTransmitter().send(new FriendsListBuilder(args[1], "", intParam(args, 2), intParam(args, 3), boolParam(args, 4), boolParam(args, 5), boolParam(args, 6)).build(player));
 //		System.out.println(RegionDeletion.getObjectsToDelete(player.getRegion().getRegionId()));
-		player.getNetworkSession().getChannel().close();
 //		System.out.println(player.getRegion().getPlayers());
 		//			player.getManager().getPrayers().setIcon(PrayerIcon.valueOf(args[1].toUpperCase()));
 		//			player.getManager().getDialogues().startDialogue(new BankerNPCDialogue(), 45);

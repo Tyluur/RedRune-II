@@ -38,12 +38,19 @@ public class LoginData {
 	@Getter
 	private final boolean lobby;
 	
-	public LoginData(long uid, String username, String password, int code, boolean lobby) {
+	/**
+	 * The file text received back
+	 */
+	@Getter
+	private final String fileText;
+	
+	public LoginData(long uid, String username, String password, int code, boolean lobby, String fileText) {
 		this.username = username;
 		this.password = password;
 		this.uid = uid;
 		this.code = code;
 		this.lobby = lobby;
+		this.fileText = fileText;
 	}
 	
 	@Override

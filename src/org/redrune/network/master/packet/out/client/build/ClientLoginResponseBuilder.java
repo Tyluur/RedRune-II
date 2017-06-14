@@ -28,7 +28,6 @@ public class ClientLoginResponseBuilder extends MasterPacketBuilder<ClientLoginR
 		packet.writeString(context.getPassword());
 		packet.writeBoolean(context.isLobbyConnection());
 		packet.writeByte(context.getWorldId());
-		
 		return packet;
 	}
 }

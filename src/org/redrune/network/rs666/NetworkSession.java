@@ -44,13 +44,6 @@ public final class NetworkSession {
 	private Channel channel;
 	
 	/**
-	 * The player affiliated with the networkSession
-	 */
-	@Getter
-	@Setter
-	private Player player;
-	
-	/**
 	 * If the networkSession is in the lobby
 	 */
 	@Getter
@@ -67,11 +60,23 @@ public final class NetworkSession {
 	 */
 	private ConcurrentLinkedQueue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
 	
+	/**
+	 * The player affiliated with the networkSession
+	 */
+	@Getter
+	@Setter
+	private Player player;
+	
 	public NetworkSession(Channel channel) {
 		this.channel = channel;
 		this.viewComponents = new PlayerViewComponents();
 		// thread-safe uid generation. we'll never have more than the max long connections anyways
 		this.uid = UID_GENERATOR.getAndIncrement();
+	}
+	
+	@Override
+	public String toString() {
+		return "NetworkSession{" + "uid=" + uid + ", inLobby=" + inLobby + ", player=" + player + '}';
 	}
 	
 	/**
@@ -121,5 +126,23 @@ public final class NetworkSession {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Checking if the {@link #channel} is still active
+	 */
+	public boolean isActive() {
+		return channel.isBound() && channel.isWritable() && channel.isReadable() && channel.isConnected();
+	}
+	
+	/**
+	 * Sycs the variables
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public void sync(Player player) {
+		setPlayer(player);
+		player.setNetworkSession(this);
 	}
 }

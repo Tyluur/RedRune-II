@@ -34,13 +34,8 @@ public class ClientDisplayPacketDecoder implements IncomingPacketDecoder {
 		player.getNetworkSession().getViewComponents().setScreenSizeY(screenSizeY);
 		player.getNetworkSession().getViewComponents().setDisplayMode(displayMode);
 		if (send) {
-			player.getManager().getInterfaces().sendLogin();
+			player.getManager().getInterfaces().sendLogin(false);
 			player.getManager().getInterfaces().sendInterface(742, true);
-			if (screenSizeMode < 2) {
-				player.getTransmitter().sendFixedAMasks();
-			} else {
-				player.getTransmitter().sendFullScreenAMasks();
-			}
 		}
 	}
 }

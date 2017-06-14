@@ -6,7 +6,12 @@ import org.jboss.netty.channel.Channel;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/10/2017
  */
-public interface MasterPacketReader {
+public interface MasterPacketReader extends MasterConstants {
+	
+	/**
+	 * Gets the id of the packet
+	 */
+	int getId();
 	
 	/**
 	 * Handles the reading of the packet

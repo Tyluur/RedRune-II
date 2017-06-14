@@ -28,6 +28,7 @@ public class ServerLoginResponseBuilder extends MasterPacketBuilder<ServerLoginR
 		packet.writeString(context.getPassword());
 		packet.writeBoolean(context.isLobbyConnection());
 		packet.writeByte(context.getResponseCode());
+		packet.writeString(context.getFileJsonText());
 		return packet;
 	}
 }

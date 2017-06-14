@@ -1,7 +1,11 @@
 package org.redrune.cache;
 
+import org.redrune.cache.parse.BodyDataParser;
+import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.GameConstants;
+import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.utility.Misc;
+import org.redrune.utility.backend.MapDataParser;
 
 import java.util.logging.Logger;
 
@@ -24,9 +28,13 @@ public class Cache {
 	public static void init() {
 		try {
 			CacheManager.load(GameConstants.CACHE_PATH);
+			BodyDataParser.loadAll();
+			ItemDefinitionParser.loadEquipmentConfiguration();
+			MapDataParser.readAll();
+			RegionDeletion.prepare();
 			logger.info("Cache loaded! [items=" + getAmountOfItems() + ", interfaces=" + getAmountOfInterfaces() + ", npcs=" + getAmountOfNpcs() + ", objects=" + getAmountOfObjects() + ", anims=" + getAmountOfAnimations() + ", graphics=" + getAmountOfGraphics() + "]");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 			System.exit(0);
 		}
 	}

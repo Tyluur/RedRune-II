@@ -12,6 +12,11 @@ import org.redrune.network.master.MasterPacketReader;
 public class ClientStatisticsReader implements MasterPacketReader {
 	
 	@Override
+	public int getId() {
+		return STATISTICS_SEND_SERVER_PACKET;
+	}
+	
+	@Override
 	public void read(Channel channel, MasterPacket packet) {
 		int worldCount = packet.readByte();
 		for (int index = 1; index <= worldCount; index++) {

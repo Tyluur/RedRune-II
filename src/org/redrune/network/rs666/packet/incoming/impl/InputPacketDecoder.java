@@ -3,7 +3,6 @@ package org.redrune.network.rs666.packet.incoming.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.Misc;
 import org.redrune.utility.rs.input.InputResponse;
 import org.redrune.utility.rs.input.InputType;
 
@@ -30,7 +29,7 @@ public class InputPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(INPUT_INTEGER, INPUT_STRING, INPUT_LONG_STRING);
+		return arguments(INPUT_INTEGER, INPUT_STRING, INPUT_LONG_STRING);
 	}
 	
 	@Override

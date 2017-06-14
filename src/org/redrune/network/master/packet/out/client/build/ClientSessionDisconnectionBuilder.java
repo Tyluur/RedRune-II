@@ -26,6 +26,7 @@ public class ClientSessionDisconnectionBuilder extends MasterPacketBuilder<Clien
 		packet.writeLong(context.getUid());
 		packet.writeBoolean(context.isLobby());
 		packet.writeString(context.getUsername());
+		packet.writeString(context.getJsonText());
 		return packet;
 	}
 }

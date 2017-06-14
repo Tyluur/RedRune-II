@@ -5,7 +5,9 @@ import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.GameTab;
+import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
 import java.util.HashMap;
@@ -47,15 +49,27 @@ public final class InterfaceManager implements InterfaceConstants {
 		return fixedMode ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID;
 	}
 	
-	public void sendLogin() {
+	/**
+	 * Sends the interface login definitions
+	 *
+	 * @param login
+	 * 		If we are actually logging in
+	 */
+	public void sendLogin(boolean login) {
 		sendMainComponents();
 		if (usingFixedMode()) {
 			player.getTransmitter().sendFixedAMasks();
 		} else {
 			player.getTransmitter().sendFullScreenAMasks();
 		}
+		if (!login) {
+			return;
+		}
 		EmoteManager.sendUnlockConfigs(player);
 		player.getManager().getPrayers().sendLoginConfigurations();
+		player.getManager().getNotes().sendLoginConfiguration();
+		player.getManager().getContacts().sendLogin();
+		sendGameBar();
 	}
 	
 	/**
@@ -82,14 +96,6 @@ public final class InterfaceManager implements InterfaceConstants {
 			sendInterface(178, 750);
 			sendInterface(179, 747);
 			sendInterface(14, 745);
-		}
-		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
-			case 0:
-			case 1:
-				break;
-			case 2:
-			case 3:
-				break;
 		}
 		sendInterface(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID).sendDefaultTabs();
 		return this;
@@ -401,6 +407,61 @@ public final class InterfaceManager implements InterfaceConstants {
 		int posHash = player.getLocation().getX() << 14 | player.getLocation().getY();
 		player.getTransmitter().send(new CS2ConfigBuilder(622, posHash).build(player));
 		player.getTransmitter().send(new CS2ConfigBuilder(674, posHash).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends the game bar settings
+	 */
+	public InterfaceManager sendGameBar() {
+		Object filterData = player.getVariables().getAttribute(AttributeKey.FILTER, GameBarStatus.NO_FILTER);
+		Object clanData = player.getVariables().getAttribute(AttributeKey.CLAN, GameBarStatus.ON);
+		Object assistData = player.getVariables().getAttribute(AttributeKey.ASSIST, GameBarStatus.ON);
+		Object friendsData = player.getVariables().getAttribute(AttributeKey.FRIENDS, GameBarStatus.ON);
+		GameBarStatus filter = GameBarStatus.NO_FILTER;
+		if (filterData != null) {
+			if (filterData.getClass().equals(String.class)) {
+				filter = GameBarStatus.valueOf(filterData.toString());
+			} else {
+				filter = (GameBarStatus) filterData;
+			}
+		}
+		GameBarStatus clan = GameBarStatus.ON;
+		if (clanData != null) {
+			if (clanData.getClass().equals(String.class)) {
+				clan = GameBarStatus.valueOf(clanData.toString());
+			} else {
+				clan = (GameBarStatus) clanData;
+			}
+		}
+		GameBarStatus assist = GameBarStatus.ON;
+		if (assistData != null) {
+			if (assistData.getClass().equals(String.class)) {
+				assist = GameBarStatus.valueOf(assistData.toString());
+			} else {
+				assist = (GameBarStatus) assistData;
+			}
+		}
+		GameBarStatus friends = GameBarStatus.ON;
+		if (friendsData != null) {
+			if (friendsData.getClass().equals(String.class)) {
+				friends = GameBarStatus.valueOf(friendsData.toString());
+			} else {
+				friends = (GameBarStatus) friendsData;
+			}
+		}
+		player.getTransmitter().sendGameStatuses(filter, clan, assist, friends);
+		// TODO show our private chat status
+		return this;
+	}
+	
+	/**
+	 * Sends lobby login details
+	 */
+	public InterfaceManager sendLobbyLogin() {
+		player.getManager().getContacts().sendLogin();
+		
+		System.out.println("Player registered into lobby:\t" + player);
 		return this;
 	}
 }

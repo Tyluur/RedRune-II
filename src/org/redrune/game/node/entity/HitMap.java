@@ -22,7 +22,7 @@ public final class HitMap {
 	/**
 	 * The entity.
 	 */
-	private final Entity entity;
+	private transient final Entity entity;
 	
 	/**
 	 * Holds all the hit data.

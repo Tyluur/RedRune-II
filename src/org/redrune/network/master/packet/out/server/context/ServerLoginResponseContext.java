@@ -1,6 +1,7 @@
 package org.redrune.network.master.packet.out.server.context;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.network.master.packet.out.MasterPacketContext;
 
 /**
@@ -37,7 +38,15 @@ public class ServerLoginResponseContext implements MasterPacketContext {
 	 * The response code of the login request
 	 */
 	@Getter
-	private final int responseCode;
+	@Setter
+	private int responseCode;
+	
+	/**
+	 * The text of the file in json
+	 */
+	@Getter
+	@Setter
+	private String fileJsonText = "null";
 	
 	public ServerLoginResponseContext(long uid, String username, String password, boolean lobbyConnection, int responseCode) {
 		this.uid = uid;

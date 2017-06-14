@@ -2,6 +2,7 @@ package org.redrune.core.master.server;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jboss.netty.channel.Channel;
 import org.redrune.core.master.MasterPlayer;
 
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -25,13 +26,20 @@ public final class MasterWorld {
 	private final CopyOnWriteArraySet<MasterPlayer> players;
 	
 	/**
+	 * The channel of the world
+	 */
+	@Getter
+	@Setter
+	private Channel channel;
+	
+	/**
 	 * If the world is online
 	 */
 	@Getter
 	@Setter
 	private boolean isOnline = false;
 	
-	public MasterWorld(int worldId) {
+	MasterWorld(int worldId) {
 		this.worldId = worldId;
 		this.players = new CopyOnWriteArraySet<>();
 	}
@@ -47,7 +55,7 @@ public final class MasterWorld {
 	 * @param username
 	 * 		The username of the player
 	 */
-	public void removePlayer(String username) {
+	void removePlayer(String username) {
 		players.removeIf(player -> player.getUsername().equalsIgnoreCase(username));
 	}
 }

@@ -76,6 +76,11 @@ public interface InterfaceConstants extends InterfaceRepository {
 	int LOGOUT_INTERFACE_ID = 182;
 	
 	/**
+	 * The interface id of the gameframe
+	 */
+	int GAMEFRAME_INTERFACE_ID = 751;
+	
+	/**
 	 * Sends the quest interface to the player with the parameterized title and
 	 * list of messages. The messages will be formatted to never overlap one
 	 * line, but to go to the next one if it passes the limit of characters on a

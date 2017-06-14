@@ -27,9 +27,16 @@ public class ClientSessionDisconnectionContext implements MasterPacketContext {
 	@Getter
 	private final String username;
 	
-	public ClientSessionDisconnectionContext(long uid, boolean lobby, String username) {
+	/**
+	 * The text the player in json
+	 */
+	@Getter
+	private final String jsonText;
+	
+	public ClientSessionDisconnectionContext(long uid, boolean lobby, String username, String jsonText) {
 		this.uid = uid;
 		this.lobby = lobby;
 		this.username = username;
+		this.jsonText = jsonText;
 	}
 }

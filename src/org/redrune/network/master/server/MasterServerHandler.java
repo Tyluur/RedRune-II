@@ -4,10 +4,10 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.redrune.cache.Cache;
 import org.redrune.core.master.server.MasterServerRepository;
 import org.redrune.core.system.SystemManager;
 import org.redrune.network.master.MasterPacket;
-import org.redrune.network.master.server.packet.MasterServerPacketManager;
 import org.redrune.utility.Misc;
 
 import java.net.InetSocketAddress;
@@ -35,6 +35,11 @@ public class MasterServerHandler extends SimpleChannelHandler {
 	private static final MasterServerRepository REPOSITORY = new MasterServerRepository();
 	
 	/**
+	 * The packet manager
+	 */
+	private static final MasterServerPacketManager PACKET_MANAGER = new MasterServerPacketManager("org.redrune.network.master.packet.in.server");
+	
+	/**
 	 * Starts the login server
 	 */
 	public static void main(String[] args) {
@@ -44,7 +49,10 @@ public class MasterServerHandler extends SimpleChannelHandler {
 	/**
 	 * Binds the login server
 	 */
-	private static void bind() {
+	public static boolean bind() {
+		Cache.init();
+		// defaults
+		SystemManager.setDefaults();
 		try {
 			Executor executor = Executors.newCachedThreadPool();
 			
@@ -62,8 +70,10 @@ public class MasterServerHandler extends SimpleChannelHandler {
 			REPOSITORY.getUpdateWorker().start();
 			
 			LOGGER.info("Master server bound to port: " + PORT);
+			return true;
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Unable to bind to port " + PORT, e);
+			return false;
 		}
 	}
 	
@@ -74,7 +84,7 @@ public class MasterServerHandler extends SimpleChannelHandler {
 			if (packet == null) {
 				return;
 			}
-			MasterServerPacketManager.read(ctx.getChannel(), packet);
+			PACKET_MANAGER.read(ctx.getChannel(), packet);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -82,7 +92,7 @@ public class MasterServerHandler extends SimpleChannelHandler {
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
-		ctx.getChannel().close();
+		e.getCause().printStackTrace();
 	}
 	
 	@Override

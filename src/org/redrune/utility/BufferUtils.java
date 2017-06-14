@@ -106,6 +106,98 @@ public class BufferUtils {
 		return sb.toString();
 	}
 	
+	public static final byte[] getFormatedMessage(String message) {
+		int i_0_ = message.length();
+		byte[] is = new byte[i_0_];
+		for (int i_1_ = 0; (i_1_ ^ 0xffffffff) > (i_0_ ^ 0xffffffff); i_1_++) {
+			int i_2_ = message.charAt(i_1_);
+			if (((i_2_ ^ 0xffffffff) >= -1 || i_2_ >= 128) && (i_2_ < 160 || i_2_ > 255)) {
+				if ((i_2_ ^ 0xffffffff) != -8365) {
+					if ((i_2_ ^ 0xffffffff) == -8219) {
+						is[i_1_] = (byte) -126;
+					} else if ((i_2_ ^ 0xffffffff) == -403) {
+						is[i_1_] = (byte) -125;
+					} else if (i_2_ == 8222) {
+						is[i_1_] = (byte) -124;
+					} else if (i_2_ != 8230) {
+						if ((i_2_ ^ 0xffffffff) != -8225) {
+							if ((i_2_ ^ 0xffffffff) != -8226) {
+								if ((i_2_ ^ 0xffffffff) == -711) {
+									is[i_1_] = (byte) -120;
+								} else if (i_2_ == 8240) {
+									is[i_1_] = (byte) -119;
+								} else if ((i_2_ ^ 0xffffffff) == -353) {
+									is[i_1_] = (byte) -118;
+								} else if ((i_2_ ^ 0xffffffff) != -8250) {
+									if (i_2_ == 338) {
+										is[i_1_] = (byte) -116;
+									} else if (i_2_ == 381) {
+										is[i_1_] = (byte) -114;
+									} else if ((i_2_ ^ 0xffffffff) == -8217) {
+										is[i_1_] = (byte) -111;
+									} else if (i_2_ == 8217) {
+										is[i_1_] = (byte) -110;
+									} else if (i_2_ != 8220) {
+										if (i_2_ == 8221) {
+											is[i_1_] = (byte) -108;
+										} else if ((i_2_ ^ 0xffffffff) == -8227) {
+											is[i_1_] = (byte) -107;
+										} else if ((i_2_ ^ 0xffffffff) != -8212) {
+											if (i_2_ == 8212) {
+												is[i_1_] = (byte) -105;
+											} else if ((i_2_ ^ 0xffffffff) != -733) {
+												if (i_2_ != 8482) {
+													if (i_2_ == 353) {
+														is[i_1_] = (byte) -102;
+													} else if (i_2_ != 8250) {
+														if ((i_2_ ^ 0xffffffff) == -340) {
+															is[i_1_] = (byte) -100;
+														} else if (i_2_ != 382) {
+															if (i_2_ == 376) {
+																is[i_1_] = (byte) -97;
+															} else {
+																is[i_1_] = (byte) 63;
+															}
+														} else {
+															is[i_1_] = (byte) -98;
+														}
+													} else {
+														is[i_1_] = (byte) -101;
+													}
+												} else {
+													is[i_1_] = (byte) -103;
+												}
+											} else {
+												is[i_1_] = (byte) -104;
+											}
+										} else {
+											is[i_1_] = (byte) -106;
+										}
+									} else {
+										is[i_1_] = (byte) -109;
+									}
+								} else {
+									is[i_1_] = (byte) -117;
+								}
+							} else {
+								is[i_1_] = (byte) -121;
+							}
+						} else {
+							is[i_1_] = (byte) -122;
+						}
+					} else {
+						is[i_1_] = (byte) -123;
+					}
+				} else {
+					is[i_1_] = (byte) -128;
+				}
+			} else {
+				is[i_1_] = (byte) i_2_;
+			}
+		}
+		return is;
+	}
+	
 	/**
 	 * Compresses text using the huffman algorithm.
 	 *

@@ -3,6 +3,7 @@ package org.redrune.utility;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.jboss.netty.channel.Channel;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 
@@ -104,20 +105,6 @@ public class Misc {
 			ip[i++] = Integer.parseInt(st.nextToken());
 		}
 		return ((ip[0] << 24) | (ip[1] << 16) | (ip[2] << 8) | (ip[3]));
-	}
-	
-	/**
-	 * Formats the IP-Address.
-	 *
-	 * @param unformatted
-	 * 		The unformatted IP.
-	 * @return The formatted IP.
-	 */
-	public static final String formatIp(String unformatted) {
-		String ipAddress = unformatted;
-		ipAddress = ipAddress.replaceAll("/", "").replaceAll(" ", "");
-		ipAddress = ipAddress.substring(0, ipAddress.indexOf(":"));
-		return ipAddress;
 	}
 	
 	/**
@@ -304,7 +291,7 @@ public class Misc {
 	public static String getText(String location) {
 		File file = new File(location);
 		if (!file.exists()) {
-			throw new IllegalStateException("File doesn't exist:\t" + file.getAbsolutePath());
+			return "";
 		}
 		StringBuilder text = new StringBuilder();
 		for (String fileText : getFileText(location)) {
@@ -575,6 +562,20 @@ public class Misc {
 		return true;
 	}
 	
+	/**
+	 * Checks if a character is valid to use.
+	 *
+	 * @param c
+	 * 		The character.
+	 * @return {@code True} if so.
+	 */
+	public static boolean allowed(char c) {
+		return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == ' ';
+		/*
+		 * for (char c2 : VALID_CHARS) if (c == c2) return true; return false;
+		 */
+	}
+	
 	public static Gson getGSON() {
 		return GSON;
 	}
@@ -600,5 +601,61 @@ public class Misc {
 	 */
 	public static boolean timeHasPassed(long eventTime, long timeToCheck) {
 		return eventTime == -1 || System.currentTimeMillis() - eventTime >= timeToCheck;
+	}
+	
+	/**
+	 * Constructs a player from the player class text
+	 *
+	 * @param playerClassText
+	 * 		The class text
+	 */
+	public static Player constructPlayer(String playerClassText) {
+		try {
+			return GSON.fromJson(playerClassText, Player.class);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Gets the ip address of a channel
+	 *
+	 * @param channel
+	 * 		The channel
+	 */
+	public static String getIpAddress(Channel channel) {
+		return formatIp(channel.getRemoteAddress().toString());
+	}
+	
+	/**
+	 * Formats the IP-Address.
+	 *
+	 * @param unformatted
+	 * 		The unformatted IP.
+	 * @return The formatted IP.
+	 */
+	private static String formatIp(String unformatted) {
+		String ipAddress = unformatted;
+		ipAddress = ipAddress.replaceAll("/", "").replaceAll(" ", "");
+		ipAddress = ipAddress.substring(0, ipAddress.indexOf(":"));
+		return ipAddress;
+	}
+	
+	public static String formatPlayerNameForProtocol(String name) {
+		if (name == null) {
+			return "";
+		}
+		name = name.replaceAll(" ", "_");
+		name = name.toLowerCase();
+		return name;
+	}
+	
+	public static int getRandom(int maxValue) {
+		return (int) (Math.random() * (maxValue + 1));
+	}
+	
+	public static String printChannel(Channel channel) {
+		return "open=" + channel.isOpen() + ", bound=" + channel.isBound() + ", writeable=" + channel.isWritable() + ", readeable=" + channel.isReadable() + ", connected=" + channel.isConnected();
 	}
 }

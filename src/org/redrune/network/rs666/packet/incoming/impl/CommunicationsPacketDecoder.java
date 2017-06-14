@@ -4,6 +4,9 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.CommandEventContext;
 import org.redrune.game.node.entity.player.event.impl.CommandEvent;
 import org.redrune.game.world.World;
+import org.redrune.network.RS2MasterCommunication;
+import org.redrune.network.master.packet.out.client.build.ClientPrivateMessageBuilder;
+import org.redrune.network.master.packet.out.client.context.ClientPrivateMessageContext;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.PublicChatBuilder;
@@ -21,9 +24,14 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 	 */
 	private static final int PUBLIC_CHAT = 19;
 	
+	/**
+	 * The private chat message opcode
+	 */
+	private static final int PRIVATE_MESSAGE = 13;
+	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(19);
+		return arguments(PUBLIC_CHAT, PRIVATE_MESSAGE);
 	}
 	
 	@Override
@@ -32,7 +40,26 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 			case PUBLIC_CHAT:
 				readPublicChatPacket(player, packet);
 				break;
+			case PRIVATE_MESSAGE:
+				readPrivateMessagePacket(player, packet);
+				break;
 		}
+	}
+	
+	/**
+	 * Decodes the packet saying that we should send a private message
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void readPrivateMessagePacket(Player player, Packet packet) {
+		String name = packet.readRS2String();
+		byte length = packet.readByte();
+		String message = BufferUtils.decompressHuffman(packet, length);
+		
+		RS2MasterCommunication.writeMasterPacket(new ClientPrivateMessageBuilder(new ClientPrivateMessageContext(player.getNetworkSession().getUid(), player.getDetails().getUsername(), player.getDetails().getDominantRight().getClientRight(), name, message)).build());
 	}
 	
 	/**

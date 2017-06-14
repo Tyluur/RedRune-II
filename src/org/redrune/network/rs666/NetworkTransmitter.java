@@ -4,6 +4,7 @@ import org.redrune.game.GameConstants;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 import org.redrune.utility.rs.input.InputResponse;
 import org.redrune.utility.rs.input.InputType;
@@ -34,7 +35,7 @@ public final class NetworkTransmitter {
 		send(new LoginCredentialsBuilder().build(player));
 		
 		player.loadMapRegions();
-		player.getManager().getInterfaces().sendLogin();
+		player.getManager().getInterfaces().sendLogin(true);
 		player.sendSettings();
 		sendDefaultConfigs();
 		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!");
@@ -295,6 +296,26 @@ public final class NetworkTransmitter {
 	public NetworkTransmitter requestInput(InputResponse response, InputType type, String title) {
 		player.putAttribute(type.getName(), response);
 		send(new CS2ScriptBuilder(type.getScriptId(), "s", title).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends the game bar statuses
+	 *
+	 * @param filter
+	 * 		The filter bar
+	 * @param clan
+	 * 		The clan bar
+	 * @param assist
+	 * 		The assist bar
+	 * @param friends
+	 * 		The friends bar
+	 */
+	public NetworkTransmitter sendGameStatuses(GameBarStatus filter, GameBarStatus clan, GameBarStatus assist, GameBarStatus friends) {
+		send(new ConfigPacketBuilder(1054, clan.getValue()).build(player));
+		send(new ConfigPacketBuilder(1055, assist.getValue()).build(player));
+		send(new ConfigPacketBuilder(1056, filter.getValue()).build(player));
+		send(new ConfigPacketBuilder(2159, friends.getValue()).build(player));
 		return this;
 	}
 }

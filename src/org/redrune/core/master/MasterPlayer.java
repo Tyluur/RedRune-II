@@ -9,7 +9,7 @@ import lombok.Getter;
 public class MasterPlayer {
 	
 	/**
-	 * The uid of the player
+	 * The uid of the player's session
 	 */
 	@Getter
 	private final long uid;
@@ -20,9 +20,16 @@ public class MasterPlayer {
 	@Getter
 	private final String username;
 	
-	public MasterPlayer(long uid, String username) {
+	/**
+	 * The id of the world the player is in
+	 */
+	@Getter
+	private final int worldId;
+	
+	public MasterPlayer(long uid, String username, int worldId) {
 		this.uid = uid;
 		this.username = username;
+		this.worldId = worldId;
 	}
 	
 	@Override

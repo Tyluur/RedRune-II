@@ -1,5 +1,7 @@
 package org.redrune.network.master;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 
@@ -10,6 +12,13 @@ import org.jboss.netty.buffer.ChannelBuffers;
  * @since 6/9/2017
  */
 public class MasterPacket {
+	
+	/**
+	 * The opcode of the packet
+	 */
+	@Getter
+	@Setter
+	private int opcode;
 	
 	/**
 	 * The buffer that we're reading
@@ -29,6 +38,10 @@ public class MasterPacket {
 	public MasterPacket(int opcode) {
 		this.outBuffer = ChannelBuffers.dynamicBuffer();
 		this.writeByte(opcode);
+		this.setOpcode(opcode);
+		if (opcode != 4 && opcode != 5) {
+			System.out.println("Writing packet #" + opcode);
+		}
 	}
 	
 	public MasterPacket(byte[] inBuffer) {
