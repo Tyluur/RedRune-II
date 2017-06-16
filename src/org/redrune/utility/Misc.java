@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.jboss.netty.channel.Channel;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 
@@ -611,6 +612,16 @@ public class Misc {
 	
 	public static String format(Number number) {
 		return NumberFormat.getIntegerInstance().format(number);
+	}
+	
+	/**
+	 * Gets the ip address of a channel
+	 *
+	 * @param channel
+	 * 		The channel
+	 */
+	public static String getIpAddress(Channel channel) {
+		return formatIp(channel.getRemoteAddress().toString());
 	}
 	
 }

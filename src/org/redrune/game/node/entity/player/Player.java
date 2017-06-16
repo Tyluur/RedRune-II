@@ -98,18 +98,15 @@ public final class Player extends Entity {
 	@Setter
 	private transient NodeInteractionTask interactionTask;
 	
-	public Player(String username, String password, NetworkSession session) {
+	public Player(String username) {
 		super(GameConstants.HOME_LOCATION);
 		this.skills = new PlayerSkills();
-		this.details = new PlayerDetails(username, password);
+		this.details = new PlayerDetails(username);
 		this.equipment = new PlayerEquipment();
 		this.inventory = new PlayerInventory();
 		this.variables = new PlayerVariables();
 		this.manager = new PlayerManager();
 		this.bank = new PlayerBank();
-		
-		this.setNetworkSession(session);
-		this.getNetworkSession().setPlayer(this);
 	}
 	
 	@Override

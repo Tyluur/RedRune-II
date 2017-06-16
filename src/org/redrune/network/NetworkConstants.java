@@ -13,7 +13,7 @@ public interface NetworkConstants extends GameConstants {
 	/**
 	 * The id of the port used for main communications
 	 */
-	int BASE_PORT_ID = 43593;
+	int MAIN_PORT_ID = 43594;
 	
 	/**
 	 * The revision of the game

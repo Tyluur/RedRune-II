@@ -1,6 +1,5 @@
 package org.redrune.game.world.list;
 
-import org.redrune.core.master.client.MasterClientRepository;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.utility.rs.constant.WorldConstants;
@@ -65,8 +64,8 @@ public class WorldList implements WorldConstants {
 			buffer.writeSmart(w.getWorldId());
 			buffer.writeByte(w.getLocation());
 			buffer.writeInt(w.getFlag());
-			buffer.writeGJString(MasterClientRepository.isOnline(w.getWorldId()) ? w.getActivity() : "OFFLINE");
-			buffer.writeGJString(MasterClientRepository.isOnline(w.getWorldId()) ? w.getIp() : "0.0.0.0");
+			buffer.writeGJString(w.getActivity());
+			buffer.writeGJString(w.getIp());
 		}
 		buffer.writeInt(0x94DA4A87);
 	}
@@ -80,7 +79,7 @@ public class WorldList implements WorldConstants {
 	private static void populateStatus(PacketBuilder buffer) {
 		for (WorldDefinition w : WORLD_LIST) {
 			buffer.writeSmart(w.getWorldId());
-			buffer.writeShort(MasterClientRepository.isOnline(w.getWorldId()) ? MasterClientRepository.getPlayerCount(w.getWorldId()) : 0);
+			buffer.writeShort(1337);
 		}
 	}
 	

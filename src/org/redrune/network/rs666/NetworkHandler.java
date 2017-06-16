@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import static org.redrune.game.GameConstants.MAIN_PORT_ID;
+import static org.redrune.network.NetworkConstants.MAIN_PORT_ID;
 
 /**
  * This is the network handler for the main game protocol. This initializes the main game server and the update server.

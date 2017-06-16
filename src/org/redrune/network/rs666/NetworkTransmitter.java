@@ -35,7 +35,7 @@ public final class NetworkTransmitter {
 		send(new LoginCredentialsBuilder().build(player));
 		
 		player.loadMapRegions();
-		player.getManager().getInterfaces().sendLogin(true);
+		player.getManager().getInterfaces().sendLogin();
 		player.sendSettings();
 		sendDefaultConfigs();
 		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!");

@@ -94,7 +94,8 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					session.setInLobby(true);
 					session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 					
-					Player player = new Player(name, password, session);
+					Player player = new Player(name);
+					session.sync(player);
 					player.registerToLobby();
 					
 					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
@@ -143,8 +144,9 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					session.getViewComponents().setDisplayMode(displayMode);
 					session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 					
-					Player player = new Player(username, password, session);
+					Player player = new Player(username);
 					
+					session.sync(player);
 					player.register();
 					
 					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));

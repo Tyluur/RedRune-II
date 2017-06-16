@@ -3,9 +3,6 @@ package org.redrune.game.node.entity.player.link.chat;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.RS2MasterCommunication;
-import org.redrune.network.master.packet.out.client.build.ClientFriendRequestBuilder;
-import org.redrune.network.master.packet.out.client.context.ClientFriendRequestContext;
 import org.redrune.network.rs666.packet.outgoing.impl.FriendsListBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.IgnoreListBuilder;
 import org.redrune.utility.Misc;
@@ -120,7 +117,7 @@ public class ContactChatManager {
 	 * 		The name of the friend
 	 */
 	private void requestFriendDetails(String name) {
-		RS2MasterCommunication.writeMasterPacket(new ClientFriendRequestBuilder(new ClientFriendRequestContext(player.getNetworkSession().getUid(), name)).build());
+		//TODO: RS2MasterCommunication.writeMasterPacket(new ClientFriendRequestBuilder(new ClientFriendRequestContext(player.getNetworkSession().getUid(), name)).build());
 	}
 	
 	/**

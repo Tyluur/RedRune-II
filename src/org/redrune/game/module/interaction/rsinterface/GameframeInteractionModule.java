@@ -67,7 +67,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 				}
 				break;
 			case LOGOUT_INTERFACE_ID:
-				player.logout(componentId == 6);
+				//TODO: player.logout(componentId == 6);
 				return true;
 			case OPTIONS_INTERFACE_ID:
 				switch (componentId) {
@@ -162,6 +162,6 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 	 */
 	private void updateGameBar(Player player, AttributeKey bar, GameBarStatus status) {
 		player.getVariables().putAttribute(bar, status);
-		player.getManager().getInterfaces().sendGameBar();
+		//TODO: player.getManager().getInterfaces().sendGameBar();
 	}
 }

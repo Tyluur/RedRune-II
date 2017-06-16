@@ -2,10 +2,6 @@ package org.redrune.core.system;
 
 import org.redrune.core.MajorUpdateWorker;
 import org.redrune.core.task.Scheduler;
-import org.redrune.core.task.impl.MasterServerTasks;
-import org.redrune.game.GameFlags;
-import org.redrune.network.master.client.MasterClientHandler;
-import org.redrune.network.master.server.MasterServerHandler;
 import org.redrune.network.rs666.NetworkHandler;
 import org.redrune.utility.backend.OutLogger;
 
@@ -50,12 +46,6 @@ public class SystemManager {
 	 * Starts the worker
 	 */
 	public static void start() throws IOException {
-		if (GameFlags.runMasterServer && !MasterServerHandler.bind()) {
-			return;
-		}
-		if (!MasterClientHandler.connect()) {
-			return;
-		}
 		MAJOR_UPDATE_WORKER.start();
 		NetworkHandler.bind();
 		dumpTasks();
@@ -66,7 +56,7 @@ public class SystemManager {
 	 * Dumps all the tasks
 	 */
 	private static void dumpTasks() {
-		SCHEDULER.schedule(new MasterServerTasks());
+	
 	}
 	
 	/**

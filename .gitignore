@@ -16,3 +16,6 @@ hs_err_pid*
 *.iml
 *.project
 *.classpath
+
+# player saves
+/data/saves/*

@@ -4,9 +4,6 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.CommandEventContext;
 import org.redrune.game.node.entity.player.event.impl.CommandEvent;
 import org.redrune.game.world.World;
-import org.redrune.network.RS2MasterCommunication;
-import org.redrune.network.master.packet.out.client.build.ClientPrivateMessageBuilder;
-import org.redrune.network.master.packet.out.client.context.ClientPrivateMessageContext;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.PublicChatBuilder;
@@ -59,7 +56,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		byte length = packet.readByte();
 		String message = BufferUtils.decompressHuffman(packet, length);
 		
-		RS2MasterCommunication.writeMasterPacket(new ClientPrivateMessageBuilder(new ClientPrivateMessageContext(player.getNetworkSession().getUid(), player.getDetails().getUsername(), player.getDetails().getDominantRight().getClientRight(), name, message)).build());
+		//TODO: RS2MasterCommunication.writeMasterPacket(new ClientPrivateMessageBuilder(new ClientPrivateMessageContext(player.getNetworkSession().getUid(), player.getDetails().getUsername(), player.getDetails().getDominantRight().getClientRight(), name, message)).build());
 	}
 	
 	/**
