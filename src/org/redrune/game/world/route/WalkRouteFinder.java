@@ -530,9 +530,10 @@ public class WalkRouteFinder {
 				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
 				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
 				
-				Region region = RegionManager.getRegion(transmitRegionX << 8 | transmitRegionY);
+				Region region = RegionManager.getRegionAndLoad(transmitRegionX << 8 | transmitRegionY);
 				RegionMap map = region.getMap();
-				if (map == null || !region.allLoaded() || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
+				if (map == null || region.getLoadMapStage() != 2 || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
+					System.out.println("[id=" + region.getRegionId() + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
 					for (int fillX = startX; fillX < endX; fillX++) {
 						for (int fillY = startY; fillY < endY; fillY++) {
 							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;

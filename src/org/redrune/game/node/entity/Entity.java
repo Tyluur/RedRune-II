@@ -12,6 +12,7 @@ import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
 import org.redrune.game.world.region.Region;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.Priority;
 
@@ -187,6 +188,12 @@ public abstract class Entity extends Node implements EntityDetails {
 		for (int xCalc = minRegionX < 0 ? 0 : minRegionX; xCalc <= ((chunkX + mapHash) / 8); xCalc++) {
 			for (int yCalc = minRegionY < 0 ? 0 : minRegionY; yCalc <= ((chunkY + mapHash) / 8); yCalc++) {
 				int regionId = yCalc + (xCalc << 8);
+				/*
+				if (World.getRegion(regionId, isPlayer()) instanceof DynamicRegion) {
+					isAtDynamicRegion = true;
+				}
+				 */
+				RegionManager.getRegionAndLoad(regionId);
 				mapRegionsIds.add(regionId);
 			}
 		}

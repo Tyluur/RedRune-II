@@ -105,4 +105,11 @@ public final class PlayerDetails {
 		return false;
 	}
 	
+	/**
+	 * The display name of the player
+	 */
+	public String getDisplayName() {
+		return Misc.formatPlayerNameForDisplay(username);
+	}
+	
 }

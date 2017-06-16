@@ -3,8 +3,10 @@ package org.redrune.game.node.entity.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.link.*;
-import org.redrune.game.node.entity.player.link.chat.ContactChatManager;
+import org.redrune.game.node.entity.player.link.chat.ContactManager;
 import org.redrune.game.node.entity.player.link.prayer.PrayerManager;
+
+import java.util.HashMap;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,10 +27,10 @@ public final class PlayerManager {
 	private final PrayerManager prayers;
 	
 	/**
-	 * The friend manager
+	 * The chat manager
 	 */
 	@Getter
-	private final ContactChatManager contacts;
+	private final ContactManager contacts;
 	
 	/**
 	 * The interface manager of the player
@@ -68,7 +70,7 @@ public final class PlayerManager {
 	PlayerManager() {
 		this.notes = new NoteManager();
 		this.prayers = new PrayerManager();
-		this.contacts = new ContactChatManager();
+		this.contacts = new ContactManager();
 	}
 	
 	/**
@@ -89,6 +91,7 @@ public final class PlayerManager {
 		this.actions.setPlayer(player);
 		this.prayers.setPlayer(player);
 		this.contacts.setPlayer(player);
+		player.getSkills().setLevelsAdvanced(new HashMap<>());
 	}
 	
 }

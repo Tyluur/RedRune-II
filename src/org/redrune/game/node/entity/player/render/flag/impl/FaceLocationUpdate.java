@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -42,7 +43,7 @@ public class FaceLocationUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(Player outgoing, PacketBuilder bldr) {
 		if (npc) {
 			bldr.writeLEShortA(location.getX() << 1);
 			bldr.writeLEShortA(location.getY() << 1);

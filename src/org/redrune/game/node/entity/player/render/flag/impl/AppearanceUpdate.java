@@ -7,7 +7,6 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.utility.Misc;
 
 /**
  * Represents a player's appearance update flag.
@@ -38,7 +37,7 @@ public class AppearanceUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(Player outgoing, PacketBuilder bldr) {
 		PacketBuilder playerUpdate = new PacketBuilder();
 		int bitSet = 0;
 		bitSet |= 0x4; //Enable combat colouring.
@@ -106,7 +105,7 @@ public class AppearanceUpdate extends UpdateFlag {
 			playerUpdate.writeByte(appearance.getColor(i));
 		}
 		playerUpdate.writeShort(appearance.getRenderEmote());
-		playerUpdate.writeRS2String(Misc.formatPlayerNameForDisplay(player.getDetails().getUsername()));
+		playerUpdate.writeRS2String(player.getDetails().getDisplayName());
 		playerUpdate.writeByte(player.getSkills().getCombatLevel());
 		playerUpdate.writeShort(0);
 		playerUpdate.writeByte(0);

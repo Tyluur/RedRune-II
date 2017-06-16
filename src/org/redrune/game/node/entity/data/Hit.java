@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
+import java.util.Objects;
+
 /**
  * Represents a damage to hit.
  *
@@ -90,42 +92,15 @@ public class Hit {
 	}
 	
 	/**
-	 * Gets the mark of the hitsplat
+	 * Checks if the person who hit the player is the player
 	 *
 	 * @param player
 	 * 		The player
 	 * @param victim
 	 * 		The victim
 	 */
-	public int getMark(Player player, Entity victim) {
-		if (HitSplat.HEALED_DAMAGE == splat) {
-			return splat.getMark();
-		}
-		if (damage == 0) {
-			return HitSplat.MISSED.getMark();
-		}
-		int mark = splat.getMark();
-		if (critical) {
-			mark += 10;
-		}
-		if (!interactingWith(player, victim)) {
-			mark += 14;
-		}
-		return mark;
-	}
-	
-	/**
-	 * Checks if the player is interacting
-	 *
-	 * @param player
-	 * 		The player
-	 * @param victim
-	 * 		The victim
-	 */
-	// TODO: implementation
 	public boolean interactingWith(Player player, Entity victim) {
-		return false;
-		//return Objects.equals(player, victim) || Objects.equals(player, source);
+		return Objects.equals(player, victim) || Objects.equals(player, source);
 	}
 	
 	/**

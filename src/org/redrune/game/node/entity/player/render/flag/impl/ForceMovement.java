@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -38,7 +39,7 @@ public final class ForceMovement extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(Player outgoing, PacketBuilder bldr) {
 		Location myLocation = entity.getLocation();
 		Location fromLocation = entity.getLocation(); //Is this even needed?
 		Location toLocation = Location.create(movement[0], movement[1], 0);

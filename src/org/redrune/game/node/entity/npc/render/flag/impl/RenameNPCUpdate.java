@@ -1,5 +1,6 @@
 package org.redrune.game.node.entity.npc.render.flag.impl;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -26,7 +27,7 @@ public class RenameNPCUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(Player outgoing, PacketBuilder bldr) {
 		bldr.writeRS2String(name);
 	}
 	

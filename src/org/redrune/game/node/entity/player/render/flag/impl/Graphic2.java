@@ -1,5 +1,6 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -50,7 +51,7 @@ public class Graphic2 extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder blrd) {
+	public void write(Player outgoing, PacketBuilder blrd) {
 		if (npc) {
 			blrd.writeShort(id);
 			blrd.writeInt2(delay << 16);

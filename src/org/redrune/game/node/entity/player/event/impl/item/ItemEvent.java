@@ -243,6 +243,9 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 * 		The player
 	 */
 	public static void handleItemExamining(Player player, Item item) {
+		if (item == null) {
+			return;
+		}
 		String examine = ItemRepository.getExamine(item.getId());
 		if (examine != null) {
 			player.getTransmitter().sendMessage(examine, true);

@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -30,7 +31,7 @@ public class HitUpdate extends UpdateFlag {
 	// TODO: implement interactingWith (colored if we are fighting the guy hitting us or smomeshit)
 	
 	@Override
-	public void write(PacketBuilder bldr) {
+	public void write(Player outgoing, PacketBuilder bldr) {
 		final int size = entity.getHitMap().getHitList().size();
 		bldr.writeByteA(size); //Amount of hits
 		if (size == 0) {
@@ -53,7 +54,7 @@ public class HitUpdate extends UpdateFlag {
 				} else if (hit.isCritical()) {
 					type += 10;
 				}
-				if (false/*hit.getSource() == bldr.getPlayer() || entity == bldr.getPlayer()*/) {
+				if (hit.interactingWith(outgoing, hit.getSource())) {
 					bldr.writeSmart(type);
 				} else {
 					bldr.writeSmart(type + 14);
@@ -63,7 +64,7 @@ public class HitUpdate extends UpdateFlag {
 			}
 			bldr.writeSmart(hit.getDamage());
 			if (hit.getSoaked() > 0) {
-				if (false/*hit.getSource() == entity || entity == bldr.getPlayer()*/) {
+				if (hit.interactingWith(outgoing, hit.getSource())) {
 					bldr.writeSmart(5);
 				} else {
 					bldr.writeSmart(19);

@@ -1,10 +1,13 @@
 package org.redrune.game.world.region;
 
+import com.alex.io.InputStream;
 import lombok.Getter;
-import org.redrune.cache.parse.MapRegionParser;
+import lombok.Setter;
 import org.redrune.cache.parse.definition.ObjectDefinition;
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.impl.FloorItemTask;
+import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
@@ -16,10 +19,11 @@ import org.redrune.network.rs666.packet.outgoing.impl.FloorItemAdditionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.FloorItemRemovalBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ObjectAdditionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ObjectRemovalBuilder;
+import org.redrune.utility.backend.MapDataParser;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
+import org.redrune.utility.rs.CacheFilestore;
 import org.redrune.utility.rs.constant.RegionConstants;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -36,13 +40,13 @@ public class Region {
 	 * A list of players in this region.
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<Player> players;
+	private final CopyOnWriteArraySet<Player> players = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * A list of NPCs in this region.
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<NPC> npcs;
+	private final CopyOnWriteArraySet<NPC> npcs = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The id of the region
@@ -65,36 +69,43 @@ public class Region {
 	 * If all the spawns have been loaded.
 	 */
 	@Getter
-	private final boolean[] loadedFlags;
+	private final boolean[] loadedFlags = new boolean[2];
+	
+	/**
+	 * The map stage
+	 */
+	@Getter
+	@Setter
+	private volatile int loadMapStage;
 	
 	/**
 	 * The list of floor items
 	 */
-	private final CopyOnWriteArrayList<FloorItem> floorItems;
+	private final CopyOnWriteArrayList<FloorItem> floorItems = new CopyOnWriteArrayList<>();
 	
 	/**
 	 * A list of game defaultObjects on this region.
 	 */
 	@Getter
-	private final CopyOnWriteArrayList<GameObject> defaultObjects;
+	private final CopyOnWriteArrayList<GameObject> defaultObjects = new CopyOnWriteArrayList<>();
 	
 	/**
 	 * The list of objects that have been removed from the region.
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> removedObjects;
+	private final CopyOnWriteArraySet<GameObject> removedObjects = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The list of objects that have been spawned in the region
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> spawnedObjects;
+	private final CopyOnWriteArraySet<GameObject> spawnedObjects = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The list of objects that were deleted (these will never be spawned)
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> deletedObjects;
+	private final CopyOnWriteArraySet<GameObject> deletedObjects = RegionManager.findDeletedObjects(this);
 	
 	/**
 	 * Constructs a new {@code Region} {@code Object}.
@@ -104,15 +115,32 @@ public class Region {
 	 */
 	public Region(int regionId) {
 		this.regionId = regionId;
-		this.floorItems = new CopyOnWriteArrayList<>();
-		this.players = new CopyOnWriteArraySet<>();
-		this.npcs = new CopyOnWriteArraySet<>();
-		this.loadedFlags = new boolean[2];
-		
-		this.defaultObjects = new CopyOnWriteArrayList<>();
-		this.removedObjects = new CopyOnWriteArraySet<>();
-		this.spawnedObjects = new CopyOnWriteArraySet<>();
-		this.deletedObjects = RegionManager.findDeletedObjects(this);
+	}
+	
+	/**
+	 * Checks the region load map
+	 */
+	public Region checkLoadMap() {
+		if (getLoadMapStage() == 0) {
+			setLoadMapStage(1);
+			EngineWorkingSet.submitEngineWork(() -> {
+				try {
+					loadRegionMap();
+					setLoadMapStage(2);
+					if (!loadedFlags[RegionConstants.LOADED_OBJECTS_FLAG]) {
+						checkObjectSpawns();
+						loadedFlags[RegionConstants.LOADED_OBJECTS_FLAG] = true;
+					}
+					if (!loadedFlags[RegionConstants.LOADED_NPCS_FLAG]) {
+						loadNPCSpawns();
+						loadedFlags[RegionConstants.LOADED_NPCS_FLAG] = true;
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			});
+		}
+		return this;
 	}
 	
 	@Override
@@ -121,27 +149,95 @@ public class Region {
 	}
 	
 	/**
-	 * Loads the landscape
-	 *
-	 * @param keys
-	 * 		The keys
+	 * Loads the region map data from the cache.
 	 */
-	public void loadLandscape(int[] keys) {
-		if (RegionManager.BROKEN_REGIONS.contains(regionId)) {
-			System.out.println("Broken region #" + regionId);
-			return;
+	private void loadRegionMap() {
+		int regionX = (regionId >> 8);
+		int regionY = (regionId & 0xff);
+		int baseX = regionX << 6;
+		int baseY = regionY << 6;
+		int landArchiveId = 0;
+		byte[] landContainerData = new byte[0];
+		try {
+			landArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("l" + ((regionX)) + "_" + ((regionY)));
+			landContainerData = landArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(landArchiveId, 0, MapDataParser.getMapData(regionId));
+			int mapArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("m" + ((regionX) + "_" + ((regionY))));
+			byte[] mapContainerData = mapArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
+			byte[][][] mapSettings = mapContainerData == null ? null : new byte[4][64][64];
+			if (mapContainerData != null) {
+				InputStream mapStream = new InputStream(mapContainerData);
+				for (int plane = 0; plane < 4; plane++) {
+					for (int x = 0; x < 64; x++) {
+						for (int y = 0; y < 64; y++) {
+							while (true) {
+								int value = mapStream.readByte() & 0xff;
+								if (value == 0) {
+									break;
+								} else if (value == 1) {
+									mapStream.readByte();
+									break;
+								} else if (value <= 49) {
+									mapStream.readByte();
+								} else if (value <= 81) {
+									mapSettings[plane][x][y] = (byte) (value - 49);
+								}
+							}
+						}
+					}
+				}
+				// floor textures (water/lava)
+				for (int plane = 0; plane < 4; plane++) {
+					for (int x = 0; x < 64; x++) {
+						for (int y = 0; y < 64; y++) {
+							if ((mapSettings[plane][x][y] & 1) == 1) {
+								int height = plane;
+								if ((mapSettings[1][x][y] & 2) == 2) {
+									height--;
+								}
+								if (height >= 0 && height <= 3) {
+									forceGetRegionMap().addUnwalkable(height, x, y);
+								}
+							}
+						}
+					}
+				}
+			}
+			if (landContainerData != null) {
+				InputStream landStream = new InputStream(landContainerData);
+				int objectId = -1;
+				int incr;
+				while ((incr = landStream.readSmart2()) != 0) {
+					objectId += incr;
+					int location = 0;
+					int incr2;
+					while ((incr2 = landStream.readUnsignedSmart()) != 0) {
+						location += incr2 - 1;
+						int localX = (location >> 6 & 0x3f);
+						int localY = (location & 0x3f);
+						int plane = location >> 12;
+						int objectData = landStream.readUnsignedByte();
+						int type = objectData >> 2;
+						int rotation = objectData & 0x3;
+						if (localX < 0 || localX >= 64 || localY < 0 || localY >= 64) {
+							continue;
+						}
+						int objectPlane = plane;
+						if (mapSettings != null && (mapSettings[1][localX][localY] & 2) == 2) {
+							objectPlane--;
+						}
+						if (objectPlane < 0 || objectPlane >= 4 || plane < 0 || plane >= 4) {
+							continue;
+						}
+						spawnObject(new GameObject(objectId, type, rotation, Location.create(localX + baseX, localY + baseY, objectPlane)), localX, localY, true);
+					}
+				}
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
-		if (RegionManager.LOADED_REGIONS.contains(regionId)) {
-			return;
+		if (landContainerData == null && landArchiveId != -1 && MapDataParser.getMapData(regionId) != null) {
+			System.out.println("Missing xteas for region " + regionId + ".");
 		}
-		List<GameObject> defaultObjects = MapRegionParser.parseMap(regionId, keys);
-		RegionManager.LOADED_REGIONS.add(regionId);
-		if (defaultObjects.isEmpty()) {
-			return;
-		}
-		final int regionX = (regionId >> 8) * 64;
-		final int regionY = (regionId & 0xff) * 64;
-		defaultObjects.forEach(object -> spawnObject(object, new int[] { object.getLocation().getX() - regionX, object.getLocation().getY() - regionY }));
 	}
 	
 	/**
@@ -212,27 +308,12 @@ public class Region {
 				npcs.add(entity.toNPC());
 			}
 		}
-		if (entity.isPlayer()) {
-			loadRegionSpawns();
-		}
-	}
-	
-	/**
-	 * Loads all the region's spawns
-	 */
-	private void loadRegionSpawns() {
-		checkNPCSpawns();
-		checkObjectSpawns();
 	}
 	
 	/**
 	 * Checks for all spawns to be done
 	 */
-	private void checkNPCSpawns() {
-		if (loadedFlags[RegionConstants.LOADED_NPCS_FLAG]) {
-			return;
-		}
-		loadedFlags[RegionConstants.LOADED_NPCS_FLAG] = true;
+	private void loadNPCSpawns() {
 		NPCSpawnRepository.loadSpawns(regionId);
 	}
 	
@@ -240,10 +321,6 @@ public class Region {
 	 * Checks the object spawns
 	 */
 	private void checkObjectSpawns() {
-		if (loadedFlags[RegionConstants.LOADED_OBJECTS_FLAG]) {
-			return;
-		}
-		loadedFlags[RegionConstants.LOADED_OBJECTS_FLAG] = true;
 		// TODO: load object spawns
 	}
 	
@@ -467,31 +544,34 @@ public class Region {
 	}
 	
 	/**
-	 * Spawns an object
+	 * Spawns an object, with type {@link ObjectType#SERVER}
 	 *
 	 * @param object
 	 * 		The object
 	 */
 	public void spawnObject(GameObject object) {
-		spawnObject(object, null);
+		spawnObject(object, object.getLocation().getXInRegion(), object.getLocation().getYInRegion(), false);
 	}
 	
 	/**
-	 * Spawns an object into the region
+	 * Spawns an object
 	 *
 	 * @param object
 	 * 		The object
-	 * @param defaultObjectData
-	 * 		If the object is as default game object
+	 * @param localX
+	 * 		The local x of the object
+	 * @param localY
+	 * 		The local y of the object
+	 * @param original
+	 * 		If its an original cache object
 	 */
-	private void spawnObject(GameObject object, int[] defaultObjectData) {
-		boolean defaultObject = defaultObjectData != null;
-		if (defaultObject) {
+	private void spawnObject(GameObject object, int localX, int localY, boolean original) {
+		if (original) {
 			if (deleteListContains(object)) {
 				return;
 			}
 			addDefaultObject(object);
-			clip(object, defaultObjectData[0], defaultObjectData[1]);
+			clip(object, localX, localY);
 			return;
 		} else {
 			Optional<GameObject> spawnedOptional = findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());

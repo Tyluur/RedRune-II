@@ -30,7 +30,7 @@ public class PlayerDialogueMessage extends DialogueMessage {
 	public void send(Player player) {
 		int interfaceId = 63 + this.messages.length;
 		int[] componentOptions = getIComponentsIds(interfaceId);
-		String title = player.getDetails().getUsername();
+		String title = player.getDetails().getDisplayName();
 		String[] messages = getMessages(title, this.messages);
 		if (componentOptions == null || (messages.length) != componentOptions.length) {
 			return;

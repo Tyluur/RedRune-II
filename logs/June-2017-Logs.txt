@@ -1,27 +1,18 @@
-6/13/17 {
-	+	Added private messaging from different worlds
-	
-	
-	MEDIA
-	
-	[IMG]http://i.imgur.com/Qaf9h5F.png[/IMG]
-}
-
-
-6/10/17 {
-	+   Added the logout packet
-		-   This sends the player to the lobby or to login screen based on what button was clicked
-	+   Wrote a master server [login server] from scratch for multi-world support
-		-   This basically makes it so different worlds can communicate
-		-   We have support for one player being logged into one world at a time
-		-   The master server also verifies that the worlds are online every 10 seconds
-		-   The master server updates the lobby world selection screen with world info as well
-	+   Implemented the master server successfully and multi-world support is good!
+6/15/17 {
++   Fixed some region clipping bugs
++   Finished quick prayers
++   Added hit color changing
+	-   Based on RSWIKI entry
+		+    'Darker splats appear when someone takes damage not dealt or received by you, allowing you to easily distinguish damage in mulitplayer situations.'
++   Added shop management with buying + selling
+	-   Also support for custom item amounts [I.E. buying 10x noted sharks from the shop]
+	-   Support for custom item amounts is implemented in selling as well
 
 	MEDIA
 
-	[IMG]http://i.imgur.com/tp2lLbR.png[/IMG]
-	[img]http://i.imgur.com/HMhIjbG.png[/img]
+	[IMG]http://i.imgur.com/KH0fLeC.gif[/IMG]
+	[IMG]http://i.imgur.com/yZWvPqJ.png[/IMG]
+	[IMG]http://i.imgur.com/2ycxE51.gif[/IMG]
 }
 
 6/8/17 {

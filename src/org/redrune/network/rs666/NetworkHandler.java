@@ -4,8 +4,6 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
-import org.redrune.core.system.SystemManager;
-import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.codec.handshake.HandshakePacket;
 import org.redrune.network.rs666.packet.Packet;
@@ -18,7 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import static org.redrune.network.NetworkConstants.BASE_PORT_ID;
+import static org.redrune.game.GameConstants.MAIN_PORT_ID;
 
 /**
  * This is the network handler for the main game protocol. This initializes the main game server and the update server.
@@ -71,11 +69,7 @@ public final class NetworkHandler extends SimpleChannelHandler {
 			NetworkSession session = (NetworkSession) attached;
 			Player player = session.getPlayer();
 			if (player != null) {
-				if (player.getNetworkSession().isInLobby()) {
-					player.leaveLobby();
-				} else {
-					player.deregister();
-				}
+				player.deregister();
 			}
 			session.setPlayer(null);
 		} catch (Exception ex) {
@@ -84,25 +78,22 @@ public final class NetworkHandler extends SimpleChannelHandler {
 	}
 	
 	/**
-	 * Binds the local address to port {@link org.redrune.network.NetworkConstants#BASE_PORT_ID} + {@link
-	 * GameFlags#worldId}
+	 * Binds the local address to port {@link org.redrune.network.NetworkConstants#MAIN_PORT_ID}
 	 */
 	public static void bind() throws IOException {
-		int port = BASE_PORT_ID + GameFlags.worldId;
 		Executor executor = Executors.newCachedThreadPool();
 		
 		ServerBootstrap bootstrap = new ServerBootstrap();
-		ServerSocketChannelFactory socketFactory = new NioServerSocketChannelFactory(executor, executor, SystemManager.PROCESSOR_COUNT);
+		ServerSocketChannelFactory socketFactory = new NioServerSocketChannelFactory(executor, executor, Runtime.getRuntime().availableProcessors());
 		ChannelPipelineFactory pipelineFactory = new NetworkPipeline();
 		
-		bootstrap.setOption("localAddress", new InetSocketAddress(port));
+		bootstrap.setOption("localAddress", new InetSocketAddress(MAIN_PORT_ID));
 		bootstrap.setOption("child.tcpNoDelay", true);
 		
 		bootstrap.setFactory(socketFactory);
 		bootstrap.setPipelineFactory(pipelineFactory);
 		bootstrap.bind();
 		
-		logger.info("Network bound to port: " + port);
+		logger.info("Network bound to port: " + MAIN_PORT_ID);
 	}
-	
 }

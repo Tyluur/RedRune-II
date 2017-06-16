@@ -38,7 +38,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 				updateNPCMovement(npc, bldr);
 				// Update the npc is required, since it is conditionally valid.
 				if (npc.getUpdateMasks().isUpdateRequired()) {
-					updateNPC(updateBlock, npc);
+					updateNPC(player, updateBlock, npc);
 				}
 			} else {
 				// Signify the client that this npc needs to be removed.
@@ -62,7 +62,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 				localNpcs.add(npc);
 				addNewNpc(player, npc, bldr);
 				if (npc.getUpdateMasks() != null && npc.getUpdateMasks().isUpdateRequired()) {
-					updateNPC(updateBlock, npc);
+					updateNPC(player, updateBlock, npc);
 				}
 			}
 		}
@@ -111,7 +111,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 	 * @param npc
 	 * 		The npc.
 	 */
-	private static void updateNPC(PacketBuilder packet, NPC npc) {
+	private static void updateNPC(Player player, PacketBuilder packet, NPC npc) {
 		int maskdata = 0;
 		PriorityQueue<UpdateFlag> flags = new PriorityQueue<>(npc.getUpdateMasks().getFlagQueue());
 		for (UpdateFlag flag : flags) {
@@ -131,7 +131,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 			packet.writeByte((byte) (maskdata >> 16));
 		}
 		while (!flags.isEmpty()) {
-			flags.poll().write(packet);
+			flags.poll().write(player, packet);
 		}
 	}
 	

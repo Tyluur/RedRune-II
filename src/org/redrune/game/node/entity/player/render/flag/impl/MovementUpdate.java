@@ -31,8 +31,8 @@ public class MovementUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public void write(PacketBuilder outgoing) {
-		outgoing.writeByteS(type);
+	public void write(Player outgoing, PacketBuilder packet) {
+		packet.writeByteS(type);
 	}
 	
 	@Override

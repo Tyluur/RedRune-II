@@ -185,19 +185,29 @@ public final class ItemsContainer<T extends Item> {
 	/**
 	 * Gets the number of an item we have
 	 *
-	 * @param item
-	 * 		The item
+	 * @param itemId
+	 * 		The item id
 	 */
-	public int getNumberOf(Item item) {
+	public int getNumberOf(int itemId) {
 		int count = 0;
 		for (Item item1 : items) {
 			if (item1 != null) {
-				if (item1.getId() == item.getId()) {
+				if (item1.getId() == itemId) {
 					count += item1.getAmount();
 				}
 			}
 		}
 		return count;
+	}
+	
+	/**
+	 * Gets the number of an item we have
+	 *
+	 * @param item
+	 * 		The item
+	 */
+	public int getNumberOf(Item item) {
+		return getNumberOf(item.getId());
 	}
 	
 	/**

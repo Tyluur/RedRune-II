@@ -73,6 +73,16 @@ public class RegionManager {
 	}
 	
 	/**
+	 * Gets a region by its id, if it doesn't exist, and forces it to load
+	 *
+	 * @param regionId
+	 * 		The id of the region
+	 */
+	public static Region getRegionAndLoad(int regionId) {
+		return REGION_CACHE.computeIfAbsent(regionId, Region::new).checkLoadMap();
+	}
+	
+	/**
 	 * Gets a new region by the id
 	 *
 	 * @param regionId

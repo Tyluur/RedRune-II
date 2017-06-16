@@ -244,7 +244,7 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 			composer.writeByte((byte) (maskdata >> 16));
 		}
 		while (!flags.isEmpty()) {
-			flags.poll().write(composer);
+			flags.poll().write(writingFor, composer);
 		}
 	}
 	

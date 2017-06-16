@@ -50,15 +50,11 @@ public final class ObjectDefinitionParser {
 			objectDef.setSolid(false);
 			objectDef.setActionCount(0);
 		}
-		// bar
-		if (objectDef.getId() == 11763) {
+		int id = objectId;
+		// bar, bank booth, wildy ditch
+		if (objectDef.getId() == 11763 || objectDef.getName().contains("booth") || (id >= 1440 && id <= 1444 || id >= 65076 && id <= 65087)) {
 			objectDef.setClippingFlag(true);
 			objectDef.setSolid(true);
-			objectDef.setActionCount(2);
-		}
-		if (objectDef.getName().contains("booth")) {
-			objectDef.setClippingFlag(false);
-			objectDef.setSolid(false);
 			objectDef.setActionCount(2);
 		}
 		OBJECT_DEFINITIONS.put(objectId, objectDef);

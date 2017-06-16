@@ -32,6 +32,12 @@ public final class World {
 	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
 	
 	/**
+	 * The list of all players in the lobby
+	 */
+	@Getter
+	private final EntityList<Player> lobbyPlayers = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
+	
+	/**
 	 * The {@code EntityList} of all npcs that exist.
 	 */
 	@Getter
@@ -87,6 +93,23 @@ public final class World {
 		npc.register();
 		npcs.add(npc);
 		return npc;
+	}
+	
+	/**
+	 * Handles the removal of a player
+	 *
+	 * @param player
+	 * 		The player to remove
+	 */
+	public boolean removePlayer(Player player) {
+		if (players.contains(player)) {
+			players.remove(player);
+			return true;
+		} else if (lobbyPlayers.contains(player)) {
+			lobbyPlayers.remove(player);
+			return true;
+		}
+		return false;
 	}
 	
 	/**

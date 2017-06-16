@@ -13,15 +13,10 @@ import org.redrune.game.node.entity.player.render.PlayerRendering;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.world.World;
 import org.redrune.game.world.region.RegionManager;
-import org.redrune.network.RS2MasterCommunication;
-import org.redrune.network.master.packet.out.client.build.ClientSessionDisconnectionBuilder;
-import org.redrune.network.master.packet.out.client.context.ClientSessionDisconnectionContext;
-import org.redrune.network.master.server.login.MasterServerLogin;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.SkillConstants;
 import org.redrune.utility.rs.input.InputType;
 
@@ -103,15 +98,18 @@ public final class Player extends Entity {
 	@Setter
 	private transient NodeInteractionTask interactionTask;
 	
-	public Player(String username) {
+	public Player(String username, String password, NetworkSession session) {
 		super(GameConstants.HOME_LOCATION);
 		this.skills = new PlayerSkills();
-		this.details = new PlayerDetails(username);
+		this.details = new PlayerDetails(username, password);
 		this.equipment = new PlayerEquipment();
 		this.inventory = new PlayerInventory();
 		this.variables = new PlayerVariables();
 		this.manager = new PlayerManager();
 		this.bank = new PlayerBank();
+		
+		this.setNetworkSession(session);
+		this.getNetworkSession().setPlayer(this);
 	}
 	
 	@Override
@@ -124,6 +122,7 @@ public final class Player extends Entity {
 		equipment.sendContainer();
 		inventory.initialize();
 		skills.refreshAll();
+		manager.getNotes().sendLoginConfiguration();
 		
 		// renderable must be after this because of map region building...
 		
@@ -132,22 +131,19 @@ public final class Player extends Entity {
 		SequencialUpdate.getRenderablePlayers().add(this);
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		RegionManager.updateEntityRegion(this);
-		variables.putAttribute(AttributeKey.LAST_LONGIN_STAMP, System.currentTimeMillis());
-		details.setLastIp(Misc.getIpAddress(networkSession.getChannel()));
 		
-		System.out.println("Player registered into game:\t" + this);
+		System.out.println("Player registered to game:\t" + this);
 	}
 	
 	@Override
 	public void deregister() {
 		setRenderable(false);
 		
-		World.get().getPlayers().remove(this);
+		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
-		RS2MasterCommunication.writeMasterPacket(new ClientSessionDisconnectionBuilder(new ClientSessionDisconnectionContext(networkSession.getUid(), networkSession.isInLobby(), getDetails().getUsername(), MasterServerLogin.generateJsonFileText(this, false))).build());
 		
-		System.out.println("Player deregistered from game:\t" + this);
+		System.out.println("Player deregistered:\t" + this);
 	}
 	
 	@Override
@@ -167,9 +163,9 @@ public final class Player extends Entity {
 	public void registerTransients() {
 		super.registerTransients();
 		
+		this.manager.registerTransients(this);
 		this.transmitter = new NetworkTransmitter(this);
 		this.renderData = new PlayerRenderData(this);
-		this.manager.registerTransients(this);
 		
 		// actual player things
 		this.skills.setPlayer(this);
@@ -214,26 +210,17 @@ public final class Player extends Entity {
 	
 	@Override
 	public String toString() {
-		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + ", lobby=" + networkSession.isInLobby() + "]";
+		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
 	}
 	
 	/**
-	 * Logs the player out
-	 *
-	 * @param lobby
-	 * 		If they should be sent to the lobby
+	 * Registers a player to the lobby
 	 */
-	public void logout(boolean lobby) {
-		transmitter.send(new LogoutBuilder(lobby).build(this));
-	}
-	
-	/**
-	 * Removes the player from the lobby
-	 */
-	public void leaveLobby() {
-		RS2MasterCommunication.writeMasterPacket(new ClientSessionDisconnectionBuilder(new ClientSessionDisconnectionContext(networkSession.getUid(), networkSession.isInLobby(), getDetails().getUsername(), MasterServerLogin.generateJsonFileText(this, false))).build());
+	public void registerToLobby() {
+		registerTransients();
+		networkSession.write(new LobbyResponseBuilder().build(this));
 		
-		System.out.println("Player deregistered from lobby:\t" + this);
+		System.out.println("Player registered to lobby:\t" + this);
 	}
 	
 	/**
@@ -243,6 +230,7 @@ public final class Player extends Entity {
 		getTransmitter().send(new PlayerRendering().build(this));
 		getTransmitter().send(new NPCRendering().build(this));
 	}
+	
 	/**
 	 * Sends the settings to the client
 	 */

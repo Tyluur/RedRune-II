@@ -1,5 +1,6 @@
 package org.redrune.game.node.entity.player.render.flag;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -13,10 +14,12 @@ public abstract class UpdateFlag implements Comparable<UpdateFlag> {
 	/**
 	 * Writes the data to the packet specified.
 	 *
+	 * @param outgoing
+	 * 		The player the packet is going to
 	 * @param packet
-	 * 		The packet packet.
+	 * 		The packet
 	 */
-	public abstract void write(PacketBuilder packet);
+	public abstract void write(Player outgoing, PacketBuilder packet);
 	
 	@Override
 	public int compareTo(UpdateFlag flag) {

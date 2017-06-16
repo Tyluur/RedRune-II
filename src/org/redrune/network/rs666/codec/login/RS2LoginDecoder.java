@@ -5,11 +5,8 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
-import org.redrune.game.GameFlags;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
-import org.redrune.network.RS2MasterCommunication;
-import org.redrune.network.master.packet.out.client.build.ClientLoginResponseBuilder;
-import org.redrune.network.master.packet.out.client.context.ClientLoginResponseContext;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.codec.RS2GameDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.LoginResponseCodeBuilder;
@@ -34,7 +31,6 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 			if (state == LoginState.LOBBY_ENTRANCE || state == LoginState.GAME_ENTRANCE) {
 				session = new NetworkSession(channel);
 				session.getChannel().getPipeline().getContext("handler").setAttachment(session);
-				RS2MasterCommunication.getNetworkSessions().add(session);
 			}
 			if (state == LoginState.PRE_STAGE) {
 				if (BufferUtils.readableBytes(buffer) < 3) {
@@ -62,7 +58,6 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 						return session;
 					}
 				}
-				
 			} else if (state == LoginState.LOBBY_ENTRANCE) {
 				if (buffer.readable()) {
 					int rsaHeader = buffer.readByte();
@@ -82,7 +77,7 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					byte[] block = new byte[BufferUtils.readableBytes(buffer)];
 					buffer.readBytes(block);
 					ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
-					String username = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
+					String name = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
 					decryptedPayload.readByte(); // screen settings?
 					decryptedPayload.readByte();
 					for (int i = 0; i < 24; i++) {
@@ -95,15 +90,14 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					}
 					
 					// finished decoding
-					if (!RS2MasterCommunication.loginServerOnline()) {
-						session.getChannel().write(new LoginResponseCodeBuilder(ReturnCode.LOGIN_SERVER_OFFLINE).build(null));
-						return session;
-					}
 					
 					session.setInLobby(true);
-					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
+					session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 					
-					RS2MasterCommunication.writeMasterPacket(new ClientLoginResponseBuilder(new ClientLoginResponseContext(session.getUid(), username, password, session.isInLobby(), GameFlags.worldId)).build());
+					Player player = new Player(name, password, session);
+					player.registerToLobby();
+					
+					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
 					return session;
 				}
 				return session;
@@ -147,16 +141,14 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					session.getViewComponents().setScreenSizeX(width);
 					session.getViewComponents().setScreenSizeY(height);
 					session.getViewComponents().setDisplayMode(displayMode);
+					session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 					
-					if (!RS2MasterCommunication.loginServerOnline()) {
-						session.getChannel().write(new LoginResponseCodeBuilder(ReturnCode.LOGIN_SERVER_OFFLINE).build(null));
-						return session;
-					}
+					Player player = new Player(username, password, session);
+					
+					player.register();
 					
 					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
-					
-					RS2MasterCommunication.writeMasterPacket(new ClientLoginResponseBuilder(new ClientLoginResponseContext(session.getUid(), username, password, session.isInLobby(), GameFlags.worldId)).build());
-					return session;
+					return null;
 				}
 				return session;
 			}

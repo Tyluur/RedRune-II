@@ -81,7 +81,7 @@ public class FiremakingAction implements Action {
 					if (!player.getRegion().removeFloorItem(item)) {
 						return;
 					}
-					final GameObject spawnedFire = new GameObject(fire.getFireId(), 10, 0, tile);
+					final GameObject spawnedFire = new GameObject(fire.getObjectId(), 10, 0, tile);
 					player.getRegion().spawnObject(spawnedFire);
 					player.getSkills().addExperienceWithMultiplier(SkillConstants.FIREMAKING, increasedExperience(player, fire.getXp()));
 					SystemManager.getScheduler().schedule(new ScheduledTask(fire.getLife(), 1, false) {

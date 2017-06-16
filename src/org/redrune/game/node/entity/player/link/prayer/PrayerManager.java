@@ -13,10 +13,12 @@ import org.redrune.utility.rs.constant.HeadIcons.PrayerIcon;
 import org.redrune.utility.rs.constant.PrayerConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.stream.Collectors;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -68,7 +70,6 @@ public final class PrayerManager {
 		this.nextDrain = new long[30];
 		player.getTransmitter().send(new CS2ConfigBuilder(181, settingQuickPrayers ? 1 : 0).build(player));
 		player.getTransmitter().send(new ConfigPacketBuilder(1584, book == PrayerBook.CURSES ? 1 : 0).build(player));
-		setBook(PrayerBook.CURSES);
 	}
 	
 	/**
@@ -91,7 +92,6 @@ public final class PrayerManager {
 	 * 		The slot clicked
 	 */
 	public void handlePrayerSettings(int componentId, int slotId) {
-		System.out.println("componentId = [" + componentId + "], slotId = [" + slotId + "]");
 		if (componentId == 8) {
 			Optional<Prayer> optional = Prayer.findPrayerBySlot(slotId, book);
 			if (!optional.isPresent()) {
@@ -114,7 +114,7 @@ public final class PrayerManager {
 			// and we turn on the prayer
 			boolean activate = false;
 			if (!deactivatePrayer(prayer)) {
-				closePrayers(prayer);
+				closePrayers(prayer, false);
 				activePrayers.add(prayer);
 				activate = true;
 			}
@@ -139,7 +139,12 @@ public final class PrayerManager {
 			if (!prayer.canActivate(player)) {
 				return;
 			}
-			// TODO: finish this
+			// if we're not removing it, we're adding it
+			if (!removeQuickPrayer(prayer)) {
+				closePrayers(prayer, true);
+				quickPrayers.add(prayer);
+			}
+			refreshActivatedConfigs();
 		} else if (componentId == 43) {
 			settingQuickPrayers = false;
 			player.getTransmitter().send(new CS2ConfigBuilder(181, settingQuickPrayers ? 1 : 0).build(player));
@@ -173,12 +178,24 @@ public final class PrayerManager {
 	}
 	
 	/**
+	 * If the quick prayer was removed
+	 *
+	 * @param prayer
+	 * 		The prayer to remove
+	 */
+	public boolean removeQuickPrayer(Prayer prayer) {
+		return quickPrayers.remove(prayer);
+	}
+	
+	/**
 	 * Closes the prayers that this prayer requires closed
 	 *
 	 * @param prayer
 	 * 		The prayer
+	 * @param useQuickPrayers
+	 * 		If we should close the quick prayers list
 	 */
-	private boolean closePrayers(Prayer prayer) {
+	private boolean closePrayers(Prayer prayer, boolean useQuickPrayers) {
 		int[][] close = prayer.getPrayersToClose();
 		Set<Prayer> prayerSet = new TreeSet<>();
 		for (int[] closeArray : close) {
@@ -196,7 +213,7 @@ public final class PrayerManager {
 		}
 		int closed = 0;
 		for (Prayer toClose : prayerSet) {
-			if (activePrayers.remove(toClose)) {
+			if ((useQuickPrayers ? quickPrayers : activePrayers).remove(toClose)) {
 				closed++;
 			}
 		}
@@ -220,12 +237,18 @@ public final class PrayerManager {
 	 */
 	private void refreshActivatedConfigs() {
 		int value = 0;
-		for (Prayer prayer : activePrayers) {
+		for (Prayer prayer : (settingQuickPrayers ? quickPrayers : activePrayers)) {
+			if (prayer.getBook() != book) {
+				continue;
+			}
 			value += prayer.getActivationConfig();
 		}
 		int configId = book == PrayerBook.CURSES ? (settingQuickPrayers ? 1587 : 1582) : (settingQuickPrayers ? 1397 : 1395);
 		player.getTransmitter().send(new ConfigPacketBuilder(configId, value).build(player));
-		//System.out.println("config=" + configId + ":value=" + value);
+		// sets the orb to on/off
+		if (!settingQuickPrayers) {
+			player.getTransmitter().send(new CS2ConfigBuilder(182, value == 0 ? 0 : 1).build(player));
+		}
 	}
 	
 	/**
@@ -439,13 +462,15 @@ public final class PrayerManager {
 			player.getTransmitter().sendMessage("You have no quick prayers to activate.");
 			return;
 		}
+		List<Prayer> quickPrayers = this.quickPrayers.stream().filter(prayer -> prayer.getBook().equals(book)).collect(Collectors.toList());
 		quickPrayers.forEach(prayer -> {
+			closePrayers(prayer, false);
+			activePrayers.add(prayer);
 			prayer.activate(player);
 			resetDrainPrayer(prayer.getSlotId());
 			refreshActivatedConfigs();
 			updateHeadIcon();
 		});
-		System.out.println("Activated Prayers: " + quickPrayers);
 	}
 	
 	/**

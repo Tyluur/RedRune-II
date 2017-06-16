@@ -42,7 +42,7 @@ public enum Fire {
 	 * The object id of the fire
 	 */
 	@Getter
-	private int fireId;
+	private int objectId;
 	
 	/**
 	 * The experience given from lighting this fire
@@ -50,11 +50,11 @@ public enum Fire {
 	@Getter
 	private double xp;
 	
-	Fire(int logId, int level, int life, int fireId, double xp) {
+	Fire(int logId, int level, int life, int objectId, double xp) {
 		this.logId = logId;
 		this.level = level;
 		this.life = life;
-		this.fireId = fireId;
+		this.objectId = objectId;
 		this.xp = xp;
 	}
 	

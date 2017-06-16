@@ -1,5 +1,6 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
 
@@ -11,8 +12,8 @@ import org.redrune.network.rs666.packet.PacketBuilder;
 public class TeleportUpdate extends UpdateFlag {
 	
 	@Override
-	public void write(PacketBuilder outgoing) {
-		outgoing.writeByteC(127);
+	public void write(Player outgoing, PacketBuilder packet) {
+		packet.writeByteC(127);
 	}
 	
 	@Override
