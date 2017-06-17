@@ -117,20 +117,6 @@ public class Misc {
 	}
 	
 	/**
-	 * Formats the IP-Address.
-	 *
-	 * @param unformatted
-	 * 		The unformatted IP.
-	 * @return The formatted IP.
-	 */
-	public static final String formatIp(String unformatted) {
-		String ipAddress = unformatted;
-		ipAddress = ipAddress.replaceAll("/", "").replaceAll(" ", "");
-		ipAddress = ipAddress.substring(0, ipAddress.indexOf(":"));
-		return ipAddress;
-	}
-	
-	/**
 	 * Gets the direction the player is running
 	 *
 	 * @param dx
@@ -303,53 +289,6 @@ public class Misc {
 		while ((element = queue.poll()) != null) {
 			consumer.accept(element);
 		}
-	}
-	
-	/**
-	 * Getting the text in the file as a formatted {@code String} {@code Object}
-	 *
-	 * @param location
-	 * 		The location of the file
-	 */
-	public static String getText(String location) {
-		File file = new File(location);
-		if (!file.exists()) {
-			throw new IllegalStateException("File doesn't exist:\t" + file.getAbsolutePath());
-		}
-		StringBuilder text = new StringBuilder();
-		for (String fileText : getFileText(location)) {
-			text.append(fileText).append("\n");
-		}
-		return text.toString();
-	}
-	
-	/**
-	 * Gets the text from a file.
-	 *
-	 * @param file
-	 * 		The location of the file.
-	 * @return A list of the text in the file. Different lines are separated by different list indexes.
-	 */
-	public static List<String> getFileText(String file) {
-		List<String> text = new ArrayList<>();
-		File realFile = new File(file);
-		if (!realFile.exists()) {
-			return text;
-		}
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.equals("") || line.equals(" ")) {
-					continue;
-				}
-				text.add(line);
-			}
-			reader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return text;
 	}
 	
 	public static int getMoveDirection(int xOffset, int yOffset) {
@@ -563,10 +502,6 @@ public class Misc {
 		return ((int) (Math.atan2(-xOffset, -yOffset) * 2607.5945876176133)) & 0x3fff;
 	}
 	
-	public static Gson getGSON() {
-		return GSON;
-	}
-	
 	public static final int getRandom(int maxValue) {
 		return (int) (Math.random() * (maxValue + 1));
 	}
@@ -610,6 +545,57 @@ public class Misc {
 		}.getType());
 	}
 	
+	public static Gson getGSON() {
+		return GSON;
+	}
+	
+	/**
+	 * Getting the text in the file as a formatted {@code String} {@code Object}
+	 *
+	 * @param location
+	 * 		The location of the file
+	 */
+	public static String getText(String location) {
+		File file = new File(location);
+		if (!file.exists()) {
+			throw new IllegalStateException("File doesn't exist:\t" + file.getAbsolutePath());
+		}
+		StringBuilder text = new StringBuilder();
+		for (String fileText : getFileText(location)) {
+			text.append(fileText).append("\n");
+		}
+		return text.toString();
+	}
+	
+	/**
+	 * Gets the text from a file.
+	 *
+	 * @param file
+	 * 		The location of the file.
+	 * @return A list of the text in the file. Different lines are separated by different list indexes.
+	 */
+	public static List<String> getFileText(String file) {
+		List<String> text = new ArrayList<>();
+		File realFile = new File(file);
+		if (!realFile.exists()) {
+			return text;
+		}
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals("") || line.equals(" ")) {
+					continue;
+				}
+				text.add(line);
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return text;
+	}
+	
 	public static String format(Number number) {
 		return NumberFormat.getIntegerInstance().format(number);
 	}
@@ -624,4 +610,23 @@ public class Misc {
 		return formatIp(channel.getRemoteAddress().toString());
 	}
 	
+	/**
+	 * Formats the IP-Address.
+	 *
+	 * @param unformatted
+	 * 		The unformatted IP.
+	 * @return The formatted IP.
+	 */
+	public static final String formatIp(String unformatted) {
+		String ipAddress = unformatted;
+		ipAddress = ipAddress.replaceAll("/", "").replaceAll(" ", "");
+		ipAddress = ipAddress.substring(0, ipAddress.indexOf(":"));
+		return ipAddress;
+	}
+	
+	public static final int getDistance(int coordX1, int coordY1, int coordX2, int coordY2) {
+		int deltaX = Math.abs(coordX2 - coordX1);
+		int deltaY = Math.abs(coordY2 - coordY1);
+		return ((int) Math.ceil(Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2))));
+	}
 }

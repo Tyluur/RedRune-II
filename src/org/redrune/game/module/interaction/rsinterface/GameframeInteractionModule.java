@@ -67,7 +67,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 				}
 				break;
 			case LOGOUT_INTERFACE_ID:
-				//TODO: player.logout(componentId == 6);
+				player.logout(componentId == 6);
 				return true;
 			case OPTIONS_INTERFACE_ID:
 				switch (componentId) {

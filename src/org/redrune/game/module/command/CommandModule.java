@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerRight;
+import org.redrune.utility.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -89,8 +90,28 @@ public abstract class CommandModule {
 	 * @param slot
 	 * 		The slot
 	 */
-	protected Integer intParam(String[] args, int slot) {
+	protected int intParam(String[] args, int slot) {
 		return Integer.parseInt(args[slot]);
+	}
+	
+	/**
+	 * Gets an integer parameter if it exists, otherwise we return the default type. This is used for commands with
+	 * varags parameters
+	 *
+	 * @param args
+	 * 		The parameters
+	 * @param slot
+	 * 		The slot
+	 * @param defaultType
+	 * 		The default return
+	 */
+	protected int intParamOrDefault(String[] args, int slot, int defaultType) {
+		String param = Misc.getArrayEntry(args, slot);
+		if (param == null) {
+			return defaultType;
+		} else {
+			return Integer.parseInt(param);
+		}
 	}
 	
 	/**

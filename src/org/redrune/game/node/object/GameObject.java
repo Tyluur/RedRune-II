@@ -44,6 +44,15 @@ public class GameObject extends Node {
 	@Setter
 	private ObjectType spawnType;
 	
+	public GameObject(GameObject other) {
+		super(other.getLocation());
+		this.id = other.id;
+		this.type = other.type;
+		this.rotation = other.rotation;
+		this.definitions = other.definitions;
+		this.spawnType = other.spawnType;
+	}
+	
 	/**
 	 * Constructs a regular object with a 0 rotation and type 10.
 	 *
@@ -106,25 +115,25 @@ public class GameObject extends Node {
 	}
 	
 	@Override
-	public String toString() {
-		StringBuilder bldr = new StringBuilder();
-		bldr.append("[id=").append(id).append(", ");
-		if (getDefinitions().getName() != null &&!getDefinitions().getName().equals("null")) {
-			bldr.append("name=").append(getDefinitions().getName()).append(", ");
-		}
-		bldr.append("location=").append(getLocation()).append(", ");
-		bldr.append("type=").append(type).append(", ");
-		bldr.append("rotation=").append(rotation).append("]");
-		return bldr.toString();
-	}
-	
-	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof GameObject)) {
 			return false;
 		}
 		GameObject o = (GameObject) obj;
 		return o.id == id && o.type == type && o.rotation == rotation && o.getLocation().equals(getLocation()) && o.getSpawnType() == spawnType;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder bldr = new StringBuilder();
+		bldr.append("[id=").append(id).append(", ");
+		if (getDefinitions().getName() != null && !getDefinitions().getName().equals("null")) {
+			bldr.append("name=").append(getDefinitions().getName()).append(", ");
+		}
+		bldr.append("location=").append(getLocation().toString()).append(", ");
+		bldr.append("type=").append(type).append(", ");
+		bldr.append("rotation=").append(rotation).append("]");
+		return bldr.toString();
 	}
 	
 	/**

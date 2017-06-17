@@ -1,3 +1,34 @@
+6/16/17 {
++   Added hint icon outgoing packet
+	-   Support for sending the icon on entities [npc/players]
+	-   Support for sending the icon on tiles
+	-   Support for sending different types of icons
+	-   Support for sending icons on the minimap from a distance
+	-   Refactored the client incoming packet
++   Added a hint icon management system
+	-   Support for following entities around, even those that are not on the minimap anymore...
+		+   This can be used for things like target systems in the wilderness/pvp areas :]
++   Fixed a clipping issue with objects (wilderness ditch would take up 2 tiles in the Y)
++   Added woodcutting
+	-   All tree types are supported [with tree levels]
+	-   All hatchet types are supported (inferno adze included) [with priority for best axe] [hatchet levels too]
+	-   With support for inferno adze
++   Added projectile sending
++   Added object spawning per region
++   Added interface on object packet decoding, as well as pathfinding to the object
++
+
+MEDIA
+[img]http://i.imgur.com/xBSOZy6.png[/img]
+[img]http://i.imgur.com/xXK31N6.png[/img]
+[img]http://i.imgur.com/NfKcRTb.gif[/img]
+[img]http://i.imgur.com/wE8bIbc.gif[/img]
+[IMG]http://i.imgur.com/pFmFm5K.png[/img]
+[IMG]http://i.imgur.com/aKtRgoG.gif[/img]
+[IMG]http://i.imgur.com/8Zqhmnw.png[/img]
+[IMG]http://i.imgur.com/qIeQjth.png[/img]
+}
+
 6/15/17 {
 +   Fixed some region clipping bugs
 +   Finished quick prayers

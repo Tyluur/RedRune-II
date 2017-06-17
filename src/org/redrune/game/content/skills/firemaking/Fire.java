@@ -1,4 +1,4 @@
-package org.redrune.game.action.skill.firemaking;
+package org.redrune.game.content.skills.firemaking;
 
 import lombok.Getter;
 

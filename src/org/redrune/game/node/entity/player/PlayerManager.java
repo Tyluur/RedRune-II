@@ -40,6 +40,13 @@ public final class PlayerManager {
 	private transient InterfaceManager interfaces;
 	
 	/**
+	 * The hint icon manager of the player
+	 */
+	@Getter
+	@Setter
+	private transient HintIconManager hintIcons;
+	
+	/**
 	 * The event manager object
 	 */
 	@Getter
@@ -85,10 +92,12 @@ public final class PlayerManager {
 		this.setActions(new ActionManager());
 		this.setLocks(new LockManager());
 		this.setDialogues(new DialogueManager(player));
+		this.setHintIcons(new HintIconManager());
 		
 		this.interfaces.setPlayer(player);
 		this.notes.setPlayer(player);
 		this.actions.setPlayer(player);
+		this.hintIcons.setPlayer(player);
 		this.prayers.setPlayer(player);
 		this.contacts.setPlayer(player);
 		player.getSkills().setLevelsAdvanced(new HashMap<>());

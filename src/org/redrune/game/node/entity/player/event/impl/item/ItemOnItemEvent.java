@@ -1,7 +1,7 @@
 package org.redrune.game.node.entity.player.event.impl.item;
 
-import org.redrune.game.action.skill.firemaking.Fire;
-import org.redrune.game.action.skill.firemaking.FiremakingAction;
+import org.redrune.game.content.skills.firemaking.Fire;
+import org.redrune.game.content.skills.firemaking.FiremakingAction;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
@@ -44,7 +44,7 @@ public class ItemOnItemEvent extends Event<ItemOnItemContext> {
 		
 		Fire fire = FiremakingAction.getFire(player, usedItem, withItem);
 		if (fire != null) {
-			player.getManager().getActions().setAction(new FiremakingAction(fire));
+			player.getManager().getActions().startAction(new FiremakingAction(fire));
 		} else {
 			player.getTransmitter().sendMessage("Nothing interesting happens.");
 		}

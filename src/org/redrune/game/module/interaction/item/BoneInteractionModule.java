@@ -1,7 +1,7 @@
 package org.redrune.game.module.interaction.item;
 
-import org.redrune.game.action.skill.prayer.Bone;
-import org.redrune.game.action.skill.prayer.BoneBuryingAction;
+import org.redrune.game.content.skills.prayer.Bone;
+import org.redrune.game.content.skills.prayer.BoneBuryingAction;
 import org.redrune.game.module.type.ItemInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
@@ -27,7 +27,7 @@ public class BoneInteractionModule implements ItemInteractionModule {
 			if (bone == null) {
 				return false;
 			}
-			player.getManager().getActions().setAction(new BoneBuryingAction(bone, slotId));
+			player.getManager().getActions().startAction(new BoneBuryingAction(bone, slotId));
 			return true;
 		}
 	}

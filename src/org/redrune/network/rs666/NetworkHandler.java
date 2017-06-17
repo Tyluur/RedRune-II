@@ -69,7 +69,11 @@ public final class NetworkHandler extends SimpleChannelHandler {
 			NetworkSession session = (NetworkSession) attached;
 			Player player = session.getPlayer();
 			if (player != null) {
-				player.deregister();
+				if (player.isRenderable()) {
+					player.deregister();
+				} else {
+					player.deregisterLobby();
+				}
 			}
 			session.setPlayer(null);
 		} catch (Exception ex) {

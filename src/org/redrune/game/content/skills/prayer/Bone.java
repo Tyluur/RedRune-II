@@ -1,4 +1,4 @@
-package org.redrune.game.action.skill.prayer;
+package org.redrune.game.content.skills.prayer;
 
 import lombok.Getter;
 

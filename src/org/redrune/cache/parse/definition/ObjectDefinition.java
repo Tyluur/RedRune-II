@@ -221,9 +221,9 @@ public final class ObjectDefinition {
 		} else if (opcode == 2) {
 			name = stream.readRS2String();
 		} else if (opcode == 14) {
-			sizeY = stream.readUnsignedByte();
-		} else if (opcode == 15) {
 			sizeX = stream.readUnsignedByte();
+		} else if (opcode == 15) {
+			sizeY = stream.readUnsignedByte();
 		} else if (opcode == 17) {
 			solid = false;
 			actionCount = 0;
@@ -479,4 +479,25 @@ public final class ObjectDefinition {
 		return aByte3912;
 	}
 	
+	public boolean containsOption(int index, String option) {
+		if (options == null || options.length <= index || options[index] == null) {
+			return false;
+		}
+		return options[index].equals(option);
+	}
+	
+	public boolean containsOption(String option) {
+		if (options == null) {
+			return false;
+		}
+		for (String optionText : options) {
+			if (optionText == null) {
+				continue;
+			}
+			if (optionText.equalsIgnoreCase(option)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

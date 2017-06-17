@@ -16,6 +16,7 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
+import org.redrune.utility.repository.object.ObjectSpawnRepository;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -65,7 +66,8 @@ public class Bootstrap {
 			ModuleRepository.registerAllModules();
 			RegionDeletion.prepare();
 			DialogueRepository.loadSubscriptions();
-			CommandRepository.populate();
+			CommandRepository.populate(false);
+			ObjectSpawnRepository.get().loadAll();
 			MapDataParser.readAll();
 			ShopRepository.load();
 			
@@ -74,7 +76,7 @@ public class Bootstrap {
 			LOGGER.info("Successfully started " + GameConstants.SERVER_NAME + " #" + NetworkConstants.REVISION + " in " + STOPWATCH.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Unexpected error on initialization", e);
-			System.exit(1);
+			System.exit(0);
 		}
 	}
 	

@@ -25,8 +25,12 @@ public class CommandRepository {
 	
 	/**
 	 * Populates the {@link #COMMAND_MODULES}
+	 * @param reload
 	 */
-	public static void populate() {
+	public static void populate(boolean reload) {
+		if (reload) {
+			COMMAND_MODULES.clear();
+		}
 		for (String directory : Misc.getSubDirectories(CommandRepository.class)) {
 			Optional<PlayerRight> optional = PlayerRight.playerRightOptional(directory);
 			if (!optional.isPresent()) {

@@ -1,6 +1,5 @@
 package org.redrune.game.module.command.owner;
 
-import org.redrune.game.content.market.shop.ShopRepository;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
@@ -19,10 +18,10 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		ShopRepository.open(player, intParam(args, 1));
-//		player.getManager().getPrayers().setBook(PrayerBook.valueOf(args[1].toUpperCase()));
+		//		ShopRepository.open(player, intParam(args, 1));
+		//		player.getManager().getPrayers().setBook(PrayerBook.valueOf(args[1].toUpperCase()));
 		//player.getNetworkSession().getChannel().close();
-//		System.out.println(player.getRegion().getPlayers());
+		//		System.out.println(player.getRegion().getPlayers());
 		//			player.getManager().getPrayers().setIcon(PrayerIcon.valueOf(args[1].toUpperCase()));
 		//			player.getManager().getDialogues().startDialogue(new BankerNPCDialogue(), 45);
 	/*		Animation MODERN_ANIM = new Animation(8939, 0, false, Priority.HIGHEST);

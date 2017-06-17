@@ -55,10 +55,10 @@ public class RegionMap {
 	public void addObject(int plane, int x, int y, int sizeX, int sizeY, boolean solid, boolean notAlternative) {
 		int mask = 256;
 		if (solid) {
-			mask |= 131072;
+			mask |= 0x20000;
 		}
 		if (notAlternative) {
-			mask |= 1073741824;
+			mask |= 0x40000000;
 		}
 		for (int tileX = x; tileX < x + sizeX; tileX++) {
 			for (int tileY = y; tileY < y + sizeY; tileY++) {

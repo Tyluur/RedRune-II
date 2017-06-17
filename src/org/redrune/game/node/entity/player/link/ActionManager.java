@@ -30,12 +30,37 @@ public final class ActionManager {
 	private int delay;
 	
 	/**
+	 * Sets the action
+	 *
+	 * @param action
+	 * 		The action
+	 */
+	public void startAction(Action action) {
+		stopAction();
+		if (!action.start(player)) {
+			return;
+		}
+		this.action = action;
+	}
+	
+	/**
+	 * Forces the action to stop
+	 */
+	public void stopAction() {
+		if (action == null) {
+			return;
+		}
+		action.stop(player);
+		action = null;
+	}
+	
+	/**
 	 * Handles the processing of the action
 	 */
 	public void process() {
 		if (action != null) {
-			if (!action.process(player)) {
-				forceStop();
+			if (player.isDead() || !action.process(player)) {
+				stopAction();
 			}
 		}
 		if (delay > 0) {
@@ -47,37 +72,10 @@ public final class ActionManager {
 		}
 		int delay = action.processOnTicks(player);
 		if (delay == -1) {
-			forceStop();
+			stopAction();
 			return;
 		}
 		this.delay += delay;
-	}
-	
-	/**
-	 * Forces the action to stop
-	 */
-	public void forceStop() {
-		if (action == null) {
-			return;
-		}
-		action.stop(player);
-		action = null;
-	}
-	
-	/**
-	 * Sets the action
-	 *
-	 * @param action
-	 * 		The action
-	 * @return True if the action was started successfully, based on {@link Action#start(Player)}
-	 */
-	public boolean setAction(Action action) {
-		forceStop();
-		if (!action.start(player)) {
-			return false;
-		}
-		this.action = action;
-		return true;
 	}
 	
 	/**

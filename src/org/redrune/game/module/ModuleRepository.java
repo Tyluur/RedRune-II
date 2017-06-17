@@ -100,10 +100,14 @@ public class ModuleRepository {
 	 * @return {@code True} if it was handled successfully
 	 */
 	public static boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		for (InterfaceInteractionModule module : getInterfaceModules(interfaceId)) {
-			if (module.handle(player, interfaceId, componentId, itemId, slotId, packetId)) {
-				return true;
+		try {
+			for (InterfaceInteractionModule module : getInterfaceModules(interfaceId)) {
+				if (module.handle(player, interfaceId, componentId, itemId, slotId, packetId)) {
+					return true;
+				}
 			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 		return false;
 	}
@@ -130,10 +134,14 @@ public class ModuleRepository {
 	 * @return {@code True} if successfully interacted.
 	 */
 	public static boolean handle(Player player, NPC npc, InteractionOption option) {
-		for (NPCInteractionModule module : getNPCModules(npc.getId())) {
-			if (module.handle(player, npc, option)) {
-				return true;
+		try {
+			for (NPCInteractionModule module : getNPCModules(npc.getId())) {
+				if (module.handle(player, npc, option)) {
+					return true;
+				}
 			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 		return false;
 	}
@@ -161,10 +169,14 @@ public class ModuleRepository {
 	 * 		The option we clicked  @return {@code True} if successfully interacted.
 	 */
 	public static boolean handle(Player player, Item item, int slotId, InteractionOption option) {
-		for (ItemInteractionModule module : getItemModules(item.getId())) {
-			if (module.handle(player, item, slotId, option)) {
-				return true;
+		try {
+			for (ItemInteractionModule module : getItemModules(item.getId())) {
+				if (module.handle(player, item, slotId, option)) {
+					return true;
+				}
 			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 		return false;
 	}
@@ -191,10 +203,14 @@ public class ModuleRepository {
 	 * @return {@code True} if the interaction was successful
 	 */
 	public static boolean handle(Player player, GameObject object, InteractionOption option) {
-		for (ObjectInteractionModule module : getObjectModules(object.getId())) {
-			if (module.handle(player, object, option)) {
-				return true;
+		try {
+			for (ObjectInteractionModule module : getObjectModules(object.getId())) {
+				if (module.handle(player, object, option)) {
+					return true;
+				}
 			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 		return false;
 	}

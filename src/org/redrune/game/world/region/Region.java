@@ -21,6 +21,7 @@ import org.redrune.network.rs666.packet.outgoing.impl.ObjectAdditionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ObjectRemovalBuilder;
 import org.redrune.utility.backend.MapDataParser;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
+import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.CacheFilestore;
 import org.redrune.utility.rs.constant.RegionConstants;
 
@@ -55,28 +56,10 @@ public class Region {
 	private final int regionId;
 	
 	/**
-	 * The map of the region
-	 */
-	@Getter
-	private RegionMap map;
-	
-	/**
-	 * The clipped only map
-	 */
-	private RegionMap clipedOnlyMap;
-	
-	/**
 	 * If all the spawns have been loaded.
 	 */
 	@Getter
 	private final boolean[] loadedFlags = new boolean[2];
-	
-	/**
-	 * The map stage
-	 */
-	@Getter
-	@Setter
-	private volatile int loadMapStage;
 	
 	/**
 	 * The list of floor items
@@ -105,7 +88,25 @@ public class Region {
 	 * The list of objects that were deleted (these will never be spawned)
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> deletedObjects = RegionManager.findDeletedObjects(this);
+	private final CopyOnWriteArraySet<GameObject> deletedObjects;
+	
+	/**
+	 * The map of the region
+	 */
+	@Getter
+	private RegionMap map;
+	
+	/**
+	 * The clipped only map
+	 */
+	private RegionMap clipedOnlyMap;
+	
+	/**
+	 * The map stage
+	 */
+	@Getter
+	@Setter
+	private volatile int loadMapStage;
 	
 	/**
 	 * Constructs a new {@code Region} {@code Object}.
@@ -115,6 +116,12 @@ public class Region {
 	 */
 	public Region(int regionId) {
 		this.regionId = regionId;
+		this.deletedObjects = RegionManager.findDeletedObjects(this);
+	}
+	
+	@Override
+	public String toString() {
+		return "[id=" + regionId + ", players=" + players + ", npcs=" + npcs + "]";
 	}
 	
 	/**
@@ -141,11 +148,6 @@ public class Region {
 			});
 		}
 		return this;
-	}
-	
-	@Override
-	public String toString() {
-		return "[id=" + regionId + ", players=" + players + ", npcs=" + npcs + "]";
 	}
 	
 	/**
@@ -241,6 +243,20 @@ public class Region {
 	}
 	
 	/**
+	 * Checks the object spawns
+	 */
+	private void checkObjectSpawns() {
+		ObjectSpawnRepository.get().loadObjectSpawns(regionId);
+	}
+	
+	/**
+	 * Checks for all spawns to be done
+	 */
+	private void loadNPCSpawns() {
+		NPCSpawnRepository.loadSpawns(regionId);
+	}
+	
+	/**
 	 * Gets the region map, if it isn't set we create a new one that isn't clipped only
 	 */
 	public RegionMap forceGetRegionMap() {
@@ -248,6 +264,199 @@ public class Region {
 			map = new RegionMap(regionId, false);
 		}
 		return map;
+	}
+	
+	/**
+	 * Spawns an object
+	 *
+	 * @param object
+	 * 		The object
+	 * @param localX
+	 * 		The local x of the object
+	 * @param localY
+	 * 		The local y of the object
+	 * @param original
+	 * 		If its an original cache object
+	 */
+	private void spawnObject(GameObject object, int localX, int localY, boolean original) {
+		if (original) {
+			if (deleteListContains(object)) {
+				return;
+			}
+			addDefaultObject(object);
+			clip(object, localX, localY);
+			return;
+		}
+		Optional<GameObject> spawnedOptional = findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+		if (spawnedOptional.isPresent()) {
+			final GameObject spawned = spawnedOptional.get();
+			spawnedObjects.remove(spawned);
+			removedObjects.add(spawned);
+			unclip(spawned, spawned.getLocation().getXInRegion(), spawned.getLocation().getY());
+		}
+		spawnedObjects.add(object);
+		object.setSpawnType(ObjectType.SERVER);
+		clip(object, object.getLocation().getXInRegion(), object.getLocation().getYInRegion());
+		players.forEach(this::refreshAllObjects);
+	}
+	
+	/**
+	 * Checks if the deleted list contains the object
+	 *
+	 * @param object
+	 * 		The object
+	 */
+	private boolean deleteListContains(GameObject object) {
+		return deletedObjects.stream().anyMatch(deleted -> deleted.getId() == object.getId() && deleted.getLocation().equals(object.getLocation()) && deleted.getType() == object.getType());
+	}
+	
+	/**
+	 * Adds a game object.
+	 *
+	 * @param object
+	 * 		The object to add.
+	 */
+	private void addDefaultObject(GameObject object) {
+		object.setSpawnType(ObjectType.CACHE);
+		defaultObjects.add(object);
+	}
+	
+	/**
+	 * Clips an object
+	 *
+	 * @param object
+	 * 		The object
+	 * @param localX
+	 * 		The local x of the object
+	 * @param localY
+	 * 		The local y of the object
+	 */
+	private void clip(GameObject object, int localX, int localY) {
+		if (map == null) {
+			map = new RegionMap(regionId, false);
+		}
+		if (clipedOnlyMap == null) {
+			clipedOnlyMap = new RegionMap(regionId, true);
+		}
+		int plane = object.getLocation().getPlane();
+		int type = object.getType();
+		int rotation = object.getRotation();
+		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
+			return;
+		}
+		ObjectDefinition objectDefinition = object.getDefinitions();
+		if (type == 22 ? objectDefinition.getActionCount() != 1 : objectDefinition.getActionCount() == 0) {
+			return;
+		}
+		if (type >= 0 && type <= 3) {
+			if (!objectDefinition.isClippingFlag()) {
+				map.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type >= 9 && type <= 21) {
+			int sizeX;
+			int sizeY;
+			if (rotation != 1 && rotation != 3) {
+				sizeX = objectDefinition.getSizeX();
+				sizeY = objectDefinition.getSizeY();
+			} else {
+				sizeX = objectDefinition.getSizeY();
+				sizeY = objectDefinition.getSizeX();
+			}
+			map.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type == 22) {
+			map.addFloor(plane, localX, localY);
+		}
+	}
+	
+	/**
+	 * Gets a game object from the {@link #spawnedObjects} list.
+	 *
+	 * @param objectId
+	 * 		The id of the object, -1 if we should not check
+	 * @param x
+	 * 		The x coordinate of the object
+	 * @param y
+	 * 		The y coordinate of the object
+	 * @param plane
+	 * 		The plane of the object
+	 * @param type
+	 * 		The type of the object
+	 * @return The game object, or null if the list didn't contain this object.
+	 */
+	public Optional<GameObject> findSpawnedGameObject(int objectId, int x, int y, int plane, int type) {
+		return spawnedObjects.stream().filter(object -> {
+			if (objectId == -1) {
+				if (type == -1) {
+					return object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
+				} else {
+					return object.getType() == type && object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
+				}
+			} else {
+				if (type == -1) {
+					return objectId == object.getId() && object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
+				} else {
+					return objectId == object.getId() && type == object.getType() && object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
+				}
+			}
+		}).findFirst();
+	}
+	
+	/**
+	 * Unclips a game object
+	 *
+	 * @param object
+	 * 		The object
+	 * @param localX
+	 * 		The local x of the object
+	 * @param localY
+	 * 		The local y of the object
+	 */
+	public void unclip(GameObject object, int localX, int localY) {
+		if (map == null) {
+			map = new RegionMap(regionId, false);
+		}
+		if (clipedOnlyMap == null) {
+			clipedOnlyMap = new RegionMap(regionId, true);
+		}
+		int plane = object.getLocation().getPlane();
+		int type = object.getType();
+		int rotation = object.getRotation();
+		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
+			return;
+		}
+		ObjectDefinition objectDefinition = object.getDefinitions();
+		
+		if (type == 22 ? objectDefinition.getActionCount() != 1 : objectDefinition.getActionCount() == 0) {
+			return;
+		}
+		if (type >= 0 && type <= 3) {
+			map.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type >= 9 && type <= 21) {
+			int sizeX;
+			int sizeY;
+			if (rotation != 1 && rotation != 3) {
+				sizeX = objectDefinition.getSizeX();
+				sizeY = objectDefinition.getSizeY();
+			} else {
+				sizeX = objectDefinition.getSizeY();
+				sizeY = objectDefinition.getSizeX();
+			}
+			map.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isSolid()) {
+				clipedOnlyMap.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			}
+		} else if (type == 22) {
+			map.removeFloor(plane, localX, localY);
+		}
 	}
 	
 	/**
@@ -275,6 +484,18 @@ public class Region {
 			return -1; // cliped tile
 		}
 		return map.getMasks()[plane][localX][localY];
+	}
+	
+	/**
+	 * Checks if all the data has loaded
+	 */
+	public boolean allLoaded() {
+		for (boolean flag : loadedFlags) {
+			if (!flag) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -311,20 +532,6 @@ public class Region {
 	}
 	
 	/**
-	 * Checks for all spawns to be done
-	 */
-	private void loadNPCSpawns() {
-		NPCSpawnRepository.loadSpawns(regionId);
-	}
-	
-	/**
-	 * Checks the object spawns
-	 */
-	private void checkObjectSpawns() {
-		// TODO: load object spawns
-	}
-	
-	/**
 	 * Removes an entity from this region.
 	 *
 	 * @param entity
@@ -339,14 +546,16 @@ public class Region {
 	}
 	
 	/**
-	 * Adds a game object.
-	 *
-	 * @param object
-	 * 		The object to add.
+	 * Finds a game object, used to verify the existence of objects
+	 * @param object The object
+	 * @return
 	 */
-	private void addDefaultObject(GameObject object) {
-		object.setSpawnType(ObjectType.CACHE);
-		defaultObjects.add(object);
+	public Optional<GameObject> findAnyGameObject(GameObject object) {
+		if (object == null) {
+			return Optional.empty();
+		} else {
+			return findAnyGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+		}
 	}
 	
 	/**
@@ -534,16 +743,6 @@ public class Region {
 	}
 	
 	/**
-	 * Checks if the deleted list contains the object
-	 *
-	 * @param object
-	 * 		The object
-	 */
-	private boolean deleteListContains(GameObject object) {
-		return deletedObjects.stream().anyMatch(deleted -> deleted.getId() == object.getId() && deleted.getLocation().equals(object.getLocation()) && deleted.getType() == object.getType());
-	}
-	
-	/**
 	 * Spawns an object, with type {@link ObjectType#SERVER}
 	 *
 	 * @param object
@@ -551,179 +750,6 @@ public class Region {
 	 */
 	public void spawnObject(GameObject object) {
 		spawnObject(object, object.getLocation().getXInRegion(), object.getLocation().getYInRegion(), false);
-	}
-	
-	/**
-	 * Spawns an object
-	 *
-	 * @param object
-	 * 		The object
-	 * @param localX
-	 * 		The local x of the object
-	 * @param localY
-	 * 		The local y of the object
-	 * @param original
-	 * 		If its an original cache object
-	 */
-	private void spawnObject(GameObject object, int localX, int localY, boolean original) {
-		if (original) {
-			if (deleteListContains(object)) {
-				return;
-			}
-			addDefaultObject(object);
-			clip(object, localX, localY);
-			return;
-		} else {
-			Optional<GameObject> spawnedOptional = findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
-			if (spawnedOptional.isPresent()) {
-				final GameObject spawned = spawnedOptional.get();
-				spawnedObjects.remove(spawned);
-				removedObjects.add(spawned);
-				unclip(spawned, spawned.getLocation().getXInRegion(), spawned.getLocation().getY());
-			}
-			spawnedObjects.add(object);
-			object.setSpawnType(ObjectType.SERVER);
-		}
-		clip(object, object.getLocation().getXInRegion(), object.getLocation().getYInRegion());
-		players.forEach(this::refreshAllObjects);
-	}
-	
-	/**
-	 * Gets a game object from the {@link #spawnedObjects} list.
-	 *
-	 * @param objectId
-	 * 		The id of the object, -1 if we should not check
-	 * @param x
-	 * 		The x coordinate of the object
-	 * @param y
-	 * 		The y coordinate of the object
-	 * @param plane
-	 * 		The plane of the object
-	 * @param type
-	 * 		The type of the object
-	 * @return The game object, or null if the list didn't contain this object.
-	 */
-	public Optional<GameObject> findSpawnedGameObject(int objectId, int x, int y, int plane, int type) {
-		return spawnedObjects.stream().filter(object -> {
-			if (objectId == -1) {
-				if (type == -1) {
-					return object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
-				} else {
-					return object.getType() == type && object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
-				}
-			} else {
-				if (type == -1) {
-					return objectId == object.getId() && object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
-				} else {
-					return objectId == object.getId() && type == object.getType() && object.getLocation().getX() == x && object.getLocation().getY() == y && object.getLocation().getPlane() == plane;
-				}
-			}
-		}).findFirst();
-	}
-	
-	/**
-	 * Clips an object
-	 *
-	 * @param object
-	 * 		The object
-	 * @param localX
-	 * 		The local x of the object
-	 * @param localY
-	 * 		The local y of the object
-	 */
-	private void clip(GameObject object, int localX, int localY) {
-		if (map == null) {
-			map = new RegionMap(regionId, false);
-		}
-		if (clipedOnlyMap == null) {
-			clipedOnlyMap = new RegionMap(regionId, true);
-		}
-		int plane = object.getLocation().getPlane();
-		int type = object.getType();
-		int rotation = object.getRotation();
-		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
-			return;
-		}
-		ObjectDefinition objectDefinition = object.getDefinitions();
-		if (type == 22 ? objectDefinition.getActionCount() != 1 : objectDefinition.getActionCount() == 0) {
-			return;
-		}
-		if (type >= 0 && type <= 3) {
-			if (!objectDefinition.isClippingFlag()) {
-				map.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			}
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			}
-		} else if (type >= 9 && type <= 21) {
-			int sizeX;
-			int sizeY;
-			if (rotation != 1 && rotation != 3) {
-				sizeX = objectDefinition.getSizeX();
-				sizeY = objectDefinition.getSizeY();
-			} else {
-				sizeX = objectDefinition.getSizeY();
-				sizeY = objectDefinition.getSizeX();
-			}
-			map.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			}
-		} else if (type == 22) {
-			map.addFloor(plane, localX, localY);
-		}
-	}
-	
-	/**
-	 * Unclips a game object
-	 *
-	 * @param object
-	 * 		The object
-	 * @param localX
-	 * 		The local x of the object
-	 * @param localY
-	 * 		The local y of the object
-	 */
-	public void unclip(GameObject object, int localX, int localY) {
-		if (map == null) {
-			map = new RegionMap(regionId, false);
-		}
-		if (clipedOnlyMap == null) {
-			clipedOnlyMap = new RegionMap(regionId, true);
-		}
-		int plane = object.getLocation().getPlane();
-		int type = object.getType();
-		int rotation = object.getRotation();
-		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
-			return;
-		}
-		ObjectDefinition objectDefinition = object.getDefinitions();
-		
-		if (type == 22 ? objectDefinition.getActionCount() != 1 : objectDefinition.getActionCount() == 0) {
-			return;
-		}
-		if (type >= 0 && type <= 3) {
-			map.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			}
-		} else if (type >= 9 && type <= 21) {
-			int sizeX;
-			int sizeY;
-			if (rotation != 1 && rotation != 3) {
-				sizeX = objectDefinition.getSizeX();
-				sizeY = objectDefinition.getSizeY();
-			} else {
-				sizeX = objectDefinition.getSizeY();
-				sizeY = objectDefinition.getSizeX();
-			}
-			map.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			}
-		} else if (type == 22) {
-			map.removeFloor(plane, localX, localY);
-		}
 	}
 	
 	/**
@@ -742,15 +768,12 @@ public class Region {
 	}
 	
 	/**
-	 * Checks if all the data has loaded
+	 * Finds an npc by the id
+	 *
+	 * @param npcId
+	 * 		The id of the npc  we want
 	 */
-	public boolean allLoaded() {
-		for (boolean flag : loadedFlags) {
-			if (!flag) {
-				return false;
-			}
-		}
-		return true;
+	public Optional<NPC> findNPC(int npcId) {
+		return npcs.stream().filter(npc -> npc.getId() == npcId).findAny();
 	}
-	
 }

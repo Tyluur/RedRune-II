@@ -313,4 +313,9 @@ public abstract class Entity extends Node implements EntityDetails {
 	public int getWorld() {
 		return GameFlags.worldId;
 	}
+	
+	@Override
+	public String toString() {
+		return "Entity{" + "index=" + index + ", isPlayer=" + isPlayer() + ", lastRegion=" + lastRegion + ", lastLoadedLocation=" + lastLoadedLocation + '}';
+	}
 }

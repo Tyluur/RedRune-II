@@ -1,5 +1,7 @@
 package org.redrune.game.world.region;
 
+import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.item.FloorItem;
@@ -523,5 +525,60 @@ public class RegionManager {
 		int baseLocalX = x - ((regionId >> 8) * 64);
 		int baseLocalY = y - ((regionId & 0xff) * 64);
 		return region.getMaskClipedOnly(tile.getPlane(), baseLocalX, baseLocalY);
+	}
+	
+	/**
+	 * Adds a game object that will be removed after delay, and replaced with an item
+	 *
+	 * @param object
+	 * 		The object
+	 * @param itemReplaceId
+	 * 		The item that wil replace it
+	 * @param itemReplaceAmount
+	 * 		The amount of the item to replace with
+	 * @param ticks
+	 * 		The ticks
+	 */
+	public static void addTimedGamedObject(GameObject object, int itemReplaceId, int itemReplaceAmount, int ticks) {
+		object.getRegion().spawnObject(object);
+		SystemManager.getScheduler().schedule(new ScheduledTask(ticks, 1, false) {
+			@Override
+			public Runnable getTask() {
+				return () -> {
+					Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+					if (!optional.isPresent()) {
+						return;
+					}
+					GameObject gameObject = optional.get();
+					gameObject.getRegion().removeObject(gameObject);
+					RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 180, gameObject.getLocation(), null);
+				};
+			}
+		});
+	}
+	
+	/**
+	 * Spawns an object that is removed after x ticks
+	 *
+	 * @param object
+	 * 		The object
+	 * @param ticks
+	 * 		The ticks to wait
+	 */
+	public static void spawnTimedObject(GameObject object, int ticks) {
+		object.getRegion().spawnObject(object);
+		SystemManager.getScheduler().schedule(new ScheduledTask(ticks, 1, false) {
+			@Override
+			public Runnable getTask() {
+				return () -> {
+					Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+					if (!optional.isPresent()) {
+						return;
+					}
+					object.getRegion().removeObject(object);
+				};
+			}
+		});
+		
 	}
 }

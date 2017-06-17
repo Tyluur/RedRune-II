@@ -100,16 +100,14 @@ public final class World {
 	 *
 	 * @param player
 	 * 		The player to remove
+	 * @param lobby
 	 */
-	public boolean removePlayer(Player player) {
-		if (players.contains(player)) {
+	public void removePlayer(Player player, boolean lobby) {
+		if (!lobby) {
 			players.remove(player);
-			return true;
-		} else if (lobbyPlayers.contains(player)) {
+		} else {
 			lobbyPlayers.remove(player);
-			return true;
 		}
-		return false;
 	}
 	
 	/**

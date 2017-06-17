@@ -1,4 +1,4 @@
-package org.redrune.game.action.skill.prayer;
+package org.redrune.game.content.skills.prayer;
 
 import org.redrune.game.action.Action;
 import org.redrune.game.node.entity.player.Player;
@@ -34,8 +34,6 @@ public class BoneBuryingAction implements Action {
 	 */
 	private Item item;
 	
-	private int ticks = 0;
-	
 	public BoneBuryingAction(Bone bone, int slotId) {
 		this.bone = bone;
 		this.slotId = slotId;
@@ -44,38 +42,42 @@ public class BoneBuryingAction implements Action {
 	@Override
 	public boolean start(Player player) {
 		item = player.getInventory().getItems().get(slotId);
-		return bone != null && item != null && item.getId() == bone.getItemId();
-	}
-	
-	@Override
-	public boolean process(Player player) {
+		final boolean check = canCheck();
+		if (!check) {
+			return false;
+		}
+		player.sendAnimation(BURY_ANIMATION);
+		player.getManager().getLocks().lockIndefinitely(LockType.MOVEMENT, LockType.ITEM_INTERACTION);
+		player.getTransmitter().sendMessage("You dig a hole in the ground...", true);
 		return true;
 	}
 	
 	@Override
+	public boolean process(Player player) {
+		return canCheck();
+	}
+	
+	@Override
 	public int processOnTicks(Player player) {
-		switch (ticks) {
-			case 0:
-				player.sendAnimation(BURY_ANIMATION);
-				player.getManager().getLocks().lockIndefinitely(LockType.MOVEMENT, LockType.ITEM_INTERACTION);
-				player.getTransmitter().sendMessage("You dig a hole in the ground...", true);
-				break;
-			case 3:
-				if (!Objects.equals(player.getInventory().getItems().get(slotId), item)) {
-					return -1;
-				}
-				player.getManager().getLocks().unlock(LockType.MOVEMENT, LockType.ITEM_INTERACTION);
-				player.getTransmitter().sendMessage("You bury the " + item.getName().toLowerCase() + ".");
-				player.getSkills().addExperienceWithMultiplier(SkillConstants.PRAYER, bone.getExperience());
-				player.getInventory().deleteItem(slotId, item);
-				return -1;
+		if (!canCheck() || !Objects.equals(player.getInventory().getItems().get(slotId), item)) {
+			return -1;
 		}
-		ticks++;
-		return 0;
+		player.getManager().getLocks().unlock(LockType.MOVEMENT, LockType.ITEM_INTERACTION);
+		player.getTransmitter().sendMessage("You bury the " + item.getName().toLowerCase() + ".");
+		player.getSkills().addExperienceWithMultiplier(SkillConstants.PRAYER, bone.getExperience());
+		player.getInventory().deleteItem(slotId, item);
+		return 3;
 	}
 	
 	@Override
 	public void stop(Player player) {
 	
+	}
+	
+	/**
+	 * Checks to make sure everything is good to bury the bone.
+	 */
+	private boolean canCheck() {
+		return bone != null && item != null && item.getId() == bone.getItemId();
 	}
 }

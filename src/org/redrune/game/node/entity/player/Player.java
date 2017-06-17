@@ -136,11 +136,11 @@ public final class Player extends Entity {
 	public void deregister() {
 		setRenderable(false);
 		
-		World.get().removePlayer(this);
+		World.get().removePlayer(this, false);
 		RegionManager.updateEntityRegion(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
 		
-		System.out.println("Player deregistered:\t" + this);
+		System.out.println("Player deregistered from game:\t" + this);
 	}
 	
 	@Override
@@ -179,6 +179,11 @@ public final class Player extends Entity {
 	}
 	
 	@Override
+	public String toString() {
+		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
+	}
+	
+	@Override
 	public int getHitpoints() {
 		return variables.getHealthPoints();
 	}
@@ -194,6 +199,7 @@ public final class Player extends Entity {
 		manager.getEvents().process(this);
 		manager.getActions().process();
 		manager.getPrayers().process();
+		manager.getHintIcons().process();
 	}
 	
 	/**
@@ -205,18 +211,14 @@ public final class Player extends Entity {
 		}
 	}
 	
-	@Override
-	public String toString() {
-		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
-	}
-	
 	/**
 	 * Registers a player to the lobby
 	 */
 	public void registerToLobby() {
 		registerTransients();
-		networkSession.write(new LobbyResponseBuilder().build(this));
+		World.get().getLobbyPlayers().add(this);
 		
+		networkSession.write(new LobbyResponseBuilder().build(this));
 		System.out.println("Player registered to lobby:\t" + this);
 	}
 	
@@ -270,7 +272,7 @@ public final class Player extends Entity {
 			getTransmitter().sendMinimapFlagReset();
 		}
 		if (actions) {
-			getManager().getActions().forceStop();
+			getManager().getActions().stopAction();
 		}
 		turnTo(null);
 		
@@ -278,6 +280,25 @@ public final class Player extends Entity {
 		if (interactingNPC != null) {
 			interactingNPC.endPlayerInteraction(this);
 		}
+	}
+	
+	/**
+	 * Logs the player out
+	 *
+	 * @param lobby
+	 * 		If its going to the lobby
+	 */
+	public void logout(boolean lobby) {
+		transmitter.send(new LogoutBuilder(lobby).build(this));
+	}
+	
+	/**
+	 * Deregisters a player from the lobby
+	 */
+	public void deregisterLobby() {
+		World.get().removePlayer(this, true);
+		
+		System.out.println("Player deregistered from lobby:" + this);
 	}
 	
 }

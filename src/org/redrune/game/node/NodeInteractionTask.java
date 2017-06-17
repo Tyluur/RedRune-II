@@ -139,6 +139,11 @@ public class NodeInteractionTask {
 	 * 		The player executing it
 	 */
 	private void executeTask(Player player) {
+		// TODO:
+		// we've stopped walking, we need to check if we can interact with the node
+		// the problems that exist so far are interacting through walls...
+		// this is the case with entities and objects, floor item strategy/walk strategy
+		// verifies clipping first...
 		task.run();
 	}
 	

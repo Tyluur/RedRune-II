@@ -14,11 +14,14 @@ public class SpawnObjectCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("spawnobject");
+		return arguments("obj", "spawnobject");
 	}
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.getRegion().spawnObject(new GameObject(intParam(args, 1), 10, 1, player.getLocation()));
+		int objectId = intParam(args, 1);
+		int objectType = intParamOrDefault(args, 2, 10);
+		int objectRotation = intParamOrDefault(args, 3, 0);
+		player.getRegion().spawnObject(new GameObject(objectId, objectType, objectRotation, player.getLocation()));
 	}
 }

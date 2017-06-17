@@ -6,6 +6,7 @@ import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.event.context.ObjectEventContext;
 import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.node.entity.player.event.impl.ObjectEvent;
+import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.game.world.region.RegionManager;
@@ -22,41 +23,89 @@ import java.util.Optional;
  */
 public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 	
+	/**
+	 * The opcode for the interface on object packet
+	 */
+	public static final int INTERFACE_ON_OBJECT_OPCODE = 42;
+	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(1, 39, 86, 58, 38, 75);
+		return Misc.arguments(1, 39, 86, 58, 38, 75, INTERFACE_ON_OBJECT_OPCODE);
 	}
 	
 	@Override
 	public void read(Player player, Packet packet) {
-		int y = packet.readShortA();
-		int x = packet.readLEShortA();
-		int id = packet.readLEShort();
-		boolean forceRun = packet.readByte() == 1;
-		int packetId = packet.getOpcode();
-		int regionId = Location.getRegionId(x, y);
+		if (packet.getOpcode() == INTERFACE_ON_OBJECT_OPCODE) {
+			handleInterfaceOnObjectPacket(player, packet);
+		} else {
+			int y = packet.readShortA();
+			int x = packet.readLEShortA();
+			int id = packet.readLEShort();
+			boolean forceRun = packet.readByte() == 1;
+			int packetId = packet.getOpcode();
+			int regionId = Location.getRegionId(x, y);
+			
+			Optional<GameObject> optional = RegionManager.getRegion(regionId).findAnyGameObject(id, x, y, player.getLocation().getPlane(), -1);
+			if (!optional.isPresent()) {
+				System.out.println(id + ", " + x + ", " + y + " [ " + regionId + "]: N/A");
+				return;
+			}
+			GameObject object = optional.get();
+			InteractionOption option = getOption(packetId);
+			if (option == null) {
+				throw new IllegalStateException("Unexpected packet id " + packetId + ", could not find option.");
+			}
+			if (option != InteractionOption.EXAMINE) {
+				player.getMovement().reset(forceRun);
+				player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, option))))));
+			} else {
+				if (!player.getAttribute("remove_spawns", false)) {
+					// TODO object examines
+					player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + ", " + regionId + "], " + object.getType() + ", " + object.getRotation(), true);
+				} else {
+					player.getRegion().removeObject(object);
+					RegionDeletion.dumpObject(object);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Handles the interact on object packet interaction
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void handleInterfaceOnObjectPacket(Player player, Packet packet) {
+		final int y = packet.readLEShortA();
+		final int x = packet.readShort();
+		final int itemSlot = packet.readByte();
+		packet.readByte(); // unknown
+		final int fromInterface = packet.readLEShort();
+		packet.readShort(); // unknown
+		packet.readShort(); // item id
+		int runningFlag = packet.readByte();
+		final int objectId = packet.readLEShortA();
 		
-		Optional<GameObject> optional = RegionManager.getRegion(regionId).findAnyGameObject(id, x, y, player.getLocation().getPlane(), -1);
+		final int regionId = Location.getRegionId(x, y);
+		
+		Optional<GameObject> optional = RegionManager.getRegion(regionId).findAnyGameObject(objectId, x, y, player.getLocation().getPlane(), -1);
 		if (!optional.isPresent()) {
-			System.out.println(id + ", " + x + ", " + y + ": N/A");
+			System.out.println(objectId + ", " + x + ", " + y + " [ " + regionId + "]: N/A");
 			return;
 		}
 		GameObject object = optional.get();
-		InteractionOption option = getOption(packetId);
-		if (option == null) {
-			throw new IllegalStateException("Unexpected packet id " + packetId + ", could not find option.");
-		}
-		if (option != InteractionOption.EXAMINE) {
-			player.getMovement().reset(forceRun);
-			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, option))))));
-		} else {
-			if (!player.getAttribute("remove_spawns", false)) {
-				// TODO object examines
-				player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + "], " + object.getType() + ", " + object.getRotation(), true);
-			} else {
-				player.getRegion().removeObject(object);
-				RegionDeletion.dumpObject(object);
+		boolean forceRun = runningFlag > 0;
+		
+		if (fromInterface == 679) {
+			Item item = player.getInventory().getItems().get(itemSlot);
+			if (item == null) {
+				return;
 			}
+			player.getMovement().reset(forceRun);
+			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, InteractionOption.ITEM_ON_OBJECT, item))))));
 		}
 	}
 	

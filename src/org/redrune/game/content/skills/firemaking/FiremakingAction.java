@@ -1,4 +1,4 @@
-package org.redrune.game.action.skill.firemaking;
+package org.redrune.game.content.skills.firemaking;
 
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
@@ -81,23 +81,8 @@ public class FiremakingAction implements Action {
 					if (!player.getRegion().removeFloorItem(item)) {
 						return;
 					}
-					final GameObject spawnedFire = new GameObject(fire.getObjectId(), 10, 0, tile);
-					player.getRegion().spawnObject(spawnedFire);
+					RegionManager.addTimedGamedObject(new GameObject(fire.getObjectId(), 10, 0, tile), 592, 1, fire.getLife());
 					player.getSkills().addExperienceWithMultiplier(SkillConstants.FIREMAKING, increasedExperience(player, fire.getXp()));
-					SystemManager.getScheduler().schedule(new ScheduledTask(fire.getLife(), 1, false) {
-						@Override
-						public Runnable getTask() {
-							return () -> {
-								Optional<GameObject> fireOptional = RegionManager.getRegion(spawnedFire.getLocation().getRegionId()).findSpawnedGameObject(spawnedFire.getId(), spawnedFire.getLocation().getX(), spawnedFire.getLocation().getY(), spawnedFire.getLocation().getPlane(), spawnedFire.getType());
-								if (!fireOptional.isPresent()) {
-									return;
-								}
-								GameObject fire = fireOptional.get();
-								fire.getRegion().removeObject(fire);
-								RegionManager.addFloorItem(592, 1, 180, fire.getLocation(), null);
-							};
-						}
-					});
 					player.getUpdateMasks().register(new FaceLocationUpdate(player, tile));
 				};
 			}
@@ -126,11 +111,15 @@ public class FiremakingAction implements Action {
 			player.getTransmitter().sendMessage("You do not have the required level to light this.");
 			return false;
 		}
-		if (!RegionManager.canMoveNPC(player.getLocation().getPlane(), player.getLocation().getX(), player.getLocation().getY(), player.getSize()) || player.getRegion().findSpawnedGameObject(-1, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), -1).isPresent()) {
+		if (badFireLoction(player)) {
 			player.getTransmitter().sendMessage("You can't light a fire here.");
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean badFireLoction(Player player) {
+		return !RegionManager.canMoveNPC(player.getLocation().getPlane(), player.getLocation().getX(), player.getLocation().getY(), player.getSize()) || player.getRegion().findSpawnedGameObject(-1, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), -1).isPresent();
 	}
 	
 	/**
