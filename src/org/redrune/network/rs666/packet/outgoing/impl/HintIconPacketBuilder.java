@@ -22,33 +22,6 @@ public class HintIconPacketBuilder implements OutgoingPacketBuilder {
 		this.icon = icon;
 	}
 	
-	/*
-	public void sendHintIcon(HintIcon icon) {
-		            OutputStream stream = new OutputStream(13);
-		            stream.writePacket(player, 81);
-		            stream.writeByte((icon.getTargetType() & 0x1f) | (icon.getIndex() << 5));
-		            if (icon.getTargetType() == 0) {
-		                stream.skip(11);
-		            } else {
-		                stream.writeByte(icon.getArrowType());
-		                if (icon.getTargetType() == 1 || icon.getTargetType() == 10) {
-		                    stream.writeShort(icon.getTargetIndex());
-		                    stream.writeShort(0); // unknown
-		                    stream.skip(4);
-		                } else if ((icon.getTargetType() >= 2 && icon.getTargetType() <= 6)) { // directions
-		                    stream.writeByte(0); // unknown
-		                    stream.writeShort(icon.getCoordX());
-		                    stream.writeShort(icon.getCoordY());
-		                    stream.writeByte(icon.getDistanceFromFloor() * 4 >> 2);
-		                    stream.writeShort(0); // unknown
-		                }
-		                stream.writeShort(icon.getModelId());
-		            }
-		            session.write(stream);
-
-		        }
-			}
-	 */
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(116);

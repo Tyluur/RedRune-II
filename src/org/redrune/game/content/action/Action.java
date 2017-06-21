@@ -1,8 +1,10 @@
-package org.redrune.game.action;
+package org.redrune.game.content.action;
 
 import org.redrune.game.node.entity.player.Player;
 
 /**
+ * This interface provides methods to handle an action that is processed at a continuous tick rate.
+ *
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/29/2017
  */

@@ -17,18 +17,14 @@ import org.redrune.game.node.entity.player.link.LockManager.LockType;
 public class WalkEvent extends Event<WalkEventContext> {
 	
 	@Override
-	public boolean canStart(Player player) {
+	public boolean canStart(Player player, WalkEventContext context) {
 		return !player.getManager().getLocks().isLocked(LockType.MOVEMENT);
 	}
 	
 	/**
 	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
 	 */
-	public WalkEvent(WalkEventContext context) {
-		super(context);
+	public WalkEvent() {
 		setWalkablePolicy(WalkablePolicy.RESET);
 		setActionPolicy(ActionPolicy.RESET);
 		setAnimationPolicy(AnimationPolicy.RESET);
@@ -36,11 +32,11 @@ public class WalkEvent extends Event<WalkEventContext> {
 	}
 	
 	@Override
-	public void run(Player player) {
-		int[] bufferX = getContext().getBufferX();
-		int[] bufferY = getContext().getBufferY();
-		int steps = getContext().getSteps();
-		player.getMovement().reset(getContext().isRunning());
+	public void run(Player player, WalkEventContext context) {
+		int[] bufferX = context.getBufferX();
+		int[] bufferY = context.getBufferY();
+		int steps = context.getSteps();
+		player.getMovement().reset(context.isRunning());
 		int last = -1;
 		for (int i = steps - 1; i >= 0; i--) {
 			if (!player.getMovement().addWalkSteps(bufferX[i], bufferY[i], 25, true)) {

@@ -11,6 +11,7 @@ import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.content.market.shop.ShopRepository;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.module.command.CommandRepository;
+import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
@@ -69,6 +70,7 @@ public class Bootstrap {
 			CommandRepository.populate(false);
 			ObjectSpawnRepository.get().loadAll();
 			MapDataParser.readAll();
+			EventManager.registerEvents();
 			ShopRepository.load();
 			
 			// finalization

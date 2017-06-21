@@ -18,26 +18,22 @@ import java.util.Optional;
 public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 	
 	@Override
-	public boolean canStart(Player player) {
+	public boolean canStart(Player player, FloorItemPickupContext context) {
 		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
 	}
 	
 	/**
 	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
 	 */
-	public FloorItemPickupEvent(FloorItemPickupContext context) {
-		super(context);
+	public FloorItemPickupEvent() {
 		setInterfacePolicy(InterfacePolicy.CLOSE);
 		setActionPolicy(ActionPolicy.RESET);
 		setAnimationPolicy(AnimationPolicy.RESET);
 	}
 	
 	@Override
-	public void run(Player player) {
-		FloorItem floorItem = getContext().getFloorItem();
+	public void run(Player player, FloorItemPickupContext context) {
+		FloorItem floorItem = context.getFloorItem();
 		Optional<FloorItem> optional = player.getRegion().getFloorItem(floorItem.getId(), floorItem.getLocation().getX(), floorItem.getLocation().getY(), floorItem.getLocation()
 		.getPlane());
 		if (!optional.isPresent()) {

@@ -6,6 +6,7 @@ import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.event.context.ObjectEventContext;
 import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.node.entity.player.event.impl.ObjectEvent;
+import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.RegionDeletion;
@@ -57,7 +58,10 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 			}
 			if (option != InteractionOption.EXAMINE) {
 				player.getMovement().reset(forceRun);
-				player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, option))))));
+				EventManager.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
+					// executing the object interaction event
+					EventManager.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, option));
+				}));
 			} else {
 				if (!player.getAttribute("remove_spawns", false)) {
 					// TODO object examines
@@ -105,7 +109,10 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 				return;
 			}
 			player.getMovement().reset(forceRun);
-			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(object, () -> player.getManager().getEvents().executeEvent(player, new ObjectEvent(new ObjectEventContext(object, InteractionOption.ITEM_ON_OBJECT, item))))));
+			EventManager.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
+				// executing the object interaction event on arrival
+				EventManager.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, InteractionOption.ITEM_ON_OBJECT, item));
+			}));
 		}
 	}
 	

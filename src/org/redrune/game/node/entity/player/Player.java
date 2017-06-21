@@ -129,6 +129,10 @@ public final class Player extends Entity {
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		RegionManager.updateEntityRegion(this);
 		
+		networkSession.write(new PlayerOptionPacketBuilder("Attack", true, 1).build(this));
+		networkSession.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
+		networkSession.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
+		
 		System.out.println("Player registered to game:\t" + this);
 	}
 	
@@ -196,7 +200,6 @@ public final class Player extends Entity {
 	@Override
 	public void tick() {
 		checkInteractionTask();
-		manager.getEvents().process(this);
 		manager.getActions().process();
 		manager.getPrayers().process();
 		manager.getHintIcons().process();

@@ -3,6 +3,7 @@ package org.redrune.network.rs666.packet.incoming.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.CommandEventContext;
 import org.redrune.game.node.entity.player.event.impl.CommandEvent;
+import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.Misc;
@@ -27,6 +28,6 @@ public class CommandHandlerPacketDecoder implements IncomingPacketDecoder {
 		packet.readUnsignedByte();
 		String command = packet.readRS2String();
 		String[] args = command.toLowerCase().split(" ");
-		player.getManager().getEvents().executeEvent(player, new CommandEvent(new CommandEventContext(args, true)));
+		EventManager.executeEvent(player, CommandEvent.class, new CommandEventContext(args, true));
 	}
 }

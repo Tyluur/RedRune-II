@@ -19,6 +19,6 @@ public class MyPositionCommand extends CommandModule {
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
 		player.getTransmitter().sendMessage("Location[" + player.getLocation().toString() + "]");
-		player.getTransmitter().sendMessage("My Regions:" + (player.getMapRegionsIds()));
+		player.getTransmitter().sendMessage("         My Regions:" + (player.getMapRegionsIds()));
 	}
 }

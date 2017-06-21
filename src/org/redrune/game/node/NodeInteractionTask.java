@@ -3,12 +3,22 @@ package org.redrune.game.node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.FloorItem;
+import org.redrune.game.node.object.GameObject;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.RouteStrategy;
 import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.game.world.route.strategy.FloorItemStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
+import org.redrune.utility.Misc;
+import org.redrune.utility.rs.constant.Directions.Direction;
+
+import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.redrune.utility.rs.constant.Directions.Direction.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -35,6 +45,12 @@ public class NodeInteractionTask {
 	 * Contains last route strategies.
 	 */
 	private RouteStrategy[] last;
+	
+	/**
+	 * The destination the player will finally arrive at, this is used for verifying whether the node we're interacting
+	 * with can be reached.
+	 */
+	private Location destination;
 	
 	/**
 	 * Constructs a new path event
@@ -118,11 +134,11 @@ public class NodeInteractionTask {
 				player.getMovement().resetWalkSteps();
 				player.getTransmitter().sendMinimapFlag(last.getLocalX(player.getLastLoadedLocation()), last.getLocalY(player.getLastLoadedLocation()));
 				for (int step = steps - 1; step >= 0; step--) {
+					destination = new Location(bufferX[step], bufferY[step], node.getLocation().getPlane());
 					if (!player.getMovement().addWalkSteps(bufferX[step], bufferY[step], 25, true)) {
 						break;
 					}
 				}
-				
 				return false;
 			}
 			
@@ -130,21 +146,6 @@ public class NodeInteractionTask {
 			player.getTransmitter().sendMinimapFlagReset();
 			return true;
 		}
-	}
-	
-	/**
-	 * Executes the task
-	 *
-	 * @param player
-	 * 		The player executing it
-	 */
-	private void executeTask(Player player) {
-		// TODO:
-		// we've stopped walking, we need to check if we can interact with the node
-		// the problems that exist so far are interacting through walls...
-		// this is the case with entities and objects, floor item strategy/walk strategy
-		// verifies clipping first...
-		task.run();
 	}
 	
 	/**
@@ -194,6 +195,165 @@ public class NodeInteractionTask {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Executes the task
+	 *
+	 * @param player
+	 * 		The player executing it
+	 */
+	private void executeTask(Player player) {
+	/*	destination = node.getLocation();
+		Direction direction = getDirectionToNode(player);
+		// we couldn't find a direction [we only support N/S/W/E]
+		if (direction == null) {
+			task.run();
+			return;
+		}
+		final Set<Location> tiles = tilesBetweenDestinations(player.getLocation(), destination, direction);
+		// the set of walls that are between the player and the node.
+		Set<GameObject> walls = new LinkedHashSet<>();
+		// adding all the walls into the set
+		for (Location tile : tiles) {
+			dumpPossibleWalls(walls, tile);
+		}
+		boolean cantReach = false;
+		for (GameObject wall : walls) {
+			if (wallBetween(player, wall)) {
+				cantReach = true;
+				break;
+			}
+		}
+		if (cantReach) {
+			player.getTransmitter().sendMessage("You can't reach that!");
+		} else {
+			task.run();
+		}*/
+		task.run();
+	}
+	
+	/**
+	 * Checks if the wall is between the player and the node
+	 *
+	 * @param player
+	 * 		The player
+	 * @param wall
+	 * 		The wall
+	 */
+	private boolean wallBetween(Player player, GameObject wall) {
+		/*
+		rotation 2 - ahead east
+		rotation 0 - behind east
+		
+		rotation 1 - north ahead
+		rotation 3 - north behind
+		*/
+		boolean xAhead = wall.getLocation().getX() > player.getLocation().getX();
+		boolean yAhead = wall.getLocation().getY() > player.getLocation().getY();
+		int rotation = wall.getRotation();
+		if (xAhead) {
+			if (rotation == 0) {
+				return true;
+			}
+		} else {
+			if (rotation == 2) {
+				return true;
+			}
+		}
+		// we are on the same tile
+		if (!xAhead && !yAhead) {
+			Direction direction = getDirectionToNode(player);
+			if (direction == null) {
+				// safe
+				return true;
+			}
+			// if the wall is ahead or behind us
+			if (direction == NORTH && (rotation == 1 || rotation == 0)) {
+				return true;
+			}
+			// if the wall is
+			if (direction == SOUTH && rotation == 3) {
+				return true;
+			}
+			if (direction == WEST && rotation == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Puts all the walls between a location into a set of possible walls
+	 *
+	 * @param walls
+	 * 		The set of walls
+	 * @param tile
+	 * 		The tile the wall might exist on
+	 */
+	private void dumpPossibleWalls(Set<GameObject> walls, Location tile) {
+		Optional<GameObject> optional = RegionManager.getRegion(tile.getRegionId()).findAnyGameObject(-1, tile.getX(), tile.getY(), tile.getPlane(), 0);
+		if (!optional.isPresent()) {
+			optional = RegionManager.getRegion(tile.getRegionId()).findAnyGameObject(-1, tile.getX(), tile.getY(), tile.getPlane(), 1);
+			if (!optional.isPresent()) {
+				optional = RegionManager.getRegion(tile.getRegionId()).findAnyGameObject(-1, tile.getX(), tile.getY(), tile.getPlane(), 2);
+				if (!optional.isPresent()) {
+					optional = RegionManager.getRegion(tile.getRegionId()).findAnyGameObject(-1, tile.getX(), tile.getY(), tile.getPlane(), 3);
+					optional.ifPresent(walls::add);
+				} else {
+					walls.add(optional.get());
+				}
+			} else {
+				walls.add(optional.get());
+			}
+		} else {
+			walls.add(optional.get());
+		}
+	}
+	
+	private Direction getDirectionToNode(Player player) {
+		int dX = destination.getX(), dY = destination.getY();
+		int mX = player.getLocation().getX(), mY = player.getLocation().getY();
+		if (mX < dX) {
+			return EAST;
+		} else if (mX > dX) {
+			return WEST;
+		} else if (mY > dY) {
+			return SOUTH;
+		} else if (mY < dY) {
+			return NORTH;
+		}
+		return null;
+	}
+	
+	/**
+	 * Finding the tiles between two destinations
+	 *
+	 * @param start
+	 * 		The start location
+	 * @param end
+	 * 		The end location
+	 */
+	private static Set<Location> tilesBetweenDestinations(Location start, Location end, Direction direction) {
+		final int distance = Misc.getDistance(start.getX(), start.getY(), end.getX(), end.getY());
+		final Set<Location> tilesBetween = new LinkedHashSet<>();
+		for (int i = 0; i <= distance; i++) {
+			switch (direction) {
+				case EAST:
+					tilesBetween.add(start.transform(i, 0, 0));
+					break;
+				case WEST:
+					tilesBetween.add(start.transform(-i, 0, 0));
+					break;
+				case NORTH:
+					tilesBetween.add(start.transform(0, -i, 0));
+					break;
+				case SOUTH:
+					tilesBetween.add(start.transform(0, i, 0));
+					break;
+			}
+		}
+		return tilesBetween;
 	}
 	
 }

@@ -15,25 +15,10 @@ import org.redrune.utility.rs.InteractionOption;
  */
 public class NPCEvent extends Event<NPCEventContext> {
 	
-	/**
-	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
-	 */
-	public NPCEvent(NPCEventContext context) {
-		super(context);
-	}
-	
 	@Override
-	public boolean canStart(Player player) {
-		return !player.getManager().getLocks().isLocked(LockType.NPC_INTERACTION);
-	}
-	
-	@Override
-	public void run(Player player) {
-		NPC npc = getContext().getNpc();
-		InteractionOption option = getContext().getOption();
+	public void run(Player player, NPCEventContext context) {
+		NPC npc = context.getNpc();
+		InteractionOption option = context.getOption();
 		
 		player.turnTo(npc);
 		npc.startPlayerInteraction(player);
@@ -46,5 +31,10 @@ public class NPCEvent extends Event<NPCEventContext> {
 		}
 		player.getTransmitter().sendMessage("Nothing interesting happens.");
 		// TODO npc dialogues next
+	}
+	
+	@Override
+	public boolean canStart(Player player, NPCEventContext context) {
+		return !player.getManager().getLocks().isLocked(LockType.NPC_INTERACTION);
 	}
 }

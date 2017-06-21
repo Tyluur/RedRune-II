@@ -18,34 +18,24 @@ import org.redrune.utility.rs.InteractionOption;
  */
 public class ObjectEvent extends Event<ObjectEventContext> {
 	
-	/**
-	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
-	 */
-	public ObjectEvent(ObjectEventContext context) {
-		super(context);
-	}
-	
 	@Override
-	public boolean canStart(Player player) {
+	public boolean canStart(Player player, ObjectEventContext context) {
 		return !player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION);
 	}
 	
 	@Override
-	public void run(Player player) {
-		final GameObject object = getContext().getObject();
+	public void run(Player player, ObjectEventContext context) {
+		final GameObject object = context.getObject();
 		ObjectDefinition objectDef = object.getDefinitions();
 		int id = object.getId();
 		String name = objectDef.getName().toLowerCase();
 		
 		player.getUpdateMasks().register(new FaceLocationUpdate(player, object.getLocation()));
 		
-		if (ModuleRepository.handle(player, object, getContext().getOption())) {
+		if (ModuleRepository.handle(player, object, context.getOption())) {
 			return;
 		}
-		if (getContext().getOption().equals(InteractionOption.FIRST_OPTION)) {
+		if (context.getOption().equals(InteractionOption.FIRST_OPTION)) {
 			if (id == 61190 || id == 61191 || id == 61192 || id == 61193) {
 				if (objectDef.containsOption(0, "Chop down")) {
 					player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.NORMAL));
@@ -126,9 +116,9 @@ public class ObjectEvent extends Event<ObjectEventContext> {
 					}
 					break;
 			}
-		} else if (getContext().getOption().equals(InteractionOption.ITEM_ON_OBJECT)) {
+		} else if (context.getOption().equals(InteractionOption.ITEM_ON_OBJECT)) {
 			System.out.println(object);
-			System.out.println(getContext().getItem());
+			System.out.println(context.getItem());
 		}
 		player.getTransmitter().sendMessage("Nothing interesting happens.");
 	}

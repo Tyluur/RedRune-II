@@ -6,6 +6,7 @@ import org.redrune.game.node.entity.player.event.context.NPCEventContext;
 import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.event.impl.NPCEvent;
 import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
+import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
@@ -58,7 +59,10 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 		}
 		if (option != InteractionOption.EXAMINE) {
 			player.getMovement().reset(forceRun);
-			player.getManager().getEvents().executeEvent(player, new NodeReachEvent(new NodeReachEventContext(npc, () -> player.getManager().getEvents().executeEvent(player, new NPCEvent(new NPCEventContext(npc, option))))));
+			EventManager.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(npc, () -> {
+				// executing the npc interaction event on arrival
+				EventManager.executeEvent(player, NPCEvent.class, new NPCEventContext(npc, option));
+			}));
 		} else {
 			player.getTransmitter().sendMessage(npc.toString(), true);
 		}

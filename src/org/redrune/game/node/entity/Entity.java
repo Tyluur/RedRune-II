@@ -7,6 +7,7 @@ import org.redrune.cache.parse.definition.AnimationDefinition;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
@@ -85,6 +86,11 @@ public abstract class Entity extends Node implements EntityDetails {
 		super(location);
 	}
 	
+	@Override
+	public String toString() {
+		return "Entity{" + "index=" + index + ", isPlayer=" + isPlayer() + ", lastRegion=" + lastRegion + ", lastLoadedLocation=" + lastLoadedLocation + '}';
+	}
+	
 	/**
 	 * Registers all transient variables
 	 */
@@ -127,19 +133,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	@SuppressWarnings("unchecked")
 	public <T> T getAttribute(Object key) {
 		return (T) attributes.get(key);
-	}
-	
-	/**
-	 * Puts the key into the attributes map
-	 *
-	 * @param key
-	 * 		The key
-	 * @param value
-	 * 		The value
-	 */
-	public <T> T putAttribute(Object key, T value) {
-		attributes.put(key, value);
-		return value;
 	}
 	
 	/**
@@ -226,6 +219,18 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Gets the client index of the entity.
+	 *
+	 * @return The client index.
+	 */
+	private int getClientIndex() {
+		if (isPlayer()) {
+			return index + 0x8000;
+		}
+		return index;
+	}
+	
+	/**
 	 * Moves to a location
 	 *
 	 * @param location
@@ -233,6 +238,19 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public void moveTo(Location location) {
 		putAttribute(AttributeKey.TELEPORT_LOCATION, location);
+	}
+	
+	/**
+	 * Puts the key into the attributes map
+	 *
+	 * @param key
+	 * 		The key
+	 * @param value
+	 * 		The value
+	 */
+	public <T> T putAttribute(Object key, T value) {
+		attributes.put(key, value);
+		return value;
 	}
 	
 	/**
@@ -289,18 +307,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Gets the client index of the entity.
-	 *
-	 * @return The client index.
-	 */
-	private int getClientIndex() {
-		if (isPlayer()) {
-			return index + 0x8000;
-		}
-		return index;
-	}
-	
-	/**
 	 * If we are dead
 	 */
 	public boolean isDead() {
@@ -314,8 +320,14 @@ public abstract class Entity extends Node implements EntityDetails {
 		return GameFlags.worldId;
 	}
 	
-	@Override
-	public String toString() {
-		return "Entity{" + "index=" + index + ", isPlayer=" + isPlayer() + ", lastRegion=" + lastRegion + ", lastLoadedLocation=" + lastLoadedLocation + '}';
+	/**
+	 * Checks if we are attackable by a player
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public boolean attackable(Player player) {
+		return true;
 	}
+	
 }

@@ -5,6 +5,7 @@ import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.item.ItemRemovalContext;
 import org.redrune.game.node.entity.player.event.impl.item.ItemRemovalEvent;
+import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 
@@ -37,7 +38,7 @@ public class WornEquipmentInteractionModule implements InterfaceInteractionModul
 				return true;
 			}
 			SlotAction action = optional.get();
-			player.getManager().getEvents().executeEvent(player, new ItemRemovalEvent(new ItemRemovalContext(action.getEquipmentSlot())));
+			EventManager.executeEvent(player, ItemRemovalEvent.class, new ItemRemovalContext(action.getEquipmentSlot()));
 		}
 		return true;
 	}

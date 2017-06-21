@@ -2,7 +2,7 @@ package org.redrune.game.content.skills.firemaking;
 
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.action.Action;
+import org.redrune.game.content.action.Action;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;

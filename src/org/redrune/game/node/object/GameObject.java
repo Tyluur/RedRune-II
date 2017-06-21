@@ -7,6 +7,9 @@ import org.redrune.cache.parse.definition.ObjectDefinition;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/26/2017
@@ -132,8 +135,77 @@ public class GameObject extends Node {
 		}
 		bldr.append("location=").append(getLocation().toString()).append(", ");
 		bldr.append("type=").append(type).append(", ");
+//		bldr.append("clip=").append(getDefinitions().isClippingFlag()).append(",");
+//		bldr.append("solid=").append(getDefinitions().isSolid()).append(", ");
 		bldr.append("rotation=").append(rotation).append("]");
 		return bldr.toString();
+	}
+	
+	/**
+	 * Gets a list of the tiles the object occupies
+	 */
+	public Set<Location> tilesOccupied() {
+		final int rotation = getRotation();
+		final Set<Location> tileList = new HashSet<>();
+		
+		int sizeX;
+		int sizeY;
+		if (rotation != 1 && rotation != 3) {
+			sizeX = getDefinitions().getSizeX();
+			sizeY = getDefinitions().getSizeY();
+		} else {
+			sizeX = getDefinitions().getSizeY();
+			sizeY = getDefinitions().getSizeX();
+		}
+		
+		for (int i = 0; i < sizeX; i++) {
+			tileList.add(new Location(getLocation().getX() + i, getLocation().getY(), getLocation().getPlane()));
+		}
+		for (int i = 0; i < sizeY; i++) {
+			tileList.add(new Location(getLocation().getX(), getLocation().getY() + i, getLocation().getPlane()));
+		}
+		return tileList;
+	}
+	
+	/**
+	 * Checks if the object tiles used contains a specific tile
+	 *
+	 * @param tile
+	 * 		The tile to check
+	 */
+	public boolean containsTile(Location tile) {
+		for (Location tiles : tilesOccupied()) {
+			if (tiles.equals(tile)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Gets the accurate size x of the object, taking the rotation into consideration.
+	 */
+	public int getAccurateSizeX() {
+		int sizeX;
+		if (rotation != 1 && rotation != 3) {
+			sizeX = getDefinitions().getSizeX();
+		} else {
+			sizeX = getDefinitions().getSizeY();
+		}
+		return sizeX;
+	}
+	
+	/**
+	 * Gets the accurate size x of the object, taking the rotation into consideration
+	 */
+	public int getAccurateSizeY() {
+		int sizeY;
+		if (rotation != 1 && rotation != 3) {
+			sizeY = getDefinitions().getSizeY();
+		} else {
+			sizeY = getDefinitions().getSizeX();
+		}
+		return sizeY;
 	}
 	
 	/**

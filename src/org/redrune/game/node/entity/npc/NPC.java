@@ -138,4 +138,9 @@ public class NPC extends Entity {
 			turnTo(null);
 		}
 	}
+	
+	@Override
+	public boolean attackable(Player player) {
+		return super.attackable(player);
+	}
 }

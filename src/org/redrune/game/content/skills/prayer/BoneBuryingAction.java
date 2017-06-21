@@ -1,6 +1,6 @@
 package org.redrune.game.content.skills.prayer;
 
-import org.redrune.game.action.Action;
+import org.redrune.game.content.action.Action;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.item.Item;

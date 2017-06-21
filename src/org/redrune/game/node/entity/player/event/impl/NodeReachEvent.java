@@ -16,19 +16,10 @@ import org.redrune.game.node.NodeInteractionTask;
  */
 public class NodeReachEvent extends Event<NodeReachEventContext> {
 	
-	@Override
-	public boolean canStart(Player player) {
-		return !(getContext().getNode().isNPC() && player.getManager().getLocks().isLocked(LockType.NPC_INTERACTION) || getContext().getNode().isGameObject() && player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION) || getContext().getNode().isItem() && player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION) || getContext().getNode().isPlayer() && player.getManager().getLocks().isLocked(LockType.PLAYER_INTERACTION));
-	}
-	
 	/**
 	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
 	 */
-	public NodeReachEvent(NodeReachEventContext context) {
-		super(context);
+	public NodeReachEvent() {
 		setWalkablePolicy(WalkablePolicy.RESET);
 		setInterfacePolicy(InterfacePolicy.CLOSE);
 		setAnimationPolicy(AnimationPolicy.RESET);
@@ -36,8 +27,13 @@ public class NodeReachEvent extends Event<NodeReachEventContext> {
 	}
 	
 	@Override
-	public void run(Player player) {
-		player.setInteractionTask(new NodeInteractionTask(getContext().getNode(), getContext().getTask(), getContext().getNode().isGameObject() || getContext().getNode().isNPC()));
+	public void run(Player player, NodeReachEventContext context) {
+		player.setInteractionTask(new NodeInteractionTask(context.getNode(), context.getTask(), context.getNode().isGameObject() || context.getNode().isNPC()));
 		player.checkInteractionTask();
+	}
+	
+	@Override
+	public boolean canStart(Player player, NodeReachEventContext context) {
+		return !(context.getNode().isNPC() && player.getManager().getLocks().isLocked(LockType.NPC_INTERACTION) || context.getNode().isGameObject() && player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION) || context.getNode().isItem() && player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION) || context.getNode().isPlayer() && player.getManager().getLocks().isLocked(LockType.PLAYER_INTERACTION));
 	}
 }

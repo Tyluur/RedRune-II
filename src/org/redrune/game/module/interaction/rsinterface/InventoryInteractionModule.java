@@ -4,6 +4,7 @@ import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.item.ItemEventContext;
 import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
+import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.Misc;
@@ -33,7 +34,7 @@ public class InventoryInteractionModule implements InterfaceInteractionModule {
 			System.out.println("Unable to find interaction option for packet: " + packetId);
 			return true;
 		}
-		player.getManager().getEvents().executeEvent(player, new ItemEvent(new ItemEventContext(item, slotId, option)));
+		EventManager.executeEvent(player, ItemEvent.class, new ItemEventContext(item, slotId, option));
 		return true;
 	}
 	

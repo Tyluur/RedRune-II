@@ -1,8 +1,11 @@
 package org.redrune.utility.rs.constant;
 
+import lombok.Getter;
 import org.redrune.game.node.Location;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Represents the walking and running directions.
@@ -199,6 +202,10 @@ public class Directions {
 		public int npcIntValue() {
 			throw new UnsupportedOperationException("The GNP protocol does not support 2 step running directions!");
 		}
+		
+		public static Optional<RunningDirection> getDirection(int dir) {
+			return Arrays.stream(values()).filter(direction -> dir == direction.dir).findAny();
+		}
 	}
 	
 	public enum WalkingDirection {
@@ -349,23 +356,11 @@ public class Directions {
 		WEST(6),
 		NORTHWEST(7);
 		
+		@Getter
 		private int value;
 		
 		Direction(int value) {
 			this.value = value;
-		}
-		
-		public static Direction getDirection(String text) {
-			for (Direction d : Direction.values()) {
-				if (d.name().equalsIgnoreCase(text)) {
-					return d;
-				}
-			}
-			return null;
-		}
-		
-		public int getValue() {
-			return value;
 		}
 	}
 	

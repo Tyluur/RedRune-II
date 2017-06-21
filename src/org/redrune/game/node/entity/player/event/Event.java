@@ -12,28 +12,14 @@ import org.redrune.game.node.entity.player.event.EventPolicy.*;
 public abstract class Event<T extends EventContext> {
 	
 	/**
-	 * If the event can be executed, defaults to true.
-	 *
-	 * @param player
-	 * 		The player executing the event
-	 */
-	public boolean canStart(Player player) {
-		return true;
-	}
-	
-	/**
 	 * Handles the running of the event
 	 *
 	 * @param player
 	 * 		The player
+	 * @param context
+	 * 		The context of the event
 	 */
-	public abstract void run(Player player);
-	
-	/**
-	 * The context instance
-	 */
-	@Getter
-	private final T context;
+	public abstract void run(Player player, T context);
 	
 	/**
 	 * The policy for walking
@@ -71,12 +57,14 @@ public abstract class Event<T extends EventContext> {
 	private ActionPolicy actionPolicy = ActionPolicy.NONE;
 	
 	/**
-	 * Constructs a new event
+	 * If the event can be executed, defaults to true.
 	 *
+	 * @param player
+	 * 		The player executing the event
 	 * @param context
-	 * 		The context wrapper of the event
+	 * 		The context
 	 */
-	public Event(T context) {
-		this.context = context;
+	public boolean canStart(Player player, T context) {
+		return true;
 	}
 }

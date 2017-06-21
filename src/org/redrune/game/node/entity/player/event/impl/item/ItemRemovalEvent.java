@@ -17,19 +17,7 @@ import org.redrune.game.node.item.Item;
  */
 public class ItemRemovalEvent extends Event<ItemRemovalContext> {
 	
-	@Override
-	public boolean canStart(Player player) {
-		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
-	}
-	
-	/**
-	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
-	 */
-	public ItemRemovalEvent(ItemRemovalContext context) {
-		super(context);
+	public ItemRemovalEvent() {
 		setWalkablePolicy(WalkablePolicy.RESET);
 		setInterfacePolicy(InterfacePolicy.CLOSE);
 		setAnimationPolicy(AnimationPolicy.RESET);
@@ -37,8 +25,8 @@ public class ItemRemovalEvent extends Event<ItemRemovalContext> {
 	}
 	
 	@Override
-	public void run(Player player) {
-		int slotId = getContext().getSlotId();
+	public void run(Player player, ItemRemovalContext context) {
+		int slotId = context.getSlotId();
 		if (slotId >= 15) {
 			return;
 		}
@@ -52,5 +40,10 @@ public class ItemRemovalEvent extends Event<ItemRemovalContext> {
 		if (slotId == 3) {
 			// TODO: player.getCombatDefinitions().desecreaseSpecialAttack(0);
 		}
+	}
+	
+	@Override
+	public boolean canStart(Player player, ItemRemovalContext context) {
+		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
 	}
 }

@@ -47,7 +47,8 @@ public final class ObjectDefinitionParser {
 		}
 		objectDef.method3287();
 		// bar, bank booth
-		if (objectDef.getId() == 11763 || objectDef.getName().contains("booth")) {
+		final String name = objectDef.getName().toLowerCase();
+		if (objectDef.getId() == 11763 || name.contains("booth") || name.contains("counter")) {
 			objectDef.setClippingFlag(false);
 			objectDef.setSolid(true);
 			objectDef.setActionCount(2);

@@ -32,13 +32,24 @@ import java.util.concurrent.TimeUnit;
 public class ItemEvent extends Event<ItemEventContext> {
 	
 	@Override
-	public boolean canStart(Player player) {
-		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
+	public void run(Player player, ItemEventContext context) {
+		setPolicies(context);
+		if (ModuleRepository.handle(player, context.getItem(), context.getSlotId(), context.getOption())) {
+			return;
+		}
+		if (context.getOption().equals(InteractionOption.FIRST_OPTION)) {
+			handleItemUsage(player);
+		} else if (context.getOption().equals(InteractionOption.SECOND_OPTION)) {
+			handleQueuedItemEquipping(player, context);
+		} else if (context.getOption().equals(InteractionOption.EXAMINE)) {
+			handleItemExamining(player, context.getItem());
+		} else if (context.getOption().equals(InteractionOption.DROP)) {
+			handleItemDrop(player, context);
+		}
 	}
 	
-	public ItemEvent(ItemEventContext context) {
-		super(context);
-		if (getContext().getOption() != InteractionOption.EXAMINE) {
+	private void setPolicies(ItemEventContext context) {
+		if (context.getOption() != InteractionOption.EXAMINE) {
 			setInterfacePolicy(InterfacePolicy.CLOSE);
 			if (context.getOption().equals(InteractionOption.DROP)) {
 				setWalkablePolicy(WalkablePolicy.RESET);
@@ -48,19 +59,18 @@ public class ItemEvent extends Event<ItemEventContext> {
 	}
 	
 	@Override
-	public void run(Player player) {
-		if (ModuleRepository.handle(player, getContext().getItem(), getContext().getSlotId(), getContext().getOption())) {
-			return;
-		}
-		if (getContext().getOption().equals(InteractionOption.FIRST_OPTION)) {
-			handleItemUsage(player);
-		} else if (getContext().getOption().equals(InteractionOption.SECOND_OPTION)) {
-			handleQueuedItemEquipping(player);
-		} else if (getContext().getOption().equals(InteractionOption.EXAMINE)) {
-			handleItemExamining(player, getContext().getItem());
-		} else if (getContext().getOption().equals(InteractionOption.DROP)) {
-			handleItemDrop(player);
-		}
+	public boolean canStart(Player player, ItemEventContext context) {
+		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
+	}
+	
+	/**
+	 * Handles the usage of items
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	private void handleItemUsage(Player player) {
+	
 	}
 	
 	/**
@@ -69,15 +79,15 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 * @param player
 	 * 		The player
 	 */
-	private void handleQueuedItemEquipping(Player player) {
+	private void handleQueuedItemEquipping(Player player, ItemEventContext context) {
 		Queue<Integer> queue = player.getAttribute("equip_queue");
 		boolean startTask = false;
 		if (queue == null) {
 			queue = new LinkedBlockingQueue<>();
 			startTask = true;
 		}
-		if (!queue.contains(getContext().getSlotId())) {
-			queue.add(getContext().getSlotId());
+		if (!queue.contains(context.getSlotId())) {
+			queue.add(context.getSlotId());
 		}
 		player.putAttribute("equip_queue", queue);
 		
@@ -119,28 +129,36 @@ public class ItemEvent extends Event<ItemEventContext> {
 	}
 	
 	/**
+	 * The examining of an item is sent here
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public static void handleItemExamining(Player player, Item item) {
+		if (item == null) {
+			return;
+		}
+		String examine = ItemRepository.getExamine(item.getId());
+		if (examine != null) {
+			player.getTransmitter().sendMessage(examine, true);
+		} else {
+			player.getTransmitter().sendMessage("It's a " + item.getName().toLowerCase() + ".", true);
+		}
+	}
+	
+	/**
 	 * Handles the dropping of an item
 	 *
 	 * @param player
 	 * 		The player dropping the item
 	 */
-	private void handleItemDrop(Player player) {
-		final Item item = getContext().getItem();
-		if (!Objects.equals(player.getInventory().getItems().get(getContext().getSlotId()), item)) {
+	private void handleItemDrop(Player player, ItemEventContext context) {
+		final Item item = context.getItem();
+		if (!Objects.equals(player.getInventory().getItems().get(context.getSlotId()), item)) {
 			return;
 		}
-		player.getInventory().deleteItem(getContext().getSlotId(), item);
+		player.getInventory().deleteItem(context.getSlotId(), item);
 		RegionManager.addFloorItem(item.getId(), item.getAmount(), 180, player.getLocation(), player.getDetails().getUsername());
-	}
-	
-	/**
-	 * Handles the usage of items
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	private void handleItemUsage(Player player) {
-	
 	}
 	
 	/**
@@ -234,23 +252,5 @@ public class ItemEvent extends Event<ItemEventContext> {
 			player.getCombatDefinitions().desecreaseSpecialAttack(0);
 		}*/
 		//		ItemConstants.handleItemEquip(player, item2);
-	}
-	
-	/**
-	 * The examining of an item is sent here
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	public static void handleItemExamining(Player player, Item item) {
-		if (item == null) {
-			return;
-		}
-		String examine = ItemRepository.getExamine(item.getId());
-		if (examine != null) {
-			player.getTransmitter().sendMessage(examine, true);
-		} else {
-			player.getTransmitter().sendMessage("It's a " + item.getName().toLowerCase() + ".", true);
-		}
 	}
 }

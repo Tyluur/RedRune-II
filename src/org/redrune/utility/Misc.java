@@ -390,7 +390,22 @@ public class Misc {
 	}
 	
 	/**
-	 * Walk dirs 0 - South-West 1 - South 2 - South-East 3 - West 4 - East 5 - North-West 6 - North 7 - North-East
+	 * Gets the direction the player is facing from walking.
+	 * <ul>
+	 * <li>0 - southwest</li>
+	 * <li>1 - south</li>
+	 * <li>2 - southeast</li>
+	 * <li>3 - west</li>
+	 * <li>4 - east</li>
+	 * <li>5 - northwest</li>
+	 * <li>6 - north</li>
+	 * <li>7 - northeast</li>
+	 * </ul>
+	 *
+	 * @param dx
+	 * 		The delta x
+	 * @param dy
+	 * 		The delta y
 	 */
 	public static int getPlayerWalkingDirection(int dx, int dy) {
 		if (dx == -1 && dy == -1) {
@@ -420,6 +435,24 @@ public class Misc {
 		return -1;
 	}
 	
+	/**
+	 * Gets the direction for the player to face, based on their running direction.
+	 * <ul>
+	 * <li>0 - southwest</li>
+	 * <li>1 - south</li>
+	 * <li>2 - southeast</li>
+	 * <li>3 - west</li>
+	 * <li>4 - east</li>
+	 * <li>5 - northwest</li>
+	 * <li>6 - north</li>
+	 * <li>7 - northeast</li>
+	 * </ul>
+	 *
+	 * @param dx
+	 * 		The delta x
+	 * @param dy
+	 * 		The delta y
+	 */
 	public static int getPlayerRunningDirection(int dx, int dy) {
 		if (dx == -2 && dy == -2) {
 			return 0;

@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.action.Action;
+import org.redrune.game.content.action.Action;
 import org.redrune.game.node.entity.player.Player;
 
 /**

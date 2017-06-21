@@ -5,12 +5,16 @@
 [Wrappers/Systems]
 +   Combat
 +   Trade system
++	Controller -> Activity (?) system
 
 [Data]
-+	Item examines
 +	NPC examines
 +	Object examines
 
 [Unfinished]
-+  Set interaction modules on creation of nodes. [maybe objects can have names as well as ids in modules, in cases of flagged by object name [trees]]
-+  Proper object facing. [facing tiles/levers is broken]
++ 	Set interaction modules on creation of nodes. [maybe objects can have names as well as ids in modules, in cases of flagged by object name [trees]]
++	Proper object facing. [facing tiles/levers is broken]
++	EventManager.send(player, ObjectEvent.class, new ObjectEventContext()); // design like so
+
+[Bugs]
++	How come the session was d/cing after burying many bones??

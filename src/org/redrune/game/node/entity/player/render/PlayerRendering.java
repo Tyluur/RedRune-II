@@ -137,6 +137,7 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 					running = false;
 					opcode = Misc.getPlayerWalkingDirection(dx, dy);
 				}
+				p.putAttribute("last_direction", opcode);
 				buffer.writeBits(1, 1);
 				buffer.writeBits(1, needUpdate ? 1 : 0);
 				buffer.writeBits(2, running ? 2 : 1);

@@ -1,3 +1,13 @@
+6/20/17 {
++   Added player following with dancing
+	-   Support for never getting stuck behind objects
+	-   Players never trail by too many tiles either.
++   Updated the event management system for easy execution
+
+	[IMG]http://i.imgur.com/SacgqZ3.png[/img]
+	[IMG]http://i.imgur.com/clPDzak.png[/img]
+}
+
 6/16/17 {
 +   Added hint icon outgoing packet
 	-   Support for sending the icon on entities [npc/players]

@@ -19,12 +19,8 @@ public class ItemOnItemEvent extends Event<ItemOnItemContext> {
 	
 	/**
 	 * Constructs a new event
-	 *
-	 * @param context
-	 * 		The context wrapper of the event
 	 */
-	public ItemOnItemEvent(ItemOnItemContext context) {
-		super(context);
+	public ItemOnItemEvent() {
 		setInterfacePolicy(InterfacePolicy.CLOSE);
 		setAnimationPolicy(AnimationPolicy.RESET);
 		setWalkablePolicy(WalkablePolicy.RESET);
@@ -32,12 +28,12 @@ public class ItemOnItemEvent extends Event<ItemOnItemContext> {
 	}
 	
 	@Override
-	public void run(Player player) {
-		int usedSlot = getContext().getUsedSlot();
-		int withSlot = getContext().getWithSlot();
+	public void run(Player player, ItemOnItemContext context) {
+		int usedSlot = context.getUsedSlot();
+		int withSlot = context.getWithSlot();
 		
 		Item usedItem = player.getInventory().getItems().get(usedSlot);
-		Item withItem =  player.getInventory().getItems().get(withSlot);
+		Item withItem = player.getInventory().getItems().get(withSlot);
 		if (usedItem == null || withItem == null) {
 			return;
 		}

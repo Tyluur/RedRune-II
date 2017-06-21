@@ -1,6 +1,7 @@
 package org.redrune.game.node;
 
 import lombok.Getter;
+import org.redrune.utility.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -239,7 +240,7 @@ public final class Location {
 	 * @return The distance.
 	 */
 	public int getDistance(Location location) {
-		return (int) Math.sqrt(Math.pow(location.x - x, 2) + Math.pow(location.y - y, 2));
+		return Misc.getDistance(getX(), getY(), location.getX(), location.getY());
 	}
 	
 	/**
