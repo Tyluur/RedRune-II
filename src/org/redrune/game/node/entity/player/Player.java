@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.core.SequencialUpdate;
 import org.redrune.game.GameConstants;
+import org.redrune.game.content.action.combat.PlayerCombatAction;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.data.Hit;
+import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
@@ -157,6 +160,11 @@ public final class Player extends Entity {
 		return this;
 	}
 	
+	@Override
+	public String toString() {
+		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
+	}
+	
 	/**
 	 * Generates the transient objects (objects which will not save)
 	 */
@@ -183,11 +191,6 @@ public final class Player extends Entity {
 	}
 	
 	@Override
-	public String toString() {
-		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
-	}
-	
-	@Override
 	public int getHitpoints() {
 		return variables.getHealthPoints();
 	}
@@ -203,6 +206,19 @@ public final class Player extends Entity {
 		manager.getActions().process();
 		manager.getPrayers().process();
 		manager.getHintIcons().process();
+	}
+	
+	@Override
+	public void receiveHit(Entity attacker, Hit hit) {
+		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
+			return;
+		}
+		equipment.handleAbsorption(hit);
+	}
+	
+	@Override
+	public boolean fighting() {
+		return manager.getActions().getAction() instanceof PlayerCombatAction;
 	}
 	
 	/**
@@ -277,12 +293,11 @@ public final class Player extends Entity {
 		if (actions) {
 			getManager().getActions().stopAction();
 		}
-		turnTo(null);
-		
 		NPC interactingNPC = getAttribute(AttributeKey.INTERACTING_NPC);
 		if (interactingNPC != null) {
 			interactingNPC.endPlayerInteraction(this);
 		}
+		turnTo(null);
 	}
 	
 	/**

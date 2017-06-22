@@ -7,7 +7,6 @@ import org.redrune.cache.parse.definition.AnimationDefinition;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
@@ -25,6 +24,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 5/18/2017
  */
 public abstract class Entity extends Node implements EntityDetails {
+	
+	/**
+	 * The combat definitions of the entity. These are saved
+	 */
+	@Getter
+	private final EntityCombatDefinitions combatDefinitions = new EntityCombatDefinitions();
 	
 	/**
 	 * The {@code HitMap} {@code Object} instance for this entity
@@ -100,6 +105,7 @@ public abstract class Entity extends Node implements EntityDetails {
 		this.attributes = new ConcurrentHashMap<>();
 		this.movement = new EntityMovement(this);
 		this.mapRegionsIds = new CopyOnWriteArrayList<>();
+		this.combatDefinitions.setEntity(this);
 	}
 	
 	/**
@@ -254,13 +260,46 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Sends an animation
+	 *
+	 * @param animation
+	 * 		The animation
+	 */
+	public void sendAnimation(Animation animation) {
+		updateMasks.register(animation);
+		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
+		AnimationDefinition definition = AnimationDefinitionParser.forId(animation.getId());
+		if (definition != null) {
+			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
+		}
+	}
+	
+	/**
 	 * Sends an animation mask
 	 *
 	 * @param animationId
 	 * 		The id of the animation
 	 */
 	public void sendAnimation(int animationId) {
-		updateMasks.register(new Animation(animationId, 0, isNPC()));
+		updateMasks.register(new Animation(animationId, 0, isNPC(), Priority.NORMAL));
+		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
+		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
+		if (definition != null) {
+			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
+		}
+	}
+	
+	/**
+	 * Sends an animation that makes sure that we are no longer animation
+	 *
+	 * @param animationId
+	 * 		The animation
+	 */
+	public void sendAwaitedAnimation(int animationId) {
+		if (updateMasks.getLastAnimationEndTime() > System.currentTimeMillis()) {
+			return;
+		}
+		updateMasks.register(new Animation(animationId, 0, isNPC(), Priority.LOWEST));
 		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
 		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
 		if (definition != null) {
@@ -321,12 +360,12 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Checks if we are attackable by a player
+	 * Checks if we are attackable by an entity. // TODO implement slayer requirements in the npc classes.
 	 *
-	 * @param player
+	 * @param entity
 	 * 		The player
 	 */
-	public boolean attackable(Player player) {
+	public boolean attackable(Entity entity) {
 		return true;
 	}
 	

@@ -135,8 +135,8 @@ public class GameObject extends Node {
 		}
 		bldr.append("location=").append(getLocation().toString()).append(", ");
 		bldr.append("type=").append(type).append(", ");
-//		bldr.append("clip=").append(getDefinitions().isClippingFlag()).append(",");
-//		bldr.append("solid=").append(getDefinitions().isSolid()).append(", ");
+		bldr.append("notClipped=").append(getDefinitions().isNotClipped()).append(",");
+		bldr.append("projectileClipped=").append(getDefinitions().isProjectileClipped()).append(", ");
 		bldr.append("rotation=").append(rotation).append("]");
 		return bldr.toString();
 	}

@@ -4,7 +4,6 @@ import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.node.entity.player.event.context.WalkEventContext;
@@ -27,7 +26,6 @@ public class WalkEvent extends Event<WalkEventContext> {
 	public WalkEvent() {
 		setWalkablePolicy(WalkablePolicy.RESET);
 		setActionPolicy(ActionPolicy.RESET);
-		setAnimationPolicy(AnimationPolicy.RESET);
 		setInterfacePolicy(InterfacePolicy.CLOSE);
 	}
 	

@@ -61,6 +61,7 @@ public final class NPCDefinition {
 	
 	private boolean aBoolean841;
 	
+	@Getter
 	private int anInt842;
 	
 	private int anInt844;
@@ -107,8 +108,10 @@ public final class NPCDefinition {
 	
 	private int anInt874;
 	
+	@Getter
 	private int anInt875;
 	
+	@Getter
 	private int anInt876;
 	
 	private int headIcons;
@@ -117,6 +120,7 @@ public final class NPCDefinition {
 	
 	private short[] aShortArray880;
 	
+	@Getter
 	private int anInt884;
 	
 	private int[] anIntArray885;

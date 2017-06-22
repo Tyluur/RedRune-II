@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
+import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
@@ -28,8 +29,6 @@ public class HitUpdate extends UpdateFlag {
 		this.entity = entity;
 	}
 	
-	// TODO: implement interactingWith (colored if we are fighting the guy hitting us or smomeshit)
-	
 	@Override
 	public void write(Player outgoing, PacketBuilder bldr) {
 		final int size = entity.getHitMap().getHitList().size();
@@ -47,8 +46,8 @@ public class HitUpdate extends UpdateFlag {
 			if (hit.getSoaked() > 0) {
 				bldr.writeSmart(32767);
 			}
-			int type = hit.getSplat().ordinal();
-			if (type != 9) {
+			int type = hit.getSplat().getMark();
+			if (hit.getSplat() != HitSplat.HEALED_DAMAGE) {
 				if (hit.getDamage() < 1) {
 					type = 8;
 				} else if (hit.isCritical()) {

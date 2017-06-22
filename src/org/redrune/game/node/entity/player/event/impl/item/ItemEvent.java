@@ -6,6 +6,7 @@ import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
+import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
@@ -31,9 +32,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class ItemEvent extends Event<ItemEventContext> {
 	
+	/**
+	 * Constructs a new event
+	 */
+	public ItemEvent() {
+		setInterfacePolicy(InterfacePolicy.CLOSE);
+		setAnimationPolicy(AnimationPolicy.NONE);
+		setWalkablePolicy(WalkablePolicy.RESET);
+		setActionPolicy(ActionPolicy.RESET);
+	}
+	
 	@Override
 	public void run(Player player, ItemEventContext context) {
-		setPolicies(context);
 		if (ModuleRepository.handle(player, context.getItem(), context.getSlotId(), context.getOption())) {
 			return;
 		}
@@ -45,16 +55,6 @@ public class ItemEvent extends Event<ItemEventContext> {
 			handleItemExamining(player, context.getItem());
 		} else if (context.getOption().equals(InteractionOption.DROP)) {
 			handleItemDrop(player, context);
-		}
-	}
-	
-	private void setPolicies(ItemEventContext context) {
-		if (context.getOption() != InteractionOption.EXAMINE) {
-			setInterfacePolicy(InterfacePolicy.CLOSE);
-			if (context.getOption().equals(InteractionOption.DROP)) {
-				setWalkablePolicy(WalkablePolicy.RESET);
-				setAnimationPolicy(AnimationPolicy.RESET);
-			}
 		}
 	}
 	
@@ -235,9 +235,6 @@ public class ItemEvent extends Event<ItemEventContext> {
 			}
 			player.getEquipment().getItems().set(targetSlot, null);
 		}
-		/*if (targetSlot == Equipment.SLOT_AURA) {
-			player.getAuraManager().removeAura();
-		}*/
 		int oldAmt = 0;
 		if (player.getEquipment().getItem(targetSlot) != null) {
 			oldAmt = player.getEquipment().getItem(targetSlot).getAmount();
@@ -248,9 +245,6 @@ public class ItemEvent extends Event<ItemEventContext> {
 		player.getEquipment().sendContainer();
 		player.getInventory().refreshAll();
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
-		/*if (targetSlot == 3) {
-			player.getCombatDefinitions().desecreaseSpecialAttack(0);
-		}*/
-		//		ItemConstants.handleItemEquip(player, item2);
+		// TODO: turn off spec
 	}
 }

@@ -24,7 +24,6 @@ public class InventoryInteractionModule implements InterfaceInteractionModule {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		//		System.out.println("player = [" + player + "], interfaceId = [" + interfaceId + "], componentId = [" + componentId + "], itemId = [" + itemId + "], slotId = [" + slotId + "], packetId = [" + packetId + "]");
 		Item item = player.getInventory().getItems().get(slotId);
 		if (item == null) {
 			return true;

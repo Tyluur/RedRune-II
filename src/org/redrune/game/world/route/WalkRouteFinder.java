@@ -322,7 +322,7 @@ public class WalkRouteFinder {
 	 * Perform's size 2 calculations.
 	 */
 	private static boolean performCalculationS2(int srcX, int srcY, RouteStrategy strategy) {
-		return performCalculationSX(srcX, srcY, 2, strategy); // TODO optimized algorhytm's.
+		return performCalculationSX(srcX, srcY, 2, strategy);
 	}
 	
 	/**

@@ -6,6 +6,9 @@ import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.render.flag.impl.TeleportUpdate;
 import org.redrune.game.world.region.RegionManager;
+import org.redrune.game.world.route.RouteFinder;
+import org.redrune.game.world.route.strategy.EntityStrategy;
+import org.redrune.game.world.route.strategy.ObjectStrategy;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
 
@@ -394,68 +397,6 @@ public class EntityMovement {
 		return new int[] { step[1], step[2] };
 	}
 	
-	public boolean canWalkNPC(int toX, int toY) {
-		return canWalkNPC(toX, toY, false);
-	}
-	
-	public boolean canWalkNPC(int toX, int toY, boolean checkUnder) {
-		int size = entity.getSize();
-		for (int regionId : entity.getMapRegionsIds()) {
-			CopyOnWriteArraySet<NPC> npcIndexes = RegionManager.getRegion(regionId).getNpcs();
-			if (npcIndexes != null) {
-				for (NPC target : npcIndexes) {
-					if (target == null || target == entity || target.isDead() || !target.isRenderable() || target.getLocation().getPlane() != entity.getLocation().getPlane()) {
-						continue;
-					}
-					int targetSize = target.getSize();
-					if (!checkUnder && target.getMovement().getNextWalkDirection() == -1) {
-						int previewDir = getPreviewNextWalkStep();
-						if (previewDir != -1) {
-							Location tile = target.getLocation().transform(RegionManager.DIRECTION_DELTA_X[previewDir], RegionManager.DIRECTION_DELTA_Y[previewDir], 0);
-							if (colides(tile.getX(), tile.getY(), targetSize, entity.getLocation().getX(), entity.getLocation().getY(), size)) {
-								continue;
-							}
-							if (colides(tile.getX(), tile.getY(), targetSize, toX, toY, size)) {
-								return false;
-							}
-						}
-					}
-					if (colides(target.getLocation().getX(), target.getLocation().getY(), targetSize, entity.getLocation().getX(), entity.getLocation().getY(), size)) {
-						continue;
-					}
-					if (colides(target.getLocation().getX(), target.getLocation().getY(), targetSize, toX, toY, size)) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-	
-	private static boolean colides(int x1, int y1, int size1, int x2, int y2, int size2) {
-		for (int checkX1 = x1; checkX1 < x1 + size1; checkX1++) {
-			for (int checkY1 = y1; checkY1 < y1 + size1; checkY1++) {
-				for (int checkX2 = x2; checkX2 < x2 + size2; checkX2++) {
-					for (int checkY2 = y2; checkY2 < y2 + size2; checkY2++) {
-						if (checkX1 == checkX2 && checkY1 == checkY2) {
-							return true;
-						}
-					}
-					
-				}
-			}
-		}
-		return false;
-	}
-	
-	private int getPreviewNextWalkStep() {
-		int step[] = walkSteps.poll();
-		if (step == null) {
-			return -1;
-		}
-		return step[0];
-	}
-	
 	/**
 	 * Adds a walk step
 	 *
@@ -502,5 +443,146 @@ public class EntityMovement {
 			return clippedProjectile(node.getLocation(), checkClose, 1) || node.toPlayer().getMovement().clippedProjectile(entity.getLocation(), checkClose, 1);
 		}
 		return clippedProjectile(tile, checkClose, 1);
+	}
+	
+	public boolean calcFollow(Entity target, boolean inteligent) {
+		return calcFollow(target, -1, inteligent);
+	}
+	
+	public boolean calcFollow(Entity target, int maxStepsCount, boolean intelligent) {
+		if (intelligent) {
+			int steps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getPlane(), entity.getSize(), target.isGameObject() ? new ObjectStrategy(target.toGameObject()) : new EntityStrategy(target), true);
+			if (steps == -1) {
+				return false;
+			}
+			if (steps == 0) {
+				return true;
+			}
+			int[] bufferX = RouteFinder.getLastPathBufferX();
+			int[] bufferY = RouteFinder.getLastPathBufferY();
+			for (int step = steps - 1; step >= 0; step--) {
+				if (!addWalkSteps(bufferX[step], bufferY[step], maxStepsCount, true)) {
+					break;
+				}
+			}
+			return true;
+		}
+		return findBasicRoute(entity, target, target.getLocation(), maxStepsCount);
+	}
+	
+	public static boolean findBasicRoute(Entity src, Entity target, Location dest, int maxStepsCount) {
+		int[] srcPos = src.getMovement().getLastWalkTile();
+		int[] destPos = { dest.getX(), dest.getY() };
+		int srcSize = src.getSize();
+		//set destSize to 0 to walk under it else follows
+		int destSize = target.getSize();
+		int[] destScenePos = { destPos[0] + destSize - 1, destPos[1] + destSize - 1 };//Arrays.copyOf(destPos, 2);//destSize == 1 ? Arrays.copyOf(destPos, 2) : new int[] {WorldTile.getCoordFaceX(destPos[0], destSize, destSize, -1), WorldTile.getCoordFaceY(destPos[1], destSize, destSize, -1)};
+		while (maxStepsCount-- != 0) {
+			int[] srcScenePos = { srcPos[0] + srcSize - 1, srcPos[1] + srcSize - 1 };//srcSize == 1 ? Arrays.copyOf(srcPos, 2) : new int[] { WorldTile.getCoordFaceX(srcPos[0], srcSize, srcSize, -1), WorldTile.getCoordFaceY(srcPos[1], srcSize, srcSize, -1)};
+			if (!Misc.isOnRange(srcPos[0], srcPos[1], srcSize, destPos[0], destPos[1], destSize, 0)) {
+				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] < destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1] + 1)) && src.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]++;
+					srcPos[1]++;
+					continue;
+				}
+				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] > destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1] - 1)) && src.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]--;
+					srcPos[1]--;
+					continue;
+				}
+				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] > destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1] - 1)) && src.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]++;
+					srcPos[1]--;
+					continue;
+				}
+				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] < destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1] + 1)) && src.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]--;
+					srcPos[1]++;
+					continue;
+				}
+				if (srcScenePos[0] < destScenePos[0] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1])) && src.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1], srcPos[0], srcPos[1], true)) {
+					srcPos[0]++;
+					continue;
+				}
+				if (srcScenePos[0] > destScenePos[0] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1])) && src.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1], srcPos[0], srcPos[1], true)) {
+					srcPos[0]--;
+					continue;
+				}
+				if (srcScenePos[1] < destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0], srcPos[1] + 1)) && src.getMovement().addWalkStep(srcPos[0], srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+					srcPos[1]++;
+					continue;
+				}
+				if (srcScenePos[1] > destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0], srcPos[1] - 1)) && src.getMovement().addWalkStep(srcPos[0], srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+					srcPos[1]--;
+					continue;
+				}
+				return false;
+			}
+			break;
+		}
+		return true;
+	}
+	
+	public boolean canWalkNPC(int toX, int toY) {
+		return canWalkNPC(toX, toY, false);
+	}
+	
+	public boolean canWalkNPC(int toX, int toY, boolean checkUnder) {
+		// TODO if (!isAtMultiArea())return true
+		int size = entity.getSize();
+		for (int regionId : entity.getMapRegionsIds()) {
+			CopyOnWriteArraySet<NPC> npcIndexes = RegionManager.getRegion(regionId).getNpcs();
+			if (npcIndexes != null) {
+				for (NPC target : npcIndexes) {
+					if (target == null || target == entity || target.isDead() || !target.isRenderable() || target.getLocation().getPlane() != entity.getLocation().getPlane()) {
+						continue;
+					}
+					int targetSize = target.getSize();
+					if (!checkUnder && target.getMovement().getNextWalkDirection() == -1) {
+						int previewDir = getPreviewNextWalkStep();
+						if (previewDir != -1) {
+							Location tile = target.getLocation().transform(RegionManager.DIRECTION_DELTA_X[previewDir], RegionManager.DIRECTION_DELTA_Y[previewDir], 0);
+							if (colides(tile.getX(), tile.getY(), targetSize, entity.getLocation().getX(), entity.getLocation().getY(), size)) {
+								continue;
+							}
+							if (colides(tile.getX(), tile.getY(), targetSize, toX, toY, size)) {
+								return false;
+							}
+						}
+					}
+					if (colides(target.getLocation().getX(), target.getLocation().getY(), targetSize, entity.getLocation().getX(), entity.getLocation().getY(), size)) {
+						continue;
+					}
+					if (colides(target.getLocation().getX(), target.getLocation().getY(), targetSize, toX, toY, size)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	private int getPreviewNextWalkStep() {
+		int step[] = walkSteps.poll();
+		if (step == null) {
+			return -1;
+		}
+		return step[0];
+	}
+	
+	private static boolean colides(int x1, int y1, int size1, int x2, int y2, int size2) {
+		for (int checkX1 = x1; checkX1 < x1 + size1; checkX1++) {
+			for (int checkY1 = y1; checkY1 < y1 + size1; checkY1++) {
+				for (int checkX2 = x2; checkX2 < x2 + size2; checkX2++) {
+					for (int checkY2 = y2; checkY2 < y2 + size2; checkY2++) {
+						if (checkX1 == checkX2 && checkY1 == checkY2) {
+							return true;
+						}
+					}
+					
+				}
+			}
+		}
+		return false;
 	}
 }

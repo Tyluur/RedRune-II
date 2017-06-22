@@ -38,11 +38,11 @@ public final class ObjectDefinition {
 	
 	@Getter
 	@Setter
-	private boolean solid;
+	private boolean projectileClipped;
 	
 	@Getter
 	@Setter
-	private boolean clippingFlag;
+	private boolean notClipped;
 	
 	private short[] modifiedColors;
 	
@@ -163,7 +163,7 @@ public final class ObjectDefinition {
 		anIntArray3869 = null;
 		sizeX = 1;
 		thirdInt = -1;
-		solid = true;
+		projectileClipped = true;
 		aBoolean3895 = true;
 		aBoolean3870 = false;
 		aBoolean3853 = true;
@@ -173,7 +173,7 @@ public final class ObjectDefinition {
 		anInt3904 = 0;
 		sizeY = 1;
 		anInt3876 = -1;
-		clippingFlag = false;
+		notClipped = false;
 		aBoolean3891 = false;
 		anInt3905 = 0;
 		name = "null";
@@ -225,10 +225,10 @@ public final class ObjectDefinition {
 		} else if (opcode == 15) {
 			sizeY = stream.readUnsignedByte();
 		} else if (opcode == 17) {
-			solid = false;
+			projectileClipped = false;
 			actionCount = 0;
 		} else if (opcode == 18) {
-			solid = false;
+			projectileClipped = false;
 		} else if (opcode == 19) {
 			secondInt = stream.readUnsignedByte();
 		} else if (opcode == 21) {
@@ -295,7 +295,7 @@ public final class ObjectDefinition {
 		} else if (opcode == 73) {
 			secondBool = true;
 		} else if (opcode == 74) {
-			clippingFlag = true;
+			notClipped = true;
 		} else if (opcode == 75) {
 			anInt3855 = stream.readUnsignedByte();
 		} else if (opcode == 77 || opcode == 92) {

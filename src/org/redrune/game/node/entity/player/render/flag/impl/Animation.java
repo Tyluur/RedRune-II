@@ -88,10 +88,9 @@ public class Animation extends UpdateFlag {
 	@Override
 	public void write(Player outgoing, PacketBuilder bldr) {
 		if (npc) {
-			bldr.writeLEShortA(id);
-			bldr.writeLEShortA(id);
-			bldr.writeLEShortA(id);
-			bldr.writeLEShortA(id);
+			for (int i = 0; i < 4; i++) {
+				bldr.writeLEShortA(id);
+			}
 			bldr.writeByteA(speed << 16);
 		} else {
 			for (int i = 0; i < 4; i++) {
@@ -102,13 +101,13 @@ public class Animation extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return npc ? 0x1 : 0x10;
+	public int getOrdinal() {
+		return npc ? 6 : 15;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return npc ? 6 : 15;
+	public int getMaskData() {
+		return npc ? 0x1 : 0x10;
 	}
 	
 	@Override

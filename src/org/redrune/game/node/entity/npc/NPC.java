@@ -6,6 +6,7 @@ import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.utility.AttributeKey;
@@ -64,6 +65,16 @@ public class NPC extends Entity {
 	}
 	
 	@Override
+	public void receiveHit(Entity attacker, Hit hit) {
+	
+	}
+	
+	@Override
+	public boolean fighting() {
+		return false;
+	}
+	
+	@Override
 	public void register() {
 		super.registerTransients();
 		getRegion().addEntity(this);
@@ -84,6 +95,16 @@ public class NPC extends Entity {
 		return getDefinitions().getSize();
 	}
 	
+	@Override
+	public NPC toNPC() {
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + ", renderable=" + isRenderable() + "]";
+	}
+	
 	/**
 	 * Gets the {@link NPCDefinition}s of this npc
 	 */
@@ -95,13 +116,8 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	public NPC toNPC() {
-		return this;
-	}
-	
-	@Override
-	public String toString() {
-		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + ", renderable=" + isRenderable() + "]";
+	public boolean attackable(Entity entity) {
+		return super.attackable(entity);
 	}
 	
 	/**
@@ -137,10 +153,5 @@ public class NPC extends Entity {
 		if (interactingWith.equals(player)) {
 			turnTo(null);
 		}
-	}
-	
-	@Override
-	public boolean attackable(Player player) {
-		return super.attackable(player);
 	}
 }

@@ -1,5 +1,6 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
@@ -64,8 +65,11 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 				}));
 			} else {
 				if (!player.getAttribute("remove_spawns", false)) {
-					// TODO object examines
-					player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + ", " + regionId + "], " + object.getType() + ", " + object.getRotation(), true);
+					if (GameFlags.debugMode) {
+						// TODO object examines
+						player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + ", " + regionId + "], " + object.getType() + ", " + object.getRotation(), true);
+						System.out.println(object.toGameObject());
+					}
 				} else {
 					player.getRegion().removeObject(object);
 					RegionDeletion.dumpObject(object);

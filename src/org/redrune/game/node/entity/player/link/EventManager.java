@@ -74,6 +74,7 @@ public final class EventManager {
 	 * 		The event
 	 * @return True if we should start the event
 	 */
+	@SuppressWarnings("unchecked")
 	private static boolean sendPreExecuteFlags(Player player, Event event, EventContext context) {
 		final boolean stopWalk = event.getWalkablePolicy() == WalkablePolicy.RESET;
 		final boolean stopInterfaces = event.getInterfacePolicy() == InterfacePolicy.CLOSE;

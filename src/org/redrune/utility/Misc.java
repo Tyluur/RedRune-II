@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.jboss.netty.channel.Channel;
 import org.redrune.cache.Cache;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
 import java.io.*;
@@ -661,5 +662,34 @@ public class Misc {
 		int deltaX = Math.abs(coordX2 - coordX1);
 		int deltaY = Math.abs(coordY2 - coordY1);
 		return ((int) Math.ceil(Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2))));
+	}
+	
+	public static boolean colides(Entity entity, Entity target) {
+		return entity.getLocation().getPlane() == target.getLocation().getPlane() && colides(entity.getLocation().getX(), entity.getLocation().getY(), entity.getSize(), target.getLocation().getX(), target.getLocation().getY(), target.getSize());
+	}
+	
+	public static boolean colides(int x1, int y1, int size1, int x2, int y2, int size2) {
+		int distanceX = x1 - x2;
+		int distanceY = y1 - y2;
+		return distanceX < size2 && distanceX > -size1 && distanceY < size2 && distanceY > -size1;
+	}
+	
+	public static boolean isOnRange(Entity entity, Entity target, int rangeRatio) {
+		return entity.getLocation().getPlane() == target.getLocation().getPlane() && isOnRange(entity.getLocation().getX(), entity.getLocation().getY(), entity.getSize(), target.getLocation().getX(), target.getLocation().getY(), target.getSize(), rangeRatio);
+	}
+	
+	public static boolean isOnRange(int x1, int y1, int size1, int x2, int y2, int size2, int maxDistance) {
+		int distanceX = x1 - x2;
+		int distanceY = y1 - y2;
+		return !(distanceX > size2 + maxDistance || distanceX < -size1 - maxDistance || distanceY > size2 + maxDistance || distanceY < -size1 - maxDistance);
+	}
+	
+	public static boolean isNumeric(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

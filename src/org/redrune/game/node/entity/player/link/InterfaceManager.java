@@ -61,6 +61,7 @@ public final class InterfaceManager implements InterfaceConstants {
 		EmoteManager.sendUnlockConfigs(player);
 		player.getManager().getPrayers().sendLoginConfigurations();
 		player.getManager().getContacts().sendLogin();
+		player.getCombatDefinitions().sendLogin();
 	}
 	
 	/**

@@ -1,3 +1,18 @@
+6/21/17 {
++   Started on melee combat
+	-   Diagonal combat doesn't work
+	-   Tile collision finds the best tile to go to
++   Added combat style saving
++   Added auto retaliate saving
++   Updated player appearance to show the player's combat level with summoning addition
++   Fixed the bugged combat styles tab showing the wrong summoning level addition (S/O Walied)
++   Fixed some interaction bugs
+
+[IMG]http://i.imgur.com/s8y5VbR.png[/IMG]
+[IMG]http://i.imgur.com/gkMERkW.png[/IMG]
+[IMG]http://i.imgur.com/UAJ3enr.gif[/img]
+}
+
 6/20/17 {
 +   Added player following with dancing
 	-   Support for never getting stuck behind objects

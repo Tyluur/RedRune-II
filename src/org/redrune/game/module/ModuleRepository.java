@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-// TODO: load modules from jars
 public class ModuleRepository {
 	
 	/**

@@ -99,6 +99,18 @@ public class PlayerSkills implements SkillConstants {
 		}
 		return skill == DUNGEONEERING ? 120 : 99;
 	}
+	/**
+	 * Adds experience to the skill without multiplier effects
+	 *
+	 * @param skillId
+	 * 		The id of the skill
+	 * @param experience
+	 * 		The amount of exp to add
+	 */
+	public PlayerSkills addExperienceNoMultiplier(short skillId, double experience) {
+		trackExperienceChange(skillId, experience);
+		return this;
+	}
 	
 	/**
 	 * Adds experience to the skill with multiplier effects
@@ -108,7 +120,7 @@ public class PlayerSkills implements SkillConstants {
 	 * @param experience
 	 * 		The amount of exp to add
 	 */
-	public void addExperienceWithMultiplier(short skillId, double experience) {
+	public PlayerSkills addExperienceWithMultiplier(short skillId, double experience) {
 		switch (skillId) {
 			case ATTACK:
 			case STRENGTH:
@@ -126,6 +138,7 @@ public class PlayerSkills implements SkillConstants {
 				break;
 		}
 		trackExperienceChange(skillId, experience);
+		return this;
 	}
 	
 	/**
@@ -260,6 +273,13 @@ public class PlayerSkills implements SkillConstants {
 		double rangeC = 0.325 * (Math.floor(ranged / 2) + ranged);
 		double mageC = 0.325 * (Math.floor(magic / 2) + magic);
 		return (int) Math.floor(base + Math.max(meleeC, Math.max(rangeC, mageC)));
+	}
+	
+	/**
+	 * Gets the combat level with summoning addition
+	 */
+	public int getCombatLevelWithSummoning() {
+		return getCombatLevel() + getSummoningCombatLevel();
 	}
 	
 	/**

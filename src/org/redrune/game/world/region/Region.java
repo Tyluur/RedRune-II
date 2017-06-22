@@ -99,7 +99,7 @@ public class Region {
 	/**
 	 * The clipped only map
 	 */
-	private RegionMap clipedOnlyMap;
+	private RegionMap clippedOnlyMap;
 	
 	/**
 	 * The map stage
@@ -335,8 +335,8 @@ public class Region {
 		if (map == null) {
 			map = new RegionMap(regionId, false);
 		}
-		if (clipedOnlyMap == null) {
-			clipedOnlyMap = new RegionMap(regionId, true);
+		if (clippedOnlyMap == null) {
+			clippedOnlyMap = new RegionMap(regionId, true);
 		}
 		int plane = object.getLocation().getPlane();
 		int type = object.getType();
@@ -349,11 +349,11 @@ public class Region {
 			return;
 		}
 		if (type >= 0 && type <= 3) {
-			if (!objectDefinition.isClippingFlag()) {
-				map.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (!objectDefinition.isNotClipped()) {
+				map.addWall(plane, localX, localY, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
 			}
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.addWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			if (objectDefinition.isProjectileClipped()) {
+				clippedOnlyMap.addWall(plane, localX, localY, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
 			}
 		} else if (type >= 9 && type <= 21) {
 			int sizeX;
@@ -365,9 +365,9 @@ public class Region {
 				sizeX = objectDefinition.getSizeY();
 				sizeY = objectDefinition.getSizeX();
 			}
-			map.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			map.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
+			if (objectDefinition.isProjectileClipped()) {
+				clippedOnlyMap.addObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
 			}
 		} else if (type == 22) {
 			map.addFloor(plane, localX, localY);
@@ -421,8 +421,8 @@ public class Region {
 		if (map == null) {
 			map = new RegionMap(regionId, false);
 		}
-		if (clipedOnlyMap == null) {
-			clipedOnlyMap = new RegionMap(regionId, true);
+		if (clippedOnlyMap == null) {
+			clippedOnlyMap = new RegionMap(regionId, true);
 		}
 		int plane = object.getLocation().getPlane();
 		int type = object.getType();
@@ -436,9 +436,9 @@ public class Region {
 			return;
 		}
 		if (type >= 0 && type <= 3) {
-			map.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.removeWall(plane, localX, localY, type, rotation, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			map.removeWall(plane, localX, localY, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
+			if (objectDefinition.isProjectileClipped()) {
+				clippedOnlyMap.removeWall(plane, localX, localY, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
 			}
 		} else if (type >= 9 && type <= 21) {
 			int sizeX;
@@ -450,9 +450,9 @@ public class Region {
 				sizeX = objectDefinition.getSizeY();
 				sizeY = objectDefinition.getSizeX();
 			}
-			map.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
-			if (objectDefinition.isSolid()) {
-				clipedOnlyMap.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isSolid(), !objectDefinition.isClippingFlag());
+			map.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
+			if (objectDefinition.isProjectileClipped()) {
+				clippedOnlyMap.removeObject(plane, localX, localY, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isNotClipped());
 			}
 		} else if (type == 22) {
 			map.removeFloor(plane, localX, localY);
@@ -463,10 +463,10 @@ public class Region {
 	 * Gets the clipped only region map, if it isn't set we create a new oen that isn't clipped only
 	 */
 	public RegionMap forceGetRegionMapClipedOnly() {
-		if (clipedOnlyMap == null) {
-			clipedOnlyMap = new RegionMap(regionId, true);
+		if (clippedOnlyMap == null) {
+			clippedOnlyMap = new RegionMap(regionId, true);
 		}
-		return clipedOnlyMap;
+		return clippedOnlyMap;
 	}
 	
 	/**
@@ -508,11 +508,11 @@ public class Region {
 	 * @param localY
 	 * 		The local y
 	 */
-	public int getMaskClipedOnly(int plane, int localX, int localY) {
-		if (clipedOnlyMap == null || !allLoaded()) {
+	public int getMaskClippedOnly(int plane, int localX, int localY) {
+		if (clippedOnlyMap == null || !allLoaded()) {
 			return -1; // cliped tile
 		}
-		return clipedOnlyMap.getMasks()[plane][localX][localY];
+		return clippedOnlyMap.getMasks()[plane][localX][localY];
 	}
 	
 	/**

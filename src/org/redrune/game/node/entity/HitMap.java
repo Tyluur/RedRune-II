@@ -33,14 +33,30 @@ public final class HitMap {
 	 * A list of hits to deal.
 	 */
 	@Getter
-	private final List<Hit> hitList = new LinkedList<>();
+	private final List<Hit> hitList;
 	
 	/**
 	 * The damage constructor.
 	 */
-	public HitMap(Entity entity) {
+	HitMap(Entity entity) {
 		this.entity = entity;
 		this.hitRecord = new HashMap<>();
+		this.hitList = new LinkedList<>();
+	}
+	
+	/**
+	 * Applies a hit to the entity
+	 *
+	 * @param attacker
+	 * 		The attacker
+	 * @param hit
+	 * 		The hit
+	 */
+	public void applyHit(Entity attacker, Hit hit) {
+		entity.receiveHit(attacker, hit);
+		submitDamage(attacker, hit.getDamage());
+		
+		hitList.add(hit);
 	}
 	
 	/**
@@ -51,7 +67,7 @@ public final class HitMap {
 	 * @param damage
 	 * 		The amount of damage.
 	 */
-	public void submitDamage(Entity attacker, int damage) {
+	private void submitDamage(Entity attacker, int damage) {
 		if (attacker == null || !attacker.isPlayer()) {
 			return;
 		}

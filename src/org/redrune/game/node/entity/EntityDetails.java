@@ -1,5 +1,7 @@
 package org.redrune.game.node.entity;
 
+import org.redrune.game.node.entity.data.Hit;
+
 /**
  * This class contains methods that are necessary for the abstraction of entities.
  *
@@ -22,5 +24,21 @@ public interface EntityDetails {
 	 * What is executed on the tick of an entity.
 	 */
 	void tick();
+	
+	/**
+	 * Receives the hit and makes any modification [soaking] necessary, as well as secondary listeners [prayer
+	 * deflections]
+	 *
+	 * @param attacker
+	 * 		The person who sent the hit
+	 * @param hit
+	 * 		The hit received
+	 */
+	void receiveHit(Entity attacker, Hit hit);
+	
+	/**
+	 * If we are fighting
+	 */
+	boolean fighting();
 	
 }

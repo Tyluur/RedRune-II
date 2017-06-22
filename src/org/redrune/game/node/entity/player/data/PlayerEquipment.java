@@ -2,6 +2,8 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.data.Hit;
+import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
@@ -132,6 +134,36 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 					continue;
 				}
 				this.bonuses[id] += bonuses[id];
+			}
+		}
+	}
+	
+	/**
+	 * Handles the absorption of a hit
+	 *
+	 * @param hit
+	 * 		The hit
+	 */
+	public void handleAbsorption(Hit hit) {
+		if (hit.getDamage() >= 200) {
+			if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
+				int reducedDamage = hit.getDamage() * getBonus(ABSORB_MELEE_BONUS) / 100;
+				if (reducedDamage > 0) {
+					hit.setDamage(hit.getDamage() - reducedDamage);
+					hit.setSoaked(reducedDamage);
+				}
+			} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
+				int reducedDamage = hit.getDamage() * getBonus(ABSORB_RANGE_BONUS) / 100;
+				if (reducedDamage > 0) {
+					hit.setDamage(hit.getDamage() - reducedDamage);
+					hit.setSoaked(reducedDamage);
+				}
+			} else if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
+				int reducedDamage = hit.getDamage() * getBonus(ABSORB_MAGE_BONUS) / 100;
+				if (reducedDamage > 0) {
+					hit.setDamage(hit.getDamage() - reducedDamage);
+					hit.setSoaked(reducedDamage);
+				}
 			}
 		}
 	}

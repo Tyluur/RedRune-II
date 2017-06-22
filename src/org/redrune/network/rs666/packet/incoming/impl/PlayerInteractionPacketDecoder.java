@@ -1,6 +1,6 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
-import org.redrune.game.content.action.combat.player.PlayerCombatAction;
+import org.redrune.game.content.action.combat.PlayerCombatAction;
 import org.redrune.game.content.action.interaction.PlayerFollowAction;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
@@ -63,6 +63,7 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	 * 		The other player we're attacking
 	 */
 	private void decodePlayerAttack(Player player, Player other) {
+		player.stop(true, true, true, false);
 		player.getManager().getActions().startAction(new PlayerCombatAction(other));
 	}
 	
@@ -75,6 +76,7 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	 * 		The other player we're following
 	 */
 	private void decodePlayerFollow(Player player, Player other) {
+		player.stop(true, true, true, false);
 		player.getManager().getActions().startAction(new PlayerFollowAction(other));
 	}
 	

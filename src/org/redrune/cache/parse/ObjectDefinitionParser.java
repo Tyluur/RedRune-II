@@ -48,13 +48,17 @@ public final class ObjectDefinitionParser {
 		objectDef.method3287();
 		// bar, bank booth
 		final String name = objectDef.getName().toLowerCase();
-		if (objectDef.getId() == 11763 || name.contains("booth") || name.contains("counter")) {
-			objectDef.setClippingFlag(false);
-			objectDef.setSolid(true);
-			objectDef.setActionCount(2);
+		
+		// falador bar & bank booths
+		if (objectDef.getId() == 11763 || (name.equalsIgnoreCase("bank booth") || name.equalsIgnoreCase("counter"))) {
+			objectDef.setNotClipped(false);
+			objectDef.setProjectileClipped(true);
+			if (objectDef.getActionCount() == 0) {
+				objectDef.setActionCount(1);
+			}
 		}
-		if (objectDef.isClippingFlag()) {
-			objectDef.setSolid(false);
+		if (objectDef.isNotClipped()) {
+			objectDef.setProjectileClipped(false);
 			objectDef.setActionCount(0);
 		}
 		OBJECT_DEFINITIONS.put(objectId, objectDef);

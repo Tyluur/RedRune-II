@@ -6,6 +6,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.ItemConstants;
 
 import java.util.List;
@@ -242,8 +243,7 @@ public final class Shop {
 		if (currency.getSellValue(currency.getBuyPrice(itemId)) <= 0) {
 			return false;
 		}
-		// TODO: or is untradeable, check here..
-		if (itemId == ItemConstants.BLOOD_MONEY) {
+		if (itemId == ItemConstants.BLOOD_MONEY || ItemRepository.isUntradeable(itemId)) {
 			return false;
 		}
 		if (isGeneralStore()) {

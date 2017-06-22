@@ -7,6 +7,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.CS2ConfigBuilder;
 
 /**
  * Represents a player's appearance update flag.
@@ -34,26 +35,29 @@ public class AppearanceUpdate extends UpdateFlag {
 	public AppearanceUpdate(Player player) {
 		this.player = player;
 		this.appearance = player.getDetails().getAppearance();
+		// updating the combat level on the styles tab
+		player.getTransmitter().send(new CS2ConfigBuilder(1000, player.getSkills().getCombatLevelWithSummoning()).build(player));
 	}
 	
 	@Override
 	public void write(Player outgoing, PacketBuilder bldr) {
 		PacketBuilder playerUpdate = new PacketBuilder();
+		final int npcId = appearance.getNpcId();
 		int bitSet = 0;
-		bitSet |= 0x4; //Enable combat colouring.
+		//bitSet |= 0x4; we are in a pvp area
 		if (!appearance.isMale()) {
 			bitSet |= 0x1;
 		}
-		final NPCDefinition definition = appearance.getNpcId() > 0 ? NPCDefinitionParser.forId(appearance.getNpcId()) : null;
-		if (appearance.getNpcId() != -1 && definition != null) {
-			bitSet |= (definition.getSize() - 1) << 3;
+		final NPCDefinition definition = npcId >= 0 ? NPCDefinitionParser.forId(npcId) : null;
+		if (npcId != -1 && definition != null) {
+			bitSet |= 0x2;
 		}
 		playerUpdate.writeByte(bitSet);
 		playerUpdate.writeByte(0); // title
 		playerUpdate.writeByte(player.getVariables().getSkullIcon().getId()); //skull icon
 		playerUpdate.writeByte(player.getManager().getPrayers().getIcon().getId());
 		playerUpdate.writeByte(0);
-		if (definition == null || appearance.getNpcId() == -1) {
+		if (definition == null || npcId == -1) {
 			for (int i = 0; i < BodyDataParser.getBodyData().length; i++) {
 				if (BodyDataParser.getBodyData()[i] != 1) {
 					int d = appearance.getBodyPart(i);
@@ -98,7 +102,7 @@ public class AppearanceUpdate extends UpdateFlag {
 			}
 		} else {
 			playerUpdate.writeShort(-1);
-			playerUpdate.writeShort(appearance.getNpcId());
+			playerUpdate.writeShort(npcId);
 			playerUpdate.writeByte(0);
 		}
 		for (byte i = 0; i < 10; i++) {
@@ -106,9 +110,24 @@ public class AppearanceUpdate extends UpdateFlag {
 		}
 		playerUpdate.writeShort(appearance.getRenderEmote());
 		playerUpdate.writeRS2String(player.getDetails().getDisplayName());
-		playerUpdate.writeByte(player.getSkills().getCombatLevel());
-		playerUpdate.writeShort(0);
-		playerUpdate.writeByte(0);
+		
+		boolean pvpArea = true; // TODO: World.isPvpArea(player);
+		
+		// this also updates combat lvl in tab
+		playerUpdate.writeByte(pvpArea ? player.getSkills().getCombatLevel() : player.getSkills().getCombatLevelWithSummoning());
+		playerUpdate.writeByte(pvpArea ? player.getSkills().getCombatLevelWithSummoning() : 0);
+		
+		playerUpdate.writeByte(-1);
+		
+		// npc morph
+		playerUpdate.writeByte(npcId >= 0 ? 1 : 0);
+		if (npcId >= 0 && definition != null) {
+			playerUpdate.writeShort(definition.getAnInt876());
+			playerUpdate.writeShort(definition.getAnInt842());
+			playerUpdate.writeShort(definition.getAnInt884());
+			playerUpdate.writeShort(definition.getAnInt875());
+			playerUpdate.writeByte(definition.getAnInt875());
+		}
 		bldr.writeByte(playerUpdate.getBuffer().writerIndex());
 		bldr.writeBytesA(playerUpdate.getBuffer().array(), 0, playerUpdate.getBuffer().writerIndex());
 	}

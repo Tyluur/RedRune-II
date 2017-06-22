@@ -6,6 +6,7 @@ import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents a damage to hit.
@@ -15,6 +16,12 @@ import java.util.Objects;
  * @since 5/21/2017
  */
 public class Hit {
+	
+	/**
+	 * The attributes a hit can have, used for storing data about where the hit came from.
+	 */
+	@Getter
+	private final ConcurrentHashMap<HitAttributes, Object> attributes;
 	
 	/**
 	 * The entity dealing the damage.
@@ -37,11 +44,10 @@ public class Hit {
 	private int damage;
 	
 	/**
-	 * If the hit is a critical hit
+	 * The max hit
 	 */
-	@Getter
 	@Setter
-	private boolean critical;
+	private double maxHit = -1;
 	
 	/**
 	 * The amount of soaked damage.
@@ -54,7 +60,6 @@ public class Hit {
 	 * The delay on the hit
 	 */
 	@Getter
-	@Setter
 	private int delay;
 	
 	public Hit(Entity source, int damage) {
@@ -65,30 +70,8 @@ public class Hit {
 		this.source = source;
 		this.damage = damage;
 		this.splat = splat;
-		this.critical = false;
 		this.soaked = 0;
-	}
-	
-	/**
-	 * Sets the critical look
-	 */
-	public void setCriticalMark() {
-		critical = true;
-	}
-	
-	/**
-	 * Sets the hit to be a heal
-	 */
-	public void setHealHit() {
-		setSplat(HitSplat.HEALED_DAMAGE);
-		critical = false;
-	}
-	
-	/**
-	 * If the hit was missed
-	 */
-	public boolean missed() {
-		return damage == 0;
+		this.attributes = new ConcurrentHashMap<>();
 	}
 	
 	/**
@@ -101,6 +84,30 @@ public class Hit {
 	 */
 	public boolean interactingWith(Player player, Entity victim) {
 		return Objects.equals(player, victim) || Objects.equals(player, source);
+	}
+	
+	/**
+	 * Sets the delay of the hit
+	 *
+	 * @param ticks
+	 * 		The ticks
+	 */
+	public Hit setDelay(int ticks) {
+		// in the hit mask, 1 delay = 20ms...
+		// so if we want to delay for 1 tick we have to calculate it
+		this.delay = (600 * ticks) / 20;
+		return this;
+	}
+	
+	/**
+	 * Checks if the hit is critical, based on the max hit and the hit landed.
+	 */
+	public boolean isCritical() {
+		if (maxHit == -1 || damage == 0) {
+			return false;
+		}
+		double criticalMinimum = maxHit * 0.90;
+		return damage >= criticalMinimum;
 	}
 	
 	/**
@@ -130,5 +137,14 @@ public class Hit {
 			this.setMark(mark);
 		}
 		
+	}
+	
+	/**
+	 * The possible attributes of the hit
+	 */
+	public enum HitAttributes {
+		HIT_SOUND,
+		WEAPON_USED,
+		SPECIAL_ATTACK_USED
 	}
 }

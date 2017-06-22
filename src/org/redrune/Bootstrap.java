@@ -17,6 +17,7 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
+import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 
 import java.util.concurrent.TimeUnit;
@@ -61,6 +62,7 @@ public class Bootstrap {
 			
 			// loading the actual important data
 			Cache.init();
+			ItemRepository.loadUntradeables();
 			BodyDataParser.loadAll();
 			ItemDefinitionParser.loadEquipmentConfiguration();
 			IncomingPacketRepository.storeAll();
