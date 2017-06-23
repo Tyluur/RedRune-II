@@ -1,5 +1,6 @@
 package org.redrune.game.module.interaction.rsinterface;
 
+import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 
@@ -17,7 +18,7 @@ public class CombatStyleInteractionModule implements InterfaceInteractionModule 
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (componentId == 4) {
-			// TODO: implement special bar usage
+			StaticCombatFormulae.submitSpecialRequest(player);
 		} else if (componentId >= 11 && componentId <= 14) {
 			player.getCombatDefinitions().changeAttackStyle((byte) (componentId - 11));
 		} else if (componentId == 15) {

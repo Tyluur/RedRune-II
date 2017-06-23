@@ -130,4 +130,13 @@ public abstract class Node {
 		return null;
 	}
 	
+	/**
+	 * Gets the center location.
+	 * @return The center location.
+	 */
+	public Location getCenterLocation() {
+		int offset = getSize() >> 1;
+		return location.transform(offset, offset, 0);
+	}
+	
 }

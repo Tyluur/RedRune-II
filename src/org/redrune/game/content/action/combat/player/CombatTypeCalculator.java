@@ -1,5 +1,6 @@
 package org.redrune.game.content.action.combat.player;
 
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -24,12 +25,12 @@ public interface CombatTypeCalculator extends EquipConstants, SkillConstants, Bo
 	/**
 	 * Finds the total defensive boost of this combat type
 	 *
-	 * @param player
+	 * @param entity
 	 * 		The player
 	 * @param params
 	 * 		Other possible parameters of this method.
 	 */
-	double totalDefensiveBoost(Player player, Object... params);
+	double totalDefensiveBoost(Entity entity, Object... params);
 	
 	/**
 	 * Finds the maximum amount of damage the player can do

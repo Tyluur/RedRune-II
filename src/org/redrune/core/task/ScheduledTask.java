@@ -68,6 +68,9 @@ public abstract class ScheduledTask {
 	 */
 	public ScheduledTask(int delay, int maxPulses, boolean immediate) {
 		setDelay(delay);
+		if (delay <= 0) {
+			immediate = true;
+		}
 		this.pulses = immediate ? 0 : delay;
 		this.maxPulses = maxPulses;
 	}

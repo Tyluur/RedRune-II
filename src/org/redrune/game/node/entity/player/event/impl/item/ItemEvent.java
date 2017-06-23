@@ -87,10 +87,13 @@ public class ItemEvent extends Event<ItemEventContext> {
 			startTask = true;
 		}
 		if (!queue.contains(context.getSlotId())) {
-			queue.add(context.getSlotId());
+			if (canEquip(player, context.getItem()) != null) {
+				queue.add(context.getSlotId());
+			}
 		}
 		player.putAttribute("equip_queue", queue);
 		
+		// we're not to push the task
 		if (!startTask) {
 			return;
 		}
@@ -168,47 +171,12 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 * 		The player
 	 */
 	public static void handleItemEquipping(Player player, Item item, int slotId) {
-		if (item.getDefinitions().isNoted() || !item.getDefinitions().isWearItem(player.getDetails().getAppearance().isMale()) && item.getId() != 4084) {
-			player.getTransmitter().sendMessage("You can't wear that.", true);
+		Object[] equipData = canEquip(player, item);
+		if (equipData == null || equipData.length != 3 || !(boolean) equipData[1]) {
 			return;
 		}
-		int targetSlot = EquipConstants.getItemSlot(item.getId());
-		if (item.getAmount() == 4084) {
-			targetSlot = 3;
-		}
-		if (targetSlot == -1) {
-			player.getTransmitter().sendMessage("You can't wear that.", true);
-			return;
-		}
-		boolean isTwoHandedWeapon = targetSlot == 3 && EquipConstants.isTwoHanded(item);
-		if (isTwoHandedWeapon && !player.getInventory().hasFreeSlots() && player.getEquipment().hasShield()) {
-			player.getTransmitter().sendMessage("Not enough free space in your inventory.", true);
-			return;
-		}
-		HashMap<Integer, Integer> requirements = item.getDefinitions().getWearingRequirements();
-		boolean hasRequirements = true;
-		if (requirements != null) {
-			for (int skillId : requirements.keySet()) {
-				if (skillId > 24 || skillId < 0) {
-					continue;
-				}
-				int level = requirements.get(skillId);
-				if (level < 0 || level > 120) {
-					continue;
-				}
-				if (player.getSkills().getLevelForXp(skillId) < level) {
-					if (hasRequirements) {
-						player.getTransmitter().sendMessage("You are not high enough level to use this item.", true);
-					}
-					hasRequirements = false;
-					String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
-					player.getTransmitter().sendMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".", true);
-				}
-			}
-		}
-		if (!hasRequirements) {
-			return;
-		}
+		int targetSlot = (int) equipData[0];
+		boolean isTwoHandedWeapon = (boolean) equipData[2];
 		player.getInventory().getItems().remove(slotId, item);
 		if (targetSlot == 3) {
 			if (isTwoHandedWeapon && player.getEquipment().getItem(5) != null) {
@@ -242,9 +210,61 @@ public class ItemEvent extends Event<ItemEventContext> {
 		Item item2 = new Item(item.getId(), oldAmt + item.getAmount());
 		player.getEquipment().getItems().set(targetSlot, item2);
 		player.getEquipment().refresh(targetSlot, targetSlot == 3 ? 5 : 3);
-		player.getEquipment().sendContainer();
 		player.getInventory().refreshAll();
+		player.getCombatDefinitions().setSpecialActivated(false);
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
-		// TODO: turn off spec
+	}
+	
+	/**
+	 * Checks if the player can equip the weapon
+	 *
+	 * @param player
+	 * 		The player
+	 * @param item
+	 * 		The item
+	 */
+	private static Object[] canEquip(Player player, Item item) {
+		if (item.getDefinitions().isNoted() || !item.getDefinitions().isWearItem(player.getDetails().getAppearance().isMale()) && item.getId() != 4084) {
+			player.getTransmitter().sendMessage("You can't wear that.", true);
+			return null;
+		}
+		int targetSlot = EquipConstants.getItemSlot(item.getId());
+		if (item.getAmount() == 4084) {
+			targetSlot = 3;
+		}
+		if (targetSlot == -1) {
+			player.getTransmitter().sendMessage("You can't wear that.", true);
+			return null;
+		}
+		boolean isTwoHandedWeapon = targetSlot == 3 && EquipConstants.isTwoHanded(item);
+		if (isTwoHandedWeapon && !player.getInventory().hasFreeSlots() && player.getEquipment().hasShield()) {
+			player.getTransmitter().sendMessage("Not enough free space in your inventory.", true);
+			return null;
+		}
+		HashMap<Integer, Integer> requirements = item.getDefinitions().getWearingRequirements();
+		boolean hasRequirements = true;
+		if (requirements != null) {
+			for (int skillId : requirements.keySet()) {
+				if (skillId > 24 || skillId < 0) {
+					continue;
+				}
+				int level = requirements.get(skillId);
+				if (level < 0 || level > 120) {
+					continue;
+				}
+				if (player.getSkills().getLevelForXp(skillId) < level) {
+					if (hasRequirements) {
+						player.getTransmitter().sendMessage("You are not high enough level to use this item.", true);
+					}
+					hasRequirements = false;
+					String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
+					player.getTransmitter().sendMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".", true);
+				}
+			}
+		}
+		if (!hasRequirements) {
+			return null;
+		}
+		return new Object[] { targetSlot, true, isTwoHandedWeapon };
 	}
 }

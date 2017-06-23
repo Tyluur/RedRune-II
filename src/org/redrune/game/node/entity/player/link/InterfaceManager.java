@@ -7,7 +7,9 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.InterfaceConstants;
+import org.redrune.utility.rs.input.InputType;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,18 +40,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	private transient Player player;
 	
 	/**
-	 * Gets the component id of the screen
-	 *
-	 * @param fixedMode
-	 * 		If we are using fixed mode.
-	 */
-	private static int getInventoryComponentId(boolean fixedMode) {
-		return fixedMode ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID;
-	}
-	
-	/**
 	 * Sends all the login configurations
-	 *
 	 */
 	public void sendLogin() {
 		sendMainComponents();
@@ -127,17 +118,6 @@ public final class InterfaceManager implements InterfaceConstants {
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Sends a window pane
-	 *
-	 * @param paneId
-	 * 		The id of the pane
-	 */
-	public InterfaceManager sendWindowPane(int paneId) {
-		player.getTransmitter().send(new GameWindowBuilder(this.paneId = paneId, 0).build(player));
-		return this;
 	}
 	
 	/**
@@ -231,13 +211,6 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
-	 * Closes the chatbox interface and sends the regular one
-	 */
-	public InterfaceManager closeChatboxInterface() {
-		return closeInterface(CHATBOX_WINDOW_ID, 13);
-	}
-	
-	/**
 	 * Sends a regular screen interface
 	 *
 	 * @param interfaceId
@@ -298,74 +271,6 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
-	 * Gets the chatbox interface id
-	 */
-	public int getChatboxInterface() {
-		for (Entry<Integer, int[]> entry : interfaceBindings.entrySet()) {
-			if (entry.getKey() == 13 && entry.getValue()[1] == CHATBOX_WINDOW_ID) {
-				return entry.getValue()[0];
-			}
-		}
-		return -1;
-	}
-	
-	/**
-	 * Gets  the id of the inventory interface
-	 */
-	public int getInventoryInterface() {
-		int[] values = interfaceBindings.get(getInventoryComponentId(usingFixedMode()));
-		if (values == null) {
-			return -1;
-		} else {
-			return values[0];
-		}
-	}
-	
-	/**
-	 * Closes all the interfaces visible
-	 */
-	public InterfaceManager closeAllInterfaces() {
-		if (getScreenInterface() != -1) {
-			closeScreenInterface();
-			System.out.println("Closed the screen interface");
-		}
-		if (getChatboxInterface() != -1) {
-			System.out.println("Closed the chatbox interface");
-			closeChatboxInterface();
-			player.getManager().getDialogues().end();
-		}
-		if (getInventoryInterface() != -1) {
-			System.out.println("Closed the inventory interface");
-			closeInventoryInterface();
-		}
-		return this;
-	}
-	
-	/**
-	 * Closes the interface we have open on the screen
-	 */
-	public InterfaceManager closeScreenInterface() {
-		int componentId = getScreenComponentId(usingFixedMode());
-		int[] values = interfaceBindings.get(componentId);
-		if (values == null) {
-			return this;
-		}
-		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
-	}
-	
-	/**
-	 * Closes the inventory interface
-	 */
-	public InterfaceManager closeInventoryInterface() {
-		int componentId = getInventoryComponentId(usingFixedMode());
-		int[] values = interfaceBindings.get(componentId);
-		if (values == null) {
-			return this;
-		}
-		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
-	}
-	
-	/**
 	 * Sends an interface on a tab
 	 *
 	 * @param tab
@@ -408,5 +313,107 @@ public final class InterfaceManager implements InterfaceConstants {
 		player.getTransmitter().send(new CS2ConfigBuilder(622, posHash).build(player));
 		player.getTransmitter().send(new CS2ConfigBuilder(674, posHash).build(player));
 		return this;
+	}
+	
+	/**
+	 * Sends a window pane
+	 *
+	 * @param paneId
+	 * 		The id of the pane
+	 */
+	public InterfaceManager sendWindowPane(int paneId) {
+		player.getTransmitter().send(new GameWindowBuilder(this.paneId = paneId, 0).build(player));
+		return this;
+	}
+	
+	/**
+	 * Closes all interfaces
+	 */
+	public void closeAll() {
+		Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
+		player.getTransmitter().closeInputBox();
+		player.getManager().getInterfaces().closeAllInterfaces();
+	}
+	
+	/**
+	 * Closes all the interfaces visible
+	 */
+	public InterfaceManager closeAllInterfaces() {
+		if (getScreenInterface() != -1) {
+			closeScreenInterface();
+		}
+		if (getChatboxInterface() != -1) {
+			closeChatboxInterface();
+			player.getManager().getDialogues().end();
+		}
+		if (getInventoryInterface() != -1) {
+			closeInventoryInterface();
+		}
+		return this;
+	}
+	
+	/**
+	 * Closes the interface we have open on the screen
+	 */
+	public InterfaceManager closeScreenInterface() {
+		int componentId = getScreenComponentId(usingFixedMode());
+		int[] values = interfaceBindings.get(componentId);
+		if (values == null) {
+			return this;
+		}
+		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
+	}
+	
+	/**
+	 * Gets the chatbox interface id
+	 */
+	public int getChatboxInterface() {
+		for (Entry<Integer, int[]> entry : interfaceBindings.entrySet()) {
+			if (entry.getKey() == 13 && entry.getValue()[1] == CHATBOX_WINDOW_ID) {
+				return entry.getValue()[0];
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Closes the chatbox interface and sends the regular one
+	 */
+	public InterfaceManager closeChatboxInterface() {
+		return closeInterface(CHATBOX_WINDOW_ID, 13);
+	}
+	
+	/**
+	 * Gets  the id of the inventory interface
+	 */
+	public int getInventoryInterface() {
+		int[] values = interfaceBindings.get(getInventoryComponentId(usingFixedMode()));
+		if (values == null) {
+			return -1;
+		} else {
+			return values[0];
+		}
+	}
+	
+	/**
+	 * Closes the inventory interface
+	 */
+	public InterfaceManager closeInventoryInterface() {
+		int componentId = getInventoryComponentId(usingFixedMode());
+		int[] values = interfaceBindings.get(componentId);
+		if (values == null) {
+			return this;
+		}
+		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
+	}
+	
+	/**
+	 * Gets the component id of the screen
+	 *
+	 * @param fixedMode
+	 * 		If we are using fixed mode.
+	 */
+	private static int getInventoryComponentId(boolean fixedMode) {
+		return fixedMode ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID;
 	}
 }

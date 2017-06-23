@@ -69,12 +69,15 @@ public class FiremakingAction implements Action {
 			}
 		}
 		player.getTransmitter().sendMessage("The fire catches and the logs begin to burn.", true);
-		SystemManager.getScheduler().schedule(new ScheduledTask(1, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(1, 1,false) {
 			@Override
 			public Runnable getTask() {
 				return () -> {
 					Optional<FloorItem> optional = player.getRegion().getFloorItem(fire.getLogId(), tile.getX(), tile.getY(), tile.getPlane());
 					if (!optional.isPresent()) {
+						return;
+					}
+					if (!checkAll(player)) {
 						return;
 					}
 					FloorItem item = optional.get();
@@ -111,14 +114,20 @@ public class FiremakingAction implements Action {
 			player.getTransmitter().sendMessage("You do not have the required level to light this.");
 			return false;
 		}
-		if (badFireLoction(player)) {
+		if (badFireLocation(player)) {
 			player.getTransmitter().sendMessage("You can't light a fire here.");
 			return false;
 		}
 		return true;
 	}
 	
-	public static boolean badFireLoction(Player player) {
+	/**
+	 * If the player's location is a bad location to light a fire
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public static boolean badFireLocation(Player player) {
 		return !RegionManager.canMoveNPC(player.getLocation().getPlane(), player.getLocation().getX(), player.getLocation().getY(), player.getSize()) || player.getRegion().findSpawnedGameObject(-1, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), -1).isPresent();
 	}
 	

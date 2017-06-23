@@ -46,7 +46,6 @@ public class Hit {
 	/**
 	 * The max hit
 	 */
-	@Setter
 	private double maxHit = -1;
 	
 	/**
@@ -100,10 +99,25 @@ public class Hit {
 	}
 	
 	/**
+	 * Sets the max hit
+	 *
+	 * @param maxHit
+	 * 		The max hit
+	 */
+	public Hit setMaxHit(double maxHit) {
+		this.maxHit = maxHit;
+		return this;
+	}
+	
+	/**
 	 * Checks if the hit is critical, based on the max hit and the hit landed.
 	 */
 	public boolean isCritical() {
 		if (maxHit == -1 || damage == 0) {
+			return false;
+		}
+		// we can only set combat splats to critical
+		if (!(splat == HitSplat.MELEE_DAMAGE || splat == HitSplat.RANGE_DAMAGE || splat == HitSplat.MAGIC_DAMAGE)) {
 			return false;
 		}
 		double criticalMinimum = maxHit * 0.90;

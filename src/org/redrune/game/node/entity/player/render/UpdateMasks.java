@@ -8,8 +8,6 @@ import org.redrune.game.node.entity.player.render.flag.impl.HitUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.MovementUpdate;
 import org.redrune.utility.backend.Priority;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -26,20 +24,10 @@ public class UpdateMasks {
 	private final PriorityQueue<UpdateFlag> flagQueue = new PriorityQueue<>();
 	
 	/**
-	 * A queue holding all update flags
-	 */
-	private final List<UpdateFlag> queuedUpdates = new LinkedList<>();
-	
-	/**
 	 * The mask data.
 	 */
 	@Getter
 	private int maskData = 0;
-	
-	/**
-	 * If we're updating this Entity.
-	 */
-	private boolean updating;
 	
 	/**
 	 * The current animation priority.
@@ -73,7 +61,6 @@ public class UpdateMasks {
 		if (e.getHitMap().getHitList().size() > 0) {
 			register(new HitUpdate(e));
 		}
-		updating = true;
 	}
 	
 	/**
@@ -83,10 +70,6 @@ public class UpdateMasks {
 	 * 		The update flag.
 	 */
 	public void register(UpdateFlag updateFlag) {
-		if (updating) {
-			queuedUpdates.add(updateFlag);
-			return;
-		}
 		if (!updateFlag.canRegister(this)) {
 			return;
 		}
@@ -104,11 +87,6 @@ public class UpdateMasks {
 		animationPriority = Priority.LOWEST;
 		maskData = 0;
 		flagQueue.clear();
-		updating = false;
-		for (UpdateFlag flag : queuedUpdates) {
-			register(flag);
-		}
-		queuedUpdates.clear();
 	}
 	
 	/**

@@ -51,6 +51,8 @@ public class FloorItemTask extends ScheduledTask {
 					item.getRegion().removeFloorItem(item);
 					stop();
 				}
+				// TODO fix: ground items showing up for other players when removed
+				// http://i.imgur.com/3YCLp7M.png
 			}
 		};
 	}

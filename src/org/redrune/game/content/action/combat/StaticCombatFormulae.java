@@ -2,14 +2,22 @@ package org.redrune.game.content.action.combat;
 
 import com.google.common.base.Preconditions;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
+import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+
+import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 import static org.redrune.utility.rs.constant.BonusConstants.*;
 
@@ -26,7 +34,415 @@ public class StaticCombatFormulae {
 	 * 		The player
 	 */
 	public static CombatType getCombatType(Player player) {
+		int rangeResponse = getRangeResponse(player);
+		switch (rangeResponse) {
+			case 0: // nothing found that symbolizes range
+				return CombatType.MELEE;
+			case 1: // invalid ammo
+			case 2: // good range
+			case 3: // no ammo
+				return CombatType.RANGE;
+		}
 		return CombatType.MELEE;
+	}
+	
+	/**
+	 * Gets the range response from the player. The options are as follows:
+	 * <br>
+	 * <ul>
+	 * <li>0 - We are doing melee</li>
+	 * <li>1 - The ammo being used is incorrect</li>
+	 * <li>2 - Range should proceed</li>
+	 * <li>3 - We do not have ammo to use.</li>
+	 * </ul>
+	 *
+	 * @param player
+	 * 		The player to check.
+	 */
+	public static int getRangeResponse(Player player) {
+		int weaponId = player.getEquipment().getWeaponId();
+		if (weaponId == -1) {
+			return 0;
+		}
+		String name = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
+		// those dont need arrows
+		if (name.contains("knife") || name.contains("dart") || name.contains("javelin") || name.contains("thrownaxe") || name.contains("throwing axe") || name.contains("crystal bow") || name.equalsIgnoreCase("zaryte bow") || name.contains("chinchompa") || name.contains("bolas") || name.contains("sling") || name.contains("toktz-xil-ul")) {
+			return 2;
+		}
+		int ammoId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_ARROWS);
+		switch (weaponId) {
+			case 15241: // Hand cannon
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 15243: // bronze arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 839: // longbow
+			case 841: // shortbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 882: // bronze arrow
+					case 884: // iron arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 843: // oak longbow
+			case 845: // oak shortbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 882: // bronze arrow
+					case 884: // iron arrow
+					case 886: // steel arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 847: // willow longbow
+			case 849: // willow shortbow
+			case 13541: // Willow composite bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 882: // bronze arrow
+					case 884: // iron arrow
+					case 886: // steel arrow
+					case 888: // mithril arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 851: // maple longbow
+			case 853: // maple shortbow
+			case 18331: // Maple longbow (sighted)
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 882: // bronze arrow
+					case 884: // iron arrow
+					case 886: // steel arrow
+					case 888: // mithril arrow
+					case 890: // adamant arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 2883:// ogre bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 2866: // ogre arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 4827:// Comp ogre bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 2866: // ogre arrow
+					case 4773: // bronze brutal
+					case 4778: // iron brutal
+					case 4783: // steel brutal
+					case 4788: // black brutal
+					case 4793: // mithril brutal
+					case 4798: // adamant brutal
+					case 4803: // rune brutal
+						return 2;
+					default:
+						return 1;
+				}
+			case 855: // yew longbow
+			case 857: // yew shortbow
+			case 10281: // Yew composite bow
+			case 14121: // Sacred clay bow
+			case 859: // magic longbow
+			case 861: // magic shortbow
+			case 10284: // Magic composite bow
+			case 18332: // Magic longbow (sighted)
+			case 6724: // seercull
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 882: // bronze arrow
+					case 884: // iron arrow
+					case 886: // steel arrow
+					case 888: // mithril arrow
+					case 890: // adamant arrow
+					case 892: // rune arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 11235: // dark bows
+			case 15701:
+			case 15702:
+			case 15703:
+			case 15704:
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 882: // bronze arrow
+					case 884: // iron arrow
+					case 886: // steel arrow
+					case 888: // mithril arrow
+					case 890: // adamant arrow
+					case 892: // rune arrow
+					case 11212: // dragon arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 19143: // saradomin bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 19152: // saradomin arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 19146: // guthix bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 19157: // guthix arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 19149: // zamorak bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 19162: // zamorak arrow
+						return 2;
+					default:
+						return 1;
+				}
+			case 24338: // Royal crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 24336: // Coral bolts
+						return 2;
+					default:
+						return 1;
+				}
+			case 24303: // Coral crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 24304: // Coral bolts
+						return 2;
+					default:
+						return 1;
+				}
+			case 4734: // karil crossbow
+			case 4934:
+			case 4935:
+			case 4936:
+			case 4937:
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 4740: // bolt rack
+						return 2;
+					default:
+						return 1;
+				}
+			case 10156: // hunters crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 10158: // Kebbit bolts
+					case 10159: // Long kebbit bolts
+						return 2;
+					default:
+						return 1;
+				}
+			case 8880: // Dorgeshuun c'bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 8882: // bone bolts
+						return 2;
+					default:
+						return 1;
+				}
+			case 14684: // zanik crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 13083: // black bolts
+					case 9142:// mithril bolts
+					case 9143: // adam bolts
+					case 9144: // rune bolts
+					case 9145: // silver bolts wtf
+						return 2;
+					default:
+						return 1;
+				}
+			case 767: // phoenix crossbow
+			case 837: // crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+						return 2;
+					default:
+						return 1;
+				}
+			case 9174: // bronze crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9236: // Opal bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 9176: // blurite crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 13083: // black bolts
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+					case 9239: // Topaz bolts (e)
+					case 9139: // Blurite bolts
+					case 9237: // Jade bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 9177: // iron crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 9179: // steel crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+					case 9239: // Topaz bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 13081: // black crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 13083: // black bolts
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+					case 9239: // Topaz bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 9181: // Mith crossbow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 13083: // black bolts
+					case 9142:// mithril bolts
+					case 9145: // silver bolts
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+					case 9239: // Topaz bolts (e)
+					case 9240: // Sapphire bolts (e)
+					case 9241: // Emerald bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 9183: // adam c bow
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 13083: // black bolts
+					case 9142:// mithril bolts
+					case 9143: // adam bolts
+					case 9145: // silver bolts wtf
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+					case 9239: // Topaz bolts (e)
+					case 9240: // Sapphire bolts (e)
+					case 9241: // Emerald bolts (e)
+					case 9242: // Ruby bolts (e)
+					case 9243: // Diamond bolts (e)
+						return 2;
+					default:
+						return 1;
+				}
+			case 9185: // rune c bow
+			case 18357: // chaotic crossbow
+			case 18358:
+				switch (ammoId) {
+					case -1:
+						return 3;
+					case 877: // bronze bolts
+					case 9140: // iron bolts
+					case 9141: // steel bolts
+					case 13083: // black bolts
+					case 9142:// mithril bolts
+					case 9143: // adam bolts
+					case 9144: // rune bolts
+					case 9145: // silver bolts wtf
+					case 9236: // Opal bolts (e)
+					case 9238: // Pearl bolts (e)
+					case 9239: // Topaz bolts (e)
+					case 9240: // Sapphire bolts (e)
+					case 9241: // Emerald bolts (e)
+					case 9242: // Ruby bolts (e)
+					case 9243: // Diamond bolts (e)
+					case 9244: // Dragon bolts (e)
+					case 9245: // Onyx bolts (e)
+					case 24116: // Bakriminel bolts
+						return 2;
+					default:
+						return 1;
+				}
+			default:
+				return 0;
+		}
 	}
 	
 	/**
@@ -194,7 +610,7 @@ public class StaticCombatFormulae {
 	 * Checks if we have an armour set equipped. This uses lowercase naming.
 	 * <br>
 	 * Example usage:
-	 * <br>armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_AMMY, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok",
+	 * <br>armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_chest, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok",
 	 * "dharok", "dharok");// armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_AMMY, SLOT_LEGS, SLOT_WEAPON },
 	 * "dharok", "dharok", "dharok", "dharok");
 	 *
@@ -207,14 +623,16 @@ public class StaticCombatFormulae {
 	 */
 	public static boolean armourSetEquipped(Player player, int[] slots, String... nameFlags) {
 		Preconditions.checkArgument(slots.length == nameFlags.length, "Name flags and slot length must be equal!");
-		for (int slot : slots) {
+		for (int i = 0; i < slots.length; i++) {
+			int slot = slots[i];
 			int itemInSlot = player.getEquipment().getIdInSlot(slot);
 			// theres no item in the slot, so its not possible to match the name
 			if (itemInSlot == -1) {
 				return false;
 			}
 			String itemInSlotName = ItemDefinitionParser.forId(itemInSlot).getName().toLowerCase();
-			String nameFlag = nameFlags[slot].toLowerCase();
+			
+			String nameFlag = nameFlags[i].toLowerCase();
 			// the item in that slot's name didn't have the expected flag
 			if (!itemInSlotName.contains(nameFlag)) {
 				return false;
@@ -733,10 +1151,11 @@ public class StaticCombatFormulae {
 	 */
 	public static void fireCombatListeners(Player player, Entity target) {
 		if (target.isPlayer()) {
-			target.toPlayer().stop(false, false, true, false);
+			target.toPlayer().getManager().getInterfaces().closeAll();
 		}
-		if (target.getCombatDefinitions().isRetaliating() && !target.fighting()) {
-			SystemManager.getScheduler().schedule(new ScheduledTask(2, 1, false) {
+		// as long as the target isnt moving or fighting already, they'll retaliate to us
+		if (target.getCombatDefinitions().isRetaliating() && !target.fighting() && !target.getMovement().isMoving()) {
+			SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, false) {
 				@Override
 				public Runnable getTask() {
 					return () -> {
@@ -780,4 +1199,193 @@ public class StaticCombatFormulae {
 		// otherwise we can fight
 		return true;
 	}
+	
+	/**
+	 * Performing some checks to toggle the special attack bar. It must be done after players stop switching if they are
+	 * to make combat smooth.
+	 *
+	 * @param player
+	 * 		The player
+	 * @param attempt
+	 * 		The attempt number
+	 */
+	public static void checkSpecialToggle(Player player, final int attempt) {
+		Queue<Integer> equipQueue = player.getAttribute("equip_queue", new ConcurrentLinkedQueue<>());
+		if (!equipQueue.isEmpty() && attempt <= 3) {
+			EngineWorkingSet.getScheduledExecutorService().schedule(() -> checkSpecialToggle(player, attempt + 1), 100, TimeUnit.MILLISECONDS);
+			return;
+		}
+		if (player.removeAttribute("special_attack_toggled", false)) {
+			player.getCombatDefinitions().setSpecialActivated(!player.getCombatDefinitions().isSpecialActivated());
+		}
+		// check instant specs
+		if (player.getCombatDefinitions().isSpecialActivated() && player.getManager().getActions().getAction() instanceof PlayerCombatAction) {
+			PlayerCombatAction action = (PlayerCombatAction) player.getManager().getActions().getAction();
+			Optional<SpecialAttackEvent> optional = CombatRegistry.getSpecial(player.getEquipment().getWeaponId());
+			// no optional found
+			if (!optional.isPresent()) {
+				return;
+			}
+			SpecialAttackEvent event = optional.get();
+			// the event isn't instant
+			if (!event.isInstant()) {
+				return;
+			}
+			// not enough energy
+			if (player.getCombatDefinitions().getSpecialEnergy() < event.energyRequired()) {
+				player.getTransmitter().sendMessage("You don't have enough special attack energy.");
+				return;
+			}
+			Entity target = action.getTarget();
+			// no target and it was necessary
+			if (target == null && event.requiresFight()) {
+				return;
+			}
+			// granite maul is instant and requires combat, others like SOL/DBA don't...
+			if (event.requiresFight()) {
+				// just incase [nearly certain all instant specs are melee...]
+				CombatType type = StaticCombatFormulae.getCombatType(player);
+				if (type == null) {
+					return;
+				}
+				event.fire(player, target, type.getSwing(), player.getCombatDefinitions().getAttackStyle());
+			} else {
+				event.fire(player, null, null, player.getCombatDefinitions().getAttackStyle());
+			}
+			// dropping the special attack amount
+			player.getCombatDefinitions().reduceSpecial(event.energyRequired());
+		}
+	}
+	
+	/**
+	 * Submits a special attack request
+	 *
+	 * @param player
+	 * 		The player submitting
+	 */
+	public static void submitSpecialRequest(final Player player) {
+		player.putAttribute("special_attack_toggled", true);
+		EngineWorkingSet.getScheduledExecutorService().schedule(() -> {
+			try {
+				if (player.isDead()) {
+					return;
+				}
+				checkSpecialToggle(player, 0);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}, 100, TimeUnit.MILLISECONDS);
+	}
+	
+	/**
+	 * Gets the graphics id of the thrown weapon
+	 *
+	 * @param weaponId
+	 * 		The id of the weapon
+	 */
+	public static int getKnifeThrowGfxId(int weaponId) {
+		// knives
+		if (weaponId == 868) { // rune
+			return 218;
+		} else if (weaponId == 867) { // addy
+			return 217;
+		} else if (weaponId == 866) {  // mith
+			return 216;
+		} else if (weaponId == 869) { // black
+			return 215;
+		} else if (weaponId == 865) { // steel
+			return 214;
+		} else if (weaponId == 863) { // iron
+			return 213;
+		} else if (weaponId == 864) { // bronze
+			return 212;
+		}
+		// darts
+		if (weaponId == 806) { // bronze
+			return 226;
+		} else if (weaponId == 807) { // iron
+			return 227;
+		} else if (weaponId == 808) { // steel
+			return 228;
+		} else if (weaponId == 3093) { // black
+			return 34;
+		} else if (weaponId == 809) { // mithril
+			return 229;
+		} else if (weaponId == 810) { // addy
+			return 230;
+		} else if (weaponId == 811) { // rune
+			return 231;
+		} else if (weaponId == 11230) { // dragon
+			return 1122;
+		}
+		// javelins
+		if (weaponId >= 13954 && weaponId <= 13956 || weaponId >= 13879 && weaponId <= 13882) {
+			return 1837;
+		}
+		// thrownaxe
+		if (weaponId == 13883 || weaponId == 13957) {
+			return 1839;
+		}
+		// obby rings
+		if (weaponId == 6522) {
+			return 442;
+		}
+		if (weaponId == 800) {
+			return 43;
+		} else if (weaponId == 13954 || weaponId == 13955 || weaponId == 13956 || weaponId == 13879 || weaponId == 13880 || weaponId == 13881 || weaponId == 13882) {
+			return 1837;
+		}
+		return 219;
+	}
+	
+	/**
+	 * Gets the graphics id of an arrow
+	 *
+	 * @param arrowId
+	 * 		The arrow
+	 */
+	public static int getArrowThrowGfxId(int arrowId) {
+		if (arrowId == 884) {
+			return 18;
+		} else if (arrowId == 886) {
+			return 20;
+		} else if (arrowId == 888) {
+			return 21;
+		} else if (arrowId == 890) {
+			return 22;
+		} else if (arrowId == 892) {
+			return 24;
+		}
+		return 19; // bronze default
+	}
+	
+	/**
+	 * Gets the projectile id based on the weapon and the arrow
+	 *
+	 * @param weaponId
+	 * 		The weapon
+	 * @param arrowId
+	 * 		The arrow
+	 */
+	public static int getArrowProjectileGfxId(int weaponId, int arrowId) {
+		if (arrowId == 882) {
+			return 9;
+		} else if (arrowId == 884) {
+			return 10;
+		} else if (arrowId == 886) {
+			return 11;
+		} else if (arrowId == 888) {
+			return 12;
+		} else if (arrowId == 890) {
+			return 13;
+		} else if (arrowId == 892) {
+			return 15;
+		} else if (arrowId == 11212) {
+			return 1120;
+		} else if (weaponId == 20171) {
+			return 1066;
+		}
+		return 10;// bronze default
+	}
+	
 }

@@ -1,0 +1,53 @@
+package org.redrune.game.content;
+
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.Projectile;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 6/22/2017
+ */
+public class ProjectileManager {
+	
+	/**
+	 * Creates a new ranged projectile
+	 *
+	 * @param source
+	 * 		The source of the projectile
+	 * @param target
+	 * 		The target of the projectile
+	 * @param projectileId
+	 * 		The id of the projectile
+	 * @param startHeight
+	 * 		The start height of the projectile
+	 * @param endHeight
+	 * 		The end height of the projectile
+	 * @param delay
+	 * 		The delay on the projectile
+	 * @param angle
+	 * 		The angle of the projectile
+	 * @param offset
+	 * 		The distsance offset
+	 */
+	public static Projectile createRangeProjectile(Player source, Entity target, int projectileId, int startHeight, int endHeight, int delay, int angle, int offset) {
+		int speed = 46 + (getLocation(source).getDistance(target.getLocation()) * 5);
+		return new Projectile(source, target, projectileId, startHeight, endHeight, delay, speed, angle, offset);
+	}
+	
+	/**
+	 * Gets the source location on construction.
+	 *
+	 * @param n
+	 * 		The node.
+	 * @return The centered location.
+	 */
+	public static Location getLocation(Entity n) {
+		if (n == null) {
+			return null;
+		}
+		return n.getCenterLocation();
+	}
+	
+}

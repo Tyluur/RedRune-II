@@ -21,9 +21,6 @@ import org.redrune.network.rs666.NetworkTransmitter;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
-import org.redrune.utility.rs.input.InputType;
-
-import java.util.Arrays;
 
 /**
  * The player that renderable in the game.
@@ -281,9 +278,7 @@ public final class Player extends Entity {
 			sendAnimation(-1);
 		}
 		if (interfaces) {
-			Arrays.stream(InputType.values()).forEach(type -> removeAttribute(type.getName()));
-			getTransmitter().closeInputBox();
-			getManager().getInterfaces().closeAllInterfaces();
+			manager.getInterfaces().closeAll();
 		}
 		if (travel) {
 			setInteractionTask(null);

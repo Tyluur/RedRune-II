@@ -1,23 +1,48 @@
-6/21/17 {
-+   Started on melee combat
-	-   Diagonal combat doesn't work
-	-   Tile collision finds the best tile to go to
-+   Added combat style saving
-+   Added auto retaliate saving
-+   Updated player appearance to show the player's combat level with summoning addition
-+   Fixed the bugged combat styles tab showing the wrong summoning level addition (S/O Walied)
-+   Fixed some interaction bugs
+6/22/17 {
++   Added special attacks for melee combat
+	-   Instant special attacks handled as well
+	-   AGS/DDS/GMAUL added so far...
++   Fixed spamming in firemaking for cheap exp.
++   Fixed an issue with update masks that would slow down appearance rendering
++   Started on range combat
+	-   Support for all longbows & short bows
+	-   Updated projectile packet builder [thanks to Maxi on R-S with some accurate packet data]
+		-   Start distance offset addition + creator size addition
+	-   Projectiles have been perfected for the ready bows
+	-   Clipped and distance calculated
+	-   Timing for block emotes and hit appearance is calculated as well
+	-   Calculation for max hit, accuracy, and defense is fair as well
+	-   Support for dark bow, knives, darts, crystal bow, and regular crossbows
 
-[IMG]http://i.imgur.com/s8y5VbR.png[/IMG]
-[IMG]http://i.imgur.com/gkMERkW.png[/IMG]
-[IMG]http://i.imgur.com/UAJ3enr.gif[/img]
+[IMG]http://i.imgur.com/1oHpL1r.gif[/IMG]
+[IMG]http://i.imgur.com/g3h2FIX.gif[/IMG]
+[IMG]http://i.imgur.com/0XIIe5m.gif[/IMG]
+[IMG]http://i.imgur.com/ypLZ5ON.gif[/IMG]
+}
+
+6/21/17 {
+	+   Started on melee combat
+		-   Diagonal combat doesn't work
+		-   Tile collision finds the best tile to go to
+	+   Added combat style saving
+	+   Added auto retaliate saving
+	+   Updated player appearance to show the player's combat level with summoning addition
+	+   Fixed the bugged combat styles tab showing the wrong summoning level addition (S/O Walied)
+	+   Fixed some interaction bugs
+	+   Added critical damage algorithm (damage >= 90% = critical)
+	+   Added damage absorption based on armour bonuses
+	+   Added untradeable item repository
+
+	[IMG]http://i.imgur.com/s8y5VbR.png[/IMG]
+	[IMG]http://i.imgur.com/gkMERkW.png[/IMG]
+	[IMG]http://i.imgur.com/UAJ3enr.gif[/img]
 }
 
 6/20/17 {
-+   Added player following with dancing
+	+   Added player following with dancing
 	-   Support for never getting stuck behind objects
 	-   Players never trail by too many tiles either.
-+   Updated the event management system for easy execution
+	+   Updated the event management system for easy execution
 
 	[IMG]http://i.imgur.com/SacgqZ3.png[/img]
 	[IMG]http://i.imgur.com/clPDzak.png[/img]

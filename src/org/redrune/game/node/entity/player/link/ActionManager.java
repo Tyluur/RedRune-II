@@ -64,35 +64,18 @@ public final class ActionManager {
 			}
 		}
 		if (delay > 0) {
-			delay--;
+			--delay;
 			return;
 		}
 		if (action == null) {
 			return;
 		}
-		int delay = action.processOnTicks(player);
-		if (delay == -1) {
+		int tickDelay = action.processOnTicks(player);
+		if (tickDelay == -1) {
 			stopAction();
 			return;
 		}
-		this.delay += delay;
-	}
-	
-	/**
-	 * Adds onto the action's processing delay
-	 *
-	 * @param delay
-	 * 		The amount to add
-	 */
-	public void addDelay(int delay) {
-		this.delay += delay;
-	}
-	
-	/**
-	 * If there is currently an action
-	 */
-	public boolean actionExists() {
-		return action != null;
+		this.delay += tickDelay;
 	}
 	
 }

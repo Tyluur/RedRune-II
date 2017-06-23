@@ -167,4 +167,11 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 			}
 		}
 	}
+	
+	/**
+	 * Gets the id of the weapon
+	 */
+	public int getWeaponId() {
+		return getIdInSlot(SLOT_WEAPON);
+	}
 }

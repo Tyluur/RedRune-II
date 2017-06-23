@@ -15,11 +15,6 @@ import org.redrune.game.node.entity.player.link.LockManager.LockType;
  */
 public class WalkEvent extends Event<WalkEventContext> {
 	
-	@Override
-	public boolean canStart(Player player, WalkEventContext context) {
-		return !player.getManager().getLocks().isLocked(LockType.MOVEMENT);
-	}
-	
 	/**
 	 * Constructs a new event
 	 */
@@ -49,5 +44,10 @@ public class WalkEvent extends Event<WalkEventContext> {
 		} else {
 			player.getTransmitter().sendMinimapFlagReset();
 		}
+	}
+	
+	@Override
+	public boolean canStart(Player player, WalkEventContext context) {
+		return !player.getManager().getLocks().isLocked(LockType.MOVEMENT);
 	}
 }

@@ -128,7 +128,7 @@ public class WoodcuttingAction implements Action {
 		if (hatchet != null && hatchet == HatchetDefinitions.INFERNO && Misc.getRandom(10) >= 8) {
 			Fire fire = Fire.getFireInstance(definitions.getLogsId());
 			if (fire != null) {
-				boolean cantCreateFire = FiremakingAction.badFireLoction(player);
+				boolean cantCreateFire = FiremakingAction.badFireLocation(player);
 				if (!cantCreateFire) {
 					RegionManager.addTimedGamedObject(new GameObject(fire.getObjectId(), 10, 0, player.getLocation()), 592, 1, fire.getLife());
 				}

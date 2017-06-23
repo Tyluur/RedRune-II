@@ -3,6 +3,7 @@ package org.redrune.game.content.action.combat.player;
 import lombok.Getter;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.action.combat.player.swing.MeleeCombatSwing;
+import org.redrune.game.content.action.combat.player.swing.RangeCombatSwing;
 import org.redrune.game.node.entity.player.Player;
 
 /**
@@ -50,10 +51,50 @@ public enum CombatType {
 			}
 		}
 	},
-	RANGE(null) {
+	RANGE(new RangeCombatSwing()) {
 		@Override
-		public int getDelay(Player player, int id) {
-			return 0;
+		public int getDelay(Player player, int weaponId) {
+			final int attackStyle = player.getCombatDefinitions().getAttackStyle();
+			int delay = 6;
+			if (weaponId != -1) {
+				String weaponName = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
+				if (weaponName.contains("shortbow") || weaponName.contains("karil's crossbow") || weaponName.contains("sling")) {
+					delay = 3;
+				} else if (weaponName.contains("crossbow")) {
+					delay = 5;
+				} else if (weaponName.contains("dart") || weaponName.contains("knife")) {
+					delay = 2;
+				} else if (weaponName.contains("chinchompa") || weaponName.contains("crystal bow")) {
+					delay = 4;
+				} else if (weaponName.contains("toktz-xil-ul")) {
+					delay = 3;
+				} else {
+					switch (weaponId) {
+						case 15241:
+							delay = 7;
+							break;
+						case 11235: // dark bows
+						case 15701:
+						case 15702:
+						case 15703:
+						case 15704:
+							delay = 9;
+							break;
+						case 20171:
+							delay = 4;
+							break;
+						default:
+							delay = 6;
+							break;
+					}
+				}
+			}
+			if (attackStyle == 1) {
+				delay--;
+			} else if (attackStyle == 2) {
+				delay++;
+			}
+			return delay;
 		}
 	},
 	MAGIC(null) {

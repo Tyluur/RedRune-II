@@ -1,11 +1,15 @@
 package org.redrune.game.content.action.combat;
 
+import lombok.Getter;
 import org.redrune.game.content.action.Action;
+import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
+import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
-import org.redrune.utility.rs.constant.EquipConstants;
+
+import java.util.Optional;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -16,6 +20,7 @@ public final class PlayerCombatAction implements Action {
 	/**
 	 * The target we are in combat with
 	 */
+	@Getter
 	private final Entity target;
 	
 	/**
@@ -40,29 +45,71 @@ public final class PlayerCombatAction implements Action {
 	@Override
 	public boolean process(Player player) {
 		type = StaticCombatFormulae.getCombatType(player);
-		player.turnTo(target);
-		return verifyContinuation(player);
+		if (!verifyContinuation(player)) {
+			return false;
+		}
+		checkSpecials(player);
+		return true;
+	}
+	
+	/**
+	 * Checks the special attacks, this sends instant specs as well as toggles the queued special attack on before we
+	 * use the weapon.
+	 *
+	 * @param player
+	 * 		The player.
+	 */
+	private void checkSpecials(Player player) {
+		// if the special attack was toggled on and is queued.
+		StaticCombatFormulae.checkSpecialToggle(player, 0);
+	}
+	
+	/**
+	 * Gets the special attack event
+	 *
+	 * @param player
+	 * 		The player
+	 * @param weaponId
+	 * 		The id of the weapon we're using
+	 * @param usingSpecial
+	 * 		If we're using the special attack
+	 */
+	private Optional<SpecialAttackEvent> getSpecialAttackEvent(Player player, int weaponId, boolean usingSpecial) {
+		Optional<SpecialAttackEvent> specialOptional = Optional.empty();
+		if (usingSpecial) {
+			specialOptional = CombatRegistry.getSpecial(weaponId);
+			if (!specialOptional.isPresent()) {
+				player.getCombatDefinitions().setSpecialActivated(false);
+				player.getTransmitter().sendMessage("Unregistered special attack event, please report this on the forum.");
+			}
+		}
+		return specialOptional;
 	}
 	
 	@Override
 	public int processOnTicks(Player player) {
+		// we are too far away, combat is halted [but not quit]
 		if (!StaticCombatFormulae.isWithinDistance(player, target, type)) {
 			return 0;
 		}
-		final int weaponId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_WEAPON);
-		int spellId = -1; // get the player's spell id
-		int delay = type.getDelay(player, type == CombatType.MAGIC ? spellId : weaponId);
-		boolean usingSpecial = false; // TODO: activate special and use the registry for them.
-		
-		switch (type) {
-			case MELEE:
-			case RANGE:
-				type.getSwing().run(player, target, weaponId, player.getCombatDefinitions().getAttackStyle());
-				break;
-			case MAGIC:
-				type.getSwing().run(player, target, spellId, player.getCombatDefinitions().getAttackStyle());
-				break;
+		player.turnTo(target);
+		// the id of the weapon equipped
+		final int weaponId = player.getEquipment().getWeaponId();
+		// the spell we're casting
+		final int spellId = -1; // get the player's spell id
+		// the id of the combat flag [weapon or spell id]
+		final int id = type == CombatType.MAGIC ? spellId : weaponId;
+		// the delay we will have
+		final int delay = type.getDelay(player, id);
+		// if we're using special
+		final boolean usingSpecial = player.getCombatDefinitions().isSpecialActivated();
+		// the special attack event
+		Optional<SpecialAttackEvent> specialOptional = getSpecialAttackEvent(player, weaponId, usingSpecial);
+		// sends the swing
+		if (!type.getSwing().run(player, target, id, player.getCombatDefinitions().getAttackStyle(), specialOptional.orElse(null))) {
+			return -1;
 		}
+		// after combat has been sent, we must send listeners
 		StaticCombatFormulae.fireCombatListeners(player, target);
 		return delay;
 	}

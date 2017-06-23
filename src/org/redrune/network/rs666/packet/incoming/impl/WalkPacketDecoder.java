@@ -42,7 +42,7 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		int[] bufferX = RouteFinder.getLastPathBufferX();
 		int[] bufferY = RouteFinder.getLastPathBufferY();
 		
-		// found path, lets walk/run...
+		// execute the event now.
 		EventManager.executeEvent(player, WalkEvent.class, new WalkEventContext(x, y, bufferX, bufferY, running, calculatedSteps));
 	}
 }
