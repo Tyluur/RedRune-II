@@ -34,6 +34,12 @@ public class StaticCombatFormulae {
 	 * 		The player
 	 */
 	public static CombatType getCombatType(Player player) {
+		// magic gets first priority
+		int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutocastId());
+		if (spellId != -1) {
+			return CombatType.MAGIC;
+		}
+		// then we check if we have range worn
 		int rangeResponse = getRangeResponse(player);
 		switch (rangeResponse) {
 			case 0: // nothing found that symbolizes range
@@ -1153,6 +1159,7 @@ public class StaticCombatFormulae {
 		if (target.isPlayer()) {
 			target.toPlayer().getManager().getInterfaces().closeAll();
 		}
+		player.getManager().getInterfaces().closeAll();
 		// as long as the target isnt moving or fighting already, they'll retaliate to us
 		if (target.getCombatDefinitions().isRetaliating() && !target.fighting() && !target.getMovement().isMoving()) {
 			SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, false) {
@@ -1219,8 +1226,7 @@ public class StaticCombatFormulae {
 			player.getCombatDefinitions().setSpecialActivated(!player.getCombatDefinitions().isSpecialActivated());
 		}
 		// check instant specs
-		if (player.getCombatDefinitions().isSpecialActivated() && player.getManager().getActions().getAction() instanceof PlayerCombatAction) {
-			PlayerCombatAction action = (PlayerCombatAction) player.getManager().getActions().getAction();
+		if (player.getCombatDefinitions().isSpecialActivated()) {
 			Optional<SpecialAttackEvent> optional = CombatRegistry.getSpecial(player.getEquipment().getWeaponId());
 			// no optional found
 			if (!optional.isPresent()) {
@@ -1236,24 +1242,37 @@ public class StaticCombatFormulae {
 				player.getTransmitter().sendMessage("You don't have enough special attack energy.");
 				return;
 			}
-			Entity target = action.getTarget();
+			// the combat action
+			PlayerCombatAction action = player.getManager().getActions().getAction() instanceof PlayerCombatAction ? (PlayerCombatAction) player.getManager().getActions().getAction() : null;
+			Entity target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
 			// no target and it was necessary
 			if (target == null && event.requiresFight()) {
 				return;
 			}
 			// granite maul is instant and requires combat, others like SOL/DBA don't...
 			if (event.requiresFight()) {
-				// just incase [nearly certain all instant specs are melee...]
+				if (!canFight(player, target)) {
+					return;
+				}
+				// just in case [nearly certain all instant specs are melee...]
 				CombatType type = StaticCombatFormulae.getCombatType(player);
 				if (type == null) {
 					return;
 				}
+				// we are far away
+				if (!isWithinDistance(player, target, type)) {
+					return;
+				}
 				event.fire(player, target, type.getSwing(), player.getCombatDefinitions().getAttackStyle());
+				// face the target so it looks real
+				player.turnTo(target);
 			} else {
 				event.fire(player, null, null, player.getCombatDefinitions().getAttackStyle());
 			}
 			// dropping the special attack amount
 			player.getCombatDefinitions().reduceSpecial(event.energyRequired());
+			// we used spec so it is triggered off
+			player.getCombatDefinitions().setSpecialActivated(false);
 		}
 	}
 	
@@ -1388,4 +1407,18 @@ public class StaticCombatFormulae {
 		return 10;// bronze default
 	}
 	
+	/**
+	 * Checks if the player can fight the target
+	 *
+	 * @param player
+	 * 		The player
+	 * @param target
+	 * 		The target
+	 */
+	public static boolean canFight(Player player, Entity target) {
+		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(player)) || (player.isDead() || !player.isRenderable() || !player.attackable(target)) || !player.getLocation().withinDistance(target.getLocation(), 16)) {
+			return false;
+		}
+		return true;
+	}
 }

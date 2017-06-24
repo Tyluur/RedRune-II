@@ -170,6 +170,24 @@ public final class ItemsContainer<T extends Item> {
 	}
 	
 	/**
+	 * Checks if we contain an item
+	 *
+	 * @param item
+	 * 		The item
+	 */
+	public boolean contains(T item) {
+		int amtOf = 0;
+		for (Item aData : items) {
+			if (aData != null) {
+				if (aData.getId() == item.getId()) {
+					amtOf += aData.getAmount();
+				}
+			}
+		}
+		return amtOf >= item.getAmount();
+	}
+	
+	/**
 	 * The amount of free slots in the container
 	 */
 	public int getFreeSlots() {

@@ -46,9 +46,11 @@ public final class PlayerCombatAction implements Action {
 	public boolean process(Player player) {
 		type = StaticCombatFormulae.getCombatType(player);
 		if (!verifyContinuation(player)) {
+			
 			return false;
 		}
 		checkSpecials(player);
+		player.putAttribute("combat_target", target);
 		return true;
 	}
 	
@@ -96,11 +98,17 @@ public final class PlayerCombatAction implements Action {
 		// the id of the weapon equipped
 		final int weaponId = player.getEquipment().getWeaponId();
 		// the spell we're casting
-		final int spellId = -1; // get the player's spell id
+		final int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutocastId()); // get the player's spell id
 		// the id of the combat flag [weapon or spell id]
 		final int id = type == CombatType.MAGIC ? spellId : weaponId;
 		// the delay we will have
 		final int delay = type.getDelay(player, id);
+		// the delay wasn't found [this is only possible when we don't have a magic spell
+		// otherwise, delays are calculated in the swing
+		if (delay == -1) {
+			player.getTransmitter().sendMessage("This spell has not yet been added, please report this on the forums.");
+			return -1;
+		}
 		// if we're using special
 		final boolean usingSpecial = player.getCombatDefinitions().isSpecialActivated();
 		// the special attack event
@@ -116,7 +124,10 @@ public final class PlayerCombatAction implements Action {
 	
 	@Override
 	public void stop(Player player) {
-		player.turnTo(null);
+		// otherwise we dont face when casting magic
+		if (type != null && type != CombatType.MAGIC) {
+			player.turnTo(null);
+		}
 	}
 	
 	/**
@@ -132,7 +143,7 @@ public final class PlayerCombatAction implements Action {
 			return false;
 		}
 		// if we are invalid to fight
-		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(player)) || (player.isDead() || !player.isRenderable() || !player.attackable(target)) || !player.getLocation().withinDistance(target.getLocation(), 16)) {
+		if (!StaticCombatFormulae.canFight(player, target)) {
 			return false;
 		}
 		// TODO: add player freezing/stunning checks

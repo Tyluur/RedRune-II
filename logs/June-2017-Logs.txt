@@ -1,23 +1,42 @@
-6/22/17 {
-+   Added special attacks for melee combat
-	-   Instant special attacks handled as well
-	-   AGS/DDS/GMAUL added so far...
-+   Fixed spamming in firemaking for cheap exp.
-+   Fixed an issue with update masks that would slow down appearance rendering
-+   Started on range combat
-	-   Support for all longbows & short bows
-	-   Updated projectile packet builder [thanks to Maxi on R-S with some accurate packet data]
-		-   Start distance offset addition + creator size addition
-	-   Projectiles have been perfected for the ready bows
-	-   Clipped and distance calculated
-	-   Timing for block emotes and hit appearance is calculated as well
-	-   Calculation for max hit, accuracy, and defense is fair as well
-	-   Support for dark bow, knives, darts, crystal bow, and regular crossbows
+6/23/17 {
+	+   Added magic combat type
+		-   With a easy "plugin" system to add more spells
+		-   Magic accuracy/defense formulas appropriately done
+		-   Projectiles appropriately done for the 3 spells I tested the system with
+		-   Added spellbook sorting [saves]
+		-   Added defensive casting [saves]
+			-   Formula for experience received as well [not sure it's 100% accurate tho]
+		-   Added spell hiding/showing in spellbook via buttons [saves]
+		-   Added autocasting [saves]
+	+   Added granite maul instant special attack without clicking the target again
+	+   Added animation/gfx command for owner
 
-[IMG]http://i.imgur.com/1oHpL1r.gif[/IMG]
-[IMG]http://i.imgur.com/g3h2FIX.gif[/IMG]
-[IMG]http://i.imgur.com/0XIIe5m.gif[/IMG]
-[IMG]http://i.imgur.com/ypLZ5ON.gif[/IMG]
+	[IMG]http://i.imgur.com/4FvHIxE.gif[/IMG]
+	[IMG]https://i.imgur.com/3N4P2iK.gif[/IMG]
+	[IMG]http://i.imgur.com/FhfOPMP.png[/IMG]
+	[IMG]http://i.imgur.com/taQZJjH.png[/IMG]
+}
+
+6/22/17 {
+	+   Added special attacks for melee combat
+		-   Instant special attacks handled as well
+		-   AGS/DDS/GMAUL added so far...
+	+   Fixed spamming in firemaking for cheap exp.
+	+   Fixed an issue with update masks that would slow down appearance rendering
+	+   Started on range combat
+		-   Support for all longbows & short bows
+		-   Updated projectile packet builder [thanks to Maxi on R-S with some accurate packet data]
+			-   Start distance offset addition + creator size addition
+		-   Projectiles have been perfected for the ready bows
+		-   Clipped and distance calculated
+		-   Timing for block emotes and hit appearance is calculated as well
+		-   Calculation for max hit, accuracy, and defense is fair as well
+		-   Support for dark bow, knives, darts, crystal bow, and regular crossbows
+
+	[IMG]http://i.imgur.com/1oHpL1r.gif[/IMG]
+	[IMG]http://i.imgur.com/g3h2FIX.gif[/IMG]
+	[IMG]http://i.imgur.com/0XIIe5m.gif[/IMG]
+	[IMG]http://i.imgur.com/ypLZ5ON.gif[/IMG]
 }
 
 6/21/17 {

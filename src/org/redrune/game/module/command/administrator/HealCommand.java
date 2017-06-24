@@ -19,6 +19,7 @@ public class HealCommand extends CommandModule{
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
+		player.getCombatDefinitions().setSpecialEnergy((byte) 100);
 		player.getVariables().setHealthPoints(player.getSkills().getLevelForXp(SkillConstants.HITPOINTS) * 10);
 		player.getVariables().setPrayerPoints(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10);
 		player.sendSettings();

@@ -195,4 +195,16 @@ public class PlayerInventory {
 			return null;
 		}
 	}
+	
+	/**
+	 * Checks if the container contains an item
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param amount
+	 * 		The amount we need to have
+	 */
+	public boolean containsItem(int itemId, int amount) {
+		return items.contains(new Item(itemId, amount));
+	}
 }

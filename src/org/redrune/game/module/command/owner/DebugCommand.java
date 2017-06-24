@@ -38,7 +38,7 @@ public class DebugCommand extends CommandModule {
 		}
 		System.out.println("targ=" + target);
 //		player.getRegion().sendProjectile(new Projectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6), intParam(args, 7)));
-		player.getRegion().sendProjectile(ProjectileManager.createRangeProjectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6)));
+		player.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6)));
 		
 		//		ShopRepository.open(player, intParam(args, 1));
 		//		player.getManager().getPrayers().setBook(PrayerBook.valueOf(args[1].toUpperCase()));

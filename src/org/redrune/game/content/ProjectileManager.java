@@ -12,7 +12,7 @@ import org.redrune.utility.rs.Projectile;
 public class ProjectileManager {
 	
 	/**
-	 * Creates a new ranged projectile
+	 * Creates a new projectile with the speed being calculated, based on the distance from each other [source-target]
 	 *
 	 * @param source
 	 * 		The source of the projectile
@@ -31,7 +31,7 @@ public class ProjectileManager {
 	 * @param offset
 	 * 		The distsance offset
 	 */
-	public static Projectile createRangeProjectile(Player source, Entity target, int projectileId, int startHeight, int endHeight, int delay, int angle, int offset) {
+	public static Projectile createSpeedDefinedProjectile(Player source, Entity target, int projectileId, int startHeight, int endHeight, int delay, int angle, int offset) {
 		int speed = 46 + (getLocation(source).getDistance(target.getLocation()) * 5);
 		return new Projectile(source, target, projectileId, startHeight, endHeight, delay, speed, angle, offset);
 	}

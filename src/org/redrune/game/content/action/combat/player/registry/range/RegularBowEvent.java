@@ -23,7 +23,7 @@ public class RegularBowEvent implements BowFireEvent {
 	public void fire(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
 		sendDamage(attacker, target, swing, weaponId);
 		attacker.sendGraphics(StaticCombatFormulae.getArrowThrowGfxId(ammoId), 100, 0);
-		attacker.getRegion().sendProjectile(ProjectileManager.createRangeProjectile(attacker, target, StaticCombatFormulae.getArrowProjectileGfxId(weaponId, ammoId), 40, 30, 41, 15, 0));
+		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, StaticCombatFormulae.getArrowProjectileGfxId(weaponId, ammoId), 40, 30, 41, 15, 0));
 		dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_ARROWS, ammoId, false);
 	}
 	

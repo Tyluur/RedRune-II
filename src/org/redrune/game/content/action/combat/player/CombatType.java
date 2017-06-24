@@ -2,9 +2,13 @@ package org.redrune.game.content.action.combat.player;
 
 import lombok.Getter;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.game.content.action.combat.player.registry.MagicSpellEvent;
+import org.redrune.game.content.action.combat.player.swing.MagicCombatSwing;
 import org.redrune.game.content.action.combat.player.swing.MeleeCombatSwing;
 import org.redrune.game.content.action.combat.player.swing.RangeCombatSwing;
 import org.redrune.game.node.entity.player.Player;
+
+import java.util.Optional;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -97,10 +101,11 @@ public enum CombatType {
 			return delay;
 		}
 	},
-	MAGIC(null) {
+	MAGIC(new MagicCombatSwing()) {
 		@Override
-		public int getDelay(Player player, int id) {
-			return 0;
+		public int getDelay(Player player, int spellId) {
+			Optional<MagicSpellEvent<?>> optional = CombatRegistry.getSpell(player.getCombatDefinitions().getSpellbook(), spellId);
+			return optional.map(MagicSpellEvent::delay).orElse(-1);
 		}
 	};
 	

@@ -24,7 +24,7 @@ public class CrossbowEvent implements BowFireEvent {
 		String name = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
 		
 		sendDamage(attacker, target, swing, weaponId);
-		attacker.getRegion().sendProjectile(ProjectileManager.createRangeProjectile(attacker, target,27, 38, 36, 41, 5, 0));
+		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 27, 38, 36, 41, 5, 0));
 		dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_ARROWS, ammoId, name.contains("karil"));
 	}
 	

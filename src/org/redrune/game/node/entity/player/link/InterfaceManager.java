@@ -89,6 +89,7 @@ public final class InterfaceManager implements InterfaceConstants {
 				break;
 		}
 		sendInterface(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID).sendDefaultTabs();
+		player.getCombatDefinitions().refreshSpellbook();
 		return this;
 	}
 	
