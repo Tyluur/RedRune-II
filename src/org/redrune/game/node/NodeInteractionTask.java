@@ -1,6 +1,5 @@
 package org.redrune.game.node;
 
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
@@ -166,7 +165,7 @@ public class NodeInteractionTask {
 	 */
 	private RouteStrategy[] generateStrategies() {
 		if (node.isPlayer() || node.isNPC()) {
-			return new RouteStrategy[] { new EntityStrategy((Entity) node) };
+			return new RouteStrategy[] { new EntityStrategy((org.redrune.game.node.entity.Entity) node) };
 		} else if (node.isGameObject()) {
 			return new RouteStrategy[] { new ObjectStrategy(node.toGameObject()) };
 		} else if (node.isItem()) {

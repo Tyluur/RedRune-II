@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Your sacred clay tool has transformed into a butterfly net."
+  "examine": "Your sacred clay tool has transformed into a butterfly net.",
+  "weight": 2.0
 }

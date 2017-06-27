@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "These should make me harder to spot in polar areas"
+  "examine": "These should make me harder to spot in polar areas",
+  "weight": 0.2
 }

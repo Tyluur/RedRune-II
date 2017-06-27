@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "An orb of mystical excellence."
+  "examine": "An orb of mystical excellence.",
+  "weight": 2.0
 }

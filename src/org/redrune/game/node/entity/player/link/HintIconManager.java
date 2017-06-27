@@ -3,7 +3,6 @@ package org.redrune.game.node.entity.player.link;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.outgoing.impl.HintIconPacketBuilder;
@@ -48,7 +47,7 @@ public final class HintIconManager {
 	 * @param iconArrow
 	 * 		The icon arrow
 	 */
-	public boolean addFollowingEntityIcon(Entity entity, HintIconArrow iconArrow) {
+	public boolean addFollowingEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow) {
 		int freeSlot = getFreeIndex();
 		if (freeSlot == -1) {
 			System.out.println("Unable to add a new entity icon for player {" + player + "}");
@@ -91,7 +90,7 @@ public final class HintIconManager {
 	 * @param freeSlot
 	 * 		The slot to send
 	 */
-	private void sendEntityIcon(Entity entity, HintIconArrow iconArrow, int freeSlot) {
+	private void sendEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow, int freeSlot) {
 		HintIcon icon = new HintIcon(freeSlot, entity.isPlayer() ? HintIconType.PLAYER : HintIconType.NPC, iconArrow, 0, entity.getIndex());
 		icons[freeSlot] = icon;
 		player.getTransmitter().send(new HintIconPacketBuilder(icon).build(player));
@@ -155,7 +154,7 @@ public final class HintIconManager {
 			Integer slot = entry.getKey();
 			FollowingEntityIcon icon = entry.getValue();
 			
-			Entity e;
+			org.redrune.game.node.entity.Entity e;
 			// updating the entity location
 			{
 				if (icon.isPlayer()) {
@@ -224,7 +223,7 @@ public final class HintIconManager {
 		@Getter
 		private final HintIconArrow iconArrow;
 		
-		FollowingEntityIcon(Entity entity, HintIconArrow iconArrow) {
+		FollowingEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow) {
 			this.entityIndex = entity.getIndex();
 			this.isPlayer = entity.isPlayer();
 			this.iconLocation = false;

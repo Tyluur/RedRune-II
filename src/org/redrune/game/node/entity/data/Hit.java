@@ -2,7 +2,6 @@ package org.redrune.game.node.entity.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
 import java.util.Objects;
@@ -27,7 +26,7 @@ public class Hit {
 	 * The entity dealing the damage.
 	 */
 	@Getter
-	private final Entity source;
+	private final org.redrune.game.node.entity.Entity source;
 	
 	/**
 	 * The damage hitsplat.
@@ -61,16 +60,21 @@ public class Hit {
 	@Getter
 	private int delay;
 	
-	public Hit(Entity source, int damage) {
+	public Hit(org.redrune.game.node.entity.Entity source, int damage) {
 		this(source, damage, HitSplat.REGULAR_DAMAGE);
 	}
 	
-	public Hit(Entity source, int damage, HitSplat splat) {
+	public Hit(org.redrune.game.node.entity.Entity source, int damage, HitSplat splat) {
 		this.source = source;
 		this.damage = damage;
 		this.splat = splat;
 		this.soaked = 0;
 		this.attributes = new ConcurrentHashMap<>();
+	}
+	
+	@Override
+	public String toString() {
+		return "Hit{" + "splat=" + splat + ", damage=" + damage + ", maxHit=" + maxHit + ", soaked=" + soaked + '}';
 	}
 	
 	/**
@@ -81,7 +85,7 @@ public class Hit {
 	 * @param victim
 	 * 		The victim
 	 */
-	public boolean interactingWith(Player player, Entity victim) {
+	public boolean interactingWith(Player player, org.redrune.game.node.entity.Entity victim) {
 		return Objects.equals(player, victim) || Objects.equals(player, source);
 	}
 	

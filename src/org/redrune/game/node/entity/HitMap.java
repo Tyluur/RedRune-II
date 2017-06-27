@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
+import org.redrune.utility.AttributeKey;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +23,7 @@ public final class HitMap {
 	/**
 	 * The entity.
 	 */
-	private transient final Entity entity;
+	private transient final org.redrune.game.node.entity.Entity entity;
 	
 	/**
 	 * Holds all the hit data.
@@ -38,7 +39,7 @@ public final class HitMap {
 	/**
 	 * The damage constructor.
 	 */
-	HitMap(Entity entity) {
+	HitMap(org.redrune.game.node.entity.Entity entity) {
 		this.entity = entity;
 		this.hitRecord = new HashMap<>();
 		this.hitList = new LinkedList<>();
@@ -47,16 +48,32 @@ public final class HitMap {
 	/**
 	 * Applies a hit to the entity
 	 *
-	 * @param attacker
-	 * 		The attacker
 	 * @param hit
 	 * 		The hit
 	 */
-	public void applyHit(Entity attacker, Hit hit) {
-		entity.receiveHit(attacker, hit);
+	public void applyHit(Hit hit) {
+		Entity attacker = hit.getSource();
+		
+		// handles the receiving of the hit
+		entity.receiveHit(hit);
 		submitDamage(attacker, hit.getDamage());
 		
+		// stores the last time we were hit
+		storeHitTiming(hit);
+		
+		// adds the hit to our hitlist [only used for updating]
 		hitList.add(hit);
+	}
+	
+	/**
+	 * Stores hit timing
+	 *
+	 * @param hit
+	 * 		The hit object
+	 */
+	private void storeHitTiming(Hit hit) {
+		entity.putAttribute(AttributeKey.LAST_HIT_BY_ENTITY, hit.getSource());
+		entity.putAttribute(AttributeKey.LAST_TIME_HIT, System.currentTimeMillis());
 	}
 	
 	/**
@@ -67,7 +84,7 @@ public final class HitMap {
 	 * @param damage
 	 * 		The amount of damage.
 	 */
-	private void submitDamage(Entity attacker, int damage) {
+	private void submitDamage(org.redrune.game.node.entity.Entity attacker, int damage) {
 		if (attacker == null || !attacker.isPlayer()) {
 			return;
 		}
@@ -84,9 +101,9 @@ public final class HitMap {
 	 *
 	 * @return The Player with the most damage.
 	 */
-	public Entity getMostDamageEntity() {
+	public org.redrune.game.node.entity.Entity getMostDamageEntity() {
 		int currentMaxDamage = 0;
-		Entity e = (entity instanceof Player ? (Player) entity : (entity));
+		org.redrune.game.node.entity.Entity e = (entity instanceof Player ? (Player) entity : (entity));
 		for (Player p : hitRecord.keySet()) {
 			boolean bool = World.get().getPlayerByUsername(p.getDetails().getUsername()).isPresent();
 			if (bool && hitRecord.get(p) > currentMaxDamage) {

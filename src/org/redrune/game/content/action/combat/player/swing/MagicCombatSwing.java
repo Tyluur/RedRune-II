@@ -9,7 +9,6 @@ import org.redrune.game.content.action.combat.player.calc.MagicCombatCalculator;
 import org.redrune.game.content.action.combat.player.registry.MagicSpellContext;
 import org.redrune.game.content.action.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitAttributes;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
@@ -30,7 +29,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean run(Player player, Entity target, int spellId, int combatStyle, SpecialAttackEvent special) {
+	public boolean run(Player player, org.redrune.game.node.entity.Entity target, int spellId, int combatStyle, SpecialAttackEvent special) {
 		final boolean regularCast = player.getCombatDefinitions().getAutocastId() == -1;
 		// we're not auto-casting so we should reset the spell
 		if (regularCast) {
@@ -75,7 +74,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getDefenceBonus(Entity entity, int weaponId, int combatStyle) {
+	public double getDefenceBonus(org.redrune.game.node.entity.Entity entity, int weaponId, int combatStyle) {
 		return 0;
 	}
 	
@@ -85,7 +84,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public void appendExperience(Player player, Entity target, Object... params) {
+	public void appendExperience(Player player, org.redrune.game.node.entity.Entity target, Object... params) {
 		double magicExp = (double) params[0];
 		int damage = (int) params[1];
 		
@@ -131,7 +130,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * 		The magic spell event
 	 * @return If the hit landed (damage > 0).
 	 */
-	public boolean sendSpell(Player player, Entity target, MagicSpellEvent event) {
+	public boolean sendSpell(Player player, org.redrune.game.node.entity.Entity target, MagicSpellEvent event) {
 		return sendSpell(player, target, event, null, null);
 	}
 	
@@ -150,7 +149,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * 		The task that is executed when the hit lands.
 	 * @return If the hit landed (damage > 0).
 	 */
-	public boolean sendSpell(Player player, Entity target, MagicSpellEvent event, Runnable sendTask, Runnable hitLandTask) {
+	public boolean sendSpell(Player player, org.redrune.game.node.entity.Entity target, MagicSpellEvent event, Runnable sendTask, Runnable hitLandTask) {
 		int maxHit = event.maxHit();
 		int damage = randomizeHit(maxHit, calculator.totalAggressiveBoost(player), calculator.totalDefensiveBoost(target));
 		appendExperience(player, target, event.exp(), damage);
@@ -173,7 +172,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 						// the attribute is put when the hit actually appears
 						hit.getAttributes().put(HitAttributes.WEAPON_USED, player.getEquipment().getWeaponId());
 						// and the hit is applied to the receiver
-						target.getHitMap().applyHit(player, hit);
+						target.getHitMap().applyHit(hit);
 						if (damage == 0) {
 							target.sendGraphics(85, 96, 0);
 						} else {

@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "It's a blessed silver sickle."
+  "examine": "It's a blessed silver sickle.",
+  "weight": 1.5
 }

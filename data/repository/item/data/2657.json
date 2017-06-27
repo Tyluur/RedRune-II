@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A full helmet in the colours of Zamorak."
+  "examine": "A full helmet in the colours of Zamorak.",
+  "weight": 2.0
 }

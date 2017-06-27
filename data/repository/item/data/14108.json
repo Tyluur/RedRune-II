@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Your sacred clay tool has transformed into a hatchet."
+  "examine": "Your sacred clay tool has transformed into a hatchet.",
+  "weight": 2.0
 }

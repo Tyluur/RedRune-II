@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A rune full helmet in the colours of Bandos."
+  "examine": "A rune full helmet in the colours of Bandos.",
+  "weight": 2.0
 }

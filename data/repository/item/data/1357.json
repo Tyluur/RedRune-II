@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A powerful hatchet."
+  "examine": "A powerful hatchet.",
+  "weight": 2.0
 }

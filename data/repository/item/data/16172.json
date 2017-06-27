@@ -19,5 +19,6 @@
     0,
     20
   ],
-  "examine": "This staff makes destructive spells more powerful. (Tier 2)"
+  "examine": "This staff makes destructive spells more powerful. (Tier 2)",
+  "weight": 2.0
 }

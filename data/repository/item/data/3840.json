@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "The Holy book of Saradomin."
+  "examine": "The Holy book of Saradomin.",
+  "weight": 1.0
 }

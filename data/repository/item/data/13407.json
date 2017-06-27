@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This helmet is worn by archers."
+  "examine": "This helmet is worn by archers.",
+  "weight": 2.7
 }

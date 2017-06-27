@@ -8,7 +8,6 @@ import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.impl.FloorItemTask;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.FloorItem;
@@ -125,7 +124,7 @@ public class Region {
 	/**
 	 * Checks the region load map
 	 */
-	public Region checkLoadMap() {
+	Region checkLoadMap() {
 		if (getLoadMapStage() == 0) {
 			setLoadMapStage(1);
 			EngineWorkingSet.submitEngineWork(() -> {
@@ -519,7 +518,7 @@ public class Region {
 	 * @param entity
 	 * 		The entity to add.
 	 */
-	public void addEntity(Entity entity) {
+	public void addEntity(org.redrune.game.node.entity.Entity entity) {
 		if (entity.isPlayer()) {
 			players.add(entity.toPlayer());
 		} else if (entity.isNPC()) {
@@ -535,7 +534,7 @@ public class Region {
 	 * @param entity
 	 * 		The entity to remove.
 	 */
-	public void removeEntity(Entity entity) {
+	public void removeEntity(org.redrune.game.node.entity.Entity entity) {
 		if (entity.isPlayer()) {
 			players.remove(entity.toPlayer());
 		} else if (entity.isNPC()) {

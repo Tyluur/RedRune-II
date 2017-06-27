@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A defensive blackjack."
+  "examine": "A defensive blackjack.",
+  "weight": 1.0
 }

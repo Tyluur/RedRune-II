@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This provides partial protection from dragonbreath attacks."
+  "examine": "This provides partial protection from dragonbreath attacks.",
+  "weight": 5.4
 }

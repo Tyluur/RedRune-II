@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The sacred clay has become long enough to reach the depths of pools."
+  "examine": "The sacred clay has become long enough to reach the depths of pools.",
+  "weight": 2.0
 }

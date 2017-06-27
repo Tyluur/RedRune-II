@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A runite crossbow."
+  "examine": "A runite crossbow.",
+  "weight": 6.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "You don't want to wear it inside-out."
+  "examine": "You don't want to wear it inside-out.",
+  "weight": 2.2
 }

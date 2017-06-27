@@ -2,6 +2,7 @@ package org.redrune.core.system;
 
 import org.redrune.core.MajorUpdateWorker;
 import org.redrune.core.task.Scheduler;
+import org.redrune.core.task.impl.EnergyRestorationTask;
 import org.redrune.network.rs666.NetworkHandler;
 import org.redrune.utility.backend.OutLogger;
 
@@ -56,7 +57,7 @@ public class SystemManager {
 	 * Dumps all the tasks
 	 */
 	private static void dumpTasks() {
-	
+		SCHEDULER.schedule(new EnergyRestorationTask());
 	}
 	
 	/**

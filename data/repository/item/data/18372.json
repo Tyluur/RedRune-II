@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This staff makes destructive spells more powerful."
+  "examine": "This staff makes destructive spells more powerful.",
+  "weight": 1.0
 }

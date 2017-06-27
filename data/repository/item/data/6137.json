@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Make your foes cower by wearing a skull as a helmet!"
+  "examine": "Make your foes cower by wearing a skull as a helmet!",
+  "weight": 1.3
 }

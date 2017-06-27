@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Danger: risk of fire."
+  "examine": "Danger: risk of fire.",
+  "weight": 2.2
 }

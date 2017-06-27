@@ -1,7 +1,6 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
@@ -18,7 +17,7 @@ public final class ForceMovement extends UpdateFlag {
 	/**
 	 * The entity.
 	 */
-	private final Entity entity;
+	private final org.redrune.game.node.entity.Entity entity;
 	
 	/**
 	 * The movement data.
@@ -33,7 +32,7 @@ public final class ForceMovement extends UpdateFlag {
 	 * @param movement
 	 * 		The movement data.
 	 */
-	public ForceMovement(Entity entity, int[] movement) {
+	public ForceMovement(org.redrune.game.node.entity.Entity entity, int[] movement) {
 		this.entity = entity;
 		this.movement = movement;
 	}

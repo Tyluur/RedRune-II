@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A magically enhanced gold bracelet."
+  "examine": "A magically enhanced gold bracelet.",
+  "weight": 0.1
 }

@@ -19,5 +19,6 @@
     6,
     0
   ],
-  "examine": "This staff displays the carved head of an inquisitive cat."
+  "examine": "This staff displays the carved head of an inquisitive cat.",
+  "weight": 2.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "It has a sight on it that should improve its performance."
+  "examine": "It has a sight on it that should improve its performance.",
+  "weight": 1.8
 }

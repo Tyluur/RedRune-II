@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A medium square shield."
+  "examine": "A medium square shield.",
+  "weight": 3.0
 }

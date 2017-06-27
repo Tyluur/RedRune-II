@@ -1,7 +1,6 @@
 package org.redrune.game.content.action.combat.player.registry;
 
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
 /**
@@ -35,7 +34,7 @@ public interface SpecialAttackEvent extends CombatRegistryEvent {
 	 * @param swing
 	 * 		The swing handler
 	 */
-	void fire(Player player, Entity target, CombatTypeSwing swing, int combatStyle);
+	void fire(Player player, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int combatStyle);
 	
 	/**
 	 * If the special attack is instant

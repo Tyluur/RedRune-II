@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A mithril crossbow."
+  "examine": "A mithril crossbow.",
+  "weight": 2.0
 }

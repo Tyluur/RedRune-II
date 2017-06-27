@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A dagger made out of enchanted ice."
+  "examine": "A dagger made out of enchanted ice.",
+  "weight": 1.0
 }

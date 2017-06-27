@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Boots made out of Frog hide."
+  "examine": "Boots made out of Frog hide.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     5,
     7
   ],
-  "examine": "The unholy book of a forgotten god."
+  "examine": "The unholy book of a forgotten god.",
+  "weight": 1.0
 }

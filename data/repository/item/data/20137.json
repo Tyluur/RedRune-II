@@ -19,5 +19,6 @@
     1,
     0
   ],
-  "examine": "An ancient warrior's full helm."
+  "examine": "An ancient warrior's full helm.",
+  "weight": 2.0
 }

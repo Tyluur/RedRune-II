@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A fully charged rod. (if less than 10) A partialy charged rod."
+  "examine": "A fully charged rod. (if less than 10) A partialy charged rod.",
+  "weight": 2.0
 }

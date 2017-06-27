@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Tied together so they don't come apart."
+  "examine": "Tied together so they don't come apart.",
+  "weight": 1.0
 }

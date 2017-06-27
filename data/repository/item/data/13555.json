@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Ancient armour beaten from magical silver."
+  "examine": "Ancient armour beaten from magical silver.",
+  "weight": 2.0
 }

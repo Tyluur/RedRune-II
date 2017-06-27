@@ -29,12 +29,10 @@ public interface EntityDetails {
 	 * Receives the hit and makes any modification [soaking] necessary, as well as secondary listeners [prayer
 	 * deflections]
 	 *
-	 * @param attacker
-	 * 		The person who sent the hit
 	 * @param hit
 	 * 		The hit received
 	 */
-	void receiveHit(Entity attacker, Hit hit);
+	void receiveHit(Hit hit);
 	
 	/**
 	 * If we are fighting

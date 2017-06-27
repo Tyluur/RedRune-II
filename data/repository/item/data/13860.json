@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This item degrades in combat, and will turn to dust."
+  "examine": "This item degrades in combat, and will turn to dust.",
+  "weight": 4.0
 }

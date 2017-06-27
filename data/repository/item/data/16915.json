@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Magically charged shoes. (Tier 3)"
+  "examine": "Magically charged shoes. (Tier 3)",
+  "weight": 0.4
 }

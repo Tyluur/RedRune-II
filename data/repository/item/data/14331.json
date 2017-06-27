@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The sacred clay transformed into a light, cloth-like material."
+  "examine": "The sacred clay transformed into a light, cloth-like material.",
+  "weight": 2.0
 }

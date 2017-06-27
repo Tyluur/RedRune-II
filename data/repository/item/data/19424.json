@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A full helmet in the colours of Armadyl."
+  "examine": "A full helmet in the colours of Armadyl.",
+  "weight": 2.0
 }

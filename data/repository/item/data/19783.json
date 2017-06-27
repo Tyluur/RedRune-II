@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This armour has been modified to track your movements."
+  "examine": "This armour has been modified to track your movements.",
+  "weight": 2.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "An iron crossbow."
+  "examine": "An iron crossbow.",
+  "weight": 2.0
 }

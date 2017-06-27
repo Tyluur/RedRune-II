@@ -28,7 +28,3 @@
 	-   Barrelchest anchor
 +   Ava's accumulator function
 +	G maul spec doesnt need u to click on target again.
-
-[Bugs]
-+	How come the session was d/cing after burying many bones??
-+	How come the session d/ced after new map region entry w/o clip flags when following in combat?

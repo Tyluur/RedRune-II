@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A magical staff of earth. (Tier 1)"
+  "examine": "A magical staff of earth. (Tier 1)",
+  "weight": 2.0
 }

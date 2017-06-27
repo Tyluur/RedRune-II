@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "<b>Fully charged:</b> A coif made of black dragonhide. <b>Fully degraded:</b> A worn out coif made of black dragonhide."
+  "examine": "<b>Fully charged:</b> A coif made of black dragonhide. <b>Fully degraded:</b> A worn out coif made of black dragonhide.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     25
   ],
-  "examine": "It has been cursed with dark energies, clouding the mind of the wielder."
+  "examine": "It has been cursed with dark energies, clouding the mind of the wielder.",
+  "weight": 6.0
 }

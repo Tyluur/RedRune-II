@@ -19,5 +19,6 @@
     3,
     0
   ],
-  "examine": "An ethereal shield with a divine sigil attached to it."
+  "examine": "An ethereal shield with a divine sigil attached to it.",
+  "weight": 2.0
 }

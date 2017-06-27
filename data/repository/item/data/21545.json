@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The boots of a warrior wizard."
+  "examine": "The boots of a warrior wizard.",
+  "weight": 0.4
 }

@@ -5,7 +5,6 @@ import org.redrune.game.content.action.Action;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
 
@@ -21,14 +20,14 @@ public final class PlayerCombatAction implements Action {
 	 * The target we are in combat with
 	 */
 	@Getter
-	private final Entity target;
+	private final org.redrune.game.node.entity.Entity target;
 	
 	/**
 	 * The type of combat we're engaging in.
 	 */
 	private CombatType type;
 	
-	public PlayerCombatAction(Entity target) {
+	public PlayerCombatAction(org.redrune.game.node.entity.Entity target) {
 		this.target = target;
 	}
 	
@@ -137,7 +136,7 @@ public final class PlayerCombatAction implements Action {
 	 * 		The player in combat
 	 */
 	private boolean verifyContinuation(Player player) {
-		Entity target = this.target;
+		org.redrune.game.node.entity.Entity target = this.target;
 		// we couldn't find a combat type
 		if (type == null) {
 			return false;

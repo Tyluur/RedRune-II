@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Use the spork."
+  "examine": "Use the spork.",
+  "weight": 1.8
 }

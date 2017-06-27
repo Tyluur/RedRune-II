@@ -1,3 +1,18 @@
+6/26/17 {
+	+   Added prayer bonus calculation to all combat calculators
+	+   Added weight per item and weight calculation for energy draining while running.
+	+   Added player resting via orbs
+		-   As well as the getting up animation
+	+   Added item weights to the stats popup in the equipment menu
+	+   Added protection prayer effects and deflection prayer effects
+		-   Different graphics for magic/ranged/melee
+
+	[IMG]http://i.imgur.com/4cNLYsD.png[/IMG]
+	[img]http://i.imgur.com/OVj7U8i.png[/img]
+	[IMG]http://i.imgur.com/Tc4NyzF.png[/IMG]
+	[IMG]http://i.imgur.com/fQyJeRD.gif[/IMG]
+}
+
 6/23/17 {
 	+   Added magic combat type
 		-   With a easy "plugin" system to add more spells

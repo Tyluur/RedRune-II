@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "It's a Scythe."
+  "examine": "It's a Scythe.",
+  "weight": 3.0
 }

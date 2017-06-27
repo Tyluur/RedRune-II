@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The sacred clay has become hard enough to chip stone."
+  "examine": "The sacred clay has become hard enough to chip stone.",
+  "weight": 2.0
 }

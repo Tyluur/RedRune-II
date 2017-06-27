@@ -1,3 +1,4 @@
 {
-  "examine": "There is a strange [green/yellow] marking on this stone."
+  "examine": "There is a strange [green/yellow] marking on this stone.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A magical shield."
+  "examine": "A magical shield.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A very slimy and generally disgusting green lizard."
+  "examine": "A very slimy and generally disgusting green lizard.",
+  "weight": 4.0
 }

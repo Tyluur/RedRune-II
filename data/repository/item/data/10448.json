@@ -19,5 +19,6 @@
     3,
     0
   ],
-  "examine": "A Guthix cloak."
+  "examine": "A Guthix cloak.",
+  "weight": 1.0
 }

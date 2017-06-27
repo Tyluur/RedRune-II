@@ -8,7 +8,6 @@ import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -1143,7 +1142,7 @@ public class StaticCombatFormulae {
 	 * @param target
 	 * 		The target
 	 */
-	public static boolean checkAttackPathAsRange(Entity target) {
+	public static boolean checkAttackPathAsRange(org.redrune.game.node.entity.Entity target) {
 		return false;
 	}
 	
@@ -1155,7 +1154,7 @@ public class StaticCombatFormulae {
 	 * @param target
 	 * 		The target
 	 */
-	public static void fireCombatListeners(Player player, Entity target) {
+	public static void fireCombatListeners(Player player, org.redrune.game.node.entity.Entity target) {
 		if (target.isPlayer()) {
 			target.toPlayer().getManager().getInterfaces().closeAll();
 		}
@@ -1190,7 +1189,7 @@ public class StaticCombatFormulae {
 	 * @param type
 	 * 		The combat type
 	 */
-	public static boolean isWithinDistance(Player player, Entity target, CombatType type) {
+	public static boolean isWithinDistance(Player player, org.redrune.game.node.entity.Entity target, CombatType type) {
 		// the distance change
 		final int distance = player.getMovement().isRunning() && target.getMovement().isRunning() ? 2 : 1;
 		// if we should check closeby tiles [close 1v1 melee only]
@@ -1244,7 +1243,7 @@ public class StaticCombatFormulae {
 			}
 			// the combat action
 			PlayerCombatAction action = player.getManager().getActions().getAction() instanceof PlayerCombatAction ? (PlayerCombatAction) player.getManager().getActions().getAction() : null;
-			Entity target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
+			org.redrune.game.node.entity.Entity target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
 			// no target and it was necessary
 			if (target == null && event.requiresFight()) {
 				return;
@@ -1270,7 +1269,7 @@ public class StaticCombatFormulae {
 				event.fire(player, null, null, player.getCombatDefinitions().getAttackStyle());
 			}
 			// dropping the special attack amount
-			player.getCombatDefinitions().reduceSpecial(event.energyRequired());
+			player.getCombatDefinitions().modifySpecial(event.energyRequired());
 			// we used spec so it is triggered off
 			player.getCombatDefinitions().setSpecialActivated(false);
 		}
@@ -1415,7 +1414,7 @@ public class StaticCombatFormulae {
 	 * @param target
 	 * 		The target
 	 */
-	public static boolean canFight(Player player, Entity target) {
+	public static boolean canFight(Player player, org.redrune.game.node.entity.Entity target) {
 		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(player)) || (player.isDead() || !player.isRenderable() || !player.attackable(target)) || !player.getLocation().withinDistance(target.getLocation(), 16)) {
 			return false;
 		}

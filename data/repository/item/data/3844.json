@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "The holy book of Guthix."
+  "examine": "The holy book of Guthix.",
+  "weight": 1.0
 }

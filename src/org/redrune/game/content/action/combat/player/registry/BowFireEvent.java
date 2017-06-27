@@ -5,7 +5,6 @@ import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
@@ -38,7 +37,7 @@ public interface BowFireEvent extends CombatRegistryEvent {
 	 * @param ammoId
 	 * 		The ammo id used
 	 */
-	void fire(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, int ammoId);
+	void fire(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId, int ammoId);
 	
 	/**
 	 * Drops ammo on the ground
@@ -86,7 +85,7 @@ public interface BowFireEvent extends CombatRegistryEvent {
 	 * 		The delay
 	 */
 	// TODO: npc block emote
-	default void sendBlockEmote(Entity target, int delay) {
+	default void sendBlockEmote(org.redrune.game.node.entity.Entity target, int delay) {
 		SystemManager.getScheduler().schedule(new ScheduledTask(delay - 1, 1, false) {
 			@Override
 			public Runnable getTask() {
@@ -107,7 +106,7 @@ public interface BowFireEvent extends CombatRegistryEvent {
 	 * @param weaponId
 	 * 		The weapon id
 	 */
-	default void sendDamage(Player attacker, Entity target, CombatTypeSwing swing, int weaponId) {
+	default void sendDamage(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId) {
 		final int style = attacker.getCombatDefinitions().getAttackStyle();
 		final int delay = swing.getProjectileDelay(attacker, target);
 		final double maxHit = swing.getMaxHit(attacker, weaponId, style, 1);

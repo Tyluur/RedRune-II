@@ -1,3 +1,4 @@
 {
-  "examine": "A powerbox. Broken: A broken powerbox."
+  "examine": "A powerbox. Broken: A broken powerbox.",
+  "weight": 3.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The magical book of the Mage."
+  "examine": "The magical book of the Mage.",
+  "weight": 1.0
 }

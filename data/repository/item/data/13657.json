@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Comes with goggles, for extra safety while Runecrafting."
+  "examine": "Comes with goggles, for extra safety while Runecrafting.",
+  "weight": 1.0
 }

@@ -23,4 +23,11 @@ public final class ItemData {
 	@Setter
 	private String examine;
 	
+	/**
+	 * The weight of the item
+	 */
+	@Getter
+	@Setter
+	private double weight;
+	
 }

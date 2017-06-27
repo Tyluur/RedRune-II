@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A solid stone shield."
+  "examine": "A solid stone shield.",
+  "weight": 6.8
 }

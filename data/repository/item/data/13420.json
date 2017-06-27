@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Some finely crafted Fremennik boots, made from spined dagannoth hide."
+  "examine": "Some finely crafted Fremennik boots, made from spined dagannoth hide.",
+  "weight": 3.0
 }

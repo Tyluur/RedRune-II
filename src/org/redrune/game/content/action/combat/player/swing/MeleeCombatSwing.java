@@ -5,7 +5,6 @@ import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.calc.MeleeCombatCalculator;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
@@ -23,7 +22,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	
 	// TODO: healing from guthans
 	@Override
-	public boolean run(Player player, Entity target, int weaponId, int combatStyle, SpecialAttackEvent special) {
+	public boolean run(Player player, org.redrune.game.node.entity.Entity target, int weaponId, int combatStyle, SpecialAttackEvent special) {
 		String weaponName = weaponId == -1 ? "unarmed" : ItemDefinitionParser.forId(weaponId).getName();
 		
 		// we check the special attacks
@@ -40,7 +39,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 		// custom attack send
 		if (usingSpecial) {
 			special.fire(player, target, this, combatStyle);
-			player.getCombatDefinitions().reduceSpecial(special.energyRequired());
+			player.getCombatDefinitions().modifySpecial(special.energyRequired());
 		} else {
 			// the hit (randomized)
 			final double maxHit = getMaxHit(player, weaponId, combatStyle, 1D);
@@ -75,7 +74,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getDefenceBonus(Entity entity, int weaponId, int combatStyle) {
+	public double getDefenceBonus(org.redrune.game.node.entity.Entity entity, int weaponId, int combatStyle) {
 		return calculator.totalDefensiveBoost(entity, weaponId, combatStyle);
 	}
 	
@@ -85,7 +84,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public void appendExperience(Player player, Entity target, Object... params) {
+	public void appendExperience(Player player, org.redrune.game.node.entity.Entity target, Object... params) {
 		int itemId = (int) params[0];
 		int combatStyle = (int) params[1];
 		int damage = (int) params[2];

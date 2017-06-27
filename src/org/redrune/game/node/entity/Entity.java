@@ -18,6 +18,7 @@ import org.redrune.utility.backend.Priority;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -367,6 +368,14 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public boolean attackable(Entity entity) {
 		return true;
+	}
+	
+	/**
+	 * Checks if we were in combat recently.
+	 */
+	public boolean combatRecently() {
+		long lastTimeHit = getAttribute(AttributeKey.LAST_TIME_HIT);
+		return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastTimeHit) <= 10;
 	}
 	
 }

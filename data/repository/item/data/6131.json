@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A helm fit for any Fremennik ranger."
+  "examine": "A helm fit for any Fremennik ranger.",
+  "weight": 1.0
 }

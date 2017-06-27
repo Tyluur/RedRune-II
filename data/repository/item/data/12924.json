@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "<b>Uncharged</b>: Not so spiky anymore."
+  "examine": "<b>Uncharged</b>: Not so spiky anymore.",
+  "weight": 4.0
 }

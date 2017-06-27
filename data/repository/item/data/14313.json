@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The Sacred Clay has transformed into a heavy warhammer."
+  "examine": "The Sacred Clay has transformed into a heavy warhammer.",
+  "weight": 0.4
 }

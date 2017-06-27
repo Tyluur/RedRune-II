@@ -19,5 +19,6 @@
     0,
     10
   ],
-  "examine": "A magical staff of air. (Tier 9)"
+  "examine": "A magical staff of air. (Tier 9)",
+  "weight": 2.0
 }

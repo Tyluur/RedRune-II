@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "You should see the shark..."
+  "examine": "You should see the shark...",
+  "weight": 0.3
 }

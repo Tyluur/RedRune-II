@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "These gloves seem unbelievably light!"
+  "examine": "These gloves seem unbelievably light!",
+  "weight": 7.0
 }

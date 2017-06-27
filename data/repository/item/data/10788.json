@@ -19,5 +19,6 @@
     4,
     0
   ],
-  "examine": "Blessed vestments of Guthix."
+  "examine": "Blessed vestments of Guthix.",
+  "weight": 1.0
 }

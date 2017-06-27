@@ -19,5 +19,6 @@
     3,
     0
   ],
-  "examine": "It has ancient goblin symbols on it."
+  "examine": "It has ancient goblin symbols on it.",
+  "weight": 1.8
 }

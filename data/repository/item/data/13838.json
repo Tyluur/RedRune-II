@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Rune full helmet with gold plate."
+  "examine": "Rune full helmet with gold plate.",
+  "weight": 2.0
 }

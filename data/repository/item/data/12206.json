@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Doors could be a problem, wearing these..."
+  "examine": "Doors could be a problem, wearing these...",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "It's a little smelly in there."
+  "examine": "It's a little smelly in there.",
+  "weight": 3.0
 }

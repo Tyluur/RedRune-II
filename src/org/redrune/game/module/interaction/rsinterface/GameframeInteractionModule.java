@@ -1,11 +1,11 @@
 package org.redrune.game.module.interaction.rsinterface;
 
+import org.redrune.game.content.action.interaction.PlayerRestAction;
 import org.redrune.game.content.dialogue.impl.misc.WorldMapDialogue;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.Misc;
 import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.GameBarStatus;
 
@@ -15,15 +15,15 @@ import static org.redrune.utility.rs.constant.InterfaceConstants.*;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-public class GameframeInteractionModule implements InterfaceInteractionModule {
+public class GameframeInteractionModule implements InterfaceInteractionModule, NetworkConstants {
 	
 	@Override
 	public int[] interfaceSubscriptionIds() {
-		return Misc.arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, LOGOUT_INTERFACE_ID, GAMEFRAME_INTERFACE_ID);
+		return arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, LOGOUT_INTERFACE_ID, GAMEFRAME_INTERFACE_ID);
 	}
 	
 	@Override
-	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
+	public boolean handle(Player player, int interfaceId, int componentId,   int itemId, int slotId, int packetId) {
 		switch (interfaceId) {
 			case SCREEN_FIXED_WINDOW_ID:
 			case SCREEN_RESIZABLE_WINDOW_ID:
@@ -31,9 +31,9 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 					player.getManager().getDialogues().startDialogue(new WorldMapDialogue());
 					return true;
 				} else if (componentId == 0) {
-					if (packetId == NetworkConstants.FIRST_PACKET_ID) {
+					if (packetId == FIRST_PACKET_ID) {
 						return true;
-					} else if (packetId == NetworkConstants.DROP_PACKET_ID) {
+					} else if (packetId == DROP_PACKET_ID) {
 						player.getSkills().resetExperienceCounter();
 						return true;
 					}
@@ -41,19 +41,22 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 				break;
 			case RUN_ORB_INTERACE_ID:
 				if (componentId == 1) {
-					if (packetId == NetworkConstants.FIRST_PACKET_ID) {
+					if (packetId == FIRST_PACKET_ID) {
 						player.getVariables().setRunToggled(!player.getVariables().isRunToggled());
 						player.sendSettings();
+						return true;
+					} else if (packetId == SECOND_PACKET_ID) {
+						player.getManager().getActions().startAction(new PlayerRestAction());
 						return true;
 					}
 				}
 				break;
 			case PRAYER_ORB_INTERFACE_ID:
 				if (componentId == 1) {
-					if (packetId == NetworkConstants.FIRST_PACKET_ID) {
+					if (packetId == FIRST_PACKET_ID) {
 						player.getManager().getPrayers().toggleQuickPrayers();
 						return true;
-					} else if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+					} else if (packetId == SECOND_PACKET_ID) {
 						player.getManager().getPrayers().selectQuickPrayers();
 						return true;
 					}
@@ -101,46 +104,46 @@ public class GameframeInteractionModule implements InterfaceInteractionModule {
 			case GAMEFRAME_INTERFACE_ID:
 				if (componentId == 31) {
 					// game
-					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+					if (packetId == SECOND_PACKET_ID) {
 						updateGameBar(player, AttributeKey.FILTER, GameBarStatus.NO_FILTER);
 						return true;
-					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+					} else if (packetId == LAST_PACKET_ID) {
 						updateGameBar(player, AttributeKey.FILTER, GameBarStatus.FILTER);
 						return true;
 					}
 				} else if (componentId == 8) {
 					// friends
-					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+					if (packetId == SECOND_PACKET_ID) {
 						updateGameBar(player, AttributeKey.FRIENDS, GameBarStatus.ON);
 						return true;
-					} else if (packetId == NetworkConstants.THIRD_PACKET_ID) {
+					} else if (packetId == THIRD_PACKET_ID) {
 						updateGameBar(player, AttributeKey.FRIENDS, GameBarStatus.FRIENDS);
 						return true;
-					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+					} else if (packetId == LAST_PACKET_ID) {
 						updateGameBar(player, AttributeKey.FRIENDS, GameBarStatus.OFF);
 						return true;
 					}
 				} else if (componentId == 22) {
 					//clan
-					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+					if (packetId == SECOND_PACKET_ID) {
 						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.ON);
 						return true;
-					} else if (packetId == NetworkConstants.THIRD_PACKET_ID) {
+					} else if (packetId == THIRD_PACKET_ID) {
 						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.FRIENDS);
 						return true;
-					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+					} else if (packetId == LAST_PACKET_ID) {
 						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.OFF);
 						return true;
 					}
 				} else if (componentId == 16) {
 					// assist
-					if (packetId == NetworkConstants.SECOND_PACKET_ID) {
+					if (packetId == SECOND_PACKET_ID) {
 						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.ON);
 						return true;
-					} else if (packetId == NetworkConstants.THIRD_PACKET_ID) {
+					} else if (packetId == THIRD_PACKET_ID) {
 						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.FRIENDS);
 						return true;
-					} else if (packetId == NetworkConstants.LAST_PACKET_ID) {
+					} else if (packetId == LAST_PACKET_ID) {
 						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.OFF);
 						return true;
 					}

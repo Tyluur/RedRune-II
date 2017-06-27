@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This item degrades while worn, and will turn to dust."
+  "examine": "This item degrades while worn, and will turn to dust.",
+  "weight": 27.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A hood worn by mages. (Tier 10)"
+  "examine": "A hood worn by mages. (Tier 10)",
+  "weight": 0.4
 }

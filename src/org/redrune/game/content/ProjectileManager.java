@@ -32,8 +32,19 @@ public class ProjectileManager {
 	 * 		The distsance offset
 	 */
 	public static Projectile createSpeedDefinedProjectile(Player source, Entity target, int projectileId, int startHeight, int endHeight, int delay, int angle, int offset) {
-		int speed = 46 + (getLocation(source).getDistance(target.getLocation()) * 5);
-		return new Projectile(source, target, projectileId, startHeight, endHeight, delay, speed, angle, offset);
+		return new Projectile(source, target, projectileId, startHeight, endHeight, delay, getSpeedModifier(source, target), angle, offset);
+	}
+	
+	/**
+	 * Gets the projectile speed modifier
+	 *
+	 * @param source
+	 * 		The source
+	 * @param target
+	 * 		The target
+	 */
+	public static int getSpeedModifier(Entity source, Entity target) {
+		return 46 + (getLocation(source).getDistance(target.getLocation()) * 5);
 	}
 	
 	/**
@@ -43,7 +54,7 @@ public class ProjectileManager {
 	 * 		The node.
 	 * @return The centered location.
 	 */
-	public static Location getLocation(Entity n) {
+	public static Location getLocation(org.redrune.game.node.entity.Entity n) {
 		if (n == null) {
 			return null;
 		}

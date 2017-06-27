@@ -19,5 +19,6 @@
     0,
     15
   ],
-  "examine": "It's an Armadyl battlestaff"
+  "examine": "It's an Armadyl battlestaff",
+  "weight": 2.2
 }

@@ -206,11 +206,12 @@ public final class Player extends Entity {
 	}
 	
 	@Override
-	public void receiveHit(Entity attacker, Hit hit) {
+	public void receiveHit(Hit hit) {
 		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
 		equipment.handleAbsorption(hit);
+		manager.getPrayers().handleHit(hit);
 	}
 	
 	@Override
@@ -255,10 +256,11 @@ public final class Player extends Entity {
 		getTransmitter().send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true) ? 1 : 0).build(this));
 		
-		getTransmitter().send(new ConfigPacketBuilder(173, getVariables().isRunToggled() ? 1 : 0).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
 		getTransmitter().send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
-		getTransmitter().send(new RunEnergyBuilder(getVariables().getRunEnergy()).build(this));
+		
+		transmitter.refreshRunOrbStatus();
+		transmitter.refreshEnergy();
 	}
 	
 	/**
@@ -312,6 +314,18 @@ public final class Player extends Entity {
 		World.get().removePlayer(this, true);
 		
 		System.out.println("Player deregistered from lobby:" + this);
+	}
+	
+	/**
+	 * Restores the run energy by 1.
+	 */
+	public void restoreRunEnergy() {
+		if (getMovement().getNextRunDirection() != -1 || getVariables().getRunEnergy() >= 100) {
+			return;
+		}
+		getVariables().setRunEnergy(getVariables().getRunEnergy() + 1);
+		transmitter.refreshEnergy();
+		transmitter.refreshRunOrbStatus();
 	}
 	
 }

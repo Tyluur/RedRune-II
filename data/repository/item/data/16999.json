@@ -19,5 +19,6 @@
     0,
     10
   ],
-  "examine": "A magical staff of water. (Tier 6)"
+  "examine": "A magical staff of water. (Tier 6)",
+  "weight": 2.0
 }

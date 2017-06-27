@@ -19,5 +19,6 @@
     7,
     0
   ],
-  "examine": "A fabulously ancient gnarled staff as used by the druids of old."
+  "examine": "A fabulously ancient gnarled staff as used by the druids of old.",
+  "weight": 10.0
 }

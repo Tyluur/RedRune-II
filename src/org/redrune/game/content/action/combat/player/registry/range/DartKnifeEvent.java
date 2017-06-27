@@ -5,7 +5,6 @@ import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.Projectile;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -22,7 +21,7 @@ public class DartKnifeEvent implements BowFireEvent {
 	}
 	
 	@Override
-	public void fire(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
+	public void fire(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
 		sendDamage(attacker, target, swing, weaponId);
 		
 		final String name = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();

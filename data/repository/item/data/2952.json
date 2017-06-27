@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "A silver dagger that can prevent werewolves changing form."
+  "examine": "A silver dagger that can prevent werewolves changing form.",
+  "weight": 0.4
 }

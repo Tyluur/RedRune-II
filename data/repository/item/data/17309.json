@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Boots crafted out of thick lizard hides. (Tier 7)"
+  "examine": "Boots crafted out of thick lizard hides. (Tier 7)",
+  "weight": 4.0
 }

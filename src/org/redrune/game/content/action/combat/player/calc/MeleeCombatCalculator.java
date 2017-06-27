@@ -2,8 +2,8 @@ package org.redrune.game.content.action.combat.player.calc;
 
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeCalculator;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
  * This class handles all of the melee combat formula calculations
@@ -17,33 +17,39 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 	public double totalAggressiveBoost(Player player, Object... params) {
 		final int attackStyle = (int) params[0];
 		final int weaponId = (int) params[1];
-		
 		final int style = attackStyle == 0 ? 3 : attackStyle == 2 ? 1 : 0;
-		int attackLevel = player.getSkills().getLevel(ATTACK);
-		int attackBonus = player.getEquipment().getBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle));
-		double attackMultiplier = 1.0; // TODO: prayer multipliers [* e.getPrayer().getAttackMultiplier()]
-		double accuracyMultiplier = 1.0;
+		// the attack level
+		final int attackLevel = player.getSkills().getLevel(ATTACK);
+		// the attack bonus from the weapon
+		final int attackBonus = player.getEquipment().getBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle));
+		
+		// the prayer attack bonus
+		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBoost(SkillConstants.ATTACK);
+		
 		// if we have full void equipped, 15% higher damage...
 		if (StaticCombatFormulae.fullVoidEquipped(player, 11665, 11676)) {
-			accuracyMultiplier *= 0.15;
+			attackMultiplier += 0.15;
 		}
 		double cumulativeAttack = attackLevel * attackMultiplier + style;
-		return (14 + cumulativeAttack + (attackBonus / 8) + ((cumulativeAttack * attackBonus) / 64)) * accuracyMultiplier;
+		return (14 + cumulativeAttack + (attackBonus / 8) + ((cumulativeAttack * attackBonus) / 64)) * attackMultiplier;
 	}
 	
 	@Override
-	public double totalDefensiveBoost(Entity entity, Object... params) {
+	public double totalDefensiveBoost(org.redrune.game.node.entity.Entity entity, Object... params) {
 		if (entity.isPlayer()) {
+			// the attack style of the player
 			final int attackStyle = (int) params[0];
+			// the weapon id of the player
 			final int weaponId = (int) params[1];
+			// the attack style of the receiver
+			final int targetStyle = entity.getCombatDefinitions().getAttackStyle();
 			
-			int style = entity.getCombatDefinitions().getAttackStyle();
-			style = style == 2 ? 1 : style == 3 ? 3 : 0;
+			int styleType = targetStyle == 2 ? 1 : targetStyle == 3 ? 3 : 0;
 			final int defenceLevel = entity.toPlayer().getSkills().getLevel(DEFENCE);
 			final int defenceBonus = entity.toPlayer().getEquipment().getBonus(StaticCombatFormulae.getMeleeDefenceBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle)));
-			final double defenceMultiplier = 1.0; // TODO: changing attack styles [* .getPrayer().getDefenceMultiplier()]
-			final double cumulativeDef = defenceLevel * defenceMultiplier + style;
-			return 14 + cumulativeDef + (defenceBonus / 8) + ((cumulativeDef * (defenceBonus)) / 64);
+			final double defenceMultiplier = 1.0 + entity.toPlayer().getManager().getPrayers().getBoost(SkillConstants.DEFENCE);
+			final double defenceCumulation = defenceLevel * defenceMultiplier + styleType;
+			return 14 + defenceCumulation + (defenceBonus / 8) + ((defenceCumulation * (defenceBonus)) / 64);
 		} else {
 			// TODO: npc defence bonuses
 			return 0;

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A shortbow made out of willow, still effective."
+  "examine": "A shortbow made out of willow, still effective.",
+  "weight": 1.3
 }

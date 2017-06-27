@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A rune full helmet in the colours of Guthix."
+  "examine": "A rune full helmet in the colours of Guthix.",
+  "weight": 2.0
 }

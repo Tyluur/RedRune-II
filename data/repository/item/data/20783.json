@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Used for mining."
+  "examine": "Used for mining.",
+  "weight": 2.2
 }

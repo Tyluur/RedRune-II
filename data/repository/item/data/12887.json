@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A worn-out hood, formerly worn by the followers of Guthix."
+  "examine": "A worn-out hood, formerly worn by the followers of Guthix.",
+  "weight": 7.0
 }

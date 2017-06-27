@@ -1,3 +1,4 @@
 {
-  "examine": "If a creature goes inside, then the box should slam shut."
+  "examine": "If a creature goes inside, then the box should slam shut.",
+  "weight": 0.2
 }

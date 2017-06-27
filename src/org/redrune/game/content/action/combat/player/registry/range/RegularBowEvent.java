@@ -4,7 +4,6 @@ import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.EquipConstants;
 
@@ -20,7 +19,7 @@ public class RegularBowEvent implements BowFireEvent {
 	}
 	
 	@Override
-	public void fire(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
+	public void fire(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
 		sendDamage(attacker, target, swing, weaponId);
 		attacker.sendGraphics(StaticCombatFormulae.getArrowThrowGfxId(ammoId), 100, 0);
 		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, StaticCombatFormulae.getArrowProjectileGfxId(weaponId, ammoId), 40, 30, 41, 15, 0));

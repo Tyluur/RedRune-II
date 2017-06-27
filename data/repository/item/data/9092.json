@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A staff enchanted by air and fire."
+  "examine": "A staff enchanted by air and fire.",
+  "weight": 1.0
 }

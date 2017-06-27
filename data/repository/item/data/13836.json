@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Rune platelegs with gold plate."
+  "examine": "Rune platelegs with gold plate.",
+  "weight": 9.0
 }

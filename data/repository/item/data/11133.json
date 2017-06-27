@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Helps to restore your life points."
+  "examine": "Helps to restore your life points.",
+  "weight": 0.2
 }

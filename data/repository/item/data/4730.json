@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Guthan the Infested's chainskirt."
+  "examine": "Guthan the Infested's chainskirt.",
+  "weight": 8.0
 }

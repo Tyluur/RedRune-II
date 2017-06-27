@@ -159,13 +159,14 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 		StringBuilder other = new StringBuilder();
 		other.append("Other Bonuses<br><br>");
 		for (int i = 0; i < bonuses.length; i++) {
-			int bonus = bonuses[i];
+			double bonus = bonuses[i];
 			String label = BONUS_LABELS[i];
 			StringBuilder bldr = (i <= 4 ? attack : i <= 13 ? defence : other);
 			String sign = bonus > 0 ? "+" : "";
 			
 			bldr.append(label).append(": ").append(sign).append(bonus).append(label.contains("Absorb") ? "%" : "").append(i == bonuses.length - 1 ? "" : "<br>");
 		}
+		other.append("<br>Weight: ").append(ItemRepository.getWeight(item.getId(), true));
 		player.getTransmitter().send(new CS2StringBuilder(321, "Stats for " + item.getName()).build(player));
 		player.getTransmitter().send(new CS2StringBuilder(323, attack.toString()).build(player));
 		player.getTransmitter().send(new CS2StringBuilder(324, defence.toString()).build(player));

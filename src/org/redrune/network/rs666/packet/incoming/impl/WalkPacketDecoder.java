@@ -42,6 +42,11 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		int[] bufferX = RouteFinder.getLastPathBufferX();
 		int[] bufferY = RouteFinder.getLastPathBufferY();
 		
+		// if we're walking, we wait for it to stop bc render emote must happen first.
+		if (player.getAttribute("walking", false)) {
+			return;
+		}
+		
 		// execute the event now.
 		EventManager.executeEvent(player, WalkEvent.class, new WalkEventContext(x, y, bufferX, bufferY, running, calculatedSteps));
 	}

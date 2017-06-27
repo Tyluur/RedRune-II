@@ -19,5 +19,6 @@
     8,
     0
   ],
-  "examine": "A terrifying, heavy sword."
+  "examine": "A terrifying, heavy sword.",
+  "weight": 10.0
 }

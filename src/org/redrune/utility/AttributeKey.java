@@ -8,8 +8,14 @@ package org.redrune.utility;
  * @since 5/21/2017
  */
 public enum AttributeKey {
+	
+	
 	// MISC ATTRIBUTES
 	COST_VALUE,
+	
+	LAST_HIT_BY_ENTITY,
+	
+	LAST_TIME_HIT,
 	
 	LAST_DIALOGUE_MESSAGE,
 	

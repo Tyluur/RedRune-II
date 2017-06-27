@@ -19,5 +19,6 @@
     1,
     0
   ],
-  "examine": "A sturdy chestplate."
+  "examine": "A sturdy chestplate.",
+  "weight": 12.0
 }

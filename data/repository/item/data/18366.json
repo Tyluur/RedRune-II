@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A razor-sharp rapier."
+  "examine": "A razor-sharp rapier.",
+  "weight": 1.8
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A helm with finely detailed decoration."
+  "examine": "A helm with finely detailed decoration.",
+  "weight": 1.0
 }

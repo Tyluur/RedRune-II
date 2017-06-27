@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A powerful bow made from willow."
+  "examine": "A powerful bow made from willow.",
+  "weight": 1.8
 }

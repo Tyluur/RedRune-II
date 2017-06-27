@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": " This sceptre is fully charged."
+  "examine": " This sceptre is fully charged.",
+  "weight": 2.0
 }

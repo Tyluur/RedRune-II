@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This fires crossbow bolts."
+  "examine": "This fires crossbow bolts.",
+  "weight": 2.2
 }

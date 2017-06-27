@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A weapon from the Abyss."
+  "examine": "A weapon from the Abyss.",
+  "weight": 0.45
 }

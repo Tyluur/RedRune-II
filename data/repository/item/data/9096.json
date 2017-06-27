@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A mystical helmet."
+  "examine": "A mystical helmet.",
+  "weight": 0.9
 }

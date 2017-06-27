@@ -1,3 +1,4 @@
 {
-  "examine": "This will collect metal scraps when I smelt bars at or below Smithing level 85."
+  "examine": "This will collect metal scraps when I smelt bars at or below Smithing level 85.",
+  "weight": 1.3
 }

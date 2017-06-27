@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A tool for sleuths."
+  "examine": "A tool for sleuths.",
+  "weight": 0.1
 }

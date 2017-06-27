@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A spell casting aid; barely more than an ornamental stick."
+  "examine": "A spell casting aid; barely more than an ornamental stick.",
+  "weight": 2.2
 }

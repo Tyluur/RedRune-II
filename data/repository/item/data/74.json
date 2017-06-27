@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A helmet, as worn by the minions of General Khazard."
+  "examine": "A helmet, as worn by the minions of General Khazard.",
+  "weight": 2.0
 }

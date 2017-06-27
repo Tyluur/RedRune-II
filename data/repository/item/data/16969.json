@@ -19,5 +19,6 @@
     0,
     15
   ],
-  "examine": "It's an Catalytic warstaff"
+  "examine": "It's an Catalytic warstaff",
+  "weight": 2.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Large, round, heavy shield."
+  "examine": "Large, round, heavy shield.",
+  "weight": 3.6
 }

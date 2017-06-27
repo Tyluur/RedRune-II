@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A cloak to show your clan allegiance."
+  "examine": "A cloak to show your clan allegiance.",
+  "weight": 0.4
 }

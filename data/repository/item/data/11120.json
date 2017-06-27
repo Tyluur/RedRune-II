@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "You will need to recharge the bracelet at the Legends Guild.(uncharged) A handy way to get around.(charged)"
+  "examine": "You will need to recharge the bracelet at the Legends Guild.(uncharged) A handy way to get around.(charged)",
+  "weight": 0.3
 }

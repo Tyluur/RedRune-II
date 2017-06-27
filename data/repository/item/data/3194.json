@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A steel halberd."
+  "examine": "A steel halberd.",
+  "weight": 3.0
 }

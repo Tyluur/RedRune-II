@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Charged: A Large, spiked metal shield. Uncharged: Not so spiky anymore."
+  "examine": "Charged: A Large, spiked metal shield. Uncharged: Not so spiky anymore.",
+  "weight": 6.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A helm with simple and basic decoration."
+  "examine": "A helm with simple and basic decoration.",
+  "weight": 1.0
 }

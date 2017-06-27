@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "When Bound: Designer leg protection. When not bound: Designer leg protection. (Tier 11)"
+  "examine": "When Bound: Designer leg protection. When not bound: Designer leg protection. (Tier 11)",
+  "weight": 8.0
 }

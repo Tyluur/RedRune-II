@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This should make me harder to spot in jungle areas."
+  "examine": "This should make me harder to spot in jungle areas.",
+  "weight": 0.2
 }

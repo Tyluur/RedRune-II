@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A dragon tipped spear."
+  "examine": "A dragon tipped spear.",
+  "weight": 2.0
 }

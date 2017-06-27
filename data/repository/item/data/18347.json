@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The gloves of a mercenary."
+  "examine": "The gloves of a mercenary.",
+  "weight": 1.2
 }

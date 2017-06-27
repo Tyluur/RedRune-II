@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A specially crafted hammer with strange markings on it."
+  "examine": "A specially crafted hammer with strange markings on it.",
+  "weight": 1.8
 }

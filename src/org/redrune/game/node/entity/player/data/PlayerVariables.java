@@ -41,7 +41,7 @@ public final class PlayerVariables {
 	 */
 	@Getter
 	@Setter
-	private int runEnergy = 100;
+	private double runEnergy = 100;
 	
 	/**
 	 * If the run button has been toggled on

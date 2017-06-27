@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Attack at your own risk."
+  "examine": "Attack at your own risk.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Guthix blessed dragonhide vambraces."
+  "examine": "Guthix blessed dragonhide vambraces.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Crafted from a Dramen tree branch."
+  "examine": "Crafted from a Dramen tree branch.",
+  "weight": 1.8
 }

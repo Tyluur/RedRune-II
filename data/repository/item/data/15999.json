@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A hatchet for woodcutting. (Tier 9)"
+  "examine": "A hatchet for woodcutting. (Tier 9)",
+  "weight": 1.25
 }

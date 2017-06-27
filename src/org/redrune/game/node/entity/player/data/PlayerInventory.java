@@ -9,6 +9,7 @@ import org.redrune.game.node.item.ItemsContainer;
 import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ContainerUpdateBuilder;
+import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
@@ -29,6 +30,13 @@ public class PlayerInventory {
 	@Setter
 	private transient Player player;
 	
+	/**
+	 * The weight of the items carried in the inventory
+	 */
+	@Getter
+	@Setter
+	private transient double weight;
+	
 	public PlayerInventory() {
 		items = new ItemsContainer<>(28, false);
 	}
@@ -47,6 +55,22 @@ public class PlayerInventory {
 	 */
 	private void sendContainer() {
 		player.getTransmitter().send(new ContainerPacketBuilder(93, items.toArray(), false).build(player));
+		calculateWeight();
+	}
+	
+	/**
+	 * Recalculates the total weight of items in the inventory
+	 */
+	private void calculateWeight() {
+		double weight = 0;
+		for (Item item : items.toArray()) {
+			if (item == null) {
+				continue;
+			}
+			weight += ItemRepository.getWeight(item.getId(), false);
+		}
+		this.weight = weight;
+		player.getTransmitter().sendWeight();
 	}
 	
 	/**
@@ -99,6 +123,7 @@ public class PlayerInventory {
 	 */
 	private void refresh(int... slots) {
 		player.getTransmitter().send(new ContainerUpdateBuilder(93, items.toArray(), slots).build(player));
+		calculateWeight();
 	}
 	
 	/**

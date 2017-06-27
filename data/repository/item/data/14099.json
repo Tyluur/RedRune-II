@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Your volatile tool wants to mine some rocks."
+  "examine": "Your volatile tool wants to mine some rocks.",
+  "weight": 2.0
 }

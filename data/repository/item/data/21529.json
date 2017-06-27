@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A clay shield highly resistant to ranged attacks."
+  "examine": "A clay shield highly resistant to ranged attacks.",
+  "weight": 3.6
 }

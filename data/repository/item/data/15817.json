@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A large metal shield. (Tier 10)"
+  "examine": "A large metal shield. (Tier 10)",
+  "weight": 5.4
 }

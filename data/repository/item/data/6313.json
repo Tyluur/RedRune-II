@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A jungle specific slashing device."
+  "examine": "A jungle specific slashing device.",
+  "weight": 1.35
 }

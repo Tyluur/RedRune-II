@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A wooden shield with a rope rim."
+  "examine": "A wooden shield with a rope rim.",
+  "weight": 3.6
 }

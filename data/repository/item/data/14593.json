@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Provides excellent protection, and is elite."
+  "examine": "Provides excellent protection, and is elite.",
+  "weight": 10.0
 }

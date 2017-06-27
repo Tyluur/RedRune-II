@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A woodcutter's hatchet."
+  "examine": "A woodcutter's hatchet.",
+  "weight": 1.35
 }

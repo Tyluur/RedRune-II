@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
@@ -16,7 +15,7 @@ import org.redrune.utility.rs.constant.Directions.Direction;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public class NPC extends Entity {
+public class NPC extends org.redrune.game.node.entity.Entity {
 	
 	/**
 	 * The id of the npc
@@ -65,7 +64,7 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	public void receiveHit(Entity attacker, Hit hit) {
+	public void receiveHit(Hit hit) {
 	
 	}
 	
@@ -116,7 +115,7 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	public boolean attackable(Entity entity) {
+	public boolean attackable(org.redrune.game.node.entity.Entity entity) {
 		return super.attackable(entity);
 	}
 	

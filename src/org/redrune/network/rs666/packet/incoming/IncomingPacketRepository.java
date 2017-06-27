@@ -1,5 +1,6 @@
 package org.redrune.network.rs666.packet.incoming;
 
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.utility.Misc;
@@ -44,17 +45,19 @@ public final class IncomingPacketRepository {
 	 * 		The packet
 	 */
 	public static void handlePacket(Player player, Packet packet) {
-		try {
-			final int opcode = packet.getOpcode();
-			IncomingPacketDecoder structure = DECODER_MAP.get(opcode);
-			if (structure == null) {
-				System.out.println("Received packet " + opcode + ", unidentified handler.");
-				return;
+		final int opcode = packet.getOpcode();
+		EngineWorkingSet.submitPacketWork(() -> {
+			try {
+				IncomingPacketDecoder structure = DECODER_MAP.get(opcode);
+				if (structure == null) {
+					System.out.println("Received packet " + opcode + ", unidentified handler.");
+					return;
+				}
+				structure.read(player, packet);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			structure.read(player, packet);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		});
 	}
 	
 }

@@ -19,5 +19,6 @@
     3,
     0
   ],
-  "examine": "A spiky mace."
+  "examine": "A spiky mace.",
+  "weight": 2.0
 }

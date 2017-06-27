@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Short but pointy. When poisoned: The blade is dripping with poison."
+  "examine": "Short but pointy. When poisoned: The blade is dripping with poison.",
+  "weight": 0.4
 }

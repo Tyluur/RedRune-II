@@ -86,8 +86,7 @@ public class RegionManager {
 	public static Region getRegionAndLoad(int regionId) {
 		Region region = REGION_CACHE.get(regionId);
 		if (region == null) {
-			region = new Region(regionId);
-			region.checkLoadMap();
+			region = new Region(regionId).checkLoadMap();
 			REGION_CACHE.put(regionId, region);
 			return region;
 		} else {

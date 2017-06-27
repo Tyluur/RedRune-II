@@ -19,5 +19,6 @@
     0,
     10
   ],
-  "examine": "A master level wand."
+  "examine": "A master level wand.",
+  "weight": 0.1
 }

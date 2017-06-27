@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A mage weapon made from the carcasses of Penance creatures (upgraded)"
+  "examine": "A mage weapon made from the carcasses of Penance creatures (upgraded)",
+  "weight": 3.1
 }

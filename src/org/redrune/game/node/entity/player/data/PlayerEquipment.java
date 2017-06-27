@@ -37,10 +37,26 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	private transient Player player;
 	
 	/**
+	 * The weight of the player's equipment
+	 */
+	@Getter
+	@Setter
+	private transient double weight;
+	
+	/**
 	 * Sends the full container of items
 	 */
 	public void sendContainer() {
 		player.getTransmitter().send(new ContainerPacketBuilder(94, items.toArray(), false).build(player));
+		double weight = 0;
+		for (Item item : items.toArray()) {
+			if (item == null) {
+				continue;
+			}
+			weight += ItemRepository.getWeight(item.getId(), true);
+		}
+		this.weight = weight;
+		player.getTransmitter().sendWeight();
 	}
 	
 	/**
@@ -57,28 +73,29 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	}
 	
 	/**
-	 * Gets the id of the item in the slot
-	 *
-	 * @param slot
-	 * 		The slot
+	 * Updates the bonuses accurately
 	 */
-	public int getIdInSlot(int slot) {
-		Item item = getItem(slot);
-		if (item == null) {
-			return -1;
-		} else {
-			return item.getId();
+	private void updateBonuses() {
+		bonuses = new int[18];
+		double weight = 0;
+		for (Item item : items.toArray()) {
+			if (item == null) {
+				continue;
+			}
+			weight += ItemRepository.getWeight(item.getId(), true);
+			int[] bonuses = ItemRepository.getBonuses(item.getId());
+			if (bonuses == null) {
+				continue;
+			}
+			for (int id = 0; id < bonuses.length; id++) {
+				if (id == RANGED_STRENGTH_BONUS && this.bonuses[RANGED_STRENGTH_BONUS] != 0) {
+					continue;
+				}
+				this.bonuses[id] += bonuses[id];
+			}
 		}
-	}
-	
-	/**
-	 * Gets an item in the slot
-	 *
-	 * @param slot
-	 * 		The slot
-	 */
-	public Item getItem(int slot) {
-		return items.get(slot);
+		this.weight = weight;
+		player.getTransmitter().sendWeight();
 	}
 	
 	/**
@@ -86,20 +103,6 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	 */
 	public boolean hasShield() {
 		return items.get(5) != null;
-	}
-	
-	/**
-	 * Gets the bonus at an index
-	 *
-	 * @param index
-	 * 		The index
-	 */
-	public int getBonus(int index) {
-		if (index < 0 || index >= bonuses.length) {
-			System.out.println("Invalid bonus index expected: " + index);
-			return 0;
-		}
-		return bonuses[index];
 	}
 	
 	/**
@@ -114,28 +117,6 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 			return 594;
 		}
 		return weapon.getDefinitions().getRenderAnimId();
-	}
-	
-	/**
-	 * Updates the bonuses accurately
-	 */
-	private void updateBonuses() {
-		bonuses = new int[18];
-		for (Item item : player.getEquipment().getItems().getItems()) {
-			if (item == null) {
-				continue;
-			}
-			int[] bonuses = ItemRepository.getBonuses(item.getId());
-			if (bonuses == null) {
-				continue;
-			}
-			for (int id = 0; id < bonuses.length; id++) {
-				if (id == RANGED_STRENGTH_BONUS && this.bonuses[RANGED_STRENGTH_BONUS] != 0) {
-					continue;
-				}
-				this.bonuses[id] += bonuses[id];
-			}
-		}
 	}
 	
 	/**
@@ -169,9 +150,59 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	}
 	
 	/**
+	 * Gets the bonus at an index
+	 *
+	 * @param index
+	 * 		The index
+	 */
+	public int getBonus(int index) {
+		if (index < 0 || index >= bonuses.length) {
+			System.out.println("Invalid bonus index expected: " + index);
+			return 0;
+		}
+		return bonuses[index];
+	}
+	
+	/**
 	 * Gets the id of the weapon
 	 */
 	public int getWeaponId() {
 		return getIdInSlot(SLOT_WEAPON);
+	}
+	
+	/**
+	 * Gets the id of the item in the slot
+	 *
+	 * @param slot
+	 * 		The slot
+	 */
+	public int getIdInSlot(int slot) {
+		Item item = getItem(slot);
+		if (item == null) {
+			return -1;
+		} else {
+			return item.getId();
+		}
+	}
+	
+	/**
+	 * Gets an item in the slot
+	 *
+	 * @param slot
+	 * 		The slot
+	 */
+	public Item getItem(int slot) {
+		return items.get(slot);
+	}
+	
+	/**
+	 * Drains the run energy, based on the weight modifier
+	 */
+	public void drainRunEnergy() {
+		if (player.getMovement().getNextRunDirection() != -1) {
+			double toLose = (0.67 + ((player.getEquipment().getWeight() + player.getInventory().getWeight()) / 50)) / 2;
+			player.getVariables().setRunEnergy(player.getVariables().getRunEnergy() - toLose);
+			player.getTransmitter().refreshEnergy();
+		}
 	}
 }
