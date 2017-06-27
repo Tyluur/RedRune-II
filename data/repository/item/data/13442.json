@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "A very powerful onyx amulet."
+  "examine": "A very powerful onyx amulet.",
+  "weight": 1.0
 }

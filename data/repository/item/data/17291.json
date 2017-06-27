@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "There is a glowing, red drop hanging from the necklace."
+  "examine": "There is a glowing, red drop hanging from the necklace.",
+  "weight": 0.1
 }

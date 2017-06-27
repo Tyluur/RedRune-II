@@ -1,7 +1,6 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
@@ -36,7 +35,7 @@ public class FaceLocationUpdate extends UpdateFlag {
 	 * @param location
 	 * 		The location to face.
 	 */
-	public FaceLocationUpdate(Entity entity, Location location) {
+	public FaceLocationUpdate(org.redrune.game.node.entity.Entity entity, Location location) {
 		this.currentLocation = entity.getLocation();
 		this.npc = entity.isNPC();
 		this.location = location;

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "It is stronger against targets with magical powers."
+  "examine": "It is stronger against targets with magical powers.",
+  "weight": 2.5
 }

@@ -50,9 +50,9 @@ public final class InterfaceManager implements InterfaceConstants {
 			player.getTransmitter().sendFullScreenAMasks();
 		}
 		EmoteManager.sendUnlockConfigs(player);
-		player.getManager().getPrayers().sendLoginConfigurations();
 		player.getManager().getContacts().sendLogin();
 		player.getCombatDefinitions().sendLogin();
+		player.getManager().getPrayers().sendLoginConfigurations();
 	}
 	
 	/**
@@ -225,6 +225,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			player.getTransmitter().sendMessage("You need to close the interface you have open before doing this.", false);
 			return this;
 		}
+		closeInputBox();
 		return sendInterface(getScreenPaneId(usingFixedMode()), getScreenComponentId(usingFixedMode()), interfaceId);
 	}
 	
@@ -331,9 +332,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * Closes all interfaces
 	 */
 	public void closeAll() {
+		closeInputBox();
+		player.getManager().getInterfaces().closeAllInterfaces();
+	}
+	
+	/**
+	 * Closes the input boxes
+	 */
+	public void closeInputBox() {
 		Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
 		player.getTransmitter().closeInputBox();
-		player.getManager().getInterfaces().closeAllInterfaces();
 	}
 	
 	/**

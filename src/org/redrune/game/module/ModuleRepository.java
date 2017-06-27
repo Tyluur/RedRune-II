@@ -31,22 +31,22 @@ public class ModuleRepository {
 	private static final Logger LOGGER = Misc.constructLogger(ModuleRepository.class);
 	
 	/**
-	 * The map of all interface modules
+	 * The list of all interface modules
 	 */
 	private static final List<InterfaceInteractionModule> INTERFACE_MODULES = Collections.synchronizedList(new ArrayList<>());
 	
 	/**
-	 * The map of all item modules
+	 * The list of all item modules
 	 */
 	private static final List<ItemInteractionModule> ITEM_MODULES = Collections.synchronizedList(new ArrayList<>());
 	
 	/**
-	 * The map of all modules
+	 * The list of all modules
 	 */
 	private static final List<NPCInteractionModule> NPC_MODULES = Collections.synchronizedList(new ArrayList<>());
 	
 	/**
-	 * The map of all modules
+	 * The list of all modules
 	 */
 	private static final List<ObjectInteractionModule> OBJECT_MODULES = Collections.synchronizedList(new ArrayList<>());
 	

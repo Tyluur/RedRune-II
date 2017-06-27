@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A big piece of tree."
+  "examine": "A big piece of tree.",
+  "weight": 10.0
 }

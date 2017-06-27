@@ -63,7 +63,7 @@ public class Bootstrap {
 			
 			// loading the actual important data
 			Cache.init();
-			ItemRepository.loadUntradeables();
+			ItemRepository.initialize(false);
 			BodyDataParser.loadAll();
 			ItemDefinitionParser.loadEquipmentConfiguration();
 			IncomingPacketRepository.storeAll();

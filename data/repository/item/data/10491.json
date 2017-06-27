@@ -19,5 +19,6 @@
     2,
     0
   ],
-  "examine": "It radiates purity but can still lop off heads."
+  "examine": "It radiates purity but can still lop off heads.",
+  "weight": 1.1
 }

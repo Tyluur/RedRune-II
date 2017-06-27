@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Enchanted Wizards robes."
+  "examine": "Enchanted Wizards robes.",
+  "weight": 1.8
 }

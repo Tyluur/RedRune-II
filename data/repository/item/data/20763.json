@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A cape worn by those who've spent five or more years in Gielinor."
+  "examine": "A cape worn by those who've spent five or more years in Gielinor.",
+  "weight": 0.4
 }

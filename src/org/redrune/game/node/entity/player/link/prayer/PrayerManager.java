@@ -1017,7 +1017,7 @@ public final class PrayerManager implements SkillConstants {
 						return;
 					}
 				} else if (sourcePrayer.prayerOn(LEECH_RANGED)) {
-					if (true || Misc.getRandom(7) == 0) {
+					if (Misc.getRandom(7) == 0) {
 						if (sourcePrayer.reachedMax(4)) {
 							source.getTransmitter().sendMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
 						} else {

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A wooden helmet."
+  "examine": "A wooden helmet.",
+  "weight": 0.9
 }

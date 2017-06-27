@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "The holy book of Armadyl."
+  "examine": "The holy book of Armadyl.",
+  "weight": 1.0
 }

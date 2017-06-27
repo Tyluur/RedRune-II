@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "It's brimming with power."
+  "examine": "It's brimming with power.",
+  "weight": 2.0
 }

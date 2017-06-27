@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A superior bagged chicken ready to serve you, magnet in claw."
+  "examine": "A superior bagged chicken ready to serve you, magnet in claw.",
+  "weight": 4.5
 }

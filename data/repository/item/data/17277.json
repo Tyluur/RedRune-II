@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A dagger made out of enchanted ice, covered in sharp frost shards."
+  "examine": "A dagger made out of enchanted ice, covered in sharp frost shards.",
+  "weight": 2.0
 }

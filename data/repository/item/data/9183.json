@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "An adamantite crossbow."
+  "examine": "An adamantite crossbow.",
+  "weight": 2.0
 }

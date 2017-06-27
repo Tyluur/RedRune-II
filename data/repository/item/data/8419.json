@@ -1,3 +1,4 @@
 {
-  "examine": "You can plant this in your garden."
+  "examine": "You can plant this in your garden.",
+  "weight": 10.0
 }

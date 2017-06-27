@@ -19,5 +19,6 @@
     0,
     10
   ],
-  "examine": "It's an Ahrim's staff"
+  "examine": "It's an Ahrim's staff",
+  "weight": 2.0
 }

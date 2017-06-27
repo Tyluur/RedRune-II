@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Generally used for impaling fresh meat."
+  "examine": "Generally used for impaling fresh meat.",
+  "weight": 2.0
 }

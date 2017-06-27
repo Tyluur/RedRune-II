@@ -1,11 +1,11 @@
 package org.redrune.game.module.command.owner;
 
-import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
+import org.redrune.utility.rs.Projectile;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -21,6 +21,7 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
+//		player.getTransmitter().send(new CS2ScriptBuilder(279).build(player));
 		Entity target = null;
 		for (int i = 0; i <= World.get().getPlayers().size(); i++) {
 			Player p = World.get().getPlayers().get(i);
@@ -37,8 +38,8 @@ public class DebugCommand extends CommandModule {
 			return;
 		}
 		System.out.println("targ=" + target);
-//		player.getRegion().sendProjectile(new Projectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6), intParam(args, 7)));
-		player.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6)));
+		player.getRegion().sendProjectile(new Projectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6), intParam(args, 7)));
+//		player.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, target, intParam(args, 1), intParam(args, 2), intParam(args, 3), intParam(args, 4), intParam(args, 5), intParam(args, 6)));
 		
 		//		ShopRepository.open(player, intParam(args, 1));
 		//		player.getManager().getPrayers().setBook(PrayerBook.valueOf(args[1].toUpperCase()));

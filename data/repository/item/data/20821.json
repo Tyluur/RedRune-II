@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Hit enemies with sharp end. Enemies die."
+  "examine": "Hit enemies with sharp end. Enemies die.",
+  "weight": 3.6
 }

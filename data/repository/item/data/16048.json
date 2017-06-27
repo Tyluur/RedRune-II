@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Crafted out of thick lizard hides. (Tier 3)"
+  "examine": "Crafted out of thick lizard hides. (Tier 3)",
+  "weight": 0.9
 }

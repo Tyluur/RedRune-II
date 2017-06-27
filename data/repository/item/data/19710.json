@@ -19,5 +19,6 @@
     4,
     0
   ],
-  "examine": "The cape worn by the true masters of Daemonheim."
+  "examine": "The cape worn by the true masters of Daemonheim.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A two-handed dragon sword."
+  "examine": "A two-handed dragon sword.",
+  "weight": 3.0
 }

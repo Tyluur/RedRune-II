@@ -45,7 +45,7 @@ public class EntityCombatDefinitions {
 	 * The entity whose definitions these are for
 	 */
 	@Setter
-	private transient Entity entity;
+	private transient org.redrune.game.node.entity.Entity entity;
 	
 	/**
 	 * The id of the spellbook
@@ -168,12 +168,12 @@ public class EntityCombatDefinitions {
 	}
 	
 	/**
-	 * Reduces the special attack energy by the given amount. This also verifies that we never have < 0 special energy.
+	 * Modifies the special attack energy by the given amount. This also verifies that we never have < 0 special energy.
 	 *
 	 * @param amount
 	 * 		The amount to reduce it by.
 	 */
-	public void reduceSpecial(int amount) {
+	public void modifySpecial(int amount) {
 		this.specialEnergy -= amount;
 		if (this.specialEnergy <= 0) {
 			this.specialEnergy = 0;

@@ -3,7 +3,6 @@ package org.redrune.game.content.action.combat.player.registry.range;
 import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
 /**
@@ -18,7 +17,7 @@ public class CrystalBowEvent implements BowFireEvent {
 	}
 	
 	@Override
-	public void fire(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
+	public void fire(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
 		sendDamage(attacker, target, swing, weaponId);
 		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 249, 40, 30, 41, 15, 0));
 	}

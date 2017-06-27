@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "This looks pretty heavy."
+  "examine": "This looks pretty heavy.",
+  "weight": 9.0
 }

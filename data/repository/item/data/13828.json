@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Rune full helmet in the colours of Saradomin."
+  "examine": "Rune full helmet in the colours of Saradomin.",
+  "weight": 2.0
 }

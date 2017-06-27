@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A hood that cloaks the wearer from humanoids."
+  "examine": "A hood that cloaks the wearer from humanoids.",
+  "weight": 0.4
 }

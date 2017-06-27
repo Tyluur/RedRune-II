@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A rune kiteshield in the colours of a forgotten god."
+  "examine": "A rune kiteshield in the colours of a forgotten god.",
+  "weight": 5.0
 }

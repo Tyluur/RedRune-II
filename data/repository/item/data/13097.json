@@ -19,5 +19,6 @@
     3,
     0
   ],
-  "examine": "A ruby-topped cane."
+  "examine": "A ruby-topped cane.",
+  "weight": 0.5
 }

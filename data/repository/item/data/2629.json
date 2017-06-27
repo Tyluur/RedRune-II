@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A large, metal shield with a nice trim."
+  "examine": "A large, metal shield with a nice trim.",
+  "weight": 5.0
 }

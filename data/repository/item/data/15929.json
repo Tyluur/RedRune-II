@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "These look pretty heavy. (Tier 5)"
+  "examine": "These look pretty heavy. (Tier 5)",
+  "weight": 9.0
 }

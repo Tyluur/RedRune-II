@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A shield with a heraldic design."
+  "examine": "A shield with a heraldic design.",
+  "weight": 5.0
 }

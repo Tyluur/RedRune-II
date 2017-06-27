@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A small bow, only effective at a short distance. (Tier 5)"
+  "examine": "A small bow, only effective at a short distance. (Tier 5)",
+  "weight": 2.0
 }

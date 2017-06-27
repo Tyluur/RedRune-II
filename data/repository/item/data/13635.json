@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A staff with a talisman on top."
+  "examine": "A staff with a talisman on top.",
+  "weight": 2.2
 }

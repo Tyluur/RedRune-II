@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A medium sized helmet."
+  "examine": "A medium sized helmet.",
+  "weight": 1.8
 }

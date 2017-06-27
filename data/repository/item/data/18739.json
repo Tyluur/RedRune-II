@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "For the honour of capturing most flags in a Castle Wars match."
+  "examine": "For the honour of capturing most flags in a Castle Wars match.",
+  "weight": 0.4
 }

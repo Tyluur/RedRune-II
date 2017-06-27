@@ -19,5 +19,6 @@
     6,
     0
   ],
-  "examine": "This earth staff displays the carved head of a fearsome wolf."
+  "examine": "This earth staff displays the carved head of a fearsome wolf.",
+  "weight": 2.0
 }

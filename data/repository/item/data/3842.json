@@ -19,5 +19,6 @@
     5,
     0
   ],
-  "examine": "The unholy book of Zamorak."
+  "examine": "The unholy book of Zamorak.",
+  "weight": 1.0
 }

@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A spear with a leaf-shaped point."
+  "examine": "A spear with a leaf-shaped point.",
+  "weight": 2.0
 }

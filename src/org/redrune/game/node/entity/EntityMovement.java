@@ -64,16 +64,32 @@ public class EntityMovement {
 		if (walkSteps.isEmpty()) {
 			return;
 		}
+		// we just finished resting, walking isn't polled from yet
+		// we must wait until the time has lapsed [ player got up ]
+		if (entity.getAttribute("next_emote_end", -1L) >= System.currentTimeMillis()) {
+			return;
+		}
 		nextWalkDirection = getNextWalkStep();
 		if (nextWalkDirection != -1) {
+			
 			moveLocation(RegionManager.DIRECTION_DELTA_X[nextWalkDirection], RegionManager.DIRECTION_DELTA_Y[nextWalkDirection]);
 			entity.putAttribute("direction", Misc.getFaceDirection(RegionManager.DIRECTION_DELTA_X[nextWalkDirection], RegionManager.DIRECTION_DELTA_Y[nextWalkDirection]));
+			
 			if (isRunning()) {
-				nextRunDirection = getNextWalkStep();
-				if (nextRunDirection != -1) {
-					moveLocation(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]);
-					entity.putAttribute("direction", Misc.getFaceDirection(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]));
+				if (entity.isPlayer() && entity.toPlayer().getVariables().getRunEnergy() <= 0) {
+					entity.toPlayer().getVariables().setRunToggled(false);
+				} else {
+					nextRunDirection = getNextWalkStep();
+					if (nextRunDirection != -1) {
+						// draining energy
+						if (entity.isPlayer()) {
+							entity.toPlayer().getEquipment().drainRunEnergy();
+						}
+						moveLocation(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]);
+						entity.putAttribute("direction", Misc.getFaceDirection(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]));
+					}
 				}
+				entity.toPlayer().getTransmitter().refreshRunOrbStatus();
 			}
 		}
 		RegionManager.updateEntityRegion(entity);

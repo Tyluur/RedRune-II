@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A mithril tipped spear."
+  "examine": "A mithril tipped spear.",
+  "weight": 1.8
 }

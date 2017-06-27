@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A pickaxe for mining. (Tier 10)"
+  "examine": "A pickaxe for mining. (Tier 10)",
+  "weight": 2.7
 }

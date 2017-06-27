@@ -19,5 +19,6 @@
     3,
     0
   ],
-  "examine": "A robe worn by twisted necromancers."
+  "examine": "A robe worn by twisted necromancers.",
+  "weight": 0.9
 }

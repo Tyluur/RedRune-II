@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "A fiery off-hand dagger."
+  "examine": "A fiery off-hand dagger.",
+  "weight": 1.0
 }

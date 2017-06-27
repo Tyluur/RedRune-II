@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The ultimate in gnome design, now in [colour]."
+  "examine": "The ultimate in gnome design, now in [colour].",
+  "weight": 1.0
 }

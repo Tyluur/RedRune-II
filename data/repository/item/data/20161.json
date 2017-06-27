@@ -19,5 +19,6 @@
     1,
     0
   ],
-  "examine": "An ancient mage's mask."
+  "examine": "An ancient mage's mask.",
+  "weight": 2.0
 }

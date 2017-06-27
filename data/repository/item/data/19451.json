@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "Bandos blessed dragonhide vambraces."
+  "examine": "Bandos blessed dragonhide vambraces.",
+  "weight": 1.0
 }

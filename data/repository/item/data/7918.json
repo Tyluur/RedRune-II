@@ -19,5 +19,6 @@
     0,
     0
   ],
-  "examine": "The Bonesack is a little old item that protects like leather."
+  "examine": "The Bonesack is a little old item that protects like leather.",
+  "weight": 9.0
 }

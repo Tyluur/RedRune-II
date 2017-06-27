@@ -318,4 +318,26 @@ public final class NetworkTransmitter {
 		send(new ConfigPacketBuilder(2159, friends.getValue()).build(player));
 		return this;
 	}
+	
+	/**
+	 * Refreshes the run energy the player has
+	 */
+	public void refreshEnergy() {
+		send(new RunEnergyBuilder((int) player.getVariables().getRunEnergy()).build(player));
+	}
+	
+	/**
+	 * Sends the total weight of the player
+	 */
+	public void sendWeight() {
+		send(new WeightBuilder(player.getEquipment().getWeight() + player.getInventory().getWeight()).build(player));
+	}
+	
+	/**
+	 * Refreshes the run orb status
+	 *
+	 */
+	public void refreshRunOrbStatus() {
+		player.getTransmitter().send(new ConfigPacketBuilder(173, player.getAttribute("resting", false) ? 3 : player.getVariables().isRunToggled() ? 1 : 0).build(player));
+	}
 }
