@@ -1,28 +1,24 @@
-package org.redrune.game.node.entity.player.link;
+package org.redrune.utility.repository;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventContext;
 import org.redrune.game.node.entity.player.event.EventPolicy.*;
 import org.redrune.game.node.entity.player.event.impl.*;
-import org.redrune.game.node.entity.player.event.impl.item.FloorItemPickupEvent;
-import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
-import org.redrune.game.node.entity.player.event.impl.item.ItemOnItemEvent;
-import org.redrune.game.node.entity.player.event.impl.item.ItemRemovalEvent;
+import org.redrune.game.node.entity.player.event.impl.item.*;
 import org.redrune.utility.Misc;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
+ * The class that stores all events
+ *
  * @author Tyluur <itstyluur@gmail.com>
- * @since 5/27/2017
+ * @since 6/27/2017
  */
-public final class EventManager {
+public final class EventRepository {
 	
 	/**
 	 * The map of all events
@@ -32,12 +28,7 @@ public final class EventManager {
 	/**
 	 * The instance of the logger
 	 */
-	private static final Logger logger = Misc.constructLogger(EventManager.class);
-	
-	/**
-	 * The actions that are about to be processed
-	 */
-	private final List<Event> eventsToProcess = Collections.synchronizedList(new ArrayList<>());
+	private static final Logger logger = Misc.constructLogger(EventRepository.class);
 	
 	/**
 	 * Executes an event for a player
@@ -60,9 +51,6 @@ public final class EventManager {
 			return;
 		}
 		event.run(player, context);
-		if (event.getStackPolicy() == StackPolicy.NONE) {
-			player.getManager().getEvents().eventsToProcess.clear();
-		}
 	}
 	
 	/**
@@ -90,7 +78,10 @@ public final class EventManager {
 	/**
 	 * Registers all game events
 	 */
-	public static void registerEvents() {
+	public static void registerEvents(boolean reload) {
+		if (reload) {
+			EVENT_MAP.clear();
+		}
 		try {
 			registerEvent(CommandEvent.class);
 			registerEvent(NodeReachEvent.class);
@@ -101,6 +92,7 @@ public final class EventManager {
 			registerEvent(ItemEvent.class);
 			registerEvent(ItemOnItemEvent.class);
 			registerEvent(ItemRemovalEvent.class);
+			registerEvent(ItemDropEvent.class);
 		} catch (IllegalAccessException | InstantiationException e) {
 			e.printStackTrace();
 		}
@@ -114,5 +106,4 @@ public final class EventManager {
 		final Event event = clazz.newInstance();
 		EVENT_MAP.put(clazz.getSimpleName(), event);
 	}
-	
 }

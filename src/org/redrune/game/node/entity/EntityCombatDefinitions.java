@@ -51,7 +51,6 @@ public class EntityCombatDefinitions {
 	 * The id of the spellbook
 	 */
 	@Getter
-	@Setter
 	private MagicBook spellbook = MagicBook.REGULAR;
 	
 	/**
@@ -440,5 +439,18 @@ public class EntityCombatDefinitions {
 	public void setSortSpellBook(int sortId) {
 		this.sortSpellBook = (byte) sortId;
 		refreshBookConfiguration();
+	}
+	
+	/**
+	 * Sets the spellbook we're on and refreshes the visual aspects
+	 *
+	 * @param spellbook
+	 * 		The spellbook to set
+	 */
+	public void setSpellbook(MagicBook spellbook) {
+		this.spellbook = spellbook;
+		refreshAutoCastSpell();
+		refreshDefensiveCasting();
+		refreshSpellbook();
 	}
 }

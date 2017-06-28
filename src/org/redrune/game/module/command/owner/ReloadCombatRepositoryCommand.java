@@ -3,6 +3,7 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.repository.item.ItemRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -19,5 +20,6 @@ public class ReloadCombatRepositoryCommand extends CommandModule {
 	public void handle(Player player, String[] args, boolean console) {
 		CombatRegistry.clearAll();
 		CombatRegistry.registerAll();
+		ItemRepository.initialize(true);
 	}
 }

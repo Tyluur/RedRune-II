@@ -4,9 +4,11 @@ import lombok.Getter;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.item.ItemRemovalContext;
+import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
 import org.redrune.game.node.entity.player.event.impl.item.ItemRemovalEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
+import org.redrune.network.NetworkConstants;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.rs.constant.EquipConstants;
 
 import java.util.Arrays;
@@ -32,14 +34,22 @@ public class WornEquipmentInteractionModule implements InterfaceInteractionModul
 		} else if (componentId == 45) { // ikod
 			player.getManager().getInterfaces().sendInterface(17, false);
 		} else {
-			// only thing left is removal of items
+			// only thing left is item interaction
 			Optional<SlotAction> optional = SlotAction.getSlotAction(componentId);
 			if (!optional.isPresent()) {
 				return true;
 			}
 			SlotAction action = optional.get();
-			EventManager.executeEvent(player, ItemRemovalEvent.class, new ItemRemovalContext(action.getEquipmentSlot()));
+			switch (packetId) {
+				case NetworkConstants.FIRST_PACKET_ID:
+					EventRepository.executeEvent(player, ItemRemovalEvent.class, new ItemRemovalContext(action.getEquipmentSlot()));
+					return true;
+				case NetworkConstants.EXAMINE_PACKET_ID:
+					ItemEvent.handleItemExamining(player, player.getEquipment().getItem(action.getEquipmentSlot()));
+					return true;
+			}
 		}
+		System.out.println("interfaceId = [" + interfaceId + "], componentId = [" + componentId + "], itemId = [" + itemId + "], slotId = [" + slotId + "], packetId = [" + packetId + "]");
 		return true;
 	}
 	

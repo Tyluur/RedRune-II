@@ -2,8 +2,9 @@ package org.redrune.game.content.action.combat.player.registry.range;
 
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
+import org.redrune.game.content.action.combat.player.swing.RangeCombatSwing;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.EquipConstants;
 
@@ -19,12 +20,12 @@ public class CrossbowEvent implements BowFireEvent {
 	}
 	
 	@Override
-	public void fire(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
+	public void fire(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int ammoId) {
 		String name = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
 		
 		sendDamage(attacker, target, swing, weaponId);
 		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 27, 38, 36, 41, 5, 0));
-		dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_ARROWS, ammoId, name.contains("karil"));
+		swing.dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_ARROWS, ammoId, name.contains("karil"));
 	}
 	
 	// TODO: configure the gfx for (e) bolts

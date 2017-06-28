@@ -56,9 +56,6 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 			// constructs the hit and sets its delay
 			final Hit hit = new Hit(player, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
 			
-			// sends the experience and the block emote, these are done on the same tick.
-			appendExperience(player, target, weaponId, combatStyle, damage);
-			
 			// sends the hit after the delay
 			applyHit(player, target, hit, weaponId, combatStyle, delay);
 			

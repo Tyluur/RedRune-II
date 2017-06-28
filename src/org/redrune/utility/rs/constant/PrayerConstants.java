@@ -7,6 +7,11 @@ package org.redrune.utility.rs.constant;
 public interface PrayerConstants {
 	
 	/**
+	 * The slot numbers for prayer stat adjustments
+	 */
+	int ATTACK_SLOT = 0, STRENGTH_SLOT = 1, DEFENCE_SLOT = 2, RANGE_SLOT = 3, MAGIC_SLOT = 4, ENERGY_SLOT = 5, SPECIAL_ENERGY_SLOT = 6;
+	
+	/**
 	 * The configuration ids of the prayers when they're on
 	 */
 	int[][] ACTIVATED_CONFIGURATION_IDS = {

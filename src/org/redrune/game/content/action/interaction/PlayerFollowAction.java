@@ -105,7 +105,7 @@ public class PlayerFollowAction implements Action {
 	 * 		The player
 	 */
 	private boolean canContinue(Player player) {
-		return !(partner == null || !partner.isRenderable() || !World.get().getPlayers().contains(partner) || !partner.getLocation().isWithinDistance(player.getLocation()));
+		return !(partner == null || !partner.isRenderable() || !World.get().getPlayers().contains(partner) || !partner.getLocation().isWithinDistance(player.getLocation()) || player.isFrozen());
 	}
 	
 }

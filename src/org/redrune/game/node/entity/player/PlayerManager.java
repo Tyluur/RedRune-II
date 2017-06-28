@@ -47,13 +47,6 @@ public final class PlayerManager {
 	private transient HintIconManager hintIcons;
 	
 	/**
-	 * The event manager object
-	 */
-	@Getter
-	@Setter
-	private transient EventManager events;
-	
-	/**
 	 * The lock manager object
 	 */
 	@Getter
@@ -87,7 +80,6 @@ public final class PlayerManager {
 	 * 		The player
 	 */
 	void registerTransients(Player player) {
-		this.setEvents(new EventManager());
 		this.setInterfaces(new InterfaceManager());
 		this.setActions(new ActionManager());
 		this.setLocks(new LockManager());

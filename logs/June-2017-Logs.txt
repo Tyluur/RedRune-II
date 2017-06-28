@@ -1,3 +1,37 @@
+6/27/17 {
+	+   Added entity freezing
+		-   Checks for frozen status in walking/following/node interaction [nodes mean objects/floor items/players/npcs]
+	+   Added spellbook swapping
+	+   Added a command to find items by their name [also by their options if you want]
+		-   ::itemn armadyl drop    ->  this will find all items that have 'armadyl' in their name
+			-   and that have 'drop' in their inventory options
+		-   Mainly used for admins+, but in beta testing this will be good for beta testers.
+	+   Added the destroy item interface [when you attempt to drop an item that's untradeable/destroyable/lended]
+	+   Added item definition checking for lended items [as well as changing their last definition server sided to 'discard' [not 'drop' like their regular parts]
+	+   Added interface closing event to inventory item slot swapping
+	+   Added more information to the ::commands interface, like what you should add after the command
+		-   Mainly for mod+ commands
+	+   Added all prayer drains and saps
+		-   With stat adjustment calculation in the tab according to the runescape data
+		-   Projectiles are accurately calculated as well.
+		-   Drain amount is used to calculate your attack bonuses too, so if its negative you'll have less accuracy, etc.
+		-   Added a restoration formula for the drain modifiers
+			-   Every 15 seconds, they will restore by 1% to their original 0 value.
+	+   Added ava's accumulator effect
+	+   Fixed a scheduled task bug that wouldn't allow tasks that had a delay > 1 to happen
+		-   Also removed 'immediate' task types -> these are never needed
+	+   Fixed auto retaliate - it now retaliates a tick after the hit lands, not combat starts ticking.
+	+   Added magic shortbow & magic longbow special attack with perfect projectiles & accuracy
+	+   Added ammo stacking on the floor instead of new floor items being created each time an arrow is shot
+
+	[IMG]http://i.imgur.com/9rdr0sY.gif[/IMG]
+	[IMG]http://i.imgur.com/vpV0PN6.png[/IMG]
+	[IMG]http://i.imgur.com/VPix1Hn.png[/IMG]
+	[IMG]http://i.imgur.com/JmjGSC9.gif[/IMG]
+	[IMG]http://i.imgur.com/fntTUdX.gif[/IMG]
+	[IMG]http://i.imgur.com/LPpCH6c.png[/IMG]
+}
+
 6/26/17 {
 	+   Added prayer bonus calculation to all combat calculators
 	+   Added weight per item and weight calculation for energy draining while running.

@@ -38,7 +38,7 @@ public class ItemRemovalEvent extends Event<ItemRemovalContext> {
 		player.getEquipment().refresh(slotId);
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
 		if (slotId == 3) {
-			// TODO: player.getCombatDefinitions().desecreaseSpecialAttack(0);
+			player.getCombatDefinitions().setSpecialActivated(false);
 		}
 	}
 	

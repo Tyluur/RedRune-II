@@ -24,7 +24,7 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 		final int attackBonus = player.getEquipment().getBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle));
 		
 		// the prayer attack bonus
-		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBoost(SkillConstants.ATTACK);
+		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.ATTACK);
 		
 		// if we have full void equipped, 15% higher damage...
 		if (StaticCombatFormulae.fullVoidEquipped(player, 11665, 11676)) {
@@ -47,7 +47,7 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 			int styleType = targetStyle == 2 ? 1 : targetStyle == 3 ? 3 : 0;
 			final int defenceLevel = entity.toPlayer().getSkills().getLevel(DEFENCE);
 			final int defenceBonus = entity.toPlayer().getEquipment().getBonus(StaticCombatFormulae.getMeleeDefenceBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle)));
-			final double defenceMultiplier = 1.0 + entity.toPlayer().getManager().getPrayers().getBoost(SkillConstants.DEFENCE);
+			final double defenceMultiplier = 1.0 + entity.toPlayer().getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
 			final double defenceCumulation = defenceLevel * defenceMultiplier + styleType;
 			return 14 + defenceCumulation + (defenceBonus / 8) + ((defenceCumulation * (defenceBonus)) / 64);
 		} else {

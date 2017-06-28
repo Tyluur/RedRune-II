@@ -6,11 +6,11 @@ import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.event.context.item.FloorItemPickupContext;
 import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.node.entity.player.event.impl.item.FloorItemPickupEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.repository.EventRepository;
 
 import java.util.Optional;
 
@@ -41,7 +41,7 @@ public class FloorItemPacketDecoder implements IncomingPacketDecoder{
 			boolean forceRun = packet.readByte() == 1;
 			int regionId = Location.getRegionId(x, y);
 			
-			Optional<FloorItem> optional = RegionManager.getRegion(regionId).getFloorItem(itemId, x, y, player.getLocation().getPlane());
+			Optional<FloorItem> optional = RegionManager.getRegion(regionId).getFloorItem(itemId, x, y, player.getLocation().getPlane(), null);
 			if (!optional.isPresent()) {
 				return;
 			}
@@ -51,9 +51,9 @@ public class FloorItemPacketDecoder implements IncomingPacketDecoder{
 			}
 			player.getMovement().reset(forceRun);
 			// executes an event
-			EventManager.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(item, () -> {
+			EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(item, () -> {
 				// execute the floor item pickup event
-				EventManager.executeEvent(player, FloorItemPickupEvent.class, new FloorItemPickupContext(item));
+				EventRepository.executeEvent(player, FloorItemPickupEvent.class, new FloorItemPickupContext(item));
 			}));
 		} else {
 			// TODO: lighting a fire right click

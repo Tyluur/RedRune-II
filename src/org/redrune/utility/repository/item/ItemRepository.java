@@ -35,6 +35,11 @@ public final class ItemRepository {
 	private static final String ITEM_REPOSITORY_LOCATION = "./data/repository/item/data/";
 	
 	/**
+	 * The location of the file with untradeable item data.
+	 */
+	private static final String UNTRADEABLE_ITEMS_LOCATION = "./data/repository/item/untradeables.txt";
+	
+	/**
 	 * The list of items by name that are untradeable
 	 */
 	private static final List<String> UNTRADEABLES = new ArrayList<>();
@@ -57,15 +62,15 @@ public final class ItemRepository {
 	/**
 	 * Loads all item repository data that needs to be stored on startup [and cleared occasionally]
 	 *
-	 * @param clear
-	 * 		If the item should be cleared
+	 * @param reload
+	 * 		If the item should be cleared [in the case of a reload]
 	 */
-	public static void initialize(boolean clear) {
-		if (clear) {
+	public static void initialize(boolean reload) {
+		if (reload) {
 			UNTRADEABLES.clear();
 			UNTRADEABLE_CACHE.clear();
 		}
-		List<String> fileText = Misc.getFileText("./data/resource/items/nontradeables.txt");
+		List<String> fileText = Misc.getFileText(UNTRADEABLE_ITEMS_LOCATION);
 		UNTRADEABLES.addAll(fileText);
 		LOGGER.info("Loaded " + UNTRADEABLES.size() + " untradeable items.");
 	}
@@ -192,28 +197,36 @@ public final class ItemRepository {
 	 * 		The item
 	 */
 	public static boolean isUntradeable(int itemId) {
-		Boolean untradeable = UNTRADEABLE_CACHE.get(itemId);
-		if (untradeable == null) {
+		// it was already cached so we just return the result
+		if (UNTRADEABLE_CACHE.containsKey(itemId)) {
+			return UNTRADEABLE_CACHE.get(itemId);
+		} else {
+			// we havent found if its untradeable yet
+			// we do it then cache it.
 			ItemDefinition definitions = ItemDefinitionParser.forId(itemId);
 			boolean flagged = false;
 			for (String listName : UNTRADEABLES) {
-				if (Misc.isNumeric(listName)) {
-					int id = Integer.parseInt(listName);
-					if (itemId == id) {
+				// first we check that its not an item id
+				if (!Misc.isDigit(listName)) {
+					// matches! break loop.
+					if (definitions.getName().equalsIgnoreCase(listName)) {
 						flagged = true;
 						break;
 					}
-				} else {
-					if (definitions.getName().equalsIgnoreCase(listName)) {
+				} else if (Misc.isNumeric(listName)) {
+					// the list entry is an item id, lets check if it matches the id we're looking for
+					int listId = Integer.parseInt(listName);
+					// matches! break loop.
+					if (itemId == listId) {
 						flagged = true;
 						break;
 					}
 				}
 			}
+			// adds the result to the cache
 			UNTRADEABLE_CACHE.put(itemId, flagged);
-			return false;
-		} else {
-			return untradeable;
+			// returns if it was flagged by the untradeable list
+			return flagged;
 		}
 	}
 	

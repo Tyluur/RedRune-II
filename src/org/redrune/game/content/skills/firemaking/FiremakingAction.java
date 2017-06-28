@@ -69,25 +69,23 @@ public class FiremakingAction implements Action {
 			}
 		}
 		player.getTransmitter().sendMessage("The fire catches and the logs begin to burn.", true);
-		SystemManager.getScheduler().schedule(new ScheduledTask(1, 1,false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					Optional<FloorItem> optional = player.getRegion().getFloorItem(fire.getLogId(), tile.getX(), tile.getY(), tile.getPlane());
-					if (!optional.isPresent()) {
-						return;
-					}
-					if (!checkAll(player)) {
-						return;
-					}
-					FloorItem item = optional.get();
-					if (!player.getRegion().removeFloorItem(item)) {
-						return;
-					}
-					RegionManager.addTimedGamedObject(new GameObject(fire.getObjectId(), 10, 0, tile), 592, 1, fire.getLife());
-					player.getSkills().addExperienceWithMultiplier(SkillConstants.FIREMAKING, increasedExperience(player, fire.getXp()));
-					player.getUpdateMasks().register(new FaceLocationUpdate(player, tile));
-				};
+			public void run() {
+				Optional<FloorItem> optional = player.getRegion().getFloorItem(fire.getLogId(), tile.getX(), tile.getY(), tile.getPlane(), null);
+				if (!optional.isPresent()) {
+					return;
+				}
+				if (!checkAll(player)) {
+					return;
+				}
+				FloorItem item = optional.get();
+				if (!player.getRegion().removeFloorItem(item)) {
+					return;
+				}
+				RegionManager.addTimedGamedObject(new GameObject(fire.getObjectId(), 10, 0, tile), 592, 1, fire.getLife());
+				player.getSkills().addExperienceWithMultiplier(SkillConstants.FIREMAKING, increasedExperience(player, fire.getXp()));
+				player.getUpdateMasks().register(new FaceLocationUpdate(player, tile));
 			}
 		});
 		player.putAttribute("Fire", System.currentTimeMillis() + 1800);

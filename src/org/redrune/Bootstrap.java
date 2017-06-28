@@ -12,12 +12,12 @@ import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.content.market.shop.ShopRepository;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.module.command.CommandRepository;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.Misc;
 import org.redrune.utility.backend.MapDataParser;
+import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 
@@ -67,13 +67,13 @@ public class Bootstrap {
 			BodyDataParser.loadAll();
 			ItemDefinitionParser.loadEquipmentConfiguration();
 			IncomingPacketRepository.storeAll();
-			ModuleRepository.registerAllModules();
+			ModuleRepository.registerAllModules(false);
 			RegionDeletion.prepare();
 			DialogueRepository.loadSubscriptions();
 			CommandRepository.populate(false);
 			ObjectSpawnRepository.get().loadAll();
 			MapDataParser.readAll();
-			EventManager.registerEvents();
+			EventRepository.registerEvents(false);
 			CombatRegistry.registerAll();
 			ShopRepository.load();
 			

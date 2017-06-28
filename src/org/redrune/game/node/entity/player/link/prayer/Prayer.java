@@ -208,4 +208,26 @@ public enum Prayer implements PrayerConstants {
 	public static Optional<Prayer> findPrayerBySlot(int slotId, PrayerBook book) {
 		return Arrays.stream(values()).filter(prayer -> prayer.slotId == slotId && prayer.book == book).findFirst();
 	}
+	
+	/**
+	 * If the prayer is a drainer
+	 */
+	public boolean isDrainer() {
+		return isSap() || isLeech();
+	}
+	
+	/**
+	 * If the prayer is a sap prayer
+	 */
+	public boolean isSap() {
+		return getName().toLowerCase().contains("sap");
+	}
+	
+	/**
+	 * If the prayer is a leech prayer
+	 */
+	public boolean isLeech() {
+		return getName().toLowerCase().contains("leech");
+	}
+	
 }

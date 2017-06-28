@@ -8,9 +8,15 @@ import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.calc.RangeCombatCalculator;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitAttributes;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.world.region.RegionManager;
+import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -80,17 +86,15 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public void applyHit(Player attacker, org.redrune.game.node.entity.Entity receiver, Hit hit, int itemId, int combatStyle, int delay) {
+	public void applyHit(Player attacker, Entity receiver, Hit hit, int itemId, int combatStyle, int delay) {
 		appendExperience(attacker, receiver, hit.getDamage());
-		SystemManager.getScheduler().schedule(new ScheduledTask(delay, 1, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					// the attribute is put when the hit actually appears
-					hit.getAttributes().put(HitAttributes.WEAPON_USED, itemId);
-					// and the hit is applied to the receiver
-					receiver.getHitMap().applyHit(hit);
-				};
+			public void run() {
+				// the attribute is put when the hit actually appears
+				hit.getAttributes().put(HitAttributes.WEAPON_USED, itemId);
+				// and the hit is applied to the receiver
+				receiver.getHitMap().applyHit(hit);
 			}
 		});
 	}
@@ -117,6 +121,45 @@ public class RangeCombatSwing extends CombatTypeSwing {
 					player.getSkills().addExperienceWithMultiplier(SkillConstants.RANGE, combatXp);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Drops ammo on the ground
+	 *
+	 * @param player
+	 * 		The player to drop ammo for
+	 * @param location
+	 * 		The location of the target
+	 * @param ammoSlot
+	 * 		The slot of the ammo
+	 * @param ammoId
+	 * 		The id of the ammo to use
+	 */
+	public void dropAmmo(Player player, Location location, int ammoSlot, int ammoId, boolean delete) {
+		Item ammo = player.getEquipment().getItem(ammoSlot);
+		// no ammo here, safe check [this shouldn't happen anyway]
+		if (ammo == null || ammo.getId() != ammoId) {
+			return;
+		}
+		// the player doesn't lose ammo in the case they're lucky with a cape that saves ammo
+		if (player.getEquipment().capeSavesAmmo() && Misc.getRandom(3) == 2) {
+			return;
+		}
+		// the new amount to set
+		int newAmount = ammo.getAmount() - 1;
+		// if we should remove the item from the equipment
+		final boolean removed = newAmount <= 0;
+		// removes the ammo from the equipment
+		player.getEquipment().getItems().set(ammoSlot, removed ? null : new Item(ammoId, newAmount));
+		// we aren't deleting so it must be dropped on ground...
+		if (!delete) {
+			RegionManager.addStackableFloorItem(ammoId, 1, 180, location, player.getDetails().getUsername());
+		}
+		player.getEquipment().refresh(ammoSlot);
+		// if the item is removed
+		if (removed) {
+			player.getUpdateMasks().register(new AppearanceUpdate(player));
 		}
 	}
 	

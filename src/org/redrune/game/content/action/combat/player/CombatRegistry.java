@@ -6,6 +6,7 @@ import org.redrune.game.content.action.combat.player.registry.CombatRegistryEven
 import org.redrune.game.content.action.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.link.prayer.PrayerEffectRepository;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.MagicConstants;
@@ -69,6 +70,7 @@ public class CombatRegistry implements MagicConstants {
 				BOWS.put(name, bow);
 			}
 		});
+		PrayerEffectRepository.registerAll();
 		Misc.getClassesInDirectory(CombatRegistryEvent.class.getPackage().getName() + ".spell").stream().filter(MagicSpellEvent.class::isInstance).forEach(clazz -> SPELL_EVENTS.add((MagicSpellEvent) clazz));
 		LOGGER.info("Prepared " + SPECIALS.size() + " special attack weapons, " + BOWS.size() + " bow listeners, and " + SPELL_EVENTS.size() + " spells.");
 	}
@@ -90,10 +92,14 @@ public class CombatRegistry implements MagicConstants {
 	 * 		The id of the weapon used.
 	 */
 	public static Optional<SpecialAttackEvent> getSpecial(int weaponId) {
-		String name = weaponId == -1 ? "unarmed" : ItemDefinitionParser.forId(weaponId).getName();
+		String name = weaponId == -1 ? "unarmed" : ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
 		for (Entry<String, SpecialAttackEvent> entry : SPECIALS.entrySet()) {
 			String specialName = entry.getKey();
-			if (name.toLowerCase().contains(specialName.toLowerCase())) {
+			String regex = specialName.replaceAll("\\*", ".*");
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(name);
+			
+			if (matcher.find()) {
 				return Optional.of(entry.getValue());
 			}
 		}

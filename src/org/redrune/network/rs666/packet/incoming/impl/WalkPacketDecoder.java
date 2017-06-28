@@ -1,14 +1,16 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.WalkEventContext;
 import org.redrune.game.node.entity.player.event.impl.WalkEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.EventRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -32,14 +34,30 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		if (steps > 25) {
 			return;
 		}
+		// the destination y coordinate
 		int y = packet.readLEShort();
+		// if we should force run on
 		boolean running = packet.readByteC() == 1;
+		// the destination x coordinate
 		int x = packet.readLEShortA();
 		
-		// finished reading
+		// when the player is frozen, we don't want to calculate pathfinding
+		// in the case that they shouldn't move.
+		if (player.isFrozen()) {
+			Entity frozenBy = player.getAttribute(AttributeKey.FROZEN_BY);
+			if (frozenBy == null || frozenBy.getLocation().withinDistance(player.getLocation(), 16)) {
+				player.getTransmitter().sendMessage("A magical force prevents you from moving.");
+				return;
+			} else {
+				player.unfreeze();
+			}
+		}
 		
+		// calculates the amount of steps in the path
 		int calculatedSteps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getPlane(), player.getSize(), new FixedTileStrategy(x, y), true);
+		// the buffer with the x steps
 		int[] bufferX = RouteFinder.getLastPathBufferX();
+		// the buffer with they steps
 		int[] bufferY = RouteFinder.getLastPathBufferY();
 		
 		// if we're walking, we wait for it to stop bc render emote must happen first.
@@ -47,7 +65,7 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 			return;
 		}
 		
-		// execute the event now.
-		EventManager.executeEvent(player, WalkEvent.class, new WalkEventContext(x, y, bufferX, bufferY, running, calculatedSteps));
+		// we can travel to the path, so we execute the event
+		EventRepository.executeEvent(player, WalkEvent.class, new WalkEventContext(x, y, bufferX, bufferY, running, calculatedSteps));
 	}
 }

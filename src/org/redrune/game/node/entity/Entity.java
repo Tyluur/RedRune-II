@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.AnimationDefinitionParser;
 import org.redrune.cache.parse.definition.AnimationDefinition;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
@@ -376,6 +377,41 @@ public abstract class Entity extends Node implements EntityDetails {
 	public boolean combatRecently() {
 		long lastTimeHit = getAttribute(AttributeKey.LAST_TIME_HIT);
 		return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastTimeHit) <= 10;
+	}
+	
+	/**
+	 * Freezes the entity for the amount of ticks
+	 *
+	 * @param by
+	 * 		The entity we were frozen by
+	 * @param ticks
+	 * 		The amount of ticks
+	 * @param message
+	 * 		The message to send when we're frozen
+	 */
+	public void freeze(Entity by, int ticks, String message) {
+		// time we will be unfrozen at
+		putAttribute(AttributeKey.FROZEN_UNTIL, SystemManager.getUpdateWorker().getTicksElapsed() + ticks);
+		// stores who froze us [16 tile calc]
+		putAttribute(AttributeKey.FROZEN_BY, by);
+		if (isPlayer()) {
+			toPlayer().getTransmitter().sendMessage(message, false);
+		}
+	}
+	
+	/**
+	 * Checks if we are frozen
+	 */
+	public boolean isFrozen() {
+		return getAttribute(AttributeKey.FROZEN_UNTIL, -1L) >= SystemManager.getUpdateWorker().getTicksElapsed();
+	}
+	
+	/**
+	 * Unfreezes the entity
+	 */
+	public void unfreeze() {
+		removeAttribute(AttributeKey.FROZEN_BY);
+		removeAttribute(AttributeKey.FROZEN_UNTIL);
 	}
 	
 }

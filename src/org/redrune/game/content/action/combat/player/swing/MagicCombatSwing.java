@@ -160,32 +160,30 @@ public class MagicCombatSwing extends CombatTypeSwing {
 		if (sendTask != null) {
 			sendTask.run();
 		}
-		SystemManager.getScheduler().schedule(new ScheduledTask(1, delay, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(1, delay) {
 			
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					// so we don't have to make a new task for blocking.
-					if (getPulseCount() == getMaxPulses() - 2) {
-						target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
-					} else if (getPulseCount() == getMaxPulses() - 1) {
-						// the attribute is put when the hit actually appears
-						hit.getAttributes().put(HitAttributes.WEAPON_USED, player.getEquipment().getWeaponId());
-						// and the hit is applied to the receiver
-						target.getHitMap().applyHit(hit);
-						if (damage == 0) {
-							target.sendGraphics(85, 96, 0);
-						} else {
-							if (event.hitGfx() != -1) {
-								target.sendGraphics(event.hitGfx(), event.gfxHeight(), 0);
-							}
+			public void run() {
+				// so we don't have to make a new task for blocking.
+				if (getTicksPassed() == getGoalTicks() - 2) {
+					target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
+				} else if (getTicksPassed() == getGoalTicks() - 1) {
+					// the attribute is put when the hit actually appears
+					hit.getAttributes().put(HitAttributes.WEAPON_USED, player.getEquipment().getWeaponId());
+					// and the hit is applied to the receiver
+					target.getHitMap().applyHit(hit);
+					if (damage == 0) {
+						target.sendGraphics(85, 96, 0);
+					} else {
+						if (event.hitGfx() != -1) {
+							target.sendGraphics(event.hitGfx(), event.gfxHeight(), 0);
 						}
-						if (hitLandTask != null) {
-							hitLandTask.run();
-						}
-						stop();
 					}
-				};
+					if (hitLandTask != null) {
+						hitLandTask.run();
+					}
+					stop();
+				}
 			}
 		});
 		return damage > 0;

@@ -20,7 +20,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 		int style = attackStyle == 0 ? 3 : attackStyle == 2 ? 1 : 0;
 		int attLvl = player.getSkills().getLevel(SkillConstants.RANGE);
 		int attackBonus = player.getEquipment().getBonus(RANGE_ATTACK);
-		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBoost(SkillConstants.RANGE);
+		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.RANGE);
 		double accuracyMultiplier = 1.00;
 		if (StaticCombatFormulae.fullVoidEquipped(player, 11664, 11675)) {
 			accuracyMultiplier += 0.10;
@@ -37,7 +37,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 			style = style == 2 ? 1 : style == 3 ? 3 : 0;
 			int defLvl = player.getSkills().getLevel(SkillConstants.DEFENCE);
 			int defBonus = player.getEquipment().getBonus(BonusConstants.RANGE_DEFENCE);
-			double defenceMultiplier = 1.0 + player.getManager().getPrayers().getBoost(SkillConstants.DEFENCE);
+			double defenceMultiplier = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
 			double cumulativeDef = defLvl * defenceMultiplier + style;
 			return 14 + cumulativeDef + (defBonus / 8) + ((cumulativeDef * defBonus) / 64);
 		} else {
@@ -54,7 +54,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 		
 		double rangedLvl = player.getSkills().getLevel(SkillConstants.RANGE);
 		double styleBonus = attackStyle == 0 ? 3 : attackStyle == 1 ? 0 : 1;
-		double effectiveStrength = Math.floor(rangedLvl + player.getManager().getPrayers().getBoost(SkillConstants.PRAYER)) + styleBonus; // TODO: prayer multiplier
+		double effectiveStrength = Math.floor(rangedLvl + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.PRAYER)) + styleBonus; // TODO: prayer multiplier
 		
 		// void range equipped?
 		if (StaticCombatFormulae.fullVoidEquipped(player, 11664, 11675)) {

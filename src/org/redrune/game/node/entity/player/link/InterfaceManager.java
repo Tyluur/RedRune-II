@@ -260,6 +260,8 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		The component id
 	 * @param text
 	 * 		The text
+	 * @throws IllegalStateException
+	 * 		When the component/interface id is out of bounds
 	 */
 	public InterfaceManager sendInterfaceText(int interfaceId, int componentId, String text) {
 		if (interfaceId >= Cache.getAmountOfInterfaces()) {
@@ -269,6 +271,27 @@ public final class InterfaceManager implements InterfaceConstants {
 			throw new IllegalStateException("Unable to send text on component " + componentId + " using interface " + interfaceId);
 		}
 		player.getTransmitter().send(new InterfaceStringBuilder(interfaceId, componentId, text).build(player));
+		return this;
+	}
+	
+	/**
+	 * Sends an interface change packet
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 * @param componentId
+	 * 		The component id of the interface
+	 * @param hide
+	 * 		If the button should be hidden
+	 */
+	public InterfaceManager sendInterfaceChange(int interfaceId, int componentId, boolean hide) {
+		if (interfaceId >= Cache.getAmountOfInterfaces()) {
+			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
+		}
+		if (componentId >= Cache.getAmountOfComponents(interfaceId)) {
+			throw new IllegalStateException("Unable to send text on component " + componentId + " using interface " + interfaceId);
+		}
+		player.getTransmitter().send(new InterfaceChangeBuilder(interfaceId, componentId, hide).build(player));
 		return this;
 	}
 	

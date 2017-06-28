@@ -3,6 +3,7 @@ package org.redrune.core.task;
 import org.redrune.utility.Misc;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A class which manages {@link ScheduledTask}s.
@@ -14,7 +15,7 @@ public final class Scheduler {
 	/**
 	 * The Queue of tasks that are pending execution.
 	 */
-	private final Queue<ScheduledTask> pending = new ArrayDeque<>();
+	private final Queue<ScheduledTask> pending = new LinkedBlockingQueue<>();
 	
 	/**
 	 * The List of currently active tasks.
@@ -28,10 +29,18 @@ public final class Scheduler {
 		try {
 			Misc.pollAll(pending, active::add);
 			
-			for (final Iterator<ScheduledTask> iterator = active.iterator(); iterator.hasNext(); ) {
+			for (Iterator<ScheduledTask> iterator = active.iterator(); iterator.hasNext(); ) {
+				// the task from the list
 				final ScheduledTask task = iterator.next();
+				
+				// pulsing the task
 				task.pulse();
-				final boolean shouldRemove = (task.getMaxPulses() > 0 && task.getMaxPulses() == task.getPulseCount()) || !task.isRunning();
+				
+				// so if we've reached the amount of ticks to stop
+				// or if the task was forced to stop
+				final boolean shouldRemove = (task.getDelayedTickCount() >= task.getGoalTicks()) || !task.isRunning();
+				
+				// removes the task from the list if its time
 				if (shouldRemove) {
 					iterator.remove();
 				}

@@ -15,7 +15,7 @@ public class MagicCombatCalculator implements CombatTypeCalculator {
 		// the prayer level bonus
 		final int level = player.getSkills().getLevel(SkillConstants.MAGIC);
 		// the prayer bonus
-		final double prayer = 1.0 + player.getManager().getPrayers().getBoost(SkillConstants.MAGIC);
+		final double prayer = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.MAGIC);
 		// the calculated boost
 		double effective = Math.floor(level * prayer);
 		// the bonus from your equipment
@@ -30,7 +30,7 @@ public class MagicCombatCalculator implements CombatTypeCalculator {
 			// the targets defence level
 			int level = p2.getSkills().getLevel(SkillConstants.DEFENCE);
 			// the targets prayer boost
-			double prayer = 1.0 + entity.toPlayer().getManager().getPrayers().getBoost(SkillConstants.MAGIC);
+			double prayer = 1.0 + entity.toPlayer().getManager().getPrayers().getBasePrayerBoost(SkillConstants.MAGIC);
 			// the effective calculation
 			double effective = Math.floor((level * prayer) * 0.3) + (p2.getSkills().getLevel(SkillConstants.MAGIC) * 0.7);
 			// the equipment calculation [based on magic defence]

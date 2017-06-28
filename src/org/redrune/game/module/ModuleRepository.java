@@ -52,12 +52,28 @@ public class ModuleRepository {
 	
 	/**
 	 * Registers all the modules
+	 *
+	 * @param reload
+	 * 		If we should clear the current repository
 	 */
-	public static void registerAllModules() {
+	public static void registerAllModules(boolean reload) {
+		if (reload) {
+			empty();
+		}
 		for (String directory : new ArrayList<>(Misc.getSubDirectories(InteractionModule.class))) {
 			Misc.getClassesInDirectory(InteractionModule.class.getPackage().getName() + "." + directory).stream().filter(InteractionModule.class::isInstance).forEach(clazz -> registerBindings((InteractionModule) clazz));
 		}
 		LOGGER.info(INTERFACE_MODULES.size() + " interface modules, " + ITEM_MODULES.size() + " item modules, " + NPC_MODULES.size() + " npc modules, and " + OBJECT_MODULES.size() + " object modules loaded.");
+	}
+	
+	/**
+	 * Removes all the entries in the module maps
+	 */
+	private static void empty() {
+		INTERFACE_MODULES.clear();
+		ITEM_MODULES.clear();
+		NPC_MODULES.clear();
+		OBJECT_MODULES.clear();
 	}
 	
 	/**

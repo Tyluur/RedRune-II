@@ -5,11 +5,11 @@ import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.item.ItemOnItemContext;
 import org.redrune.game.node.entity.player.event.impl.item.ItemOnItemEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.EventRepository;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +104,7 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 			return;
 		}
 		
-		EventManager.executeEvent(player, ItemOnItemEvent.class, new ItemOnItemContext(usedSlot, usedWithSlot));
+		EventRepository.executeEvent(player, ItemOnItemEvent.class, new ItemOnItemContext(usedSlot, usedWithSlot));
 	}
 	
 	/**

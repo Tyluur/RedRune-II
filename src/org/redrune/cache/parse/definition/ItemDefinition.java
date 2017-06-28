@@ -123,6 +123,9 @@ public final class ItemDefinition {
 	@Getter
 	private int lendId = -1;
 	
+	@Getter
+	private boolean lended = false;
+	
 	private int lendTemplateId = -1;
 	
 	private int recolourId = -1; // not sure
@@ -287,6 +290,8 @@ public final class ItemDefinition {
 		if (reference.inventoryOptions != null) {
 			inventoryOptions = reference.inventoryOptions.clone();
 		}
+		inventoryOptions[4] = "Discard";
+		lended = true;
 	}
 	
 	private void transferRecolourDefinition(ItemDefinition reference, ItemDefinition templateReference) {
@@ -630,6 +635,21 @@ public final class ItemDefinition {
 			}
 			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
 				return equipSlot != -1;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if the item has the selected inventory option
+	 *
+	 * @param option
+	 * 		The option to look for
+	 */
+	public boolean hasOption(String option) {
+		for (String inventoryOption : inventoryOptions) {
+			if (inventoryOption != null && inventoryOption.equalsIgnoreCase(option)) {
+				return true;
 			}
 		}
 		return false;

@@ -1,14 +1,13 @@
 package org.redrune.game.node.entity.player.event.impl;
 
+import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.Event;
 import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
-import org.redrune.game.node.NodeInteractionTask;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -22,7 +21,6 @@ public class NodeReachEvent extends Event<NodeReachEventContext> {
 	public NodeReachEvent() {
 		setWalkablePolicy(WalkablePolicy.RESET);
 		setInterfacePolicy(InterfacePolicy.CLOSE);
-		setAnimationPolicy(AnimationPolicy.RESET);
 		setActionPolicy(ActionPolicy.RESET);
 	}
 	
@@ -34,6 +32,25 @@ public class NodeReachEvent extends Event<NodeReachEventContext> {
 	
 	@Override
 	public boolean canStart(Player player, NodeReachEventContext context) {
-		return !(context.getNode().isNPC() && player.getManager().getLocks().isLocked(LockType.NPC_INTERACTION) || context.getNode().isGameObject() && player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION) || context.getNode().isItem() && player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION) || context.getNode().isPlayer() && player.getManager().getLocks().isLocked(LockType.PLAYER_INTERACTION));
+		if (context.getNode().isNPC()) {
+			if (player.getManager().getLocks().isLocked(LockType.NPC_INTERACTION)) {
+				return false;
+			}
+		} else if (context.getNode().isItem()) {
+			if (player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION)) {
+				return false;
+			}
+		} else if (context.getNode().isGameObject()) {
+			if (player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION)) {
+				return false;
+			}
+		} else if (context.getNode().isPlayer()) {
+			if (player.getManager().getLocks().isLocked(LockType.PLAYER_INTERACTION)) {
+				return false;
+			}
+		} else if (player.isFrozen()) {
+			return false;
+		}
+		return true;
 	}
 }

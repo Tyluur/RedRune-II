@@ -77,10 +77,10 @@ public class WoodcuttingAction implements Action {
 			RegionManager.spawnTimedObject(new GameObject(definitions.getStumpId(), tree.getType(), tree.getRotation(), tree.getLocation()), time);
 			
 			// then we schedule the tree to spawn
-			SystemManager.getScheduler().schedule(new ScheduledTask(time, 1, false) {
+			SystemManager.getScheduler().schedule(new ScheduledTask(time) {
 				@Override
-				public Runnable getTask() {
-					return () -> player.getRegion().spawnObject(tree);
+				public void run() {
+					player.getRegion().spawnObject(tree);
 				}
 			});
 			
@@ -170,15 +170,13 @@ public class WoodcuttingAction implements Action {
 		if (optional.isPresent()) {
 			final GameObject leaves = optional.get();
 			player.getRegion().removeObject(leaves);
-			SystemManager.getScheduler().schedule(new ScheduledTask(time, 1, false) {
+			SystemManager.getScheduler().schedule(new ScheduledTask(time) {
 				@Override
-				public Runnable getTask() {
-					return () -> {
-						if (!player.getRegion().findAnyGameObject(leaves).isPresent()) {
-							return;
-						}
-						player.getRegion().spawnObject(leaves);
-					};
+				public void run() {
+					if (!player.getRegion().findAnyGameObject(leaves).isPresent()) {
+						return;
+					}
+					player.getRegion().spawnObject(leaves);
 				}
 			});
 		} else {

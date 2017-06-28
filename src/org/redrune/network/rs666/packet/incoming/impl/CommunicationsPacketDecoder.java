@@ -3,13 +3,13 @@ package org.redrune.network.rs666.packet.incoming.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.CommandEventContext;
 import org.redrune.game.node.entity.player.event.impl.CommandEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.PublicChatBuilder;
 import org.redrune.utility.BufferUtils;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.EventRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -76,7 +76,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		}
 		String text = Misc.optimizeText(BufferUtils.decompressHuffman(packet, length));
 		if (text.startsWith("::")) {
-			EventManager.executeEvent(player, CommandEvent.class, new CommandEventContext(text.replaceFirst("::", "").split(" "), false));
+			EventRepository.executeEvent(player, CommandEvent.class, new CommandEventContext(text.replaceFirst("::", "").split(" "), false));
 			return;
 		}
 		for (Player p : World.get().getPlayers()) {

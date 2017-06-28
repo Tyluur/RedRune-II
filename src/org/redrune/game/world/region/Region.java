@@ -636,10 +636,16 @@ public class Region {
 	 * @param y
 	 * 		The y coordinate of the item
 	 * @param plane
-	 * 		The plane the player is on
+	 * 		The plane of the item
+	 * @param ownerName
+	 * 		If we want to find the owner name, this is put and we filter for it
 	 */
-	public Optional<FloorItem> getFloorItem(int itemId, int x, int y, int plane) {
-		return floorItems.stream().filter(item -> item.isRenderable() && item.getId() == itemId && item.getLocation().getX() == x && item.getLocation().getY() == y && item.getLocation().getPlane() == plane).findFirst();
+	public Optional<FloorItem> getFloorItem(int itemId, int x, int y, int plane, String ownerName) {
+		if (ownerName != null) {
+			return floorItems.stream().filter(item -> item.isRenderable() && item.getId() == itemId && item.getLocation().getX() == x && item.getLocation().getY() == y && item.getLocation().getPlane() == plane && (item.getOwnerUsername() != null && item.getOwnerUsername().equals(ownerName))).findFirst();
+		} else {
+			return floorItems.stream().filter(item -> item.isRenderable() && item.getId() == itemId && item.getLocation().getX() == x && item.getLocation().getY() == y && item.getLocation().getPlane() == plane).findFirst();
+		}
 	}
 	
 	/**
@@ -650,6 +656,20 @@ public class Region {
 	 */
 	boolean addFloorItemToList(FloorItem item) {
 		return floorItems.add(item);
+	}
+	
+	void refreshItem(FloorItem item) {
+		players.forEach(player -> player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player)));
+		if (item.isDefaultPublic()) {
+			sendFloorItemToAll(item, false);
+		} else {
+			Optional<Player> optional = World.get().getPlayerByUsername(item.getOwnerUsername());
+			if (!optional.isPresent()) {
+				return;
+			}
+			optional.get().getTransmitter().send(new FloorItemAdditionBuilder(item).build(optional.get()));
+		}
+		SystemManager.getScheduler().schedule(new FloorItemTask(item));
 	}
 	
 	/**

@@ -3,11 +3,12 @@ package org.redrune.game.module.interaction.rsinterface;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.event.context.item.ItemEventContext;
+import org.redrune.game.node.entity.player.event.impl.item.ItemDropEvent;
 import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
@@ -33,7 +34,7 @@ public class InventoryInteractionModule implements InterfaceInteractionModule {
 			System.out.println("Unable to find interaction option for packet: " + packetId);
 			return true;
 		}
-		EventManager.executeEvent(player, ItemEvent.class, new ItemEventContext(item, slotId, option));
+		EventRepository.executeEvent(player, (option == InteractionOption.DROP ? ItemDropEvent.class : ItemEvent.class), new ItemEventContext(item, slotId, option));
 		return true;
 	}
 	

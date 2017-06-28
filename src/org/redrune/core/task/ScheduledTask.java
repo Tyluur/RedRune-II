@@ -13,27 +13,34 @@ import lombok.Getter;
 public abstract class ScheduledTask {
 	
 	/**
-	 * The maximum amount of pulses that can be ran on this task
+	 * The maximum amount of ticks that can be ran on this task
 	 */
 	@Getter
-	private final int maxPulses;
+	private final int goalTicks;
 	
 	/**
-	 * The delay between executions of the task, in pulses.
+	 * The delay between executions of the task, in ticks.
 	 */
-	private int delay;
+	private final int delay;
 	
 	/**
-	 * The number of pulses remaining until the task is next executed.
+	 * The number of ticks remaining until the task is next executed.
 	 */
 	@Getter
-	private int pulses;
+	private int ticks;
 	
 	/**
 	 * The amount of times this task has been pulsed
 	 */
 	@Getter
-	private int pulseCount = 0;
+	private int ticksPassed = 0;
+	
+	/**
+	 * The delayed tick count, this is incremented each time the task is pulsed. The task is pulsed based on the delay
+	 * set in the constructor.
+	 */
+	@Getter
+	private int delayedTickCount = 0;
 	
 	/**
 	 * A flag indicating if the task is running.
@@ -44,49 +51,29 @@ public abstract class ScheduledTask {
 	 * Creates a new scheduled task.
 	 *
 	 * @param delay
-	 * 		The delay between executions of the task, in pulses.
-	 * @param immediate
-	 * 		Indicates whether or not this task should be executed immediately, or after the {@code delay}.
+	 * 		The delay between executions of the task, in ticks.
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than or equal to zero.
 	 */
-	public ScheduledTask(int delay, boolean immediate) {
-		this(delay, 0, immediate);
+	public ScheduledTask(int delay) {
+		this(delay, 1);
 	}
 	
 	/**
 	 * Creates a new scheduled task.
 	 *
 	 * @param delay
-	 * 		The delay between executions of the task, in pulses.
-	 * @param maxPulses
-	 * 		The maximum amount of pulses that this task can go through
-	 * @param immediate
-	 * 		Indicates whether or not this task should be executed immediately, or after the {@code delay}.
+	 * 		The delay between executions of the task, in ticks.
+	 * @param goalTicks
+	 * 		The maximum amount of ticks that this task can go through
 	 * @throws IllegalArgumentException
 	 * 		If the delay is less than or equal to zero.
 	 */
-	public ScheduledTask(int delay, int maxPulses, boolean immediate) {
-		setDelay(delay);
-		if (delay <= 0) {
-			delay = 0;
-			immediate = true;
-		}
-		this.pulses = immediate ? 0 : delay;
-		this.maxPulses = maxPulses;
-	}
-	
-	/**
-	 * Sets the delay.
-	 *
-	 * @param delay
-	 * 		The delay.
-	 * @throws IllegalArgumentException
-	 * 		If the delay is less than zero.
-	 */
-	private void setDelay(int delay) {
-		Preconditions.checkArgument(delay >= 0, "Delay cannot be less than 0.");
+	public ScheduledTask(int delay, int goalTicks) {
+		Preconditions.checkArgument(delay >= 0, "Delay must be more than 0.");
 		this.delay = delay;
+		this.ticks = delay;
+		this.goalTicks = goalTicks;
 	}
 	
 	/**
@@ -109,16 +96,34 @@ public abstract class ScheduledTask {
 	 * Pulses this task: updates the delay and calls {@link Runnable#run()} )} if necessary.
 	 */
 	final void pulse() {
-		if (running && --pulses <= 0) {
-			getTask().run();
-			pulseCount++;
-			pulses = delay;
+		// task wasnt forced to stop
+		if (!running) {
+			return;
+		}
+		// reduce delay
+		ticks--;
+		
+		// ticks passed increments
+		ticksPassed++;
+		
+		// time until the next one has lapsed
+		if (ticks <= 0) {
+			// increases the delayed tick count
+			delayedTickCount++;
+			// reset in the case of infinite looping pulse
+			ticks = delay;
+			// runs the task
+			run();
 		}
 	}
 	
 	/**
-	 * The task to execute
+	 * Runs the task
 	 */
-	public abstract Runnable getTask();
+	public abstract void run();
 	
+	@Override
+	public String toString() {
+		return "ScheduledTask{" + "goalTicks=" + goalTicks + ", delay=" + delay + ", ticks=" + ticks + ", ticksPassed=" + ticksPassed + ", running=" + running + '}';
+	}
 }

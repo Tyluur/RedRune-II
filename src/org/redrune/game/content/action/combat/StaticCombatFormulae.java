@@ -8,6 +8,7 @@ import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -1154,26 +1155,36 @@ public class StaticCombatFormulae {
 	 * @param target
 	 * 		The target
 	 */
-	public static void fireCombatListeners(Player player, org.redrune.game.node.entity.Entity target) {
+	public static void fireCombatListeners(Player player, Entity target) {
 		if (target.isPlayer()) {
 			target.toPlayer().getManager().getInterfaces().closeAll();
 		}
 		player.getManager().getInterfaces().closeAll();
+	}
+	
+	/**
+	 * Forces the target to get into combat with the source, 1 tick after the calling of the method. This requires the
+	 * target not to be moving and not to be fighting already
+	 *
+	 * @param source
+	 * 		The starter of combat
+	 * @param target
+	 * 		The target of combat
+	 */
+	public static void autoRetaliate(Entity source, Entity target) {
 		// as long as the target isnt moving or fighting already, they'll retaliate to us
 		if (target.getCombatDefinitions().isRetaliating() && !target.fighting() && !target.getMovement().isMoving()) {
-			SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, false) {
+			SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 				@Override
-				public Runnable getTask() {
-					return () -> {
-						if (!target.isRenderable()) {
-							return;
-						}
-						if (target.isPlayer()) {
-							target.toPlayer().getManager().getActions().startAction(new PlayerCombatAction(player));
-						} else {
-							// TODO: force the npc to attack us
-						}
-					};
+				public void run() {
+					if (!target.isRenderable()) {
+						return;
+					}
+					if (target.isPlayer()) {
+						target.toPlayer().getManager().getActions().startAction(new PlayerCombatAction(source));
+					} else {
+						// TODO: force the npc to attack us
+					}
 				}
 			});
 		}

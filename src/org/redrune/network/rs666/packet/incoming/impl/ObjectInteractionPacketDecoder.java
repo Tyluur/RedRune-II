@@ -7,7 +7,6 @@ import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
 import org.redrune.game.node.entity.player.event.context.ObjectEventContext;
 import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.node.entity.player.event.impl.ObjectEvent;
-import org.redrune.game.node.entity.player.link.EventManager;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.RegionDeletion;
@@ -15,6 +14,7 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.Misc;
+import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.rs.InteractionOption;
 
 import java.util.Optional;
@@ -59,9 +59,9 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 			}
 			if (option != InteractionOption.EXAMINE) {
 				player.getMovement().reset(forceRun);
-				EventManager.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
+				EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
 					// executing the object interaction event
-					EventManager.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, option));
+					EventRepository.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, option));
 				}));
 			} else {
 				if (!player.getAttribute("remove_spawns", false)) {
@@ -113,9 +113,9 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 				return;
 			}
 			player.getMovement().reset(forceRun);
-			EventManager.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
+			EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
 				// executing the object interaction event on arrival
-				EventManager.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, InteractionOption.ITEM_ON_OBJECT, item));
+				EventRepository.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, InteractionOption.ITEM_ON_OBJECT, item));
 			}));
 		}
 	}

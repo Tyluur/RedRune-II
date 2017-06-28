@@ -21,17 +21,6 @@ public class InterfaceSlotSwapPacketDecoder implements IncomingPacketDecoder {
 	@Override
 	
 	public void read(Player player, Packet packet) {
-	/*	int fromItemId = packet.readShort();
-		int toHash = packet.readInt2();
-		int fromSlotId = packet.readShort();
-		int toSlotId = packet.readShort();
-		int toItemId = packet.readShort();
-		int interfaceHash = packet.readInt();
-		int fromInterfaceId = interfaceHash >> 16;
-		int fromChild = interfaceHash & 0xff;
-		int toChild = toHash & 0xFFFF;
-		int toInterfaceId = toHash >> 16;*/
-	
 		int fromItemId = packet.readShort();
 		int toHash = packet.readInt2();
 		int fromSlot = packet.readShort();
@@ -51,6 +40,7 @@ public class InterfaceSlotSwapPacketDecoder implements IncomingPacketDecoder {
 			if (toSlot < 0 || toSlot >= player.getInventory().getItems().getSize() || fromSlot >= player.getInventory().getItems().getSize()) {
 				return;
 			}
+			player.getManager().getInterfaces().closeAll();
 			player.getInventory().switchItem(fromSlot, toSlot);
 		} else if (fromInterface == 762) {
 			player.getBank().switchItem(fromSlot, toSlot, toChild);

@@ -480,6 +480,36 @@ public class RegionManager {
 		addFloorItem(itemId, itemAmount, targetTicks, location, null);
 	}
 	
+	/**
+	 * Adds a floor item to the region
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param targetTicks
+	 * 		The ticks until the next item phase is hit
+	 * @param location
+	 * 		The location of the item
+	 * @param ownerUsername
+	 * 		The name of the user who owns the item
+	 */
+	public static void addStackableFloorItem(int itemId, int itemAmount, int targetTicks, Location location, String ownerUsername) {
+		Region region = getRegion(location.getRegionId());
+		Optional<FloorItem> optional = region.getFloorItem(itemId, location.getX(), location.getY(), location.getPlane(), ownerUsername);
+		if (!optional.isPresent()) {
+			addFloorItem(itemId, itemAmount, targetTicks, location, ownerUsername);
+		} else {
+			FloorItem item = optional.get();
+			long newAmount = (long) (item.getAmount() + itemAmount);
+			if (newAmount > Integer.MAX_VALUE) {
+				// TODO: split into two items
+			} else {
+				item.setAmount((int) newAmount);
+				region.refreshItem(item);
+			}
+		}
+}
 	
 	/**
 	 * Adds a floor item to the region
@@ -559,18 +589,16 @@ public class RegionManager {
 	 */
 	public static void addTimedGamedObject(GameObject object, int itemReplaceId, int itemReplaceAmount, int ticks) {
 		object.getRegion().spawnObject(object);
-		SystemManager.getScheduler().schedule(new ScheduledTask(ticks, 1, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(ticks) {
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
-					if (!optional.isPresent()) {
-						return;
-					}
-					GameObject gameObject = optional.get();
-					gameObject.getRegion().removeObject(gameObject);
-					RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 180, gameObject.getLocation(), null);
-				};
+			public void run() {
+				Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+				if (!optional.isPresent()) {
+					return;
+				}
+				GameObject gameObject = optional.get();
+				gameObject.getRegion().removeObject(gameObject);
+				RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 180, gameObject.getLocation(), null);
 			}
 		});
 	}
@@ -585,16 +613,14 @@ public class RegionManager {
 	 */
 	public static void spawnTimedObject(GameObject object, int ticks) {
 		object.getRegion().spawnObject(object);
-		SystemManager.getScheduler().schedule(new ScheduledTask(ticks, 1, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(ticks) {
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
-					if (!optional.isPresent()) {
-						return;
-					}
-					object.getRegion().removeObject(object);
-				};
+			public void run() {
+				Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+				if (!optional.isPresent()) {
+					return;
+				}
+				object.getRegion().removeObject(object);
 			}
 		});
 	}

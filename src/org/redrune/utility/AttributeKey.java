@@ -9,11 +9,16 @@ package org.redrune.utility;
  */
 public enum AttributeKey {
 	
-	
 	// MISC ATTRIBUTES
 	COST_VALUE,
 	
 	LAST_HIT_BY_ENTITY,
+	
+	DESTROY_INTERFACE_TYPE,
+	
+	FROZEN_UNTIL,
+	
+	FROZEN_BY,
 	
 	LAST_TIME_HIT,
 	

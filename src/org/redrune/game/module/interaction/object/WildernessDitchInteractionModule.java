@@ -31,22 +31,18 @@ public class WildernessDitchInteractionModule implements ObjectInteractionModule
 		player.sendAnimation(6132);
 		player.getUpdateMasks().register(new ForceMovement(player, new int[] { toLoc.getX(), toLoc.getY(), 33, 60, leaving ? ForceMovement.SOUTH : ForceMovement.NORTH }));
 		
-		SystemManager.getScheduler().schedule(new ScheduledTask(2, 1, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(2) {
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					player.moveTo(toLoc);
-					player.getUpdateMasks().register(new FaceLocationUpdate(player, from));
-					SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, false) {
-						@Override
-						public Runnable getTask() {
-							return () -> {
-								player.getManager().getLocks().unlockAll();
-								stop();
-							};
-						}
-					});
-				};
+			public void run() {
+				player.moveTo(toLoc);
+				player.getUpdateMasks().register(new FaceLocationUpdate(player, from));
+				SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+					@Override
+					public void run() {
+						player.getManager().getLocks().unlockAll();
+						stop();
+					}
+				});
 			}
 		});
 		return true;

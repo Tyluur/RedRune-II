@@ -5,6 +5,7 @@ import org.redrune.game.content.action.Action;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.Misc;
 
@@ -45,7 +46,6 @@ public final class PlayerCombatAction implements Action {
 	public boolean process(Player player) {
 		type = StaticCombatFormulae.getCombatType(player);
 		if (!verifyContinuation(player)) {
-			
 			return false;
 		}
 		checkSpecials(player);
@@ -136,7 +136,7 @@ public final class PlayerCombatAction implements Action {
 	 * 		The player in combat
 	 */
 	private boolean verifyContinuation(Player player) {
-		org.redrune.game.node.entity.Entity target = this.target;
+		Entity target = this.target;
 		// we couldn't find a combat type
 		if (type == null) {
 			return false;
@@ -145,12 +145,11 @@ public final class PlayerCombatAction implements Action {
 		if (!StaticCombatFormulae.canFight(player, target)) {
 			return false;
 		}
-		// TODO: add player freezing/stunning checks
-		/*
-		//if player is frozen and under, stops attacking, else stands waiting
-		if (player.isStunned() || player.isBound())
-		    return !Utils.colides(player, target);
-		 */
+		// if player is frozen and under, stops attacking, else stands waiting
+		// TODO add stunned check
+		if (player.isFrozen()) {
+			return !Misc.colides(player, target);
+		}
 		// if we are on the same position
 		if (Misc.colides(player, target)) {
 			player.getMovement().resetWalkSteps();

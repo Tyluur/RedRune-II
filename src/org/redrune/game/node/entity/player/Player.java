@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.redrune.core.SequencialUpdate;
 import org.redrune.game.GameConstants;
 import org.redrune.game.content.action.combat.PlayerCombatAction;
+import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
@@ -210,6 +211,7 @@ public final class Player extends Entity {
 		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
+		StaticCombatFormulae.autoRetaliate(hit.getSource(), this);
 		equipment.handleAbsorption(hit);
 		manager.getPrayers().handleHit(hit);
 	}

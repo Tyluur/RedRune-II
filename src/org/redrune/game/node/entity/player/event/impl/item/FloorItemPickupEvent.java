@@ -35,7 +35,7 @@ public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 	public void run(Player player, FloorItemPickupContext context) {
 		FloorItem floorItem = context.getFloorItem();
 		Optional<FloorItem> optional = player.getRegion().getFloorItem(floorItem.getId(), floorItem.getLocation().getX(), floorItem.getLocation().getY(), floorItem.getLocation()
-		.getPlane());
+		.getPlane(), null);
 		if (!optional.isPresent()) {
 			return;
 		}

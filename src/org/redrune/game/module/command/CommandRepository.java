@@ -121,7 +121,7 @@ public class CommandRepository {
 		if (!console) {
 			StringBuilder message = new StringBuilder("Command '" + name + "' usage -> " + "::" + "" + name + " ");
 			for (Class clazz : manifest.types()) {
-				message.append(clazz.getSimpleName()).append(" ");
+				message.append(Misc.getSimplifiedType(clazz.getSimpleName())).append(" ");
 			}
 			CommandModule.sendResponse(player, message.toString(), false);
 		} else {
@@ -129,7 +129,7 @@ public class CommandRepository {
 			messages.add("Invalid command parameters...");
 			StringBuilder usageLine = new StringBuilder("---->Expected Usage: " + name + " ");
 			for (Class clazz : manifest.types()) {
-				usageLine.append(clazz.getSimpleName()).append(" ");
+				usageLine.append(Misc.getSimplifiedType(clazz.getSimpleName())).append(" ");
 			}
 			messages.add(usageLine.toString());
 			messages.forEach(message -> CommandModule.sendResponse(player, message, true));

@@ -46,11 +46,11 @@ public abstract class CommandModule {
 	 * 		The player
 	 * @param message
 	 * 		The message
-	 * @param clientCommand
-	 * 		If it is a client response
+	 * @param console
+	 * 		If the command was sent via the console
 	 */
-	public static void sendResponse(Player player, String message, boolean clientCommand) {
-		if (clientCommand) {
+	public static void sendResponse(Player player, String message, boolean console) {
+		if (console) {
 			player.getTransmitter().sendConsoleMessage(message);
 		} else {
 			player.getTransmitter().sendMessage(message);
@@ -134,8 +134,13 @@ public abstract class CommandModule {
 	 * @param slot
 	 * 		The slot
 	 */
-	protected String stringParam(String[] args, int slot) {
-		return args[slot];
+	protected String stringParamOrDefault(String[] args, int slot, String defaultType) {
+		String param = Misc.getArrayEntry(args, slot);
+		if (param == null) {
+			return defaultType;
+		} else {
+			return param;
+		}
 	}
 	
 	/**

@@ -18,21 +18,19 @@ public class EnergyRestorationTask extends ScheduledTask {
 	private long cycle;
 	
 	public EnergyRestorationTask() {
-		super(1, true);
+		super(1, -1);
 	}
 	
 	@Override
-	public Runnable getTask() {
-		return () -> {
-			InitializingNodeList<Player> players = SequencialUpdate.getRenderablePlayers();
-			for (Player player : players) {
-				int amount = player.getAttribute("resting", false) ? 3 : ((180 - player.getSkills().getLevel(SkillConstants.AGILITY)) / 10);
-				if (cycle % amount != 0) {
-					continue;
-				}
-				player.restoreRunEnergy();
+	public void run() {
+		InitializingNodeList<Player> players = SequencialUpdate.getRenderablePlayers();
+		for (Player player : players) {
+			int amount = player.getAttribute("resting", false) ? 3 : ((180 - player.getSkills().getLevel(SkillConstants.AGILITY)) / 10);
+			if (cycle % amount != 0) {
+				continue;
 			}
-			cycle++;
-		};
+			player.restoreRunEnergy();
+		}
+		cycle++;
 	}
 }

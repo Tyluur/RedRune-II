@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
@@ -183,6 +184,15 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 		} else {
 			return item.getId();
 		}
+	}
+	
+	/**
+	 * Checks if the player's cape saves ammo
+	 */
+	public boolean capeSavesAmmo() {
+		int capeId = getIdInSlot(SLOT_CAPE);
+		String name = capeId == -1 ? "unarmed" : ItemDefinitionParser.forId(capeId).getName();
+		return capeId == 20771 || name.toLowerCase().contains("ava's");
 	}
 	
 	/**

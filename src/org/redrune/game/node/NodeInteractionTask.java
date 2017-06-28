@@ -132,6 +132,11 @@ public class NodeInteractionTask {
 				Location last = new Location(bufferX[0], bufferY[0], player.getLocation().getPlane());
 				player.getMovement().resetWalkSteps();
 				player.getTransmitter().sendMinimapFlag(last.getLocalX(player.getLastLoadedLocation()), last.getLocalY(player.getLastLoadedLocation()));
+				
+				// we're frozen so we don't move yet.
+				if (player.isFrozen()) {
+					return false;
+				}
 				for (int step = steps - 1; step >= 0; step--) {
 					destination = new Location(bufferX[step], bufferY[step], node.getLocation().getPlane());
 					if (!player.getMovement().addWalkSteps(bufferX[step], bufferY[step], 25, true)) {

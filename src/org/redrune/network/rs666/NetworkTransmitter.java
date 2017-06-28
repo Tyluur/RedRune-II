@@ -163,7 +163,7 @@ public final class NetworkTransmitter {
 		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 32, 0, 28, 55).build(player));
 		send(new AccessMaskBuilder(746, 44, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(746, 45, 0, 2, -1, -1).build(player));
-		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+//		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
 		send(new AccessMaskBuilder(746, 46, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(746, 47, 0, 0, -1, -1).build(player));
 		send(new AccessMaskBuilder(746, 40, 0, 2, -1, -1).build(player));
@@ -219,7 +219,7 @@ public final class NetworkTransmitter {
 		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 32, 0, 28, 55).build(player));
 		send(new AccessMaskBuilder(548, 134, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(548, 135, 0, 2, -1, -1).build(player));
-		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+//		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
 		send(new AccessMaskBuilder(548, 136, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(548, 99, 0, 0, -1, -1).build(player));
 		send(new AccessMaskBuilder(548, 130, 0, 2, -1, -1).build(player));

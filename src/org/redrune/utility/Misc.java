@@ -703,4 +703,21 @@ public class Misc {
 		}
 		return true;
 	}
+	
+	/**
+	 * Gets the simplified type from a class name
+	 *
+	 * @param className
+	 * 		The class name
+	 */
+	public static String getSimplifiedType(String className) {
+		switch (className) {
+			case "String":
+				return "Text";
+			case "Integer":
+				return "#";
+			default:
+				return className;
+		}
+	}
 }

@@ -14,14 +14,12 @@ import org.redrune.game.node.entity.player.event.context.item.ItemEventContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
-import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -53,8 +51,6 @@ public class ItemEvent extends Event<ItemEventContext> {
 			handleQueuedItemEquipping(player, context);
 		} else if (context.getOption().equals(InteractionOption.EXAMINE)) {
 			handleItemExamining(player, context.getItem());
-		} else if (context.getOption().equals(InteractionOption.DROP)) {
-			handleItemDrop(player, context);
 		}
 	}
 	
@@ -122,10 +118,9 @@ public class ItemEvent extends Event<ItemEventContext> {
 		if (shorter) {
 			EngineWorkingSet.getScheduledExecutorService().schedule(runnable, 300, TimeUnit.MILLISECONDS);
 		} else {
-			SystemManager.getScheduler().schedule(new ScheduledTask(1, 1, false) {
-				@Override
-				public Runnable getTask() {
-					return runnable;
+			SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+				public void run() {
+					runnable.run();
 				}
 			});
 		}
@@ -147,21 +142,6 @@ public class ItemEvent extends Event<ItemEventContext> {
 		} else {
 			player.getTransmitter().sendMessage("It's a " + item.getName().toLowerCase() + ".", true);
 		}
-	}
-	
-	/**
-	 * Handles the dropping of an item
-	 *
-	 * @param player
-	 * 		The player dropping the item
-	 */
-	private void handleItemDrop(Player player, ItemEventContext context) {
-		final Item item = context.getItem();
-		if (!Objects.equals(player.getInventory().getItems().get(context.getSlotId()), item)) {
-			return;
-		}
-		player.getInventory().deleteItem(context.getSlotId(), item);
-		RegionManager.addFloorItem(item.getId(), item.getAmount(), 180, player.getLocation(), player.getDetails().getUsername());
 	}
 	
 	/**

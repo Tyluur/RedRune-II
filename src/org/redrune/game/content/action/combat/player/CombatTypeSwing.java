@@ -3,6 +3,7 @@ package org.redrune.game.content.action.combat.player;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitAttributes;
 import org.redrune.game.node.entity.player.Player;
@@ -135,17 +136,15 @@ public abstract class CombatTypeSwing {
 	 * @param delay
 	 * 		The delay for the hit
 	 */
-	public void applyHit(Player attacker, org.redrune.game.node.entity.Entity receiver, Hit hit, int itemId, int combatStyle, int delay) {
+	public void applyHit(Player attacker, Entity receiver, Hit hit, int itemId, int combatStyle, int delay) {
 		appendExperience(attacker, receiver, itemId, combatStyle, hit.getDamage());
-		SystemManager.getScheduler().schedule(new ScheduledTask(delay, 1, false) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
 			@Override
-			public Runnable getTask() {
-				return () -> {
-					// the attribute is put when the hit actually appears
-					hit.getAttributes().put(HitAttributes.WEAPON_USED, itemId);
-					// and the hit is applied to the receiver
-					receiver.getHitMap().applyHit(hit);
-				};
+			public void run() {
+				// the attribute is put when the hit actually appears
+				hit.getAttributes().put(HitAttributes.WEAPON_USED, itemId);
+				// and the hit is applied to the receiver
+				receiver.getHitMap().applyHit(hit);
 			}
 		});
 	}

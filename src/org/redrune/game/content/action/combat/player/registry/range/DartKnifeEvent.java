@@ -3,8 +3,9 @@ package org.redrune.game.content.action.combat.player.registry.range;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
-import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
+import org.redrune.game.content.action.combat.player.swing.RangeCombatSwing;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.Projectile;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -21,7 +22,7 @@ public class DartKnifeEvent implements BowFireEvent {
 	}
 	
 	@Override
-	public void fire(Player attacker, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int weaponId, int ammoId) {
+	public void fire(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int ammoId) {
 		sendDamage(attacker, target, swing, weaponId);
 		
 		final String name = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
@@ -34,6 +35,6 @@ public class DartKnifeEvent implements BowFireEvent {
 			attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, StaticCombatFormulae.getKnifeThrowGfxId(weaponId), 40, 36, 32, 15, 0));
 		}
 		
-		dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_WEAPON, weaponId, false);
+		swing.dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_WEAPON, weaponId, false);
 	}
 }
