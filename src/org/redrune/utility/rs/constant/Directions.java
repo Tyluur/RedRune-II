@@ -195,16 +195,16 @@ public class Directions {
 			return "[run] [dir=" + dir + ", type=" + super.toString() + "]";
 		}
 		
+		public static Optional<RunningDirection> getDirection(int dir) {
+			return Arrays.stream(values()).filter(direction -> dir == direction.dir).findAny();
+		}
+		
 		public int intValue() {
 			return dir;
 		}
 		
 		public int npcIntValue() {
 			throw new UnsupportedOperationException("The GNP protocol does not support 2 step running directions!");
-		}
-		
-		public static Optional<RunningDirection> getDirection(int dir) {
-			return Arrays.stream(values()).filter(direction -> dir == direction.dir).findAny();
 		}
 	}
 	

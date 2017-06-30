@@ -1,3 +1,48 @@
+6/29/17 {
+	+   Added ice barrage
+		-   Freezes for 30 ticks
+		-   Unfreezeable for 6 ticks after your freeze is over
+		-   Accurate gfx for freezing and when your target is already frozen
+		-   Autocasting working
+	+   Added ice blitz [with the obvious implications]
+		-   Including the projectile
+	+   Added proper calculation of magic spells with delays [stacking works perfectly if ur rushing from tiles away]
+	+   Improved leeches significantly
+		-   Previously the leeches were applied when the hit landed, this isn't how it was in runescape [had to watch some videos]
+		-   I made them applied when the combat is ticked, and now the leech will overlap your combat animation [credits affliction for info]
+		-   Changed chat messages for leeches, they only send one message if you're maxed instead of flooding your chatbox with info.
+		-   Reduced leech amount from 5% to 1% per successful leech [saps too]
+	+   Added soulsplit
+		-   Correct timing for hit landing
+		-   Correct projectile
+		-   Correct graphics
+		-   Fixed soulsplit projectiles to land on time
+		-   Made it sent regardless of whether your hit lands or not.
+	+   Added prayer boosts into melee max hit calculation
+	+   Updated melee accuracy & defense combat calculations [with precision based on real runescape formulas (this info was calculated publicly)]
+	+   Updated range accuracy & defense combat calculations [with precision based on real runescape formulas (this info was calculated publicly)]
+		-   Even the combat style you're on has a small bonus on your defense calculation like on RS
+		-   Accuracy also takes into account your attack level boost from the base attack level requirement of the weapon you're wielding
+	+   Confirmed max hit calculations for all melee, range, and magic using accurate runescape calculations
+		-   Information if you're interested in javascript: https://pastebin.com/7LcSpvu4
+	+   Added special attack accuracy multiplier for several different weapon types, basing information from runescape's.
+	+   Added potions [only base potions at the moment]
+		-   Noted that in 2011 there was no combat delay after sipping a potion... however combat did stop.
+	+   Updated dharok max hit calculation to be accurate to runescape's
+		-   At exactly 1 lifepoint u can max a 1008 on a player[with the best combat bonuses with dharoks, turmoil, and super pots]
+	+   Updated 'roll' algorithm to be more realistic [we don't want to be able to hit 0-0 on mystics too often, etc....]
+	+   Made autocast spells reset when u equip a weapon
+	+   Stopped duplicate texts from being sent [so ur not spammed w/ 'mysterious force stops u....']
+
+	[IMG]http://i.imgur.com/aSlobmC.gif[/IMG]
+	[IMG]http://i.imgur.com/gfPKfmH.gif[/IMG]
+	[IMG]http://i.imgur.com/1sYUWDS.png[/IMG]
+	[IMG]http://i.imgur.com/qR4FENE.gif[/IMG]
+	[IMG]http://i.imgur.com/aYnyhlT.gif[/IMG]
+	[IMG]http://i.imgur.com/yKnDsQa.gif[/IMG]
+	[IMG]http://i.imgur.com/KK637sw.gif[/IMG]
+}
+
 6/27/17 {
 	+   Added entity freezing
 		-   Checks for frozen status in walking/following/node interaction [nodes mean objects/floor items/players/npcs]

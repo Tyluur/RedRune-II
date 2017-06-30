@@ -83,7 +83,6 @@ public final class AccessMaskBuilder implements OutgoingPacketBuilder {
 		this.interfaceId2 = this.childId2 = -1;
 	}
 	
-	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(42);

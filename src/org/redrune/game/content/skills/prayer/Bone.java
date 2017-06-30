@@ -46,6 +46,17 @@ public enum Bone {
 	FROST_DRAGON(18830, 850);
 	
 	/**
+	 * The map of all the BONE_MAP
+	 */
+	private static final Map<Integer, Bone> BONE_MAP = new HashMap<>();
+	
+	static {
+		for (Bone bone : Bone.values()) {
+			BONE_MAP.put(bone.getItemId(), bone);
+		}
+	}
+	
+	/**
 	 * The item id of the bone
 	 */
 	@Getter
@@ -60,17 +71,6 @@ public enum Bone {
 	Bone(int itemId, double experience) {
 		this.itemId = itemId;
 		this.experience = experience;
-	}
-	
-	/**
-	 * The map of all the BONE_MAP
-	 */
-	private static final Map<Integer, Bone> BONE_MAP = new HashMap<>();
-	
-	static {
-		for (Bone bone : Bone.values()) {
-			BONE_MAP.put(bone.getItemId(), bone);
-		}
 	}
 	
 	/**

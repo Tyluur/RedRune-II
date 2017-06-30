@@ -10,7 +10,7 @@ import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.InteractionOption;
 
 import java.util.ArrayList;

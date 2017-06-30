@@ -1,6 +1,6 @@
 package org.redrune.core.system;
 
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -32,13 +32,13 @@ public class RenameNPCUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return 0x100000;
+	public int getOrdinal() {
+		return 17;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return 17;
+	public int getMaskData() {
+		return 0x100000;
 	}
 	
 }

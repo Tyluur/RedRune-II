@@ -1,13 +1,9 @@
 package org.redrune.game.content.action.combat.player.registry;
 
-import org.redrune.core.system.SystemManager;
-import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.content.action.combat.StaticCombatFormulae;
+import com.google.common.base.Preconditions;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.swing.RangeCombatSwing;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 
 /**
@@ -38,24 +34,6 @@ public interface BowFireEvent extends CombatRegistryEvent {
 	void fire(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int ammoId);
 	
 	/**
-	 * Sends the block emote 1 tick before hit appears
-	 *
-	 * @param target
-	 * 		The target
-	 * @param delay
-	 * 		The delay
-	 */
-	// TODO: npc block emote
-	default void sendBlockEmote(Entity target, int delay) {
-		SystemManager.getScheduler().schedule(new ScheduledTask(delay - 1) {
-			@Override
-			public void run() {
-				target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
-			}
-		});
-	}
-	
-	/**
 	 * Sends the damage to the target
 	 *
 	 * @param attacker
@@ -67,15 +45,11 @@ public interface BowFireEvent extends CombatRegistryEvent {
 	 * @param weaponId
 	 * 		The weapon id
 	 */
-	default void sendDamage(Player attacker, Entity target, CombatTypeSwing swing, int weaponId) {
-		final int style = attacker.getCombatDefinitions().getAttackStyle();
-		final int delay = swing.getProjectileDelay(attacker, target);
-		final double maxHit = swing.getMaxHit(attacker, weaponId, style, 1);
-		final int damage = swing.randomizeHit(maxHit, swing.getAttackBonus(attacker, weaponId, style), swing.getDefenceBonus(target, weaponId, style));
-		
-		// hit, ammo, defend
-		swing.applyHit(attacker, target, new Hit(attacker, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit), weaponId, style, delay);
-		sendBlockEmote(target, delay);
+	default void sendDamage(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, double... modifier) {
+		// make sure we can cast
+		Preconditions.checkArgument(swing instanceof RangeCombatSwing, "Combat type attempting to send damage was not range!");
+		// sends the damage
+		RangeCombatSwing.sendDamage(attacker, target, (RangeCombatSwing) swing, weaponId, modifier.length != 0 ? modifier[0] : 1D, false);
 	}
 	
 }

@@ -3,7 +3,7 @@ package org.redrune.network.rs666.packet.incoming;
 import org.redrune.core.EngineWorkingSet;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;

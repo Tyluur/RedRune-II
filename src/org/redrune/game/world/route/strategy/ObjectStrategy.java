@@ -59,6 +59,19 @@ public class ObjectStrategy extends RouteStrategy {
 		}
 	}
 	
+	private int getType(GameObject object) {
+		int type = object.getType();
+		if ((type >= 0 && type <= 3) || type == 9) {
+			return 0; // wall
+		} else if (type < 9) {
+			return 1; // deco
+		} else if (type == 10 || type == 11 || type == 22) {
+			return 2; // ground
+		} else {
+			return 3; // misc
+		}
+	}
+	
 	@Override
 	public boolean canExit(int currentX, int currentY, int sizeXY, int[][] clip, int clipBaseX, int clipBaseY) {
 		switch (routeType) {
@@ -92,19 +105,6 @@ public class ObjectStrategy extends RouteStrategy {
 	@Override
 	public int getApproxDestinationSizeY() {
 		return sizeY;
-	}
-	
-	private int getType(GameObject object) {
-		int type = object.getType();
-		if ((type >= 0 && type <= 3) || type == 9) {
-			return 0; // wall
-		} else if (type < 9) {
-			return 1; // deco
-		} else if (type == 10 || type == 11 || type == 22) {
-			return 2; // ground
-		} else {
-			return 3; // misc
-		}
 	}
 	
 	@Override

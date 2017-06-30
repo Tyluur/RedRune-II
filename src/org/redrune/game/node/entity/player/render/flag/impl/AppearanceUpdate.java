@@ -133,13 +133,13 @@ public class AppearanceUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return 0x2;
+	public int getOrdinal() {
+		return 6;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return 6;
+	public int getMaskData() {
+		return 0x2;
 	}
 	
 }

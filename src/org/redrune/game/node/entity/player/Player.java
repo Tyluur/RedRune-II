@@ -149,13 +149,13 @@ public final class Player extends Entity {
 	}
 	
 	@Override
-	public int getSize() {
-		return 1;
+	public Player toPlayer() {
+		return this;
 	}
 	
 	@Override
-	public Player toPlayer() {
-		return this;
+	public int getSize() {
+		return 1;
 	}
 	
 	@Override
@@ -188,13 +188,16 @@ public final class Player extends Entity {
 		getRegion().handleRegionEntry(this);
 	}
 	
+	/**
+	 * Gets the amount of health points we have
+	 */
 	@Override
-	public int getHitpoints() {
+	public int getHealthPoints() {
 		return variables.getHealthPoints();
 	}
 	
 	@Override
-	public int getMaxHitpoints() {
+	public int getMaxHealth() {
 		return skills.getLevelForXp(SkillConstants.HITPOINTS) * 10;
 	}
 	
@@ -212,8 +215,9 @@ public final class Player extends Entity {
 			return;
 		}
 		StaticCombatFormulae.autoRetaliate(hit.getSource(), this);
-		equipment.handleAbsorption(hit);
 		manager.getPrayers().handleHit(hit);
+		// absorption after prayer so the actual hit isn't affected
+		equipment.handleAbsorption(hit);
 	}
 	
 	@Override

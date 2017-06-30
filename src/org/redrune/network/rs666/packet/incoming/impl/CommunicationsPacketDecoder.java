@@ -7,8 +7,8 @@ import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.PublicChatBuilder;
-import org.redrune.utility.BufferUtils;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.BufferUtils;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.repository.EventRepository;
 
 /**
@@ -45,22 +45,6 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 	}
 	
 	/**
-	 * Decodes the packet saying that we should send a private message
-	 *
-	 * @param player
-	 * 		The player
-	 * @param packet
-	 * 		The packet
-	 */
-	private void readPrivateMessagePacket(Player player, Packet packet) {
-		String name = packet.readRS2String();
-		byte length = packet.readByte();
-		String message = BufferUtils.decompressHuffman(packet, length);
-		
-		//TODO: RS2MasterCommunication.writeMasterPacket(new ClientPrivateMessageBuilder(new ClientPrivateMessageContext(player.getNetworkSession().getUid(), player.getDetails().getUsername(), player.getDetails().getDominantRight().getClientRight(), name, message)).build());
-	}
-	
-	/**
 	 * Reads the packet for a public chat message
 	 *
 	 * @param player
@@ -85,5 +69,21 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 			}
 			p.getNetworkSession().write(new PublicChatBuilder(player.getIndex(), player.getDetails().getDominantRight().getClientRight(), text, effects).build(p));
 		}
+	}
+	
+	/**
+	 * Decodes the packet saying that we should send a private message
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void readPrivateMessagePacket(Player player, Packet packet) {
+		String name = packet.readRS2String();
+		byte length = packet.readByte();
+		String message = BufferUtils.decompressHuffman(packet, length);
+
+		//TODO: RS2MasterCommunication.writeMasterPacket(new ClientPrivateMessageBuilder(new ClientPrivateMessageContext(player.getNetworkSession().getUid(), player.getDetails().getUsername(), player.getDetails().getDominantRight().getClientRight(), name, message)).build());
 	}
 }

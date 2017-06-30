@@ -15,7 +15,7 @@ import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.backend.MapDataParser;
 import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.repository.item.ItemRepository;

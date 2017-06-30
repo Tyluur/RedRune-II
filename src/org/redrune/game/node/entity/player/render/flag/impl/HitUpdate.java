@@ -35,8 +35,8 @@ public class HitUpdate extends UpdateFlag {
 		if (size == 0) {
 			return;
 		}
-		int hitpoints = entity.getHitpoints();
-		int maxHitpoints = entity.getMaxHitpoints();
+		int hitpoints = entity.getHealthPoints();
+		int maxHitpoints = entity.getMaxHealth();
 		if (hitpoints > maxHitpoints) {
 			hitpoints = maxHitpoints;
 		}
@@ -79,13 +79,13 @@ public class HitUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return entity.isNPC() ? 0x10 : 0x8;
+	public int getOrdinal() {
+		return entity.isNPC() ? 7 : 2;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return entity.isNPC() ? 7 : 2;
+	public int getMaskData() {
+		return entity.isNPC() ? 0x10 : 0x8;
 	}
 	
 }

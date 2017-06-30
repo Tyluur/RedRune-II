@@ -11,14 +11,9 @@ import org.redrune.game.node.entity.data.Hit;
 public interface EntityDetails {
 	
 	/**
-	 * Gets the hitpoints of the entity at the moment
-	 */
-	int getHitpoints();
-	
-	/**
 	 * Gets the maximum hitpoints of the entity
 	 */
-	int getMaxHitpoints();
+	int getMaxHealth();
 	
 	/**
 	 * What is executed on the tick of an entity.

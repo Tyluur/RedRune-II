@@ -98,6 +98,24 @@ public class FiremakingAction implements Action {
 	}
 	
 	/**
+	 * Gets the increased experience
+	 *
+	 * @param player
+	 * 		The player
+	 * @param base
+	 * 		The amount of base experience
+	 */
+	private static double increasedExperience(Player player, double base) {
+		if (player.getEquipment().getIdInSlot(EquipConstants.SLOT_HANDS) == 13660) {
+			base *= 1.025;
+		}
+		if (player.getEquipment().getIdInSlot(EquipConstants.SLOT_RING) == 13659) {
+			base *= 1.025;
+		}
+		return base;
+	}
+	
+	/**
 	 * Checks to ensure we can still fire make
 	 *
 	 * @param player
@@ -149,23 +167,5 @@ public class FiremakingAction implements Action {
 			return null;
 		}
 		return Fire.getFireInstance(log.getId());
-	}
-	
-	/**
-	 * Gets the increased experience
-	 *
-	 * @param player
-	 * 		The player
-	 * @param base
-	 * 		The amount of base experience
-	 */
-	private static double increasedExperience(Player player, double base) {
-		if (player.getEquipment().getIdInSlot(EquipConstants.SLOT_HANDS) == 13660) {
-			base *= 1.025;
-		}
-		if (player.getEquipment().getIdInSlot(EquipConstants.SLOT_RING) == 13659) {
-			base *= 1.025;
-		}
-		return base;
 	}
 }

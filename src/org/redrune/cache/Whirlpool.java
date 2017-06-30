@@ -46,7 +46,7 @@ public class Whirlpool {
 				v8 ^= 0x11dL;
 			}
 			long v9 = v8 ^ v1;
-	        /*
+		    /*
              * build the circulant table C[0][x] = S[x].[1, 1, 4, 1, 8, 5, 2, 9]:
              */
 			C[0][x] = (v1 << 56) | (v1 << 48) | (v4 << 40) | (v1 << 32) | (v8 << 24) | (v5 << 16) | (v2 << 8) | (v9);

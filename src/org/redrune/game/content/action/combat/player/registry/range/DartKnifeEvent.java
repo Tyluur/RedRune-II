@@ -30,9 +30,9 @@ public class DartKnifeEvent implements BowFireEvent {
 		// diff. projectile types
 		if (name.contains("knife")) {
 			int speed = 46 + (ProjectileManager.getLocation(attacker).getDistance(target.getLocation()) * 5);
-			attacker.getRegion().sendProjectile(new Projectile(attacker, target, StaticCombatFormulae.getKnifeThrowGfxId(weaponId), 30, 26, 32, speed, 15, 1));
+			ProjectileManager.sendProjectile(new Projectile(attacker, target, StaticCombatFormulae.getKnifeThrowGfxId(weaponId), 30, 26, 32, speed, 15, 1));
 		} else if (name.contains("dart")) {
-			attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, StaticCombatFormulae.getKnifeThrowGfxId(weaponId), 40, 36, 32, 15, 0));
+			ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, StaticCombatFormulae.getKnifeThrowGfxId(weaponId), 40, 36, 32, 15, 0));
 		}
 		
 		swing.dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_WEAPON, weaponId, false);

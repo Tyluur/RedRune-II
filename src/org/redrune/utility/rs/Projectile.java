@@ -132,25 +132,30 @@ public class Projectile {
 		this.angle = angle;
 		this.setCreatorSize(source.getSize());
 		this.startDistanceOffset = startDistanceOffset;
-//		System.out.println("projectileId = [" + projectileId + "], startHeight = [" + startHeight + "], endHeight = [" + endHeight + "], delay = [" + delay + "], speed = [" + speed + "], angle = [" + angle + "], startDistanceOffset = [" + startDistanceOffset + "]");
+//		System.out.println("projectileId = [" + projectileId + "], startHeight = [" + startHeight + "], endHeight = [" + endHeight + "], delay = [" + delay + "], speed = [" + speed + "], angle = [" + angle + "], startDistanceOffset = [" + startDistanceOffset + "], sourceLocation=[" + sourceLocation + "]");
 	}
 	
 	/**
 	 * Gets the source location on construction.
 	 *
-	 * @param n
+	 * @param entity
 	 * 		The node.
 	 * @return The centered location.
 	 */
-	public static Location getLocation(Entity n) {
-		if (n == null) {
+	public static Location getLocation(Entity entity) {
+		if (entity == null) {
 			return null;
 		}
-		if (n.isNPC()) {
-			int size = n.getSize() >> 1;
-			return n.toNPC().getLocation().transform(size, size, 0);
+		if (entity.isNPC()) {
+			int size = entity.getSize() >> 1;
+			return entity.toNPC().getLocation().transform(size, size, 0);
 		}
-		return n.getLocation();
+		return entity.getLocation();
+	}
+	
+	@Override
+	public String toString() {
+		return "Projectile{" + "source=" + source + ", sourceLocation=" + sourceLocation + ", victim=" + victim + ", projectileId=" + projectileId + ", startHeight=" + startHeight + ", endHeight=" + endHeight + ", delay=" + delay + ", speed=" + speed + ", angle=" + angle + ", creatorSize=" + creatorSize + ", startDistanceOffset=" + startDistanceOffset + ", endLocation=" + endLocation + '}';
 	}
 	
 	/**
@@ -161,5 +166,4 @@ public class Projectile {
 	public boolean isLocationBased() {
 		return endLocation != null;
 	}
-	
 }

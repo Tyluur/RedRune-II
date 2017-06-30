@@ -2,7 +2,7 @@ package org.redrune.game.module.command;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerRight;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -25,7 +25,6 @@ public class CommandRepository {
 	
 	/**
 	 * Populates the {@link #COMMAND_MODULES}
-	 * @param reload
 	 */
 	public static void populate(boolean reload) {
 		if (reload) {

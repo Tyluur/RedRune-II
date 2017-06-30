@@ -40,11 +40,6 @@ public class LeechSpecialDrain implements DrainPrayer {
 	}
 	
 	@Override
-	public double raiseCap() {
-		return 0;
-	}
-	
-	@Override
 	public int[] prayerSlots() {
 		return args(SPECIAL_ENERGY_SLOT);
 	}
@@ -52,5 +47,10 @@ public class LeechSpecialDrain implements DrainPrayer {
 	@Override
 	public double[] amounts() {
 		return args(0.10);
+	}
+	
+	@Override
+	public double raiseCap() {
+		return 0;
 	}
 }

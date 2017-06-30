@@ -3,6 +3,7 @@ package org.redrune.game.node.entity.player.data;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
@@ -13,6 +14,8 @@ import org.redrune.network.rs666.packet.outgoing.impl.ContainerUpdateBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
+
+import java.util.HashMap;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -187,15 +190,6 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	}
 	
 	/**
-	 * Checks if the player's cape saves ammo
-	 */
-	public boolean capeSavesAmmo() {
-		int capeId = getIdInSlot(SLOT_CAPE);
-		String name = capeId == -1 ? "unarmed" : ItemDefinitionParser.forId(capeId).getName();
-		return capeId == 20771 || name.toLowerCase().contains("ava's");
-	}
-	
-	/**
 	 * Gets an item in the slot
 	 *
 	 * @param slot
@@ -203,6 +197,15 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	 */
 	public Item getItem(int slot) {
 		return items.get(slot);
+	}
+	
+	/**
+	 * Checks if the player's cape saves ammo
+	 */
+	public boolean capeSavesAmmo() {
+		int capeId = getIdInSlot(SLOT_CAPE);
+		String name = capeId == -1 ? "unarmed" : ItemDefinitionParser.forId(capeId).getName();
+		return capeId == 20771 || name.toLowerCase().contains("ava's");
 	}
 	
 	/**
@@ -215,4 +218,36 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 			player.getTransmitter().refreshEnergy();
 		}
 	}
+	
+	/**
+	 * Gets the skill weapon requirement of a weapon
+	 *
+	 * @param skill
+	 * 		The skill
+	 */
+	public int getWeaponRequirement(int skill) {
+		int weaponId = getWeaponId();
+		if (weaponId == -1) {
+			return 1;
+		}
+		ItemDefinition definition = ItemDefinitionParser.forId(weaponId);
+		HashMap<Integer, Integer> requirements = definition.getWearingRequirements();
+		if (requirements == null) {
+			return 1;
+		}
+		for (int skillId : requirements.keySet()) {
+			if (skillId > 24 || skillId < 0) {
+				continue;
+			}
+			int level = requirements.get(skillId);
+			if (level < 0 || level > 120) {
+				continue;
+			}
+			if (skill == skillId) {
+				return level;
+			}
+		}
+		return 1;
+	}
+	
 }

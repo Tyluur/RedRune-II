@@ -1,7 +1,7 @@
 package org.redrune.cache;
 
 import org.redrune.game.GameConstants;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.CacheFilestore;
 
 import java.util.logging.Logger;

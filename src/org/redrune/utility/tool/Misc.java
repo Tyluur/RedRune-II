@@ -1,4 +1,4 @@
-package org.redrune.utility;
+package org.redrune.utility.tool;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;

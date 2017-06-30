@@ -36,30 +36,6 @@ public final class MapDataParser {
 	}
 	
 	/**
-	 * Loads the mapdata.
-	 */
-	private static void load() {
-		try {
-			final DataInputStream in = new DataInputStream(new FileInputStream(MAPDATA_FOLDER_LOCATION + "/packedKeys.bin"));
-			while (in.available() != 0) {
-				final int area = in.readShort();
-				final int[] parts = new int[4];
-				for (int j = 0; j < 4; j++) {
-					parts[j] = in.readInt();
-				}
-				getMapData().put(area, parts);
-			}
-		} catch (IOException e) {
-			final File Failedpacked = new File("./data/mapdata/packedKeys.bin");
-			if (Failedpacked.exists()) {
-				Failedpacked.delete();
-			}
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-	
-	/**
 	 * Packs the mapdata.
 	 */
 	private static void pack() {
@@ -96,14 +72,27 @@ public final class MapDataParser {
 	}
 	
 	/**
-	 * Gets the mapdata xteas for the given key.
-	 *
-	 * @param key
-	 * 		The region id.
-	 * @return The mapdata xteas.
+	 * Loads the mapdata.
 	 */
-	public static int[] getMapData(int key) {
-		return MAP_DATA_XTEAS.get(key);
+	private static void load() {
+		try {
+			final DataInputStream in = new DataInputStream(new FileInputStream(MAPDATA_FOLDER_LOCATION + "/packedKeys.bin"));
+			while (in.available() != 0) {
+				final int area = in.readShort();
+				final int[] parts = new int[4];
+				for (int j = 0; j < 4; j++) {
+					parts[j] = in.readInt();
+				}
+				getMapData().put(area, parts);
+			}
+		} catch (IOException e) {
+			final File Failedpacked = new File("./data/mapdata/packedKeys.bin");
+			if (Failedpacked.exists()) {
+				Failedpacked.delete();
+			}
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 	
 	/**
@@ -113,5 +102,16 @@ public final class MapDataParser {
 	 */
 	public static Map<Integer, int[]> getMapData() {
 		return MAP_DATA_XTEAS;
+	}
+	
+	/**
+	 * Gets the mapdata xteas for the given key.
+	 *
+	 * @param key
+	 * 		The region id.
+	 * @return The mapdata xteas.
+	 */
+	public static int[] getMapData(int key) {
+		return MAP_DATA_XTEAS.get(key);
 	}
 }

@@ -6,11 +6,11 @@ import org.redrune.network.rs666.packet.PacketBuilder;
 
 /**
  * Represents a face entity update flag.
- * @author Emperor
  *
+ * @author Emperor
  */
 public class FaceEntityUpdate extends UpdateFlag {
-
+	
 	/**
 	 * If the entity using this update flag is an NPC.
 	 */
@@ -23,8 +23,11 @@ public class FaceEntityUpdate extends UpdateFlag {
 	
 	/**
 	 * Constructs a new {@code FaceEntityUpdate} {@code Object}.
-	 * @param index The client index of the entity to face.
-	 * @param npc If the entity using this update flag is an NPC.
+	 *
+	 * @param index
+	 * 		The client index of the entity to face.
+	 * @param npc
+	 * 		If the entity using this update flag is an NPC.
 	 */
 	public FaceEntityUpdate(int index, boolean npc) {
 		this.npc = npc;
@@ -39,15 +42,15 @@ public class FaceEntityUpdate extends UpdateFlag {
 			bldr.writeShort(index);
 		}
 	}
-
-	@Override
-	public int getMaskData() {
-		return npc ? 0x8 : 0x4;
-	}
-
+	
 	@Override
 	public int getOrdinal() {
 		return npc ? 1 : 18;
 	}
-
+	
+	@Override
+	public int getMaskData() {
+		return npc ? 0x8 : 0x4;
+	}
+	
 }

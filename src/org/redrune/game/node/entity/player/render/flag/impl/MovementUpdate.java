@@ -36,13 +36,13 @@ public class MovementUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return 0x40;
+	public int getOrdinal() {
+		return 17;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return 17;
+	public int getMaskData() {
+		return 0x40;
 	}
 	
 }

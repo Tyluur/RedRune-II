@@ -5,7 +5,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerSkills;
 import org.redrune.game.node.entity.player.render.flag.impl.Graphic2;
 import org.redrune.game.node.entity.player.render.flag.impl.Graphic3;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.PrayerConstants;
 
 import java.util.Arrays;
@@ -157,13 +157,25 @@ public enum Prayer implements PrayerConstants {
 	}
 	
 	/**
+	 * Finds a prayer by a slot
+	 *
+	 * @param slotId
+	 * 		The slot
+	 * @param book
+	 * 		The book of the prayer
+	 */
+	public static Optional<Prayer> findPrayerBySlot(int slotId, PrayerBook book) {
+		return Arrays.stream(values()).filter(prayer -> prayer.slotId == slotId && prayer.book == book).findFirst();
+	}
+	
+	/**
 	 * Handles the activation of the prayer
 	 *
 	 * @param player
 	 * 		The player activating the prayer
 	 */
 	public void activate(Player player) {
-		
+	
 	}
 	
 	/**
@@ -191,25 +203,6 @@ public enum Prayer implements PrayerConstants {
 	}
 	
 	/**
-	 * Gets the name of this prayer
-	 */
-	public String getName() {
-		return Misc.formatPlayerNameForDisplay(name());
-	}
-	
-	/**
-	 * Finds a prayer by a slot
-	 *
-	 * @param slotId
-	 * 		The slot
-	 * @param book
-	 * 		The book of the prayer
-	 */
-	public static Optional<Prayer> findPrayerBySlot(int slotId, PrayerBook book) {
-		return Arrays.stream(values()).filter(prayer -> prayer.slotId == slotId && prayer.book == book).findFirst();
-	}
-	
-	/**
 	 * If the prayer is a drainer
 	 */
 	public boolean isDrainer() {
@@ -228,6 +221,13 @@ public enum Prayer implements PrayerConstants {
 	 */
 	public boolean isLeech() {
 		return getName().toLowerCase().contains("leech");
+	}
+	
+	/**
+	 * Gets the name of this prayer
+	 */
+	public String getName() {
+		return Misc.formatPlayerNameForDisplay(name());
 	}
 	
 }

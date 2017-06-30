@@ -3,7 +3,7 @@ package org.redrune.game.module.interaction.rsinterface;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import static org.redrune.utility.AttributeKey.SKILL_MENU;
 

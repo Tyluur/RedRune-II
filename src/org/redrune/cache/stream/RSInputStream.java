@@ -59,14 +59,18 @@ public class RSInputStream extends DataInputStream {
 	
 	public int readSShort() throws IOException {
 		int i_54_ = readShort();
-		if (i_54_ > 32767) { i_54_ -= 65536; }
+		if (i_54_ > 32767) {
+			i_54_ -= 65536;
+		}
 		return i_54_;
 	}
 	
 	public int readUnsignedSmart() throws IOException {
 		int i = readUnsignedByte();
 		seek(((RSByteArrayInputStream) in).position() - 1);
-		if (i >= 128) { return -32768 + readUnsignedShort(); }
+		if (i >= 128) {
+			return -32768 + readUnsignedShort();
+		}
 		return readUnsignedByte();
 	}
 	

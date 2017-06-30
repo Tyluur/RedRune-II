@@ -17,11 +17,6 @@ import java.util.Optional;
  */
 public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 	
-	@Override
-	public boolean canStart(Player player, FloorItemPickupContext context) {
-		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
-	}
-	
 	/**
 	 * Constructs a new event
 	 */
@@ -34,8 +29,7 @@ public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 	@Override
 	public void run(Player player, FloorItemPickupContext context) {
 		FloorItem floorItem = context.getFloorItem();
-		Optional<FloorItem> optional = player.getRegion().getFloorItem(floorItem.getId(), floorItem.getLocation().getX(), floorItem.getLocation().getY(), floorItem.getLocation()
-		.getPlane(), null);
+		Optional<FloorItem> optional = player.getRegion().getFloorItem(floorItem.getId(), floorItem.getLocation().getX(), floorItem.getLocation().getY(), floorItem.getLocation().getPlane(), null);
 		if (!optional.isPresent()) {
 			return;
 		}
@@ -47,5 +41,10 @@ public class FloorItemPickupEvent extends Event<FloorItemPickupContext> {
 		found.setRenderable(false);
 		found.getRegion().removeFloorItem(found);
 		player.getInventory().addItem(found.getId(), found.getAmount());
+	}
+	
+	@Override
+	public boolean canStart(Player player, FloorItemPickupContext context) {
+		return !player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION);
 	}
 }

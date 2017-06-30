@@ -42,18 +42,18 @@ public class SapWarriorDrain implements DrainPrayer {
 	}
 	
 	@Override
-	public double raiseCap() {
-		return -1;
-	}
-	
-	@Override
 	public int[] prayerSlots() {
 		return args(ATTACK_SLOT, STRENGTH_SLOT, DEFENCE_SLOT);
 	}
 	
 	@Override
 	public double[] amounts() {
-		return args(0.05, 0.05, 0.05);
+		return args(0.01, 0.01, 0.01);
+	}
+	
+	@Override
+	public double raiseCap() {
+		return -1;
 	}
 	
 }

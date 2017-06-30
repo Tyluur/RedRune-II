@@ -14,12 +14,14 @@ import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.node.object.GameObject.ObjectType;
 import org.redrune.game.world.World;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.network.rs666.packet.outgoing.impl.FloorItemAdditionBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.FloorItemRemovalBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ObjectAdditionBuilder;
+import org.redrune.network.rs666.packet.outgoing.impl.ObjectRemovalBuilder;
 import org.redrune.utility.backend.MapDataParser;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.CacheFilestore;
-import org.redrune.utility.rs.Projectile;
 import org.redrune.utility.rs.constant.RegionConstants;
 
 import java.util.Optional;
@@ -673,25 +675,6 @@ public class Region {
 	}
 	
 	/**
-	 * Handles the addition of a new item to the region
-	 *
-	 * @param item
-	 * 		The item added
-	 */
-	void handleAddition(FloorItem item) {
-		if (item.isDefaultPublic()) {
-			sendFloorItemToAll(item, false);
-		} else {
-			Optional<Player> optional = World.get().getPlayerByUsername(item.getOwnerUsername());
-			if (!optional.isPresent()) {
-				return;
-			}
-			optional.get().getTransmitter().send(new FloorItemAdditionBuilder(item).build(optional.get()));
-		}
-		SystemManager.getScheduler().schedule(new FloorItemTask(item));
-	}
-	
-	/**
 	 * Sends the floor item to everyone in the region
 	 *
 	 * @param item
@@ -715,6 +698,25 @@ public class Region {
 			}
 			return false;
 		}).forEach(player -> player.getTransmitter().send(new FloorItemAdditionBuilder(item).build(player)));
+	}
+	
+	/**
+	 * Handles the addition of a new item to the region
+	 *
+	 * @param item
+	 * 		The item added
+	 */
+	void handleAddition(FloorItem item) {
+		if (item.isDefaultPublic()) {
+			sendFloorItemToAll(item, false);
+		} else {
+			Optional<Player> optional = World.get().getPlayerByUsername(item.getOwnerUsername());
+			if (!optional.isPresent()) {
+				return;
+			}
+			optional.get().getTransmitter().send(new FloorItemAdditionBuilder(item).build(optional.get()));
+		}
+		SystemManager.getScheduler().schedule(new FloorItemTask(item));
 	}
 	
 	/**
@@ -795,15 +797,4 @@ public class Region {
 		return npcs.stream().filter(npc -> npc.getId() == npcId).findAny();
 	}
 	
-	/**
-	 * Sends a projectile to all players in this region
-	 *
-	 * @param projectile
-	 * 		The projectile
-	 */
-	public void sendProjectile(Projectile projectile) {
-		players.stream().filter(player -> player != null && player.isRenderable()).forEach(player -> {
-			player.getTransmitter().send(new ProjectilePacketBuilder(projectile).build(player));
-		});
-	}
 }

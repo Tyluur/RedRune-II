@@ -114,7 +114,7 @@ public class FileInformationTable {
 	
 	public static int gsmartInt(ByteBuffer buffer) {
 		/*
-    	 * if (((Stream) this).buffer[((Stream) this).index] < i)
+		 * if (((Stream) this).buffer[((Stream) this).index] < i)
 				return 0x7fffffff & getInt(true);
 			return getShort((byte) 126);
     	 */

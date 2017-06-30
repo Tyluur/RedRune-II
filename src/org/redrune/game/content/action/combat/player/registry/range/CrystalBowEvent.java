@@ -20,6 +20,6 @@ public class CrystalBowEvent implements BowFireEvent {
 	@Override
 	public void fire(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int ammoId) {
 		sendDamage(attacker, target, swing, weaponId);
-		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 249, 40, 30, 41, 15, 0));
+		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 249, 40, 30, 41, 15, 0));
 	}
 }

@@ -1,7 +1,7 @@
 package org.redrune.cache.parse;
 
 import org.redrune.cache.parse.definition.NPCDefinition;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +34,7 @@ public final class NPCDefinitionParser {
 		try {
 			def = NPCDefinition.readDefinitions(npcId);
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Unable to parse npc definitions (" + npcId  + ")" + e);
+			LOGGER.log(Level.SEVERE, "Unable to parse npc definitions (" + npcId + ")" + e);
 			return null;
 		}
 		npcDefinitions.put(npcId, def);

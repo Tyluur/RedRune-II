@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.ProjectileManager;
+import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
@@ -14,15 +15,18 @@ import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.CS2ConfigBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigFilePacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
-import org.redrune.utility.Misc;
 import org.redrune.utility.rs.Projectile;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.HeadIcons.PrayerIcon;
 import org.redrune.utility.rs.constant.PrayerConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.Misc;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
@@ -107,6 +111,17 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	private void resetStatAdjustments() {
 		for (int skillSlot = 0; skillSlot < 5; skillSlot++) {
 			adjustStat(skillSlot, 0);
+		}
+	}
+	
+	/**
+	 * Sends the prayer book access masks
+	 */
+	private void sendAccessMasks() {
+		if (settingQuickPrayers) {
+			player.getTransmitter().send(new AccessMaskBuilder(271, 42, 0, 2, 0, 29).build(player));
+		} else {
+			player.getTransmitter().send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
 		}
 	}
 	
@@ -376,17 +391,6 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	}
 	
 	/**
-	 * Sends the prayer book access masks
-	 */
-	private void sendAccessMasks() {
-		if (settingQuickPrayers) {
-			player.getTransmitter().send(new AccessMaskBuilder(271, 42, 0, 2, 0, 29).build(player));
-		} else {
-			player.getTransmitter().send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
-		}
-	}
-	
-	/**
 	 * Checks if a prayer is currently on
 	 *
 	 * @param prayer
@@ -394,49 +398,6 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 */
 	public boolean prayerOn(Prayer prayer) {
 		return activePrayers.contains(prayer);
-	}
-	
-	/**
-	 * Checks if a list of prayers are active
-	 *
-	 * @param prayers
-	 * 		The prayers
-	 */
-	public boolean prayersAreActive(Prayer... prayers) {
-		for (Prayer prayer : prayers) {
-			if (!prayerOn(prayer)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Sets the icon
-	 *
-	 * @param icon
-	 * 		The icon to set
-	 */
-	public void setIcon(PrayerIcon icon) {
-		this.icon = icon;
-		player.getUpdateMasks().register(new AppearanceUpdate(player));
-	}
-	
-	/**
-	 * Restores the player's prayer dta
-	 */
-	public void restore() {
-		modifiers = new double[5];
-		player.getVariables().setPrayerPoints(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10);
-		refreshPrayerPoints();
-		refreshStatAdjustments();
-	}
-	
-	/**
-	 * Refreshes the players prayer points
-	 */
-	private void refreshPrayerPoints() {
-		player.getTransmitter().send(new ConfigPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
 	}
 	
 	/**
@@ -470,10 +431,36 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	}
 	
 	/**
+	 * Checks if a list of prayers are active
+	 *
+	 * @param prayers
+	 * 		The prayers
+	 */
+	public boolean prayersAreActive(Prayer... prayers) {
+		for (Prayer prayer : prayers) {
+			if (!prayerOn(prayer)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Sets the icon
+	 *
+	 * @param icon
+	 * 		The icon to set
+	 */
+	public void setIcon(PrayerIcon icon) {
+		this.icon = icon;
+		player.getUpdateMasks().register(new AppearanceUpdate(player));
+	}
+	
+	/**
 	 * Restores the modifiers at a fair tick rate.
 	 */
 	private void restoreModifiers() {
-		int lastRestoreTick = player.getAttribute("last_prayer_modifier_time", -1);
+		long lastRestoreTick = player.getAttribute("last_prayer_modifier_time", -1L);
 		if (lastRestoreTick == -1 || SystemManager.getUpdateWorker().getTicksElapsed() - lastRestoreTick >= 25) {
 			for (int i = 0; i < modifiers.length; i++) {
 				if (modifiers[i] < 0) {
@@ -514,6 +501,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					bonus += 0.20;
 				} else if (prayerOn(LEECH_ATTACK)) {
 					bonus += 0.05;
+				} else if (prayerOn(TURMOIL)) {
+					bonus += 0.15;
 				}
 				break;
 			case STRENGTH:
@@ -529,6 +518,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					bonus += 0.23;
 				} else if (prayerOn(LEECH_STRENGTH)) {
 					bonus += 0.05;
+				} else if (prayerOn(TURMOIL)) {
+					bonus += 0.23;
 				}
 				break;
 			case DEFENCE:
@@ -544,6 +535,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					bonus += 0.20;
 				} else if (prayerOn(LEECH_DEFENCE)) {
 					bonus += 0.05;
+				} else if (prayerOn(TURMOIL)) {
+					bonus += 0.15;
 				}
 				break;
 			case RANGE:
@@ -597,6 +590,23 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	}
 	
 	/**
+	 * Restores the player's prayer dta
+	 */
+	public void restore() {
+		modifiers = new double[5];
+		player.getVariables().setPrayerPoints(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10);
+		refreshPrayerPoints();
+		refreshStatAdjustments();
+	}
+	
+	/**
+	 * Refreshes the players prayer points
+	 */
+	private void refreshPrayerPoints() {
+		player.getTransmitter().send(new ConfigPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
+	}
+	
+	/**
 	 * This is used to process the draining of prayers
 	 */
 	public void process() {
@@ -633,37 +643,6 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	}
 	
 	/**
-	 * Gets the amount of prayers that are active
-	 */
-	public int getPrayersActiveCount() {
-		return activePrayers.size();
-	}
-	
-	/**
-	 * Drains the prayer by the amount
-	 *
-	 * @param amount
-	 * 		The amount to drain
-	 * @return {@code Boolean.TRUE} if the prayers were all closed
-	 */
-	private boolean drainPrayer(int amount) {
-		int newAmount = getPrayerPoints() - amount;
-		if (newAmount < 0) {
-			newAmount = 0;
-		}
-		player.getVariables().setPrayerPoints(newAmount);
-		refreshPrayerPoints();
-		if (newAmount == 0) {
-			activePrayers.forEach(this::deactivatePrayer);
-			player.getTransmitter().sendMessage("You have ran out of prayer points.");
-			updateHeadIcon();
-			refreshActivatedConfigs();
-			return true;
-		}
-		return false;
-	}
-	
-	/**
 	 * Toggles the quick prayer setting
 	 */
 	public void toggleQuickPrayers() {
@@ -690,6 +669,13 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			refreshActivatedConfigs();
 			updateHeadIcon();
 		});
+	}
+	
+	/**
+	 * Gets the amount of prayers that are active
+	 */
+	public int getPrayersActiveCount() {
+		return activePrayers.size();
 	}
 	
 	/**
@@ -729,8 +715,48 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 				return;
 			}
 			handleDeflects(hit);
-			handleLeeches(hit);
 		}
+	}
+	
+	/**
+	 * Drains the prayer by the amount
+	 *
+	 * @param amount
+	 * 		The amount to drain
+	 * @return {@code Boolean.TRUE} if the prayers were all closed
+	 */
+	private boolean drainPrayer(int amount) {
+		final int points = getPrayerPoints();
+		int newAmount = points - amount;
+		if (newAmount < 0) {
+			newAmount = 0;
+		}
+		player.getVariables().setPrayerPoints(newAmount);
+		refreshPrayerPoints();
+		if (newAmount == 0 && points > 0) {
+			activePrayers.forEach(this::deactivatePrayer);
+			player.getTransmitter().sendMessage("You have ran out of prayer points.");
+			updateHeadIcon();
+			refreshActivatedConfigs();
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Restores a given amount of prayer points
+	 *
+	 * @param amount
+	 * 		The amount to restore
+	 */
+	public void restorePrayer(int amount) {
+		int maxPrayer = player.getSkills().getLevelForXp(PRAYER) * 10;
+		if ((getPrayerPoints() + amount) <= maxPrayer) {
+			player.getVariables().setPrayerPoints(getPrayerPoints() + amount);
+		} else {
+			player.getVariables().setPrayerPoints(maxPrayer);
+		}
+		refreshPrayerPoints();
 	}
 	
 	/**
@@ -793,22 +819,34 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * @param hit
 	 * 		The hit
 	 */
-	private void handleLeeches(Hit hit) {
+	public void handleLeeches(Hit hit) {
 		// leeches only apply to players
 		// and when the hit lands
 		if (!hit.getSource().isPlayer() || hit.getDamage() == 0) {
+			// soulsplit effect doesnt matter if hit  dint land
+			if (hit.getSource().isPlayer() && hit.getSource().toPlayer().getManager().getPrayers().prayerOn(SOULSPLIT)) {
+				handleSoulsplit(hit, hit.getSource().toPlayer());
+			}
 			return;
 		}
+		
 		// the instance of the source [to player object]
 		Player source = hit.getSource().toPlayer();
+		
 		// the instance of the sources prayer
 		PrayerManager sourcePrayer = source.getManager().getPrayers();
 		
 		// we only want to find the drain prayers
 		List<Prayer> drainers = sourcePrayer.activePrayers.stream().filter(Prayer::isDrainer).collect(Collectors.toList());
 		
+		String message = null;
+		
 		// loops through all the drain prayers
-		for (Prayer prayer : drainers) {
+		for (
+				
+				Prayer prayer : drainers)
+		
+		{
 			// the chance for the prayer to effect, saps have a higher chance
 			int chance = prayer.isSap() ? 6 : 8;
 			
@@ -830,7 +868,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			DrainPrayer drain = optional.get();
 			// if the source has maxed its drain and the receiver has reached its least bonuses
 			if (sourcePrayer.maxed(source, prayer, drain.raiseSource()) && maxed(source, prayer, false)) {
-				source.getTransmitter().sendMessage("Your opponent has been weakened so much that your " + (prayer.isSap() ? "sap" : "leech") + " curse has no effect.", true);
+				// so we dont spam the chatbox
+				message = ("Your opponent has been weakened so much that your " + (prayer.isSap() ? "sap" : "leech") + " curse has no effect.");
 			} else {
 				source.sendAnimation(drain.startAnimationId());
 				if (drain.startGraphicsId() > 0) {
@@ -841,6 +880,44 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			}
 			//			System.out.println("receiver{" + Arrays.toString(modifiers) + "},source{" + Arrays.toString(sourcePrayer.modifiers) + "}");
 		}
+		if (message != null)
+		
+		{
+			source.getTransmitter().sendMessage(message, false);
+		}
+		
+	}
+	
+	/**
+	 * Handles the soulsplit prayer
+	 *
+	 * @param hit
+	 * 		The hit
+	 * @param hitter
+	 * 		The source of the soulsplit
+	 */
+	private void handleSoulsplit(Hit hit, Player hitter) {
+		// actual modifiers
+		
+		//  TODO: heal the user by 5% of the hit
+		drainPrayer(10);
+		
+		// the projectile from the player who soulsplitted me to me
+		Projectile from = ProjectileManager.createSpeedDefinedProjectile(hitter, player, 2263, 11, 5, 20, 0, 0);
+		// the projectile from me to the player who soulsplitted me
+		Projectile to = ProjectileManager.createSpeedDefinedProjectile(player, hitter, 2263, 11, 5, 20, 0, 0);
+		// sending the projectiles
+		ProjectileManager.sendProjectile(from);
+		// a tick after, the next visual effects are done
+		int projectileDelay = CombatTypeSwing.getProjectileDelay(hitter, player);
+		projectileDelay += CombatTypeSwing.getDelay(hitter, player, projectileDelay, 0);
+		SystemManager.getScheduler().schedule(new ScheduledTask(projectileDelay) {
+			@Override
+			public void run() {
+				ProjectileManager.sendProjectile(to);
+				player.sendGraphics(2264);
+			}
+		});
 	}
 	
 	/**
@@ -1040,7 +1117,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * 		The id of the projectile
 	 */
 	private void visualizeLeech(Entity source, Entity target, int projectileId, int landingGraphicsId) {
-		player.getRegion().sendProjectile(new Projectile(source, target, projectileId, 0, 10, 0, ProjectileManager.getSpeedModifier(source, target) / 2, 0, 0));
+		ProjectileManager.sendProjectile(new Projectile(source, target, projectileId, 0, 10, 0, (int) (ProjectileManager.getSpeedModifier(source, target) / 1.5), 0, 0));
 		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void run() {
@@ -1048,4 +1125,5 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			}
 		});
 	}
+	
 }

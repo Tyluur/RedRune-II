@@ -1,6 +1,6 @@
 package org.redrune.game.module.interaction;
 
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

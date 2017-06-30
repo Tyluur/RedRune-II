@@ -5,7 +5,7 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
-import org.redrune.utility.BufferUtils;
+import org.redrune.utility.tool.BufferUtils;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

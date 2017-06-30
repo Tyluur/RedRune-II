@@ -21,7 +21,7 @@ public final class CacheFilestore {
 	}
 	
 	public static void init() throws IOException {
-//		ReferenceTable.NEW_PROTOCOL = true;
+		//		ReferenceTable.NEW_PROTOCOL = true;
 		STORE = new Store(GameConstants.CACHE_PATH);
 	}
 }

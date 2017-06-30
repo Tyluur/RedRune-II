@@ -17,13 +17,13 @@ public class TeleportUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return 0x400;
+	public int getOrdinal() {
+		return 11;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return 11;
+	public int getMaskData() {
+		return 0x400;
 	}
 	
 }

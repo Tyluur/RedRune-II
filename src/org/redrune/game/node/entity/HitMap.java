@@ -21,11 +21,6 @@ import java.util.Map;
 public final class HitMap {
 	
 	/**
-	 * The entity.
-	 */
-	private transient final org.redrune.game.node.entity.Entity entity;
-	
-	/**
 	 * Holds all the hit data.
 	 */
 	private final Map<Player, Integer> hitRecord;
@@ -35,6 +30,11 @@ public final class HitMap {
 	 */
 	@Getter
 	private final List<Hit> hitList;
+	
+	/**
+	 * The entity.
+	 */
+	private transient final org.redrune.game.node.entity.Entity entity;
 	
 	/**
 	 * The damage constructor.
@@ -66,17 +66,6 @@ public final class HitMap {
 	}
 	
 	/**
-	 * Stores hit timing
-	 *
-	 * @param hit
-	 * 		The hit object
-	 */
-	private void storeHitTiming(Hit hit) {
-		entity.putAttribute(AttributeKey.LAST_HIT_BY_ENTITY, hit.getSource());
-		entity.putAttribute(AttributeKey.LAST_TIME_HIT, System.currentTimeMillis());
-	}
-	
-	/**
 	 * Submits damage to the hit record.
 	 *
 	 * @param attacker
@@ -94,6 +83,17 @@ public final class HitMap {
 			totalDamage = 0;
 		}
 		hitRecord.put(dealer, damage + totalDamage);
+	}
+	
+	/**
+	 * Stores hit timing
+	 *
+	 * @param hit
+	 * 		The hit object
+	 */
+	private void storeHitTiming(Hit hit) {
+		entity.putAttribute(AttributeKey.LAST_HIT_BY_ENTITY, hit.getSource());
+		entity.putAttribute(AttributeKey.LAST_TIME_HIT, System.currentTimeMillis());
 	}
 	
 	/**

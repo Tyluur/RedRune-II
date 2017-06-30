@@ -29,6 +29,6 @@ public class DebugInterfaceCommand extends CommandModule {
 			player.getTransmitter().send(new InterfaceChangeBuilder(interId, index, false).build(player));
 		}
 		player.getManager().getInterfaces().sendInterface(interId, true);
-		player.getTransmitter().sendMessage("Interface #"+ interId + " has " + length + " component length");
+		player.getTransmitter().sendMessage("Interface #" + interId + " has " + length + " component length");
 	}
 }

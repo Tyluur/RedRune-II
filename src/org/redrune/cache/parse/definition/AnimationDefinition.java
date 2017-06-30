@@ -2,7 +2,7 @@ package org.redrune.cache.parse.definition;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.utility.BufferUtils;
+import org.redrune.utility.tool.BufferUtils;
 
 import java.nio.ByteBuffer;
 
@@ -12,6 +12,10 @@ import java.nio.ByteBuffer;
  */
 @SuppressWarnings("unused")
 public final class AnimationDefinition {
+	
+	private static float aFloat406;
+	
+	private static long aLong411 = 0L;
 	
 	private int anInt399 = -1;
 	
@@ -27,8 +31,6 @@ public final class AnimationDefinition {
 	
 	private int[] anIntArray405;
 	
-	private static float aFloat406;
-	
 	private boolean isTweened;
 	
 	private int anInt408;
@@ -36,8 +38,6 @@ public final class AnimationDefinition {
 	private boolean aBoolean409;
 	
 	private int anInt410;
-	
-	private static long aLong411 = 0L;
 	
 	private int shieldDisplayed;
 	
@@ -58,6 +58,28 @@ public final class AnimationDefinition {
 	@Getter
 	@Setter
 	private int id;
+	
+	public AnimationDefinition() {
+		anInt403 = 99;
+		anInt410 = 2;
+		aBoolean413 = false;
+		aBoolean409 = false;
+		walkingProperties = -1;
+		anInt408 = 5;
+		isTweened = false;
+		weaponDisplayed = -1;
+		shieldDisplayed = -1;
+	}
+	
+	public final void init(ByteBuffer buff) {
+		for (; ; ) {
+			int opc = buff.get() & 0xff;
+			if (opc == 0) {
+				break;
+			}
+			readOpcode(opc, buff);
+		}
+	}
 	
 	private void readOpcode(int opcode, ByteBuffer buff) {
 		if (opcode == 1) {
@@ -150,16 +172,6 @@ public final class AnimationDefinition {
 		}
 	}
 	
-	public final void init(ByteBuffer buff) {
-		for (; ; ) {
-			int opc = buff.get() & 0xff;
-			if (opc == 0) {
-				break;
-			}
-			readOpcode(opc, buff);
-		}
-	}
-	
 	public final void method544() {
 		if (anInt404 == -1) {
 			if (aBooleanArray414 != null) {
@@ -186,18 +198,6 @@ public final class AnimationDefinition {
 			ms += i;
 		}
 		return ms * 30;
-	}
-	
-	public AnimationDefinition() {
-		anInt403 = 99;
-		anInt410 = 2;
-		aBoolean413 = false;
-		aBoolean409 = false;
-		walkingProperties = -1;
-		anInt408 = 5;
-		isTweened = false;
-		weaponDisplayed = -1;
-		shieldDisplayed = -1;
 	}
 	
 }

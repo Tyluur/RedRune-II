@@ -5,6 +5,7 @@ import lombok.Setter;
 
 /**
  * Wraps around a node to represent its entry in a queue.
+ *
  * @author Emperor
  */
 public class InitializationEntry {
@@ -24,7 +25,9 @@ public class InitializationEntry {
 	
 	/**
 	 * Constructs a new {@code InitializationEntry} {@code Object}.
-	 * @param node The node.
+	 *
+	 * @param node
+	 * 		The node.
 	 */
 	public InitializationEntry(Node node) {
 		this(node, false);
@@ -32,9 +35,11 @@ public class InitializationEntry {
 	
 	/**
 	 * Constructs a new {@code InitializationEntry} {@code Object}.
-	 * @param node The node.
-	 * @param removal If the node should be removed from the game, rather than
-	 * added.
+	 *
+	 * @param node
+	 * 		The node.
+	 * @param removal
+	 * 		If the node should be removed from the game, rather than added.
 	 */
 	public InitializationEntry(Node node, boolean removal) {
 		this.node = node;

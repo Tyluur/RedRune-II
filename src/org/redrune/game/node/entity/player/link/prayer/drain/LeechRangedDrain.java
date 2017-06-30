@@ -7,7 +7,7 @@ import org.redrune.game.node.entity.player.link.prayer.Prayer;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/27/2017
  */
-public class LeechRangedDrain implements DrainPrayer{
+public class LeechRangedDrain implements DrainPrayer {
 	
 	@Override
 	public Prayer getPrayer() {
@@ -40,17 +40,17 @@ public class LeechRangedDrain implements DrainPrayer{
 	}
 	
 	@Override
-	public double raiseCap() {
-		return 0.10;
-	}
-	
-	@Override
 	public int[] prayerSlots() {
 		return args(RANGE_SLOT);
 	}
 	
 	@Override
 	public double[] amounts() {
-		return args(0.05);
+		return args(0.01);
+	}
+	
+	@Override
+	public double raiseCap() {
+		return 0.10;
 	}
 }

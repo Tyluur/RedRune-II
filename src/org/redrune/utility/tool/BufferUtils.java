@@ -1,4 +1,4 @@
-package org.redrune.utility;
+package org.redrune.utility.tool;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.redrune.network.rs666.packet.Packet;

@@ -7,7 +7,7 @@ import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,11 +34,6 @@ public class RegionManager {
 	public static final byte[] DIRECTION_DELTA_X = new byte[] { -1, 0, 1, -1, 1, -1, 0, 1 };
 	
 	/**
-	 * The region mapping.
-	 */
-	private static final Map<Integer, Region> REGION_CACHE = new ConcurrentHashMap<>();
-	
-	/**
 	 * The set of regions that couldn't be loaded
 	 */
 	public static final Set<Integer> BROKEN_REGIONS = new HashSet<>();
@@ -47,6 +42,11 @@ public class RegionManager {
 	 * The set of regions that were loaded
 	 */
 	public static final Set<Integer> LOADED_REGIONS = new HashSet<>();
+	
+	/**
+	 * The region mapping.
+	 */
+	private static final Map<Integer, Region> REGION_CACHE = new ConcurrentHashMap<>();
 	
 	/**
 	 * When an entity enters a new region, we must add them to the new region, remove them from the previous one as
@@ -78,23 +78,6 @@ public class RegionManager {
 	}
 	
 	/**
-	 * Gets a region by its id, if it doesn't exist, and forces it to load
-	 *
-	 * @param regionId
-	 * 		The id of the region
-	 */
-	public static Region getRegionAndLoad(int regionId) {
-		Region region = REGION_CACHE.get(regionId);
-		if (region == null) {
-			region = new Region(regionId).checkLoadMap();
-			REGION_CACHE.put(regionId, region);
-			return region;
-		} else {
-			return region;
-		}
-	}
-	
-	/**
 	 * Gets a new region by the id
 	 *
 	 * @param regionId
@@ -112,6 +95,251 @@ public class RegionManager {
 	}
 	
 	/**
+	 * Gets a region by its id, if it doesn't exist, and forces it to load
+	 *
+	 * @param regionId
+	 * 		The id of the region
+	 */
+	public static Region getRegionAndLoad(int regionId) {
+		Region region = REGION_CACHE.get(regionId);
+		if (region == null) {
+			region = new Region(regionId).checkLoadMap();
+			REGION_CACHE.put(regionId, region);
+			return region;
+		} else {
+			return region;
+		}
+	}
+	
+	/**
+	 * If we can move around based on the entity size
+	 *
+	 * @param plane
+	 * 		The plane
+	 * @param x
+	 * 		The x coordinate
+	 * @param y
+	 * 		The y coordinate
+	 * @param size
+	 * 		The size
+	 */
+	public static boolean canMoveNPC(int plane, int x, int y, int size) {
+		for (int tileX = x; tileX < x + size; tileX++) {
+			for (int tileY = y; tileY < y + size; tileY++) {
+				if (getMask(plane, tileX, tileY) != 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Gets the mask at coordinates
+	 *
+	 * @param plane
+	 * 		The plane
+	 * @param x
+	 * 		The x coordinate
+	 * @param y
+	 * 		The y coordinate
+	 */
+	public static int getMask(int plane, int x, int y) {
+		Location tile = new Location(x, y, plane);
+		int regionId = tile.getRegionId();
+		Region region = getRegion(regionId);
+		if (region == null) {
+			return -1;
+		}
+		int baseLocalX = x - ((regionId >> 8) * 64);
+		int baseLocalY = y - ((regionId & 0xff) * 64);
+		return region.getMask(tile.getPlane(), baseLocalX, baseLocalY);
+	}
+	
+	/**
+	 * Adds a public floor item
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param targetTicks
+	 * 		The ticks until the next item phase is hit
+	 * @param location
+	 * 		The location of the item
+	 */
+	public static void addPublicFloorItem(int itemId, int itemAmount, int targetTicks, Location location) {
+		addFloorItem(itemId, itemAmount, targetTicks, location, null);
+	}
+	
+	/**
+	 * Adds a floor item to the region
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param targetTicks
+	 * 		The ticks until the next item phase is hit
+	 * @param location
+	 * 		The location of the item
+	 * @param ownerUsername
+	 * 		The name of the user who owns the item
+	 */
+	public static void addFloorItem(int itemId, int itemAmount, int targetTicks, Location location, String ownerUsername) {
+		Region region = getRegion(location.getRegionId());
+		FloorItem item = new FloorItem(ownerUsername, targetTicks, itemId, itemAmount, location);
+		if (!region.addFloorItemToList(item)) {
+			throw new IllegalStateException("Unable to add floor item to region list.");
+		}
+		region.handleAddition(item);
+	}
+	
+	/**
+	 * Adds a floor item to the region
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param targetTicks
+	 * 		The ticks until the next item phase is hit
+	 * @param location
+	 * 		The location of the item
+	 * @param ownerUsername
+	 * 		The name of the user who owns the item
+	 */
+	public static void addStackableFloorItem(int itemId, int itemAmount, int targetTicks, Location location, String ownerUsername) {
+		Region region = getRegion(location.getRegionId());
+		Optional<FloorItem> optional = region.getFloorItem(itemId, location.getX(), location.getY(), location.getPlane(), ownerUsername);
+		if (!optional.isPresent()) {
+			addFloorItem(itemId, itemAmount, targetTicks, location, ownerUsername);
+		} else {
+			FloorItem item = optional.get();
+			long newAmount = (long) (item.getAmount() + itemAmount);
+			if (newAmount > Integer.MAX_VALUE) {
+				// TODO: split into two items
+			} else {
+				item.setAmount((int) newAmount);
+				region.refreshItem(item);
+			}
+		}
+	}
+	
+	/**
+	 * Finds the objects to delete in the region
+	 *
+	 * @param region
+	 * 		The region
+	 */
+	public static CopyOnWriteArraySet<GameObject> findDeletedObjects(Region region) {
+		Optional<List<GameObject>> optional = RegionDeletion.getObjectsToDelete(region.getRegionId());
+		if (!optional.isPresent()) {
+			return new CopyOnWriteArraySet<>();
+		} else {
+			// the objects that were found to be deleted
+			List<GameObject> foundObjects = optional.get();
+			CopyOnWriteArraySet<GameObject> objectList = new CopyOnWriteArraySet<>();
+			objectList.addAll(foundObjects);
+			return objectList;
+		}
+	}
+	
+	/**
+	 * Adds a game object that will be removed after delay, and replaced with an item
+	 *
+	 * @param object
+	 * 		The object
+	 * @param itemReplaceId
+	 * 		The item that wil replace it
+	 * @param itemReplaceAmount
+	 * 		The amount of the item to replace with
+	 * @param ticks
+	 * 		The ticks
+	 */
+	public static void addTimedGamedObject(GameObject object, int itemReplaceId, int itemReplaceAmount, int ticks) {
+		object.getRegion().spawnObject(object);
+		SystemManager.getScheduler().schedule(new ScheduledTask(ticks) {
+			@Override
+			public void run() {
+				Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+				if (!optional.isPresent()) {
+					return;
+				}
+				GameObject gameObject = optional.get();
+				gameObject.getRegion().removeObject(gameObject);
+				RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 180, gameObject.getLocation(), null);
+			}
+		});
+	}
+	
+	/**
+	 * Spawns an object that is removed after x ticks
+	 *
+	 * @param object
+	 * 		The object
+	 * @param ticks
+	 * 		The ticks to wait
+	 */
+	public static void spawnTimedObject(GameObject object, int ticks) {
+		object.getRegion().spawnObject(object);
+		SystemManager.getScheduler().schedule(new ScheduledTask(ticks) {
+			@Override
+			public void run() {
+				Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
+				if (!optional.isPresent()) {
+					return;
+				}
+				object.getRegion().removeObject(object);
+			}
+		});
+	}
+	
+	/**
+	 * Gets the first empty tile around a node, excluding the node's tile.
+	 *
+	 * @param node
+	 * 		The node
+	 * @param radius
+	 * 		The radius
+	 * @param size
+	 * 		The size of the entity we are looking for (default to 0)
+	 */
+	public static Location getFirstEmptyTile(Node node, int radius, int size) {
+		List<Location> tiles = new ArrayList<>();
+		// adds all the tiles around the node
+		for (int x = -radius; x <= radius; x++) {
+			for (int y = -radius; y <= radius; y++) {
+				final Location transform = node.getLocation().transform(x, y, 0);
+				if (!tiles.contains(transform)) {
+					tiles.add(transform);
+				}
+			}
+		}
+		// removes the actual node location
+		tiles.remove(node.getLocation());
+		// removes the tiles that are unable to be clipped or have objects on them
+		for (Iterator<Location> it = tiles.iterator(); it.hasNext(); ) {
+			Location tile = it.next();
+			int dir = Misc.getMoveDirection(node.getLocation().getX() - tile.getX(), node.getLocation().getY() - tile.getY());
+			if (dir == -1) {
+				it.remove();
+				continue;
+			}
+			if (!isTileFree(tile.getPlane(), tile.getX(), tile.getY(), dir, size) || !RegionManager.checkProjectileStep(node.getLocation().getPlane(), tile.getX(), tile.getY(), dir, size) || node.getRegion().findAnyGameObject(-1, tile.getX(), tile.getY(), tile.getPlane(), -1).isPresent()) {
+				it.remove();
+			}
+		}
+		// if we have no more tiles [all the nearby tiles are clipped]
+		if (tiles.isEmpty()) {
+			return null;
+		}
+		// sorts based on closest to the node
+		tiles.sort(Comparator.comparingInt(o -> o.getDistance(node.getLocation())));
+		return tiles.get(0);
+	}
+	
+	/**
 	 * Checks if a tile is free
 	 *
 	 * @param plane
@@ -125,152 +353,6 @@ public class RegionManager {
 	 */
 	public static boolean isTileFree(int plane, int x, int y, int dir, int size) {
 		return isTileFree(plane, x, y, DIRECTION_DELTA_X[dir], DIRECTION_DELTA_Y[dir], size);
-	}
-	
-	/**
-	 * Checks if a tile is free
-	 *
-	 * @param plane
-	 * 		The plane of the tile
-	 * @param x
-	 * 		The x
-	 * @param y
-	 * 		The y
-	 * @param xOffset
-	 * 		The x offset, based on direction
-	 * @param yOffset
-	 * 		The y offset, based on direction
-	 * @param size
-	 * 		The size of the node checking.
-	 */
-	private static boolean isTileFree(int plane, int x, int y, int xOffset, int yOffset, int size) {
-		if (size == 1) {
-			int mask = getMask(plane, x + xOffset, y + yOffset);
-			if (xOffset == -1 && yOffset == 0) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0;
-			}
-			if (xOffset == 1 && yOffset == 0) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0;
-			}
-			if (xOffset == 0 && yOffset == -1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
-			}
-			if (xOffset == 0 && yOffset == 1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
-			}
-			if (xOffset == -1 && yOffset == -1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
-			}
-			if (xOffset == 1 && yOffset == -1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
-			}
-			if (xOffset == -1 && yOffset == 1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0 && (getMask(plane, x, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
-			}
-			if (xOffset == 1 && yOffset == 1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0 && (getMask(plane, x, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
-			}
-		} else if (size == 2) {
-			if (xOffset == -1 && yOffset == 0) {
-				return (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0;
-			}
-			if (xOffset == 1 && yOffset == 0) {
-				return (getMask(plane, x + 2, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0;
-			}
-			if (xOffset == 0 && yOffset == -1) {
-				return (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0;
-			}
-			if (xOffset == 0 && yOffset == 1) {
-				return (getMask(plane, x, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x + 1, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0;
-			}
-			if (xOffset == -1 && yOffset == -1) {
-				return (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) == 0;
-			}
-			if (xOffset == 1 && yOffset == -1) {
-				return (getMask(plane, x + 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 2, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) == 0;
-			}
-			if (xOffset == -1 && yOffset == 1) {
-				return (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) == 0;
-			}
-			if (xOffset == 1 && yOffset == 1) {
-				return (getMask(plane, x + 1, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 2, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) == 0;
-			}
-		} else {
-			if (xOffset == -1 && yOffset == 0) {
-				if ((getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x - 1, -1 + (y + size)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x - 1, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == 1 && yOffset == 0) {
-				if ((getMask(plane, x + size, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0 || (getMask(plane, x + size, y - (-size + 1)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x + size, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == 0 && yOffset == -1) {
-				if ((getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x + size - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x + sizeOffset, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == 0 && yOffset == 1) {
-				if ((getMask(plane, x, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, x + (size - 1), y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x + sizeOffset, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == -1 && yOffset == -1) {
-				if ((getMask(plane, x - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x - 1, y + (-1 + sizeOffset)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, sizeOffset - 1 + x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == 1 && yOffset == -1) {
-				if ((getMask(plane, x + size, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x + size, sizeOffset + (-1 + y)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + sizeOffset, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == -1 && yOffset == 1) {
-				if ((getMask(plane, x - 1, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x - 1, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, -1 + (x + sizeOffset), y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0) {
-						return false;
-					}
-				}
-			} else if (xOffset == 1 && yOffset == 1) {
-				if ((getMask(plane, x + size, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
-					return false;
-				}
-				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x + sizeOffset, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + size, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
 	}
 	
 	/**
@@ -420,137 +502,149 @@ public class RegionManager {
 	}
 	
 	/**
-	 * If we can move around based on the entity size
+	 * Checks if a tile is free
 	 *
 	 * @param plane
-	 * 		The plane
+	 * 		The plane of the tile
 	 * @param x
-	 * 		The x coordinate
+	 * 		The x
 	 * @param y
-	 * 		The y coordinate
+	 * 		The y
+	 * @param xOffset
+	 * 		The x offset, based on direction
+	 * @param yOffset
+	 * 		The y offset, based on direction
 	 * @param size
-	 * 		The size
+	 * 		The size of the node checking.
 	 */
-	public static boolean canMoveNPC(int plane, int x, int y, int size) {
-		for (int tileX = x; tileX < x + size; tileX++) {
-			for (int tileY = y; tileY < y + size; tileY++) {
-				if (getMask(plane, tileX, tileY) != 0) {
+	private static boolean isTileFree(int plane, int x, int y, int xOffset, int yOffset, int size) {
+		if (size == 1) {
+			int mask = getMask(plane, x + xOffset, y + yOffset);
+			if (xOffset == -1 && yOffset == 0) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0;
+			}
+			if (xOffset == 1 && yOffset == 0) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0;
+			}
+			if (xOffset == 0 && yOffset == -1) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
+			}
+			if (xOffset == 0 && yOffset == 1) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
+			}
+			if (xOffset == -1 && yOffset == -1) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
+			}
+			if (xOffset == 1 && yOffset == -1) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
+			}
+			if (xOffset == -1 && yOffset == 1) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0 && (getMask(plane, x, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
+			}
+			if (xOffset == 1 && yOffset == 1) {
+				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0 && (getMask(plane, x, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
+			}
+		} else if (size == 2) {
+			if (xOffset == -1 && yOffset == 0) {
+				return (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0;
+			}
+			if (xOffset == 1 && yOffset == 0) {
+				return (getMask(plane, x + 2, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0;
+			}
+			if (xOffset == 0 && yOffset == -1) {
+				return (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0;
+			}
+			if (xOffset == 0 && yOffset == 1) {
+				return (getMask(plane, x, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x + 1, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0;
+			}
+			if (xOffset == -1 && yOffset == -1) {
+				return (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) == 0;
+			}
+			if (xOffset == 1 && yOffset == -1) {
+				return (getMask(plane, x + 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 2, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) == 0;
+			}
+			if (xOffset == -1 && yOffset == 1) {
+				return (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) == 0;
+			}
+			if (xOffset == 1 && yOffset == 1) {
+				return (getMask(plane, x + 1, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 2, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) == 0;
+			}
+		} else {
+			if (xOffset == -1 && yOffset == 0) {
+				if ((getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x - 1, -1 + (y + size)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0) {
 					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
+					if ((getMask(plane, x - 1, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == 1 && yOffset == 0) {
+				if ((getMask(plane, x + size, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0 || (getMask(plane, x + size, y - (-size + 1)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
+					if ((getMask(plane, x + size, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == 0 && yOffset == -1) {
+				if ((getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x + size - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
+					if ((getMask(plane, x + sizeOffset, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == 0 && yOffset == 1) {
+				if ((getMask(plane, x, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, x + (size - 1), y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
+					if ((getMask(plane, x + sizeOffset, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == -1 && yOffset == -1) {
+				if ((getMask(plane, x - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
+					if ((getMask(plane, x - 1, y + (-1 + sizeOffset)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, sizeOffset - 1 + x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == 1 && yOffset == -1) {
+				if ((getMask(plane, x + size, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
+					if ((getMask(plane, x + size, sizeOffset + (-1 + y)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + sizeOffset, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == -1 && yOffset == 1) {
+				if ((getMask(plane, x - 1, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
+					if ((getMask(plane, x - 1, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, -1 + (x + sizeOffset), y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0) {
+						return false;
+					}
+				}
+			} else if (xOffset == 1 && yOffset == 1) {
+				if ((getMask(plane, x + size, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
+					return false;
+				}
+				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
+					if ((getMask(plane, x + sizeOffset, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + size, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0) {
+						return false;
+					}
 				}
 			}
 		}
 		return true;
-	}
-	
-	/**
-	 * Gets the mask at coordinates
-	 *
-	 * @param plane
-	 * 		The plane
-	 * @param x
-	 * 		The x coordinate
-	 * @param y
-	 * 		The y coordinate
-	 */
-	public static int getMask(int plane, int x, int y) {
-		Location tile = new Location(x, y, plane);
-		int regionId = tile.getRegionId();
-		Region region = getRegion(regionId);
-		if (region == null) {
-			return -1;
-		}
-		int baseLocalX = x - ((regionId >> 8) * 64);
-		int baseLocalY = y - ((regionId & 0xff) * 64);
-		return region.getMask(tile.getPlane(), baseLocalX, baseLocalY);
-	}
-	
-	/**
-	 * Adds a public floor item
-	 *
-	 * @param itemId
-	 * 		The id of the item
-	 * @param itemAmount
-	 * 		The amount of the item
-	 * @param targetTicks
-	 * 		The ticks until the next item phase is hit
-	 * @param location
-	 * 		The location of the item
-	 */
-	public static void addPublicFloorItem(int itemId, int itemAmount, int targetTicks, Location location) {
-		addFloorItem(itemId, itemAmount, targetTicks, location, null);
-	}
-	
-	/**
-	 * Adds a floor item to the region
-	 *
-	 * @param itemId
-	 * 		The id of the item
-	 * @param itemAmount
-	 * 		The amount of the item
-	 * @param targetTicks
-	 * 		The ticks until the next item phase is hit
-	 * @param location
-	 * 		The location of the item
-	 * @param ownerUsername
-	 * 		The name of the user who owns the item
-	 */
-	public static void addStackableFloorItem(int itemId, int itemAmount, int targetTicks, Location location, String ownerUsername) {
-		Region region = getRegion(location.getRegionId());
-		Optional<FloorItem> optional = region.getFloorItem(itemId, location.getX(), location.getY(), location.getPlane(), ownerUsername);
-		if (!optional.isPresent()) {
-			addFloorItem(itemId, itemAmount, targetTicks, location, ownerUsername);
-		} else {
-			FloorItem item = optional.get();
-			long newAmount = (long) (item.getAmount() + itemAmount);
-			if (newAmount > Integer.MAX_VALUE) {
-				// TODO: split into two items
-			} else {
-				item.setAmount((int) newAmount);
-				region.refreshItem(item);
-			}
-		}
-}
-	
-	/**
-	 * Adds a floor item to the region
-	 *
-	 * @param itemId
-	 * 		The id of the item
-	 * @param itemAmount
-	 * 		The amount of the item
-	 * @param targetTicks
-	 * 		The ticks until the next item phase is hit
-	 * @param location
-	 * 		The location of the item
-	 * @param ownerUsername
-	 * 		The name of the user who owns the item
-	 */
-	public static void addFloorItem(int itemId, int itemAmount, int targetTicks, Location location, String ownerUsername) {
-		Region region = getRegion(location.getRegionId());
-		FloorItem item = new FloorItem(ownerUsername, targetTicks, itemId, itemAmount, location);
-		if (!region.addFloorItemToList(item)) {
-			throw new IllegalStateException("Unable to add floor item to region list.");
-		}
-		region.handleAddition(item);
-	}
-	
-	/**
-	 * Finds the objects to delete in the region
-	 *
-	 * @param region
-	 * 		The region
-	 */
-	public static CopyOnWriteArraySet<GameObject> findDeletedObjects(Region region) {
-		Optional<List<GameObject>> optional = RegionDeletion.getObjectsToDelete(region.getRegionId());
-		if (!optional.isPresent()) {
-			return new CopyOnWriteArraySet<>();
-		} else {
-			// the objects that were found to be deleted
-			List<GameObject> foundObjects = optional.get();
-			CopyOnWriteArraySet<GameObject> objectList = new CopyOnWriteArraySet<>();
-			objectList.addAll(foundObjects);
-			return objectList;
-		}
 	}
 	
 	/**
@@ -573,99 +667,5 @@ public class RegionManager {
 		int baseLocalX = x - ((regionId >> 8) * 64);
 		int baseLocalY = y - ((regionId & 0xff) * 64);
 		return region.getMaskClippedOnly(tile.getPlane(), baseLocalX, baseLocalY);
-	}
-	
-	/**
-	 * Adds a game object that will be removed after delay, and replaced with an item
-	 *
-	 * @param object
-	 * 		The object
-	 * @param itemReplaceId
-	 * 		The item that wil replace it
-	 * @param itemReplaceAmount
-	 * 		The amount of the item to replace with
-	 * @param ticks
-	 * 		The ticks
-	 */
-	public static void addTimedGamedObject(GameObject object, int itemReplaceId, int itemReplaceAmount, int ticks) {
-		object.getRegion().spawnObject(object);
-		SystemManager.getScheduler().schedule(new ScheduledTask(ticks) {
-			@Override
-			public void run() {
-				Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
-				if (!optional.isPresent()) {
-					return;
-				}
-				GameObject gameObject = optional.get();
-				gameObject.getRegion().removeObject(gameObject);
-				RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 180, gameObject.getLocation(), null);
-			}
-		});
-	}
-	
-	/**
-	 * Spawns an object that is removed after x ticks
-	 *
-	 * @param object
-	 * 		The object
-	 * @param ticks
-	 * 		The ticks to wait
-	 */
-	public static void spawnTimedObject(GameObject object, int ticks) {
-		object.getRegion().spawnObject(object);
-		SystemManager.getScheduler().schedule(new ScheduledTask(ticks) {
-			@Override
-			public void run() {
-				Optional<GameObject> optional = RegionManager.getRegion(object.getLocation().getRegionId()).findSpawnedGameObject(object.getId(), object.getLocation().getX(), object.getLocation().getY(), object.getLocation().getPlane(), object.getType());
-				if (!optional.isPresent()) {
-					return;
-				}
-				object.getRegion().removeObject(object);
-			}
-		});
-	}
-	
-	/**
-	 * Gets the first empty tile around a node, excluding the node's tile.
-	 *
-	 * @param node
-	 * 		The node
-	 * @param radius
-	 * 		The radius
-	 * @param size
-	 * 		The size of the entity we are looking for (default to 0)
-	 */
-	public static Location getFirstEmptyTile(Node node, int radius, int size) {
-		List<Location> tiles = new ArrayList<>();
-		// adds all the tiles around the node
-		for (int x = -radius; x <= radius; x++) {
-			for (int y = -radius; y <= radius; y++) {
-				final Location transform = node.getLocation().transform(x, y, 0);
-				if (!tiles.contains(transform)) {
-					tiles.add(transform);
-				}
-			}
-		}
-		// removes the actual node location
-		tiles.remove(node.getLocation());
-		// removes the tiles that are unable to be clipped or have objects on them
-		for (Iterator<Location> it = tiles.iterator(); it.hasNext(); ) {
-			Location tile = it.next();
-			int dir = Misc.getMoveDirection(node.getLocation().getX() - tile.getX(), node.getLocation().getY() - tile.getY());
-			if (dir == -1) {
-				it.remove();
-				continue;
-			}
-			if (!isTileFree(tile.getPlane(), tile.getX(), tile.getY(), dir, size) || !RegionManager.checkProjectileStep(node.getLocation().getPlane(), tile.getX(), tile.getY(), dir, size) || node.getRegion().findAnyGameObject(-1, tile.getX(), tile.getY(), tile.getPlane(), -1).isPresent()) {
-				it.remove();
-			}
-		}
-		// if we have no more tiles [all the nearby tiles are clipped]
-		if (tiles.isEmpty()) {
-			return null;
-		}
-		// sorts based on closest to the node
-		tiles.sort(Comparator.comparingInt(o -> o.getDistance(node.getLocation())));
-		return tiles.get(0);
 	}
 }

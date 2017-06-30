@@ -6,7 +6,7 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Date;
 

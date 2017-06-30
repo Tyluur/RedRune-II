@@ -1,5 +1,8 @@
 +	How come the session was d/cing after burying many bones??
 +	How come the session d/ced after new map region entry w/o clip flags when following in combat?
++   Floor items are buggy
++   Projectiles come from wrong source sometimes ??
++   Might need to multi-thread player rendering bc of this bug
 +   Some regions never load [varrock]
 	[06:26:2017 07:06:41][WalkRouteFinder.java:536#transmitClipData] [id=12853][mapNull=false][getLoadMapStage=0][false]
     [06:26:2017 07:06:41][WalkRouteFinder.java:536#transmitClipData] [id=12854][mapNull=false][getLoadMapStage=0][false]

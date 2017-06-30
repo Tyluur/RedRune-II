@@ -10,7 +10,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 

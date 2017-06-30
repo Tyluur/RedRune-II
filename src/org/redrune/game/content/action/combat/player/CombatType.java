@@ -110,12 +110,6 @@ public enum CombatType {
 	};
 	
 	/**
-	 * The combat swing type
-	 */
-	@Getter
-	private final CombatTypeSwing swing;
-	
-	/**
 	 * The delay between each swing
 	 *
 	 * @param player
@@ -124,6 +118,12 @@ public enum CombatType {
 	 * 		The id of the weapon used, or the id of the spell.
 	 */
 	public abstract int getDelay(Player player, int id);
+	
+	/**
+	 * The combat swing type
+	 */
+	@Getter
+	private final CombatTypeSwing swing;
 	
 	CombatType(CombatTypeSwing swing) {
 		this.swing = swing;

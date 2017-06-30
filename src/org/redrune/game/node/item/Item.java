@@ -99,12 +99,12 @@ public class Item extends Node {
 	}
 	
 	@Override
-	public int getSize() {
-		return 1;
+	public Item toItem() {
+		return this;
 	}
 	
 	@Override
-	public Item toItem() {
-		return this;
+	public int getSize() {
+		return 1;
 	}
 }

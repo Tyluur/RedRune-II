@@ -32,6 +32,12 @@ public class NPC extends org.redrune.game.node.entity.Entity {
 	private int faceDirection;
 	
 	/**
+	 * The amount of health points the npc has
+	 */
+	@Getter
+	private int healthPoints = 0;
+	
+	/**
 	 * The cache definitions of the npc
 	 */
 	private NPCDefinition definitions;
@@ -49,12 +55,7 @@ public class NPC extends org.redrune.game.node.entity.Entity {
 	}
 	
 	@Override
-	public int getHitpoints() {
-		return 0;
-	}
-	
-	@Override
-	public int getMaxHitpoints() {
+	public int getMaxHealth() {
 		return 0;
 	}
 	
@@ -90,13 +91,13 @@ public class NPC extends org.redrune.game.node.entity.Entity {
 	}
 	
 	@Override
-	public int getSize() {
-		return getDefinitions().getSize();
+	public NPC toNPC() {
+		return this;
 	}
 	
 	@Override
-	public NPC toNPC() {
-		return this;
+	public int getSize() {
+		return getDefinitions().getSize();
 	}
 	
 	@Override

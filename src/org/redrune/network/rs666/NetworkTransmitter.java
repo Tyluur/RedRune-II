@@ -1,5 +1,6 @@
 package org.redrune.network.rs666;
 
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
@@ -123,11 +124,25 @@ public final class NetworkTransmitter {
 	 * 		If the message should be filterable. If this parameter is empty or false, messages won't be filtered.
 	 */
 	public NetworkTransmitter sendMessage(String text, boolean... filterable) {
+		// the last message sent is the same as the one we're sending
+		if (player.getAttribute("last_message", "null").equals(text)) {
+			// checks the time of the last message sent.
+			final Long lastMessageTime = player.getAttribute("last_message_time", -1L);
+			// check if its recent though, they have to stay up to date
+			if (!SystemManager.getUpdateWorker().lapsed(lastMessageTime, 3)) {
+				System.out.println("didnt send " + text);
+				return this;
+			}
+		}
+		
 		// messages should only be filtered if this is sent as NetworkTransmitter#sendMessage("hi", true);
 		// otherwise the parameter is unneeded...
-		
 		boolean shouldFilter = filterable.length != 0 && filterable[0];
 		send(new MessageBuilder(shouldFilter ? 109 : 0, text).build(player));
+		
+		// puts the attributes of the last message sent
+		player.putAttribute("last_message", text);
+		player.putAttribute("last_message_time", SystemManager.getUpdateWorker().getTicksElapsed());
 		return this;
 	}
 	
@@ -163,7 +178,7 @@ public final class NetworkTransmitter {
 		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 32, 0, 28, 55).build(player));
 		send(new AccessMaskBuilder(746, 44, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(746, 45, 0, 2, -1, -1).build(player));
-//		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+		//		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
 		send(new AccessMaskBuilder(746, 46, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(746, 47, 0, 0, -1, -1).build(player));
 		send(new AccessMaskBuilder(746, 40, 0, 2, -1, -1).build(player));
@@ -219,7 +234,7 @@ public final class NetworkTransmitter {
 		send(new AccessMaskBuilder(InterfaceConstants.INVENTORY_INTERFACE_ID, 0, 32, 0, 28, 55).build(player));
 		send(new AccessMaskBuilder(548, 134, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(548, 135, 0, 2, -1, -1).build(player));
-//		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
+		//		send(new AccessMaskBuilder(271, 8, 0, 2, 0, 30).build(player));
 		send(new AccessMaskBuilder(548, 136, 0, 2, -1, -1).build(player));
 		send(new AccessMaskBuilder(548, 99, 0, 0, -1, -1).build(player));
 		send(new AccessMaskBuilder(548, 130, 0, 2, -1, -1).build(player));
@@ -335,7 +350,6 @@ public final class NetworkTransmitter {
 	
 	/**
 	 * Refreshes the run orb status
-	 *
 	 */
 	public void refreshRunOrbStatus() {
 		player.getTransmitter().send(new ConfigPacketBuilder(173, player.getAttribute("resting", false) ? 3 : player.getVariables().isRunToggled() ? 1 : 0).build(player));

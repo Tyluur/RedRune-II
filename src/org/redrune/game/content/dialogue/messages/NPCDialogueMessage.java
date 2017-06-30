@@ -52,7 +52,7 @@ public class NPCDialogueMessage extends DialogueMessage {
 			player.getManager().getInterfaces().sendInterfaceText(interfaceId, componentOptions[i], messages[i]);
 		}
 		player.getTransmitter().send(new InterfaceEntityBuilder(interfaceId, 2, npcId).build(player));
-		player.getTransmitter().send(new InterfaceAnimationBuilder(interfaceId, 2,  animationId).build(player));
+		player.getTransmitter().send(new InterfaceAnimationBuilder(interfaceId, 2, animationId).build(player));
 	}
 	
 }

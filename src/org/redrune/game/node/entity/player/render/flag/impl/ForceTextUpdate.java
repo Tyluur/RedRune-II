@@ -38,13 +38,13 @@ public class ForceTextUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return npc ? 0x80 : 0x4000;
+	public int getOrdinal() {
+		return npc ? 18 : 7;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return npc ? 18 : 7;
+	public int getMaskData() {
+		return npc ? 0x80 : 0x4000;
 	}
 	
 }

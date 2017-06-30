@@ -111,52 +111,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Gets the attribute from the {@link #attributes} map, and if it doesn't exist, we return the default
-	 * value
-	 *
-	 * @param key
-	 * 		The key of the attribute
-	 * @param defaultValue
-	 * 		The default value
-	 * @param <T>
-	 * 		The return type
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Object key, T defaultValue) {
-		T value = (T) attributes.get(key);
-		if (value == null) {
-			return defaultValue;
-		}
-		return value;
-	}
-	
-	/**
-	 * Gets an attribute from the {@link #attributes} map
-	 *
-	 * @param key
-	 * 		The key of the attribute
-	 * @param <T>
-	 * 		The return type
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Object key) {
-		return (T) attributes.get(key);
-	}
-	
-	/**
-	 * Removes an attribute from the {@link #attributes} map
-	 *
-	 * @param key
-	 * 		The key
-	 * @param <T>
-	 * 		The return type
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T removeAttribute(Object key) {
-		return (T) attributes.remove(key);
-	}
-	
-	/**
 	 * Removes an attribute from the {@link #attributes} map, if it doesn't exist, the default value is
 	 * returned,
 	 *
@@ -302,11 +256,6 @@ public abstract class Entity extends Node implements EntityDetails {
 			return;
 		}
 		updateMasks.register(new Animation(animationId, 0, isNPC(), Priority.LOWEST));
-		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
-		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
-		if (definition != null) {
-			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
-		}
 	}
 	
 	/**
@@ -351,7 +300,11 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * If we are dead
 	 */
 	public boolean isDead() {
-		return getHitpoints() <= 0;
+		if (isPlayer()) {
+			return toPlayer().getHealthPoints() <= 0;
+		} else {
+			return isNPC() && toNPC().getHealthPoints() <= 0;
+		}
 	}
 	
 	/**
@@ -380,6 +333,19 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Gets an attribute from the {@link #attributes} map
+	 *
+	 * @param key
+	 * 		The key of the attribute
+	 * @param <T>
+	 * 		The return type
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(Object key) {
+		return (T) attributes.get(key);
+	}
+	
+	/**
 	 * Freezes the entity for the amount of ticks
 	 *
 	 * @param by
@@ -391,12 +357,50 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public void freeze(Entity by, int ticks, String message) {
 		// time we will be unfrozen at
-		putAttribute(AttributeKey.FROZEN_UNTIL, SystemManager.getUpdateWorker().getTicksElapsed() + ticks);
+		final long frozenUntil = SystemManager.getUpdateWorker().getTicksElapsed() + ticks;
+		// storing the time
+		putAttribute(AttributeKey.FROZEN_UNTIL, frozenUntil);
+		// they can't be frozen again instantly.
+		putAttribute(AttributeKey.FREEZE_DELAY, frozenUntil + 6);
 		// stores who froze us [16 tile calc]
 		putAttribute(AttributeKey.FROZEN_BY, by);
+		// sending the message
 		if (isPlayer()) {
 			toPlayer().getTransmitter().sendMessage(message, false);
 		}
+		movement.resetWalkSteps();
+	}
+	
+	/**
+	 * Entities cannot be frozen instantly after they have once been frozen. The {@link AttributeKey#FREEZE_DELAY}
+	 * attribute stores the delay time for said variable.
+	 */
+	public boolean freezeDelayed() {
+		// when freezing is delayed until
+		long delay = getAttribute(AttributeKey.FREEZE_DELAY, -1L);
+		// the current tick we're on
+		long ticks = SystemManager.getUpdateWorker().getTicksElapsed();
+		return delay > ticks;
+	}
+	
+	/**
+	 * Gets the attribute from the {@link #attributes} map, and if it doesn't exist, we return the default
+	 * value
+	 *
+	 * @param key
+	 * 		The key of the attribute
+	 * @param defaultValue
+	 * 		The default value
+	 * @param <T>
+	 * 		The return type
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(Object key, T defaultValue) {
+		T value = (T) attributes.get(key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
 	}
 	
 	/**
@@ -414,4 +418,23 @@ public abstract class Entity extends Node implements EntityDetails {
 		removeAttribute(AttributeKey.FROZEN_UNTIL);
 	}
 	
+	/**
+	 * Removes an attribute from the {@link #attributes} map
+	 *
+	 * @param key
+	 * 		The key
+	 * @param <T>
+	 * 		The return type
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T removeAttribute(Object key) {
+		return (T) attributes.remove(key);
+	}
+	
+	/**
+	 * Gets the hitpoints of the entity
+	 */
+	public int getHealthPoints() {
+		return (isPlayer() ? toPlayer().getHealthPoints() : toNPC().getHealthPoints());
+	}
 }

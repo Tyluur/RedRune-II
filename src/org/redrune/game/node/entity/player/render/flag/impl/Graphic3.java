@@ -64,13 +64,13 @@ public class Graphic3 extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return npc ? 0x10000 : 0x100000;
+	public int getOrdinal() {
+		return npc ? 9 : 5;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return npc ? 9 : 5;
+	public int getMaskData() {
+		return npc ? 0x10000 : 0x100000;
 	}
 	
 }

@@ -72,6 +72,21 @@ public class PlayerFollowAction implements Action {
 		return canContinue(player) ? 0 : -1;
 	}
 	
+	@Override
+	public void stop(Player player) {
+		player.turnTo(null);
+	}
+	
+	/**
+	 * Verify that we can continue following the partner
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	private boolean canContinue(Player player) {
+		return !(partner == null || !partner.isRenderable() || !World.get().getPlayers().contains(partner) || !partner.getLocation().isWithinDistance(player.getLocation()) || player.isFrozen());
+	}
+	
 	/**
 	 * Uses entity route strategizing to path to the partner
 	 */
@@ -91,21 +106,6 @@ public class PlayerFollowAction implements Action {
 				break;
 			}
 		}
-	}
-	
-	@Override
-	public void stop(Player player) {
-		player.turnTo(null);
-	}
-	
-	/**
-	 * Verify that we can continue following the partner
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	private boolean canContinue(Player player) {
-		return !(partner == null || !partner.isRenderable() || !World.get().getPlayers().contains(partner) || !partner.getLocation().isWithinDistance(player.getLocation()) || player.isFrozen());
 	}
 	
 }

@@ -98,6 +98,11 @@ public class GameObject extends Node {
 	}
 	
 	@Override
+	public GameObject toGameObject() {
+		return this;
+	}
+	
+	@Override
 	public int getSize() {
 		return Math.max(getDefinitions().getSizeX(), getDefinitions().getSizeY());
 	}
@@ -110,11 +115,6 @@ public class GameObject extends Node {
 			setDefinitions(ObjectDefinitionParser.forId(id));
 		}
 		return definitions;
-	}
-	
-	@Override
-	public GameObject toGameObject() {
-		return this;
 	}
 	
 	@Override
@@ -142,6 +142,21 @@ public class GameObject extends Node {
 	}
 	
 	/**
+	 * Checks if the object tiles used contains a specific tile
+	 *
+	 * @param tile
+	 * 		The tile to check
+	 */
+	public boolean containsTile(Location tile) {
+		for (Location tiles : tilesOccupied()) {
+			if (tiles.equals(tile)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Gets a list of the tiles the object occupies
 	 */
 	public Set<Location> tilesOccupied() {
@@ -165,21 +180,6 @@ public class GameObject extends Node {
 			tileList.add(new Location(getLocation().getX(), getLocation().getY() + i, getLocation().getPlane()));
 		}
 		return tileList;
-	}
-	
-	/**
-	 * Checks if the object tiles used contains a specific tile
-	 *
-	 * @param tile
-	 * 		The tile to check
-	 */
-	public boolean containsTile(Location tile) {
-		for (Location tiles : tilesOccupied()) {
-			if (tiles.equals(tile)) {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	/**

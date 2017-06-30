@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.redrune.network.rs666.codec.js5.JS5Decoder;
 import org.redrune.network.rs666.codec.login.RS2LoginDecoder;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.utility.BufferUtils;
+import org.redrune.utility.tool.BufferUtils;
 import org.redrune.utility.backend.CreationResponse;
 
 import static org.redrune.network.NetworkConstants.*;
@@ -44,7 +44,7 @@ public final class HandshakeDecoder extends FrameDecoder {
 			
 			int idk1 = buffer.readShort();
 			int revision = buffer.readShort();
-
+			
 			String email = BufferUtils.readRS2String(buffer);
 			int language = buffer.readByte();
 			

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerRight;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

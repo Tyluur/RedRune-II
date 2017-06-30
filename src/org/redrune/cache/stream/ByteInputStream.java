@@ -24,7 +24,9 @@ public class ByteInputStream {
 	
 	public int readSmart() {
 		int i = buffer[pos] & 0xff;
-		if (i >= 128) { return readUShort() - 32768; }
+		if (i >= 128) {
+			return readUShort() - 32768;
+		}
 		return readUByte();
 	}
 	
@@ -67,7 +69,9 @@ public class ByteInputStream {
 	public String readString() {
 		StringBuilder s = new StringBuilder();
 		int b;
-		while ((b = readByte()) != 0) { s.append((char) b); }
+		while ((b = readByte()) != 0) {
+			s.append((char) b);
+		}
 		return s.toString();
 	}
 	

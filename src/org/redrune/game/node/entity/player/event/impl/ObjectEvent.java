@@ -19,11 +19,6 @@ import org.redrune.utility.rs.InteractionOption;
 public class ObjectEvent extends Event<ObjectEventContext> {
 	
 	@Override
-	public boolean canStart(Player player, ObjectEventContext context) {
-		return !player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION);
-	}
-	
-	@Override
 	public void run(Player player, ObjectEventContext context) {
 		final GameObject object = context.getObject();
 		ObjectDefinition objectDef = object.getDefinitions();
@@ -42,7 +37,7 @@ public class ObjectEvent extends Event<ObjectEventContext> {
 					return;
 				}
 			}
-			switch(name) {
+			switch (name) {
 				case "tree":
 					if (objectDef.containsOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.NORMAL));
@@ -121,5 +116,10 @@ public class ObjectEvent extends Event<ObjectEventContext> {
 			System.out.println(context.getItem());
 		}
 		player.getTransmitter().sendMessage("Nothing interesting happens.");
+	}
+	
+	@Override
+	public boolean canStart(Player player, ObjectEventContext context) {
+		return !player.getManager().getLocks().isLocked(LockType.OBJECT_INTERACTION);
 	}
 }

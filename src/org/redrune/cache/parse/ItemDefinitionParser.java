@@ -3,7 +3,7 @@ package org.redrune.cache.parse;
 import com.google.common.base.Stopwatch;
 import org.redrune.cache.Cache;
 import org.redrune.cache.parse.definition.ItemDefinition;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.io.IOException;
 import java.util.Map;
@@ -39,23 +39,6 @@ public class ItemDefinitionParser {
 	private static final String EQUIP_DATA_FILE = "./data/repository/item/equipment_data.txt";
 	
 	/**
-	 * Caches all the equipment data
-	 */
-	private static void cacheData() {
-		for (String txt : Misc.getFileText(EQUIP_DATA_FILE)) {
-			txt = txt.trim().toLowerCase();
-			if (txt.startsWith("/")) {
-				continue;
-			}
-			String[] stringSplit = txt.split(":");
-			String[] digitSplit = stringSplit[1].split(",");
-			Integer slot = Integer.parseInt(digitSplit[0]);
-			Integer type = Integer.parseInt(digitSplit[1]);
-			EQUIPMENT_DATA.put(Integer.parseInt(stringSplit[0]), new Integer[] { slot, type });
-		}
-	}
-	
-	/**
 	 * Loads all equip ids, slots, and equipment types
 	 */
 	public static void loadEquipmentConfiguration() {
@@ -77,6 +60,23 @@ public class ItemDefinitionParser {
 			def.setEquipType(equipmentData[1]);
 		}
 		LOGGER.info("Successfully loaded " + EQUIPMENT_DATA.size() + " equipment data and all equipment slots in " + watch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+	}
+	
+	/**
+	 * Caches all the equipment data
+	 */
+	private static void cacheData() {
+		for (String txt : Misc.getFileText(EQUIP_DATA_FILE)) {
+			txt = txt.trim().toLowerCase();
+			if (txt.startsWith("/")) {
+				continue;
+			}
+			String[] stringSplit = txt.split(":");
+			String[] digitSplit = stringSplit[1].split(",");
+			Integer slot = Integer.parseInt(digitSplit[0]);
+			Integer type = Integer.parseInt(digitSplit[1]);
+			EQUIPMENT_DATA.put(Integer.parseInt(stringSplit[0]), new Integer[] { slot, type });
+		}
 	}
 	
 	/**

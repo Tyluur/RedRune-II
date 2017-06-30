@@ -63,21 +63,6 @@ public class FloorItem extends Item {
 	}
 	
 	@Override
-	public void register() {
-	
-	}
-	
-	@Override
-	public void deregister() {
-	
-	}
-	
-	@Override
-	public int getSize() {
-		return 1;
-	}
-	
-	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof FloorItem)) {
 			return false;
@@ -96,6 +81,21 @@ public class FloorItem extends Item {
 	 */
 	public String getName() {
 		return getDefinitions().getName();
+	}
+	
+	@Override
+	public void register() {
+	
+	}
+	
+	@Override
+	public void deregister() {
+	
+	}
+	
+	@Override
+	public int getSize() {
+		return 1;
 	}
 	
 	/**

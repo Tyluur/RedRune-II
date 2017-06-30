@@ -6,7 +6,7 @@ import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.outgoing.impl.HintIconPacketBuilder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.HintIcon;
 import org.redrune.utility.rs.HintIcon.HintIconArrow;
 import org.redrune.utility.rs.HintIcon.HintIconType;
@@ -59,25 +59,15 @@ public final class HintIconManager {
 	}
 	
 	/**
-	 * Adda an icon to the location
-	 *
-	 * @param location
-	 * 		The location of the icon
-	 * @param type
-	 * 		The type of icon
-	 * @param iconArrow
-	 * 		The arrow to send
-	 * @param floorDistance
-	 * 		The distance from the floor
+	 * Gets the first free index from the {@link #icons} array
 	 */
-	public boolean addLocationIcon(Location location, HintIconType type, HintIconArrow iconArrow, int floorDistance) {
-		int freeSlot = getFreeIndex();
-		if (freeSlot == -1) {
-			System.out.println("Unable to add a new location icon for player {" + player + "}");
-			return false;
+	private int getFreeIndex() {
+		for (int index = 0; index < icons.length; index++) {
+			if (icons[index] == null) {
+				return index;
+			}
 		}
-		sendLocationIcon(location, type, iconArrow, floorDistance, freeSlot);
-		return true;
+		return -1;
 	}
 	
 	/**
@@ -107,6 +97,28 @@ public final class HintIconManager {
 	 * 		The arrow to send
 	 * @param floorDistance
 	 * 		The distance from the floor
+	 */
+	public boolean addLocationIcon(Location location, HintIconType type, HintIconArrow iconArrow, int floorDistance) {
+		int freeSlot = getFreeIndex();
+		if (freeSlot == -1) {
+			System.out.println("Unable to add a new location icon for player {" + player + "}");
+			return false;
+		}
+		sendLocationIcon(location, type, iconArrow, floorDistance, freeSlot);
+		return true;
+	}
+	
+	/**
+	 * Adda an icon to the location
+	 *
+	 * @param location
+	 * 		The location of the icon
+	 * @param type
+	 * 		The type of icon
+	 * @param iconArrow
+	 * 		The arrow to send
+	 * @param floorDistance
+	 * 		The distance from the floor
 	 * @param freeSlot
 	 * 		The slot of the icon
 	 */
@@ -114,32 +126,6 @@ public final class HintIconManager {
 		HintIcon icon = new HintIcon(freeSlot, type, iconArrow, 0, location, floorDistance);
 		icons[freeSlot] = icon;
 		player.getTransmitter().send(new HintIconPacketBuilder(icon).build(player));
-	}
-	
-	/**
-	 * Removes the icon at a slot
-	 */
-	private void removeIconAtSlot(int slot) {
-		HintIcon icon = Misc.getArrayEntry(icons, slot);
-		if (icon == null) {
-			System.out.println("Unable to remove icon at slot #" + slot + " for player{" + player + "}");
-			return;
-		}
-		player.getTransmitter().send(new HintIconPacketBuilder(new HintIcon(slot, HintIconType.REMOVAL, HintIconArrow.DEFAULT_YELLOW, 0, player.getLocation(), 65)).build(player));
-		followingIconList.remove(slot);
-		icons[slot] = null;
-	}
-	
-	/**
-	 * Gets the first free index from the {@link #icons} array
-	 */
-	private int getFreeIndex() {
-		for (int index = 0; index < icons.length; index++) {
-			if (icons[index] == null) {
-				return index;
-			}
-		}
-		return -1;
 	}
 	
 	/**
@@ -189,6 +175,20 @@ public final class HintIconManager {
 		}
 	}
 	
+	/**
+	 * Removes the icon at a slot
+	 */
+	private void removeIconAtSlot(int slot) {
+		HintIcon icon = Misc.getArrayEntry(icons, slot);
+		if (icon == null) {
+			System.out.println("Unable to remove icon at slot #" + slot + " for player{" + player + "}");
+			return;
+		}
+		player.getTransmitter().send(new HintIconPacketBuilder(new HintIcon(slot, HintIconType.REMOVAL, HintIconArrow.DEFAULT_YELLOW, 0, player.getLocation(), 65)).build(player));
+		followingIconList.remove(slot);
+		icons[slot] = null;
+	}
+	
 	public static class FollowingEntityIcon {
 		
 		/**
@@ -204,6 +204,12 @@ public final class HintIconManager {
 		private final boolean isPlayer;
 		
 		/**
+		 * The icon arrow
+		 */
+		@Getter
+		private final HintIconArrow iconArrow;
+		
+		/**
 		 * If the icon being shown is a location icon
 		 */
 		@Getter
@@ -216,12 +222,6 @@ public final class HintIconManager {
 		@Getter
 		@Setter
 		private Location lastUpdatedLocation;
-		
-		/**
-		 * The icon arrow
-		 */
-		@Getter
-		private final HintIconArrow iconArrow;
 		
 		FollowingEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow) {
 			this.entityIndex = entity.getIndex();

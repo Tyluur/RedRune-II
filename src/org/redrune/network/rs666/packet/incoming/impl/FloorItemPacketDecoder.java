@@ -18,7 +18,7 @@ import java.util.Optional;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/1/2017
  */
-public class FloorItemPacketDecoder implements IncomingPacketDecoder{
+public class FloorItemPacketDecoder implements IncomingPacketDecoder {
 	
 	/**
 	 * The packet id for picking up floor items

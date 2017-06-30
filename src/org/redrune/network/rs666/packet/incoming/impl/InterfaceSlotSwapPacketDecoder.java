@@ -3,7 +3,7 @@ package org.redrune.network.rs666.packet.incoming.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
@@ -33,7 +33,7 @@ public class InterfaceSlotSwapPacketDecoder implements IncomingPacketDecoder {
 		int toChild = toHash & 0xFFFF;
 		int toInterface = toHash >> 16;
 		
-//		System.out.println(fromItemId + "," + toHash + "," + fromSlot+ "," + toSlot + "," + toItemId +"," + interfaceHash + "," + fromInterface + "," + fromChild + "," + toChild + "," + toInterface);
+		//		System.out.println(fromItemId + "," + toHash + "," + fromSlot+ "," + toSlot + "," + toItemId +"," + interfaceHash + "," + fromInterface + "," + fromChild + "," + toChild + "," + toInterface);
 		
 		if (fromInterface == InterfaceConstants.INVENTORY_INTERFACE_ID && toInterface == InterfaceConstants.INVENTORY_INTERFACE_ID && toChild == 0) {
 			toSlot -= 28;

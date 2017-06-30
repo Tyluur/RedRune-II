@@ -43,5 +43,4 @@ public class CensorUtility {
 		return text;
 	}
 	
-	
 }

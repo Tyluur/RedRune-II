@@ -1,7 +1,7 @@
 package org.redrune.game.node;
 
 import lombok.Getter;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -54,12 +54,6 @@ public final class Location {
 		this(x, y, 0);
 	}
 	
-	public Location(Location other) {
-		this.x = other.x;
-		this.y = other.y;
-		this.plane = other.plane;
-	}
-	
 	/**
 	 * Constructs a new {@code Location} {@code Object}.
 	 *
@@ -76,6 +70,12 @@ public final class Location {
 		this.plane = plane;
 	}
 	
+	public Location(Location other) {
+		this.x = other.x;
+		this.y = other.y;
+		this.plane = other.plane;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Location) {
@@ -88,6 +88,32 @@ public final class Location {
 	@Override
 	public String toString() {
 		return "[x=" + x + ", y=" + y + ", plane=" + plane + ", id=" + getRegionId() + "]";
+	}
+	
+	/**
+	 * The region ID of the location you're in.
+	 */
+	
+	public int getRegionId() {
+		return (getRegionY() >> 3) | ((getRegionX() >> 3) << 8);
+	}
+	
+	/**
+	 * Gets the region y-coordinate.
+	 *
+	 * @return The region y-coordinate.
+	 */
+	public int getRegionY() {
+		return y >> 3;
+	}
+	
+	/**
+	 * Gets the region x-coordinate.
+	 *
+	 * @return The region x-coordinate.
+	 */
+	public int getRegionX() {
+		return x >> 3;
 	}
 	
 	/**
@@ -113,6 +139,10 @@ public final class Location {
 	 */
 	public static int getRegionId(int x, int y) {
 		return ((y >> 3) >> 3) | (((x >> 3) >> 3)) << 8;
+	}
+	
+	public static Location GetDelta(Location from, Location to) {
+		return Location.create((short) (to.x - from.x), (short) (to.y - from.y), (byte) (to.plane - from.plane));
 	}
 	
 	/**
@@ -182,15 +212,6 @@ public final class Location {
 	}
 	
 	/**
-	 * Gets the region x-coordinate.
-	 *
-	 * @return The region x-coordinate.
-	 */
-	public int getRegionX() {
-		return x >> 3;
-	}
-	
-	/**
 	 * Gets the viewport y.
 	 *
 	 * @param depth
@@ -213,23 +234,6 @@ public final class Location {
 	public int getViewportY(Location base, int depth) {
 		depth = VIEWPORT_SIZES[depth];
 		return y - (SECTORS_PER_REGION * (base.getRegionY() - (depth >> SECTOR_LENGTH)));
-	}
-	
-	/**
-	 * Gets the region y-coordinate.
-	 *
-	 * @return The region y-coordinate.
-	 */
-	public int getRegionY() {
-		return y >> 3;
-	}
-	
-	/**
-	 * The region ID of the location you're in.
-	 */
-	
-	public int getRegionId() {
-		return (getRegionY() >> 3) | ((getRegionX() >> 3) << 8);
 	}
 	
 	/**
@@ -333,10 +337,6 @@ public final class Location {
 	
 	public int getLocalY(Location lastRegion) {
 		return y - ((lastRegion.getRegionY() - (VIEWPORT_SIZES[plane] >> 4)) * 8);
-	}
-	
-	public static Location GetDelta(Location from, Location to) {
-		return Location.create((short) (to.x - from.x), (short) (to.y - from.y), (byte) (to.plane - from.plane));
 	}
 	
 	public int getXInRegion() {

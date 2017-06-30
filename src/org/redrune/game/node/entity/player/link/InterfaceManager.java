@@ -242,6 +242,14 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
+	 * Closes the input boxes
+	 */
+	public void closeInputBox() {
+		Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
+		player.getTransmitter().closeInputBox();
+	}
+	
+	/**
 	 * Gets the pane id for the mode we're on
 	 *
 	 * @param usingFixedMode
@@ -357,14 +365,6 @@ public final class InterfaceManager implements InterfaceConstants {
 	public void closeAll() {
 		closeInputBox();
 		player.getManager().getInterfaces().closeAllInterfaces();
-	}
-	
-	/**
-	 * Closes the input boxes
-	 */
-	public void closeInputBox() {
-		Arrays.stream(InputType.values()).forEach(type -> player.removeAttribute(type.getName()));
-		player.getTransmitter().closeInputBox();
 	}
 	
 	/**

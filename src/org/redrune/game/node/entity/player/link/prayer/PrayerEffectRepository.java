@@ -1,6 +1,6 @@
 package org.redrune.game.node.entity.player.link.prayer;
 
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.HashSet;
 import java.util.Optional;

@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.FriendsListBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.IgnoreListBuilder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -76,7 +76,7 @@ public class ContactManager {
 	 * Shows the status of all my friends onto my friends list
 	 */
 	public void showMyFriendsStatus() {
-	
+
 	}
 	
 	/**

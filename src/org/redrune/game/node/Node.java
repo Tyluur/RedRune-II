@@ -29,13 +29,6 @@ public abstract class Node {
 	public abstract void deregister();
 	
 	/**
-	 * Gets the size of the node
-	 *
-	 * @return The size of the node
-	 */
-	public abstract int getSize();
-	
-	/**
 	 * The location of the node
 	 */
 	@Getter
@@ -132,11 +125,19 @@ public abstract class Node {
 	
 	/**
 	 * Gets the center location.
+	 *
 	 * @return The center location.
 	 */
 	public Location getCenterLocation() {
 		int offset = getSize() >> 1;
 		return location.transform(offset, offset, 0);
 	}
+	
+	/**
+	 * Gets the size of the node
+	 *
+	 * @return The size of the node
+	 */
+	public abstract int getSize();
 	
 }

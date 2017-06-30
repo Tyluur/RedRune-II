@@ -3,7 +3,7 @@ package org.redrune.utility.repository.item;
 import com.google.gson.reflect.TypeToken;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.cache.parse.definition.ItemDefinition;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -59,22 +59,6 @@ public final class ItemRepository {
 	 */
 	private static final Logger LOGGER = Misc.constructLogger(ItemRepository.class);
 	
-	/**
-	 * Loads all item repository data that needs to be stored on startup [and cleared occasionally]
-	 *
-	 * @param reload
-	 * 		If the item should be cleared [in the case of a reload]
-	 */
-	public static void initialize(boolean reload) {
-		if (reload) {
-			UNTRADEABLES.clear();
-			UNTRADEABLE_CACHE.clear();
-		}
-		List<String> fileText = Misc.getFileText(UNTRADEABLE_ITEMS_LOCATION);
-		UNTRADEABLES.addAll(fileText);
-		LOGGER.info("Loaded " + UNTRADEABLES.size() + " untradeable items.");
-	}
-	
 	public static void main(String[] args) {
 		HashMap<Integer, Double> itemWeights = new HashMap<>();
 		try {
@@ -97,6 +81,66 @@ public final class ItemRepository {
 			Misc.saveData(getFileById(itemId), data);
 			System.out.println("Finished saving " + itemId);
 		}
+	}
+	
+	/**
+	 * Gets the item data using caching to increase efficiency
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 */
+	private static ItemData getItemData(int itemId) {
+		ItemData data = DATA_MAP.get(itemId);
+		boolean add = false;
+		if (data == null) {
+			data = loadFileData(itemId);
+			add = true;
+		}
+		if (add) {
+			DATA_MAP.put(itemId, data);
+		}
+		return data;
+	}
+	
+	/**
+	 * Gets the file of an item by its id
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 */
+	private static File getFileById(int itemId) {
+		return new File(ITEM_REPOSITORY_LOCATION + itemId + ".json");
+	}
+	
+	/**
+	 * Loads the file data
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 */
+	private static ItemData loadFileData(int itemId) {
+		File file = getFileById(itemId);
+		if (!file.exists()) {
+			return null;
+		}
+		return Misc.getGSON().fromJson(Misc.getText(file.getAbsolutePath()), new TypeToken<ItemData>() {
+		}.getType());
+	}
+	
+	/**
+	 * Loads all item repository data that needs to be stored on startup [and cleared occasionally]
+	 *
+	 * @param reload
+	 * 		If the item should be cleared [in the case of a reload]
+	 */
+	public static void initialize(boolean reload) {
+		if (reload) {
+			UNTRADEABLES.clear();
+			UNTRADEABLE_CACHE.clear();
+		}
+		List<String> fileText = Misc.getFileText(UNTRADEABLE_ITEMS_LOCATION);
+		UNTRADEABLES.addAll(fileText);
+		LOGGER.info("Loaded " + UNTRADEABLES.size() + " untradeable items.");
 	}
 	
 	/**
@@ -143,50 +187,6 @@ public final class ItemRepository {
 	public static String getExamine(int itemId) {
 		ItemData data = getItemData(itemId);
 		return data == null ? null : data.getExamine();
-	}
-	
-	/**
-	 * Gets the item data using caching to increase efficiency
-	 *
-	 * @param itemId
-	 * 		The id of the item
-	 */
-	private static ItemData getItemData(int itemId) {
-		ItemData data = DATA_MAP.get(itemId);
-		boolean add = false;
-		if (data == null) {
-			data = loadFileData(itemId);
-			add = true;
-		}
-		if (add) {
-			DATA_MAP.put(itemId, data);
-		}
-		return data;
-	}
-	
-	/**
-	 * Loads the file data
-	 *
-	 * @param itemId
-	 * 		The id of the item
-	 */
-	private static ItemData loadFileData(int itemId) {
-		File file = getFileById(itemId);
-		if (!file.exists()) {
-			return null;
-		}
-		return Misc.getGSON().fromJson(Misc.getText(file.getAbsolutePath()), new TypeToken<ItemData>() {
-		}.getType());
-	}
-	
-	/**
-	 * Gets the file of an item by its id
-	 *
-	 * @param itemId
-	 * 		The id of the item
-	 */
-	private static File getFileById(int itemId) {
-		return new File(ITEM_REPOSITORY_LOCATION + itemId + ".json");
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import org.redrune.game.content.action.combat.player.calc.MagicCombatCalculator;
 import org.redrune.game.content.action.combat.player.registry.MagicSpellContext;
 import org.redrune.game.content.action.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitAttributes;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
@@ -30,7 +31,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean run(Player player, org.redrune.game.node.entity.Entity target, int spellId, int combatStyle, SpecialAttackEvent special) {
-		final boolean regularCast = player.getCombatDefinitions().getAutocastId() == -1;
+		final boolean regularCast = player.getAttribute("spell_cast_id", -1) != -1;
 		// we're not auto-casting so we should reset the spell
 		if (regularCast) {
 			player.getCombatDefinitions().resetSpells(false);
@@ -50,7 +51,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 			player.getTransmitter().sendMessage("This spell has not yet been added! Please suggest it on forums.");
 			return false;
 		}
-		// spell instasnce
+		// spell instance
 		MagicSpellEvent spellEvent = spellOptional.get();
 		switch (player.getCombatDefinitions().getSpellbook()) {
 			case REGULAR:
@@ -69,7 +70,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getAttackBonus(Player player, int weaponId, int combatStyle) {
+	public double getAttackBonus(Player player, int weaponId, int combatStyle, boolean specialAttack) {
 		return 0;
 	}
 	
@@ -79,7 +80,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getMaxHit(Player player, int weaponId, int combatStyle, double accuracyIncrease) {
+	public double getMaxHit(Player player, int weaponId, int combatStyle, double multiplier) {
 		return 0;
 	}
 	
@@ -143,31 +144,48 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * 		The target
 	 * @param event
 	 * 		The magic spell event
-	 * @param sendTask
-	 * 		The task that is executed when the spell is used
+	 * @param spellCastTask
+	 * 		The task that is executed when the spell is cast
 	 * @param hitLandTask
 	 * 		The task that is executed when the hit lands.
 	 * @return If the hit landed (damage > 0).
 	 */
-	public boolean sendSpell(Player player, org.redrune.game.node.entity.Entity target, MagicSpellEvent event, Runnable sendTask, Runnable hitLandTask) {
+	public boolean sendSpell(Player player, Entity target, MagicSpellEvent event, Runnable spellCastTask, Runnable hitLandTask) {
 		int maxHit = event.maxHit();
 		int damage = randomizeHit(maxHit, calculator.totalAggressiveBoost(player), calculator.totalDefensiveBoost(target));
 		appendExperience(player, target, event.exp(), damage);
-		
-		int delay = getProjectileDelay(player, target);
+		// the projectile delay speed
+		int projectileDelay = getProjectileDelay(player, target);
+		// the extra delay calculation
+		double delayCalc = getDelay(player, target, projectileDelay, 0);
+		// the final delay
+		final int delay = (int) (projectileDelay + delayCalc);
 		
 		final Hit hit = new Hit(player, damage, HitSplat.MAGIC_DAMAGE).setMaxHit(maxHit);
-		if (sendTask != null) {
-			sendTask.run();
+		
+		// handles the leeches aspect of the hit
+		if (target.isPlayer()) {
+			target.toPlayer().getManager().getPrayers().handleLeeches(hit);
 		}
+		
+		// uses the spells animation
+		if (event.animationId() != -1) {
+			player.sendAnimation(event.animationId());
+		}
+		
+		// sends the task that is executed when the spell is used successfully
+		if (damage > 0 && spellCastTask != null) {
+			spellCastTask.run();
+		}
+		
 		SystemManager.getScheduler().schedule(new ScheduledTask(1, delay) {
 			
 			@Override
 			public void run() {
 				// so we don't have to make a new task for blocking.
-				if (getTicksPassed() == getGoalTicks() - 2) {
+				if (delay == 2 && getTicksPassed() == 0 || getTicksPassed() == getGoalTicks() - 1) {
 					target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
-				} else if (getTicksPassed() == getGoalTicks() - 1) {
+				} else if (getTicksPassed() == getGoalTicks()) {
 					// the attribute is put when the hit actually appears
 					hit.getAttributes().put(HitAttributes.WEAPON_USED, player.getEquipment().getWeaponId());
 					// and the hit is applied to the receiver
@@ -178,9 +196,9 @@ public class MagicCombatSwing extends CombatTypeSwing {
 						if (event.hitGfx() != -1) {
 							target.sendGraphics(event.hitGfx(), event.gfxHeight(), 0);
 						}
-					}
-					if (hitLandTask != null) {
-						hitLandTask.run();
+						if (hitLandTask != null) {
+							hitLandTask.run();
+						}
 					}
 					stop();
 				}
@@ -188,4 +206,5 @@ public class MagicCombatSwing extends CombatTypeSwing {
 		});
 		return damage > 0;
 	}
+	
 }

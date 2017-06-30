@@ -40,17 +40,17 @@ public class LeechDefenceDrain implements DrainPrayer {
 	}
 	
 	@Override
-	public double raiseCap() {
-		return 0.10;
-	}
-	
-	@Override
 	public int[] prayerSlots() {
 		return args(DEFENCE_SLOT);
 	}
 	
 	@Override
 	public double[] amounts() {
-		return args(0.05);
+		return args(0.01);
+	}
+	
+	@Override
+	public double raiseCap() {
+		return 0.10;
 	}
 }

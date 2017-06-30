@@ -7,7 +7,7 @@ import org.redrune.game.content.action.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.prayer.PrayerEffectRepository;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.MagicConstants;
 import org.redrune.utility.rs.constant.SkillConstants;

@@ -3,8 +3,10 @@ package org.redrune.game.content.action.combat.player.calc;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeCalculator;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.BonusConstants;
+import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
@@ -16,30 +18,40 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 	@Override
 	public double totalAggressiveBoost(Player player, Object... params) {
 		final int attackStyle = (int) params[0];
-		
-		int style = attackStyle == 0 ? 3 : attackStyle == 2 ? 1 : 0;
-		int attLvl = player.getSkills().getLevel(SkillConstants.RANGE);
-		int attackBonus = player.getEquipment().getBonus(RANGE_ATTACK);
-		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.RANGE);
-		double accuracyMultiplier = 1.00;
-		if (StaticCombatFormulae.fullVoidEquipped(player, 11664, 11675)) {
-			accuracyMultiplier += 0.10;
+		final boolean specialAttack = (boolean) params[1];
+		final int weaponId = player.getEquipment().getWeaponId();
+		int baseLevel = player.getSkills().getLevelForXp(RANGE);
+		int weaponRequirement = player.getEquipment().getWeaponRequirement(RANGE);
+		double weaponBonus = 0.0;
+		if (baseLevel > weaponRequirement) {
+			weaponBonus = (baseLevel - weaponRequirement) * .3;
 		}
-		double cumulativeAtt = attLvl * attackMultiplier + style;
-		return (14 + cumulativeAtt + (attackBonus / 8) + ((cumulativeAtt * attackBonus) / 64)) * accuracyMultiplier;
+		int level = player.getSkills().getLevel(RANGE);
+		double prayer = player.getManager().getPrayers().getBasePrayerBoost(RANGE);
+		double additional = 1.0; // Slayer helmet/salve/...
+		if (specialAttack) {
+			additional += StaticCombatFormulae.getSpecialAccuracyModifier(weaponId == -1 ? player.getEquipment().getIdInSlot(EquipConstants.SLOT_ARROWS) : weaponId);
+		}
+		int styleBonus = 0;
+		if (attackStyle == 0) {
+			styleBonus = 3;
+		}
+		double effective = Math.floor(((level * prayer) * additional) + styleBonus + weaponBonus);
+		int bonus = player.getEquipment().getBonus(RANGE_ATTACK);
+		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
 	}
 	
 	@Override
-	public double totalDefensiveBoost(org.redrune.game.node.entity.Entity entity, Object... params) {
+	public double totalDefensiveBoost(Entity entity, Object... params) {
 		if (entity.isPlayer()) {
 			Player player = entity.toPlayer();
-			int style = player.getCombatDefinitions().getAttackStyle();
-			style = style == 2 ? 1 : style == 3 ? 3 : 0;
-			int defLvl = player.getSkills().getLevel(SkillConstants.DEFENCE);
-			int defBonus = player.getEquipment().getBonus(BonusConstants.RANGE_DEFENCE);
-			double defenceMultiplier = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
-			double cumulativeDef = defLvl * defenceMultiplier + style;
-			return 14 + cumulativeDef + (defBonus / 8) + ((cumulativeDef * defBonus) / 64);
+			int style = (int) params[0];
+			int styleBonus = (style == 2 ? 1 : style == 3 ? 3 : 0);
+			int level = player.getSkills().getLevel(DEFENCE);
+			double prayer = player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
+			double effective = Math.floor((level * prayer) + styleBonus);
+			int equipment = player.getEquipment().getBonus(BonusConstants.RANGE_DEFENCE);
+			return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
 		} else {
 			// TODO: entity defense bonuses
 			return 0;
@@ -54,7 +66,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 		
 		double rangedLvl = player.getSkills().getLevel(SkillConstants.RANGE);
 		double styleBonus = attackStyle == 0 ? 3 : attackStyle == 1 ? 0 : 1;
-		double effectiveStrength = Math.floor(rangedLvl + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.PRAYER)) + styleBonus; // TODO: prayer multiplier
+		double effectiveStrength = Math.floor(rangedLvl + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.PRAYER)) + styleBonus;
 		
 		// void range equipped?
 		if (StaticCombatFormulae.fullVoidEquipped(player, 11664, 11675)) {

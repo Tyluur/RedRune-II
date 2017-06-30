@@ -102,12 +102,23 @@ public final class NetworkSession {
 				packetQueue.add(packet);
 				return null;
 			} else {
-				if (channel != null && channel.isConnected()) {
-					return channel.write(packet);
-				}
+				return writeNoDelay(packet);
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Writes a packet with no delay
+	 *
+	 * @param packet
+	 * 		The packet to write
+	 */
+	public synchronized ChannelFuture writeNoDelay(Packet packet) {
+		if (channel != null && channel.isConnected()) {
+			return channel.write(packet);
 		}
 		return null;
 	}
@@ -119,9 +130,7 @@ public final class NetworkSession {
 		try {
 			Packet packet;
 			while ((packet = packetQueue.poll()) != null) {
-				if (channel != null && channel.isConnected()) {
-					channel.write(packet);
-				}
+				writeNoDelay(packet);
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();

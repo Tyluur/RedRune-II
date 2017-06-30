@@ -105,6 +105,14 @@ public final class DialogueManager {
 	}
 	
 	/**
+	 * Ends the current dialogue
+	 */
+	public void end() {
+		this.dialogue = null;
+		this.player.getManager().getInterfaces().closeChatboxInterface();
+	}
+	
+	/**
 	 * Gets the option clicked on the interface by the component id
 	 *
 	 * @param interfaceId
@@ -122,14 +130,6 @@ public final class DialogueManager {
 						return componentId;
 				}
 		}
-	}
-	
-	/**
-	 * Ends the current dialogue
-	 */
-	public void end() {
-		this.dialogue = null;
-		this.player.getManager().getInterfaces().closeChatboxInterface();
 	}
 	
 }

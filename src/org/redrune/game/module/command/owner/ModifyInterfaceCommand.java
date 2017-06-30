@@ -8,7 +8,7 @@ import org.redrune.game.node.entity.player.Player;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/27/2017
  */
-@CommandManifest(description = "Changes the viewable components of an interface", types = { Integer.class, Integer.class, Boolean.class})
+@CommandManifest(description = "Changes an interface", types = { Integer.class, Integer.class, Boolean.class })
 public class ModifyInterfaceCommand extends CommandModule {
 	
 	@Override

@@ -5,7 +5,9 @@ import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.DialogueConstants;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

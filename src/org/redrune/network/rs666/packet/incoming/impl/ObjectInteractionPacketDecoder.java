@@ -13,7 +13,7 @@ import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.rs.InteractionOption;
 

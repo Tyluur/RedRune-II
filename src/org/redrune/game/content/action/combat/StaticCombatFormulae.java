@@ -10,9 +10,9 @@ import org.redrune.game.content.action.combat.player.CombatType;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 import java.util.Queue;
@@ -1430,5 +1430,53 @@ public class StaticCombatFormulae {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Gets the accuracy multiplier of a weapon when on special
+	 *
+	 * @param itemId
+	 * 		The weapon
+	 */
+	// TODO: boosts for ammo [rs combat data url has it]
+	public static double getSpecialAccuracyModifier(int itemId) {
+		if (itemId == -1) {
+			return 0;
+		}
+		String name = ItemDefinitionParser.forId(itemId).getName().toLowerCase();
+		if (name.contains("whip") || name.contains("dragon scimitar") || name.contains("dragon dagger") || name.contains("dragon spear") || name.contains("zamorakian spear") || name.contains("dragon halberd") || name.contains("anchor") || name.contains("magic longbow") || name.contains("magic shortbow") || name.contains("dragon longsword")) {
+			return 0.25;
+		}
+		if (name.contains("dragon mace")) {
+			return 0.1;
+		}
+		if (name.contains("korasi") || name.contains("dragon claws")) {
+			return 0.6;
+		}
+		if (name.contains("armadyl godsword")) {
+			return 0.10;
+		}
+		if (name.contains("godsword")) {
+			return 0.10;
+		}
+		if (name.contains("barrelchest anchor")) {
+			return 0.10;
+		}
+		if (name.contains("granite maul") || name.contains("granite mace")) {
+			return 0.095;
+		}
+		if (name.contains("dark bow") || name.contains("zanik")) {
+			return 0.5;
+		}
+		if (name.contains("morrigan's javel")) {
+			return 0.4;
+		}
+		if (name.contains("vesta's spear") || name.contains("statius' warhammer") || name.contains("statius' warhammer (deg)") || name.contains("morrigan's throw") || name.contains("hand cannon")) {
+			return 1.7;
+		}
+		if (name.contains("vesta's longsword")) {
+			return 1.5;
+		}
+		return 1;
 	}
 }

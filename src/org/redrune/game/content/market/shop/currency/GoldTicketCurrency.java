@@ -26,7 +26,7 @@ public class GoldTicketCurrency implements ShopCurrency {
 	
 	@Override
 	public int getBuyPrice(int itemId) {
-		switch(itemId) {
+		switch (itemId) {
 			default:
 				return Integer.MAX_VALUE;
 		}

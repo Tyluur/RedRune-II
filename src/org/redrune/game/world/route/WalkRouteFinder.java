@@ -39,15 +39,15 @@ public class WalkRouteFinder {
 	
 	private static final int[] bufferY = new int[QUEUE_SIZE];
 	
+	public static boolean debug = true;
+	
+	public static long debug_transmittime = 0;
+	
 	private static int exitX = -1;
 	
 	private static int exitY = -1;
 	
 	private static boolean isAlternative;
-	
-	public static boolean debug = true;
-	
-	public static long debug_transmittime = 0;
 	
 	/**
 	 * Find's route using given strategy. Returns amount of steps found. If
@@ -187,6 +187,39 @@ public class WalkRouteFinder {
 		}
 		
 		return steps;
+	}
+	
+	/**
+	 * Transmit's clip data to route finder buffers.
+	 */
+	private static void transmitClipData(int x, int y, int z) {
+		int graphBaseX = x - (GRAPH_SIZE / 2);
+		int graphBaseY = y - (GRAPH_SIZE / 2);
+		
+		for (int transmitRegionX = graphBaseX >> 6; transmitRegionX <= (graphBaseX + (GRAPH_SIZE - 1)) >> 6; transmitRegionX++) {
+			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
+				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
+				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
+				
+				Region region = RegionManager.getRegionAndLoad(transmitRegionX << 8 | transmitRegionY);
+				RegionMap map = region.getMap();
+				if (map == null || region.getLoadMapStage() != 2 || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
+					System.out.println("[id=" + region.getRegionId() + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
+					for (int fillX = startX; fillX < endX; fillX++) {
+						for (int fillY = startY; fillY < endY; fillY++) {
+							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;
+						}
+					}
+				} else {
+					int[][] masks = map.getMasks()[z];
+					for (int fillX = startX; fillX < endX; fillX++) {
+						for (int fillY = startY; fillY < endY; fillY++) {
+							clip[fillX - graphBaseX][fillY - graphBaseY] = masks[fillX & 0x3F][fillY & 0x3F];
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**
@@ -516,39 +549,6 @@ public class WalkRouteFinder {
 		exitX = currentX;
 		exitY = currentY;
 		return false;
-	}
-	
-	/**
-	 * Transmit's clip data to route finder buffers.
-	 */
-	private static void transmitClipData(int x, int y, int z) {
-		int graphBaseX = x - (GRAPH_SIZE / 2);
-		int graphBaseY = y - (GRAPH_SIZE / 2);
-		
-		for (int transmitRegionX = graphBaseX >> 6; transmitRegionX <= (graphBaseX + (GRAPH_SIZE - 1)) >> 6; transmitRegionX++) {
-			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
-				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
-				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
-				
-				Region region = RegionManager.getRegionAndLoad(transmitRegionX << 8 | transmitRegionY);
-				RegionMap map = region.getMap();
-				if (map == null || region.getLoadMapStage() != 2 || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
-					System.out.println("[id=" + region.getRegionId() + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
-					for (int fillX = startX; fillX < endX; fillX++) {
-						for (int fillY = startY; fillY < endY; fillY++) {
-							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;
-						}
-					}
-				} else {
-					int[][] masks = map.getMasks()[z];
-					for (int fillX = startX; fillX < endX; fillX++) {
-						for (int fillY = startY; fillY < endY; fillY++) {
-							clip[fillX - graphBaseX][fillY - graphBaseY] = masks[fillX & 0x3F][fillY & 0x3F];
-						}
-					}
-				}
-			}
-		}
 	}
 	
 	/**

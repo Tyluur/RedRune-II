@@ -10,7 +10,7 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.codec.RS2GameDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.LoginResponseCodeBuilder;
-import org.redrune.utility.BufferUtils;
+import org.redrune.utility.tool.BufferUtils;
 import org.redrune.utility.backend.ReturnCode;
 
 /**

@@ -1,4 +1,4 @@
-package org.redrune.utility;
+package org.redrune.utility.tool;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

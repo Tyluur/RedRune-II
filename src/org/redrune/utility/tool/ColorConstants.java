@@ -1,4 +1,4 @@
-package org.redrune.utility;
+package org.redrune.utility.tool;
 
 /**
  * This interface contains all color codes for regularly used colors.

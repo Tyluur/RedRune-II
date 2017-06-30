@@ -39,11 +39,6 @@ public interface DrainPrayer extends PrayerConstants {
 	double drainCap();
 	
 	/**
-	 * The maximum this drain can be raised to
-	 */
-	double raiseCap();
-	
-	/**
 	 * The slots in the {@link PrayerManager#modifiers} array
 	 */
 	int[] prayerSlots();
@@ -59,6 +54,11 @@ public interface DrainPrayer extends PrayerConstants {
 	default boolean raiseSource() {
 		return raiseCap() != -1;
 	}
+	
+	/**
+	 * The maximum this drain can be raised to
+	 */
+	double raiseCap();
 	
 	/**
 	 * Constructs an int array from a varargs int array

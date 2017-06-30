@@ -17,7 +17,7 @@ public interface SpecialAttackEvent extends CombatRegistryEvent {
 	/**
 	 * The increase in accuracy for the applicable weapons.
 	 */
-	double accuracyIncrease();
+	double multiplier();
 	
 	/**
 	 * The energy required to use the special attack

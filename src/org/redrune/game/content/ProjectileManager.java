@@ -3,13 +3,29 @@ package org.redrune.game.content;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.World;
+import org.redrune.network.rs666.packet.outgoing.impl.ProjectilePacketBuilder;
 import org.redrune.utility.rs.Projectile;
+
+import java.util.stream.Stream;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/22/2017
  */
 public class ProjectileManager {
+	
+	/**
+	 * Sends a projectile
+	 *
+	 * @param projectile
+	 * 		The projectile
+	 */
+	public static void sendProjectile(Projectile projectile) {
+		Location sourceLocation = projectile.getSourceLocation();
+		Stream<Player> closeByPlayers = World.get().getPlayers().stream().filter(player -> player.getLocation().withinDistance(sourceLocation, 16));
+		closeByPlayers.forEach(player -> player.getTransmitter().send(new ProjectilePacketBuilder(projectile).build(player)));
+	}
 	
 	/**
 	 * Creates a new projectile with the speed being calculated, based on the distance from each other [source-target]

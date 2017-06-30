@@ -16,7 +16,7 @@ public class DialogueInteractionModule implements InterfaceInteractionModule {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		switch(interfaceId) {
+		switch (interfaceId) {
 			case 740:
 				if (componentId == 3) {
 					player.getManager().getInterfaces().closeChatboxInterface();

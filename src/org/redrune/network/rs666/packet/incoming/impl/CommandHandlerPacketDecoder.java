@@ -5,7 +5,7 @@ import org.redrune.game.node.entity.player.event.context.CommandEventContext;
 import org.redrune.game.node.entity.player.event.impl.CommandEvent;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.repository.EventRepository;
 
 /**

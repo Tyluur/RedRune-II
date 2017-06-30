@@ -2,6 +2,7 @@ package org.redrune.game.content.action.combat.player.calc;
 
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeCalculator;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -15,41 +16,51 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 	
 	@Override
 	public double totalAggressiveBoost(Player player, Object... params) {
-		final int attackStyle = (int) params[0];
-		final int weaponId = (int) params[1];
-		final int style = attackStyle == 0 ? 3 : attackStyle == 2 ? 1 : 0;
-		// the attack level
-		final int attackLevel = player.getSkills().getLevel(ATTACK);
-		// the attack bonus from the weapon
-		final int attackBonus = player.getEquipment().getBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle));
+		final int weaponId = (int) params[0];
+		final int styleParam = (int) params[1];
+		final boolean specialAttack = (boolean) params[2];
 		
-		// the prayer attack bonus
-		double attackMultiplier = 1.0 + player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.ATTACK);
-		
-		// if we have full void equipped, 15% higher damage...
-		if (StaticCombatFormulae.fullVoidEquipped(player, 11665, 11676)) {
-			attackMultiplier += 0.15;
+		final int style = StaticCombatFormulae.getMeleeBonusStyle(weaponId, styleParam);
+		int baseLevel = player.getSkills().getLevelForXp(ATTACK);
+		int weaponRequirement = player.getEquipment().getWeaponRequirement(ATTACK);
+		double weaponBonus = 0.0;
+		if (baseLevel > weaponRequirement) {
+			weaponBonus = (baseLevel - weaponRequirement) * .3;
 		}
-		double cumulativeAttack = attackLevel * attackMultiplier + style;
-		return (14 + cumulativeAttack + (attackBonus / 8) + ((cumulativeAttack * attackBonus) / 64)) * attackMultiplier;
+		
+		final int level = player.getSkills().getLevel(ATTACK);
+		final double prayer = player.getManager().getPrayers().getBasePrayerBoost(ATTACK);
+		double additional = 1.0; // Black mask/slayer helmet/salve/...
+		// we add the spec modifier
+		if (specialAttack) {
+			additional += StaticCombatFormulae.getSpecialAccuracyModifier(weaponId);
+		}
+		final int styleBonus = styleParam == 0 ? 3 : styleParam == 2 ? 1 : 0;
+		int bonus = player.getEquipment().getBonus(style);
+		double effective = Math.floor(((level * prayer) * additional) + styleBonus + weaponBonus);
+		return (int) Math.floor((((effective + 8) * (bonus + 64)) / 10) * 1.10);
 	}
 	
 	@Override
-	public double totalDefensiveBoost(org.redrune.game.node.entity.Entity entity, Object... params) {
+	public double totalDefensiveBoost(Entity entity, Object... params) {
 		if (entity.isPlayer()) {
-			// the attack style of the player
-			final int attackStyle = (int) params[0];
 			// the weapon id of the player
-			final int weaponId = (int) params[1];
+			final int weaponId = (int) params[0];
+			// the attack style of the player
+			final int attackStyle = (int) params[1];
+			
 			// the attack style of the receiver
 			final int targetStyle = entity.getCombatDefinitions().getAttackStyle();
 			
-			int styleType = targetStyle == 2 ? 1 : targetStyle == 3 ? 3 : 0;
-			final int defenceLevel = entity.toPlayer().getSkills().getLevel(DEFENCE);
-			final int defenceBonus = entity.toPlayer().getEquipment().getBonus(StaticCombatFormulae.getMeleeDefenceBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle)));
-			final double defenceMultiplier = 1.0 + entity.toPlayer().getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
-			final double defenceCumulation = defenceLevel * defenceMultiplier + styleType;
-			return 14 + defenceCumulation + (defenceBonus / 8) + ((defenceCumulation * (defenceBonus)) / 64);
+			Player player = entity.toPlayer();
+			
+			final int level = entity.toPlayer().getSkills().getLevel(DEFENCE);
+			int styleBonus = targetStyle == 2 ? 1 : targetStyle == 3 ? 3 : 0;
+			double prayer = player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
+			double effective = Math.floor((level * prayer) + styleBonus);
+			final int equipment = entity.toPlayer().getEquipment().getBonus(StaticCombatFormulae.getMeleeDefenceBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle)));
+			
+			return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
 		} else {
 			// TODO: npc defence bonuses
 			return 0;
@@ -58,32 +69,30 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 	
 	@Override
 	public double maximumDamageAppendable(Player player, Object... params) {
-		final int attackStyle = (int) params[0];
-		final int weaponId = (int) params[1];
+		final int weaponId = (int) params[0];
+		final int attackStyle = (int) params[1];
 		final double multiplier = (double) params[2];
 		
 		double strengthLvl = player.getSkills().getLevel(STRENGTH);
 		int xpStyle = StaticCombatFormulae.getXpStyle(weaponId, attackStyle);
 		double styleBonus = xpStyle == STRENGTH ? 3 : xpStyle == -1 ? 1 : 0;
-		double otherBonus = 1;
-		double effectiveStrength = 8 + Math.floor((strengthLvl * 1/*player.getPrayer().getStrengthMultiplier()*/) + styleBonus); // TODO: prayer str boosts
+		// if we use the berserk effect
+		boolean berserk = player.getEquipment().getIdInSlot(SLOT_AMULET) == 11128 && (weaponId == 6528 || weaponId == 6527 || weaponId == 6523 || weaponId == 6526);
+		double otherBonus = berserk ? 1.20 : 1;
+		double effectiveStrength = 8 + Math.floor((strengthLvl * player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.STRENGTH)) + styleBonus);
 		if (StaticCombatFormulae.fullVoidEquipped(player, 11665, 11676)) {
 			effectiveStrength = Math.floor(effectiveStrength * 1.1);
 		}
+		// if we have the dharoks armour set equipped
+		if (StaticCombatFormulae.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok", "dharok", "dharok")) {
+			// Example: 99 LP out of 999 LP total. 99 / 999 = 0.1; 2  - 0.1 = 1.9 for a 90% damage boost.
+			double dharokMultiplier = 2 - ((double) player.getHealthPoints() / (double) player.getMaxHealth());
+			// multiplying the
+			otherBonus *= dharokMultiplier;
+		}
 		double strengthBonus = player.getEquipment().getBonus(STRENGTH_BONUS);
 		double baseDamage = 5 + effectiveStrength * (1 + (strengthBonus / 64));
-		boolean berserk = player.getEquipment().getIdInSlot(SLOT_AMULET) == 11128 && (weaponId == 6528 || weaponId == 6527 || weaponId == 6523 || weaponId == 6526);
 		double max = Math.floor(baseDamage * multiplier * otherBonus);
-		
-		// if we use the berserk effect
-		if (berserk) {
-			max = max * 1.26;
-		}
-		// uf we have the dharoks armour set equipped
-		if (StaticCombatFormulae.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok", "dharok", "dharok")) {
-			int hpLost = player.getMaxHitpoints() - player.getHitpoints();
-			max += (hpLost * 0.60) + 1;
-		}
 		return (int) max;
 	}
 }

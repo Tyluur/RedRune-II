@@ -201,7 +201,7 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 	
 	private void endBlock() {
 		computedBlockCRC = mCrc.getFinalCRC();
-	    /* A bad CRC is considered a fatal error. */
+		/* A bad CRC is considered a fatal error. */
 		if (storedBlockCRC != computedBlockCRC) {
 			crcError();
 		}

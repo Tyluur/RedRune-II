@@ -107,24 +107,6 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 	}
 	
 	/**
-	 * Shows the interface to the player
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	public static void show(Player player) {
-		// sent twice because of the bank glitch
-		for (int i = 0; i < 2; i++) {
-			player.stop(true, true, true, true);
-			player.getTransmitter().send(new AccessMaskBuilder(INTERFACE_ID, 7, 0, 15, 1538).build(player));
-			player.getTransmitter().send(new AccessMaskBuilder(INVENTORY_INTERFACE_ID, 0, 0, 28, 1538).build(player));
-			player.getTransmitter().send(new InterfaceChangeBuilder(INTERFACE_ID, 49, true).build(player));
-			player.getManager().getInterfaces().sendInterface(INTERFACE_ID, true).sendInventoryInterface(INVENTORY_INTERFACE_ID);
-			refresh(player);
-		}
-	}
-	
-	/**
 	 * Refreshes the interface
 	 *
 	 * @param player
@@ -171,6 +153,24 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 		player.getTransmitter().send(new CS2StringBuilder(323, attack.toString()).build(player));
 		player.getTransmitter().send(new CS2StringBuilder(324, defence.toString()).build(player));
 		player.getTransmitter().send(new CS2StringBuilder(325, other.toString()).build(player));
+	}
+	
+	/**
+	 * Shows the interface to the player
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public static void show(Player player) {
+		// sent twice because of the bank glitch
+		for (int i = 0; i < 2; i++) {
+			player.stop(true, true, true, true);
+			player.getTransmitter().send(new AccessMaskBuilder(INTERFACE_ID, 7, 0, 15, 1538).build(player));
+			player.getTransmitter().send(new AccessMaskBuilder(INVENTORY_INTERFACE_ID, 0, 0, 28, 1538).build(player));
+			player.getTransmitter().send(new InterfaceChangeBuilder(INTERFACE_ID, 49, true).build(player));
+			player.getManager().getInterfaces().sendInterface(INTERFACE_ID, true).sendInventoryInterface(INVENTORY_INTERFACE_ID);
+			refresh(player);
+		}
 	}
 	
 }

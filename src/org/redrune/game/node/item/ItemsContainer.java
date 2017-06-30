@@ -203,6 +203,16 @@ public final class ItemsContainer<T extends Item> {
 	/**
 	 * Gets the number of an item we have
 	 *
+	 * @param item
+	 * 		The item
+	 */
+	public int getNumberOf(Item item) {
+		return getNumberOf(item.getId());
+	}
+	
+	/**
+	 * Gets the number of an item we have
+	 *
 	 * @param itemId
 	 * 		The item id
 	 */
@@ -216,16 +226,6 @@ public final class ItemsContainer<T extends Item> {
 			}
 		}
 		return count;
-	}
-	
-	/**
-	 * Gets the number of an item we have
-	 *
-	 * @param item
-	 * 		The item
-	 */
-	public int getNumberOf(Item item) {
-		return getNumberOf(item.getId());
 	}
 	
 	/**

@@ -6,7 +6,7 @@ import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.ColorConstants;
+import org.redrune.utility.tool.ColorConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;

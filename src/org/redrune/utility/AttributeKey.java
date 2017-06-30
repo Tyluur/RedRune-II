@@ -18,6 +18,8 @@ public enum AttributeKey {
 	
 	FROZEN_UNTIL,
 	
+	FREEZE_DELAY,
+	
 	FROZEN_BY,
 	
 	LAST_TIME_HIT,

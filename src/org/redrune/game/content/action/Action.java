@@ -54,7 +54,7 @@ public interface Action {
 	 * 		The delay
 	 */
 	default void setDelay(Player player, int delay) {
-		player.getManager().getActions().setDelay(delay);
+		player.getManager().getActions().addDelay(delay);
 	}
 	
 }

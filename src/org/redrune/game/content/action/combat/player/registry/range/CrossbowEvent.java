@@ -24,7 +24,10 @@ public class CrossbowEvent implements BowFireEvent {
 		String name = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
 		
 		sendDamage(attacker, target, swing, weaponId);
-		attacker.getRegion().sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 27, 38, 36, 41, 5, 0));
+		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(attacker, target, 27, 38, 36, 41, 5, 0));
+		//		/players.stream().filter(player -> player != null && player.isRenderable()).forEach(player -> {
+		//			player.getNetworkSession().writeNoDelay(new ProjectilePacketBuilder(projectile).build(player));
+		//		});
 		swing.dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_ARROWS, ammoId, name.contains("karil"));
 	}
 	
@@ -64,9 +67,9 @@ public class CrossbowEvent implements BowFireEvent {
 				break;
 			case 9242:
 				max_hit = Short.MAX_VALUE;
-				damage = (int) (target.getHitpoints() * 0.2);
+				damage = (int) (target.getHealthPoints() * 0.2);
 				target.setNextGraphics(new Graphics(754));
-				player.applyHit(new Hit(target, player.getHitpoints() > 20 ? (int) (player.getHitpoints() * 0.1) : 1, HitLook.REFLECTED_DAMAGE));
+				player.applyHit(new Hit(target, player.getHealthPoints() > 20 ? (int) (player.getHealthPoints() * 0.1) : 1, HitLook.REFLECTED_DAMAGE));
 				break;
 			case 9243:
 				damage = getRandomMaxHit(player, weaponId, attackStyle, true, false, 1.15, true);

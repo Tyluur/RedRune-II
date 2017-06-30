@@ -99,6 +99,7 @@ public class PlayerSkills implements SkillConstants {
 		}
 		return skill == DUNGEONEERING ? 120 : 99;
 	}
+	
 	/**
 	 * Adds experience to the skill without multiplier effects
 	 *
@@ -108,35 +109,6 @@ public class PlayerSkills implements SkillConstants {
 	 * 		The amount of exp to add
 	 */
 	public PlayerSkills addExperienceNoMultiplier(short skillId, double experience) {
-		trackExperienceChange(skillId, experience);
-		return this;
-	}
-	
-	/**
-	 * Adds experience to the skill with multiplier effects
-	 *
-	 * @param skillId
-	 * 		The id of the skill
-	 * @param experience
-	 * 		The amount of exp to add
-	 */
-	public PlayerSkills addExperienceWithMultiplier(short skillId, double experience) {
-		switch (skillId) {
-			case ATTACK:
-			case STRENGTH:
-			case DEFENCE:
-			case MAGIC:
-			case RANGE:
-			case HITPOINTS:
-				experience = experience * GameConstants.COMBAT_EXPERIENCE_MULTIPLIER;
-				break;
-			case PRAYER:
-				experience = experience * GameConstants.PRAYER_EXPERIENCE_MULTIPLIER;
-				break;
-			default:
-				experience = experience * GameConstants.SKILL_EXPERIENCE_MULTIPLIER;
-				break;
-		}
 		trackExperienceChange(skillId, experience);
 		return this;
 	}
@@ -240,6 +212,35 @@ public class PlayerSkills implements SkillConstants {
 	}
 	
 	/**
+	 * Adds experience to the skill with multiplier effects
+	 *
+	 * @param skillId
+	 * 		The id of the skill
+	 * @param experience
+	 * 		The amount of exp to add
+	 */
+	public PlayerSkills addExperienceWithMultiplier(short skillId, double experience) {
+		switch (skillId) {
+			case ATTACK:
+			case STRENGTH:
+			case DEFENCE:
+			case MAGIC:
+			case RANGE:
+			case HITPOINTS:
+				experience = experience * GameConstants.COMBAT_EXPERIENCE_MULTIPLIER;
+				break;
+			case PRAYER:
+				experience = experience * GameConstants.PRAYER_EXPERIENCE_MULTIPLIER;
+				break;
+			default:
+				experience = experience * GameConstants.SKILL_EXPERIENCE_MULTIPLIER;
+				break;
+		}
+		trackExperienceChange(skillId, experience);
+		return this;
+	}
+	
+	/**
 	 * Refreshes all skill components
 	 */
 	public void refreshAll() {
@@ -258,6 +259,13 @@ public class PlayerSkills implements SkillConstants {
 	}
 	
 	/**
+	 * Gets the combat level with summoning addition
+	 */
+	public int getCombatLevelWithSummoning() {
+		return getCombatLevel() + getSummoningCombatLevel();
+	}
+	
+	/**
 	 * Gets the combat level in a skill
 	 */
 	public int getCombatLevel() {
@@ -273,13 +281,6 @@ public class PlayerSkills implements SkillConstants {
 		double rangeC = 0.325 * (Math.floor(ranged / 2) + ranged);
 		double mageC = 0.325 * (Math.floor(magic / 2) + magic);
 		return (int) Math.floor(base + Math.max(meleeC, Math.max(rangeC, mageC)));
-	}
-	
-	/**
-	 * Gets the combat level with summoning addition
-	 */
-	public int getCombatLevelWithSummoning() {
-		return getCombatLevel() + getSummoningCombatLevel();
 	}
 	
 	/**

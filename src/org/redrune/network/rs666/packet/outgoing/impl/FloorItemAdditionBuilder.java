@@ -29,7 +29,7 @@ public class FloorItemAdditionBuilder implements OutgoingPacketBuilder {
 		player.getTransmitter().send(new TileLocationUpdate(item.getLocation()).build(player));
 		bldr.writeLEShort(item.getAmount());
 		bldr.writeShort(0);
-		bldr.writeByte((deltaX & 0x7)  << 4 | deltaY & 0x7);
+		bldr.writeByte((deltaX & 0x7) << 4 | deltaY & 0x7);
 		bldr.writeShortA(item.getId());
 		return bldr.toPacket();
 	}

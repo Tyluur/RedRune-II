@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.world.World;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The worker for all game sequence operations.
@@ -22,7 +22,7 @@ public final class MajorUpdateWorker implements Runnable {
 	/**
 	 * The amount of ticks that have passed
 	 */
-	private final AtomicInteger ticks = new AtomicInteger(0);
+	private final AtomicLong ticks = new AtomicLong(0);
 	
 	/**
 	 * If the major update worker has started.
@@ -46,16 +46,26 @@ public final class MajorUpdateWorker implements Runnable {
 	public void run() {
 		while (World.get().isAlive()) {
 			try {
-				start = System.currentTimeMillis();
-				sequence.start();
-				sequence.execute();
-				sequence.end();
-				ticks.set(ticks.get() + 1);
-				sleep();
+				process();
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Processes the sequence
+	 *
+	 * @throws InterruptedException
+	 * 		In case anything goes wrong
+	 */
+	public void process() throws InterruptedException {
+		start = System.currentTimeMillis();
+		sequence.start();
+		sequence.execute();
+		sequence.end();
+		ticks.set(ticks.get() + 1);
+		sleep();
 	}
 	
 	/**
@@ -88,8 +98,23 @@ public final class MajorUpdateWorker implements Runnable {
 	/**
 	 * Gets the amount of ticks that have passed successfully
 	 */
-	public int getTicksElapsed() {
+	public long getTicksElapsed() {
 		return ticks.get();
+	}
+	
+	/**
+	 * Checks if an amount has lapsed between the two
+	 *
+	 * @param time
+	 * 		The amount we subtract this time from
+	 * @param ticks
+	 * 		The ticks we want to check for
+	 */
+	public boolean lapsed(long time, long ticks) {
+		long current = getTicksElapsed();
+		long difference = current - time;
+		System.out.println(difference);
+		return time == -1 || time > current || difference > ticks;
 	}
 	
 }

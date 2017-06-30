@@ -26,7 +26,6 @@ public final class ActionManager {
 	/**
 	 * The delay until the action is processed
 	 */
-	@Setter
 	private int delay;
 	
 	/**
@@ -76,6 +75,16 @@ public final class ActionManager {
 			return;
 		}
 		this.delay += tickDelay;
+	}
+	
+	/**
+	 * Adds onto the existing delay
+	 *
+	 * @param delay
+	 * 		The delay
+	 */
+	public void addDelay(int delay) {
+		this.delay = this.delay + delay;
 	}
 	
 }

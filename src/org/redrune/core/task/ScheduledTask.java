@@ -76,6 +76,11 @@ public abstract class ScheduledTask {
 		this.goalTicks = goalTicks;
 	}
 	
+	@Override
+	public String toString() {
+		return "ScheduledTask{" + "goalTicks=" + goalTicks + ", delay=" + delay + ", ticks=" + ticks + ", ticksPassed=" + ticksPassed + ", running=" + running + '}';
+	}
+	
 	/**
 	 * Checks if this task is running.
 	 *
@@ -121,9 +126,4 @@ public abstract class ScheduledTask {
 	 * Runs the task
 	 */
 	public abstract void run();
-	
-	@Override
-	public String toString() {
-		return "ScheduledTask{" + "goalTicks=" + goalTicks + ", delay=" + delay + ", ticks=" + ticks + ", ticksPassed=" + ticksPassed + ", running=" + running + '}';
-	}
 }

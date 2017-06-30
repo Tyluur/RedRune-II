@@ -11,7 +11,7 @@ import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
  * @since 6/7/2017
  */
 @CommandManifest(description = "Sets the level of a skill", types = { Integer.class, Integer.class })
-public class SetLevelCommand extends CommandModule{
+public class SetLevelCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
@@ -22,7 +22,7 @@ public class SetLevelCommand extends CommandModule{
 	public void handle(Player player, String[] args, boolean console) {
 		int skillId = intParam(args, 1);
 		int level = intParam(args, 2);
-			if (level <= 0) {
+		if (level <= 0) {
 			level = 1;
 		} else if (level > 99) {
 			level = 99;

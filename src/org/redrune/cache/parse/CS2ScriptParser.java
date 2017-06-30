@@ -1,7 +1,7 @@
 package org.redrune.cache.parse;
 
 import org.redrune.cache.parse.definition.CS2ScriptDefinition;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.io.IOException;
 import java.util.HashMap;

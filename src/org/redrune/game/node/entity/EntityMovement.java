@@ -1,6 +1,7 @@
 package org.redrune.game.node.entity;
 
 import lombok.Getter;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.npc.NPC;
@@ -10,7 +11,7 @@ import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -24,6 +25,7 @@ public class EntityMovement {
 	/**
 	 * The steps to walk to
 	 */
+	@Getter
 	private final ConcurrentLinkedQueue<int[]> walkSteps;
 	
 	/**
@@ -96,6 +98,7 @@ public class EntityMovement {
 		if (entity.needsMapUpdate()) {
 			entity.loadMapRegions();
 		}
+		System.out.println("processed movement @ " + SystemManager.getUpdateWorker().getTicksElapsed());
 	}
 	
 	/**
@@ -461,11 +464,29 @@ public class EntityMovement {
 		return clippedProjectile(tile, checkClose, 1);
 	}
 	
-	public boolean calcFollow(Entity target, boolean inteligent) {
-		return calcFollow(target, -1, inteligent);
+	/**
+	 * Adds a path to the entity
+	 *
+	 * @param target
+	 * 		The target
+	 * @param intelligent
+	 * 		If we should use intelligent path finding
+	 */
+	public boolean addEntityPath(Entity target, boolean intelligent) {
+		return addEntityPath(target, 25, intelligent);
 	}
 	
-	public boolean calcFollow(Entity target, int maxStepsCount, boolean intelligent) {
+	/**
+	 * Adds a path to the entity
+	 *
+	 * @param target
+	 * 		The target
+	 * @param maxStepsCount
+	 * 		The max steps
+	 * @param intelligent
+	 * 		If we should use intelligent path finding
+	 */
+	public boolean addEntityPath(Entity target, int maxStepsCount, boolean intelligent) {
 		if (intelligent) {
 			int steps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getPlane(), entity.getSize(), target.isGameObject() ? new ObjectStrategy(target.toGameObject()) : new EntityStrategy(target), true);
 			if (steps == -1) {
@@ -486,49 +507,64 @@ public class EntityMovement {
 		return findBasicRoute(entity, target, target.getLocation(), maxStepsCount);
 	}
 	
-	public static boolean findBasicRoute(Entity src, Entity target, Location dest, int maxStepsCount) {
-		int[] srcPos = src.getMovement().getLastWalkTile();
+	/**
+	 * Finds a basic route to an entity, this doesn't take into consideration any objects, it is a straight path to the target
+	 *
+	 * @param source
+	 * 		The base entity
+	 * @param target
+	 * 		The target entity
+	 * @param dest
+	 * 		The location destination
+	 * @param maxStepsCount
+	 * 		The max steps
+	 */
+	public static boolean findBasicRoute(Entity source, Entity target, Location dest, int maxStepsCount) {
+		// the last walk of the source
+		int[] srcPos = source.getMovement().getLastWalkTile();
+		// the dest position array
 		int[] destPos = { dest.getX(), dest.getY() };
-		int srcSize = src.getSize();
+		// the size of the source entity
+		int srcSize = source.getSize();
 		//set destSize to 0 to walk under it else follows
 		int destSize = target.getSize();
-		int[] destScenePos = { destPos[0] + destSize - 1, destPos[1] + destSize - 1 };//Arrays.copyOf(destPos, 2);//destSize == 1 ? Arrays.copyOf(destPos, 2) : new int[] {WorldTile.getCoordFaceX(destPos[0], destSize, destSize, -1), WorldTile.getCoordFaceY(destPos[1], destSize, destSize, -1)};
+		int[] destScenePos = { destPos[0] + destSize - 1, destPos[1] + destSize - 1 };
 		while (maxStepsCount-- != 0) {
-			int[] srcScenePos = { srcPos[0] + srcSize - 1, srcPos[1] + srcSize - 1 };//srcSize == 1 ? Arrays.copyOf(srcPos, 2) : new int[] { WorldTile.getCoordFaceX(srcPos[0], srcSize, srcSize, -1), WorldTile.getCoordFaceY(srcPos[1], srcSize, srcSize, -1)};
+			int[] srcScenePos = { srcPos[0] + srcSize - 1, srcPos[1] + srcSize - 1 };
 			if (!Misc.isOnRange(srcPos[0], srcPos[1], srcSize, destPos[0], destPos[1], destSize, 0)) {
-				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] < destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1] + 1)) && src.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] < destScenePos[1] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1] + 1)) && source.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
 					srcPos[0]++;
 					srcPos[1]++;
 					continue;
 				}
-				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] > destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1] - 1)) && src.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] > destScenePos[1] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1] - 1)) && source.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
 					srcPos[0]--;
 					srcPos[1]--;
 					continue;
 				}
-				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] > destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1] - 1)) && src.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] > destScenePos[1] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1] - 1)) && source.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
 					srcPos[0]++;
 					srcPos[1]--;
 					continue;
 				}
-				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] < destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1] + 1)) && src.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] < destScenePos[1] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1] + 1)) && source.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
 					srcPos[0]--;
 					srcPos[1]++;
 					continue;
 				}
-				if (srcScenePos[0] < destScenePos[0] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1])) && src.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1], srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[0] < destScenePos[0] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0] + 1, srcPos[1])) && source.getMovement().addWalkStep(srcPos[0] + 1, srcPos[1], srcPos[0], srcPos[1], true)) {
 					srcPos[0]++;
 					continue;
 				}
-				if (srcScenePos[0] > destScenePos[0] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1])) && src.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1], srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[0] > destScenePos[0] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0] - 1, srcPos[1])) && source.getMovement().addWalkStep(srcPos[0] - 1, srcPos[1], srcPos[0], srcPos[1], true)) {
 					srcPos[0]--;
 					continue;
 				}
-				if (srcScenePos[1] < destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0], srcPos[1] + 1)) && src.getMovement().addWalkStep(srcPos[0], srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[1] < destScenePos[1] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0], srcPos[1] + 1)) && source.getMovement().addWalkStep(srcPos[0], srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
 					srcPos[1]++;
 					continue;
 				}
-				if (srcScenePos[1] > destScenePos[1] && (!(src instanceof NPC) || src.getMovement().canWalkNPC(srcPos[0], srcPos[1] - 1)) && src.getMovement().addWalkStep(srcPos[0], srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+				if (srcScenePos[1] > destScenePos[1] && (!(source instanceof NPC) || source.getMovement().canWalkNPC(srcPos[0], srcPos[1] - 1)) && source.getMovement().addWalkStep(srcPos[0], srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
 					srcPos[1]--;
 					continue;
 				}

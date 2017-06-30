@@ -77,13 +77,13 @@ public class Graphic extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return npc ? 0x1000 : 0x10000;
+	public int getOrdinal() {
+		return npc ? 2 : 13;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return npc ? 2 : 13;
+	public int getMaskData() {
+		return npc ? 0x1000 : 0x10000;
 	}
 	
 	public static Graphic create(int i) {

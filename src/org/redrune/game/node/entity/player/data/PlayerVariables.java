@@ -27,7 +27,7 @@ public final class PlayerVariables {
 	 */
 	@Getter
 	@Setter
-	private int healthPoints;
+	private int healthPoints = 100;
 	
 	/**
 	 * The player points
@@ -62,10 +62,6 @@ public final class PlayerVariables {
 	 */
 	@Getter
 	private SkullIcon skullIcon = SkullIcon.NONE;
-	
-	public PlayerVariables() {
-		setHealthPoints(100);
-	}
 	
 	/**
 	 * Gets an attribute and returns the default value if it doesn't exist
@@ -170,4 +166,6 @@ public final class PlayerVariables {
 			player.getUpdateMasks().register(new AppearanceUpdate(player));
 		}
 	}
+	
 }
+

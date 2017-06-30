@@ -23,7 +23,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 	}
 	
 	@Override
-	public boolean handle(Player player, int interfaceId, int componentId,   int itemId, int slotId, int packetId) {
+	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		switch (interfaceId) {
 			case SCREEN_FIXED_WINDOW_ID:
 			case SCREEN_RESIZABLE_WINDOW_ID:

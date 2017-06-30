@@ -4,21 +4,24 @@ import org.redrune.cache.stream.RSByteArrayInputStream;
 import org.redrune.cache.stream.RSInputStream;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
-import org.redrune.utility.BufferUtils;
+import org.redrune.utility.tool.BufferUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
 public class CacheManager {
-
+	
 	private static FileInformationTable[] informationTables;
+	
 	private static FileStore fs255;
+	
 	private static FileStore[] fileStores;
+	
 	private static Object[][][] archiveFiles;
-
+	
 	private static byte[] versionTable;
-
+	
 	public static void load(String path) throws Exception {
 		fs255 = new FileStore(255, path);
 		int cacheIndicies = fs255.length();
@@ -57,20 +60,20 @@ public class CacheManager {
 		mainFileBuffer.put((byte) 10).put(Whirlpool.whirlpool(mainFileData, 5, mainFileData.length - 5));                                                                                // this
 		versionTable = mainFileBuffer.array();
 	}
-
+	
 	public static FileStore getCrc() {
 		return fs255;
 	}
-
+	
 	public static FileInformationTable getFIT(int cache) {
 		return informationTables[cache];
 	}
-
+	
 	public static byte[] getByName(int cache, String name) {
 		int id = informationTables[cache].findName(name);
 		return fileStores[cache].get(id);
 	}
-
+	
 	public static int getArchiveName(int cache, String name) {
 		int id = informationTables[cache].findName(name);
 		return id;
@@ -106,7 +109,7 @@ public class CacheManager {
 		}
 		return outBuffer.toPacket();
 	}
-
+	
 	public static byte[] getFile(int cache, int id) {
 		if (cache == 255 && id == 255) {
 			return versionTable;
@@ -134,7 +137,7 @@ public class CacheManager {
 		}
 		return (byte[]) archiveFiles[cache][main][child];
 	}
-
+	
 	public static boolean loadArchive(int cache, int main) {
 		try {
 			if (archiveFiles[cache].length < main) {
@@ -143,15 +146,17 @@ public class CacheManager {
 			int[] is_11_ = informationTables[cache].getEntry_sub_ptr()[main];
 			boolean bool = true;
 			int count = informationTables[cache].getArchiveCount()[main];
-			if (archiveFiles[cache][main] == null)
+			if (archiveFiles[cache][main] == null) {
 				archiveFiles[cache][main] = new Object[informationTables[cache].getEntry_real_sub_count()[main]];
+			}
 			Object[] objects = archiveFiles[cache][main];
 			for (int i_13_ = 0; i_13_ < count; i_13_++) {
 				int i_14_;
-				if (is_11_ != null)
+				if (is_11_ != null) {
 					i_14_ = is_11_[i_13_];
-				else
+				} else {
 					i_14_ = i_13_;
+				}
 				if (objects[i_14_] == null) {
 					bool = false;
 					break;
@@ -167,8 +172,9 @@ public class CacheManager {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (data == null)
+			if (data == null) {
 				return false;
+			}
 			if (count > 1) {
 				int i_18_ = data.length;
 				int i_19_ = data[--i_18_] & 0xff;
@@ -201,19 +207,21 @@ public class CacheManager {
 				}
 				for (int i = 0; i < count; i++) {
 					int i_31_;
-					if (is_11_ != null)
+					if (is_11_ != null) {
 						i_31_ = is_11_[i];
-					else
+					} else {
 						i_31_ = i;
+					}
 					objects[i_31_] = subData[i];
 				}
 				stream.close();
 			} else {
 				int i_32_;
-				if (is_11_ != null)
+				if (is_11_ != null) {
 					i_32_ = is_11_[0];
-				else
+				} else {
 					i_32_ = 0;
+				}
 				objects[i_32_] = data;
 			}
 			archiveFiles[cache][main] = objects;
@@ -221,7 +229,7 @@ public class CacheManager {
 		}
 		return true;
 	}
-
+	
 	public static int cacheCFCount(int cache) {
 		int lastcontainer = containerCount(cache) - 1;
 		return 256 * lastcontainer + getRealContainerChildCount(cache, lastcontainer);
@@ -234,14 +242,14 @@ public class CacheManager {
 	public static int getRealContainerChildCount(int cache, int lastcontainer) {
 		return informationTables[cache].getEntry_real_sub_count()[lastcontainer];
 	}
-
+	
 	public static int cacheCFCount2(int cache) {
 		int lastcontainer = containerCount(cache) - 1;
 		return 128 * lastcontainer + getRealContainerChildCount(cache, lastcontainer);
 	}
-
+	
 	public static int getContainerChildCount(int cache, int lastcontainer) {
 		return informationTables[cache].getArchiveCount()[lastcontainer];
 	}
-
+	
 }

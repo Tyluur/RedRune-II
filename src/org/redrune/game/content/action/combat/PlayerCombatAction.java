@@ -1,14 +1,16 @@
 package org.redrune.game.content.action.combat;
 
 import lombok.Getter;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.action.Action;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -28,13 +30,14 @@ public final class PlayerCombatAction implements Action {
 	 */
 	private CombatType type;
 	
-	public PlayerCombatAction(org.redrune.game.node.entity.Entity target) {
+	public PlayerCombatAction(Entity target) {
 		this.target = target;
 	}
 	
 	@Override
 	public boolean start(Player player) {
 		type = StaticCombatFormulae.getCombatType(player);
+		player.getMovement().resetWalkSteps();
 		if (!verifyContinuation(player)) {
 			return false;
 		}
@@ -65,6 +68,42 @@ public final class PlayerCombatAction implements Action {
 		StaticCombatFormulae.checkSpecialToggle(player, 0);
 	}
 	
+	@Override
+	public int processOnTicks(Player player) {
+		// we are too far away, combat is halted [but not quit]
+		if (!StaticCombatFormulae.isWithinDistance(player, target, type)) {
+			System.out.println("we're too far away to fight tho.");
+			return 0;
+		}
+		player.turnTo(target);
+		// the id of the weapon equipped
+		final int weaponId = player.getEquipment().getWeaponId();
+		// the spell we're casting
+		final int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutocastId()); // get the player's spell id
+		// the id of the combat flag [weapon or spell id]
+		final int id = type == CombatType.MAGIC ? spellId : weaponId;
+		// the delay we will have
+		final int delay = type.getDelay(player, id);
+		// the delay wasn't found [this is only possible when we don't have a magic spell
+		// otherwise, delays are calculated in the swing
+		if (delay == -1) {
+			player.getTransmitter().sendMessage("This spell has not yet been added, please report this on the forums.");
+			player.getCombatDefinitions().resetSpells(true);
+			return 0;
+		}
+		// if we're using special
+		final boolean usingSpecial = player.getCombatDefinitions().isSpecialActivated();
+		// the special attack event
+		Optional<SpecialAttackEvent> specialOptional = getSpecialAttackEvent(player, weaponId, usingSpecial);
+		// sends the swing
+		if (!type.getSwing().run(player, target, id, player.getCombatDefinitions().getAttackStyle(), specialOptional.orElse(null))) {
+			return -1;
+		}
+		// after combat has been sent, we must send listeners
+		StaticCombatFormulae.fireCombatListeners(player, target);
+		return delay;
+	}
+	
 	/**
 	 * Gets the special attack event
 	 *
@@ -85,40 +124,6 @@ public final class PlayerCombatAction implements Action {
 			}
 		}
 		return specialOptional;
-	}
-	
-	@Override
-	public int processOnTicks(Player player) {
-		// we are too far away, combat is halted [but not quit]
-		if (!StaticCombatFormulae.isWithinDistance(player, target, type)) {
-			return 0;
-		}
-		player.turnTo(target);
-		// the id of the weapon equipped
-		final int weaponId = player.getEquipment().getWeaponId();
-		// the spell we're casting
-		final int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutocastId()); // get the player's spell id
-		// the id of the combat flag [weapon or spell id]
-		final int id = type == CombatType.MAGIC ? spellId : weaponId;
-		// the delay we will have
-		final int delay = type.getDelay(player, id);
-		// the delay wasn't found [this is only possible when we don't have a magic spell
-		// otherwise, delays are calculated in the swing
-		if (delay == -1) {
-			player.getTransmitter().sendMessage("This spell has not yet been added, please report this on the forums.");
-			return -1;
-		}
-		// if we're using special
-		final boolean usingSpecial = player.getCombatDefinitions().isSpecialActivated();
-		// the special attack event
-		Optional<SpecialAttackEvent> specialOptional = getSpecialAttackEvent(player, weaponId, usingSpecial);
-		// sends the swing
-		if (!type.getSwing().run(player, target, id, player.getCombatDefinitions().getAttackStyle(), specialOptional.orElse(null))) {
-			return -1;
-		}
-		// after combat has been sent, we must send listeners
-		StaticCombatFormulae.fireCombatListeners(player, target);
-		return delay;
 	}
 	
 	@Override
@@ -143,22 +148,37 @@ public final class PlayerCombatAction implements Action {
 		}
 		// if we are invalid to fight
 		if (!StaticCombatFormulae.canFight(player, target)) {
+			System.out.println("we cant fight cuz we frozen");
 			return false;
 		}
 		// if player is frozen and under, stops attacking, else stands waiting
-		// TODO add stunned check
-		if (player.isFrozen()) {
+		if (player.isFrozen()) { // TODO stunned [should it be same flag as frozen?]
 			return !Misc.colides(player, target);
 		}
 		// if we are on the same position
 		if (Misc.colides(player, target)) {
+			System.out.println("PlayerCombatAction.verifyContinuation");
+			System.out.println("Colided @ " + SystemManager.getUpdateWorker().getTicksElapsed());
 			player.getMovement().resetWalkSteps();
 			// if the target is moving [must be going from the collision tile]
 			if (target.getMovement().isMoving()) {
 				return true;
 			}
-			player.getMovement().calcFollow(target, true);
+			player.getMovement().addEntityPath(target, true);
 			return true;
+		}
+		// we're too far away or we can't clip to the target
+		if (!Misc.isOnRange(player, target, StaticCombatFormulae.getMinimumDistance(player, type)) || !player.getMovement().clippedProjectileToNode(target, type == CombatType.MELEE && !StaticCombatFormulae.checkAttackPathAsRange(target))) {
+			if (!player.getMovement().isMoving() || target.getMovement().isMoving()) {
+				player.getMovement().resetWalkSteps();
+				player.getMovement().addEntityPath(target, 25, true);
+				System.out.println("PlayerCombatAction.verifyContinuation @ " + SystemManager.getUpdateWorker().getTicksElapsed());
+				System.out.println("distance check fired");
+				System.out.println(player.getLocation());
+				player.getMovement().getWalkSteps().forEach(step -> System.out.println("\t" + Arrays.toString(step)));
+			}
+		} else {
+			player.getMovement().resetWalkSteps();
 		}
 		// diagonal check
 		if (type == CombatType.MELEE && Math.abs(player.getLocation().getX() - target.getLocation().getX()) == 1 && Math.abs(player.getLocation().getY() - target.getLocation().getY()) == 1 && !target.getMovement().hasWalkSteps() && target.getSize() == 1) {
@@ -168,15 +188,6 @@ public final class PlayerCombatAction implements Action {
 				player.getMovement().addWalkSteps(player.getLocation().getX(), target.getLocation().getY(), 1, true);
 			}
 			return true;
-		}
-		// we're too far away or we can't clip to the target
-		if (!Misc.isOnRange(player, target, StaticCombatFormulae.getMinimumDistance(player, type)) || !player.getMovement().clippedProjectileToNode(target, type == CombatType.MELEE && !StaticCombatFormulae.checkAttackPathAsRange(target))) {
-			if (!player.getMovement().hasWalkSteps() || target.getMovement().hasWalkSteps()) {
-				player.getMovement().resetWalkSteps();
-				player.getMovement().calcFollow(target, player.getMovement().isRunning() ? 2 : 1, true);
-			}
-		} else {
-			player.getMovement().resetWalkSteps();
 		}
 		return true;
 	}

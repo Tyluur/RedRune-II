@@ -40,18 +40,18 @@ public class SapRangerDrain implements DrainPrayer {
 	}
 	
 	@Override
-	public double raiseCap() {
-		return -1;
-	}
-	
-	@Override
 	public int[] prayerSlots() {
 		return args(RANGE_SLOT);
 	}
 	
 	@Override
 	public double[] amounts() {
-		return args(0.05);
+		return args(0.01);
+	}
+	
+	@Override
+	public double raiseCap() {
+		return -1;
 	}
 	
 }

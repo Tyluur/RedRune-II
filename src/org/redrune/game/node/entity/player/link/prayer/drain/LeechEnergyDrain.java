@@ -7,7 +7,7 @@ import org.redrune.game.node.entity.player.link.prayer.Prayer;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/27/2017
  */
-public class LeechEnergyDrain implements DrainPrayer{
+public class LeechEnergyDrain implements DrainPrayer {
 	
 	@Override
 	public Prayer getPrayer() {
@@ -40,11 +40,6 @@ public class LeechEnergyDrain implements DrainPrayer{
 	}
 	
 	@Override
-	public double raiseCap() {
-		return 0;
-	}
-	
-	@Override
 	public int[] prayerSlots() {
 		return args(ENERGY_SLOT);
 	}
@@ -52,5 +47,10 @@ public class LeechEnergyDrain implements DrainPrayer{
 	@Override
 	public double[] amounts() {
 		return args(0.10);
+	}
+	
+	@Override
+	public double raiseCap() {
+		return 0;
 	}
 }

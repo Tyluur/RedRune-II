@@ -15,6 +15,8 @@ import java.util.HashMap;
  */
 public final class NPCDefinition {
 	
+	public int[][] anIntArrayArray882;
+	
 	@Getter
 	private int id;
 	
@@ -44,8 +46,6 @@ public final class NPCDefinition {
 	
 	@Getter
 	private byte respawnDirection;
-	
-	public int[][] anIntArrayArray882;
 	
 	private boolean aBoolean3190;
 	
@@ -183,6 +183,14 @@ public final class NPCDefinition {
 		options = new String[5];
 		anInt897 = 0;
 		anInt901 = -1;
+	}
+	
+	public static NPCDefinition readDefinitions(int npcId) throws IOException {
+		NPCDefinition def = new NPCDefinition(npcId);
+		def.constructModelIds();
+		byte[] data = CacheManager.getData(CacheConstants.NPCDEF_IDX_ID, npcId >>> 7, npcId & 0x7f);
+		def.readValueLoop(new RSInputStream(new ByteArrayInputStream(data)));
+		return def;
 	}
 	
 	public void constructModelIds() {
@@ -442,13 +450,5 @@ public final class NPCDefinition {
 			}
 		}
 		return false;
-	}
-	
-	public static NPCDefinition readDefinitions(int npcId) throws IOException {
-		NPCDefinition def = new NPCDefinition(npcId);
-		def.constructModelIds();
-		byte[] data = CacheManager.getData(CacheConstants.NPCDEF_IDX_ID, npcId >>> 7, npcId & 0x7f);
-		def.readValueLoop(new RSInputStream(new ByteArrayInputStream(data)));
-		return def;
 	}
 }

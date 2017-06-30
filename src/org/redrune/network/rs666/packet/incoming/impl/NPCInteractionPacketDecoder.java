@@ -9,7 +9,7 @@ import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.repository.EventRepository;
 import org.redrune.utility.rs.InteractionOption;
 

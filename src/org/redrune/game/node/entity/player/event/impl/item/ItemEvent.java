@@ -66,7 +66,7 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 * 		The player
 	 */
 	private void handleItemUsage(Player player) {
-	
+
 	}
 	
 	/**
@@ -145,57 +145,6 @@ public class ItemEvent extends Event<ItemEventContext> {
 	}
 	
 	/**
-	 * Handles the equipping of an item
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	public static void handleItemEquipping(Player player, Item item, int slotId) {
-		Object[] equipData = canEquip(player, item);
-		if (equipData == null || equipData.length != 3 || !(boolean) equipData[1]) {
-			return;
-		}
-		int targetSlot = (int) equipData[0];
-		boolean isTwoHandedWeapon = (boolean) equipData[2];
-		player.getInventory().getItems().remove(slotId, item);
-		if (targetSlot == 3) {
-			if (isTwoHandedWeapon && player.getEquipment().getItem(5) != null) {
-				if (!player.getInventory().getItems().add(player.getEquipment().getItem(5))) {
-					player.getInventory().getItems().set(slotId, item);
-					return;
-				}
-				player.getEquipment().getItems().set(5, null);
-			}
-		} else if (targetSlot == 5) {
-			if (player.getEquipment().getItem(3) != null && EquipConstants.isTwoHanded(player.getEquipment().getItem(3))) {
-				if (!player.getInventory().getItems().add(player.getEquipment().getItem(3))) {
-					player.getInventory().getItems().set(slotId, item);
-					return;
-				}
-				player.getEquipment().getItems().set(3, null);
-			}
-		}
-		if (player.getEquipment().getItem(targetSlot) != null && (item.getId() != player.getEquipment().getItem(targetSlot).getId() || !item.getDefinitions().isStackable())) {
-			if (player.getInventory().getItems().get(slotId) == null) {
-				player.getInventory().getItems().set(slotId, new Item(player.getEquipment().getItem(targetSlot).getId(), player.getEquipment().getItem(targetSlot).getAmount()));
-			} else {
-				player.getInventory().getItems().add(new Item(player.getEquipment().getItem(targetSlot).getId(), player.getEquipment().getItem(targetSlot).getAmount()));
-			}
-			player.getEquipment().getItems().set(targetSlot, null);
-		}
-		int oldAmt = 0;
-		if (player.getEquipment().getItem(targetSlot) != null) {
-			oldAmt = player.getEquipment().getItem(targetSlot).getAmount();
-		}
-		Item item2 = new Item(item.getId(), oldAmt + item.getAmount());
-		player.getEquipment().getItems().set(targetSlot, item2);
-		player.getEquipment().refresh(targetSlot, targetSlot == 3 ? 5 : 3);
-		player.getInventory().refreshAll();
-		player.getCombatDefinitions().setSpecialActivated(false);
-		player.getUpdateMasks().register(new AppearanceUpdate(player));
-	}
-	
-	/**
 	 * Checks if the player can equip the weapon
 	 *
 	 * @param player
@@ -246,5 +195,60 @@ public class ItemEvent extends Event<ItemEventContext> {
 			return null;
 		}
 		return new Object[] { targetSlot, true, isTwoHandedWeapon };
+	}
+	
+	/**
+	 * Handles the equipping of an item
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public static void handleItemEquipping(Player player, Item item, int slotId) {
+		Object[] equipData = canEquip(player, item);
+		if (equipData == null || equipData.length != 3 || !(boolean) equipData[1]) {
+			return;
+		}
+		int targetSlot = (int) equipData[0];
+		boolean isTwoHandedWeapon = (boolean) equipData[2];
+		player.getInventory().getItems().remove(slotId, item);
+		if (targetSlot == 3) {
+			if (isTwoHandedWeapon && player.getEquipment().getItem(5) != null) {
+				if (!player.getInventory().getItems().add(player.getEquipment().getItem(5))) {
+					player.getInventory().getItems().set(slotId, item);
+					return;
+				}
+				player.getEquipment().getItems().set(5, null);
+			}
+		} else if (targetSlot == 5) {
+			if (player.getEquipment().getItem(3) != null && EquipConstants.isTwoHanded(player.getEquipment().getItem(3))) {
+				if (!player.getInventory().getItems().add(player.getEquipment().getItem(3))) {
+					player.getInventory().getItems().set(slotId, item);
+					return;
+				}
+				player.getEquipment().getItems().set(3, null);
+			}
+		}
+		if (player.getEquipment().getItem(targetSlot) != null && (item.getId() != player.getEquipment().getItem(targetSlot).getId() || !item.getDefinitions().isStackable())) {
+			if (player.getInventory().getItems().get(slotId) == null) {
+				player.getInventory().getItems().set(slotId, new Item(player.getEquipment().getItem(targetSlot).getId(), player.getEquipment().getItem(targetSlot).getAmount()));
+			} else {
+				player.getInventory().getItems().add(new Item(player.getEquipment().getItem(targetSlot).getId(), player.getEquipment().getItem(targetSlot).getAmount()));
+			}
+			player.getEquipment().getItems().set(targetSlot, null);
+		}
+		int oldAmt = 0;
+		if (player.getEquipment().getItem(targetSlot) != null) {
+			oldAmt = player.getEquipment().getItem(targetSlot).getAmount();
+		}
+		Item item2 = new Item(item.getId(), oldAmt + item.getAmount());
+		player.getEquipment().getItems().set(targetSlot, item2);
+		player.getEquipment().refresh(targetSlot, targetSlot == 3 ? 5 : 3);
+		player.getInventory().refreshAll();
+		player.getCombatDefinitions().setSpecialActivated(false);
+		player.getUpdateMasks().register(new AppearanceUpdate(player));
+		// removing the spell cast
+		if (targetSlot == EquipConstants.SLOT_WEAPON) {
+			player.getCombatDefinitions().resetSpells(true);
+		}
 	}
 }

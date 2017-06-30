@@ -100,7 +100,6 @@ public final class World {
 	 *
 	 * @param player
 	 * 		The player to remove
-	 * @param lobby
 	 */
 	public void removePlayer(Player player, boolean lobby) {
 		if (!lobby) {

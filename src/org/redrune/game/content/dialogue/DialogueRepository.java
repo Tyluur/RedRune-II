@@ -2,7 +2,7 @@ package org.redrune.game.content.dialogue;
 
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +15,14 @@ import java.util.logging.Logger;
 public class DialogueRepository {
 	
 	/**
-	 * The map of dialogues with a {@link DialogueSubscription} subscription
-	 */
-	private static Map<String, Dialogue> SUBSCRIPTION_DIALOGUES = new HashMap<>();
-	
-	/**
 	 * The instance of the logger
 	 */
 	private static final Logger LOGGER = Misc.constructLogger(DialogueRepository.class);
+	
+	/**
+	 * The map of dialogues with a {@link DialogueSubscription} subscription
+	 */
+	private static Map<String, Dialogue> SUBSCRIPTION_DIALOGUES = new HashMap<>();
 	
 	/**
 	 * Loads all the subscriptions

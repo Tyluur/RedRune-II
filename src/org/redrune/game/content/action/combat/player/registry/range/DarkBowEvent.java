@@ -1,5 +1,6 @@
 package org.redrune.game.content.action.combat.player.registry.range;
 
+import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.registry.BowFireEvent;
 import org.redrune.game.content.action.combat.player.swing.RangeCombatSwing;
@@ -27,7 +28,8 @@ public class DarkBowEvent implements BowFireEvent {
 		
 		for (int i = 1; i <= 2; i++) {
 			sendDamage(attacker, target, swing, weaponId);
-			attacker.getRegion().sendProjectile(new Projectile(attacker, target, StaticCombatFormulae.getArrowProjectileGfxId(weaponId, ammoId), 41, 35, 41, i == 1 ? speed : speed2, i == 1 ? 5 : 25, 0));
+			Projectile projectile = new Projectile(attacker, target, StaticCombatFormulae.getArrowProjectileGfxId(weaponId, ammoId), 41, 35, 41, i == 1 ? speed : speed2, i == 1 ? 5 : 25, 0);
+			ProjectileManager.sendProjectile(projectile);
 			swing.dropAmmo(attacker, target.getLocation(), EquipConstants.SLOT_ARROWS, ammoId, false);
 		}
 	}

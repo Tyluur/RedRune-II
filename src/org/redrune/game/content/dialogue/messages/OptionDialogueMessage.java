@@ -3,7 +3,7 @@ package org.redrune.game.content.dialogue.messages;
 import com.google.common.base.Preconditions;
 import org.redrune.game.content.dialogue.DialogueMessage;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.DialogueConstants;
 
 import java.util.ArrayList;

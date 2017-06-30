@@ -21,7 +21,7 @@ public class EmoteInteractionModule implements InterfaceInteractionModule {
 			EmoteManager.handleEmote(player, slotId);
 			return true;
 		}
-//		System.out.println("player = [" + player + "], interfaceId = [" + interfaceId + "], componentId = [" + componentId + "], itemId = [" + itemId + "], slotId = [" + slotId + "], packetId = [" + packetId + "]");
+		//		System.out.println("player = [" + player + "], interfaceId = [" + interfaceId + "], componentId = [" + componentId + "], itemId = [" + itemId + "], slotId = [" + slotId + "], packetId = [" + packetId + "]");
 		return false;
 	}
 }

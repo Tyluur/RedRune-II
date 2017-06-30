@@ -12,13 +12,14 @@ import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitAttributes;
+import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
-import org.redrune.utility.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 
@@ -71,23 +72,27 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getAttackBonus(Player player, int weaponId, int combatStyle) {
-		return calculator.totalAggressiveBoost(player, combatStyle);
+	public double getAttackBonus(Player player, int weaponId, int combatStyle, boolean specialAttack) {
+		return calculator.totalAggressiveBoost(player, combatStyle, specialAttack);
 	}
 	
 	@Override
-	public double getDefenceBonus(org.redrune.game.node.entity.Entity entity, int weaponId, int combatStyle) {
-		return calculator.totalDefensiveBoost(entity);
+	public double getDefenceBonus(Entity entity, int weaponId, int combatStyle) {
+		return calculator.totalDefensiveBoost(entity, weaponId, combatStyle);
 	}
 	
 	@Override
-	public double getMaxHit(Player player, int weaponId, int combatStyle, double accuracyIncrease) {
-		return calculator.maximumDamageAppendable(player, weaponId, combatStyle, accuracyIncrease);
+	public double getMaxHit(Player player, int weaponId, int combatStyle, double multiplier) {
+		return calculator.maximumDamageAppendable(player, weaponId, combatStyle, multiplier);
 	}
 	
 	@Override
 	public void applyHit(Player attacker, Entity receiver, Hit hit, int itemId, int combatStyle, int delay) {
 		appendExperience(attacker, receiver, hit.getDamage());
+		// handles the leeches aspect of the hit
+		if (receiver.isPlayer()) {
+			receiver.toPlayer().getManager().getPrayers().handleLeeches(hit);
+		}
 		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
 			@Override
 			public void run() {
@@ -161,6 +166,51 @@ public class RangeCombatSwing extends CombatTypeSwing {
 		if (removed) {
 			player.getUpdateMasks().register(new AppearanceUpdate(player));
 		}
+	}
+	
+	/**
+	 * Sends the damage to the target
+	 *
+	 * @param attacker
+	 * 		The attacker
+	 * @param target
+	 * 		The target
+	 * @param swing
+	 * 		The swing
+	 * @param weaponId
+	 * 		The weapon id
+	 * @param modifier
+	 * 		The max hit modifier
+	 * @param specialAttack
+	 * 		If we are using a special attack
+	 */
+	public static void sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, double modifier, boolean specialAttack) {
+		final int style = attacker.getCombatDefinitions().getAttackStyle();
+		final int delay = swing.getProjectileDelay(attacker, target);
+		final double maxHit = swing.getMaxHit(attacker, weaponId, style, modifier);
+		final int damage = swing.randomizeHit(maxHit, swing.getAttackBonus(attacker, weaponId, style, specialAttack), swing.getDefenceBonus(target, weaponId, style));
+		// hit, ammo, defend
+		final Hit hit = new Hit(attacker, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit);
+		swing.applyHit(attacker, target, hit, weaponId, style, delay);
+		sendBlockEmote(target, delay);
+	}
+	
+	/**
+	 * Makes the target do their block emote a tick before the delay
+	 *
+	 * @param target
+	 * 		The target
+	 * @param delay
+	 * 		Their block emote
+	 */
+	// TODO: npc block emote
+	private static void sendBlockEmote(Entity target, int delay) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(delay - 1) {
+			@Override
+			public void run() {
+				target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
+			}
+		});
 	}
 	
 }

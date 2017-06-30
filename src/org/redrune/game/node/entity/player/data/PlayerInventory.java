@@ -121,7 +121,7 @@ public class PlayerInventory {
 	 * @param slots
 	 * 		The slots
 	 */
-	private void refresh(int... slots) {
+	public void refresh(int... slots) {
 		player.getTransmitter().send(new ContainerUpdateBuilder(93, items.toArray(), slots).build(player));
 		calculateWeight();
 	}

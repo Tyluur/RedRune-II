@@ -6,8 +6,8 @@ import org.redrune.network.rs666.packet.PacketBuilder;
 
 /**
  * Handles the NPC combat level update mask.
- * @author Emperor
  *
+ * @author Emperor
  */
 public class CombatLevelUpdate extends UpdateFlag {
 
@@ -18,7 +18,9 @@ public class CombatLevelUpdate extends UpdateFlag {
 	
 	/**
 	 * Constructs a new {@code CombatLevelUpdate} {@code Object}.
-	 * @param level The combat level to set.
+	 *
+	 * @param level
+	 * 		The combat level to set.
 	 */
 	public CombatLevelUpdate(int level) {
 		this.level = level;
@@ -30,13 +32,13 @@ public class CombatLevelUpdate extends UpdateFlag {
 	}
 
 	@Override
-	public int getMaskData() {
-		return 0x20000;
+	public int getOrdinal() {
+		return 4;
 	}
 
 	@Override
-	public int getOrdinal() {
-		return 4;
+	public int getMaskData() {
+		return 0x20000;
 	}
 
 }

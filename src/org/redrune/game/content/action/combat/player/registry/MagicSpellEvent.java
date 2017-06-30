@@ -20,6 +20,11 @@ public interface MagicSpellEvent<T extends MagicSpellContext> extends CombatRegi
 	int delay();
 	
 	/**
+	 * The animation id for the spell
+	 */
+	int animationId();
+	
+	/**
 	 * The id of the graphics applied when the hit lands
 	 */
 	int hitGfx();

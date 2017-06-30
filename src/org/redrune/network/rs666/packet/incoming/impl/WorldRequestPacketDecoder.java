@@ -4,7 +4,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.WorldListBuilder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -10,7 +10,7 @@ import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.game.world.route.strategy.FloorItemStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.Directions.Direction;
 
 import java.util.LinkedHashSet;
@@ -65,6 +65,36 @@ public class NodeInteractionTask {
 		this.node = node;
 		this.task = task;
 		this.alternative = alternative;
+	}
+	
+	/**
+	 * Finding the tiles between two destinations
+	 *
+	 * @param start
+	 * 		The start location
+	 * @param end
+	 * 		The end location
+	 */
+	private static Set<Location> tilesBetweenDestinations(Location start, Location end, Direction direction) {
+		final int distance = Misc.getDistance(start.getX(), start.getY(), end.getX(), end.getY());
+		final Set<Location> tilesBetween = new LinkedHashSet<>();
+		for (int i = 0; i <= distance; i++) {
+			switch (direction) {
+				case EAST:
+					tilesBetween.add(start.transform(i, 0, 0));
+					break;
+				case WEST:
+					tilesBetween.add(start.transform(-i, 0, 0));
+					break;
+				case NORTH:
+					tilesBetween.add(start.transform(0, -i, 0));
+					break;
+				case SOUTH:
+					tilesBetween.add(start.transform(0, i, 0));
+					break;
+			}
+		}
+		return tilesBetween;
 	}
 	
 	/**
@@ -287,6 +317,21 @@ public class NodeInteractionTask {
 		return false;
 	}
 	
+	private Direction getDirectionToNode(Player player) {
+		int dX = destination.getX(), dY = destination.getY();
+		int mX = player.getLocation().getX(), mY = player.getLocation().getY();
+		if (mX < dX) {
+			return EAST;
+		} else if (mX > dX) {
+			return WEST;
+		} else if (mY > dY) {
+			return SOUTH;
+		} else if (mY < dY) {
+			return NORTH;
+		}
+		return null;
+	}
+	
 	/**
 	 * Puts all the walls between a location into a set of possible walls
 	 *
@@ -313,51 +358,6 @@ public class NodeInteractionTask {
 		} else {
 			walls.add(optional.get());
 		}
-	}
-	
-	private Direction getDirectionToNode(Player player) {
-		int dX = destination.getX(), dY = destination.getY();
-		int mX = player.getLocation().getX(), mY = player.getLocation().getY();
-		if (mX < dX) {
-			return EAST;
-		} else if (mX > dX) {
-			return WEST;
-		} else if (mY > dY) {
-			return SOUTH;
-		} else if (mY < dY) {
-			return NORTH;
-		}
-		return null;
-	}
-	
-	/**
-	 * Finding the tiles between two destinations
-	 *
-	 * @param start
-	 * 		The start location
-	 * @param end
-	 * 		The end location
-	 */
-	private static Set<Location> tilesBetweenDestinations(Location start, Location end, Direction direction) {
-		final int distance = Misc.getDistance(start.getX(), start.getY(), end.getX(), end.getY());
-		final Set<Location> tilesBetween = new LinkedHashSet<>();
-		for (int i = 0; i <= distance; i++) {
-			switch (direction) {
-				case EAST:
-					tilesBetween.add(start.transform(i, 0, 0));
-					break;
-				case WEST:
-					tilesBetween.add(start.transform(-i, 0, 0));
-					break;
-				case NORTH:
-					tilesBetween.add(start.transform(0, -i, 0));
-					break;
-				case SOUTH:
-					tilesBetween.add(start.transform(0, i, 0));
-					break;
-			}
-		}
-		return tilesBetween;
 	}
 	
 }

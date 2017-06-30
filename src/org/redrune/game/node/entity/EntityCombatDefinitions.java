@@ -36,18 +36,6 @@ public class EntityCombatDefinitions {
 	private boolean retaliating = true;
 	
 	/**
-	 * Sets the special activated flag
-	 */
-	@Getter
-	private transient boolean specialActivated = false;
-	
-	/**
-	 * The entity whose definitions these are for
-	 */
-	@Setter
-	private transient org.redrune.game.node.entity.Entity entity;
-	
-	/**
 	 * The id of the spellbook
 	 */
 	@Getter
@@ -91,6 +79,18 @@ public class EntityCombatDefinitions {
 	private boolean showTeleportSpells = true;
 	
 	/**
+	 * Sets the special activated flag
+	 */
+	@Getter
+	private transient boolean specialActivated = false;
+	
+	/**
+	 * The entity whose definitions these are for
+	 */
+	@Setter
+	private transient org.redrune.game.node.entity.Entity entity;
+	
+	/**
 	 * Sends the login refreshing
 	 */
 	public void sendLogin() {
@@ -127,68 +127,20 @@ public class EntityCombatDefinitions {
 	}
 	
 	/**
-	 * Changes the attack style
-	 *
-	 * @param attackStyle
-	 * 		The attack style
+	 * Refreshes the currently selected autocast spell
 	 */
-	public void changeAttackStyle(byte attackStyle) {
+	private void refreshAutoCastSpell() {
+		refreshAttackStyle();
+		final Player player = entity.toPlayer();
+		player.getTransmitter().send(new ConfigPacketBuilder(108, getSpellAutoCastConfigValue()).build(player));
+	}
+	
+	/**
+	 * Refreshes the defensive casting button
+	 */
+	private void refreshDefensiveCasting() {
 		Player player = entity.toPlayer();
-		byte maxSize = 3;
-		int weaponId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_WEAPON);
-		CombatType type = StaticCombatFormulae.getCombatType(player);
-		String name = weaponId == -1 ? "" : ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
-		// whips, halberds, range, and magic combat styles only have 3 styles.
-		if (weaponId == -1 || type != CombatType.MELEE || name.contains("whip") || name.contains("halberd")) {
-			maxSize = 2;
-		}
-		if (attackStyle > maxSize) {
-			attackStyle = maxSize;
-		}
-		if (this.attackStyle != attackStyle) {
-			this.attackStyle = attackStyle;
-			if (autocastId > 1) {
-				resetSpells(true);
-			} else {
-				refreshAttackStyle();
-			}
-		} else if (autocastId > 1) {
-			resetSpells(true);
-		}
-	}
-	
-	/**
-	 * Toggles the retaliate button
-	 */
-	public void toggleAutoRetaliate() {
-		retaliating = !retaliating;
-		entity.toPlayer().stop(true, true, true, false);
-		refreshRetaliate();
-	}
-	
-	/**
-	 * Modifies the special attack energy by the given amount. This also verifies that we never have < 0 special energy.
-	 *
-	 * @param amount
-	 * 		The amount to reduce it by.
-	 */
-	public void modifySpecial(int amount) {
-		this.specialEnergy -= amount;
-		if (this.specialEnergy <= 0) {
-			this.specialEnergy = 0;
-		}
-		refreshSpecialEnergy();
-	}
-	
-	/**
-	 * Sets if the special attack is activated or not
-	 *
-	 * @param specialActivated
-	 * 		The special attack being activated
-	 */
-	public void setSpecialActivated(boolean specialActivated) {
-		this.specialActivated = specialActivated;
-		refreshSpecialActivated();
+		player.getTransmitter().send(new ConfigPacketBuilder(439, spellbook.getInterfaceId() + (!defensiveCasting ? 0 : 1 << 8)).build(player));
 	}
 	
 	/**
@@ -199,49 +151,6 @@ public class EntityCombatDefinitions {
 		GameTab data = GameTab.MAGIC_SPELLBOOK;
 		player.getManager().getInterfaces().sendInterface(player.getManager().getInterfaces().usingFixedMode() ? data.getFixedChildId() : data.getResizedChildId(), spellbook.getInterfaceId());
 		refreshBookConfiguration();
-	}
-	
-	/**
-	 * Refreshes the special attack bar, sending it on or off to the client.
-	 */
-	private void refreshSpecialActivated() {
-		final Player player = entity.toPlayer();
-		player.getTransmitter().send(new ConfigPacketBuilder(301, specialActivated ? 1 : 0).build(player));
-	}
-	
-	/**
-	 * Sets the amount of special energy we have
-	 *
-	 * @param specialEnergy
-	 * 		The amount
-	 */
-	public void setSpecialEnergy(byte specialEnergy) {
-		this.specialEnergy = specialEnergy;
-		refreshSpecialEnergy();
-	}
-	
-	/**
-	 * Resets spell information
-	 *
-	 * @param removeAutoCast
-	 * 		If we should remove the auto cast spell
-	 */
-	public void resetSpells(boolean removeAutoCast) {
-		final Player player = entity.toPlayer();
-		player.removeAttribute("spell_cast_id");
-		if (removeAutoCast) {
-			autocastId = -1;
-			refreshAutoCastSpell();
-		}
-	}
-	
-	/**
-	 * Refreshes the currently selected autocast spell
-	 */
-	private void refreshAutoCastSpell() {
-		refreshAttackStyle();
-		final Player player = entity.toPlayer();
-		player.getTransmitter().send(new ConfigPacketBuilder(108, getSpellAutoCastConfigValue()).build(player));
 	}
 	
 	/**
@@ -354,6 +263,122 @@ public class EntityCombatDefinitions {
 	}
 	
 	/**
+	 * Refreshes the book configuration
+	 */
+	private void refreshBookConfiguration() {
+		int value = 0;
+		if (spellbook == MagicBook.REGULAR) {
+			value = sortSpellBook | (showCombatSpells ? 0 : 1 << 9) | (showSkillSpells ? 0 : 1 << 10) | (showMiscellaneousSpells ? 0 : 1 << 11) | (showTeleportSpells ? 0 : 1 << 12);
+		} else if (spellbook == MagicBook.ANCIENTS) {
+			value = sortSpellBook << 3 | (showCombatSpells ? 0 : 1 << 16) | (showTeleportSpells ? 0 : 1 << 17);
+		} else if (spellbook == MagicBook.LUNARS) {
+			value = sortSpellBook << 6 | (showCombatSpells ? 0 : 1 << 13) | (showMiscellaneousSpells ? 0 : 1 << 14) | (showTeleportSpells ? 0 : 1 << 15);
+		}
+		entity.toPlayer().getTransmitter().send(new ConfigPacketBuilder(1376, value).build(entity.toPlayer()));
+	}
+	
+	/**
+	 * Changes the attack style
+	 *
+	 * @param attackStyle
+	 * 		The attack style
+	 */
+	public void changeAttackStyle(byte attackStyle) {
+		Player player = entity.toPlayer();
+		byte maxSize = 3;
+		int weaponId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_WEAPON);
+		CombatType type = StaticCombatFormulae.getCombatType(player);
+		String name = weaponId == -1 ? "" : ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
+		// whips, halberds, range, and magic combat styles only have 3 styles.
+		if (weaponId == -1 || type != CombatType.MELEE || name.contains("whip") || name.contains("halberd")) {
+			maxSize = 2;
+		}
+		if (attackStyle > maxSize) {
+			attackStyle = maxSize;
+		}
+		if (this.attackStyle != attackStyle) {
+			this.attackStyle = attackStyle;
+			if (autocastId > 1) {
+				resetSpells(true);
+			} else {
+				refreshAttackStyle();
+			}
+		} else if (autocastId > 1) {
+			resetSpells(true);
+		}
+	}
+	
+	/**
+	 * Resets spell information
+	 *
+	 * @param removeAutoCast
+	 * 		If we should remove the auto cast spell
+	 */
+	public void resetSpells(boolean removeAutoCast) {
+		final Player player = entity.toPlayer();
+		player.removeAttribute("spell_cast_id");
+		if (removeAutoCast) {
+			autocastId = -1;
+			refreshAutoCastSpell();
+		}
+	}
+	
+	/**
+	 * Toggles the retaliate button
+	 */
+	public void toggleAutoRetaliate() {
+		retaliating = !retaliating;
+		entity.toPlayer().stop(true, true, true, false);
+		refreshRetaliate();
+	}
+	
+	/**
+	 * Modifies the special attack energy by the given amount. This also verifies that we never have < 0 special energy.
+	 *
+	 * @param amount
+	 * 		The amount to reduce it by.
+	 */
+	public void modifySpecial(int amount) {
+		this.specialEnergy -= amount;
+		if (this.specialEnergy <= 0) {
+			this.specialEnergy = 0;
+		} else if (this.specialEnergy >= 100) {
+			this.specialEnergy = 100;
+		}
+		refreshSpecialEnergy();
+	}
+	
+	/**
+	 * Sets if the special attack is activated or not
+	 *
+	 * @param specialActivated
+	 * 		The special attack being activated
+	 */
+	public void setSpecialActivated(boolean specialActivated) {
+		this.specialActivated = specialActivated;
+		refreshSpecialActivated();
+	}
+	
+	/**
+	 * Refreshes the special attack bar, sending it on or off to the client.
+	 */
+	private void refreshSpecialActivated() {
+		final Player player = entity.toPlayer();
+		player.getTransmitter().send(new ConfigPacketBuilder(301, specialActivated ? 1 : 0).build(player));
+	}
+	
+	/**
+	 * Sets the amount of special energy we have
+	 *
+	 * @param specialEnergy
+	 * 		The amount
+	 */
+	public void setSpecialEnergy(byte specialEnergy) {
+		this.specialEnergy = specialEnergy;
+		refreshSpecialEnergy();
+	}
+	
+	/**
 	 * Sets the auto-cast spell id
 	 *
 	 * @param autocastId
@@ -373,14 +398,6 @@ public class EntityCombatDefinitions {
 	public void setDefensiveCasting(boolean defensiveCasting) {
 		this.defensiveCasting = defensiveCasting;
 		refreshDefensiveCasting();
-	}
-	
-	/**
-	 * Refreshes the defensive casting button
-	 */
-	private void refreshDefensiveCasting() {
-		Player player = entity.toPlayer();
-		player.getTransmitter().send(new ConfigPacketBuilder(439, spellbook.getInterfaceId() + (!defensiveCasting ? 0 : 1 << 8)).build(player));
 	}
 	
 	/**
@@ -413,21 +430,6 @@ public class EntityCombatDefinitions {
 	public void switchShowTeleportSkillSpells() {
 		showTeleportSpells = !showTeleportSpells;
 		refreshBookConfiguration();
-	}
-	
-	/**
-	 * Refreshes the book configuration
-	 */
-	private void refreshBookConfiguration() {
-		int value = 0;
-		if (spellbook == MagicBook.REGULAR) {
-			value = sortSpellBook | (showCombatSpells ? 0 : 1 << 9) | (showSkillSpells ? 0 : 1 << 10) | (showMiscellaneousSpells ? 0 : 1 << 11) | (showTeleportSpells ? 0 : 1 << 12);
-		} else if (spellbook == MagicBook.ANCIENTS) {
-			value = sortSpellBook << 3 | (showCombatSpells ? 0 : 1 << 16) | (showTeleportSpells ? 0 : 1 << 17);
-		} else if (spellbook == MagicBook.LUNARS) {
-			value = sortSpellBook << 6 | (showCombatSpells ? 0 : 1 << 13) | (showMiscellaneousSpells ? 0 : 1 << 14) | (showTeleportSpells ? 0 : 1 << 15);
-		}
-		entity.toPlayer().getTransmitter().send(new ConfigPacketBuilder(1376, value).build(entity.toPlayer()));
 	}
 	
 	/**

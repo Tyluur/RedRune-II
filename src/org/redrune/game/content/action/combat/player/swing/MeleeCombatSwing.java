@@ -5,6 +5,7 @@ import org.redrune.game.content.action.combat.StaticCombatFormulae;
 import org.redrune.game.content.action.combat.player.CombatTypeSwing;
 import org.redrune.game.content.action.combat.player.calc.MeleeCombatCalculator;
 import org.redrune.game.content.action.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
@@ -22,7 +23,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	
 	// TODO: healing from guthans
 	@Override
-	public boolean run(Player player, org.redrune.game.node.entity.Entity target, int weaponId, int combatStyle, SpecialAttackEvent special) {
+	public boolean run(Player player, Entity target, int weaponId, int combatStyle, SpecialAttackEvent special) {
 		String weaponName = weaponId == -1 ? "unarmed" : ItemDefinitionParser.forId(weaponId).getName();
 		
 		// we check the special attacks
@@ -45,7 +46,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 			final double maxHit = getMaxHit(player, weaponId, combatStyle, 1D);
 			
 			// the damage
-			int damage = randomizeHit(maxHit, getAttackBonus(player, weaponId, combatStyle), getDefenceBonus(target, weaponId, combatStyle));
+			int damage = randomizeHit(maxHit, getAttackBonus(player, weaponId, combatStyle, false), getDefenceBonus(target, weaponId, combatStyle));
 			
 			// the delay on the hit
 			final int delay = weaponId == 10887 || (weaponName.toLowerCase().contains("maul") && !weaponName.startsWith("Granite")) ? 2 : 1;
@@ -55,6 +56,11 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 			
 			// constructs the hit and sets its delay
 			final Hit hit = new Hit(player, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
+			
+			// handles the leeches aspect of the hit
+			if (target.isPlayer()) {
+				target.toPlayer().getManager().getPrayers().handleLeeches(hit);
+			}
 			
 			// sends the hit after the delay
 			applyHit(player, target, hit, weaponId, combatStyle, delay);
@@ -66,8 +72,8 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getAttackBonus(Player player, int weaponId, int combatStyle) {
-		return calculator.totalAggressiveBoost(player, weaponId, combatStyle);
+	public double getAttackBonus(Player player, int weaponId, int combatStyle, boolean specialAttack) {
+		return calculator.totalAggressiveBoost(player, weaponId, combatStyle, specialAttack);
 	}
 	
 	@Override
@@ -76,8 +82,8 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getMaxHit(Player player, int weaponId, int combatStyle, double accuracyIncrease) {
-		return calculator.maximumDamageAppendable(player, weaponId, combatStyle, accuracyIncrease);
+	public double getMaxHit(Player player, int weaponId, int combatStyle, double multiplier) {
+		return calculator.maximumDamageAppendable(player, weaponId, combatStyle, multiplier);
 	}
 	
 	@Override

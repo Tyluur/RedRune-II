@@ -28,7 +28,7 @@ public class FloorItemRemovalBuilder implements OutgoingPacketBuilder {
 		int deltaY = item.getLocation().getY() - (player.getLastLoadedLocation().getRegionY() << 3);
 		player.getTransmitter().send(new TileLocationUpdate(item.getLocation()).build(player));
 		bldr.writeShortA(item.getId());
-		bldr.writeByteS((deltaX & 0x7)  << 4 | deltaY & 0x7);
+		bldr.writeByteS((deltaX & 0x7) << 4 | deltaY & 0x7);
 		return bldr.toPacket();
 	}
 }

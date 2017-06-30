@@ -6,9 +6,9 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.redrune.network.NetworkConstants;
+import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
-import org.redrune.network.rs666.NetworkSession;
 
 /**
  * Decodes a received packet.

@@ -92,13 +92,13 @@ public final class ForceMovement extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return 0x1000;
+	public int getOrdinal() {
+		return 8;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return 8;
+	public int getMaskData() {
+		return 0x1000;
 	}
 	
 }

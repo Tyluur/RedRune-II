@@ -54,13 +54,13 @@ public class FaceLocationUpdate extends UpdateFlag {
 	}
 	
 	@Override
-	public int getMaskData() {
-		return 0x20;
+	public int getOrdinal() {
+		return npc ? 13 : 14;
 	}
 	
 	@Override
-	public int getOrdinal() {
-		return npc ? 13 : 14;
+	public int getMaskData() {
+		return 0x20;
 	}
 	
 }

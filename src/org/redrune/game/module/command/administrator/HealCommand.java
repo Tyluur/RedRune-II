@@ -10,7 +10,7 @@ import org.redrune.utility.rs.constant.SkillConstants;
  * @since 6/7/2017
  */
 @CommandManifest(description = "Heals you to max health")
-public class HealCommand extends CommandModule{
+public class HealCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {

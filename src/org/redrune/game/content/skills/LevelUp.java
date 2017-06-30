@@ -31,6 +31,72 @@ public final class LevelUp implements SkillConstants {
 	}
 	
 	/**
+	 * Switches the flash for a skill
+	 *
+	 * @param player
+	 * 		The player
+	 * @param skill
+	 * 		The id of the skill
+	 * @param on
+	 * 		If the flash should be on or off
+	 */
+	public static void switchFlash(Player player, int skill, boolean on) {
+		int id;
+		if (skill == ATTACK) {
+			id = 4732;
+		} else if (skill == STRENGTH) {
+			id = 4733;
+		} else if (skill == DEFENCE) {
+			id = 4734;
+		} else if (skill == RANGE) {
+			id = 4735;
+		} else if (skill == PRAYER) {
+			id = 4736;
+		} else if (skill == MAGIC) {
+			id = 4737;
+		} else if (skill == HITPOINTS) {
+			id = 4738;
+		} else if (skill == AGILITY) {
+			id = 4739;
+		} else if (skill == HERBLORE) {
+			id = 4740;
+		} else if (skill == THIEVING) {
+			id = 4741;
+		} else if (skill == CRAFTING) {
+			id = 4742;
+		} else if (skill == FLETCHING) {
+			id = 4743;
+		} else if (skill == MINING) {
+			id = 4744;
+		} else if (skill == SMITHING) {
+			id = 4745;
+		} else if (skill == FISHING) {
+			id = 4746;
+		} else if (skill == COOKING) {
+			id = 4747;
+		} else if (skill == FIREMAKING) {
+			id = 4748;
+		} else if (skill == WOODCUTTING) {
+			id = 4749;
+		} else if (skill == RUNECRAFTING) {
+			id = 4750;
+		} else if (skill == SLAYER) {
+			id = 4751;
+		} else if (skill == FARMING) {
+			id = 4752;
+		} else if (skill == CONSTRUCTION) {
+			id = 4754;
+		} else if (skill == HUNTER) {
+			id = 4753;
+		} else if (skill == SUMMONING) {
+			id = 4755;
+		} else {
+			id = 7756;
+		}
+		player.getTransmitter().send(new ConfigFilePacketBuilder(id, on ? 1 : 0).build(player));
+	}
+	
+	/**
 	 * Gets the icon value of a skill
 	 *
 	 * @param skill
@@ -110,72 +176,6 @@ public final class LevelUp implements SkillConstants {
 			return 24;
 		}
 		return 25;
-	}
-	
-	/**
-	 * Switches the flash for a skill
-	 *
-	 * @param player
-	 * 		The player
-	 * @param skill
-	 * 		The id of the skill
-	 * @param on
-	 * 		If the flash should be on or off
-	 */
-	public static void switchFlash(Player player, int skill, boolean on) {
-		int id;
-		if (skill == ATTACK) {
-			id = 4732;
-		} else if (skill == STRENGTH) {
-			id = 4733;
-		} else if (skill == DEFENCE) {
-			id = 4734;
-		} else if (skill == RANGE) {
-			id = 4735;
-		} else if (skill == PRAYER) {
-			id = 4736;
-		} else if (skill == MAGIC) {
-			id = 4737;
-		} else if (skill == HITPOINTS) {
-			id = 4738;
-		} else if (skill == AGILITY) {
-			id = 4739;
-		} else if (skill == HERBLORE) {
-			id = 4740;
-		} else if (skill == THIEVING) {
-			id = 4741;
-		} else if (skill == CRAFTING) {
-			id = 4742;
-		} else if (skill == FLETCHING) {
-			id = 4743;
-		} else if (skill == MINING) {
-			id = 4744;
-		} else if (skill == SMITHING) {
-			id = 4745;
-		} else if (skill == FISHING) {
-			id = 4746;
-		} else if (skill == COOKING) {
-			id = 4747;
-		} else if (skill == FIREMAKING) {
-			id = 4748;
-		} else if (skill == WOODCUTTING) {
-			id = 4749;
-		} else if (skill == RUNECRAFTING) {
-			id = 4750;
-		} else if (skill == SLAYER) {
-			id = 4751;
-		} else if (skill == FARMING) {
-			id = 4752;
-		} else if (skill == CONSTRUCTION) {
-			id = 4754;
-		} else if (skill == HUNTER) {
-			id = 4753;
-		} else if (skill == SUMMONING) {
-			id = 4755;
-		} else {
-			id = 7756;
-		}
-		player.getTransmitter().send(new ConfigFilePacketBuilder(id, on ? 1 : 0).build(player));
 	}
 	
 }

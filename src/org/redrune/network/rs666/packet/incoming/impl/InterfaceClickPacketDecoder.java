@@ -8,7 +8,7 @@ import org.redrune.game.node.entity.player.event.impl.item.ItemOnItemEvent;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.Misc;
+import org.redrune.utility.tool.Misc;
 import org.redrune.utility.repository.EventRepository;
 
 import java.util.logging.Level;
@@ -76,38 +76,6 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 	}
 	
 	/**
-	 * Decodes the packet that is sent when two items are used together
-	 *
-	 * @param player
-	 * 		The player
-	 * @param packet
-	 * 		The packet
-	 */
-	private void decodeItemOnItemPacket(Player player, Packet packet) {
-		int usedWithId = packet.readLEShortA();
-		int usedWithSlot = packet.readLEShortA();
-		int usedSlot = packet.readLEShortA();
-		int hash1 = packet.readLEInt();
-		int hash2 = packet.readLEInt();
-		int usedId = packet.readShortA();
-		
-		Item itemUsed = player.getInventory().getItems().get(usedSlot);
-		if (itemUsed == null) {
-			return;
-		}
-		Item usedWith = player.getInventory().getItems().get(usedWithSlot);
-		if (usedWith == null) {
-			return;
-		}
-		if (usedId != itemUsed.getId() || usedWithId != usedWith.getId()) {
-			System.out.println("Error in parsing item on item...");
-			return;
-		}
-		
-		EventRepository.executeEvent(player, ItemOnItemEvent.class, new ItemOnItemContext(usedSlot, usedWithSlot));
-	}
-	
-	/**
 	 * Decodes an incoming dialogue
 	 *
 	 * @param player
@@ -133,5 +101,37 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 		}
 		player.getManager().getDialogues().handleOption(interfaceId, componentId);
 		System.out.println("[interfaceId=" + interfaceId + ", componentId=" + componentId + "" + ", packetId=" + packet.getOpcode() + "]");
+	}
+	
+	/**
+	 * Decodes the packet that is sent when two items are used together
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void decodeItemOnItemPacket(Player player, Packet packet) {
+		int usedWithId = packet.readLEShortA();
+		int usedWithSlot = packet.readLEShortA();
+		int usedSlot = packet.readLEShortA();
+		int hash1 = packet.readLEInt();
+		int hash2 = packet.readLEInt();
+		int usedId = packet.readShortA();
+
+		Item itemUsed = player.getInventory().getItems().get(usedSlot);
+		if (itemUsed == null) {
+			return;
+		}
+		Item usedWith = player.getInventory().getItems().get(usedWithSlot);
+		if (usedWith == null) {
+			return;
+		}
+		if (usedId != itemUsed.getId() || usedWithId != usedWith.getId()) {
+			System.out.println("Error in parsing item on item...");
+			return;
+		}
+
+		EventRepository.executeEvent(player, ItemOnItemEvent.class, new ItemOnItemContext(usedSlot, usedWithSlot));
 	}
 }
