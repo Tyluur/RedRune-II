@@ -2,10 +2,10 @@ package org.redrune.network.rs666.packet.incoming.impl;
 
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.context.NPCEventContext;
-import org.redrune.game.node.entity.player.event.context.NodeReachEventContext;
-import org.redrune.game.node.entity.player.event.impl.NPCEvent;
-import org.redrune.game.node.entity.player.event.impl.NodeReachEvent;
+import org.redrune.game.content.event.context.NPCEventContext;
+import org.redrune.game.content.event.context.NodeReachEventContext;
+import org.redrune.game.content.event.impl.NPCEvent;
+import org.redrune.game.content.event.impl.NodeReachEvent;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;

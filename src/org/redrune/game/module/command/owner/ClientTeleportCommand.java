@@ -3,7 +3,6 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.AttributeKey;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -32,7 +31,7 @@ public class ClientTeleportCommand extends CommandModule {
 				z = Integer.parseInt(args[3]);
 			}
 		}
-		player.putAttribute(AttributeKey.TELEPORT_LOCATION, Location.create(x, y, z));
+		player.teleport(Location.create(x, y, z));
 	}
 	
 	@Override

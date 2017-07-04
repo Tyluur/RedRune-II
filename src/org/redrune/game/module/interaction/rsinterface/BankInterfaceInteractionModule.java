@@ -2,7 +2,7 @@ package org.redrune.game.module.interaction.rsinterface;
 
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
+import org.redrune.game.content.event.impl.item.ItemEvent;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.rs.input.InputResponse;

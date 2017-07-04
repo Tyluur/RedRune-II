@@ -1,14 +1,14 @@
-package org.redrune.game.node.entity.player.event.impl.item;
+package org.redrune.game.content.event.impl.item;
 
 import org.redrune.game.content.skills.firemaking.Fire;
 import org.redrune.game.content.skills.firemaking.FiremakingAction;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.Event;
-import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
-import org.redrune.game.node.entity.player.event.context.item.ItemOnItemContext;
+import org.redrune.game.content.event.Event;
+import org.redrune.game.content.event.EventPolicy.ActionPolicy;
+import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
+import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
+import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
+import org.redrune.game.content.event.context.item.ItemOnItemContext;
 import org.redrune.game.node.item.Item;
 
 /**
@@ -40,7 +40,7 @@ public class ItemOnItemEvent extends Event<ItemOnItemContext> {
 		
 		Fire fire = FiremakingAction.getFire(player, usedItem, withItem);
 		if (fire != null) {
-			player.getManager().getActions().startAction(new FiremakingAction(fire));
+			player.getManager().getActions().startAction(new FiremakingAction(fire, false));
 		} else {
 			player.getTransmitter().sendMessage("Nothing interesting happens.");
 		}

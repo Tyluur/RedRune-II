@@ -41,7 +41,7 @@ public final class Scheduler {
 				
 				// so if we've reached the amount of ticks to stop
 				// or if the task was forced to stop
-				final boolean shouldRemove = (task.getDelayedTickCount() >= task.getGoalTicks()) || !task.isRunning();
+				final boolean shouldRemove = (task.getGoalTicks() != -1 && task.getDelayedTickCount() >= task.getGoalTicks()) || !task.isRunning();
 				
 				// removes the task from the list if its time
 				if (shouldRemove) {

@@ -34,7 +34,7 @@ public class WildernessDitchInteractionModule implements ObjectInteractionModule
 		SystemManager.getScheduler().schedule(new ScheduledTask(2) {
 			@Override
 			public void run() {
-				player.moveTo(toLoc);
+				player.teleport(toLoc);
 				player.getUpdateMasks().register(new FaceLocationUpdate(player, from));
 				SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 					@Override

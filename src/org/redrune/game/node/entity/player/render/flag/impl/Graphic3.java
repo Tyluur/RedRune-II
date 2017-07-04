@@ -3,13 +3,14 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.utility.rs.Graphics;
 
 /**
  * Represents the secondary animation mask?
  *
  * @author Emperor
  */
-public class Graphic3 extends UpdateFlag {
+public class Graphic3 extends UpdateFlag implements Graphics {
 	
 	/**
 	 * The graphic id.
@@ -20,6 +21,11 @@ public class Graphic3 extends UpdateFlag {
 	 * The height.
 	 */
 	private final int height;
+	
+	/**
+	 * The speed of the graphic
+	 */
+	private final int speed;
 	
 	/**
 	 * The rotation.
@@ -33,19 +39,19 @@ public class Graphic3 extends UpdateFlag {
 	
 	/**
 	 * Constructs a new {@code Graphic3} {@code Object}.
-	 *
-	 * @param id
-	 * 		The graphic id.
-	 * @param height
-	 * 		The height.
-	 * @param rotation
-	 * 		The rotation.
-	 * @param npc
-	 * 		If the entity is an NPC.
 	 */
-	public Graphic3(int id, int height, int rotation, boolean npc) {
+	public Graphic3(int id, int height, int speed, boolean npc) {
 		this.id = id;
 		this.height = height;
+		this.speed = speed;
+		this.rotation = 0;
+		this.npc = npc;
+	}
+	
+	public Graphic3(int id, int height, int speed, int rotation, boolean npc) {
+		this.id = id;
+		this.height = height;
+		this.speed = speed;
 		this.rotation = rotation;
 		this.npc = npc;
 	}
@@ -54,12 +60,12 @@ public class Graphic3 extends UpdateFlag {
 	public void write(Player outgoing, PacketBuilder bldr) {
 		if (npc) {
 			bldr.writeLEShortA(id);
-			bldr.writeLEInt(height << 16);
-			bldr.writeByteA(rotation);
+			bldr.writeLEInt(getPrimarySettings());
+			bldr.writeByteA(getSecondarySettings());
 		} else {
 			bldr.writeLEShort(id);
-			bldr.writeInt(height << 16);
-			bldr.writeByteC(rotation);
+			bldr.writeInt(getPrimarySettings());
+			bldr.writeByteC(getSecondarySettings());
 		}
 	}
 	
@@ -73,4 +79,29 @@ public class Graphic3 extends UpdateFlag {
 		return npc ? 0x10000 : 0x100000;
 	}
 	
+	@Override
+	public int id() {
+		return id;
+	}
+	
+	@Override
+	public boolean npc() {
+		return npc;
+	}
+	
+	@Override
+	
+	public int height() {
+		return height;
+	}
+	
+	@Override
+	public int speed() {
+		return speed;
+	}
+	
+	@Override
+	public int rotation() {
+		return rotation;
+	}
 }

@@ -31,6 +31,7 @@ public class FloorItemTask extends ScheduledTask {
 			item.setRenderable(false);
 			item.getRegion().removeFloorItem(item);
 			stop();
+			//			System.out.println("removed a public floor item	" + item);
 		} else {
 			// the item had an owner and its been alive for its destination ticks
 			// the next phase is to remove after public for 3 minutes
@@ -44,10 +45,12 @@ public class FloorItemTask extends ScheduledTask {
 				
 				// everyone else should see the item now
 				item.getRegion().sendFloorItemToAll(item, true);
+				//				System.out.println("made an item visible to the public	" + item);
 			} else {
 				// the item's phase for being public to the owner only has already lapsed... removal now
 				item.setRenderable(false);
 				item.getRegion().removeFloorItem(item);
+				//				System.out.println("removed an owner floor item\t" + item);
 				stop();
 			}
 			// TODO fix: ground items showing up for other players when removed

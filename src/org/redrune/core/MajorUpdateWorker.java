@@ -113,7 +113,6 @@ public final class MajorUpdateWorker implements Runnable {
 	public boolean lapsed(long time, long ticks) {
 		long current = getTicksElapsed();
 		long difference = current - time;
-		System.out.println(difference);
 		return time == -1 || time > current || difference > ticks;
 	}
 	

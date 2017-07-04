@@ -1,10 +1,10 @@
 package org.redrune.game.node.entity;
 
 import lombok.Getter;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.render.flag.impl.MovementUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.TeleportUpdate;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.route.RouteFinder;
@@ -98,7 +98,6 @@ public class EntityMovement {
 		if (entity.needsMapUpdate()) {
 			entity.loadMapRegions();
 		}
-		System.out.println("processed movement @ " + SystemManager.getUpdateWorker().getTicksElapsed());
 	}
 	
 	/**
@@ -439,6 +438,9 @@ public class EntityMovement {
 			return false;
 		}
 		walkSteps.add(new int[] { dir, nextX, nextY });
+		if (entity.isPlayer()) {
+			entity.getUpdateMasks().register(new MovementUpdate(entity.toPlayer()));
+		}
 		return true;
 	}
 	

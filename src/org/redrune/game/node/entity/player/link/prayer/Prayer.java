@@ -3,10 +3,8 @@ package org.redrune.game.node.entity.player.link.prayer;
 import lombok.Getter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerSkills;
-import org.redrune.game.node.entity.player.render.flag.impl.Graphic2;
-import org.redrune.game.node.entity.player.render.flag.impl.Graphic3;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.PrayerConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -86,7 +84,7 @@ public enum Prayer implements PrayerConstants {
 		@Override
 		public void activate(Player player) {
 			player.sendAnimation(12589);
-			player.getUpdateMasks().register(new Graphic2(2266, 0, 0, false));
+			player.sendGraphics(2266);
 		}
 	},
 	DEFLECT_SUMMONING(CURSES, 6, new int[][] { PRAYER_CLOSE_IDS[1][4] }),
@@ -106,7 +104,7 @@ public enum Prayer implements PrayerConstants {
 		@Override
 		public void activate(Player player) {
 			player.sendAnimation(12565);
-			player.getUpdateMasks().register(new Graphic3(2226, 0, 0, false));
+			player.sendGraphics(2226);
 		}
 	};
 	

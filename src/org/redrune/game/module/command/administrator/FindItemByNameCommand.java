@@ -59,7 +59,7 @@ public class FindItemByNameCommand extends CommandModule {
 			if (!added) {
 				continue;
 			}
-			found.add("[<col=FF0000>ITEM</col>] <col=" + ColorConstants.LIGHT_BLUE + ">" + definition.getName() + "</col> " + Arrays.toString(definition.getInventoryOptions()) + " - ID: " + itemId + "");
+			found.add("[<col=FF0000>" + itemId+ "</col>] <col=" + ColorConstants.LIGHT_BLUE + ">" + definition.getName() + "</col> inventory=" + Arrays.toString(definition.getInventoryOptions()) + " ground=" + Arrays.toString(definition.getGroundOptions()));
 		}
 		// shows the entries found
 		found.forEach(entry -> player.getTransmitter().sendConsoleMessage(entry));

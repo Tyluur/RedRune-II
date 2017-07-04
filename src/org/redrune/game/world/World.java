@@ -116,6 +116,6 @@ public final class World {
 	 * 		The username of the player
 	 */
 	public Optional<Player> getPlayerByUsername(String username) {
-		return players.stream().filter(player -> player.getDetails().getUsername().equals(username)).findAny();
+		return players.stream().filter(player -> player.getDetails().getUsername().equalsIgnoreCase(username)).findAny();
 	}
 }

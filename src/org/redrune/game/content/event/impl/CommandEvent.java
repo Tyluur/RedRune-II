@@ -1,12 +1,12 @@
-package org.redrune.game.node.entity.player.event.impl;
+package org.redrune.game.content.event.impl;
 
 import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.Event;
-import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
-import org.redrune.game.node.entity.player.event.context.CommandEventContext;
+import org.redrune.game.content.event.Event;
+import org.redrune.game.content.event.EventPolicy.ActionPolicy;
+import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
+import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
+import org.redrune.game.content.event.context.CommandEventContext;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

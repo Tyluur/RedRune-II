@@ -8,6 +8,7 @@ import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.impl.FloorItemTask;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.FloorItem;
@@ -24,6 +25,7 @@ import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.CacheFilestore;
 import org.redrune.utility.rs.constant.RegionConstants;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -126,7 +128,7 @@ public class Region {
 	/**
 	 * Checks the region load map
 	 */
-	Region checkLoadMap() {
+	void checkLoadMap() {
 		if (getLoadMapStage() == 0) {
 			setLoadMapStage(1);
 			EngineWorkingSet.submitEngineWork(() -> {
@@ -146,7 +148,6 @@ public class Region {
 				}
 			});
 		}
-		return this;
 	}
 	
 	/**
@@ -520,7 +521,7 @@ public class Region {
 	 * @param entity
 	 * 		The entity to add.
 	 */
-	public void addEntity(org.redrune.game.node.entity.Entity entity) {
+	public void addEntity(Entity entity) {
 		if (entity.isPlayer()) {
 			players.add(entity.toPlayer());
 		} else if (entity.isNPC()) {
@@ -536,7 +537,7 @@ public class Region {
 	 * @param entity
 	 * 		The entity to remove.
 	 */
-	public void removeEntity(org.redrune.game.node.entity.Entity entity) {
+	public void removeEntity(Entity entity) {
 		if (entity.isPlayer()) {
 			players.remove(entity.toPlayer());
 		} else if (entity.isNPC()) {
@@ -660,18 +661,16 @@ public class Region {
 		return floorItems.add(item);
 	}
 	
+	/**
+	 * Refreshes an item
+	 *
+	 * @param item
+	 * 		The item
+	 */
 	void refreshItem(FloorItem item) {
 		players.forEach(player -> player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player)));
-		if (item.isDefaultPublic()) {
-			sendFloorItemToAll(item, false);
-		} else {
-			Optional<Player> optional = World.get().getPlayerByUsername(item.getOwnerUsername());
-			if (!optional.isPresent()) {
-				return;
-			}
-			optional.get().getTransmitter().send(new FloorItemAdditionBuilder(item).build(optional.get()));
-		}
-		SystemManager.getScheduler().schedule(new FloorItemTask(item));
+		// only adding the item for those its visible to
+		players.stream().filter(item::visibleFor).forEach(player -> player.getTransmitter().send(new FloorItemAdditionBuilder(item).build(player)));
 	}
 	
 	/**
@@ -697,7 +696,10 @@ public class Region {
 				return true;
 			}
 			return false;
-		}).forEach(player -> player.getTransmitter().send(new FloorItemAdditionBuilder(item).build(player)));
+		}).forEach(player -> {
+			player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player));
+			player.getTransmitter().send(new FloorItemAdditionBuilder(item).build(player));
+		});
 	}
 	
 	/**
@@ -727,9 +729,10 @@ public class Region {
 	 */
 	public void handleRegionEntry(Player player) {
 		for (FloorItem item : floorItems) {
-			if (!item.isRenderable()) {
+			if (!item.visibleFor(player)) {
 				continue;
 			}
+			player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player));
 			player.getTransmitter().send(new FloorItemAdditionBuilder(item).build(player));
 		}
 		refreshAllObjects(player);
@@ -754,12 +757,11 @@ public class Region {
 	 * 		The floor item
 	 */
 	public boolean removeFloorItem(FloorItem item) {
-		if (!floorItems.contains(item)) {
-			return false;
-		}
-		floorItems.remove(item);
-		players.stream().filter(player -> player != null && player.getLocation().getPlane() == item.getLocation().getPlane() && player.isRenderable()).forEach(player -> player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player)));
-		return true;
+		// if the item was removed
+		final boolean remove = floorItems.remove(item);
+		// removes the item for all players
+		players.stream().filter(Objects::nonNull).forEach(player -> player.getTransmitter().send(new FloorItemRemovalBuilder(item).build(player)));
+		return remove;
 	}
 	
 	/**

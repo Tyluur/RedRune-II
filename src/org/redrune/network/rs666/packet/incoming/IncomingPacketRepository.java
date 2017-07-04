@@ -46,7 +46,8 @@ public final class IncomingPacketRepository {
 	 */
 	public static void handlePacket(Player player, Packet packet) {
 		final int opcode = packet.getOpcode();
-		EngineWorkingSet.submitPacketWork(() -> {
+		// packet decoding is done instantly but on a separate worker
+		EngineWorkingSet.executePacketWork(() -> {
 			try {
 				IncomingPacketDecoder structure = DECODER_MAP.get(opcode);
 				if (structure == null) {

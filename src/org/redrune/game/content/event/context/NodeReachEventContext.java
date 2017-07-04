@@ -1,8 +1,8 @@
-package org.redrune.game.node.entity.player.event.context;
+package org.redrune.game.content.event.context;
 
 import lombok.Getter;
 import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.player.event.EventContext;
+import org.redrune.game.content.event.EventContext;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

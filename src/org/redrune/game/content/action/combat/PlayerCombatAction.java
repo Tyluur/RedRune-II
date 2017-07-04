@@ -1,7 +1,6 @@
 package org.redrune.game.content.action.combat;
 
 import lombok.Getter;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.action.Action;
 import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.combat.player.CombatType;
@@ -10,7 +9,6 @@ import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.tool.Misc;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -23,7 +21,7 @@ public final class PlayerCombatAction implements Action {
 	 * The target we are in combat with
 	 */
 	@Getter
-	private final org.redrune.game.node.entity.Entity target;
+	private final Entity target;
 	
 	/**
 	 * The type of combat we're engaging in.
@@ -72,7 +70,6 @@ public final class PlayerCombatAction implements Action {
 	public int processOnTicks(Player player) {
 		// we are too far away, combat is halted [but not quit]
 		if (!StaticCombatFormulae.isWithinDistance(player, target, type)) {
-			System.out.println("we're too far away to fight tho.");
 			return 0;
 		}
 		player.turnTo(target);
@@ -148,7 +145,6 @@ public final class PlayerCombatAction implements Action {
 		}
 		// if we are invalid to fight
 		if (!StaticCombatFormulae.canFight(player, target)) {
-			System.out.println("we cant fight cuz we frozen");
 			return false;
 		}
 		// if player is frozen and under, stops attacking, else stands waiting
@@ -157,8 +153,6 @@ public final class PlayerCombatAction implements Action {
 		}
 		// if we are on the same position
 		if (Misc.colides(player, target)) {
-			System.out.println("PlayerCombatAction.verifyContinuation");
-			System.out.println("Colided @ " + SystemManager.getUpdateWorker().getTicksElapsed());
 			player.getMovement().resetWalkSteps();
 			// if the target is moving [must be going from the collision tile]
 			if (target.getMovement().isMoving()) {
@@ -172,10 +166,6 @@ public final class PlayerCombatAction implements Action {
 			if (!player.getMovement().isMoving() || target.getMovement().isMoving()) {
 				player.getMovement().resetWalkSteps();
 				player.getMovement().addEntityPath(target, 25, true);
-				System.out.println("PlayerCombatAction.verifyContinuation @ " + SystemManager.getUpdateWorker().getTicksElapsed());
-				System.out.println("distance check fired");
-				System.out.println(player.getLocation());
-				player.getMovement().getWalkSteps().forEach(step -> System.out.println("\t" + Arrays.toString(step)));
 			}
 		} else {
 			player.getMovement().resetWalkSteps();

@@ -1,3 +1,22 @@
+6/30/17 {
+	+   Fixed region bug [some secondary ones would never load]
+	+   Added dynamic support for 4 graphics at the same time [4 different masks] [for npcs too]
+	+   Fixed floor items [gif shown sped up a lot]
+	+	Updated projectiles for leeches a bit [slow don + angled like on rs]
+	+	Updated projectile for soulsplit a bit [slow down + angled like on rs]
+	+   Added floor item examine packet
+	+   Added floor item examining event
+	+   Added floor item usage packet
+	+   Added floor item usage event
+		-   I.e. lighting logs that are already lit
+	+   Stopped inventory items from being swapped when player is item interact locked [hopping ditch/burying bones]
+	+
+
+	[IMG]http://i.imgur.com/UfQ3XTB.gif[/IMG]
+	[IMG]http://i.imgur.com/jD5JbJu.png[/IMG]
+	[IMG]http://i.imgur.com/h8RB4he.gif[/IMG]
+}
+
 6/29/17 {
 	+   Added ice barrage
 		-   Freezes for 30 ticks
@@ -27,7 +46,7 @@
 		-   Information if you're interested in javascript: https://pastebin.com/7LcSpvu4
 	+   Added special attack accuracy multiplier for several different weapon types, basing information from runescape's.
 	+   Added potions [only base potions at the moment]
-		-   Noted that in 2011 there was no combat delay after sipping a potion... however combat did stop.
+		-   Noted that in 2011 there was no combat speed after sipping a potion... however combat did stop.
 	+   Updated dharok max hit calculation to be accurate to runescape's
 		-   At exactly 1 lifepoint u can max a 1008 on a player[with the best combat bonuses with dharoks, turmoil, and super pots]
 	+   Updated 'roll' algorithm to be more realistic [we don't want to be able to hit 0-0 on mystics too often, etc....]
@@ -63,7 +82,7 @@
 		-   Added a restoration formula for the drain modifiers
 			-   Every 15 seconds, they will restore by 1% to their original 0 value.
 	+   Added ava's accumulator effect
-	+   Fixed a scheduled task bug that wouldn't allow tasks that had a delay > 1 to happen
+	+   Fixed a scheduled task bug that wouldn't allow tasks that had a speed > 1 to happen
 		-   Also removed 'immediate' task types -> these are never needed
 	+   Fixed auto retaliate - it now retaliates a tick after the hit lands, not combat starts ticking.
 	+   Added magic shortbow & magic longbow special attack with perfect projectiles & accuracy

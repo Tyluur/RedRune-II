@@ -7,6 +7,7 @@ import lombok.Getter;
  * @since 6/8/2017
  */
 public enum Fire {
+	
 	NORMAL(1511, 1, 30, 2732, 40),
 	ACHEY(2862, 1, 30, 2732, 40),
 	OAK(1521, 15, 45, 2732, 60),

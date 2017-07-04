@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.player.Player;
 
 import java.util.Objects;
 
@@ -73,7 +74,7 @@ public class FloorItem extends Item {
 	
 	@Override
 	public String toString() {
-		return "[id=" + getId() + ", name=" + getName() + ", amount=" + getAmount() + ", location=" + getLocation() + ", owner=" + ownerUsername + ", renderable=" + isRenderable() + "]";
+		return "FloorItem{" + "ownerUsername='" + ownerUsername + '\'' + ", ticksPassed=" + ticksPassed + ", targetTicks=" + targetTicks + ", ownerVisibleOnly=" + ownerVisibleOnly + ", item=['" + getId() + "', '" + getAmount() + "']}";
 	}
 	
 	/**
@@ -109,7 +110,7 @@ public class FloorItem extends Item {
 	 * Increments {@link #ticksPassed} by one.
 	 */
 	public void addTicksPassed() {
-		++ticksPassed;
+		ticksPassed++;
 	}
 	
 	/**
@@ -119,4 +120,13 @@ public class FloorItem extends Item {
 		return ticksPassed >= targetTicks;
 	}
 	
+	/**
+	 * Checks if the item is visible for a player
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public boolean visibleFor(Player player) {
+		return isRenderable() && (isDefaultPublic() || !isOwnerVisibleOnly() || Objects.equals(ownerUsername, player.getDetails().getUsername()));
+	}
 }

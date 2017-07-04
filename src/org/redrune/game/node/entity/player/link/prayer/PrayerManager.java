@@ -820,16 +820,15 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * 		The hit
 	 */
 	public void handleLeeches(Hit hit) {
+		// soulsplit effect doesnt matter if hit  dint land
+		if (hit.getDamage() > 0 && hit.getSource().isPlayer() && hit.getSource().toPlayer().getManager().getPrayers().prayerOn(SOULSPLIT)) {
+			handleSoulsplit(hit, hit.getSource().toPlayer());
+		}
 		// leeches only apply to players
 		// and when the hit lands
 		if (!hit.getSource().isPlayer() || hit.getDamage() == 0) {
-			// soulsplit effect doesnt matter if hit  dint land
-			if (hit.getSource().isPlayer() && hit.getSource().toPlayer().getManager().getPrayers().prayerOn(SOULSPLIT)) {
-				handleSoulsplit(hit, hit.getSource().toPlayer());
-			}
 			return;
 		}
-		
 		// the instance of the source [to player object]
 		Player source = hit.getSource().toPlayer();
 		
@@ -902,14 +901,17 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 		//  TODO: heal the user by 5% of the hit
 		drainPrayer(10);
 		
+		// the speed of the projectiles
+		int speed = ProjectileManager.getSpeedModifier(hitter, player) - 10;
 		// the projectile from the player who soulsplitted me to me
-		Projectile from = ProjectileManager.createSpeedDefinedProjectile(hitter, player, 2263, 11, 5, 20, 0, 0);
+		Projectile from = new Projectile(hitter, player, 2263, 11, 5, 10, speed, 10, 0);
 		// the projectile from me to the player who soulsplitted me
-		Projectile to = ProjectileManager.createSpeedDefinedProjectile(player, hitter, 2263, 11, 5, 20, 0, 0);
+		Projectile to = new Projectile(player, hitter, 2263, 11, 5, 10, speed, 10, 0);
 		// sending the projectiles
 		ProjectileManager.sendProjectile(from);
 		// a tick after, the next visual effects are done
 		int projectileDelay = CombatTypeSwing.getProjectileDelay(hitter, player);
+		// add to the delay
 		projectileDelay += CombatTypeSwing.getDelay(hitter, player, projectileDelay, 0);
 		SystemManager.getScheduler().schedule(new ScheduledTask(projectileDelay) {
 			@Override
@@ -1117,7 +1119,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * 		The id of the projectile
 	 */
 	private void visualizeLeech(Entity source, Entity target, int projectileId, int landingGraphicsId) {
-		ProjectileManager.sendProjectile(new Projectile(source, target, projectileId, 0, 10, 0, (int) (ProjectileManager.getSpeedModifier(source, target) / 1.5), 0, 0));
+		final int speed = ProjectileManager.getSpeedModifier(source, target);
+		ProjectileManager.sendProjectile(new Projectile(source, target, projectileId, 0, 10, 0, speed, 15, 0));
 		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void run() {

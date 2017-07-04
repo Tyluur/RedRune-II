@@ -3,7 +3,7 @@ package org.redrune.game.module.interaction.rsinterface;
 import org.redrune.game.content.market.shop.Shop;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.impl.item.ItemEvent;
+import org.redrune.game.content.event.impl.item.ItemEvent;
 
 import static org.redrune.game.content.market.shop.Shop.INTERFACE_ID;
 import static org.redrune.game.content.market.shop.Shop.INVENTORY_INTERFACE_ID;

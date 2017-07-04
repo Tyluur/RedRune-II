@@ -168,6 +168,16 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Teleports to a destination
+	 *
+	 * @param destination
+	 * 		The destination
+	 */
+	public void teleport(Location destination) {
+		putAttribute(AttributeKey.TELEPORT_LOCATION, destination);
+	}
+	
+	/**
 	 * Turns this entity to the locked on entity.
 	 *
 	 * @param lockon
@@ -190,16 +200,6 @@ public abstract class Entity extends Node implements EntityDetails {
 			return index + 0x8000;
 		}
 		return index;
-	}
-	
-	/**
-	 * Moves to a location
-	 *
-	 * @param location
-	 * 		The location
-	 */
-	public void moveTo(Location location) {
-		putAttribute(AttributeKey.TELEPORT_LOCATION, location);
 	}
 	
 	/**
@@ -252,10 +252,12 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The animation
 	 */
 	public void sendAwaitedAnimation(int animationId) {
-		if (updateMasks.getLastAnimationEndTime() > System.currentTimeMillis()) {
-			return;
-		}
 		updateMasks.register(new Animation(animationId, 0, isNPC(), Priority.LOWEST));
+		
+		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
+		if (definition != null) {
+			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
+		}
 	}
 	
 	/**
@@ -279,6 +281,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The id of the graphic
 	 */
 	public void sendGraphics(int graphicsId) {
+		
 		updateMasks.register(new Graphic(graphicsId, 0, 0, isNPC()));
 	}
 	

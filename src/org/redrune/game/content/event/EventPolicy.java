@@ -1,4 +1,4 @@
-package org.redrune.game.node.entity.player.event;
+package org.redrune.game.content.event;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

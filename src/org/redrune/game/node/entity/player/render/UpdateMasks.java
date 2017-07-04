@@ -3,10 +3,11 @@ package org.redrune.game.node.entity.player.render;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.game.node.entity.player.render.flag.impl.HitUpdate;
-import org.redrune.game.node.entity.player.render.flag.impl.MovementUpdate;
+import org.redrune.game.node.entity.player.render.flag.impl.*;
 import org.redrune.utility.backend.Priority;
+import org.redrune.utility.rs.Graphics;
 
 import java.util.PriorityQueue;
 
@@ -46,20 +47,22 @@ public class UpdateMasks {
 	/**
 	 * Prepares the outgoing packet for updating.
 	 *
-	 * @param e
+	 * @param entity
 	 * 		The entity who's using this update mask instance.
 	 */
-	public void prepare(Entity e) {
-		if (e.isPlayer()) {
-			if (e.toPlayer().getDetails().getAppearance() != null) {
-				e.toPlayer().getDetails().getAppearance().prepareBodyData(e.toPlayer());
+	public void prepare(Entity entity) {
+		if (entity.isPlayer()) {
+			final Player toPlayer = entity.toPlayer();
+			
+			if (toPlayer.getDetails().getAppearance() != null) {
+				toPlayer.getDetails().getAppearance().prepareBodyData(toPlayer);
 			}
-			if (e.getMovement().getNextWalkDirection() != -1 || e.getMovement().getNextRunDirection() != -1) {
-				register(new MovementUpdate(e.toPlayer()));
+			if (entity.getMovement().getNextWalkDirection() != -1 || entity.getMovement().getNextRunDirection() != -1) {
+				register(new MovementUpdate(toPlayer));
 			}
 		}
-		if (e.getHitMap().getHitList().size() > 0) {
-			register(new HitUpdate(e));
+		if (entity.getHitMap().getHitList().size() > 0) {
+			register(new HitUpdate(entity));
 		}
 	}
 	
@@ -73,11 +76,54 @@ public class UpdateMasks {
 		if (!updateFlag.canRegister(this)) {
 			return;
 		}
+		// we're attempting to register a graphic
+		if (updateFlag instanceof Graphics) {
+			UpdateFlag graphicFlag = canRegisterGraphic(updateFlag);
+			if (graphicFlag != null) {
+				updateFlag = graphicFlag;
+			}
+		}
 		if ((maskData & updateFlag.getMaskData()) != 0) {
 			flagQueue.remove(updateFlag);
 		}
 		maskData |= updateFlag.getMaskData();
 		flagQueue.add(updateFlag);
+	}
+	
+	/**
+	 * Checks if we can register a graphic
+	 *
+	 * @param updateFlag
+	 * 		The graphic flag
+	 */
+	private UpdateFlag canRegisterGraphic(UpdateFlag updateFlag) {
+		Graphics graphic = (Graphics) updateFlag;
+		if (!hasFlag(Graphic.class)) {
+			return new Graphic(graphic.id(), graphic.height(), graphic.speed(), graphic.npc());
+		} else if (!hasFlag(Graphic2.class)) {
+			return new Graphic2(graphic.id(), graphic.height(), graphic.speed(), graphic.npc());
+		} else if (!hasFlag(Graphic3.class)) {
+			return new Graphic3(graphic.id(), graphic.height(), graphic.speed(), graphic.npc());
+		} else if (!hasFlag(Graphic4.class)) {
+			return new Graphic4(graphic.id(), graphic.height(), graphic.speed(), graphic.npc());
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Checks if we have a flag registered
+	 *
+	 * @param clazz
+	 * 		The class of the flag
+	 */
+	private boolean hasFlag(Class<?> clazz) {
+		for (UpdateFlag flag : flagQueue) {
+			if (flag.getClass().getSimpleName().equalsIgnoreCase(clazz.getSimpleName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

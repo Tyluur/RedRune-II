@@ -50,8 +50,8 @@ public class MagicBowSpecial implements SpecialAttackEvent {
 		visualize(player, target);
 		
 		// drops the ammo
-		range.dropAmmo(player, target.getLocation(), PlayerEquipment.SLOT_ARROWS, player.getEquipment().getIdInSlot(EquipConstants.SLOT_ARROWS), true);
-		range.dropAmmo(player, target.getLocation(), PlayerEquipment.SLOT_ARROWS, player.getEquipment().getIdInSlot(EquipConstants.SLOT_ARROWS), true);
+		range.dropAmmo(player, target.getLocation(), PlayerEquipment.SLOT_ARROWS, player.getEquipment().getIdInSlot(EquipConstants.SLOT_ARROWS), false);
+		range.dropAmmo(player, target.getLocation(), PlayerEquipment.SLOT_ARROWS, player.getEquipment().getIdInSlot(EquipConstants.SLOT_ARROWS), false);
 	}
 	
 	/**

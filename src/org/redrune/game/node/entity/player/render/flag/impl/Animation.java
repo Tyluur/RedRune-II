@@ -112,14 +112,14 @@ public class Animation extends UpdateFlag {
 	
 	@Override
 	public boolean canRegister(UpdateMasks updateMasks) {
-		if (priority == Priority.LOWEST && updateMasks.getAnimationPriority().ordinal() > priority.ordinal()) {
-			return false;
-		}
-		if (updateMasks.get(getMaskData())) {
-			if (updateMasks.getAnimationPriority() != null && updateMasks.getAnimationPriority().ordinal() > priority.ordinal()) {
-				return false;
-			}
-			updateMasks.setAnimationPriority(priority);
+		switch(priority) {
+			case LOWEST:
+				if (updateMasks.getLastAnimationEndTime() > System.currentTimeMillis()) {
+					return false;
+				}
+				break;
+			default:
+				return true;
 		}
 		return true;
 	}

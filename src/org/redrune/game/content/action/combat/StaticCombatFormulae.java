@@ -1200,13 +1200,13 @@ public class StaticCombatFormulae {
 	 * @param type
 	 * 		The combat type
 	 */
-	public static boolean isWithinDistance(Player player, org.redrune.game.node.entity.Entity target, CombatType type) {
+	public static boolean isWithinDistance(Player player, Entity target, CombatType type) {
 		// the distance change
-		final int distance = player.getMovement().isRunning() && target.getMovement().isRunning() ? 2 : 1;
+		final int distance = player.getMovement().isRunning() /*&& target.getMovement().isRunning()*/ ? 2 : 1;
 		// if we should check closeby tiles [close 1v1 melee only]
 		final boolean checkClose = type == CombatType.MELEE && !checkAttackPathAsRange(target);
 		// the distance modifier
-		final int modifier = player.getMovement().hasWalkSteps() && target.getMovement().hasWalkSteps() ? distance : 0;
+		final int modifier = player.getMovement().hasWalkSteps() /*&& target.getMovement().hasWalkSteps()*/ ? distance : 0;
 		// if we can't clip to the target
 		// or the target is too far away
 		// or we're colliding with the target

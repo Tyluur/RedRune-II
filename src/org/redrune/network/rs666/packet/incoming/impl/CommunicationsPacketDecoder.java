@@ -1,8 +1,8 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.context.CommandEventContext;
-import org.redrune.game.node.entity.player.event.impl.CommandEvent;
+import org.redrune.game.content.event.context.CommandEventContext;
+import org.redrune.game.content.event.impl.CommandEvent;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;

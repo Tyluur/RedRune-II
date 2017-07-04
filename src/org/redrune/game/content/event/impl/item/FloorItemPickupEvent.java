@@ -1,11 +1,11 @@
-package org.redrune.game.node.entity.player.event.impl.item;
+package org.redrune.game.content.event.impl.item;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.Event;
-import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
-import org.redrune.game.node.entity.player.event.context.item.FloorItemPickupContext;
+import org.redrune.game.content.event.Event;
+import org.redrune.game.content.event.EventPolicy.ActionPolicy;
+import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
+import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
+import org.redrune.game.content.event.context.item.FloorItemPickupContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.item.FloorItem;
 

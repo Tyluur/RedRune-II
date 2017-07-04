@@ -1,14 +1,14 @@
 package org.redrune.utility.repository;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.Event;
-import org.redrune.game.node.entity.player.event.EventContext;
-import org.redrune.game.node.entity.player.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.AnimationPolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.InterfacePolicy;
-import org.redrune.game.node.entity.player.event.EventPolicy.WalkablePolicy;
-import org.redrune.game.node.entity.player.event.impl.*;
-import org.redrune.game.node.entity.player.event.impl.item.*;
+import org.redrune.game.content.event.Event;
+import org.redrune.game.content.event.EventContext;
+import org.redrune.game.content.event.EventPolicy.ActionPolicy;
+import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
+import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
+import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
+import org.redrune.game.content.event.impl.*;
+import org.redrune.game.content.event.impl.item.*;
 import org.redrune.utility.tool.Misc;
 
 import java.util.Map;
@@ -92,6 +92,7 @@ public final class EventRepository {
 			registerEvent(ObjectEvent.class);
 			registerEvent(WalkEvent.class);
 			registerEvent(FloorItemPickupEvent.class);
+			registerEvent(FloorItemUsageEvent.class);
 			registerEvent(ItemEvent.class);
 			registerEvent(ItemOnItemEvent.class);
 			registerEvent(ItemRemovalEvent.class);

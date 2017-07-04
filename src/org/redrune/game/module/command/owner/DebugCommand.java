@@ -2,10 +2,8 @@ package org.redrune.game.module.command.owner;
 
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
-import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.EntityMovement;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.World;
+import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -21,7 +19,12 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		Entity target = null;
+		int interfaceId = 741;
+		int config = 1230;
+		player.getTransmitter().send(new ConfigPacketBuilder(config, intParam(args, 1)).build(player));
+		player.getTransmitter().send(new ConfigPacketBuilder(965, intParam(args, 2)).build(player));
+		player.getManager().getInterfaces().sendInterface(interfaceId, true);
+/*		Entity target = null;
 		for (int i = 0; i <= World.get().getPlayers().size(); i++) {
 			Player p = World.get().getPlayers().get(i);
 			if (p == null) {
@@ -37,7 +40,7 @@ public class DebugCommand extends CommandModule {
 			return;
 		}
 		boolean found = EntityMovement.findBasicRoute(player, target, target.getLocation(), 25);
-		System.out.println("targ=" + target + ", found=" + found);
+		System.out.println("targ=" + target + ", found=" + found);*/
 		
 		
 	/*	int stat = 30;

@@ -3,13 +3,14 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.utility.rs.Graphics;
 
 /**
  * Represents the graphic 1 update flag.
  *
  * @author Emperor
  */
-public class Graphic extends UpdateFlag {
+public class Graphic extends UpdateFlag implements Graphics {
 	
 	/**
 	 * The graphic id.
@@ -25,6 +26,11 @@ public class Graphic extends UpdateFlag {
 	 * The speed.
 	 */
 	private final int speed;
+	
+	/**
+	 * The rotation of the graphic
+	 */
+	private final int rotation;
 	
 	/**
 	 * If the entity is an NPC.
@@ -48,6 +54,7 @@ public class Graphic extends UpdateFlag {
 		this.height = height;
 		this.speed = speed;
 		this.npc = npc;
+		this.rotation = 0;
 	}
 	
 	/**
@@ -61,18 +68,27 @@ public class Graphic extends UpdateFlag {
 		this.height = 0;
 		this.speed = 0;
 		this.npc = false;
+		this.rotation = 0;
+	}
+	
+	public Graphic(int id, int height, int speed, int rotation, boolean npc) {
+		this.id = id;
+		this.height = height;
+		this.speed = speed;
+		this.rotation = rotation;
+		this.npc = npc;
 	}
 	
 	@Override
 	public void write(Player outgoing, PacketBuilder bldr) {
 		if (npc) {
 			bldr.writeLEShortA(id);
-			bldr.writeLEInt(height << 16);
-			bldr.writeByteA(speed);
+			bldr.writeLEInt(getPrimarySettings());
+			bldr.writeByteA(getSecondarySettings());
 		} else {
 			bldr.writeLEShort(id);
-			bldr.writeInt(height << 16);
-			bldr.writeByteS(speed << 7);
+			bldr.writeInt(getPrimarySettings());
+			bldr.writeByteS(getSecondarySettings());
 		}
 	}
 	
@@ -86,8 +102,32 @@ public class Graphic extends UpdateFlag {
 		return npc ? 0x1000 : 0x10000;
 	}
 	
+	@Override
+	public int id() {
+		return id;
+	}
+	
+	@Override
+	public boolean npc() {
+		return npc;
+	}
+	
+	@Override
+	public int height() {
+		return height;
+	}
+	
+	@Override
+	public int speed() {
+		return speed;
+	}
+	
+	@Override
+	public int rotation() {
+		return rotation;
+	}
+	
 	public static Graphic create(int i) {
 		return new Graphic(i);
 	}
-	
 }

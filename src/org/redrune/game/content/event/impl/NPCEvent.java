@@ -1,11 +1,11 @@
-package org.redrune.game.node.entity.player.event.impl;
+package org.redrune.game.content.event.impl;
 
 import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.event.Event;
-import org.redrune.game.node.entity.player.event.context.NPCEventContext;
+import org.redrune.game.content.event.Event;
+import org.redrune.game.content.event.context.NPCEventContext;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.utility.rs.InteractionOption;
 

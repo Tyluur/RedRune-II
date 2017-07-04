@@ -21,7 +21,7 @@ public class LeechSpecialDrain implements DrainPrayer {
 	
 	@Override
 	public int startGraphicsId() {
-		return -1;
+		return 2255;
 	}
 	
 	@Override

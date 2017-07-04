@@ -31,17 +31,17 @@ public final class SequencialUpdate {
 		try {
 			SystemManager.getScheduler().pulse();
 			for (Player player : getRenderablePlayers()) {
+				player.tick();
 				player.getMovement().processMovement();
 				player.getUpdateMasks().prepare(player);
-				player.tick();
 			}
 			for (NPC npc : World.get().getNpcs()) {
 				if (npc == null || !npc.isRenderable()) {
 					continue;
 				}
-				npc.getMovement().processMovement();
-				npc.getUpdateMasks().prepare(npc);
 				npc.tick();
+				npc.getUpdateMasks().prepare(npc);
+				npc.getMovement().processMovement();
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -52,7 +52,9 @@ public final class SequencialUpdate {
 	 * Executes the updating part of the sequence
 	 */
 	void execute() {
+		// the countdown latch, for sync'd decrement
 		final CountDownLatch latch = new CountDownLatch(getRenderablePlayers().size());
+		// loop thru the renderable
 		for (Player player : getRenderablePlayers()) {
 			EngineWorkingSet.submitEngineWork(() -> {
 				try {

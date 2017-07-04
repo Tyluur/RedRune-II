@@ -1,6 +1,7 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.tool.Misc;
@@ -37,7 +38,7 @@ public class InterfaceSlotSwapPacketDecoder implements IncomingPacketDecoder {
 		
 		if (fromInterface == InterfaceConstants.INVENTORY_INTERFACE_ID && toInterface == InterfaceConstants.INVENTORY_INTERFACE_ID && toChild == 0) {
 			toSlot -= 28;
-			if (toSlot < 0 || toSlot >= player.getInventory().getItems().getSize() || fromSlot >= player.getInventory().getItems().getSize()) {
+			if (player.getManager().getLocks().isLocked(LockType.ITEM_INTERACTION) || toSlot < 0 || toSlot >= player.getInventory().getItems().getSize() || fromSlot >= player.getInventory().getItems().getSize()) {
 				return;
 			}
 			player.getManager().getInterfaces().closeAll();

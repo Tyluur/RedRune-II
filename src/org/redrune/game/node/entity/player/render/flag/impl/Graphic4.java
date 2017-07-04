@@ -3,13 +3,14 @@ package org.redrune.game.node.entity.player.render.flag.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.utility.rs.Graphics;
 
 /**
  * Represents the fourth gfx update mask.
  *
  * @author Emperor
  */
-public class Graphic4 extends UpdateFlag {
+public class Graphic4 extends UpdateFlag implements Graphics {
 	
 	/**
 	 * The graphic id.
@@ -20,6 +21,11 @@ public class Graphic4 extends UpdateFlag {
 	 * The graphic height.
 	 */
 	private final int height;
+	
+	/**
+	 * The speed of the graphics
+	 */
+	private final int speed;
 	
 	/**
 	 * The rotation.
@@ -33,19 +39,19 @@ public class Graphic4 extends UpdateFlag {
 	
 	/**
 	 * Constructs a new {@code Graphic4} {@code Object}.
-	 *
-	 * @param id
-	 * 		The graphic id.
-	 * @param height
-	 * 		The graphic id.
-	 * @param rotation
-	 * 		The rotation.
-	 * @param npc
-	 * 		If the entity is an NPC.
 	 */
-	public Graphic4(int id, int height, int rotation, boolean npc) {
+	public Graphic4(int id, int height, int speed, boolean npc) {
 		this.id = id;
 		this.height = height;
+		this.speed = speed;
+		this.rotation = 0;
+		this.npc = npc;
+	}
+	
+	public Graphic4(int id, int height, int speed, int rotation, boolean npc) {
+		this.id = id;
+		this.height = height;
+		this.speed = speed;
 		this.rotation = rotation;
 		this.npc = npc;
 	}
@@ -54,12 +60,12 @@ public class Graphic4 extends UpdateFlag {
 	public void write(Player outgoing, PacketBuilder bldr) {
 		if (npc) {
 			bldr.writeLEShortA(id);
-			bldr.writeLEInt(height << 16);
-			bldr.writeByteC(rotation);
+			bldr.writeLEInt(getPrimarySettings());
+			bldr.writeByteC(getSecondarySettings());
 		} else {
 			bldr.writeLEShort(id);
-			bldr.writeInt2(height << 16);
-			bldr.writeByteA(rotation);
+			bldr.writeInt2(getPrimarySettings());
+			bldr.writeByteA(getSecondarySettings());
 		}
 	}
 	
@@ -73,4 +79,28 @@ public class Graphic4 extends UpdateFlag {
 		return npc ? 0x4 : 0x80;
 	}
 	
+	@Override
+	public int id() {
+		return id;
+	}
+	
+	@Override
+	public boolean npc() {
+		return npc;
+	}
+	
+	@Override
+	public int height() {
+		return height;
+	}
+	
+	@Override
+	public int speed() {
+		return speed;
+	}
+	
+	@Override
+	public int rotation() {
+		return rotation;
+	}
 }

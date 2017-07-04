@@ -5,7 +5,6 @@ import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.MessageBuilder;
-import org.redrune.utility.AttributeKey;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -26,7 +25,7 @@ public class TeleportCoordinatesCommand extends CommandModule {
 			Integer y = intParam(args, 2);
 			Integer plane = args.length == 4 ? intParam(args, 3) : player.getLocation().getPlane();
 			
-			player.putAttribute(AttributeKey.TELEPORT_LOCATION, Location.create(x, y, plane));
+			player.teleport(Location.create(x, y, plane));
 		} catch (NumberFormatException e) {
 			player.getTransmitter().send(new MessageBuilder("Invalid parameters...").build(player));
 		}

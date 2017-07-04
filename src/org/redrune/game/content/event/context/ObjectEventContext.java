@@ -1,8 +1,8 @@
-package org.redrune.game.node.entity.player.event.context;
+package org.redrune.game.content.event.context;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.player.event.EventContext;
+import org.redrune.game.content.event.EventContext;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.rs.InteractionOption;

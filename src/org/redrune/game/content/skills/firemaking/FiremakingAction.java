@@ -31,8 +31,14 @@ public class FiremakingAction implements Action {
 	 */
 	private final Fire fire;
 	
-	public FiremakingAction(Fire fire) {
+	/**
+	 * If the log is already on the ground
+	 */
+	private final boolean ground;
+	
+	public FiremakingAction(Fire fire, boolean ground) {
 		this.fire = fire;
+		this.ground = ground;
 	}
 	
 	@Override
@@ -41,8 +47,12 @@ public class FiremakingAction implements Action {
 			return false;
 		}
 		player.getTransmitter().sendMessage("You attempt to light the logs.", true);
-		player.getInventory().deleteItem(fire.getLogId(), 1);
-		RegionManager.addFloorItem(fire.getLogId(), 1, 180, player.getLocation(), player.getDetails().getUsername());
+		// in the case the item is already on the ground we don't need to delete
+		// nor add another floor item
+		if (!ground) {
+			player.getInventory().deleteItem(fire.getLogId(), 1);
+			RegionManager.addFloorItem(fire.getLogId(), 1, 180, player.getLocation(), player.getDetails().getUsername());
+		}
 		
 		Long time = player.removeAttribute("Fire");
 		boolean quickFire = time != null && time > System.currentTimeMillis();

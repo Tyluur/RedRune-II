@@ -103,12 +103,13 @@ public class RegionManager {
 	public static Region getRegionAndLoad(int regionId) {
 		Region region = REGION_CACHE.get(regionId);
 		if (region == null) {
-			region = new Region(regionId).checkLoadMap();
-			REGION_CACHE.put(regionId, region);
-			return region;
-		} else {
-			return region;
+			region = new Region(regionId);
 		}
+		region.checkLoadMap();
+		if (!REGION_CACHE.containsKey(regionId)) {
+			REGION_CACHE.put(regionId, region);
+		}
+		return region;
 	}
 	
 	/**
@@ -221,8 +222,8 @@ public class RegionManager {
 				// TODO: split into two items
 			} else {
 				item.setAmount((int) newAmount);
-				region.refreshItem(item);
 			}
+			region.refreshItem(item);
 		}
 	}
 	

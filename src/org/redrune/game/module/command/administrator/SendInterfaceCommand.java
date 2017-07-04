@@ -13,7 +13,7 @@ public class SendInterfaceCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("interface");
+		return arguments("interface", "inter");
 	}
 	
 	@Override

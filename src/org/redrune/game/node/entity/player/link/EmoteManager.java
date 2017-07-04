@@ -65,7 +65,6 @@ public final class EmoteManager {
 			return;
 		}
 		emote.play(player);
-		System.out.println(player.getUpdateMasks().getLastAnimationEndTime());
 	}
 	
 	public enum Emote {

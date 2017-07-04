@@ -87,7 +87,7 @@ public class EngineWorkingSet {
 	 * @param work
 	 * 		The work
 	 */
-	public static void submitPacketWork(Runnable work) {
+	public static void executePacketWork(Runnable work) {
 		PACKET_SERVICE.execute(work);
 	}
 	
