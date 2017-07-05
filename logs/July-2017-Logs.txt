@@ -1,0 +1,9 @@
+7/4/17 {
+	+   Started dynamic region system
+		-   Clip flags loading
+		-   Object loading
+		-   Unfinished at the moment still requires some finishing for clipped movement
+
+	[IMG]http://i.imgur.com/hdquLZS.png[/IMG]
+
+}

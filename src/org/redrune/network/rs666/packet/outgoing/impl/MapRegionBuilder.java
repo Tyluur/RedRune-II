@@ -6,7 +6,8 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
-import org.redrune.utility.backend.MapDataParser;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.backend.MapKeyRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -32,12 +33,12 @@ public final class MapRegionBuilder implements OutgoingPacketBuilder {
 		}
 		int regionX = pos.getRegionX();
 		int regionY = pos.getRegionY();
-		bldr.writeByteC(1); //Force refresh? 1 : 0
+		bldr.writeByteC(player.getAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD, false) ? 1 : 0); //Force refresh? 1 : 0
 		bldr.writeLEShort(regionY);
 		bldr.writeLEShortA(regionX);
 		bldr.writeByteS(0); //Scene graph size index.
 		for (int regionId : player.getMapRegionsIds()) {
-			int[] keys = MapDataParser.getMapData().get(regionId);
+			int[] keys = MapKeyRepository.getKeys(regionId);
 			if (keys == null) {
 				keys = new int[4];
 			}

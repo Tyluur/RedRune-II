@@ -34,6 +34,13 @@ public abstract class Entity extends Node implements EntityDetails {
 	private final EntityCombatDefinitions combatDefinitions = new EntityCombatDefinitions();
 	
 	/**
+	 * The size of the map
+	 */
+	@Getter
+	@Setter
+	private int mapSize = 0;
+	
+	/**
 	 * The {@code HitMap} {@code Object} instance for this entity
 	 */
 	@Getter
@@ -82,6 +89,13 @@ public abstract class Entity extends Node implements EntityDetails {
 	@Getter
 	@Setter
 	private transient Location lastLoadedLocation;
+	
+	/**
+	 * If we're at a dynamic region
+	 */
+	@Getter
+	@Setter
+	private transient boolean isAtDynamicRegion;
 	
 	/**
 	 * Constructs a new {@code Entity}
@@ -135,6 +149,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public void loadMapRegions() {
 		mapRegionsIds.clear();
+		isAtDynamicRegion = false;
 		int chunkX = getLocation().getRegionX();
 		int chunkY = getLocation().getRegionY();
 		int mapHash = Location.VIEWPORT_SIZES[0] >> 4;
@@ -142,13 +157,14 @@ public abstract class Entity extends Node implements EntityDetails {
 		int minRegionY = (chunkY - mapHash) / 8;
 		for (int xCalc = minRegionX < 0 ? 0 : minRegionX; xCalc <= ((chunkX + mapHash) / 8); xCalc++) {
 			for (int yCalc = minRegionY < 0 ? 0 : minRegionY; yCalc <= ((chunkY + mapHash) / 8); yCalc++) {
+				// the id of the region
 				int regionId = yCalc + (xCalc << 8);
-				/*
-				if (World.getRegion(regionId, isPlayer()) instanceof DynamicRegion) {
+				// the region will only load if we are a player
+				final Region region = isPlayer() ? RegionManager.getRegionAndLoad(regionId) : RegionManager.getRegion(regionId);
+				// if the region is dynamic
+				if (region.isDynamic()) {
 					isAtDynamicRegion = true;
 				}
-				 */
-				RegionManager.getRegionAndLoad(regionId);
 				mapRegionsIds.add(regionId);
 			}
 		}

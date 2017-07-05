@@ -39,6 +39,8 @@ public enum AttributeKey {
 	
 	PLAYER_TELEPORTED,
 	
+	FORCE_NEXT_MAP_LOAD,
+	
 	// saved vars
 	
 	FILTERING_PROFANITY,
@@ -59,5 +61,5 @@ public enum AttributeKey {
 	FRIENDS,
 	CLAN,
 	TRADE,
-	ASSIST,;
+	ASSIST,
 }

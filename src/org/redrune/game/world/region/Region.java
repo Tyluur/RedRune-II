@@ -19,12 +19,13 @@ import org.redrune.network.rs666.packet.outgoing.impl.FloorItemAdditionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.FloorItemRemovalBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ObjectAdditionBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ObjectRemovalBuilder;
-import org.redrune.utility.backend.MapDataParser;
+import org.redrune.utility.backend.MapKeyRepository;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.CacheFilestore;
 import org.redrune.utility.rs.constant.RegionConstants;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -42,72 +43,73 @@ public class Region {
 	 * A list of players in this region.
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<Player> players = new CopyOnWriteArraySet<>();
+	protected final CopyOnWriteArraySet<Player> players = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * A list of NPCs in this region.
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<NPC> npcs = new CopyOnWriteArraySet<>();
+	protected final CopyOnWriteArraySet<NPC> npcs = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The id of the region
 	 */
 	@Getter
-	private final int regionId;
+	protected final int regionId;
 	
 	/**
 	 * If all the spawns have been loaded.
 	 */
 	@Getter
-	private final boolean[] loadedFlags = new boolean[2];
+	protected final boolean[] loadedFlags = new boolean[2];
 	
 	/**
 	 * The list of floor items
 	 */
-	private final CopyOnWriteArrayList<FloorItem> floorItems = new CopyOnWriteArrayList<>();
+	@Getter
+	protected final CopyOnWriteArrayList<FloorItem> floorItems = new CopyOnWriteArrayList<>();
 	
 	/**
 	 * A list of game defaultObjects on this region.
 	 */
 	@Getter
-	private final CopyOnWriteArrayList<GameObject> defaultObjects = new CopyOnWriteArrayList<>();
+	protected final CopyOnWriteArrayList<GameObject> defaultObjects = new CopyOnWriteArrayList<>();
 	
 	/**
 	 * The list of objects that have been removed from the region.
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> removedObjects = new CopyOnWriteArraySet<>();
+	protected final CopyOnWriteArraySet<GameObject> removedObjects = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The list of objects that have been spawned in the region
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> spawnedObjects = new CopyOnWriteArraySet<>();
+	protected final CopyOnWriteArraySet<GameObject> spawnedObjects = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The list of objects that were deleted (these will never be spawned)
 	 */
 	@Getter
-	private final CopyOnWriteArraySet<GameObject> deletedObjects;
+	protected final CopyOnWriteArraySet<GameObject> deletedObjects;
 	
 	/**
 	 * The map of the region
 	 */
 	@Getter
-	private RegionMap map;
+	protected RegionMap map;
 	
 	/**
 	 * The clipped only map
 	 */
-	private RegionMap clippedOnlyMap;
+	protected RegionMap clippedOnlyMap;
 	
 	/**
 	 * The map stage
 	 */
 	@Getter
 	@Setter
-	private volatile int loadMapStage;
+	protected volatile int loadMapStage;
 	
 	/**
 	 * Constructs a new {@code Region} {@code Object}.
@@ -153,18 +155,25 @@ public class Region {
 	/**
 	 * Loads the region map data from the cache.
 	 */
-	private void loadRegionMap() {
-		int regionX = (regionId >> 8);
-		int regionY = (regionId & 0xff);
+	public void loadRegionMap() {
+		int regionX = regionId >> 8;
+		int regionY = regionId & 0xff;
 		int baseX = regionX << 6;
 		int baseY = regionY << 6;
 		int landArchiveId = 0;
 		byte[] landContainerData = new byte[0];
 		try {
-			landArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("l" + ((regionX)) + "_" + ((regionY)));
-			landContainerData = landArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(landArchiveId, 0, MapDataParser.getMapData(regionId));
-			int mapArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("m" + ((regionX) + "_" + ((regionY))));
+			landArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("l" + regionX + "_" + regionY);
+			landContainerData = landArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(landArchiveId, 0, MapKeyRepository.getKeys(regionId));
+			int mapArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("m" + (regionX + "_" + regionY));
 			byte[] mapContainerData = mapArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
+			
+			if (regionId == 9551) {
+				System.out.println("regionId=" + regionId);
+				System.out.println("\tlandArchiveId=" + landArchiveId + ", mapArchiveId=" + mapArchiveId);
+				System.out.println("\tmapContainerData=" + Arrays.toString(mapContainerData));
+				System.out.println("\tlandContainerData=" + Arrays.toString(landContainerData));
+			}
 			byte[][][] mapSettings = mapContainerData == null ? null : new byte[4][64][64];
 			if (mapContainerData != null) {
 				InputStream mapStream = new InputStream(mapContainerData);
@@ -237,7 +246,7 @@ public class Region {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		if (landContainerData == null && landArchiveId != -1 && MapDataParser.getMapData(regionId) != null) {
+		if (landContainerData == null && landArchiveId != -1 && MapKeyRepository.getKeys(regionId) != null) {
 			System.out.println("Missing xteas for region " + regionId + ".");
 		}
 	}
@@ -278,7 +287,7 @@ public class Region {
 	 * @param original
 	 * 		If its an original cache object
 	 */
-	private void spawnObject(GameObject object, int localX, int localY, boolean original) {
+	void spawnObject(GameObject object, int localX, int localY, boolean original) {
 		if (original) {
 			if (deleteListContains(object)) {
 				return;
@@ -747,6 +756,7 @@ public class Region {
 	private void refreshAllObjects(Player player) {
 		deletedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
 		removedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
+		
 		spawnedObjects.forEach(object -> player.getTransmitter().send(new ObjectAdditionBuilder(object).build(player)));
 	}
 	
@@ -799,4 +809,10 @@ public class Region {
 		return npcs.stream().filter(npc -> npc.getId() == npcId).findAny();
 	}
 	
+	/**
+	 * Checks if the region is dynamic
+	 */
+	public boolean isDynamic() {
+		return false;
+	}
 }

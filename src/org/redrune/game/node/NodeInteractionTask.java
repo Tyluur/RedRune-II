@@ -10,8 +10,8 @@ import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.game.world.route.strategy.FloorItemStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.utility.tool.Misc;
 
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -263,7 +263,9 @@ public class NodeInteractionTask {
 			player.getTransmitter().sendMessage("You can't reach that!");
 		} else {
 			task.run();
-		}*/
+		}
+		boolean canPath = EntityMovement.findBasicRoute(player, node.getSize(), node.getLocation(), 25);
+		System.out.println(canPath);*/
 		task.run();
 	}
 	

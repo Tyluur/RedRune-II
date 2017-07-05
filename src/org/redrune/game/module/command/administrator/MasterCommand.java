@@ -16,7 +16,7 @@ public class MasterCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("master");
+		return arguments("org/redrune/network/master");
 	}
 	
 	@Override

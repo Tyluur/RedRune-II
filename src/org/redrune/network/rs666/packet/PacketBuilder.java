@@ -8,7 +8,7 @@ import org.redrune.utility.tool.BufferUtils;
 /**
  * @author 'Mystic Flow
  */
-public class PacketBuilder {
+public final class PacketBuilder {
 	
 	public static final int[] BIT_MASK_OUT = new int[32];
 	

@@ -22,8 +22,8 @@ public class DarkBowEvent implements BowFireEvent {
 	
 	@Override
 	public void fire(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int ammoId) {
-		int speed = (int) (46 + (attacker.getLocation().distance(target.getLocation()) * 5));
-		int speed2 = (int) (55 + (attacker.getLocation().distance(target.getLocation()) * 10));
+		int speed = (int) (46 + (attacker.getLocation().getDistance(target.getLocation()) * 5));
+		int speed2 = (int) (55 + (attacker.getLocation().getDistance(target.getLocation()) * 10));
 		attacker.sendGraphics(StaticCombatFormulae.getArrowThrowGfxId(ammoId), 100, 0);
 		
 		for (int i = 1; i <= 2; i++) {

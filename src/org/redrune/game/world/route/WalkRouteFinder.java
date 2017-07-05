@@ -200,11 +200,12 @@ public class WalkRouteFinder {
 			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
 				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
 				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
+				final int regionId = transmitRegionX << 8 | transmitRegionY;
 				
-				Region region = RegionManager.getRegionAndLoad(transmitRegionX << 8 | transmitRegionY);
+				Region region = RegionManager.getRegionAndLoad(regionId);
 				RegionMap map = region.getMap();
 				if (map == null || region.getLoadMapStage() != 2 || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
-					System.out.println("[id=" + region.getRegionId() + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
+					System.out.println("[id=" + regionId + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
 					for (int fillX = startX; fillX < endX; fillX++) {
 						for (int fillY = startY; fillY < endY; fillY++) {
 							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;

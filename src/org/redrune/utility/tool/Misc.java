@@ -720,4 +720,8 @@ public class Misc {
 				return className;
 		}
 	}
+	
+	public static int getMapArchiveId(int regionX, int regionY) {
+		return regionX | regionY << 7;
+	}
 }

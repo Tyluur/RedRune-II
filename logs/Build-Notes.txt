@@ -7,11 +7,11 @@ Combat notes:
 Tree stumps
 	https://www.rune-server.ee/runescape-development/rs2-server/requests/590826-tree-stump-ids.html#post4839115
 	
-SS/LEECHES @ 2:30 https://www.youtube.com/watch?v=TFgP8Cm0I24
-	re-add speed to awaited animations
-	
 - blood blitz
 - blood barrage
 - teleblock
-- when ur targ dies u can move again
 - you cant reach that when froze and tryna loot something > 1 tile away
+- activity system [controllers v2]
+- stop interacting through walls
+- interaction system [trading/duelling]
+	-   could be applicable to npc interacting with a player...

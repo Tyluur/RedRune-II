@@ -1,8 +1,11 @@
 package org.redrune.utility.backend;
 
+import org.redrune.utility.tool.Misc;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Holds the mapdata XTeas.
@@ -11,7 +14,7 @@ import java.util.Map;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/19/2017
  */
-public final class MapDataParser {
+public final class MapKeyRepository {
 	
 	/**
 	 * The location of the folder with mapdata
@@ -24,26 +27,34 @@ public final class MapDataParser {
 	private static final Map<Integer, int[]> MAP_DATA_XTEAS = new HashMap<>();
 	
 	/**
+	 * Thet logger
+	 */
+	private static final Logger LOGGER = Misc.constructLogger(MapKeyRepository.class);
+	
+	/**
 	 * Initializes the mapdata.
 	 */
 	public static void readAll() {
 		final File packedFile = new File(MAPDATA_FOLDER_LOCATION + "/packedKeys.bin");
+		boolean packed = false;
 		if (!packedFile.exists()) {
 			pack();
+			packed = true;
 		} else {
 			load();
 		}
+		LOGGER.info("Loaded " + MAP_DATA_XTEAS.size() + " " + (packed ? "packed" : "unpacked") + " map keys.");
 	}
 	
 	/**
-	 * Packs the mapdata.
+	 * Packs the map data
 	 */
 	private static void pack() {
 		try {
 			final DataOutputStream out = new DataOutputStream(new FileOutputStream(MAPDATA_FOLDER_LOCATION + "/packedKeys.bin"));
 			final File unpacked = new File(MAPDATA_FOLDER_LOCATION + "/unpacked/");
 			final File[] files = unpacked.listFiles();
-			for (File region : files) {
+			for (File region : files != null ? files : new File[0]) {
 				final String name = region.getName();
 				if (!name.contains(".txt")) {
 					continue;
@@ -56,16 +67,12 @@ public final class MapDataParser {
 					Key[j] = Integer.parseInt(in.readLine());
 					out.writeInt(Key[j]);
 				}
-				getMapData().put(regionId, Key);
+				MAP_DATA_XTEAS.put(regionId, Key);
 				in.close();
 			}
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			final File Failedpacked = new File(MAPDATA_FOLDER_LOCATION + "/packedKeys.bin");
-			if (Failedpacked.exists()) {
-				Failedpacked.delete();
-			}
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -80,38 +87,26 @@ public final class MapDataParser {
 			while (in.available() != 0) {
 				final int area = in.readShort();
 				final int[] parts = new int[4];
-				for (int j = 0; j < 4; j++) {
-					parts[j] = in.readInt();
+				for (int i = 0; i < 4; i++) {
+					parts[i] = in.readInt();
 				}
-				getMapData().put(area, parts);
+				MAP_DATA_XTEAS.put(area, parts);
 			}
+			in.close();
 		} catch (IOException e) {
-			final File Failedpacked = new File("./data/mapdata/packedKeys.bin");
-			if (Failedpacked.exists()) {
-				Failedpacked.delete();
-			}
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 	
 	/**
-	 * Gets all the mapdata xteas.
-	 *
-	 * @return The mapdata xtea mapping.
-	 */
-	public static Map<Integer, int[]> getMapData() {
-		return MAP_DATA_XTEAS;
-	}
-	
-	/**
 	 * Gets the mapdata xteas for the given key.
 	 *
-	 * @param key
+	 * @param regionId
 	 * 		The region id.
 	 * @return The mapdata xteas.
 	 */
-	public static int[] getMapData(int key) {
-		return MAP_DATA_XTEAS.get(key);
+	public static int[] getKeys(int regionId) {
+		return MAP_DATA_XTEAS.get(regionId);
 	}
 }

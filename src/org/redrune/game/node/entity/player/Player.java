@@ -183,8 +183,20 @@ public final class Player extends Entity {
 	
 	@Override
 	public void loadMapRegions() {
+		boolean wasAtDynamicRegion = isAtDynamicRegion();
 		super.loadMapRegions();
-		getTransmitter().send(new MapRegionBuilder(!isRenderable()).build(this));
+		if (isAtDynamicRegion()) {
+			transmitter.send(new DynamicMapRegionBuilder().build(this));
+			if (!wasAtDynamicRegion) {
+				getRenderData().getLocalNpcs().clear();
+			}
+		} else {
+			transmitter.send(new MapRegionBuilder(!isRenderable()).build(this));
+			if (wasAtDynamicRegion) {
+				getRenderData().getLocalNpcs().clear();
+			}
+		}
+		removeAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD);
 		getRegion().handleRegionEntry(this);
 	}
 	
@@ -249,21 +261,21 @@ public final class Player extends Entity {
 	 * Sends the updating required
 	 */
 	public void sendUpdating() {
-		getTransmitter().send(new PlayerRendering().build(this));
-		getTransmitter().send(new NPCRendering().build(this));
+		transmitter.send(new PlayerRendering().build(this));
+		transmitter.send(new NPCRendering().build(this));
 	}
 	
 	/**
 	 * Sends the settings to the client
 	 */
 	public void sendSettings() {
-		getTransmitter().send(new ConfigFilePacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));
-		getTransmitter().send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
-		getTransmitter().send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
-		getTransmitter().send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true) ? 1 : 0).build(this));
+		transmitter.send(new ConfigFilePacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));
+		transmitter.send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
+		transmitter.send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
+		transmitter.send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true) ? 1 : 0).build(this));
 		
-		getTransmitter().send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
-		getTransmitter().send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
+		transmitter.send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
+		transmitter.send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
 		
 		transmitter.refreshRunOrbStatus();
 		transmitter.refreshEnergy();
@@ -291,7 +303,7 @@ public final class Player extends Entity {
 		if (travel) {
 			setInteractionTask(null);
 			getMovement().resetWalkSteps();
-			getTransmitter().sendMinimapFlagReset();
+			transmitter.sendMinimapFlagReset();
 		}
 		if (actions) {
 			getManager().getActions().stopAction();

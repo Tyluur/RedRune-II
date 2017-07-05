@@ -506,7 +506,7 @@ public class EntityMovement {
 			}
 			return true;
 		}
-		return findBasicRoute(entity, target, target.getLocation(), maxStepsCount);
+		return findBasicRoute(entity, target.getSize(), target.getLocation(), maxStepsCount);
 	}
 	
 	/**
@@ -514,14 +514,14 @@ public class EntityMovement {
 	 *
 	 * @param source
 	 * 		The base entity
-	 * @param target
-	 * 		The target entity
+	 * @param targetSize
+	 * 		The target entity entity
 	 * @param dest
 	 * 		The location destination
 	 * @param maxStepsCount
 	 * 		The max steps
 	 */
-	public static boolean findBasicRoute(Entity source, Entity target, Location dest, int maxStepsCount) {
+	public static boolean findBasicRoute(Entity source, int targetSize, Location dest, int maxStepsCount) {
 		// the last walk of the source
 		int[] srcPos = source.getMovement().getLastWalkTile();
 		// the dest position array
@@ -529,7 +529,7 @@ public class EntityMovement {
 		// the size of the source entity
 		int srcSize = source.getSize();
 		//set destSize to 0 to walk under it else follows
-		int destSize = target.getSize();
+		int destSize = targetSize;
 		int[] destScenePos = { destPos[0] + destSize - 1, destPos[1] + destSize - 1 };
 		while (maxStepsCount-- != 0) {
 			int[] srcScenePos = { srcPos[0] + srcSize - 1, srcPos[1] + srcSize - 1 };

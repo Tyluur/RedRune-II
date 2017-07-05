@@ -669,4 +669,21 @@ public class RegionManager {
 		int baseLocalY = y - ((regionId & 0xff) * 64);
 		return region.getMaskClippedOnly(tile.getPlane(), baseLocalX, baseLocalY);
 	}
+	
+	/**
+	 * Gets the map of all regions
+	 */
+	public static Map<Integer, Region> getRegions() {
+		return REGION_CACHE;
+	}
+	
+	/**
+	 * Removes a region
+	 *
+	 * @param regionId
+	 * 		The region
+	 */
+	public static Region removeRegion(int regionId) {
+		return REGION_CACHE.remove(regionId);
+	}
 }

@@ -87,7 +87,7 @@ public final class Location {
 	
 	@Override
 	public String toString() {
-		return "[x=" + x + ", y=" + y + ", plane=" + plane + ", id=" + getRegionId() + "]";
+		return "[x=" + x + ", y=" + y + ", plane=" + plane + ", id=" + getRegionId() + ", rX=" + getRegionX() + ", rY=" + getRegionY() + "]";
 	}
 	
 	/**
@@ -245,17 +245,6 @@ public final class Location {
 	 */
 	public int getDistance(Location location) {
 		return Misc.getDistance(getX(), getY(), location.getX(), location.getY());
-	}
-	
-	/**
-	 * Gets the distance between this location and the given location.
-	 *
-	 * @param l
-	 * 		The given location.
-	 * @return The distance in double format.
-	 */
-	public double distance(Location l) {
-		return Math.sqrt(Math.pow(l.x - x, 2) + Math.pow(l.y - y, 2));
 	}
 	
 	/**
