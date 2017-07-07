@@ -1,3 +1,14 @@
+7/5/17 {
+	+   Added an activity system for handling activities like being in the wilderness
+	+   Added support for transparent interfaces in the interface manager [previously we never needed to send transparent interfaces]
+	+   Added wilderness activity
+		-   Shows the wilderness level you're on in the overlay
+		-   Attempting to fight someone will always make you face them [pjer alert ;)]
+
+	[IMG]http://i.imgur.com/1Qkqai6.png[/IMG]
+	[IMG]http://i.imgur.com/IXt9Pz5.png[/IMG]
+}
+
 7/4/17 {
 	+   Started dynamic region system
 		-   Clip flags loading

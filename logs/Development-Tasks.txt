@@ -26,5 +26,3 @@
 	-   Vesta spear
 	-   Korasis sword
 	-   Barrelchest anchor
-+   Ava's accumulator function
-+	G maul spec doesnt need u to click on target again.

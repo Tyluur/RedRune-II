@@ -3,7 +3,6 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -19,11 +18,12 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		int interfaceId = 741;
-		int config = 1230;
-		player.getTransmitter().send(new ConfigPacketBuilder(config, intParam(args, 1)).build(player));
-		player.getTransmitter().send(new ConfigPacketBuilder(965, intParam(args, 2)).build(player));
-		player.getManager().getInterfaces().sendInterface(interfaceId, true);
+		player.getManager().getInterfaces().sendInterface(intParam(args, 1), intParam(args, 2));
+		/*if (boolParam(args, 1)) {
+			player.getManager().getInterfaces().sendPrimaryOverlay(intParam(args, 2));
+		} else {
+			player.getManager().getInterfaces().closePrimaryOverlay();
+		}*/
 /*		Entity target = null;
 		for (int i = 0; i <= World.get().getPlayers().size(); i++) {
 			Player p = World.get().getPlayers().get(i);

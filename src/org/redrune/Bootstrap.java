@@ -7,7 +7,7 @@ import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.action.combat.player.CombatRegistry;
+import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.content.market.shop.ShopRepository;
 import org.redrune.game.module.ModuleRepository;

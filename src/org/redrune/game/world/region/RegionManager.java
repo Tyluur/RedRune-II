@@ -2,6 +2,7 @@ package org.redrune.game.world.region;
 
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.activity.ActivitySystem;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
@@ -73,6 +74,10 @@ public class RegionManager {
 			Region region = getRegion(regionId);
 			region.addEntity(entity);
 			entity.setLastRegion(entity.getRegion());
+		}
+		// we update the location to the activities
+		if (entity.isPlayer()) {
+			ActivitySystem.fireLocationUpdate(entity.toPlayer());
 		}
 		// this is where we would check if we are in a multi zone
 	}

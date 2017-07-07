@@ -33,6 +33,12 @@ public final class PlayerManager {
 	private final ContactManager contacts;
 	
 	/**
+	 * The activity manager instance
+	 */
+	@Getter
+	private final ActivityManager activities;
+	
+	/**
 	 * The interface manager of the player
 	 */
 	@Getter
@@ -71,6 +77,7 @@ public final class PlayerManager {
 		this.notes = new NoteManager();
 		this.prayers = new PrayerManager();
 		this.contacts = new ContactManager();
+		this.activities = new ActivityManager();
 	}
 	
 	/**
@@ -85,6 +92,7 @@ public final class PlayerManager {
 		this.setLocks(new LockManager());
 		this.setDialogues(new DialogueManager(player));
 		this.setHintIcons(new HintIconManager());
+		this.activities.setPlayer(player);
 		
 		this.interfaces.setPlayer(player);
 		this.notes.setPlayer(player);

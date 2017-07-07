@@ -1,6 +1,6 @@
 package org.redrune.game.module.interaction.rsinterface;
 
-import org.redrune.game.content.action.combat.StaticCombatFormulae;
+import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 

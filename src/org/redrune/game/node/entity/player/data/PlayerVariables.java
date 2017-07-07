@@ -58,6 +58,13 @@ public final class PlayerVariables {
 	private boolean experienceLocked = false;
 	
 	/**
+	 * If we are in an area we can fight in
+	 */
+	@Getter
+	@Setter
+	private boolean inFightArea = false;
+	
+	/**
 	 * The skull icon
 	 */
 	@Getter

@@ -24,18 +24,18 @@ public class WildernessDitchInteractionModule implements ObjectInteractionModule
 	@Override
 	public boolean handle(Player player, GameObject object, InteractionOption option) {
 		final boolean leaving = player.getLocation().getY() > object.getLocation().getY();
-		final Location from = new Location(player.getLocation());
-		final Location toLoc = new Location(player.getLocation().getX(), object.getLocation().getY() + (leaving ? -1 : 2), player.getLocation().getPlane());
+		final Location original = new Location(player.getLocation());
+		final Location destination = new Location(player.getLocation().getX(), object.getLocation().getY() + (leaving ? -1 : 2), player.getLocation().getPlane());
 		
 		player.getManager().getLocks().lockAll();
 		player.sendAnimation(6132);
-		player.getUpdateMasks().register(new ForceMovement(player, new int[] { toLoc.getX(), toLoc.getY(), 33, 60, leaving ? ForceMovement.SOUTH : ForceMovement.NORTH }));
+		player.getUpdateMasks().register(new ForceMovement(player, new int[] { destination.getX(), destination.getY(), 33, 60, leaving ? ForceMovement.SOUTH : ForceMovement.NORTH }));
 		
 		SystemManager.getScheduler().schedule(new ScheduledTask(2) {
 			@Override
 			public void run() {
-				player.teleport(toLoc);
-				player.getUpdateMasks().register(new FaceLocationUpdate(player, from));
+				player.teleport(destination);
+				player.getUpdateMasks().register(new FaceLocationUpdate(player, original));
 				SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 					@Override
 					public void run() {

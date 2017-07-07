@@ -88,7 +88,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			case 3:
 				break;
 		}
-		sendInterface(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID).sendDefaultTabs();
+		sendInterface(CHATBOX_WINDOW_ID, 9, REGULAR_CHATBOX_INTERFACE_ID, false).sendDefaultTabs();
 		player.getCombatDefinitions().refreshSpellbook();
 		return this;
 	}
@@ -139,7 +139,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		The id of the interface
 	 */
 	public InterfaceManager sendChatboxInterface(int interfaceId) {
-		return sendInterface(CHATBOX_WINDOW_ID, 13, interfaceId);
+		return sendInterface(CHATBOX_WINDOW_ID, 13, interfaceId, false);
 	}
 	
 	/**
@@ -151,15 +151,17 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		The component id that the interface will be drawn on.
 	 * @param interfaceId
 	 * 		The id of the interface
+	 * @param walkable
+	 * 		If the interface should be walkable
 	 */
-	public InterfaceManager sendInterface(int paneId, int componentId, int interfaceId) {
+	public InterfaceManager sendInterface(int paneId, int componentId, int interfaceId, boolean walkable) {
 		if (interfaceId >= Cache.getAmountOfInterfaces()) {
 			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
 		}
 		if (interfaceBindings.get(componentId) != null) {
 			closeInterface(paneId, componentId);
 		}
-		interfaceBindings.put(componentId, new int[] { interfaceId, paneId });
+		interfaceBindings.put(componentId, new int[] { interfaceId, paneId, walkable ? 1 : 0 });
 		flushComponent(componentId);
 		return this;
 	}
@@ -189,8 +191,17 @@ public final class InterfaceManager implements InterfaceConstants {
 		if (values == null) {
 			return this;
 		}
-		boolean notTransparent = componentId == getScreenComponentId(usingFixedMode());
-		player.getTransmitter().send(new InterfaceDisplayBuilder(values[1], componentId, values[0], !notTransparent).build(player));
+		// the walk flag
+		final int walkFlag = values[2];
+		// if the walk flag is on [set to 1]
+		boolean walkable = walkFlag == 1;
+		// the interface should be sent differently from other ones because it is force walkable
+		if (walkable) {
+			player.getTransmitter().send(new InterfaceDisplayBuilder(values[1], componentId, values[0], true).build(player));
+		} else {
+			boolean forceWalkable = componentId == getScreenComponentId(usingFixedMode());
+			player.getTransmitter().send(new InterfaceDisplayBuilder(values[1], componentId, values[0], !forceWalkable).build(player));
+		}
 		return this;
 	}
 	
@@ -226,7 +237,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			return this;
 		}
 		closeInputBox();
-		return sendInterface(getScreenPaneId(usingFixedMode()), getScreenComponentId(usingFixedMode()), interfaceId);
+		return sendInterface(getScreenPaneId(usingFixedMode()), getScreenComponentId(usingFixedMode()), interfaceId, false);
 	}
 	
 	/**
@@ -316,6 +327,23 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
+	 * Sends the primary overlay
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public InterfaceManager sendPrimaryOverlay(int interfaceId) {
+		return sendWalkableInterface(usingFixedMode() ? 20 : 9, interfaceId);
+	}
+	
+	/**
+	 * Closes the primary overlay
+	 */
+	public InterfaceManager closePrimaryOverlay() {
+		return closeInterface(getPaneId(), usingFixedMode() ? 20 : 9);
+	}
+	
+	/**
 	 * Sends an interface on the specified component id
 	 *
 	 * @param componentId
@@ -324,7 +352,19 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		The id of the interface
 	 */
 	public InterfaceManager sendInterface(int componentId, int interfaceId) {
-		return sendInterface(getScreenPaneId(usingFixedMode()), componentId, interfaceId);
+		return sendInterface(getScreenPaneId(usingFixedMode()), componentId, interfaceId, false);
+	}
+	
+	/**
+	 * Sends an interface on the specified component id
+	 *
+	 * @param componentId
+	 * 		The component id that the interface will be drawn on.
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	private InterfaceManager sendWalkableInterface(int componentId, int interfaceId) {
+		return sendInterface(getScreenPaneId(usingFixedMode()), componentId, interfaceId, true);
 	}
 	
 	/**
@@ -373,13 +413,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	public InterfaceManager closeAllInterfaces() {
 		if (getScreenInterface() != -1) {
 			closeScreenInterface();
+			System.out.println("closed screen");
 		}
 		if (getChatboxInterface() != -1) {
 			closeChatboxInterface();
 			player.getManager().getDialogues().end();
+			System.out.println("closed chatbox");
 		}
 		if (getInventoryInterface() != -1) {
 			closeInventoryInterface();
+			System.out.println("Closed inventory");
 		}
 		return this;
 	}

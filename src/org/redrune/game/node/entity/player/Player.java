@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.core.SequencialUpdate;
 import org.redrune.game.GameConstants;
-import org.redrune.game.content.action.combat.PlayerCombatAction;
-import org.redrune.game.content.action.combat.StaticCombatFormulae;
+import org.redrune.game.content.combat.PlayerCombatAction;
+import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
@@ -130,7 +130,6 @@ public final class Player extends Entity {
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		RegionManager.updateEntityRegion(this);
 		
-		networkSession.write(new PlayerOptionPacketBuilder("Attack", true, 1).build(this));
 		networkSession.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
 		networkSession.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
 		
@@ -219,6 +218,7 @@ public final class Player extends Entity {
 		manager.getActions().process();
 		manager.getPrayers().process();
 		manager.getHintIcons().process();
+		manager.getActivities().process();
 	}
 	
 	@Override
@@ -344,6 +344,15 @@ public final class Player extends Entity {
 		getVariables().setRunEnergy(getVariables().getRunEnergy() + 1);
 		transmitter.refreshEnergy();
 		transmitter.refreshRunOrbStatus();
+	}
+	
+	/**
+	 * Updates the fight area flag
+	 */
+	public void setInFightArea(boolean inFightArea) {
+		variables.setInFightArea(inFightArea);
+		networkSession.write(new PlayerOptionPacketBuilder(inFightArea ? "Attack" : "null", true, 1).build(this));
+		//		getPackets().sendPlayerUnderNPCPriority(inFightArea);
 	}
 	
 }

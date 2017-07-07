@@ -1,13 +1,15 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
-import org.redrune.game.content.action.combat.PlayerCombatAction;
-import org.redrune.game.content.action.combat.StaticCombatFormulae;
-import org.redrune.game.content.action.combat.player.CombatRegistry;
 import org.redrune.game.content.action.interaction.PlayerFollowAction;
+import org.redrune.game.content.combat.PlayerCombatAction;
+import org.redrune.game.content.combat.StaticCombatFormulae;
+import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.rs.InteractionOption;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -158,6 +160,11 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	 */
 	private void decodePlayerAttack(Player player, Player other) {
 		player.stop(true, true, true, false);
+		player.getUpdateMasks().register(new FaceLocationUpdate(player, other.getLocation()));
+		// we can't continue fighting in the activity
+		if (!player.getManager().getActivities().handleNodeInteraction(other, InteractionOption.ATTACK_OPTION)) {
+			return;
+		}
 		player.getManager().getActions().startAction(new PlayerCombatAction(other));
 	}
 	
