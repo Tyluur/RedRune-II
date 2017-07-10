@@ -10,7 +10,7 @@ import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.tool.Misc;
-import org.redrune.utility.repository.EventRepository;
+import org.redrune.game.content.event.EventRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

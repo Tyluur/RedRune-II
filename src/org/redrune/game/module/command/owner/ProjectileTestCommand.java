@@ -13,7 +13,7 @@ import org.redrune.utility.rs.Projectile;
  * @since 6/29/2017
  */
 @CommandManifest(description = "Sends a projectile to a close entity")
-public class SendProjectileCommand extends CommandModule {
+public class ProjectileTestCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
@@ -34,19 +34,29 @@ public class SendProjectileCommand extends CommandModule {
 			target = p;
 		}
 		if (target == null) {
-			System.out.println("Notargfound");
 			return;
 		}
-		System.out.println("targ=" + target);
-		
-		final int projectileId = intParam(args, 1);
-		final int startHeight = intParam(args, 2);
-		final int endHeight = intParam(args, 3);
-		final int delay = intParam(args, 4);
-		final int angle = intParam(args, 5);
-		final int offset = intParam(args, 6);
-		
-		Projectile projectile = ProjectileManager.createSpeedDefinedProjectile(player, target, projectileId, startHeight, endHeight, delay, angle, offset);
+		boolean speedDefined = boolParam(args, 1);
+		Projectile projectile;
+		if (speedDefined) {
+			final int projectileId = intParam(args, 2);
+			final int startHeight = intParam(args, 3);
+			final int endHeight = intParam(args, 4);
+			final int delay = intParam(args, 5);
+			final int angle = intParam(args, 6);
+			final int offset = intParam(args, 7);
+			projectile = ProjectileManager.createSpeedDefinedProjectile(player, target, projectileId, startHeight, endHeight, delay, angle, offset);
+		} else {
+			final int projectileId = intParam(args, 2);
+			final int startHeight = intParam(args, 3);
+			final int endHeight = intParam(args, 4);
+			final int delay = intParam(args, 5);
+			final int speed = intParam(args, 6);
+			final int angle = intParam(args, 7);
+			final int offset = intParam(args, 8);
+			
+			projectile = new Projectile(player, target, projectileId, startHeight, endHeight, delay, speed, angle, offset);
+		}
 		
 		/*projectile = new Projectile(player, target, projectileId, startHeight, endHeight, delay, intParam(args, 5), intParam(args, 6), intParam(args, 7));
 		*/

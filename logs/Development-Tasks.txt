@@ -15,14 +15,12 @@
 + 	Set interaction modules on creation of nodes. [maybe objects can have names as well as ids in modules, in cases of flagged by object name [trees]]
 +	Proper object facing. [facing tiles/levers is broken]
 +	NPC combat bonuses in player combat calculation
-+   Finish all range weapons
-	-   Range specs
++   Finish all range specials
+	-   Hand cannon
+	-   Crossbow bolt [e]
 +   Finish all melee special attacks
-	-   Godswords [sara sword]
-	-   Dragon claws,mace,halberd,spear,longsword,scim,2h
+	-   Dragon mace,halberd,spear,longsword,scim,2h
 	-   Whip [vine too]
-	-   Vesta longsword
 	-   Statius warhammer
 	-   Vesta spear
-	-   Korasis sword
 	-   Barrelchest anchor

@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.link;
 
 import org.redrune.game.content.activity.Activity;
 import org.redrune.game.node.Node;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.InteractionOption;
 
@@ -52,6 +53,16 @@ public class ActivityManager {
 	 */
 	public boolean handleNodeInteraction(Node node, InteractionOption option) {
 		return activity != null && activity.handleNodeInteraction(node, option);
+	}
+	
+	/**
+	 * If the activity handles the entity's death
+	 *
+	 * @param entity
+	 * 		The entity
+	 */
+	public boolean handleEntityDeath(Entity entity) {
+		return activity != null && activity.handleEntityDeath(entity);
 	}
 	
 	/**

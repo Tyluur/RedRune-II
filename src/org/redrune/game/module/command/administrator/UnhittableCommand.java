@@ -6,18 +6,19 @@ import org.redrune.game.node.entity.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 6/7/2017
+ * @since 7/9/2017
  */
-@CommandManifest(description = "Heals you to max health")
-public class HealCommand extends CommandModule {
+@CommandManifest(description = "Toggles whether u can be hit.")
+public class UnhittableCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("heal");
+		return arguments("togglehittable");
 	}
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.restoreAll();
+		player.putAttribute("unhittable", !player.getAttribute("unhittable", false));
+		player.getTransmitter().sendMessage("You are now " + (player.getAttribute("unhittable", false) ? "un" : "") + "hittable.");
 	}
 }

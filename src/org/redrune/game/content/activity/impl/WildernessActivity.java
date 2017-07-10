@@ -1,10 +1,17 @@
 package org.redrune.game.content.activity.impl;
 
 import org.redrune.game.content.activity.Activity;
-import org.redrune.game.content.activity.ActivityFlag;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.world.region.RegionManager;
+import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.InteractionOption;
+import org.redrune.utility.rs.constant.ItemConstants;
+
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -17,11 +24,6 @@ public class WildernessActivity extends Activity {
 	 */
 	private boolean showingSkull;
 	
-	public WildernessActivity(Object... parameters) {
-		super(parameters);
-		flag(ActivityFlag.SAVE_ON_LOGOUT);
-	}
-	
 	@Override
 	public void start() {
 		checkLocations();
@@ -32,6 +34,12 @@ public class WildernessActivity extends Activity {
 		checkLocations();
 	}
 	
+	@Override
+	public void end() {
+		super.end();
+		player.setInFightArea(false);
+	}
+	
 	/**
 	 * Checks what to do based on our location
 	 */
@@ -39,18 +47,21 @@ public class WildernessActivity extends Activity {
 		boolean isAtWild = isAtWild(player.getLocation());
 		boolean isAtWildSafe = isAtWildSafe(player.getLocation());
 		
+		// we're inside a danger zone
 		if (!showingSkull && isAtWild && !isAtWildSafe) {
 			showingSkull = true;
 			player.setInFightArea(true);
 			player.getManager().getInterfaces().sendPrimaryOverlay(381);
 		} else if (showingSkull && (isAtWildSafe || !isAtWild)) {
+			// we're inside the safe area
 			player.getManager().getInterfaces().closePrimaryOverlay();
 			player.setInFightArea(false);
 			showingSkull = false;
-		} else if (!isAtWildSafe && !isAtWild) {
-			player.setInFightArea(false);
 		} else if (isAtWild) {
-			//			updateWildLevel();
+			// we moved while we're still in the wild
+		} else if (!isAtWildSafe && !isAtWild) {
+			// we're not in the wilderness anymore
+			end();
 		}
 	}
 	
@@ -67,6 +78,11 @@ public class WildernessActivity extends Activity {
 		}
 	}
 	
+	@Override
+	public boolean savesOnLogout() {
+		return true;
+	}
+	
 	/**
 	 * Checks if the target's wilderness level is capable of fighting us
 	 *
@@ -79,6 +95,105 @@ public class WildernessActivity extends Activity {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Sends the death container
+	 *
+	 * @param dead
+	 * 		The player who is dead
+	 * @param killer
+	 * 		The entity who killed the player
+	 * @return An array of the items kept
+	 */
+	public static Item[] sendDeathContainer(Player dead, Entity killer) {
+		CopyOnWriteArrayList<Item> containedItems = dead.findContainedItems();
+		if (containedItems.isEmpty()) {
+			return null;
+		}
+		Map<Integer, List<Item>> deathList = getItemsOnDeath(containedItems, dead.getManager().getPrayers().itemKeptCount());
+		
+		List<Item> itemsDropped = deathList.get(0);
+		List<Item> itemsKept = deathList.get(1);
+		List<Item> untradeables = deathList.get(2);
+/*
+		System.out.println("Contained Items:\t" + containedItems);
+		System.out.println("Items dropped:\t" + itemsDropped);
+		System.out.println("Items kept:\t" + itemsKept);
+		System.out.println("Untradebles:\t" + untradeables);
+		*/
+
+		// if the killer is an ironman, the drop is handled differently.
+		final Location lootTile = dead.getLocation();
+		
+		for (Item item : itemsDropped) {
+			RegionManager.addFloorItem(item.getId(), item.getAmount(), 180, lootTile, killer == null || !killer.isPlayer() ? dead.getDetails().getUsername() : killer.toPlayer().getDetails().getUsername());
+		}
+		RegionManager.addPublicFloorItem(526, 1, 180, lootTile);
+		
+		untradeables.stream().filter(item -> item.getDefinitions().isLended()).forEach(dead.getInventory()::addItem);
+		untradeables.stream().filter(item -> !item.getDefinitions().isLended()).forEach(item -> {
+			// TODO untradeable shop
+			/*if (!untradeablesShop.add(item)) {
+				sendMessage("Your untradeable shop was too full, so the " + item.getName().toLowerCase() + " was dropped.");
+				World.addGroundItem(item, lootTile, this, true, 180, 2, 150);
+			}*/
+		});
+		return itemsKept.toArray(new Item[itemsKept.size()]);
+	}
+	
+	/**
+	 * This method finds out the items that we keep on death, items we drop on death, and the untradeables on death. The
+	 * first index in this array is the items dropped, second is items kept, third is the untradeables. No operations
+	 * are done to the items in this method nor the containedItems list, they are just put into lists.
+	 *
+	 * @param containedItems
+	 * 		The items the player contains in their inventory and equipment
+	 * @param amountToKeep
+	 * 		The amount of items a player should keep
+	 */
+	@SuppressWarnings("unchecked")
+	private static Map<Integer, List<Item>> getItemsOnDeath(List<Item> containedItems, int amountToKeep) {
+		List<Item> itemsDropped = new ArrayList<>(containedItems);
+		List<Item> itemsKept = new ArrayList<>();
+		List<Item> untradeables = new ArrayList<>();
+		// removing untradeable items & lent items from the contained items
+		Iterator<Item> it$ = itemsDropped.iterator();
+		while (it$.hasNext()) {
+			Item deathItem = it$.next();
+			if ((ItemRepository.isUntradeable(deathItem.getId()) && !ItemConstants.untradeableDropsOnDeath(deathItem)) || deathItem.getDefinitions().isLended()) {
+				untradeables.add(deathItem);
+				it$.remove();
+			}
+		}
+		
+		// sorting the items dropped based on the price of them
+		itemsDropped.sort((o1, o2) -> Integer.compare(o2.getDefinitions().getValue(), o1.getDefinitions().getValue()));
+		
+		int tempAmountKept = 0;
+		k:
+		for (Iterator<Item> iterator = itemsDropped.iterator(); iterator.hasNext(); ) {
+			Item item = iterator.next();
+			for (int i = 0; i <= item.getAmount(); i++) {
+				if (tempAmountKept++ == amountToKeep) {
+					break k;
+				}
+				Item saved = new Item(item.getId(), 1);
+				itemsKept.add(saved);
+				if (item.getAmount() >= 1) {
+					item.setAmount(item.getAmount() - 1);
+				}
+				if (item.getAmount() < 1) {
+					iterator.remove();
+				}
+			}
+		}
+		
+		Map<Integer, List<Item>> items = new HashMap<>();
+		items.put(0, itemsDropped);
+		items.put(1, itemsKept);
+		items.put(2, untradeables);
+		return items;
 	}
 	
 	/**

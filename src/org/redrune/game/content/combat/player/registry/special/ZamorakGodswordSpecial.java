@@ -9,18 +9,18 @@ import org.redrune.game.node.entity.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 6/22/2017
+ * @since 7/9/2017
  */
-public class ArmadylGodswordSpecial implements SpecialAttackEvent {
+public class ZamorakGodswordSpecial implements SpecialAttackEvent {
 	
 	@Override
 	public String[] applicableNames() {
-		return arguments("armadyl godsword");
+		return arguments("zamorak godsword");
 	}
 	
 	@Override
 	public double multiplier() {
-		return 1.25;
+		return 1.10;
 	}
 	
 	@Override
@@ -31,8 +31,12 @@ public class ArmadylGodswordSpecial implements SpecialAttackEvent {
 		final int damage = swing.randomizeHit(maxHit, attackBonus, defenceBonus);
 		final Hit hit = new Hit(player, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
 		
-		player.sendAnimation(11989);
-		player.sendGraphics(2113);
+		player.sendAnimation(7070);
+		player.sendGraphics(1221);
+		if (damage > 0 && target.getSize() == 1) {
+			target.sendGraphics(2104);
+			target.freeze(player, 30, "You have been frozen!");
+		}
 		swing.applyHit(player, target, hit, player.getEquipment().getWeaponId(), combatStyle, 1);
 	}
 }

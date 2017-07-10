@@ -9,6 +9,7 @@ import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Consumer;
@@ -721,7 +722,17 @@ public class Misc {
 		}
 	}
 	
-	public static int getMapArchiveId(int regionX, int regionY) {
-		return regionX | regionY << 7;
+	/**
+	 * Gets a string format of the amount of memory we're using.
+	 */
+	public static String getMemoryUsageInformation() {
+		DecimalFormat decimalFormat = new DecimalFormat("0.0#%");
+		NumberFormat memoryFormat = NumberFormat.getInstance();
+		Runtime runtime = Runtime.getRuntime();
+		long totalMemory = runtime.totalMemory();
+		long freeMemory = runtime.freeMemory();
+		long usedMemory = (totalMemory - freeMemory);
+		return "Total Used JVM Allocated Memory: " + memoryFormat.format(usedMemory / (1024L * 1024L)) + "/" + memoryFormat.format(totalMemory / (1024L * 1024L)) + " MB, " + decimalFormat.format((double) usedMemory / (double) totalMemory) + " - Free JVM Allocated Memory: " + memoryFormat.format(freeMemory / (1024L * 1024L)) + " MB, " + decimalFormat.format((double) freeMemory / (double) totalMemory);
 	}
+	
 }

@@ -53,7 +53,7 @@ public class PlayerInventory {
 	/**
 	 * Sends the container items
 	 */
-	private void sendContainer() {
+	public void sendContainer() {
 		player.getTransmitter().send(new ContainerPacketBuilder(93, items.toArray(), false).build(player));
 		calculateWeight();
 	}
@@ -71,6 +71,16 @@ public class PlayerInventory {
 		}
 		this.weight = weight;
 		player.getTransmitter().sendWeight();
+	}
+	
+	/**
+	 * Adds an item to the container
+	 *
+	 * @param item
+	 * 		The  item instance
+	 */
+	public boolean addItem(Item item) {
+		return addItem(item.getId(), item.getAmount());
 	}
 	
 	/**

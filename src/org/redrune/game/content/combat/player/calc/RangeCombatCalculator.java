@@ -1,6 +1,5 @@
 package org.redrune.game.content.combat.player.calc;
 
-import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatTypeCalculator;
 import org.redrune.game.node.entity.Entity;
@@ -60,8 +59,31 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 	
 	@Override
 	public double maximumDamageAppendable(Player player, Object... params) {
-		final int attackStyle = (int) params[0];
-		final int weaponId = (int) params[1];
+		final int weaponId = (int) params[0];
+		final int attackStyle = (int) params[1];
+		final double multiplier = (double) params[2];
+		final boolean voidEquipped = StaticCombatFormulae.fullVoidEquipped(player, 11664, 11675);
+		final boolean pernixEquipped = StaticCombatFormulae.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS }, "pernix", "pernix", "pernix");
+		
+		int level = player.getSkills().getLevel(RANGE);
+		int bonus = player.getEquipment().getBonus(BonusConstants.RANGED_STRENGTH_BONUS);
+		double prayer = player.getManager().getPrayers().getBasePrayerBoost(PRAYER);
+		
+		double cumulativeStr = Math.floor(level * prayer);
+		double styleBonus = attackStyle == 0 ? 3 : attackStyle == 1 ? 0 : 1;
+		cumulativeStr += (8 + styleBonus);
+		if (voidEquipped) {
+			cumulativeStr *= StaticCombatFormulae.fullVoidEquipped(player, 11675) ? 1.125 : 1.1;
+		}
+		if (pernixEquipped) {
+			cumulativeStr += 150;
+		}
+		final double effective = (((14 + cumulativeStr + (bonus / 8) + ((cumulativeStr * bonus) * 0.016865))) / 10 + 1) * multiplier;
+		double maxHit = (Math.round(effective) * 10);
+		return maxHit;
+		
+/*		final int weaponId = (int) params[0];
+		final int attackStyle = (int) params[1];
 		final double multiplier = (double) params[2];
 		
 		double rangedLvl = player.getSkills().getLevel(SkillConstants.RANGE);
@@ -86,6 +108,6 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 		if (StaticCombatFormulae.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS }, "pernix", "pernix", "pernix")) {
 			maxHit += 150;
 		}
-		return maxHit;
+		return maxHit;*/
 	}
 }

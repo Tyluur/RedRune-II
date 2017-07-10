@@ -34,6 +34,11 @@ public interface GameConstants {
 	Location HOME_LOCATION = new Location(3092, 3503);
 	
 	/**
+	 * The location players are sent to when they die
+	 */
+	Location DEATH_LOCATION = new Location(3102, 3492);
+	
+	/**
 	 * The experience multiplier for combat skills
 	 */
 	int COMBAT_EXPERIENCE_MULTIPLIER = 75;

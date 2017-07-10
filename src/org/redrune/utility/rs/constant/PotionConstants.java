@@ -529,7 +529,7 @@ public class PotionConstants implements SkillConstants {
 				}
 				player.getTransmitter().refreshEnergy();
 				//player.getPoison().reset();
-				//	player.heal(50);
+				player.heal(50);
 			}
 			
 		},
@@ -553,7 +553,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public void extra(Player player) {
 				int hitpointsModification = (int) (player.getMaxHealth() * 0.15);
-				//player.heal(hitpointsModification + 20, hitpointsModification);
+				player.heal(hitpointsModification + 20, hitpointsModification);
 			}
 		},
 		
@@ -668,7 +668,8 @@ public class PotionConstants implements SkillConstants {
 		/**
 		 * Handles the extra effects of a potion, these are usually not used
 		 */
-		public void extra(Player player) { }
+		public void extra(Player player) {
+		}
 	}
 	
 }

@@ -130,7 +130,6 @@ public final class NetworkTransmitter {
 			final Long lastMessageTime = player.getAttribute("last_message_time", -1L);
 			// check if its recent though, they have to stay up to date
 			if (!SystemManager.getUpdateWorker().lapsed(lastMessageTime, 3)) {
-				System.out.println("didnt send " + text);
 				return this;
 			}
 		}
@@ -352,6 +351,27 @@ public final class NetworkTransmitter {
 	 * Refreshes the run orb status
 	 */
 	public void refreshRunOrbStatus() {
-		player.getTransmitter().send(new ConfigPacketBuilder(173, player.getAttribute("resting", false) ? 3 : player.getVariables().isRunToggled() ? 1 : 0).build(player));
+		send(new ConfigPacketBuilder(173, player.getAttribute("resting", false) ? 3 : player.getVariables().isRunToggled() ? 1 : 0).build(player));
 	}
+	
+	/**
+	 * Refreshes the amount of health points we have
+	 *
+	 * @param amount
+	 * 		The amount
+	 */
+	public void refreshHealthPoints(int amount) {
+		send(new ConfigPacketBuilder(1240, amount << 1).build(player));
+	}
+	
+	/**
+	 * Logs the player out
+	 *
+	 * @param lobby
+	 * 		If its going to the lobby
+	 */
+	public void sendLogout(boolean lobby) {
+		send(new LogoutBuilder(lobby).build(player));
+	}
+	
 }

@@ -8,7 +8,7 @@ import org.redrune.game.content.event.impl.item.ItemEvent;
 import org.redrune.game.content.event.impl.item.ItemRemovalEvent;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.tool.Misc;
-import org.redrune.utility.repository.EventRepository;
+import org.redrune.game.content.event.EventRepository;
 import org.redrune.utility.rs.constant.EquipConstants;
 
 import java.util.Arrays;

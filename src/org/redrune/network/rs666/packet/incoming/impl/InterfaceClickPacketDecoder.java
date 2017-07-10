@@ -9,7 +9,7 @@ import org.redrune.game.node.item.Item;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.tool.Misc;
-import org.redrune.utility.repository.EventRepository;
+import org.redrune.game.content.event.EventRepository;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

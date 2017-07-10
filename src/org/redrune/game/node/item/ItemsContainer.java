@@ -581,4 +581,13 @@ public final class ItemsContainer<T extends Item> {
 		}
 		return size;
 	}
+	
+	/**
+	 * Clears all the items from the container
+	 */
+	public void clear() {
+		for (int i = 0; i < items.length; i++) {
+			items[i] = null;
+		}
+	}
 }

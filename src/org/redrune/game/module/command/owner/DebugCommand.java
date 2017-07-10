@@ -18,7 +18,6 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.getManager().getInterfaces().sendInterface(intParam(args, 1), intParam(args, 2));
 		/*if (boolParam(args, 1)) {
 			player.getManager().getInterfaces().sendPrimaryOverlay(intParam(args, 2));
 		} else {

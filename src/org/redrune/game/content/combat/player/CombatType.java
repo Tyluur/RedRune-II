@@ -24,9 +24,13 @@ public enum CombatType {
 				if (weaponId == 9703) {
 					return 1;
 				}
-				// Interval 2.4
-				if (weaponName.equals("zamorakian spear") || weaponName.equals("korasi's sword")) {
+				// Interval 1.8
+				if (weaponName.contains("saradomin sword") || weaponName.contains(" whip") || weaponName.equals("zamorakian spear") || weaponName.equals("korasi's sword")) {
 					return 3;
+				}
+				// Interval 3.0
+				if (weaponName.contains("spear") || weaponName.contains(" sword") || weaponName.contains("longsword") || weaponName.contains("light") || weaponName.contains("hatchet") || weaponName.contains("pickaxe ") || weaponName.contains("mace") || weaponName.contains("hasta") || weaponName.contains("warspear") || weaponName.contains("flail") || weaponName.contains("hammers")) {
+					return 4;
 				}
 				// Interval 3.6
 				if (weaponName.contains("godsword") || weaponName.contains("warhammer") || weaponName.contains("battleaxe") || weaponName.contains("maul") || weaponName.equals("dominion sword")) {
@@ -35,10 +39,6 @@ public enum CombatType {
 				// Interval 4.2
 				if (weaponName.contains("greataxe") || weaponName.contains("halberd") || weaponName.contains("2h sword") || weaponName.contains("two handed sword") || weaponName.contains("katana") || weaponName.equals("thok's sword")) {
 					return 6;
-				}
-				// Interval 3.0
-				if (weaponName.contains("spear") || weaponName.contains(" sword") || weaponName.contains("longsword") || weaponName.contains("light") || weaponName.contains("hatchet") || weaponName.contains("pickaxe ") || weaponName.contains("mace") || weaponName.contains("hasta") || weaponName.contains("warspear") || weaponName.contains("flail") || weaponName.contains("hammers")) {
-					return 4;
 				}
 			}
 			switch (weaponId) {

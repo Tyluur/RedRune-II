@@ -1,3 +1,34 @@
+7/9/17 {
+	+   Added general game bar toggling + saving
+	+   Identified client packet for private game bar changing
+	+   Identified client packet for public/trade game bar changing
+	+   Added private/public/trade game bar changing + saving
+	+   Added hitpoint modification
+	+   Added hitpoint refresh config
+	+   Added death events for players
+	+   Added saradomin brew + guthix flask health modifications
+	+   Added correct items on death calculation based on item values.
+	+   Added new special attacks
+		-   Bandos godsword [The Bandos godsword's special attack, "Warstrike", has doubled accuracy, inflicts 21% more damage and drains the opponent's combat stats equivalent to the damage hit in the following order: Defence, Strength, Attack, Prayer, Magic, Ranged. For example, if the special attack inflicts 50 damage on a foe with 30 in all combat stats, it would drain 30 Defence and 20 Strength levels (leaving the target with 0 Defence and 10 Strength).]
+		-   Zamorak godsword [The Zamorak godsword has a special attack, Ice Cleave, which freezes the target in place for 20 seconds; the same duration as Ice Barrage. Additionally, the special doubles the user's accuracy and increases the user's max hit by 10%. It uses 50% of the special attack bar. The sword's special attack must produce a successful hit in order to have the freezing effect.]
+		-   Saradomin godsword [When used, the player's max hit is increased by 10%, accuracy is doubled, and half of the damage dealt (rounded down) by the sword is restored to the player's hitpoints, and 1/4 of the damage is restored to the player's Prayer. This drains 50% of the special attack bar.]
+		-   Saradomin sword [Its special attack adds up to 16 extra Magic-based damage to the standard melee attack. If the melee attack misses, then the magic attack will not activate. However, the melee-based can still hit a 0 with the magic-based still activating (similar to Guthan's healing a 0 hit). Players receive 2 Magic experience for each point of damage caused by the magical hit. This special attack consumes the user's entire special attack bar.]
+			-   Also updated the speed to match whip's speed
+		-   Dragon claw special [These claws feature a special attack, Slice and Dice, which drains 50% of the special attack bar and hits an enemy four times in succession, which is popularly used by PKers as a finisher.]
+		-   Vesta's longsword special
+		-   Korasi's sword special
+		-   Dark bow special
+	+   Updated range max hit formula [max of 480 with dark bow and elite void]
+
+	[IMG]http://i.imgur.com/I28JL9K.png[/IMG]
+	[IMG]http://i.imgur.com/NV80KJg.png[/IMG]
+	[IMG]http://i.imgur.com/lhuQ1YX.gif[/IMG]
+	[IMG]http://i.imgur.com/jJJaXUK.gif[/IMG]
+	[IMG]http://i.imgur.com/W6ua7NW.gif[/IMG]
+	[IMG]http://i.imgur.com/5jhutWO.gif[/IMG]
+	[IMG]http://i.imgur.com/XkGihea.png[/IMG]
+}
+
 7/5/17 {
 	+   Added an activity system for handling activities like being in the wilderness
 	+   Added support for transparent interfaces in the interface manager [previously we never needed to send transparent interfaces]

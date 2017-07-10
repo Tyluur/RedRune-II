@@ -16,6 +16,14 @@ public interface EntityDetails {
 	int getMaxHealth();
 	
 	/**
+	 * Sets the amount of health points we're at
+	 *
+	 * @param healthPoints
+	 * 		The amount of health points we're at
+	 */
+	void setHealthPoints(int healthPoints);
+	
+	/**
 	 * What is executed on the tick of an entity.
 	 */
 	void tick();
@@ -33,5 +41,15 @@ public interface EntityDetails {
 	 * If we are fighting
 	 */
 	boolean fighting();
+	
+	/**
+	 * Fires the death event
+	 */
+	void fireDeathEvent();
+	
+	/**
+	 * Restores to default settings
+	 */
+	void restoreAll();
 	
 }

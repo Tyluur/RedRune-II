@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
@@ -15,7 +16,7 @@ import org.redrune.utility.rs.constant.Directions.Direction;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public class NPC extends org.redrune.game.node.entity.Entity {
+public class NPC extends Entity {
 	
 	/**
 	 * The id of the npc
@@ -60,18 +61,34 @@ public class NPC extends org.redrune.game.node.entity.Entity {
 	}
 	
 	@Override
-	public void tick() {
+	public void setHealthPoints(int healthPoints) {
 	
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
 	}
 	
 	@Override
 	public void receiveHit(Hit hit) {
-	
+		//TODO
 	}
 	
 	@Override
 	public boolean fighting() {
+		//TODO
 		return false;
+	}
+	
+	@Override
+	public void fireDeathEvent() {
+		//TODO
+	}
+	
+	@Override
+	public void restoreAll() {
+		//TODO
 	}
 	
 	@Override

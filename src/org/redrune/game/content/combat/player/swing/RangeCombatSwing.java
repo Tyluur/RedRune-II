@@ -18,6 +18,7 @@ import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 import org.redrune.utility.tool.Misc;
 
@@ -34,7 +35,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public boolean run(Player player, org.redrune.game.node.entity.Entity target, int weaponId, int combatStyle, SpecialAttackEvent special) {
+	public boolean run(Player player, Entity target, int weaponId, int combatStyle, SpecialAttackEvent special) {
 		int response = StaticCombatFormulae.getRangeResponse(player);
 		if (response == 3) {
 			player.getTransmitter().sendMessage("You don't have any more ammo left to use.");
@@ -45,11 +46,12 @@ public class RangeCombatSwing extends CombatTypeSwing {
 		}
 		// we check the special attacks
 		boolean usingSpecial = special != null;
-		
+		// the energy required
+		final int energyRequired = ItemConstants.getSpecialEnergy(weaponId);
 		if (usingSpecial) {
 			// set the special attack off now...
 			player.getCombatDefinitions().setSpecialActivated(false);
-			if (player.getCombatDefinitions().getSpecialEnergy() < special.energyRequired()) {
+			if (player.getCombatDefinitions().getSpecialEnergy() < energyRequired) {
 				player.getTransmitter().sendMessage("You don't have enough special attack energy.");
 				usingSpecial = false;
 			}
@@ -57,7 +59,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 		// custom attack send
 		if (usingSpecial) {
 			special.fire(player, target, this, combatStyle);
-			player.getCombatDefinitions().modifySpecial(special.energyRequired());
+			player.getCombatDefinitions().modifySpecial(energyRequired);
 		} else {
 			Optional<BowFireEvent> optional = CombatRegistry.getBow(weaponId);
 			if (!optional.isPresent()) {
@@ -186,13 +188,45 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	 */
 	public static void sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, double modifier, boolean specialAttack) {
 		final int style = attacker.getCombatDefinitions().getAttackStyle();
-		final int delay = swing.getProjectileDelay(attacker, target);
+		final int delay = getProjectileDelay(attacker, target);
 		final double maxHit = swing.getMaxHit(attacker, weaponId, style, modifier);
 		final int damage = swing.randomizeHit(maxHit, swing.getAttackBonus(attacker, weaponId, style, specialAttack), swing.getDefenceBonus(target, weaponId, style));
+		sendDamage(attacker, target, swing, weaponId, style, delay, maxHit, damage, null);
+	}
+	
+	/**
+	 * Sends damage to the target
+	 *
+	 * @param attacker
+	 * 		The attacker
+	 * @param target
+	 * 		The target
+	 * @param swing
+	 * 		The swing
+	 * @param weaponId
+	 * 		The id of the weapon
+	 * @param style
+	 * 		The style we're using
+	 * @param delay
+	 * 		The delay to use
+	 * @param maxHit
+	 * 		The max hit
+	 * @param damage
+	 * 		The damage
+	 */
+	public static void sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int style, int delay, double maxHit, int damage, Runnable landTask) {
 		// hit, ammo, defend
 		final Hit hit = new Hit(attacker, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit);
 		swing.applyHit(attacker, target, hit, weaponId, style, delay);
 		sendBlockEmote(target, delay);
+		if (landTask != null) {
+			SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
+				@Override
+				public void run() {
+					landTask.run();
+				}
+			});
+		}
 	}
 	
 	/**

@@ -3,18 +3,16 @@ package org.redrune.game.node.entity.player.link;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.outgoing.impl.HintIconPacketBuilder;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.HintIcon;
 import org.redrune.utility.rs.HintIcon.HintIconArrow;
 import org.redrune.utility.rs.HintIcon.HintIconType;
+import org.redrune.utility.tool.Misc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -47,7 +45,7 @@ public final class HintIconManager {
 	 * @param iconArrow
 	 * 		The icon arrow
 	 */
-	public boolean addFollowingEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow) {
+	public boolean addFollowingEntityIcon(Entity entity, HintIconArrow iconArrow) {
 		int freeSlot = getFreeIndex();
 		if (freeSlot == -1) {
 			System.out.println("Unable to add a new entity icon for player {" + player + "}");
@@ -80,7 +78,7 @@ public final class HintIconManager {
 	 * @param freeSlot
 	 * 		The slot to send
 	 */
-	private void sendEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow, int freeSlot) {
+	private void sendEntityIcon(Entity entity, HintIconArrow iconArrow, int freeSlot) {
 		HintIcon icon = new HintIcon(freeSlot, entity.isPlayer() ? HintIconType.PLAYER : HintIconType.NPC, iconArrow, 0, entity.getIndex());
 		icons[freeSlot] = icon;
 		player.getTransmitter().send(new HintIconPacketBuilder(icon).build(player));
@@ -140,7 +138,7 @@ public final class HintIconManager {
 			Integer slot = entry.getKey();
 			FollowingEntityIcon icon = entry.getValue();
 			
-			org.redrune.game.node.entity.Entity e;
+			Entity e;
 			// updating the entity location
 			{
 				if (icon.isPlayer()) {
@@ -187,6 +185,23 @@ public final class HintIconManager {
 		player.getTransmitter().send(new HintIconPacketBuilder(new HintIcon(slot, HintIconType.REMOVAL, HintIconArrow.DEFAULT_YELLOW, 0, player.getLocation(), 65)).build(player));
 		followingIconList.remove(slot);
 		icons[slot] = null;
+	}
+	
+	/**
+	 * Removes all the icons shown
+	 */
+	public void removeAll() {
+		for (Entry<Integer, FollowingEntityIcon> entry : followingIconList.entrySet()) {
+			removeIconAtSlot(entry.getKey());
+		}
+		for (int i = 0; i < icons.length; i++) {
+			if (icons[i] == null) {
+				continue;
+			}
+			removeIconAtSlot(i);
+		}
+		Arrays.fill(icons, null);
+		followingIconList.clear();
 	}
 	
 	public static class FollowingEntityIcon {

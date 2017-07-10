@@ -3,7 +3,10 @@ package org.redrune.game.node.entity.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.core.SequencialUpdate;
+import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.GameConstants;
+import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.PlayerCombatAction;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
@@ -15,6 +18,7 @@ import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
 import org.redrune.game.node.entity.player.render.PlayerRendering;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
+import org.redrune.game.node.item.Item;
 import org.redrune.game.world.World;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.NetworkSession;
@@ -22,6 +26,8 @@ import org.redrune.network.rs666.NetworkTransmitter;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The player that renderable in the game.
@@ -213,7 +219,14 @@ public final class Player extends Entity {
 	}
 	
 	@Override
+	public void setHealthPoints(int healthPoints) {
+		variables.setHealthPoints(healthPoints);
+		transmitter.refreshHealthPoints(healthPoints);
+	}
+	
+	@Override
 	public void tick() {
+		super.tick();
 		checkInteractionTask();
 		manager.getActions().process();
 		manager.getPrayers().process();
@@ -223,13 +236,24 @@ public final class Player extends Entity {
 	
 	@Override
 	public void receiveHit(Hit hit) {
-		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
+		// only hitsplats we care about are combat ones
+		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE && hit.getSplat() != HitSplat.MISSED) {
 			return;
 		}
 		StaticCombatFormulae.autoRetaliate(hit.getSource(), this);
+		// prayers handle the hit first
 		manager.getPrayers().handleHit(hit);
 		// absorption after prayer so the actual hit isn't affected
 		equipment.handleAbsorption(hit);
+		// the player is unhittable so we don't do this
+		if (!getAttribute("unhittable", false)) {
+			// if we should die after damage lands
+			if (variables.reduceHealth(hit.getDamage())) {
+				checkDeathEvent();
+			}
+		}
+		// the hit is no longer modifiable, the actual damage received will be stored now.
+		transmitter.refreshHealthPoints(variables.getHealthPoints());
 	}
 	
 	@Override
@@ -279,6 +303,7 @@ public final class Player extends Entity {
 		
 		transmitter.refreshRunOrbStatus();
 		transmitter.refreshEnergy();
+		transmitter.refreshHealthPoints(getHealthPoints());
 	}
 	
 	/**
@@ -316,16 +341,6 @@ public final class Player extends Entity {
 	}
 	
 	/**
-	 * Logs the player out
-	 *
-	 * @param lobby
-	 * 		If its going to the lobby
-	 */
-	public void logout(boolean lobby) {
-		transmitter.send(new LogoutBuilder(lobby).build(this));
-	}
-	
-	/**
 	 * Deregisters a player from the lobby
 	 */
 	public void deregisterLobby() {
@@ -352,7 +367,98 @@ public final class Player extends Entity {
 	public void setInFightArea(boolean inFightArea) {
 		variables.setInFightArea(inFightArea);
 		networkSession.write(new PlayerOptionPacketBuilder(inFightArea ? "Attack" : "null", true, 1).build(this));
-		//		getPackets().sendPlayerUnderNPCPriority(inFightArea);
+		//	TODO: getPackets().sendPlayerUnderNPCPriority(inFightArea);
 	}
 	
+	/**
+	 * Fire this later
+	 */
+	@Override
+	public void fireDeathEvent() {
+		// if the activity should handle death instead
+		if (manager.getActivities().handleEntityDeath(this)) {
+			return;
+		}
+		// vars
+		final Player player = this;
+		final Entity killer = getHitMap().getMostDamageEntity();
+		// we can't walk anymore
+		getMovement().resetWalkSteps();
+		// we can't do anything while dying.
+		manager.getLocks().lockAll();
+		// the event
+		SystemManager.getScheduler().schedule(new ScheduledTask(1, 6) {
+			@Override
+			public void run() {
+				if (getTicksPassed() == 1) {
+					sendAnimation(836);
+				} else if (getTicksPassed() == 2) {
+					transmitter.sendMessage("Oh dear, you have died.");
+					/*if (source instanceof Player) {
+						Player killer = (Player) source;
+						killer.setAttackedByDelay(4);
+					}*/
+				} else if (getTicksPassed() == 5) {
+					Item[] kept = WildernessActivity.sendDeathContainer(player, killer);
+					
+					player.equipment.getItems().clear();
+					player.inventory.getItems().clear();
+					player.equipment.sendContainer();
+					player.inventory.sendContainer();
+					player.restoreAll();
+					
+					teleport(GameConstants.DEATH_LOCATION);
+					sendAnimation(-1);
+					
+					// add the items we should've kept to our inventory...
+					if (kept != null) {
+						for (Item item : kept) {
+							player.inventory.addItem(item.getId(), item.getAmount());
+						}
+					}
+				} else if (getTicksPassed() == 6) {
+					// TODO:	getPackets().sendMusicEffect(90);
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void restoreAll() {
+		skills.restoreAll();
+		manager.getHintIcons().removeAll();
+		manager.getActions().stopAction();
+		manager.getPrayers().setBook(manager.getPrayers().getBook());
+		variables.setRunEnergy(100);
+		removeAttribute("dying");
+		
+		getCombatDefinitions().setSpecialEnergy((byte) 100);
+		getCombatDefinitions().setSpecialActivated(false);
+		getCombatDefinitions().resetSpells(true);
+		unfreeze();
+		sendSettings();
+		
+		getUpdateMasks().register(new AppearanceUpdate(this));
+		manager.getLocks().unlockAll();
+	}
+	
+	/**
+	 * This method finds all the items that the player contains on them.
+	 */
+	public CopyOnWriteArrayList<Item> findContainedItems() {
+		CopyOnWriteArrayList<Item> containedItems = new CopyOnWriteArrayList<>();
+		for (int i = 0; i < 14; i++) {
+			final Item item = equipment.getItem(i);
+			if (item != null && item.getId() != -1 && item.getAmount() != -1) {
+				containedItems.add(new Item(item.getId(), item.getAmount()));
+			}
+		}
+		for (int i = 0; i < 28; i++) {
+			final Item item = inventory.getItems().get(i);
+			if (item != null && item.getId() != -1 && item.getAmount() != -1) {
+				containedItems.add(new Item(item.getId(), item.getAmount()));
+			}
+		}
+		return containedItems;
+	}
 }

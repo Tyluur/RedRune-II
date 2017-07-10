@@ -1,24 +1,23 @@
-package org.redrune.game.module.command.owner;
+package org.redrune.game.module.command.administrator;
 
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.content.event.EventRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 6/27/2017
+ * @since 7/9/2017
  */
-@CommandManifest(description = "Reloads all the events in the repository")
-public class ReloadEventRepositoryCommand extends CommandModule {
+@CommandManifest(description = "Restores your special to 100%")
+public class RestoreSpecialCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("reloadevents");
+		return arguments("spec");
 	}
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		EventRepository.registerEvents(false);
+		player.getCombatDefinitions().setSpecialEnergy((byte) 100);
 	}
 }

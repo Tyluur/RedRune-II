@@ -174,5 +174,21 @@ public final class PlayerVariables {
 		}
 	}
 	
+	/**
+	 * Reduces the amount of health points we have
+	 *
+	 * @param amount
+	 * 		The amount to reduce by
+	 */
+	public boolean reduceHealth(int amount) {
+		healthPoints = healthPoints - amount;
+		if (healthPoints <= 0) {
+			healthPoints = 0;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
 

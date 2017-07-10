@@ -27,11 +27,6 @@ public class MagicBowSpecial implements SpecialAttackEvent {
 	}
 	
 	@Override
-	public int energyRequired() {
-		return 55;
-	}
-	
-	@Override
 	public void fire(Player player, Entity target, CombatTypeSwing swing, int combatStyle) {
 		// we should always be on this mode
 		if (!(swing instanceof RangeCombatSwing)) {

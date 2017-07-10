@@ -1,8 +1,6 @@
-package org.redrune.utility.repository;
+package org.redrune.game.content.event;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.content.event.Event;
-import org.redrune.game.content.event.EventContext;
 import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.content.event.EventPolicy.InterfacePolicy;

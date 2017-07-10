@@ -3,26 +3,18 @@ package org.redrune.game.content.activity;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.Node;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.rs.InteractionOption;
 
-import java.util.BitSet;
-
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/5/2017
  */
-public class Activity implements ActivityFlag {
-	
-	/**
-	 * The player doing the activity
-	 */
-	@Getter
-	@Setter
-	protected transient Player player;
+public class Activity {
 	
 	/**
 	 * The parameters of the activity
@@ -31,9 +23,11 @@ public class Activity implements ActivityFlag {
 	protected final Object[] parameters;
 	
 	/**
-	 * The flag set
+	 * The player doing the activity
 	 */
-	protected final BitSet flags = new BitSet();
+	@Getter
+	@Setter
+	protected transient Player player;
 	
 	public Activity(Object... parameters) {
 		this.parameters = parameters;
@@ -61,7 +55,7 @@ public class Activity implements ActivityFlag {
 	}
 	
 	/**
-	 * Handles the end of an activity
+	 * Handles the end of an activity. This method call cancels the player's current activity
 	 */
 	public void end() {
 		player.getManager().getActivities().end();
@@ -137,26 +131,19 @@ public class Activity implements ActivityFlag {
 	}
 	
 	/**
-	 * Checks if we are at the activity
+	 * Checks if the activity saves on logout.
 	 */
-	public boolean isAtActivity() {
+	public boolean savesOnLogout() {
 		return false;
 	}
 	
 	/**
-	 * Sets a flag to true
+	 * Handles the entity's death
 	 *
-	 * @param flag
-	 * 		The flag
+	 * @param entity
+	 * 		The entity
 	 */
-	public void flag(byte flag) {
-		this.flags.set(flag, true);
-	}
-	
-	/**
-	 * Checks if the activity saves on logout.
-	 */
-	public boolean savesOnLogout() {
-		return flags.get(SAVE_ON_LOGOUT);
+	public boolean handleEntityDeath(Entity entity) {
+		return false;
 	}
 }

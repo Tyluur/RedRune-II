@@ -15,14 +15,9 @@ public interface SpecialAttackEvent extends CombatRegistryEvent {
 	String[] applicableNames();
 	
 	/**
-	 * The increase in accuracy for the applicable weapons.
+	 * The max hit multiplier
 	 */
 	double multiplier();
-	
-	/**
-	 * The energy required to use the special attack
-	 */
-	int energyRequired();
 	
 	/**
 	 * Sends the special attack to the target

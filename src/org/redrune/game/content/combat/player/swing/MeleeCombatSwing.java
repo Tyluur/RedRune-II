@@ -9,6 +9,7 @@ import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
@@ -29,10 +30,13 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 		// we check the special attacks
 		boolean usingSpecial = special != null;
 		
+		// the energy required for the special
+		final int energyRequired = ItemConstants.getSpecialEnergy(weaponId);
+		
 		if (usingSpecial) {
 			// set the special attack off now...
 			player.getCombatDefinitions().setSpecialActivated(false);
-			if (player.getCombatDefinitions().getSpecialEnergy() < special.energyRequired()) {
+			if (player.getCombatDefinitions().getSpecialEnergy() < energyRequired) {
 				player.getTransmitter().sendMessage("You don't have enough special attack energy.");
 				usingSpecial = false;
 			}
@@ -40,7 +44,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 		// custom attack send
 		if (usingSpecial) {
 			special.fire(player, target, this, combatStyle);
-			player.getCombatDefinitions().modifySpecial(special.energyRequired());
+			player.getCombatDefinitions().modifySpecial(energyRequired);
 		} else {
 			// the hit (randomized)
 			final double maxHit = getMaxHit(player, weaponId, combatStyle, 1D);

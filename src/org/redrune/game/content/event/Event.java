@@ -65,6 +65,6 @@ public abstract class Event<T extends EventContext> {
 	 * 		The context
 	 */
 	public boolean canStart(Player player, T context) {
-		return true;
+		return !player.isDead();
 	}
 }

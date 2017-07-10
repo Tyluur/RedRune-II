@@ -18,7 +18,7 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.tool.Misc;
 import org.redrune.utility.backend.MapKeyRepository;
-import org.redrune.utility.repository.EventRepository;
+import org.redrune.game.content.event.EventRepository;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 

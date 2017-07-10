@@ -11,6 +11,7 @@ import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 import org.redrune.utility.tool.Misc;
 
@@ -1247,14 +1248,15 @@ public class StaticCombatFormulae {
 			if (!event.isInstant()) {
 				return;
 			}
+			final boolean energyRequired = player.getCombatDefinitions().getSpecialEnergy() < ItemConstants.getSpecialEnergy(player.getEquipment().getWeaponId());
 			// not enough energy
-			if (player.getCombatDefinitions().getSpecialEnergy() < event.energyRequired()) {
+			if (energyRequired) {
 				player.getTransmitter().sendMessage("You don't have enough special attack energy.");
 				return;
 			}
 			// the combat action
 			PlayerCombatAction action = player.getManager().getActions().getAction() instanceof PlayerCombatAction ? (PlayerCombatAction) player.getManager().getActions().getAction() : null;
-			org.redrune.game.node.entity.Entity target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
+			Entity target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
 			// no target and it was necessary
 			if (target == null && event.requiresFight()) {
 				return;
@@ -1280,7 +1282,7 @@ public class StaticCombatFormulae {
 				event.fire(player, null, null, player.getCombatDefinitions().getAttackStyle());
 			}
 			// dropping the special attack amount
-			player.getCombatDefinitions().modifySpecial(event.energyRequired());
+			player.getCombatDefinitions().modifySpecial(ItemConstants.getSpecialEnergy(player.getEquipment().getWeaponId()));
 			// we used spec so it is triggered off
 			player.getCombatDefinitions().setSpecialActivated(false);
 		}

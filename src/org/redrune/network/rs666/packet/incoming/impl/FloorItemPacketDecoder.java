@@ -12,7 +12,7 @@ import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.repository.EventRepository;
+import org.redrune.game.content.event.EventRepository;
 
 import java.util.Optional;
 

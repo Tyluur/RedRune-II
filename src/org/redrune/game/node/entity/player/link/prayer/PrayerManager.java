@@ -51,6 +51,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	/**
 	 * The book the player is using
 	 */
+	@Getter
 	private PrayerBook book = PrayerBook.REGULAR;
 	
 	/**
@@ -101,7 +102,11 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * Sends the prayer book we're on
 	 */
 	private void sendBook() {
+		// closes all the prayers we have
+		activePrayers.forEach(prayer -> closePrayers(prayer, settingQuickPrayers));
+		// shows the right book
 		player.getTransmitter().send(new ConfigPacketBuilder(1584, book == PrayerBook.CURSES ? 1 : 0).build(player));
+		// allows us to click on the prayer interface
 		sendAccessMasks();
 	}
 	
@@ -533,6 +538,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					bonus += 0.15;
 				} else if (prayerOn(PIETY)) {
 					bonus += 0.20;
+				} else if (prayerOn(RIGOUR)) {
+					bonus += 0.25;
 				} else if (prayerOn(LEECH_DEFENCE)) {
 					bonus += 0.05;
 				} else if (prayerOn(TURMOIL)) {
@@ -546,6 +553,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					bonus += 0.10;
 				} else if (prayerOn(EAGLE_EYE)) {
 					bonus += 0.15;
+				} else if (prayerOn(RIGOUR)) {
+					bonus += 0.20;
 				} else if (prayerOn(LEECH_RANGED)) {
 					bonus += 0.05;
 				}
@@ -1129,4 +1138,16 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 		});
 	}
 	
+	/**
+	 * Gets the amount of items we keep
+	 */
+	public int itemKeptCount() {
+		boolean skulled = false;
+		// TODO: in corp zone we keep 0 base
+		int amountToKeep = (/*(controllerManager.getController() instanceof CorpBeastControler) ? 0 : */(skulled ? 0 : 3));
+		if (prayerOn(Prayer.PROTECT_ITEM) || prayerOn(PROTECT_ITEM_CURSE)) {
+			amountToKeep++;
+		}
+		return amountToKeep;
+	}
 }

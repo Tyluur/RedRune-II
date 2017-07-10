@@ -70,7 +70,7 @@ public abstract class ScheduledTask {
 	 * 		If the delay is less than or equal to zero.
 	 */
 	public ScheduledTask(int delay, int goalTicks) {
-		Preconditions.checkArgument(delay >= 0, "Delay must be more than 0.");
+		Preconditions.checkArgument(delay >= 0, "Delay cannot be negative");
 		this.delay = delay;
 		this.ticks = delay;
 		this.goalTicks = goalTicks;

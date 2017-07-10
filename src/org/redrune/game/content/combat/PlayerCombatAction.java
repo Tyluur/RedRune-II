@@ -149,10 +149,6 @@ public final class PlayerCombatAction implements Action {
 		if (!StaticCombatFormulae.canFight(player, target)) {
 			return false;
 		}
-		// we can't continue fighting in the activity
-		if (!player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {
-			return false;
-		}
 		// if player is frozen and under, stops attacking, else stands waiting
 		if (player.isFrozen()) { // TODO stunned [should it be same flag as frozen?]
 			return !Misc.colides(player, target);
@@ -184,6 +180,10 @@ public final class PlayerCombatAction implements Action {
 				player.getMovement().addWalkSteps(player.getLocation().getX(), target.getLocation().getY(), 1, true);
 			}
 			return true;
+		}
+		// we can't continue fighting in the activity
+		if (!player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {
+			return false;
 		}
 		return true;
 	}

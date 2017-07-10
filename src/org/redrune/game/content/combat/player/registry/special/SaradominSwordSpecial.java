@@ -6,21 +6,22 @@ import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.tool.RandomFunction;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 6/22/2017
+ * @since 7/9/2017
  */
-public class ArmadylGodswordSpecial implements SpecialAttackEvent {
+public class SaradominSwordSpecial implements SpecialAttackEvent {
 	
 	@Override
 	public String[] applicableNames() {
-		return arguments("armadyl godsword");
+		return arguments("saradomin sword");
 	}
 	
 	@Override
 	public double multiplier() {
-		return 1.25;
+		return 1;
 	}
 	
 	@Override
@@ -28,11 +29,16 @@ public class ArmadylGodswordSpecial implements SpecialAttackEvent {
 		double attackBonus = swing.getAttackBonus(player, player.getEquipment().getWeaponId(), combatStyle, true);
 		double defenceBonus = swing.getDefenceBonus(target, player.getEquipment().getWeaponId(), combatStyle);
 		double maxHit = swing.getMaxHit(player, player.getEquipment().getWeaponId(), combatStyle, multiplier());
-		final int damage = swing.randomizeHit(maxHit, attackBonus, defenceBonus);
-		final Hit hit = new Hit(player, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
+		final int meleeDamage = swing.randomizeHit(maxHit, attackBonus, defenceBonus);
+		final int magicDamage = RandomFunction.random(160);
+		final Hit meleeHit = new Hit(player, meleeDamage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
+		final Hit magicHit = new Hit(player, magicDamage, HitSplat.MAGIC_DAMAGE).setMaxHit(160);
 		
-		player.sendAnimation(11989);
-		player.sendGraphics(2113);
-		swing.applyHit(player, target, hit, player.getEquipment().getWeaponId(), combatStyle, 1);
+		player.sendAnimation(11993);
+		target.sendGraphics(1194);
+		swing.applyHit(player, target, meleeHit, player.getEquipment().getWeaponId(), combatStyle, 1);
+		if (meleeDamage > 0) {
+			swing.applyHit(player, target, magicHit, player.getEquipment().getWeaponId(), combatStyle, 1);
+		}
 	}
 }

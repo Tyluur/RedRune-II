@@ -23,11 +23,6 @@ public class GraniteMaulSpecial implements SpecialAttackEvent {
 	}
 	
 	@Override
-	public int energyRequired() {
-		return 50;
-	}
-	
-	@Override
 	public void fire(Player player, org.redrune.game.node.entity.Entity target, CombatTypeSwing swing, int combatStyle) {
 		double attackBonus = swing.getAttackBonus(player, player.getEquipment().getWeaponId(), combatStyle, true);
 		double defenceBonus = swing.getDefenceBonus(target, player.getEquipment().getWeaponId(), combatStyle);

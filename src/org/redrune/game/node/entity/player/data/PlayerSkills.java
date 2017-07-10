@@ -346,4 +346,50 @@ public class PlayerSkills implements SkillConstants {
 		}
 	}
 	
+	/**
+	 * Restores all skills
+	 */
+	public void restoreAll() {
+		for (int skill = 0; skill < level.length; skill++) {
+			restoreSkill(skill);
+			updateSkill(skill);
+		}
+	}
+	
+	/**
+	 * Restores a skill to its original state
+	 *
+	 * @param skill
+	 * 		The skill
+	 */
+	private void restoreSkill(int skill) {
+		if (skill == HITPOINTS) {
+			player.heal(getLevelForXp(skill) * 10);
+		} else if (skill == PRAYER) {
+			player.getManager().getPrayers().restorePrayer(getLevelForXp(skill) * 10);
+		} else {
+			level[skill] = (short) getLevelForXp(skill);
+		}
+	}
+	
+	/**
+	 * Drains a level
+	 *
+	 * @param skill
+	 * 		The skill
+	 * @param drain
+	 * 		The amount to drain
+	 */
+	public int drainLevel(int skill, int drain) {
+		int drainLeft = drain - level[skill];
+		if (drainLeft < 0) {
+			drainLeft = 0;
+		}
+		level[skill] -= drain;
+		if (level[skill] < 0) {
+			level[skill] = 0;
+		}
+		updateSkill(skill);
+		return drainLeft;
+	}
 }

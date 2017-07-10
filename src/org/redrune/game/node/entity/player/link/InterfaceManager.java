@@ -5,7 +5,9 @@ import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.GameTab;
+import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 import org.redrune.utility.rs.input.InputType;
 
@@ -50,6 +52,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			player.getTransmitter().sendFullScreenAMasks();
 		}
 		EmoteManager.sendUnlockConfigs(player);
+		sendGameBar();
 		player.getManager().getContacts().sendLogin();
 		player.getCombatDefinitions().sendLogin();
 		player.getManager().getPrayers().sendLoginConfigurations();
@@ -490,5 +493,77 @@ public final class InterfaceManager implements InterfaceConstants {
 	 */
 	private static int getInventoryComponentId(boolean fixedMode) {
 		return fixedMode ? INVENTORY_FIXED_CHILD_ID : INVENTORY_RESIZABLE_CHILD_ID;
+	}
+	
+	/**
+	 * Sends the game bar settings
+	 */
+	public void sendGameBar() {
+		Object filterData = player.getVariables().getAttribute(AttributeKey.FILTER, GameBarStatus.NO_FILTER);
+		Object publicData = player.getVariables().getAttribute(AttributeKey.PUBLIC, GameBarStatus.ON);
+		Object privateData = player.getVariables().getAttribute(AttributeKey.PRIVATE, GameBarStatus.ON);
+		Object friendsData = player.getVariables().getAttribute(AttributeKey.FRIENDS, GameBarStatus.ON);
+		Object clanData = player.getVariables().getAttribute(AttributeKey.CLAN, GameBarStatus.ON);
+		Object tradeData = player.getVariables().getAttribute(AttributeKey.TRADE, GameBarStatus.ON);
+		Object assistData = player.getVariables().getAttribute(AttributeKey.ASSIST, GameBarStatus.ON);
+		GameBarStatus filter = GameBarStatus.NO_FILTER;
+		if (filterData != null) {
+			if (filterData.getClass().equals(String.class)) {
+				filter = GameBarStatus.valueOf(filterData.toString());
+			} else {
+				filter = (GameBarStatus) filterData;
+			}
+		}
+		GameBarStatus publicStatus = GameBarStatus.ON;
+		if (publicData != null) {
+			if (publicData.getClass().equals(String.class)) {
+				publicStatus = GameBarStatus.valueOf(publicData.toString());
+			} else {
+				publicStatus = (GameBarStatus) publicData;
+			}
+		}
+		GameBarStatus privateStatus = GameBarStatus.ON;
+		if (privateData != null) {
+			if (privateData.getClass().equals(String.class)) {
+				privateStatus = GameBarStatus.valueOf(privateData.toString());
+			} else {
+				privateStatus = (GameBarStatus) privateData;
+			}
+		}
+		GameBarStatus friends = GameBarStatus.ON;
+		if (friendsData != null) {
+			if (friendsData.getClass().equals(String.class)) {
+				friends = GameBarStatus.valueOf(friendsData.toString());
+			} else {
+				friends = (GameBarStatus) friendsData;
+			}
+		}
+		GameBarStatus clan = GameBarStatus.ON;
+		if (clanData != null) {
+			if (clanData.getClass().equals(String.class)) {
+				clan = GameBarStatus.valueOf(clanData.toString());
+			} else {
+				clan = (GameBarStatus) clanData;
+			}
+		}
+		GameBarStatus trade = GameBarStatus.ON;
+		if (tradeData != null) {
+			if (tradeData.getClass().equals(String.class)) {
+				trade = GameBarStatus.valueOf(tradeData.toString());
+			} else {
+				trade = (GameBarStatus) tradeData;
+			}
+		}
+		GameBarStatus assist = GameBarStatus.ON;
+		if (assistData != null) {
+			if (assistData.getClass().equals(String.class)) {
+				assist = GameBarStatus.valueOf(assistData.toString());
+			} else {
+				assist = (GameBarStatus) assistData;
+			}
+		}
+		player.getTransmitter().sendGameStatuses(filter, clan, assist, friends);
+		player.getTransmitter().send(new PrivateStatusBuilder(privateStatus).build(player));
+		player.getTransmitter().send(new GameStatusBuilder(publicStatus, trade).build(player));
 	}
 }

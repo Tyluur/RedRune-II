@@ -70,7 +70,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 				}
 				break;
 			case LOGOUT_INTERFACE_ID:
-				player.logout(componentId == 6);
+				player.getTransmitter().sendLogout(componentId == 6);
 				return true;
 			case OPTIONS_INTERFACE_ID:
 				switch (componentId) {
@@ -111,6 +111,33 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 						updateGameBar(player, AttributeKey.FILTER, GameBarStatus.FILTER);
 						return true;
 					}
+				} else if (componentId == 28) {
+					// public
+					if (packetId == SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PUBLIC, GameBarStatus.ON);
+						return true;
+					} else if (packetId == THIRD_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PUBLIC, GameBarStatus.FRIENDS);
+						return true;
+					} else if (packetId == LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PUBLIC, GameBarStatus.OFF);
+						return true;
+					} else if (packetId == FIFTH_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PUBLIC, GameBarStatus.HIDE);
+						return true;
+					}
+				} else if (componentId == 25) {
+					 // private
+					if (packetId == SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PRIVATE, GameBarStatus.ON);
+						return true;
+					} else if (packetId == THIRD_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PRIVATE, GameBarStatus.FRIENDS);
+						return true;
+					} else if (packetId == LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.PRIVATE, GameBarStatus.OFF);
+						return true;
+					}
 				} else if (componentId == 8) {
 					// friends
 					if (packetId == SECOND_PACKET_ID) {
@@ -135,7 +162,19 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 						updateGameBar(player, AttributeKey.CLAN, GameBarStatus.OFF);
 						return true;
 					}
-				} else if (componentId == 16) {
+				} else if (componentId == 19) {
+					if (packetId == SECOND_PACKET_ID) {
+						updateGameBar(player, AttributeKey.TRADE, GameBarStatus.ON);
+						return true;
+					} else if (packetId == THIRD_PACKET_ID) {
+						updateGameBar(player, AttributeKey.TRADE, GameBarStatus.FRIENDS);
+						return true;
+					} else if (packetId == LAST_PACKET_ID) {
+						updateGameBar(player, AttributeKey.TRADE, GameBarStatus.OFF);
+						return true;
+					}
+					// trade
+				}  else if (componentId == 16) {
 					// assist
 					if (packetId == SECOND_PACKET_ID) {
 						updateGameBar(player, AttributeKey.ASSIST, GameBarStatus.ON);
@@ -165,6 +204,6 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 	 */
 	private void updateGameBar(Player player, AttributeKey bar, GameBarStatus status) {
 		player.getVariables().putAttribute(bar, status);
-		//TODO: player.getManager().getInterfaces().sendGameBar();
+		player.getManager().getInterfaces().sendGameBar();
 	}
 }

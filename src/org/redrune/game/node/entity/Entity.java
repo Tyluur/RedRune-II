@@ -27,6 +27,11 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class Entity extends Node implements EntityDetails {
 	
+	@Override
+	public void tick() {
+		checkDeathEvent();
+	}
+	
 	/**
 	 * The combat definitions of the entity. These are saved
 	 */
@@ -194,6 +199,19 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Puts the key into the attributes map
+	 *
+	 * @param key
+	 * 		The key
+	 * @param value
+	 * 		The value
+	 */
+	public <T> T putAttribute(Object key, T value) {
+		attributes.put(key, value);
+		return value;
+	}
+	
+	/**
 	 * Turns this entity to the locked on entity.
 	 *
 	 * @param lockon
@@ -216,19 +234,6 @@ public abstract class Entity extends Node implements EntityDetails {
 			return index + 0x8000;
 		}
 		return index;
-	}
-	
-	/**
-	 * Puts the key into the attributes map
-	 *
-	 * @param key
-	 * 		The key
-	 * @param value
-	 * 		The value
-	 */
-	public <T> T putAttribute(Object key, T value) {
-		attributes.put(key, value);
-		return value;
 	}
 	
 	/**
@@ -319,11 +324,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * If we are dead
 	 */
 	public boolean isDead() {
-		if (isPlayer()) {
-			return toPlayer().getHealthPoints() <= 0;
-		} else {
-			return isNPC() && toNPC().getHealthPoints() <= 0;
-		}
+		return getHealthPoints() <= 0;
 	}
 	
 	/**
@@ -455,5 +456,48 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public int getHealthPoints() {
 		return (isPlayer() ? toPlayer().getHealthPoints() : toNPC().getHealthPoints());
+	}
+	
+	/**
+	 * Checks to see if we're dead (lifepoints <=0 ), and if we are, and we haven't yet started the death event, we
+	 * start it.
+	 */
+	protected void checkDeathEvent() {
+		// if we arent dead
+		if (!isDead()) {
+			return;
+		}
+		// avoid duplicates of this method being fired
+		if (getAttribute("dying", false)) {
+			return;
+		}
+		// flag the death
+		putAttribute("dying", true);
+		// send the death
+		fireDeathEvent();
+	}
+	
+	/**
+	 * Healths the amount
+	 *
+	 * @param amount
+	 * 		The amount
+	 */
+	public void heal(int amount) {
+		heal(amount, 0);
+	}
+	
+	/**
+	 * Heals an amount
+	 *
+	 * @param amount
+	 * 		The amount
+	 * @param boost
+	 * 		The boost health amount
+	 */
+	public void heal(int amount, int boost) {
+		final int adjusted = getHealthPoints() + amount;
+		final int boostAdjust = getMaxHealth() + boost;
+		setHealthPoints(adjusted >= boostAdjust ? boostAdjust : adjusted);
 	}
 }
