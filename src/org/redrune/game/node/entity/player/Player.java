@@ -293,6 +293,7 @@ public final class Player extends Entity {
 	 * Sends the settings to the client
 	 */
 	public void sendSettings() {
+		checkMultiArea();
 		transmitter.send(new ConfigFilePacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));
 		transmitter.send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
 		transmitter.send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
@@ -440,6 +441,12 @@ public final class Player extends Entity {
 		
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		manager.getLocks().unlockAll();
+	}
+	
+	@Override
+	public void checkMultiArea() {
+		super.checkMultiArea();
+		transmitter.send(new CS2ConfigBuilder(616, isAtMultiArea() ? 1 : 0).build(this));
 	}
 	
 	/**

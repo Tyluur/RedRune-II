@@ -6,7 +6,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.jboss.netty.channel.Channel;
 import org.redrune.cache.Cache;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.region.Region;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -733,6 +736,30 @@ public class Misc {
 		long freeMemory = runtime.freeMemory();
 		long usedMemory = (totalMemory - freeMemory);
 		return "Total Used JVM Allocated Memory: " + memoryFormat.format(usedMemory / (1024L * 1024L)) + "/" + memoryFormat.format(totalMemory / (1024L * 1024L)) + " MB, " + decimalFormat.format((double) usedMemory / (double) totalMemory) + " - Free JVM Allocated Memory: " + memoryFormat.format(freeMemory / (1024L * 1024L)) + " MB, " + decimalFormat.format((double) freeMemory / (double) totalMemory);
+	}
+	
+	/**
+	 * Finds an npc by the name, in a region
+	 *
+	 * @param region
+	 * 		The region the npc is in
+	 * @param name
+	 * 		The name
+	 * @param defaultId
+	 * 		The default id if we couldn't find it
+	 * @param closestTo
+	 * 		The closest tile to the npc we know of.
+	 */
+	public static int findNPCByName(Region region, String name, int defaultId, Location closestTo) {
+		if (closestTo == null) {
+			Optional<NPC> optional = region.getNpcs().stream().filter(npc -> npc.getDefinitions().getName().equalsIgnoreCase(name)).findFirst();
+			return optional.map(NPC::getId).orElse(defaultId);
+		} else {
+			List<NPC> npcs = new ArrayList<>(region.getNpcs());
+			npcs.sort(Comparator.comparingInt(o -> o.getLocation().getDistance(closestTo)));
+			Optional<NPC> optional = npcs.stream().filter(npc -> npc.getDefinitions().getName().equalsIgnoreCase(name)).findFirst();
+			return optional.map(NPC::getId).orElse(defaultId);
+		}
 	}
 	
 }

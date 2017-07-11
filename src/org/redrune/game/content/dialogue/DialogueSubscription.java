@@ -14,8 +14,13 @@ import java.lang.annotation.Target;
 public @interface DialogueSubscription {
 	
 	/**
-	 * The names that this dialogue subscribes to
+	 * The names of npcs that this dialogue subscribes to
 	 */
-	String[] names() default "";
+	String[] npcNames() default "";
+	
+	/**
+	 * The names of objects that this dialgoue subscribes to
+	 */
+	String[] objectNames() default "";
 	
 }

@@ -24,3 +24,4 @@
 	-   Statius warhammer
 	-   Vesta spear
 	-   Barrelchest anchor
++	Granite maul shouldnt use spec if targ is alrd dead.

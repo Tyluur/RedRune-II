@@ -51,12 +51,11 @@ public class RegionManager {
 	
 	/**
 	 * When an entity enters a new region, we must add them to the new region, remove them from the previous one as
-	 * well.
+	 * well. This method is also fired when the entity moves.
 	 *
 	 * @param entity
 	 * 		The entity.
 	 */
-	// TODO: multi-zone support
 	// TODO: region-music support
 	public static void updateEntityRegion(Entity entity) {
 		if (!entity.isRenderable()) {
@@ -75,6 +74,7 @@ public class RegionManager {
 			region.addEntity(entity);
 			entity.setLastRegion(entity.getRegion());
 		}
+		entity.checkMultiArea();
 		// we update the location to the activities
 		if (entity.isPlayer()) {
 			ActivitySystem.fireLocationUpdate(entity.toPlayer());

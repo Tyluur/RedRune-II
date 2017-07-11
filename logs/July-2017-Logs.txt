@@ -1,3 +1,10 @@
+7/10/17 {
+	+   Added multi zone area listeners + flag setting when we walk in and out of a multi zone
+	+   Added object names to dialogue subscriptions [dialogues with subscriptions mapped will be fired when the interaction starts]
+
+	[IMG]http://i.imgur.com/urngRNf.png[/IMG]
+}
+
 7/9/17 {
 	+   Added general game bar toggling + saving
 	+   Identified client packet for private game bar changing

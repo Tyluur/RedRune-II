@@ -2,6 +2,7 @@ package org.redrune.game.content.dialogue;
 
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.tool.Misc;
 
 import java.util.HashMap;
@@ -22,7 +23,12 @@ public class DialogueRepository {
 	/**
 	 * The map of dialogues with a {@link DialogueSubscription} subscription
 	 */
-	private static Map<String, Dialogue> SUBSCRIPTION_DIALOGUES = new HashMap<>();
+	private static Map<String, Dialogue> NPC_SUBSCRIPTION_DIALOGUES = new HashMap<>();
+	
+	/**
+	 * The map of dialogues with a {@link DialogueSubscription} subscription
+	 */
+	private static Map<String, Dialogue> OBJECT_SUBSCRIPTION_DIALOGUES = new HashMap<>();
 	
 	/**
 	 * Loads all the subscriptions
@@ -33,7 +39,7 @@ public class DialogueRepository {
 			DialogueSubscription subscription = dialogue.getClass().getAnnotation(DialogueSubscription.class);
 			addEntry(dialogue, subscription);
 		});
-		LOGGER.info("Loaded " + SUBSCRIPTION_DIALOGUES.size() + " dialogues with subscriptions.");
+		LOGGER.info("Loaded " + NPC_SUBSCRIPTION_DIALOGUES.size() + "/" + OBJECT_SUBSCRIPTION_DIALOGUES.size() + " dialogues with npc/object subscriptions.");
 	}
 	
 	/**
@@ -45,12 +51,19 @@ public class DialogueRepository {
 	 * 		The subscription
 	 */
 	private static void addEntry(Dialogue dialogue, DialogueSubscription subscription) {
-		for (String name : subscription.names()) {
-			if (SUBSCRIPTION_DIALOGUES.containsKey(name)) {
+		for (String name : subscription.npcNames()) {
+			if (NPC_SUBSCRIPTION_DIALOGUES.containsKey(name)) {
 				LOGGER.info("Unable to register dialogue with subscription: " + dialogue.getClass().getSimpleName() + "[" + subscription + "]");
 				return;
 			}
-			SUBSCRIPTION_DIALOGUES.put(name, dialogue);
+			NPC_SUBSCRIPTION_DIALOGUES.put(name, dialogue);
+		}
+		for (String name : subscription.objectNames()) {
+			if (OBJECT_SUBSCRIPTION_DIALOGUES.containsKey(name)) {
+				LOGGER.info("Unable to register dialogue with subscription: " + dialogue.getClass().getSimpleName() + "[" + subscription + "]");
+				return;
+			}
+			OBJECT_SUBSCRIPTION_DIALOGUES.put(name, dialogue);
 		}
 	}
 	
@@ -63,12 +76,33 @@ public class DialogueRepository {
 	 * 		The npc
 	 */
 	public static boolean handleNPC(Player player, NPC npc) {
-		Dialogue dialogue = SUBSCRIPTION_DIALOGUES.get(npc.getDefinitions().getName());
+		Dialogue dialogue = NPC_SUBSCRIPTION_DIALOGUES.get(npc.getDefinitions().getName());
 		if (dialogue == null) {
 			return false;
 		}
 		try {
 			player.getManager().getDialogues().startDialogue(dialogue.getClass().newInstance(), npc.getId());
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	/**
+	 * Handles the interaction with the object for a dialogue
+	 *
+	 * @param player
+	 * 		The player
+	 * @param object
+	 * 		The object
+	 */
+	public static boolean handleObject(Player player, GameObject object) {
+		Dialogue dialogue = OBJECT_SUBSCRIPTION_DIALOGUES.get(object.getDefinitions().getName());
+		if (dialogue == null) {
+			return false;
+		}
+		try {
+			player.getManager().getDialogues().startDialogue(dialogue.getClass().newInstance());
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}

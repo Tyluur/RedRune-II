@@ -103,6 +103,13 @@ public abstract class Entity extends Node implements EntityDetails {
 	private transient boolean isAtDynamicRegion;
 	
 	/**
+	 * If we're at a multi area
+	 */
+	@Getter
+	@Setter
+	private boolean atMultiArea;
+	
+	/**
 	 * Constructs a new {@code Entity}
 	 *
 	 * @param location
@@ -214,14 +221,12 @@ public abstract class Entity extends Node implements EntityDetails {
 	/**
 	 * Turns this entity to the locked on entity.
 	 *
-	 * @param lockon
+	 * @param entity
 	 * 		The locked on entity.
-	 * @return {@code True}.
 	 */
-	public boolean turnTo(Entity lockon) {
-		int index = lockon == null ? -1 : lockon.getClientIndex();
+	public void turnTo(Entity entity) {
+		int index = entity == null ? -1 : entity.getClientIndex();
 		updateMasks.register(new FaceEntityUpdate(index, isNPC()));
-		return true;
 	}
 	
 	/**
@@ -499,5 +504,23 @@ public abstract class Entity extends Node implements EntityDetails {
 		final int adjusted = getHealthPoints() + amount;
 		final int boostAdjust = getMaxHealth() + boost;
 		setHealthPoints(adjusted >= boostAdjust ? boostAdjust : adjusted);
+	}
+	
+	/**
+	 * Checks if we're at a multi area
+	 */
+	public void checkMultiArea() {
+		atMultiArea = getAttribute(AttributeKey.FORCE_MULTI_AREA, false) || getLocation().isMultiArea();
+	}
+	
+	/**
+	 * Forces the entity to be in a multi area
+	 *
+	 * @param forced
+	 * 		If it should be forced
+	 */
+	public void setMultiAreaForce(boolean forced) {
+		putAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD, forced);
+		checkMultiArea();
 	}
 }

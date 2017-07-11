@@ -2,6 +2,7 @@ package org.redrune.game.content.dialogue;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.content.dialogue.messages.*;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.DialogueConstants;
 
@@ -120,4 +121,69 @@ public abstract class Dialogue implements DialogueConstants {
 	public int getLastStage() {
 		return messageMap.size();
 	}
+	
+	/**
+	 * Executes a player dialogue
+	 *
+	 * @param animation
+	 * 		The animation to use
+	 * @param messages
+	 * 		The messages to send
+	 */
+	protected void player(int animation, String... messages) {
+		construct(new PlayerDialogueMessage(animation, messages));
+	}
+	
+	/**
+	 * Executes an npc dialogue
+	 *
+	 * @param npcId
+	 * 		The id of the npc
+	 * @param animation
+	 * 		The animation of the npc
+	 * @param messages
+	 * 		The messages of the npc
+	 */
+	protected void npc(int npcId, int animation, String... messages) {
+		construct(new NPCDialogueMessage(npcId, animation, messages));
+	}
+	
+	/**
+	 * Executes an options dialogue
+	 *
+	 * @param title
+	 * 		The title of the dialgoue
+	 * @param messages
+	 * 		The messages of the dialogue
+	 * @param tasks
+	 * 		The tasks to execute when we click successfully
+	 */
+	protected void options(String title, String[] messages, Runnable... tasks) {
+		construct(new OptionDialogueMessage(title, messages, tasks));
+	}
+	
+	/**
+	 * Executes a chatbox dialogue
+	 *
+	 * @param messages
+	 * 		The messages on the dialogue
+	 */
+	protected void chatbox(String... messages) {
+		construct(new ChatDialogueMessage(messages));
+	}
+	
+	/**
+	 * Executes an item dialogue
+	 *
+	 * @param itemId
+	 * 		The id of the item
+	 * @param itemAmount
+	 * 		The amount of the item
+	 * @param messages
+	 * 		The messages to send
+	 */
+	protected void item(int itemId, int itemAmount, String... messages) {
+		construct(new ItemDialogueMessage(itemId, itemAmount, messages));
+	}
 }
+

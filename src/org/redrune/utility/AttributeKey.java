@@ -51,6 +51,8 @@ public enum AttributeKey {
 	
 	ACCEPTING_AID,
 	
+	FORCE_MULTI_AREA,
+	
 	LAST_LONGIN_STAMP,
 	
 	// game bar status
@@ -61,5 +63,5 @@ public enum AttributeKey {
 	FRIENDS,
 	CLAN,
 	TRADE,
-	ASSIST,
+	ASSIST;
 }
