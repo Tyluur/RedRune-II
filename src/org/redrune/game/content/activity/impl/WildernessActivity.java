@@ -1,9 +1,9 @@
 package org.redrune.game.content.activity.impl;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.activity.Activity;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.repository.item.ItemRepository;

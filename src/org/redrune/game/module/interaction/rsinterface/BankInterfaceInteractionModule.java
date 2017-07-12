@@ -1,14 +1,12 @@
 package org.redrune.game.module.interaction.rsinterface;
 
-import org.redrune.game.module.type.InterfaceInteractionModule;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.event.impl.item.ItemEvent;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.rs.input.InputResponse;
 import org.redrune.utility.rs.input.InputType;
-
-import static org.redrune.network.NetworkConstants.*;
+import org.redrune.game.module.type.InterfaceInteractionModule;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -26,32 +24,32 @@ public class BankInterfaceInteractionModule implements InterfaceInteractionModul
 		if (interfaceId == 762) { // bank
 			if (componentId == 93) {
 				switch (packetId) {
-					case FIRST_PACKET_ID:
+					case NetworkConstants.FIRST_PACKET_ID:
 						player.getBank().withdrawItem(slotId, 1);
 						return true;
-					case SECOND_PACKET_ID:
+					case NetworkConstants.SECOND_PACKET_ID:
 						player.getBank().withdrawItem(slotId, 5);
 						return true;
-					case THIRD_PACKET_ID:
+					case NetworkConstants.THIRD_PACKET_ID:
 						player.getBank().withdrawItem(slotId, 10);
 						return true;
-					case LAST_PACKET_ID:
+					case NetworkConstants.LAST_PACKET_ID:
 						player.getBank().withdrawItem(slotId, player.getBank().getDetails().getLastX());
 						return true;
-					case FIFTH_PACKET_ID:
+					case NetworkConstants.FIFTH_PACKET_ID:
 						player.getTransmitter().requestInput(input -> {
 							player.getBank().withdrawItem(slotId, InputResponse.getInput(input));
 							player.getBank().getDetails().setLastX(InputResponse.getInput(input));
 							player.getBank().refreshLastX();
 						}, InputType.INTEGER, "Enter amount:");
 						return true;
-					case SIXTH_PACKET_ID:
+					case NetworkConstants.SIXTH_PACKET_ID:
 						player.getBank().withdrawItem(slotId, Integer.MAX_VALUE);
 						return true;
-					case FOURTH_PACKET_ID:
+					case NetworkConstants.FOURTH_PACKET_ID:
 						player.getBank().withdrawItemButOne(slotId);
 						return true;
-					case EXAMINE_PACKET_ID:
+					case NetworkConstants.EXAMINE_PACKET_ID:
 						Item item = player.getBank().getItemInSlot(slotId);
 						if (item == null) {
 							return true;
@@ -88,29 +86,29 @@ public class BankInterfaceInteractionModule implements InterfaceInteractionModul
 			}
 		} else if (interfaceId == 763) { // bank inventory
 			switch (packetId) {
-				case FIRST_PACKET_ID:
+				case NetworkConstants.FIRST_PACKET_ID:
 					player.getBank().depositItem(slotId, 1, true);
 					return true;
-				case SECOND_PACKET_ID:
+				case NetworkConstants.SECOND_PACKET_ID:
 					player.getBank().depositItem(slotId, 5, true);
 					return true;
-				case THIRD_PACKET_ID:
+				case NetworkConstants.THIRD_PACKET_ID:
 					player.getBank().depositItem(slotId, 10, true);
 					return true;
-				case LAST_PACKET_ID:
+				case NetworkConstants.LAST_PACKET_ID:
 					player.getBank().depositItem(slotId, player.getBank().getDetails().getLastX(), true);
 					return true;
-				case FIFTH_PACKET_ID:
+				case NetworkConstants.FIFTH_PACKET_ID:
 					player.getTransmitter().requestInput(input -> {
 						player.getBank().depositItem(slotId, InputResponse.getInput(input), true);
 						player.getBank().getDetails().setLastX(InputResponse.getInput(input));
 						player.getBank().refreshLastX();
 					}, InputType.INTEGER, "Enter amount:");
 					return true;
-				case SIXTH_PACKET_ID:
+				case NetworkConstants.SIXTH_PACKET_ID:
 					player.getBank().depositItem(slotId, Integer.MAX_VALUE, true);
 					return true;
-				case EXAMINE_PACKET_ID:
+				case NetworkConstants.EXAMINE_PACKET_ID:
 					Item item = player.getInventory().getItems().get(slotId);
 					if (item == null) {
 						return true;

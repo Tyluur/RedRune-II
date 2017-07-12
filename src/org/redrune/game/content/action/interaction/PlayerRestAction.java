@@ -1,6 +1,7 @@
 package org.redrune.game.content.action.interaction;
 
 import org.redrune.game.content.action.Action;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.tool.Misc;
 
@@ -16,7 +17,7 @@ public class PlayerRestAction implements Action {
 	private static int[][] REST_DEFS = { { 5713, 1549, 5748 }, { 11786, 1550, 11788 }, { 5713, 1551, 2921 } };
 	
 	// TODO handle facing a musician and resting
-	private org.redrune.game.node.entity.Entity faceNode = null;
+	private Entity faceNode = null;
 	
 	/**
 	 * The index that the animation is based on, called into the {@link #REST_DEFS} array.

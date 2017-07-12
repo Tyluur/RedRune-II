@@ -1,14 +1,14 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
+import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.action.interaction.PlayerFollowAction;
-import org.redrune.game.content.combat.PlayerCombatAction;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
-import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
+import org.redrune.game.world.World;
 import org.redrune.utility.rs.InteractionOption;
 
 /**

@@ -2,12 +2,12 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.GameConstants;
-import org.redrune.game.content.skills.LevelUp;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.SkillPacketBuilder;
+import org.redrune.game.GameConstants;
+import org.redrune.game.content.skills.LevelUp;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.Map;

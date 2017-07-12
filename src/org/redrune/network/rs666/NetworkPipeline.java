@@ -1,10 +1,10 @@
 package org.redrune.network.rs666;
 
+import org.redrune.network.rs666.codec.handshake.HandshakeDecoder;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.DefaultChannelPipeline;
 import org.redrune.network.rs666.codec.RS2GameEncoder;
-import org.redrune.network.rs666.codec.handshake.HandshakeDecoder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -1,8 +1,7 @@
 package org.redrune.game.module.interaction.rsinterface;
 
-import org.redrune.game.module.type.InterfaceInteractionModule;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.event.impl.item.ItemEvent;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.NetworkConstants;
@@ -11,8 +10,8 @@ import org.redrune.network.rs666.packet.outgoing.impl.CS2ConfigBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.CS2StringBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.InterfaceChangeBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
-
-import static org.redrune.utility.rs.constant.BonusConstants.*;
+import org.redrune.utility.rs.constant.BonusConstants;
+import org.redrune.game.module.type.InterfaceInteractionModule;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,13 +24,13 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 	 */
 	private static final Object[][] BONUSES_INTERFACE_DATA = new Object[][] {
 			// ATTACK
-			{ 31, STAB_ATTACK, "Stab" }, { 32, SLASH_ATTACK, "Slash" }, { 33, CRUSH_ATTACK, "Crush" }, { 34, MAGIC_ATTACK, "Magic" }, { 35, RANGE_ATTACK, "Range" },
+			{ 31, BonusConstants.STAB_ATTACK, "Stab" }, { 32, BonusConstants.SLASH_ATTACK, "Slash" }, { 33, BonusConstants.CRUSH_ATTACK, "Crush" }, { 34, BonusConstants.MAGIC_ATTACK, "Magic" }, { 35, BonusConstants.RANGE_ATTACK, "Range" },
 			// DEFENCE
-			{ 36, STAB_DEFENCE, "Stab" }, { 37, SLASH_DEFENCE, "Slash" }, { 38, CRUSH_DEFENCE, "Crush" }, { 39, MAGIC_DEFENCE, "Magic" }, { 40, RANGE_DEFENCE, "Range" }, { 41, SUMMONING_DEFENCE, "Summoning" },
+			{ 36, BonusConstants.STAB_DEFENCE, "Stab" }, { 37, BonusConstants.SLASH_DEFENCE, "Slash" }, { 38, BonusConstants.CRUSH_DEFENCE, "Crush" }, { 39, BonusConstants.MAGIC_DEFENCE, "Magic" }, { 40, BonusConstants.RANGE_DEFENCE, "Range" }, { 41, BonusConstants.SUMMONING_DEFENCE, "Summoning" },
 			// ABSORB
-			{ 42, ABSORB_MELEE_BONUS, "Absorb Melee" }, { 43, ABSORB_MAGE_BONUS, "Absorb Magic" }, { 44, ABSORB_RANGE_BONUS, "Absorb Range" },
+			{ 42, BonusConstants.ABSORB_MELEE_BONUS, "Absorb Melee" }, { 43, BonusConstants.ABSORB_MAGE_BONUS, "Absorb Magic" }, { 44, BonusConstants.ABSORB_RANGE_BONUS, "Absorb Range" },
 			// STRENGTHS
-			{ 45, STRENGTH_BONUS, "Strength" }, { 46, RANGED_STRENGTH_BONUS, "Ranged Strength" }, { 47, PRAYER_BONUS, "Prayer" }, { 48, MAGIC_DAMAGE_BONUS, "Magic Damage" } };
+			{ 45, BonusConstants.STRENGTH_BONUS, "Strength" }, { 46, BonusConstants.RANGED_STRENGTH_BONUS, "Ranged Strength" }, { 47, BonusConstants.PRAYER_BONUS, "Prayer" }, { 48, BonusConstants.MAGIC_DAMAGE_BONUS, "Magic Damage" } };
 	
 	/**
 	 * The id of the interface

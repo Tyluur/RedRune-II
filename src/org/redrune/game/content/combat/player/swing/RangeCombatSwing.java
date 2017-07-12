@@ -1,10 +1,12 @@
 package org.redrune.game.content.combat.player.swing;
 
-import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.combat.player.CombatTypeSwing;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
+import org.redrune.utility.tool.Misc;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
-import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.content.combat.player.calc.RangeCombatCalculator;
 import org.redrune.game.content.combat.player.registry.BowFireEvent;
 import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
@@ -14,13 +16,11 @@ import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitAttributes;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
-import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 
@@ -107,7 +107,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public void appendExperience(Player player, org.redrune.game.node.entity.Entity target, Object... params) {
+	public void appendExperience(Player player, Entity target, Object... params) {
 		int damage = (int) params[0];
 		
 		if (damage > 0) {

@@ -1,16 +1,15 @@
 package org.redrune.network.rs666.codec.handshake;
 
+import org.redrune.network.NetworkConstants;
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.redrune.network.rs666.codec.js5.JS5Decoder;
 import org.redrune.network.rs666.codec.login.RS2LoginDecoder;
-import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.utility.tool.BufferUtils;
 import org.redrune.utility.backend.CreationResponse;
-
-import static org.redrune.network.NetworkConstants.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,21 +24,21 @@ public final class HandshakeDecoder extends FrameDecoder {
 		}
 		int opcode = buffer.readByte() & 0xFF;
 		PacketBuilder response = new PacketBuilder();
-		if (opcode == JS5_REQUEST) {
+		if (opcode == NetworkConstants.JS5_REQUEST) {
 			int version = buffer.readInt();
-			if (version != REVISION) {
+			if (version != NetworkConstants.REVISION) {
 				response.writeByte((byte) 6);
 			} else {
 				response.writeByte((byte) 0);
 				for (int i = 0; i < 27; i++) {
-					response.writeInt(DATA[i]);
+					response.writeInt(NetworkConstants.DATA[i]);
 				}
 				ctx.getPipeline().addBefore("handler", "decoder", new JS5Decoder());
 			}
-		} else if (opcode == LOGIN_REQUEST) {
+		} else if (opcode == NetworkConstants.LOGIN_REQUEST) {
 			ctx.getPipeline().addBefore("handler", "decoder", new RS2LoginDecoder());
 			response.writeByte((byte) 0);
-		} else if (opcode == EMAIL_VERIFICATION) {
+		} else if (opcode == NetworkConstants.EMAIL_VERIFICATION) {
 			System.out.println("Received opcode " + opcode);
 			
 			int idk1 = buffer.readShort();
@@ -50,7 +49,7 @@ public final class HandshakeDecoder extends FrameDecoder {
 			
 			System.out.println(idk1 + ", " + revision + ", " + email + ", " + language);
 			response.writeByte(2);
-		} else if (opcode == CREATE_ACCOUNT) {
+		} else if (opcode == NetworkConstants.CREATE_ACCOUNT) {
 			System.out.println("Received opcode " + opcode + ", readableBytes=[ " + buffer.readableBytes() + "]");
 			
 			int idk1 = buffer.readShort();

@@ -3,9 +3,9 @@ package org.redrune.game.node.item;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.game.node.Node;
 import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.Node;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

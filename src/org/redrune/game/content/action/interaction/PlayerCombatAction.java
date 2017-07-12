@@ -1,14 +1,15 @@
-package org.redrune.game.content.combat;
+package org.redrune.game.content.action.interaction;
 
 import lombok.Getter;
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.content.action.Action;
+import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatType;
 import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.InteractionOption;
-import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 
@@ -77,7 +78,7 @@ public final class PlayerCombatAction implements Action {
 		// the id of the weapon equipped
 		final int weaponId = player.getEquipment().getWeaponId();
 		// the spell we're casting
-		final int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutocastId()); // get the player's spell id
+		final int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutocastId());
 		// the id of the combat flag [weapon or spell id]
 		final int id = type == CombatType.MAGIC ? spellId : weaponId;
 		// the delay we will have
@@ -126,7 +127,7 @@ public final class PlayerCombatAction implements Action {
 	
 	@Override
 	public void stop(Player player) {
-		// otherwise we dont face when casting magic
+		// otherwise we don't face when casting magic
 		if (type != null && type != CombatType.MAGIC) {
 			player.turnTo(null);
 		}
@@ -185,6 +186,7 @@ public final class PlayerCombatAction implements Action {
 		if (!player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {
 			return false;
 		}
+		// anything else ?
 		return true;
 	}
 	

@@ -1,8 +1,8 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 
 /**
  * Represents a face entity update flag.

@@ -2,10 +2,10 @@ package org.redrune.cache.parse;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.utility.tool.Misc;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.parse.definition.BodyData;
 import org.redrune.cache.stream.RSInputStream;
-import org.redrune.utility.tool.Misc;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

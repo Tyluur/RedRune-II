@@ -1,11 +1,11 @@
 package org.redrune.game.module.command.player;
 
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerRight;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 
 import java.util.*;

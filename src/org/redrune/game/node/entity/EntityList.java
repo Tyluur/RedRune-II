@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class EntityList<T extends org.redrune.game.node.entity.Entity> implements Iterable<T> {
+public class EntityList<T extends Entity> implements Iterable<T> {
 	
 	/**
 	 * The array of entities

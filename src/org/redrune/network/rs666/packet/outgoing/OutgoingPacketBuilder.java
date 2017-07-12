@@ -1,8 +1,8 @@
 package org.redrune.network.rs666.packet.outgoing;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.rs666.packet.Packet;
 
 /**
  * The structure of an outgoing packet.

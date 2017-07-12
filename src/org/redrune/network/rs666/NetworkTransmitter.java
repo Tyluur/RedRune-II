@@ -1,14 +1,15 @@
 package org.redrune.network.rs666;
 
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
+import master.server.network.rs666.packet.outgoing.impl.*;
 import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 import org.redrune.utility.rs.input.InputResponse;
 import org.redrune.utility.rs.input.InputType;
+import org.redrune.core.system.SystemManager;
+import org.redrune.network.rs666.packet.outgoing.impl.*;
 
 /**
  * This class handles the transmission of all important packets directly to the client.

@@ -36,7 +36,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 			styleBonus = 3;
 		}
 		double effective = Math.floor(((level * prayer) * additional) + styleBonus + weaponBonus);
-		int bonus = player.getEquipment().getBonus(RANGE_ATTACK);
+		int bonus = player.getEquipment().getBonus(BonusConstants.RANGE_ATTACK);
 		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
 	}
 	
@@ -63,7 +63,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 		final int attackStyle = (int) params[1];
 		final double multiplier = (double) params[2];
 		final boolean voidEquipped = StaticCombatFormulae.fullVoidEquipped(player, 11664, 11675);
-		final boolean pernixEquipped = StaticCombatFormulae.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS }, "pernix", "pernix", "pernix");
+		final boolean pernixEquipped = StaticCombatFormulae.armourSetEquipped(player, new int[] { EquipConstants.SLOT_HAT, EquipConstants.SLOT_CHEST, EquipConstants.SLOT_LEGS }, "pernix", "pernix", "pernix");
 		
 		int level = player.getSkills().getLevel(RANGE);
 		int bonus = player.getEquipment().getBonus(BonusConstants.RANGED_STRENGTH_BONUS);

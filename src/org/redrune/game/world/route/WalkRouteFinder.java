@@ -1,8 +1,8 @@
 package org.redrune.game.world.route;
 
 import org.redrune.game.world.region.Region;
-import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.region.RegionMap;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.constant.RegionConstants;
 
 /**

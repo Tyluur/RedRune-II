@@ -1,9 +1,9 @@
 package org.redrune.game.module.command.owner;
 
-import org.redrune.game.module.command.CommandManifest;
-import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.tool.Misc;
+import org.redrune.game.module.command.CommandManifest;
+import org.redrune.game.module.command.CommandModule;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

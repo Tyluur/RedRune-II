@@ -1,11 +1,11 @@
 package org.redrune.game.content.combat.player.registry.spell;
 
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.registry.MagicSpellContext;
 import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
+import org.redrune.game.content.combat.player.registry.MagicSpellContext;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

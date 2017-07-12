@@ -31,7 +31,7 @@ public abstract class CombatTypeSwing {
 	 * @param special
 	 * 		The special attack
 	 */
-	public abstract boolean run(Player player, org.redrune.game.node.entity.Entity target, int id, int combatStyle, SpecialAttackEvent special);
+	public abstract boolean run(Player player, Entity target, int id, int combatStyle, SpecialAttackEvent special);
 	
 	/**
 	 * Gets the attack bonus
@@ -57,7 +57,7 @@ public abstract class CombatTypeSwing {
 	 * @param combatStyle
 	 * 		The combat style used
 	 */
-	public abstract double getDefenceBonus(org.redrune.game.node.entity.Entity entity, int weaponId, int combatStyle);
+	public abstract double getDefenceBonus(Entity entity, int weaponId, int combatStyle);
 	
 	/**
 	 * Gets the max hit bonus
@@ -243,7 +243,7 @@ public abstract class CombatTypeSwing {
 	 * @param params
 	 * 		The parameters
 	 */
-	public abstract void appendExperience(Player player, org.redrune.game.node.entity.Entity target, Object... params);
+	public abstract void appendExperience(Player player, Entity target, Object... params);
 	
 	/**
 	 * Gets the delay before a projectile can arrive at a target.

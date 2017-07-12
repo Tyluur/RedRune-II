@@ -3,24 +3,24 @@ package org.redrune.game.content.combat;
 import com.google.common.base.Preconditions;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.EngineWorkingSet;
-import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.action.interaction.PlayerCombatAction;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.constant.BonusConstants;
+import org.redrune.utility.tool.Misc;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatType;
 import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
-import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
-
-import static org.redrune.utility.rs.constant.BonusConstants.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -462,92 +462,92 @@ public class StaticCombatFormulae {
 	 */
 	public static int getMeleeBonusStyle(int weaponId, int attackStyle) {
 		if (weaponId == -1) {
-			return CRUSH_ATTACK;
+			return BonusConstants.CRUSH_ATTACK;
 		} else {
 			if (weaponId == -2) {
-				return CRUSH_ATTACK;
+				return BonusConstants.CRUSH_ATTACK;
 			}
 			String weaponName = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
 			if (weaponName.contains("whip")) {
-				return SLASH_ATTACK;
+				return BonusConstants.SLASH_ATTACK;
 			}
 			if (weaponName.contains("staff of light")) {
 				switch (attackStyle) {
 					case 0:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 					case 1:
-						return SLASH_ATTACK;
+						return BonusConstants.SLASH_ATTACK;
 					default:
-						return CRUSH_ATTACK;
+						return BonusConstants.CRUSH_ATTACK;
 				}
 			}
 			if (weaponName.contains("staff") || weaponName.contains("granite mace") || weaponName.contains("warhammer") || weaponName.contains("tzhaar-ket-em") || weaponName.contains("tzhaar-ket-om") || weaponName.contains("maul")) {
-				return CRUSH_ATTACK;
+				return BonusConstants.CRUSH_ATTACK;
 			}
 			if (weaponName.contains("godsword") || weaponName.contains("greataxe") || weaponName.contains("2h sword") || weaponName.equals("saradomin sword")) {
 				switch (attackStyle) {
 					case 2:
-						return CRUSH_ATTACK;
+						return BonusConstants.CRUSH_ATTACK;
 					default:
-						return SLASH_ATTACK;
+						return BonusConstants.SLASH_ATTACK;
 				}
 			}
 			if (weaponName.contains("scimitar") || weaponName.contains("hatchet") || weaponName.contains("claws") || weaponName.contains(" sword") || weaponName.contains("longsword")) {
 				switch (attackStyle) {
 					case 2:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 					default:
-						return SLASH_ATTACK;
+						return BonusConstants.SLASH_ATTACK;
 				}
 			}
 			if (weaponName.contains("mace") || weaponName.contains("anchor")) {
 				switch (attackStyle) {
 					case 2:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 					default:
-						return CRUSH_ATTACK;
+						return BonusConstants.CRUSH_ATTACK;
 				}
 			}
 			if (weaponName.contains("halberd")) {
 				switch (attackStyle) {
 					case 1:
-						return SLASH_ATTACK;
+						return BonusConstants.SLASH_ATTACK;
 					default:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 				}
 			}
 			if (weaponName.contains("spear")) {
 				switch (attackStyle) {
 					case 1:
-						return SLASH_ATTACK;
+						return BonusConstants.SLASH_ATTACK;
 					case 2:
-						return CRUSH_ATTACK;
+						return BonusConstants.CRUSH_ATTACK;
 					default:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 				}
 			}
 			if (weaponName.contains("pickaxe")) {
 				switch (attackStyle) {
 					case 2:
-						return CRUSH_ATTACK;
+						return BonusConstants.CRUSH_ATTACK;
 					default:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 				}
 			}
 			
 			if (weaponName.contains("dagger") || weaponName.contains("rapier")) {
 				switch (attackStyle) {
 					case 2:
-						return SLASH_ATTACK;
+						return BonusConstants.SLASH_ATTACK;
 					default:
-						return STAB_ATTACK;
+						return BonusConstants.STAB_ATTACK;
 				}
 			}
 			
 		}
 		switch (weaponId) {
 			default:
-				return CRUSH_ATTACK;
+				return BonusConstants.CRUSH_ATTACK;
 		}
 	}
 	
@@ -558,7 +558,7 @@ public class StaticCombatFormulae {
 	 * 		The attack bonus id
 	 */
 	public static int getMeleeDefenceBonus(int bonusId) {
-		return bonusId == STAB_ATTACK ? STAB_DEFENCE : bonusId == STAB_DEFENCE ? SLASH_DEFENCE : CRUSH_DEFENCE;
+		return bonusId == BonusConstants.STAB_ATTACK ? BonusConstants.STAB_DEFENCE : bonusId == BonusConstants.STAB_DEFENCE ? BonusConstants.SLASH_DEFENCE : BonusConstants.CRUSH_DEFENCE;
 	}
 	
 	/**
@@ -1102,7 +1102,7 @@ public class StaticCombatFormulae {
 	 * @param type
 	 * 		The type of combat the player is using
 	 */
-	static int getMinimumDistance(Player player, CombatType type) {
+	public static int getMinimumDistance(Player player, CombatType type) {
 		final int weaponId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_WEAPON);
 		final int attackStyle = player.getCombatDefinitions().getAttackStyle();
 		final String name = weaponId == -1 ? "null" : ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
@@ -1144,7 +1144,7 @@ public class StaticCombatFormulae {
 	 * @param target
 	 * 		The target
 	 */
-	public static boolean checkAttackPathAsRange(org.redrune.game.node.entity.Entity target) {
+	public static boolean checkAttackPathAsRange(Entity target) {
 		return false;
 	}
 	
@@ -1427,7 +1427,7 @@ public class StaticCombatFormulae {
 	 * @param target
 	 * 		The target
 	 */
-	public static boolean canFight(Player player, org.redrune.game.node.entity.Entity target) {
+	public static boolean canFight(Player player, Entity target) {
 		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(player)) || (player.isDead() || !player.isRenderable() || !player.attackable(target)) || !player.getLocation().withinDistance(target.getLocation(), 16)) {
 			return false;
 		}

@@ -2,9 +2,10 @@ package org.redrune.game.node.entity.player;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.player.link.*;
+import master.server.game.node.entity.player.link.*;
 import org.redrune.game.node.entity.player.link.chat.ContactManager;
 import org.redrune.game.node.entity.player.link.prayer.PrayerManager;
+import org.redrune.game.node.entity.player.link.*;
 
 import java.util.HashMap;
 

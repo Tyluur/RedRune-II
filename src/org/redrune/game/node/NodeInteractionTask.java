@@ -1,23 +1,22 @@
 package org.redrune.game.node;
 
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.route.RouteStrategy;
+import org.redrune.game.world.route.strategy.ObjectStrategy;
+import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.route.RouteFinder;
-import org.redrune.game.world.route.RouteStrategy;
 import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.game.world.route.strategy.FloorItemStrategy;
-import org.redrune.game.world.route.strategy.ObjectStrategy;
-import org.redrune.utility.rs.constant.Directions.Direction;
-import org.redrune.utility.tool.Misc;
 
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.redrune.utility.rs.constant.Directions.Direction.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -200,7 +199,7 @@ public class NodeInteractionTask {
 	 */
 	private RouteStrategy[] generateStrategies() {
 		if (node.isPlayer() || node.isNPC()) {
-			return new RouteStrategy[] { new EntityStrategy((org.redrune.game.node.entity.Entity) node) };
+			return new RouteStrategy[] { new EntityStrategy((Entity) node) };
 		} else if (node.isGameObject()) {
 			return new RouteStrategy[] { new ObjectStrategy(node.toGameObject()) };
 		} else if (node.isItem()) {
@@ -305,14 +304,14 @@ public class NodeInteractionTask {
 				return true;
 			}
 			// if the wall is ahead or behind us
-			if (direction == NORTH && (rotation == 1 || rotation == 0)) {
+			if (direction == Direction.NORTH && (rotation == 1 || rotation == 0)) {
 				return true;
 			}
 			// if the wall is
-			if (direction == SOUTH && rotation == 3) {
+			if (direction == Direction.SOUTH && rotation == 3) {
 				return true;
 			}
-			if (direction == WEST && rotation == 0) {
+			if (direction == Direction.WEST && rotation == 0) {
 				return true;
 			}
 		}
@@ -323,13 +322,13 @@ public class NodeInteractionTask {
 		int dX = destination.getX(), dY = destination.getY();
 		int mX = player.getLocation().getX(), mY = player.getLocation().getY();
 		if (mX < dX) {
-			return EAST;
+			return Direction.EAST;
 		} else if (mX > dX) {
-			return WEST;
+			return Direction.WEST;
 		} else if (mY > dY) {
-			return SOUTH;
+			return Direction.SOUTH;
 		} else if (mY < dY) {
-			return NORTH;
+			return Direction.NORTH;
 		}
 		return null;
 	}

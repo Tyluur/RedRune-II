@@ -1,9 +1,9 @@
 package org.redrune.game.content.combat.player.calc;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatTypeCalculator;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**

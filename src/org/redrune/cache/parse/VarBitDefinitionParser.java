@@ -1,7 +1,7 @@
 package org.redrune.cache.parse;
 
-import org.redrune.cache.Cache;
 import org.redrune.cache.CacheManager;
+import org.redrune.cache.Cache;
 import org.redrune.cache.parse.definition.VarBitDefinition;
 
 import java.io.IOException;

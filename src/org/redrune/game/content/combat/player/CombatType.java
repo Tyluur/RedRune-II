@@ -2,11 +2,11 @@ package org.redrune.game.content.combat.player;
 
 import lombok.Getter;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.content.combat.player.swing.MagicCombatSwing;
-import org.redrune.game.content.combat.player.swing.MeleeCombatSwing;
 import org.redrune.game.content.combat.player.swing.RangeCombatSwing;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
+import org.redrune.game.content.combat.player.swing.MeleeCombatSwing;
 
 import java.util.Optional;
 

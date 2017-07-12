@@ -1,9 +1,9 @@
 package org.redrune.cache;
 
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.cache.stream.RSByteArrayInputStream;
 import org.redrune.cache.stream.RSInputStream;
 import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.utility.tool.BufferUtils;
 
 import java.io.IOException;

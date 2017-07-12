@@ -1,10 +1,10 @@
 package org.redrune.game.module.interaction.rsinterface;
 
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.packet.outgoing.impl.InterfaceChangeBuilder;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.input.InputType;
 
 /**

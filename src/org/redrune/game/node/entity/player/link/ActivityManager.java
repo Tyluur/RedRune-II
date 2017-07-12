@@ -1,9 +1,9 @@
 package org.redrune.game.node.entity.player.link;
 
-import org.redrune.game.content.activity.Activity;
 import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.content.activity.Activity;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.utility.rs.InteractionOption;
 
 import java.util.Optional;

@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 
 import java.util.Objects;
@@ -26,7 +27,7 @@ public class Hit {
 	 * The entity dealing the damage.
 	 */
 	@Getter
-	private final org.redrune.game.node.entity.Entity source;
+	private final Entity source;
 	
 	/**
 	 * The damage hitsplat.
@@ -60,11 +61,11 @@ public class Hit {
 	@Getter
 	private int delay;
 	
-	public Hit(org.redrune.game.node.entity.Entity source, int damage) {
+	public Hit(Entity source, int damage) {
 		this(source, damage, HitSplat.REGULAR_DAMAGE);
 	}
 	
-	public Hit(org.redrune.game.node.entity.Entity source, int damage, HitSplat splat) {
+	public Hit(Entity source, int damage, HitSplat splat) {
 		this.source = source;
 		this.damage = damage;
 		this.splat = splat;
@@ -85,7 +86,7 @@ public class Hit {
 	 * @param victim
 	 * 		The victim
 	 */
-	public boolean interactingWith(Player player, org.redrune.game.node.entity.Entity victim) {
+	public boolean interactingWith(Player player, Entity victim) {
 		return Objects.equals(player, victim) || Objects.equals(player, source);
 	}
 	

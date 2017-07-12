@@ -1,13 +1,13 @@
 package org.redrune.game.content.event.impl.item;
 
-import org.redrune.game.module.interaction.rsinterface.DestroyItemInteractionModule;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.context.item.ItemEventContext;
-import org.redrune.game.node.item.Item;
-import org.redrune.game.world.region.RegionManager;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.repository.item.ItemRepository;
+import org.redrune.game.module.interaction.rsinterface.DestroyItemInteractionModule;
+import org.redrune.game.content.event.EventPolicy.ActionPolicy;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.world.region.RegionManager;
 
 import java.util.Objects;
 

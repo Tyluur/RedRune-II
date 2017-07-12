@@ -1,16 +1,16 @@
 package org.redrune.network.rs666.packet.outgoing.impl;
 
-import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.region.DynamicRegion;
 import org.redrune.game.world.region.Region;
-import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.Packet.PacketType;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.MapKeyRepository;
+import org.redrune.game.node.Location;
+import org.redrune.game.world.region.DynamicRegion;
+import org.redrune.game.world.region.RegionManager;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -2,8 +2,9 @@ package org.redrune.game.content.dialogue;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.content.dialogue.messages.*;
+import master.server.game.content.dialogue.messages.*;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.content.dialogue.messages.*;
 import org.redrune.utility.rs.constant.DialogueConstants;
 
 import java.util.HashMap;

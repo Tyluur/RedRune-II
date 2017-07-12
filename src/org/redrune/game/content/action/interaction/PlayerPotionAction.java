@@ -1,8 +1,8 @@
 package org.redrune.game.content.action.interaction;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.action.Action;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.utility.rs.constant.PotionConstants.Potion;
 

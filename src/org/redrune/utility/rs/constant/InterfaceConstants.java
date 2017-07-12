@@ -1,8 +1,8 @@
 package org.redrune.utility.rs.constant;
 
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.CS2ScriptBuilder;
-import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

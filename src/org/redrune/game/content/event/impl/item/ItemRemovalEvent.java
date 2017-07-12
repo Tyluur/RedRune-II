@@ -1,15 +1,15 @@
 package org.redrune.game.content.event.impl.item;
 
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.content.event.Event;
 import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.content.event.context.item.ItemRemovalContext;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
+import org.redrune.game.content.event.Event;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

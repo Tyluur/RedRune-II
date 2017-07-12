@@ -1,10 +1,10 @@
 package org.redrune.game.module.command.owner;
 
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.world.World;
 import org.redrune.utility.rs.Projectile;
 

@@ -2,11 +2,11 @@ package org.redrune.network.rs666;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.Packet;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerViewComponents;
-import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.outgoing.impl.PingPacketBuilder;
 
 import java.util.concurrent.ConcurrentLinkedQueue;

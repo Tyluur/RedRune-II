@@ -9,9 +9,6 @@ import org.redrune.utility.tool.Misc;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.redrune.game.node.entity.player.link.prayer.PrayerBook.CURSES;
-import static org.redrune.game.node.entity.player.link.prayer.PrayerBook.REGULAR;
-
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/6/2017
@@ -69,38 +66,38 @@ public enum Prayer implements PrayerConstants {
 	
 	// curse books
 	
-	PROTECT_ITEM_CURSE(CURSES, 0, new int[][] { PRAYER_CLOSE_IDS[1][0] }) {
+	PROTECT_ITEM_CURSE(PrayerBook.CURSES, 0, new int[][] { PRAYER_CLOSE_IDS[1][0] }) {
 		@Override
 		public void activate(Player player) {
 			player.sendAnimation(12567);
 			player.sendGraphics(2213);
 		}
 	},
-	SAP_WARRIOR(CURSES, 1, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
-	SAP_RANGER(CURSES, 2, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
-	SAP_MAGE(CURSES, 3, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
-	SAP_SPIRIT(CURSES, 4, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
-	BERSERKER(CURSES, 5, new int[][] { PRAYER_CLOSE_IDS[1][2] }) {
+	SAP_WARRIOR(PrayerBook.CURSES, 1, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
+	SAP_RANGER(PrayerBook.CURSES, 2, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
+	SAP_MAGE(PrayerBook.CURSES, 3, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
+	SAP_SPIRIT(PrayerBook.CURSES, 4, new int[][] { PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }),
+	BERSERKER(PrayerBook.CURSES, 5, new int[][] { PRAYER_CLOSE_IDS[1][2] }) {
 		@Override
 		public void activate(Player player) {
 			player.sendAnimation(12589);
 			player.sendGraphics(2266);
 		}
 	},
-	DEFLECT_SUMMONING(CURSES, 6, new int[][] { PRAYER_CLOSE_IDS[1][4] }),
-	DEFLECT_MAGIC(CURSES, 7, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
-	DEFLECT_MISSILES(CURSES, 8, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
-	DEFLECT_MELEE(CURSES, 9, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
-	LEECH_ATTACK(CURSES, 10, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	LEECH_RANGED(CURSES, 11, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	LEECH_MAGIC(CURSES, 12, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	LEECH_DEFENCE(CURSES, 13, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	LEECH_STRENGTH(CURSES, 14, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	LEECH_ENERGY(CURSES, 15, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	LEECH_SPECIAL_ATTACK(CURSES, 16, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
-	WRATH(CURSES, 17, new int[][] { PRAYER_CLOSE_IDS[1][3], PRAYER_CLOSE_IDS[1][4] }),
-	SOULSPLIT(CURSES, 18, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
-	TURMOIL(CURSES, 19, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }) {
+	DEFLECT_SUMMONING(PrayerBook.CURSES, 6, new int[][] { PRAYER_CLOSE_IDS[1][4] }),
+	DEFLECT_MAGIC(PrayerBook.CURSES, 7, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
+	DEFLECT_MISSILES(PrayerBook.CURSES, 8, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
+	DEFLECT_MELEE(PrayerBook.CURSES, 9, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
+	LEECH_ATTACK(PrayerBook.CURSES, 10, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	LEECH_RANGED(PrayerBook.CURSES, 11, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	LEECH_MAGIC(PrayerBook.CURSES, 12, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	LEECH_DEFENCE(PrayerBook.CURSES, 13, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	LEECH_STRENGTH(PrayerBook.CURSES, 14, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	LEECH_ENERGY(PrayerBook.CURSES, 15, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	LEECH_SPECIAL_ATTACK(PrayerBook.CURSES, 16, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][6] }),
+	WRATH(PrayerBook.CURSES, 17, new int[][] { PRAYER_CLOSE_IDS[1][3], PRAYER_CLOSE_IDS[1][4] }),
+	SOULSPLIT(PrayerBook.CURSES, 18, new int[][] { PRAYER_CLOSE_IDS[1][3] }),
+	TURMOIL(PrayerBook.CURSES, 19, new int[][] { PRAYER_CLOSE_IDS[1][1], PRAYER_CLOSE_IDS[1][5], PRAYER_CLOSE_IDS[1][6] }) {
 		@Override
 		public void activate(Player player) {
 			player.sendAnimation(12565);
@@ -133,7 +130,7 @@ public enum Prayer implements PrayerConstants {
 	 * 		The array of prayers to close
 	 */
 	Prayer(int[][] prayersToClose) {
-		this.book = REGULAR;
+		this.book = PrayerBook.REGULAR;
 		this.slotId = ordinal();
 		this.prayersToClose = prayersToClose;
 	}

@@ -2,9 +2,9 @@ package org.redrune.game.module.interaction.item;
 
 import org.redrune.game.content.skills.prayer.Bone;
 import org.redrune.game.content.skills.prayer.BoneBuryingAction;
-import org.redrune.game.module.type.ItemInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
+import org.redrune.game.module.type.ItemInteractionModule;
 import org.redrune.utility.rs.InteractionOption;
 
 /**

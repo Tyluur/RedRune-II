@@ -1,10 +1,10 @@
 package org.redrune.game.content.combat.player.registry.range;
 
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.registry.BowFireEvent;
 import org.redrune.game.content.combat.player.swing.RangeCombatSwing;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.content.combat.player.registry.BowFireEvent;
+import org.redrune.game.node.entity.Entity;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

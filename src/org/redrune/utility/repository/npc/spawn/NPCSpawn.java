@@ -1,8 +1,8 @@
 package org.redrune.utility.repository.npc.spawn;
 
 import lombok.Getter;
-import org.redrune.game.node.Location;
 import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.game.node.Location;
 
 /**
  * @author Tyluur<itstyluur@gmail.com>

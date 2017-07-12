@@ -2,8 +2,8 @@ package org.redrune.game.content.event;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.event.EventPolicy.*;
+import org.redrune.game.node.entity.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

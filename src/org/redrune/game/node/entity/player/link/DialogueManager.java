@@ -1,10 +1,10 @@
 package org.redrune.game.node.entity.player.link;
 
 import org.redrune.game.content.dialogue.Dialogue;
-import org.redrune.game.content.dialogue.DialogueMessage;
 import org.redrune.game.content.dialogue.messages.OptionDialogueMessage;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.AttributeKey;
+import org.redrune.game.content.dialogue.DialogueMessage;
 
 import java.util.Optional;
 

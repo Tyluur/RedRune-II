@@ -1,26 +1,26 @@
 package org.redrune;
 
 import com.google.common.base.Stopwatch;
-import org.redrune.cache.Cache;
 import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
+import org.redrune.game.content.event.EventRepository;
+import org.redrune.game.content.market.shop.ShopRepository;
+import org.redrune.game.module.ModuleRepository;
+import org.redrune.network.NetworkConstants;
+import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
+import org.redrune.utility.backend.MapKeyRepository;
+import org.redrune.utility.repository.item.ItemRepository;
+import org.redrune.utility.repository.object.ObjectSpawnRepository;
+import org.redrune.utility.tool.Misc;
+import org.redrune.cache.Cache;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameFlags;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.dialogue.DialogueRepository;
-import org.redrune.game.content.market.shop.ShopRepository;
-import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.world.region.RegionBuilder;
 import org.redrune.game.world.region.RegionDeletion;
-import org.redrune.network.NetworkConstants;
-import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
-import org.redrune.utility.tool.Misc;
-import org.redrune.utility.backend.MapKeyRepository;
-import org.redrune.game.content.event.EventRepository;
-import org.redrune.utility.repository.item.ItemRepository;
-import org.redrune.utility.repository.object.ObjectSpawnRepository;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;

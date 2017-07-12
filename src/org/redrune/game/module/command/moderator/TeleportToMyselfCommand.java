@@ -1,8 +1,8 @@
 package org.redrune.game.module.command.moderator;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 
 import java.util.Optional;

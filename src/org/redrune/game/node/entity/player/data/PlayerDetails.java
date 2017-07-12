@@ -2,8 +2,8 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.GameFlags;
 import org.redrune.utility.tool.Misc;
+import org.redrune.game.GameFlags;
 
 import java.util.Comparator;
 import java.util.SortedSet;

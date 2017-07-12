@@ -1,10 +1,10 @@
 package org.redrune.game.module.command.administrator;
 
-import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.World;
 import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.game.module.command.CommandManifest;
+import org.redrune.game.world.World;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

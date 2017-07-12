@@ -3,12 +3,12 @@ package org.redrune.game.world.region;
 import com.alex.io.InputStream;
 import org.redrune.cache.parse.ObjectDefinitionParser;
 import org.redrune.cache.parse.definition.ObjectDefinition;
-import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.backend.MapKeyRepository;
-import org.redrune.utility.rs.CacheFilestore;
 import org.redrune.utility.rs.constant.RegionConstants;
+import org.redrune.game.GameFlags;
+import org.redrune.game.node.object.GameObject;
+import org.redrune.utility.rs.CacheFilestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package org.redrune.game.module.interaction.object;
 
-import org.redrune.game.module.type.ObjectInteractionModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.module.type.ObjectInteractionModule;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.rs.InteractionOption;
 

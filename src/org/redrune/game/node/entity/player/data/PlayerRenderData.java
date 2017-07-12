@@ -1,12 +1,12 @@
 package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
-import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.World;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.utility.AttributeKey;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.world.World;
 
 import java.util.LinkedList;
 import java.util.List;

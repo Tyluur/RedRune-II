@@ -1,7 +1,7 @@
 package org.redrune.game.world.area.shape;
 
-import org.redrune.game.node.Location;
 import org.redrune.game.world.area.Shape;
+import org.redrune.game.node.Location;
 
 public class Polygon extends Shape {
 	

@@ -1,17 +1,17 @@
 package org.redrune.game.content.skills.woodcutting;
 
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.Action;
-import org.redrune.game.content.skills.firemaking.Fire;
 import org.redrune.game.content.skills.firemaking.FiremakingAction;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
-import org.redrune.game.world.region.RegionManager;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.utility.tool.Misc;
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.content.skills.firemaking.Fire;
+import org.redrune.game.node.object.GameObject;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.Optional;

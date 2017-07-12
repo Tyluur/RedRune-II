@@ -30,7 +30,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean run(Player player, org.redrune.game.node.entity.Entity target, int spellId, int combatStyle, SpecialAttackEvent special) {
+	public boolean run(Player player, Entity target, int spellId, int combatStyle, SpecialAttackEvent special) {
 		final boolean regularCast = player.getAttribute("spell_cast_id", -1) != -1;
 		// we're not auto-casting so we should reset the spell
 		if (regularCast) {
@@ -75,7 +75,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getDefenceBonus(org.redrune.game.node.entity.Entity entity, int weaponId, int combatStyle) {
+	public double getDefenceBonus(Entity entity, int weaponId, int combatStyle) {
 		return 0;
 	}
 	
@@ -85,7 +85,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public void appendExperience(Player player, org.redrune.game.node.entity.Entity target, Object... params) {
+	public void appendExperience(Player player, Entity target, Object... params) {
 		double magicExp = (double) params[0];
 		int damage = (int) params[1];
 		
@@ -131,7 +131,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * 		The magic spell event
 	 * @return If the hit landed (damage > 0).
 	 */
-	public boolean sendSpell(Player player, org.redrune.game.node.entity.Entity target, MagicSpellEvent event) {
+	public boolean sendSpell(Player player, Entity target, MagicSpellEvent event) {
 		return sendSpell(player, target, event, null, null);
 	}
 	

@@ -3,17 +3,17 @@ package org.redrune.game.node.entity.player.data;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
-import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.ContainerUpdateBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.cache.parse.definition.ItemDefinition;
+import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
 
 import java.util.HashMap;
 

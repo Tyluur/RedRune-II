@@ -1,10 +1,10 @@
 package org.redrune.game.module.command.owner;
 
-import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
+import org.redrune.game.module.command.CommandManifest;
+import org.redrune.game.node.object.GameObject;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

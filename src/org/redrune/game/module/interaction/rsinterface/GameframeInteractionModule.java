@@ -1,13 +1,14 @@
 package org.redrune.game.module.interaction.rsinterface;
 
-import org.redrune.game.content.action.interaction.PlayerRestAction;
 import org.redrune.game.content.dialogue.impl.misc.WorldMapDialogue;
-import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.GameBarStatus;
+import org.redrune.utility.rs.constant.InterfaceConstants;
+import org.redrune.game.content.action.interaction.PlayerRestAction;
+import org.redrune.game.module.type.InterfaceInteractionModule;
+import org.redrune.utility.rs.GameTab;
 
 import static org.redrune.utility.rs.constant.InterfaceConstants.*;
 
@@ -19,14 +20,14 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 	
 	@Override
 	public int[] interfaceSubscriptionIds() {
-		return arguments(CHAT_SETUP_INTERFACE_ID, SCREEN_RESIZABLE_WINDOW_ID, SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, LOGOUT_INTERFACE_ID, GAMEFRAME_INTERFACE_ID);
+		return arguments(CHAT_SETUP_INTERFACE_ID, InterfaceConstants.SCREEN_RESIZABLE_WINDOW_ID, InterfaceConstants.SCREEN_FIXED_WINDOW_ID, OPTIONS_INTERFACE_ID, PRAYER_ORB_INTERFACE_ID, RUN_ORB_INTERACE_ID, InterfaceConstants.LOGOUT_INTERFACE_ID, InterfaceConstants.GAMEFRAME_INTERFACE_ID);
 	}
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		switch (interfaceId) {
-			case SCREEN_FIXED_WINDOW_ID:
-			case SCREEN_RESIZABLE_WINDOW_ID:
+			case InterfaceConstants.SCREEN_FIXED_WINDOW_ID:
+			case InterfaceConstants.SCREEN_RESIZABLE_WINDOW_ID:
 				if (componentId == 179) {
 					player.getManager().getDialogues().startDialogue(new WorldMapDialogue());
 					return true;
@@ -69,7 +70,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 						return true;
 				}
 				break;
-			case LOGOUT_INTERFACE_ID:
+			case InterfaceConstants.LOGOUT_INTERFACE_ID:
 				player.getTransmitter().sendLogout(componentId == 6);
 				return true;
 			case OPTIONS_INTERFACE_ID:
@@ -101,7 +102,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 						return true;
 				}
 				break;
-			case GAMEFRAME_INTERFACE_ID:
+			case InterfaceConstants.GAMEFRAME_INTERFACE_ID:
 				if (componentId == 31) {
 					// game
 					if (packetId == SECOND_PACKET_ID) {

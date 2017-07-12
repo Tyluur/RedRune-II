@@ -3,9 +3,9 @@ package org.redrune.game.node.entity.player.link.chat;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.tool.Misc;
 import org.redrune.network.rs666.packet.outgoing.impl.FriendsListBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.IgnoreListBuilder;
-import org.redrune.utility.tool.Misc;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;

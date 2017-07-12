@@ -1,12 +1,12 @@
 package org.redrune.network.rs666.codec.js5;
 
+import org.redrune.cache.CacheManager;
+import org.redrune.core.EngineWorkingSet;
+import org.redrune.network.rs666.packet.Packet;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
-import org.redrune.cache.CacheManager;
-import org.redrune.core.EngineWorkingSet;
-import org.redrune.network.rs666.packet.Packet;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

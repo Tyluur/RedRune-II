@@ -3,6 +3,7 @@ package org.redrune.game.content.combat.player.calc;
 import org.redrune.game.content.combat.player.CombatTypeCalculator;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
@@ -20,7 +21,7 @@ public class MagicCombatCalculator implements CombatTypeCalculator {
 		// the calculated boost
 		double effective = Math.floor(level * prayer);
 		// the bonus from your equipment
-		int bonus = player.getEquipment().getBonus(MAGIC_ATTACK);
+		int bonus = player.getEquipment().getBonus(BonusConstants.MAGIC_ATTACK);
 		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
 	}
 	
@@ -35,7 +36,7 @@ public class MagicCombatCalculator implements CombatTypeCalculator {
 			// the effective calculation
 			double effective = Math.floor((level * prayer) * 0.3) + (p2.getSkills().getLevel(SkillConstants.MAGIC) * 0.7);
 			// the equipment calculation [based on magic defence]
-			int equipment = p2.getEquipment().getBonus(MAGIC_DEFENCE) + 5;
+			int equipment = p2.getEquipment().getBonus(BonusConstants.MAGIC_DEFENCE) + 5;
 			return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
 		} else {
 			// TODO npc defense bonus

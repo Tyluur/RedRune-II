@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.redrune.game.node.entity.Entity;
 import org.jboss.netty.channel.Channel;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.Location;
@@ -679,7 +680,7 @@ public class Misc {
 		return ((int) Math.ceil(Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2))));
 	}
 	
-	public static boolean colides(org.redrune.game.node.entity.Entity entity, org.redrune.game.node.entity.Entity target) {
+	public static boolean colides(Entity entity, Entity target) {
 		return entity.getLocation().getPlane() == target.getLocation().getPlane() && colides(entity.getLocation().getX(), entity.getLocation().getY(), entity.getSize(), target.getLocation().getX(), target.getLocation().getY(), target.getSize());
 	}
 	
@@ -689,7 +690,7 @@ public class Misc {
 		return distanceX < size2 && distanceX > -size1 && distanceY < size2 && distanceY > -size1;
 	}
 	
-	public static boolean isOnRange(org.redrune.game.node.entity.Entity entity, org.redrune.game.node.entity.Entity target, int rangeRatio) {
+	public static boolean isOnRange(Entity entity, Entity target, int rangeRatio) {
 		return entity.getLocation().getPlane() == target.getLocation().getPlane() && isOnRange(entity.getLocation().getX(), entity.getLocation().getY(), entity.getSize(), target.getLocation().getX(), target.getLocation().getY(), target.getSize(), rangeRatio);
 	}
 	

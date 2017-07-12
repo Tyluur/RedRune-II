@@ -1,8 +1,8 @@
 package org.redrune.game.world.region;
 
 import org.redrune.game.node.Location;
-import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.tool.Misc;
+import org.redrune.game.node.object.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;

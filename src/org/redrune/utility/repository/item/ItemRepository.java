@@ -2,8 +2,8 @@ package org.redrune.utility.repository.item;
 
 import com.google.gson.reflect.TypeToken;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.utility.tool.Misc;
+import org.redrune.cache.parse.definition.ItemDefinition;
 
 import java.io.File;
 import java.io.RandomAccessFile;

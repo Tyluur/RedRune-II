@@ -2,14 +2,14 @@ package org.redrune.game.node.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
+import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatType;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -88,7 +88,7 @@ public class EntityCombatDefinitions {
 	 * The entity whose definitions these are for
 	 */
 	@Setter
-	private transient org.redrune.game.node.entity.Entity entity;
+	private transient Entity entity;
 	
 	/**
 	 * Sends the login refreshing

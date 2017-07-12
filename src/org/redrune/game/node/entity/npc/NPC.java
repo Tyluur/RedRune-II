@@ -2,15 +2,15 @@ package org.redrune.game.node.entity.npc;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
-import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.World;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.cache.parse.NPCDefinitionParser;
+import org.redrune.game.node.Location;
+import org.redrune.game.world.World;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -133,7 +133,7 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	public boolean attackable(org.redrune.game.node.entity.Entity entity) {
+	public boolean attackable(Entity entity) {
 		return super.attackable(entity);
 	}
 	

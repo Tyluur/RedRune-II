@@ -3,10 +3,10 @@ package org.redrune.game.node.entity.player.data;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.BodyDataParser;
-import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.cache.parse.NPCDefinitionParser;
 
 /**
  * The appearance of the player.

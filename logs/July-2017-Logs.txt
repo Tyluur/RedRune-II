@@ -1,3 +1,11 @@
+7/11/17 {
+	+   Recognized an error in the dark bow special projectiles + hit delays and fixed it, they're 100% now. [thx aero for pointing this out]
+	+   Started progress on our new master server (tossed the old one so we could use netty 4)
+
+	[IMG]http://i.imgur.com/KfKRQnf.png[/IMG]
+	[IMG]http://i.imgur.com/7HcWPf5.gif[/IMG]
+}
+
 7/10/17 {
 	+   Added multi zone area listeners + flag setting when we walk in and out of a multi zone
 	+   Added object names to dialogue subscriptions [dialogues with subscriptions mapped will be fired when the interaction starts]

@@ -1,8 +1,8 @@
 package org.redrune.network.rs666.packet.incoming;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.Packet;
 import org.redrune.utility.tool.Misc;
+import org.redrune.network.rs666.packet.Packet;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

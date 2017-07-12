@@ -2,6 +2,7 @@ package org.redrune.game.node.entity.player.link.prayer.drain;
 
 import org.redrune.game.node.entity.player.link.prayer.DrainPrayer;
 import org.redrune.game.node.entity.player.link.prayer.Prayer;
+import org.redrune.utility.rs.constant.PrayerConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -41,7 +42,7 @@ public class LeechStrengthDrain implements DrainPrayer {
 	
 	@Override
 	public int[] prayerSlots() {
-		return args(STRENGTH_SLOT);
+		return args(PrayerConstants.STRENGTH_SLOT);
 	}
 	
 	@Override

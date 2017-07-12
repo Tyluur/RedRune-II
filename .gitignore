@@ -18,4 +18,4 @@ hs_err_pid*
 *.classpath
 
 # player saves
-/data/saves/*
+/bytes/saves/*

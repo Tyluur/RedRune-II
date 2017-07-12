@@ -1,17 +1,17 @@
 package org.redrune.network.rs666.codec.login;
 
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.NetworkConstants;
+import org.redrune.network.rs666.NetworkSession;
+import org.redrune.network.rs666.codec.RS2GameDecoder;
+import org.redrune.utility.backend.ReturnCode;
+import org.redrune.utility.tool.BufferUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.NetworkConstants;
-import org.redrune.network.rs666.NetworkSession;
-import org.redrune.network.rs666.codec.RS2GameDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.LoginResponseCodeBuilder;
-import org.redrune.utility.tool.BufferUtils;
-import org.redrune.utility.backend.ReturnCode;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

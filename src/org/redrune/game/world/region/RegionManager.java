@@ -1,20 +1,19 @@
 package org.redrune.game.world.region;
 
-import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.content.activity.ActivitySystem;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.item.FloorItem;
-import org.redrune.game.node.object.GameObject;
+import org.redrune.game.world.route.Flags;
 import org.redrune.utility.tool.Misc;
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.content.activity.ActivitySystem;
+import org.redrune.game.node.object.GameObject;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import static org.redrune.game.world.route.Flags.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -527,124 +526,124 @@ public class RegionManager {
 		if (size == 1) {
 			int mask = getMask(plane, x + xOffset, y + yOffset);
 			if (xOffset == -1 && yOffset == 0) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST)) == 0;
 			}
 			if (xOffset == 1 && yOffset == 0) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_WEST)) == 0;
 			}
 			if (xOffset == 0 && yOffset == -1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH)) == 0;
 			}
 			if (xOffset == 0 && yOffset == 1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH)) == 0;
 			}
 			if (xOffset == -1 && yOffset == -1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST)) == 0 && (getMask(plane, x, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH)) == 0;
 			}
 			if (xOffset == 1 && yOffset == -1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_WEST)) == 0 && (getMask(plane, x, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH)) == 0;
 			}
 			if (xOffset == -1 && yOffset == 1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST)) == 0 && (getMask(plane, x, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST)) == 0 && (getMask(plane, x, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH)) == 0;
 			}
 			if (xOffset == 1 && yOffset == 1) {
-				return (mask & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_WEST)) == 0 && (getMask(plane, x, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH)) == 0;
+				return (mask & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_WEST)) == 0 && (getMask(plane, x, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH)) == 0;
 			}
 		} else if (size == 2) {
 			if (xOffset == -1 && yOffset == 0) {
-				return (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0;
+				return (getMask(plane, x - 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) == 0;
 			}
 			if (xOffset == 1 && yOffset == 0) {
-				return (getMask(plane, x + 2, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0;
+				return (getMask(plane, x + 2, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) == 0;
 			}
 			if (xOffset == 0 && yOffset == -1) {
-				return (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0;
+				return (getMask(plane, x, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 1, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) == 0;
 			}
 			if (xOffset == 0 && yOffset == 1) {
-				return (getMask(plane, x, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x + 1, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0;
+				return (getMask(plane, x, y + 2) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x + 1, y + 2) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) == 0;
 			}
 			if (xOffset == -1 && yOffset == -1) {
-				return (getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) == 0;
+				return (getMask(plane, x - 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_NORTHEAST | Flags.CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_NORTHEAST)) == 0;
 			}
 			if (xOffset == 1 && yOffset == -1) {
-				return (getMask(plane, x + 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 2, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) == 0;
+				return (getMask(plane, x + 1, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_NORTHEAST)) == 0 && (getMask(plane, x + 2, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) == 0 && (getMask(plane, x + 2, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_SOUTHWEST)) == 0;
 			}
 			if (xOffset == -1 && yOffset == 1) {
-				return (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) == 0;
+				return (getMask(plane, x - 1, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_NORTHEAST | Flags.CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x - 1, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) == 0 && (getMask(plane, x, y + 2) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHEAST | Flags.CORNEROBJ_SOUTHWEST)) == 0;
 			}
 			if (xOffset == 1 && yOffset == 1) {
-				return (getMask(plane, x + 1, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 2, y + 2) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y + 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) == 0;
+				return (getMask(plane, x + 1, y + 2) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHEAST | Flags.CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 2, y + 2) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) == 0 && (getMask(plane, x + 1, y + 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_SOUTHWEST)) == 0;
 			}
 		} else {
 			if (xOffset == -1 && yOffset == 0) {
-				if ((getMask(plane, x - 1, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x - 1, -1 + (y + size)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0) {
+				if ((getMask(plane, x - 1, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x - 1, -1 + (y + size)) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x - 1, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0) {
+					if ((getMask(plane, x - 1, y + sizeOffset) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_NORTHEAST | Flags.CORNEROBJ_SOUTHEAST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == 1 && yOffset == 0) {
-				if ((getMask(plane, x + size, y) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0 || (getMask(plane, x + size, y - (-size + 1)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
+				if ((getMask(plane, x + size, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) != 0 || (getMask(plane, x + size, y - (-size + 1)) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x + size, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0) {
+					if ((getMask(plane, x + size, y + sizeOffset) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == 0 && yOffset == -1) {
-				if ((getMask(plane, x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x + size - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0) {
+				if ((getMask(plane, x, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) != 0 || (getMask(plane, x + size - 1, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x + sizeOffset, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
+					if ((getMask(plane, x + sizeOffset, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_NORTHEAST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == 0 && yOffset == 1) {
-				if ((getMask(plane, x, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, x + (size - 1), y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
+				if ((getMask(plane, x, y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, x + (size - 1), y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size - 1; sizeOffset++) {
-					if ((getMask(plane, x + sizeOffset, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0) {
+					if ((getMask(plane, x + sizeOffset, y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHEAST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == -1 && yOffset == -1) {
-				if ((getMask(plane, x - 1, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | CORNEROBJ_NORTHEAST)) != 0) {
+				if ((getMask(plane, x - 1, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.CORNEROBJ_NORTHEAST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x - 1, y + (-1 + sizeOffset)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, sizeOffset - 1 + x, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
+					if ((getMask(plane, x - 1, y + (-1 + sizeOffset)) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_NORTHEAST | Flags.CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, sizeOffset - 1 + x, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_NORTHEAST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == 1 && yOffset == -1) {
-				if ((getMask(plane, x + size, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST)) != 0) {
+				if ((getMask(plane, x + size, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x + size, sizeOffset + (-1 + y)) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + sizeOffset, y - 1) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_NORTHEAST)) != 0) {
+					if ((getMask(plane, x + size, sizeOffset + (-1 + y)) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + sizeOffset, y - 1) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_NORTHEAST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == -1 && yOffset == 1) {
-				if ((getMask(plane, x - 1, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_SOUTHEAST)) != 0) {
+				if ((getMask(plane, x - 1, y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_SOUTHEAST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x - 1, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_EAST | WALLOBJ_SOUTH | CORNEROBJ_NORTHEAST | CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, -1 + (x + sizeOffset), y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0) {
+					if ((getMask(plane, x - 1, y + sizeOffset) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.CORNEROBJ_NORTHEAST | Flags.CORNEROBJ_SOUTHEAST)) != 0 || (getMask(plane, -1 + (x + sizeOffset), y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHEAST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 						return false;
 					}
 				}
 			} else if (xOffset == 1 && yOffset == 1) {
-				if ((getMask(plane, x + size, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHWEST)) != 0) {
+				if ((getMask(plane, x + size, y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 					return false;
 				}
 				for (int sizeOffset = 1; sizeOffset < size; sizeOffset++) {
-					if ((getMask(plane, x + sizeOffset, y + size) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_EAST | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_SOUTHEAST | CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + size, y + sizeOffset) & (FLOOR_BLOCKSWALK | FLOORDECO_BLOCKSWALK | OBJ | WALLOBJ_NORTH | WALLOBJ_SOUTH | WALLOBJ_WEST | CORNEROBJ_NORTHWEST | CORNEROBJ_SOUTHWEST)) != 0) {
+					if ((getMask(plane, x + sizeOffset, y + size) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_EAST | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_SOUTHEAST | Flags.CORNEROBJ_SOUTHWEST)) != 0 || (getMask(plane, x + size, y + sizeOffset) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_SOUTHWEST)) != 0) {
 						return false;
 					}
 				}

@@ -1,7 +1,7 @@
 package org.redrune.game.world.route.strategy;
 
-import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.route.RouteStrategy;
+import org.redrune.game.node.object.GameObject;
 
 public class ObjectStrategy extends RouteStrategy {
 	

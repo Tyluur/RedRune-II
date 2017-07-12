@@ -70,7 +70,7 @@ public class ProjectileManager {
 	 * 		The node.
 	 * @return The centered location.
 	 */
-	public static Location getLocation(org.redrune.game.node.entity.Entity n) {
+	public static Location getLocation(Entity n) {
 		if (n == null) {
 			return null;
 		}

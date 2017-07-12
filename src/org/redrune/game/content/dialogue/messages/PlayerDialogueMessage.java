@@ -1,9 +1,9 @@
 package org.redrune.game.content.dialogue.messages;
 
-import org.redrune.game.content.dialogue.DialogueMessage;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.outgoing.impl.InterfaceAnimationBuilder;
 import org.redrune.network.rs666.packet.outgoing.impl.InterfaceEntityBuilder;
+import org.redrune.game.content.dialogue.DialogueMessage;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

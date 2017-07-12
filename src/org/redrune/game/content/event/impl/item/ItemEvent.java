@@ -1,20 +1,20 @@
 package org.redrune.game.content.event.impl.item;
 
 import org.redrune.core.EngineWorkingSet;
-import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.module.ModuleRepository;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.content.event.Event;
 import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.content.event.context.item.ItemEventContext;
+import org.redrune.game.module.ModuleRepository;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.utility.repository.item.ItemRepository;
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.content.event.Event;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;

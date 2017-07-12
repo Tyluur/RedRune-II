@@ -1,5 +1,6 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
+import org.redrune.game.content.event.EventRepository;
 import org.redrune.game.content.event.context.NodeReachEventContext;
 import org.redrune.game.content.event.context.item.FloorItemPickupContext;
 import org.redrune.game.content.event.impl.NodeReachEvent;
@@ -12,7 +13,6 @@ import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
-import org.redrune.game.content.event.EventRepository;
 
 import java.util.Optional;
 

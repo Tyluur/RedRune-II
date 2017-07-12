@@ -1,15 +1,15 @@
 package org.redrune.game.content.combat.player;
 
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.constant.EquipConstants;
+import org.redrune.utility.rs.constant.MagicConstants;
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.content.combat.player.registry.BowFireEvent;
 import org.redrune.game.content.combat.player.registry.CombatRegistryEvent;
 import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
 import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.prayer.PrayerEffectRepository;
-import org.redrune.utility.tool.Misc;
-import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.utility.rs.constant.MagicConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.*;
@@ -151,7 +151,7 @@ public class CombatRegistry implements MagicConstants {
 	public static void processSpell(Player player, int spellId) {
 		player.stop(false, false, true, false);
 		switch (player.getCombatDefinitions().getSpellbook()) {
-			case REGULAR:
+			case MagicBook.REGULAR:
 				switch (spellId) {
 					case 25:
 					case 28:
@@ -223,7 +223,7 @@ public class CombatRegistry implements MagicConstants {
 						break;
 				}
 				break;
-			case ANCIENTS:
+			case MagicBook.ANCIENTS:
 				switch (spellId) {
 					case 28:
 					case 32:
@@ -276,7 +276,7 @@ public class CombatRegistry implements MagicConstants {
 						break;
 				}
 				break;
-			case LUNARS:
+			case MagicBook.LUNARS:
 				switch (spellId) {
 					case 33:
 						/*player.getInterfaceManager().openGameTab(7);
@@ -364,7 +364,7 @@ public class CombatRegistry implements MagicConstants {
 			return true;
 		}
 		switch (player.getCombatDefinitions().getSpellbook()) {
-			case REGULAR:
+			case MagicBook.REGULAR:
 				switch (spellId) {
 					case 98:
 						if (!checkSpellRequirements(player, 1, delete, AIR_RUNE, 2)) {
@@ -527,7 +527,7 @@ public class CombatRegistry implements MagicConstants {
 						return false;
 				}
 				break;
-			case ANCIENTS:
+			case MagicBook.ANCIENTS:
 				switch (spellId) {
 					case 28:
 						if (!checkSpellRequirements(player, 50, delete, CHAOS_RUNE, 2, DEATH_RUNE, 2, FIRE_RUNE, 1, AIR_RUNE, 1)) {

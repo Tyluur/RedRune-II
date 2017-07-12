@@ -81,7 +81,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public double getDefenceBonus(org.redrune.game.node.entity.Entity entity, int weaponId, int combatStyle) {
+	public double getDefenceBonus(Entity entity, int weaponId, int combatStyle) {
 		return calculator.totalDefensiveBoost(entity, weaponId, combatStyle);
 	}
 	
@@ -91,7 +91,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 	}
 	
 	@Override
-	public void appendExperience(Player player, org.redrune.game.node.entity.Entity target, Object... params) {
+	public void appendExperience(Player player, Entity target, Object... params) {
 		int itemId = (int) params[0];
 		int combatStyle = (int) params[1];
 		int damage = (int) params[2];

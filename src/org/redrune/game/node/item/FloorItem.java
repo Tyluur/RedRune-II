@@ -3,8 +3,8 @@ package org.redrune.game.node.item;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.Location;
 
 import java.util.Objects;
 

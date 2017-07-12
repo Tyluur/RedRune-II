@@ -1,7 +1,7 @@
 package org.redrune.game.content.market.shop.currency;
 
-import org.redrune.game.content.market.shop.ShopCurrency;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.content.market.shop.ShopCurrency;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -1,8 +1,8 @@
 package org.redrune.game.module.command;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.data.PlayerRight;
 import org.redrune.utility.tool.Misc;
+import org.redrune.game.node.entity.player.data.PlayerRight;
 
 import java.util.*;
 import java.util.logging.Logger;

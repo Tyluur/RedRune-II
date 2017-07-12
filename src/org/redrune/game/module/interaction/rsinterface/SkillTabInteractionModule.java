@@ -1,12 +1,12 @@
 package org.redrune.game.module.interaction.rsinterface;
 
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.content.skills.LevelUp;
 import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerSkills;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.constant.SkillConstants;
 import org.redrune.utility.rs.input.InputResponse;
 import org.redrune.utility.rs.input.InputType;

@@ -3,8 +3,8 @@ package org.redrune.game.node.entity;
 import lombok.Getter;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.World;
 import org.redrune.utility.AttributeKey;
+import org.redrune.game.world.World;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,12 +34,12 @@ public final class HitMap {
 	/**
 	 * The entity.
 	 */
-	private transient final org.redrune.game.node.entity.Entity entity;
+	private transient final Entity entity;
 	
 	/**
 	 * The damage constructor.
 	 */
-	HitMap(org.redrune.game.node.entity.Entity entity) {
+	HitMap(Entity entity) {
 		this.entity = entity;
 		this.hitRecord = new HashMap<>();
 		this.hitList = new LinkedList<>();
@@ -73,7 +73,7 @@ public final class HitMap {
 	 * @param damage
 	 * 		The amount of damage.
 	 */
-	private void submitDamage(org.redrune.game.node.entity.Entity attacker, int damage) {
+	private void submitDamage(Entity attacker, int damage) {
 		if (attacker == null || !attacker.isPlayer()) {
 			return;
 		}
@@ -101,9 +101,9 @@ public final class HitMap {
 	 *
 	 * @return The Player with the most damage.
 	 */
-	public org.redrune.game.node.entity.Entity getMostDamageEntity() {
+	public Entity getMostDamageEntity() {
 		int currentMaxDamage = 0;
-		org.redrune.game.node.entity.Entity e = (entity instanceof Player ? (Player) entity : (entity));
+		Entity e = (entity instanceof Player ? (Player) entity : (entity));
 		for (Player p : hitRecord.keySet()) {
 			boolean bool = World.get().getPlayerByUsername(p.getDetails().getUsername()).isPresent();
 			if (bool && hitRecord.get(p) > currentMaxDamage) {

@@ -2,15 +2,15 @@ package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.rs666.packet.outgoing.impl.HintIconPacketBuilder;
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
-import org.redrune.network.rs666.packet.outgoing.impl.HintIconPacketBuilder;
 import org.redrune.utility.rs.HintIcon;
 import org.redrune.utility.rs.HintIcon.HintIconArrow;
 import org.redrune.utility.rs.HintIcon.HintIconType;
-import org.redrune.utility.tool.Misc;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -238,7 +238,7 @@ public final class HintIconManager {
 		@Setter
 		private Location lastUpdatedLocation;
 		
-		FollowingEntityIcon(org.redrune.game.node.entity.Entity entity, HintIconArrow iconArrow) {
+		FollowingEntityIcon(Entity entity, HintIconArrow iconArrow) {
 			this.entityIndex = entity.getIndex();
 			this.isPlayer = entity.isPlayer();
 			this.iconLocation = false;

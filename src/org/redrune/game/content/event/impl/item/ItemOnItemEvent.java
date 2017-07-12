@@ -1,8 +1,8 @@
 package org.redrune.game.content.event.impl.item;
 
-import org.redrune.game.content.skills.firemaking.Fire;
 import org.redrune.game.content.skills.firemaking.FiremakingAction;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.content.skills.firemaking.Fire;
 import org.redrune.game.content.event.Event;
 import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.EventPolicy.AnimationPolicy;

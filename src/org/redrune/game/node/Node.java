@@ -2,8 +2,8 @@ package org.redrune.game.node;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;

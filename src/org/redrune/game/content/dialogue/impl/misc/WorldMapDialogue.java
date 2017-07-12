@@ -1,8 +1,8 @@
 package org.redrune.game.content.dialogue.impl.misc;
 
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.dialogue.Dialogue;
 import org.redrune.game.content.dialogue.messages.OptionDialogueMessage;
-import org.redrune.game.node.entity.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -1,8 +1,8 @@
 package org.redrune.game.module.interaction.npc;
 
 import org.redrune.game.module.type.NPCInteractionModule;
-import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.utility.rs.InteractionOption;
 
 /**

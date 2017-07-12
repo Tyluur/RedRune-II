@@ -1,6 +1,7 @@
 package org.redrune.game.node.entity.player.link.prayer.drain;
 
 import org.redrune.game.node.entity.player.link.prayer.DrainPrayer;
+import org.redrune.utility.rs.constant.PrayerConstants;
 import org.redrune.game.node.entity.player.link.prayer.Prayer;
 
 /**
@@ -41,7 +42,7 @@ public class SapRangerDrain implements DrainPrayer {
 	
 	@Override
 	public int[] prayerSlots() {
-		return args(RANGE_SLOT);
+		return args(PrayerConstants.RANGE_SLOT);
 	}
 	
 	@Override

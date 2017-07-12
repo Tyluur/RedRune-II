@@ -2,20 +2,20 @@ package org.redrune.game.node.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.cache.parse.AnimationDefinitionParser;
 import org.redrune.cache.parse.definition.AnimationDefinition;
-import org.redrune.core.system.SystemManager;
-import org.redrune.game.GameFlags;
-import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
 import org.redrune.game.world.region.Region;
-import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.Priority;
+import org.redrune.cache.parse.AnimationDefinitionParser;
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.GameFlags;
+import org.redrune.game.node.Location;
+import org.redrune.game.world.region.RegionManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;

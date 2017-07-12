@@ -1,10 +1,11 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
+import org.redrune.game.node.entity.Entity;
+import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.network.rs666.packet.PacketBuilder;
 
 /**
  * Represents the hit update mask.
@@ -16,7 +17,7 @@ public class HitUpdate extends UpdateFlag {
 	/**
 	 * The entity.
 	 */
-	public final org.redrune.game.node.entity.Entity entity;
+	public final Entity entity;
 	
 	/**
 	 * Constructs a new {@code HitUpdate} {@code Object}.
@@ -24,7 +25,7 @@ public class HitUpdate extends UpdateFlag {
 	 * @param entity
 	 * 		The entity.
 	 */
-	public HitUpdate(org.redrune.game.node.entity.Entity entity) {
+	public HitUpdate(Entity entity) {
 		this.entity = entity;
 	}
 	

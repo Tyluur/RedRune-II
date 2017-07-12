@@ -1,12 +1,12 @@
 package org.redrune.network.rs666.packet.outgoing.impl;
 
-import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.PacketBuilder;
 import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.tool.Misc;
+import org.redrune.game.GameFlags;
 
 import java.util.Date;
 

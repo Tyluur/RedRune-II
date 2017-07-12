@@ -1,12 +1,12 @@
 package org.redrune.game.module.command.administrator;
 
-import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.World;
 import org.redrune.utility.tool.Misc;
+import org.redrune.game.module.command.CommandManifest;
+import org.redrune.game.world.World;
 
 import java.util.Optional;
 

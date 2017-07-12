@@ -1,10 +1,10 @@
 package org.redrune.network.rs666.packet.incoming.impl;
 
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.input.InputType;
 import org.redrune.network.rs666.packet.Packet;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketDecoder;
 import org.redrune.utility.rs.input.InputResponse;
-import org.redrune.utility.rs.input.InputType;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

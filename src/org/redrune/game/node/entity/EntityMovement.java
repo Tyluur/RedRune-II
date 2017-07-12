@@ -1,6 +1,8 @@
 package org.redrune.game.node.entity;
 
 import lombok.Getter;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.npc.NPC;
@@ -10,8 +12,6 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
-import org.redrune.utility.AttributeKey;
-import org.redrune.utility.tool.Misc;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
