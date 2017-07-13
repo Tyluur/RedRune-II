@@ -62,7 +62,7 @@ public class FriendsListBuilder implements OutgoingPacketBuilder {
 		this.clanRank = 0;
 		this.warn = true;
 		this.lobby = worldId == 0;
-		this.online = true;
+		this.online = worldId != -1;
 	}
 	
 	public FriendsListBuilder(String name, String previousName, int worldId, int clanRank, boolean warn, boolean lobby, boolean online) {

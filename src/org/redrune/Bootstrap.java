@@ -8,6 +8,7 @@ import org.redrune.game.content.event.EventRepository;
 import org.redrune.game.content.market.shop.ShopRepository;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.network.NetworkConstants;
+import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.backend.MapKeyRepository;
 import org.redrune.utility.repository.item.ItemRepository;
@@ -54,12 +55,14 @@ public class Bootstrap {
 		if (args.length == 0) {
 			System.err.println("Unexpected end of JVM arguments!");
 			System.err.println("args[0]=[true/false] - debug mode");
+			System.err.println("args[1]=[integer] - worldId");
 			return;
 		}
 		try {
 			// startup necessities
 			Bootstrap.STOPWATCH.start();
 			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
+			GameFlags.worldId = Integer.parseInt(args[1]);
 			SystemManager.setDefaults();
 			
 			// loading the actual important data
@@ -78,6 +81,7 @@ public class Bootstrap {
 			EventRepository.registerEvents(false);
 			CombatRegistry.registerAll();
 			ShopRepository.load();
+			MasterCommunication.start();
 			
 			// finalization
 			SystemManager.start();

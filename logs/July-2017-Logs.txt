@@ -1,8 +1,24 @@
+7/12/17 {
+	+   Progress continued on master server
+	+   Successfully integrated it into the real game server
+		-   Login requests are all handled on the master server
+		-   Response codes are sent from the master server to the game server
+		-   Each world has their own lobby server
+		-   Still using json for player file saving, we're now encoding & transmitting the player file over the network (serialization saving ease of use)
+		-   Added private messaging over the network
+		-   Automatic reconnection listener incase of connection drops
+		-   Connection verification for packets so we don't send packets when the server is offline
+		-   Connection verification for game server, if the master server is offline and someone tries to log in, they get a 'login server offline' messaeg
+			+   If the master server goes offline, players online aren't affected but private messages/logins will be broken
+
+	[IMG]http://i.imgur.com/XDwQ6tC.png[/IMG]
+	[IMG]http://i.imgur.com/0Bc8CH5.png[/IMG]
+}
+
 7/11/17 {
 	+   Recognized an error in the dark bow special projectiles + hit delays and fixed it, they're 100% now. [thx aero for pointing this out]
 	+   Started progress on our new master server (tossed the old one so we could use netty 4)
 
-	[IMG]http://i.imgur.com/KfKRQnf.png[/IMG]
 	[IMG]http://i.imgur.com/7HcWPf5.gif[/IMG]
 }
 

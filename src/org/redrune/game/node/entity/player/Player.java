@@ -2,15 +2,13 @@ package org.redrune.game.node.entity.player;
 
 import lombok.Getter;
 import lombok.Setter;
+import master.client.packet.out.PlayerFilePacketOut;
+import master.utility.Utility;
 import org.redrune.core.SequencialUpdate;
-import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.content.action.interaction.PlayerCombatAction;
-import master.server.game.node.entity.player.data.*;
-import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
-import master.server.network.rs666.packet.outgoing.impl.*;
-import org.redrune.utility.AttributeKey;
 import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.GameConstants;
+import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
@@ -21,12 +19,15 @@ import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
 import org.redrune.game.node.entity.player.render.PlayerRendering;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.World;
 import org.redrune.game.world.region.RegionManager;
+import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.rs666.NetworkSession;
 import org.redrune.network.rs666.NetworkTransmitter;
 import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -280,6 +281,7 @@ public final class Player extends Entity {
 		World.get().getLobbyPlayers().add(this);
 		
 		networkSession.write(new LobbyResponseBuilder().build(this));
+		manager.getContacts().sendLogin();
 		System.out.println("Player registered to lobby:\t" + this);
 	}
 	
@@ -469,5 +471,12 @@ public final class Player extends Entity {
 			}
 		}
 		return containedItems;
+	}
+	
+	/**
+	 * Saves the player
+	 */
+	public void save() {
+		MasterCommunication.write(new PlayerFilePacketOut(details.getUsername(), Utility.getJsonText(this, true)));
 	}
 }

@@ -1,15 +1,15 @@
 package org.redrune.network.rs666;
 
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.NetworkConstants;
-import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
-import org.redrune.utility.tool.Misc;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.NetworkConstants;
 import org.redrune.network.rs666.codec.handshake.HandshakePacket;
 import org.redrune.network.rs666.packet.Packet;
+import org.redrune.network.rs666.packet.incoming.IncomingPacketRepository;
+import org.redrune.utility.tool.Misc;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -63,18 +63,10 @@ public final class NetworkHandler extends SimpleChannelHandler {
 		try {
 			Object attached = ctx.getAttachment();
 			if (attached == null) {
+				System.out.println("Disconnected without an attached session.");
 				return;
 			}
-			NetworkSession session = (NetworkSession) attached;
-			Player player = session.getPlayer();
-			if (player != null) {
-				if (player.isRenderable()) {
-					player.deregister();
-				} else {
-					player.deregisterLobby();
-				}
-			}
-			session.setPlayer(null);
+			((NetworkSession) attached).disconnect();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

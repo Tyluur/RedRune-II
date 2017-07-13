@@ -1,17 +1,19 @@
 package org.redrune.network.rs666.codec.login;
 
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.NetworkConstants;
-import org.redrune.network.rs666.NetworkSession;
-import org.redrune.network.rs666.codec.RS2GameDecoder;
-import org.redrune.utility.backend.ReturnCode;
-import org.redrune.utility.tool.BufferUtils;
+import master.client.MCFlags;
+import master.client.packet.out.LoginRequestPacketOut;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
+import org.redrune.network.NetworkConstants;
+import org.redrune.network.master.MasterCommunication;
+import org.redrune.network.rs666.NetworkSession;
+import org.redrune.network.rs666.codec.RS2GameDecoder;
 import org.redrune.network.rs666.packet.outgoing.impl.LoginResponseCodeBuilder;
+import org.redrune.utility.backend.ReturnCode;
+import org.redrune.utility.tool.BufferUtils;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -77,28 +79,31 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					byte[] block = new byte[BufferUtils.readableBytes(buffer)];
 					buffer.readBytes(block);
 					ChannelBuffer decryptedPayload = ChannelBuffers.wrappedBuffer(BufferUtils.decrypt(keys, block, 0, block.length));
-					String name = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
-					decryptedPayload.readByte(); // screen settings?
+					String username = BufferUtils.readRS2String(decryptedPayload).toLowerCase();
+					decryptedPayload.readByte();
 					decryptedPayload.readByte();
 					for (int i = 0; i < 24; i++) {
 						decryptedPayload.readByte();
 					}
-					BufferUtils.readRS2String(decryptedPayload); // settings
+					// settings
+					BufferUtils.readRS2String(decryptedPayload);
 					decryptedPayload.readInt();
 					for (int i = 0; i < 34; i++) {
 						decryptedPayload.readInt();
 					}
-					
 					// finished decoding
+					if (!credentialsAdmissible(username, password, session)) {
+						return null;
+					}
 					
+					// update session
 					session.setInLobby(true);
-					session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 					
-					Player player = new Player(name);
-					session.sync(player);
-					player.registerToLobby();
-					
+					// update decoder
 					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
+					
+					// send request to master server
+					MasterCommunication.write(new LoginRequestPacketOut(MCFlags.worldId, true, username, password, session.getUid()));
 					return session;
 				}
 				return session;
@@ -136,20 +141,22 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 					decryptedPayload.skipBytes(decryptedPayload.readByte() & 0xff);
 					
 					// finished decoding
+					if (!credentialsAdmissible(username, password, session)) {
+						return null;
+					}
 					
+					// update session
 					session.setInLobby(false);
 					session.getViewComponents().setScreenSizeMode(mode);
 					session.getViewComponents().setScreenSizeX(width);
 					session.getViewComponents().setScreenSizeY(height);
 					session.getViewComponents().setDisplayMode(displayMode);
-					session.write(new LoginResponseCodeBuilder(ReturnCode.SUCCESSFUL).build(null));
 					
-					Player player = new Player(username);
-					
-					session.sync(player);
-					player.register();
-					
+					// update decoder
 					ctx.getPipeline().replace("decoder", "decoder", new RS2GameDecoder(session));
+					
+					// send request to master server
+					MasterCommunication.write(new LoginRequestPacketOut(MCFlags.worldId, false, username, password, session.getUid()));
 					return null;
 				}
 				return session;
@@ -158,6 +165,19 @@ public final class RS2LoginDecoder extends ReplayingDecoder<LoginState> {
 			t.printStackTrace();
 		}
 		return session;
+	}
+	
+	private boolean credentialsAdmissible(String username, String password, NetworkSession session) {
+		if (username.length() > 12 || username.length() == 1 || password.length() >= 30) {
+			session.write(new LoginResponseCodeBuilder(ReturnCode.INVALID_CREDENTIALS).build(null));
+			return false;
+		}
+		if (!MasterCommunication.isConnected()) {
+			System.out.println("we aren't connected yo");
+			session.write(new LoginResponseCodeBuilder(ReturnCode.LOGIN_SERVER_OFFLINE).build(null));
+			return false;
+		}
+		return true;
 	}
 	
 }

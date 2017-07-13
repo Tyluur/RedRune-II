@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.player.render;
 
 import lombok.Getter;
 import lombok.Setter;
-import master.server.game.node.entity.player.render.flag.impl.*;
+import org.redrune.game.node.entity.player.render.flag.impl.*;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;

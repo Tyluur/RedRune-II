@@ -4,10 +4,10 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.redrune.game.node.entity.Entity;
 import org.jboss.netty.channel.Channel;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.Region;
@@ -533,6 +533,16 @@ public class Misc {
 		}
 	}
 	
+	/**
+	 * Writes text to the file
+	 *
+	 * @param file
+	 * 		The file
+	 * @param text
+	 * 		The text to write
+	 * @param append
+	 * 		If we should append text
+	 */
 	public static void writeTextToFile(String file, String text, boolean append) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, append))) {
 			writer.write(text);
@@ -592,6 +602,17 @@ public class Misc {
 			return null;
 		}
 		return Misc.getGSON().fromJson(Misc.getText(file.getAbsolutePath()), new TypeToken<K>() {
+		}.getType());
+	}
+	
+	/**
+	 * Loads a player from the file contents
+	 *
+	 * @param fileContents
+	 * 		The contents of the file
+	 */
+	public static Player loadPlayer(String fileContents) {
+		return Misc.getGSON().fromJson(fileContents, new TypeToken<Player>() {
 		}.getType());
 	}
 	

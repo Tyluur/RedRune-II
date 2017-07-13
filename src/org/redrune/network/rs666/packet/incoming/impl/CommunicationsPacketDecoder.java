@@ -92,7 +92,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		byte length = packet.readByte();
 		String message = BufferUtils.decompressHuffman(packet, length);
 		
-		//TODO: RS2MasterCommunication.writeMasterPacket(new ClientPrivateMessageBuilder(new ClientPrivateMessageContext(player.getNetworkSession().getUid(), player.getDetails().getUsername(), player.getDetails().getDominantRight().getClientRight(), name, message)).build());
+		player.getManager().getContacts().sendPrivateMessage(name, message);
 	}
 	
 	/**
