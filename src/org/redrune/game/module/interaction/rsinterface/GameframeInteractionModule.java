@@ -203,7 +203,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 	 * @param status
 	 * 		The status of the bar
 	 */
-	private void updateGameBar(Player player, AttributeKey bar, GameBarStatus status) {
+	public static void updateGameBar(Player player, AttributeKey bar, GameBarStatus status) {
 		player.getVariables().putAttribute(bar, status);
 		player.getManager().getInterfaces().sendGameBar();
 	}

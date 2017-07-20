@@ -1,7 +1,7 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.game.node.entity.Entity;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;

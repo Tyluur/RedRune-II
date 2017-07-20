@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.jboss.netty.channel.Channel;
+import io.netty.channel.Channel;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
@@ -24,6 +24,8 @@ import java.util.logging.Logger;
  * @since 5/18/2017
  */
 public class Misc {
+	
+	private static final char[] VALID_CHARS = { '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 	
 	/**
 	 * The gson instance
@@ -283,8 +285,8 @@ public class Misc {
 	}
 	
 	/**
-	 * Polls every element within the specified {@link Queue} and performs the specified {@link Consumer} event for
-	 * each element.
+	 * Polls every element within the specified {@link Queue} and performs the specified {@link Consumer} event for each
+	 * element.
 	 *
 	 * @param queue
 	 * 		The {@link Queue} to poll elements from. Must not be {@code null}.
@@ -400,17 +402,9 @@ public class Misc {
 	}
 	
 	/**
-	 * Gets the direction the player is facing from walking.
-	 * <ul>
-	 * <li>0 - southwest</li>
-	 * <li>1 - south</li>
-	 * <li>2 - southeast</li>
-	 * <li>3 - west</li>
-	 * <li>4 - east</li>
-	 * <li>5 - northwest</li>
-	 * <li>6 - north</li>
-	 * <li>7 - northeast</li>
-	 * </ul>
+	 * Gets the direction the player is facing from walking. <ul> <li>0 - southwest</li> <li>1 - south</li> <li>2 -
+	 * southeast</li> <li>3 - west</li> <li>4 - east</li> <li>5 - northwest</li> <li>6 - north</li> <li>7 -
+	 * northeast</li> </ul>
 	 *
 	 * @param dx
 	 * 		The delta x
@@ -446,17 +440,9 @@ public class Misc {
 	}
 	
 	/**
-	 * Gets the direction for the player to face, based on their running direction.
-	 * <ul>
-	 * <li>0 - southwest</li>
-	 * <li>1 - south</li>
-	 * <li>2 - southeast</li>
-	 * <li>3 - west</li>
-	 * <li>4 - east</li>
-	 * <li>5 - northwest</li>
-	 * <li>6 - north</li>
-	 * <li>7 - northeast</li>
-	 * </ul>
+	 * Gets the direction for the player to face, based on their running direction. <ul> <li>0 - southwest</li> <li>1 -
+	 * south</li> <li>2 - southeast</li> <li>3 - west</li> <li>4 - east</li> <li>5 - northwest</li> <li>6 - north</li>
+	 * <li>7 - northeast</li> </ul>
 	 *
 	 * @param dx
 	 * 		The delta x
@@ -678,7 +664,7 @@ public class Misc {
 	 * 		The channel
 	 */
 	public static String getIpAddress(Channel channel) {
-		return formatIp(channel.getRemoteAddress().toString());
+		return formatIp(channel.remoteAddress().toString());
 	}
 	
 	/**
@@ -782,6 +768,28 @@ public class Misc {
 			Optional<NPC> optional = npcs.stream().filter(npc -> npc.getDefinitions().getName().equalsIgnoreCase(name)).findFirst();
 			return optional.map(NPC::getId).orElse(defaultId);
 		}
+	}
+	
+	public static boolean invalidAccountName(String name) {
+		return name.length() < 2 || name.length() > 12 || name.startsWith("_") || name.endsWith("_") || name.contains("__") || containsInvalidCharacter(name);
+	}
+	
+	public static boolean containsInvalidCharacter(String name) {
+		for (char c : name.toCharArray()) {
+			if (containsInvalidCharacter(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean containsInvalidCharacter(char c) {
+		for (char vc : VALID_CHARS) {
+			if (vc == c) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }

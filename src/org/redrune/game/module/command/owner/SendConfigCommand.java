@@ -3,7 +3,7 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ConfigPacketBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -2,11 +2,10 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.cache.parse.BodyDataParser;
+import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.cache.parse.NPCDefinitionParser;
 
 /**
  * The appearance of the player.
@@ -63,7 +62,7 @@ public final class PlayerAppearance {
 	 */
 	public void setDefaultAppearance() {
 		this.look = new int[7];
-		this.bodyParts = new int[BodyDataParser.getBodyData().length];
+		this.bodyParts = new int[15];
 		this.colors = new int[10];
 		setLook(0, 1);
 		setLook(1, 10);

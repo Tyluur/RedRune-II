@@ -1,7 +1,7 @@
 package org.redrune.game.content.skills;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigFilePacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ConfigFilePacketBuilder;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**

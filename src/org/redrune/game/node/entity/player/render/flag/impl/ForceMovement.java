@@ -4,7 +4,7 @@ import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.world.packet.PacketBuilder;
 
 /**
  * Handles the force movement update flag.

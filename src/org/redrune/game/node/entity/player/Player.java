@@ -2,8 +2,6 @@ package org.redrune.game.node.entity.player;
 
 import lombok.Getter;
 import lombok.Setter;
-import master.client.packet.out.PlayerFilePacketOut;
-import master.utility.Utility;
 import org.redrune.core.SequencialUpdate;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
@@ -23,10 +21,13 @@ import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.World;
 import org.redrune.game.world.region.RegionManager;
-import org.redrune.network.master.MasterCommunication;
-import org.redrune.network.rs666.NetworkSession;
-import org.redrune.network.rs666.NetworkTransmitter;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.network.lobby.packet.outgoing.LobbyResponseBuilder;
+import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.client.packet.out.PlayerFilePacketOut;
+import org.redrune.network.master.utility.Utility;
+import org.redrune.network.world.Transmitter;
+import org.redrune.network.world.WorldSession;
+import org.redrune.network.world.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -87,13 +88,13 @@ public final class Player extends Entity {
 	 */
 	@Getter
 	@Setter
-	private transient NetworkSession networkSession;
+	private transient WorldSession session;
 	
 	/**
 	 * The network transmitter object
 	 */
 	@Getter
-	private transient NetworkTransmitter transmitter;
+	private transient Transmitter transmitter;
 	
 	/**
 	 * The render information object
@@ -139,8 +140,8 @@ public final class Player extends Entity {
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		RegionManager.updateEntityRegion(this);
 		
-		networkSession.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
-		networkSession.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
+		session.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
+		session.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
 		
 		System.out.println("Player registered to game:\t" + this);
 	}
@@ -148,12 +149,13 @@ public final class Player extends Entity {
 	@Override
 	public void deregister() {
 		setRenderable(false);
+		session.pushDisconnect(getWorld());
 		
-		World.get().removePlayer(this, false);
+		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
 		
-		System.out.println("Player deregistered from game:\t" + this);
+		System.out.println("Player de-registered from game:\t" + this);
 	}
 	
 	@Override
@@ -179,7 +181,7 @@ public final class Player extends Entity {
 		super.registerTransients();
 		
 		this.manager.registerTransients(this);
-		this.transmitter = new NetworkTransmitter(this);
+		this.transmitter = new Transmitter(this);
 		this.renderData = new PlayerRenderData(this);
 		
 		// actual player things
@@ -278,9 +280,8 @@ public final class Player extends Entity {
 	 */
 	public void registerToLobby() {
 		registerTransients();
-		World.get().getLobbyPlayers().add(this);
 		
-		networkSession.write(new LobbyResponseBuilder().build(this));
+		session.write(new LobbyResponseBuilder().build(this));
 		manager.getContacts().sendLogin();
 		System.out.println("Player registered to lobby:\t" + this);
 	}
@@ -346,11 +347,9 @@ public final class Player extends Entity {
 	}
 	
 	/**
-	 * Deregisters a player from the lobby
+	 * De-registers a player from the lobby
 	 */
 	public void deregisterLobby() {
-		World.get().removePlayer(this, true);
-		
 		System.out.println("Player deregistered from lobby:" + this);
 	}
 	
@@ -371,7 +370,7 @@ public final class Player extends Entity {
 	 */
 	public void setInFightArea(boolean inFightArea) {
 		variables.setInFightArea(inFightArea);
-		networkSession.write(new PlayerOptionPacketBuilder(inFightArea ? "Attack" : "null", true, 1).build(this));
+		session.write(new PlayerOptionPacketBuilder(inFightArea ? "Attack" : "null", true, 1).build(this));
 		//	TODO: getPackets().sendPlayerUnderNPCPriority(inFightArea);
 	}
 	

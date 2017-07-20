@@ -1,0 +1,46 @@
+# [Master Server Perfection] #
+1.  Login/Logout must be free from dupes and rollbacks [perhaps implement 30 seconds to login to the game from another world]
+2.  Master server has to update the status of your contact list on two occasions:
+	-   When you log in, you request the status of all the people on your friends. It sends them back [0,1,2]
+	-   When your friend updates their status, the world sends that data to the master server and all the people in both worlds with friends receive that update
+
+[Friends Chat]
+- Write about this after friends communication done
+
+# [PVM] #
+1.  Use all the npc data in json from HDPvP for npcs which do not need custom scripts
+	-   Rock crabs, baby blue dragons, that kind of shit
+2.   Use a formula for multi zone checking, for npcs not stacking on the same tile [i.e. you have rock crabs in a row ready to fight you]
+
+# [EXCHANGE] #
+1.  Trade system
+	-   We need an interaction system for trading
+		+   For requesting an interaction, we have to know what type of interaction it is
+			-   We will only support TRADE and DUEL in the beginning stages.
+		+   Requesting interactions can work like so
+			-   InteractionManager.requestInteraction(player, target, InteractionType.TRADE);
+				->  'player wishes to trade with you'
+				->  You have sent a trade request to player
+		+   This can work like so
+			player.startInteraction(target).setInteraction(new TradeInteraction(player, target));
+		+   To engage in interactions
+			player.startInteraction#Player target
+				{
+					if (player.getAttribute("target_requested_" + type.name() + ", null").equals(target)) {
+						Interaction interaction = attribute(target_requested);
+						interaction.start();
+				}
+		+   Interactions close on walk listeners
+		+   Interactions can be used for clan invitations, duel arena challenges,
+2.  Grand Exchange
+	-   This is completely player - player, but with some stock items so that it's simple enough
+	-   The code from hdpvp can be used - bug and dupe free.
+
+# [FORUM INTEGRATION]
+
+1.  Display names can be changed over the forums 31 days and will be 12 characters MAX. [DONOR ONLY]
+2.  Login password must be your forum password
+	-   Perhaps implement the Bcrypt hash checking to skip verifying passwords on each login attempt.
+3.  Account creation creates a forum account on the master server worker.
+	-   We should have a flag that notifies the player that their forum account was created for them on login during this process
+	-

@@ -2,7 +2,6 @@ package org.redrune.cache;
 
 import org.redrune.game.GameConstants;
 import org.redrune.utility.tool.Misc;
-import org.redrune.utility.rs.CacheFilestore;
 
 import java.util.logging.Logger;
 
@@ -24,8 +23,8 @@ public class Cache {
 	 */
 	public static void init() {
 		try {
-			CacheFilestore.init();
 			CacheManager.load(GameConstants.CACHE_PATH);
+			CacheFileStore.init();
 			logger.info("Cache loaded! [items=" + getAmountOfItems() + ", interfaces=" + getAmountOfInterfaces() + ", npcs=" + getAmountOfNpcs() + ", objects=" + getAmountOfObjects() + ", anims=" + getAmountOfAnimations() + ", graphics=" + getAmountOfGraphics() + "]");
 		} catch (Exception e) {
 			e.printStackTrace();

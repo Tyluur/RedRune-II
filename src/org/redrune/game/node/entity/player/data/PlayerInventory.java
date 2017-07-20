@@ -5,12 +5,12 @@ import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
-import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
+import org.redrune.network.world.packet.outgoing.impl.AccessMaskBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 import org.redrune.cache.Cache;
-import org.redrune.network.rs666.packet.outgoing.impl.ContainerPacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.ContainerUpdateBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ContainerPacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ContainerUpdateBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

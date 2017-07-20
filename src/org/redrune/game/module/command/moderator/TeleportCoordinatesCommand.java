@@ -4,7 +4,7 @@ import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.MessageBuilder;
+import org.redrune.network.world.packet.outgoing.impl.MessageBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.network.world.packet.outgoing.impl.*;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.tool.Misc;

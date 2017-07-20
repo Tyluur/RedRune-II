@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerNote;
-import org.redrune.network.rs666.packet.outgoing.impl.AccessMaskBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.CS2StringBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.ConfigPacketBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.InterfaceChangeBuilder;
+import org.redrune.network.world.packet.outgoing.impl.AccessMaskBuilder;
+import org.redrune.network.world.packet.outgoing.impl.CS2StringBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ConfigPacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.InterfaceChangeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

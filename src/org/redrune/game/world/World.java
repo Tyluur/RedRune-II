@@ -32,12 +32,6 @@ public final class World {
 	private final EntityList<Player> players = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
 	
 	/**
-	 * The list of all players in the lobby
-	 */
-	@Getter
-	private final EntityList<Player> lobbyPlayers = new EntityList<>(GameConstants.PLAYERS_LIMIT, true);
-	
-	/**
 	 * The {@code EntityList} of all npcs that exist.
 	 */
 	@Getter
@@ -101,12 +95,8 @@ public final class World {
 	 * @param player
 	 * 		The player to remove
 	 */
-	public void removePlayer(Player player, boolean lobby) {
-		if (!lobby) {
-			players.remove(player);
-		} else {
-			lobbyPlayers.remove(player);
-		}
+	public void removePlayer(Player player) {
+		players.remove(player);
 	}
 	
 	/**

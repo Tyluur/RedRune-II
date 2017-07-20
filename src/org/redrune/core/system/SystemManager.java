@@ -3,10 +3,8 @@ package org.redrune.core.system;
 import org.redrune.core.MajorUpdateWorker;
 import org.redrune.core.task.Scheduler;
 import org.redrune.core.task.impl.EnergyRestorationTask;
-import org.redrune.network.rs666.NetworkHandler;
+import org.redrune.game.GameFlags;
 import org.redrune.utility.backend.OutLogger;
-
-import java.io.IOException;
 
 /**
  * Manages all system operations.
@@ -39,16 +37,19 @@ public class SystemManager {
 	/**
 	 * Sets default system configuration values
 	 */
-	public static void setDefaults() {
+	public static void setDefaults(String[] args) {
+		if (args != null) {
+			GameFlags.debugMode = Boolean.parseBoolean(args[0]);
+			GameFlags.worldId = Byte.parseByte(args[1]);
+		}
 		System.setOut(new OutLogger(System.out));
 	}
 	
 	/**
 	 * Starts the worker
 	 */
-	public static void start() throws IOException {
+	public static void start() {
 		MAJOR_UPDATE_WORKER.start();
-		NetworkHandler.bind();
 		dumpTasks();
 		Runtime.getRuntime().addShutdownHook(FINALIZATION);
 	}

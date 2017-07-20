@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.npc.NPC;

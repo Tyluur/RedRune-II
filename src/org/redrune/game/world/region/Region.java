@@ -6,8 +6,8 @@ import lombok.Setter;
 import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.task.impl.FloorItemTask;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.FloorItemAdditionBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.ObjectAdditionBuilder;
+import org.redrune.network.world.packet.outgoing.impl.FloorItemAdditionBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ObjectAdditionBuilder;
 import org.redrune.utility.backend.MapKeyRepository;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.cache.parse.definition.ObjectDefinition;
@@ -19,13 +19,12 @@ import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.node.object.GameObject.ObjectType;
 import org.redrune.game.world.World;
-import org.redrune.network.rs666.packet.outgoing.impl.FloorItemRemovalBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.ObjectRemovalBuilder;
+import org.redrune.network.world.packet.outgoing.impl.FloorItemRemovalBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ObjectRemovalBuilder;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
-import org.redrune.utility.rs.CacheFilestore;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.utility.rs.constant.RegionConstants;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -163,17 +162,10 @@ public class Region {
 		int landArchiveId = 0;
 		byte[] landContainerData = new byte[0];
 		try {
-			landArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("l" + regionX + "_" + regionY);
-			landContainerData = landArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(landArchiveId, 0, MapKeyRepository.getKeys(regionId));
-			int mapArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("m" + (regionX + "_" + regionY));
-			byte[] mapContainerData = mapArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
-			
-			if (regionId == 9551) {
-				System.out.println("regionId=" + regionId);
-				System.out.println("\tlandArchiveId=" + landArchiveId + ", mapArchiveId=" + mapArchiveId);
-				System.out.println("\tmapContainerData=" + Arrays.toString(mapContainerData));
-				System.out.println("\tlandContainerData=" + Arrays.toString(landContainerData));
-			}
+			landArchiveId = CacheFileStore.STORE.getIndexes()[5].getArchiveId("l" + regionX + "_" + regionY);
+			landContainerData = landArchiveId == -1 ? null : CacheFileStore.STORE.getIndexes()[5].getFile(landArchiveId, 0, MapKeyRepository.getKeys(regionId));
+			int mapArchiveId = CacheFileStore.STORE.getIndexes()[5].getArchiveId("m" + (regionX + "_" + regionY));
+			byte[] mapContainerData = mapArchiveId == -1 ? null : CacheFileStore.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
 			byte[][][] mapSettings = mapContainerData == null ? null : new byte[4][64][64];
 			if (mapContainerData != null) {
 				InputStream mapStream = new InputStream(mapContainerData);

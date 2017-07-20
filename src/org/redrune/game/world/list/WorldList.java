@@ -1,7 +1,7 @@
 package org.redrune.game.world.list;
 
-import org.redrune.network.rs666.packet.Packet.PacketType;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.world.packet.Packet.PacketType;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.utility.rs.constant.WorldConstants;
 
 import java.util.ArrayList;

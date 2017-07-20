@@ -1,0 +1,3 @@
+[Friend Server]
+-   Exists on port z, simply for updating your status, sending messages, receiving amongst friends
+-   Also handles clan chats amongst different worlds

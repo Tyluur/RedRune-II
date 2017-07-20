@@ -48,6 +48,16 @@ public class EngineWorkingSet {
 	 * 		The js5 task.
 	 */
 	public static void submitJs5Work(Runnable runnable) {
+		CACHE_SERVICE_POOL.submit(runnable);
+	}
+	
+	/**
+	 * Executes work for the js5 worker
+	 *
+	 * @param runnable
+	 * 		The work
+	 */
+	public static void executeJS5Work(Runnable runnable) {
 		CACHE_SERVICE_POOL.execute(runnable);
 	}
 	

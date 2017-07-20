@@ -1,9 +1,10 @@
 package org.redrune.cache;
 
-import org.redrune.network.rs666.packet.PacketBuilder;
+import lombok.Setter;
 import org.redrune.cache.stream.RSByteArrayInputStream;
 import org.redrune.cache.stream.RSInputStream;
-import org.redrune.network.rs666.packet.Packet;
+import org.redrune.network.world.packet.Packet;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.utility.tool.BufferUtils;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class CacheManager {
 	
 	private static Object[][][] archiveFiles;
 	
+	@Setter
 	private static byte[] versionTable;
 	
 	public static void load(String path) throws Exception {
@@ -57,7 +59,7 @@ public class CacheManager {
 		mainFileBuffer.rewind();
 		byte[] mainFileData = new byte[bufferPosition];
 		mainFileBuffer.get(mainFileData).rewind().position(bufferPosition);
-		mainFileBuffer.put((byte) 10).put(Whirlpool.whirlpool(mainFileData, 5, mainFileData.length - 5));                                                                                // this
+		mainFileBuffer.put((byte) 10).put(Whirlpool.whirlpool(mainFileData, 5, mainFileData.length - 5));
 		versionTable = mainFileBuffer.array();
 	}
 	
@@ -86,8 +88,10 @@ public class CacheManager {
 		return fileStores[cache];
 	}
 	
-	public static Packet generateFile(int container, int file, int opcode) {
-		byte[] cacheFile = getFile(container, file);
+	// container = index
+	// file = archive
+	public static Packet generateFile(int indexId, int archiveId, int opcode) {
+		byte[] cacheFile = getFile(indexId, archiveId);
 		int compression = cacheFile[0] & 0xFF;
 		int length = BufferUtils.readInt(1, cacheFile);
 		int attributes = compression;
@@ -96,8 +100,8 @@ public class CacheManager {
 			attributes |= 0x80;
 		}
 		PacketBuilder outBuffer = new PacketBuilder();
-		outBuffer.writeByte((byte) container);
-		outBuffer.writeShort((short) file);
+		outBuffer.writeByte((byte) indexId);
+		outBuffer.writeShort((short) archiveId);
 		outBuffer.writeByte((byte) attributes);
 		outBuffer.writeInt(length);
 		int realLength = compression != 0 ? length + 4 : length;
@@ -110,6 +114,14 @@ public class CacheManager {
 		return outBuffer.toPacket();
 	}
 	
+	/**
+	 * Gets a file from the cache
+	 *
+	 * @param cache
+	 * 		The index
+	 * @param id
+	 * 		The file
+	 */
 	public static byte[] getFile(int cache, int id) {
 		if (cache == 255 && id == 255) {
 			return versionTable;

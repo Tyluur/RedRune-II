@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.network.world.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.GameBarStatus;
@@ -83,7 +83,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			sendInterface(179, 747);
 			sendInterface(14, 745);
 		}
-		switch (player.getNetworkSession().getViewComponents().getScreenSizeMode()) {
+		switch (player.getSession().getViewComponents().getScreenSizeMode()) {
 			case 0:
 			case 1:
 				break;
@@ -222,7 +222,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * If the player is using the fixed client mode.
 	 */
 	public boolean usingFixedMode() {
-		return player.getNetworkSession().getViewComponents().usingFixedMode();
+		return player.getSession().getViewComponents().usingFixedMode();
 	}
 	
 	/**

@@ -2,6 +2,9 @@ package org.redrune.utility.rs.constant;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/12/2017
@@ -42,10 +45,20 @@ public enum GameBarStatus {
 	 * The value to send for this status
 	 */
 	@Getter
-	private final int value;
+	private final byte value;
 	
 	GameBarStatus(int value) {
-		this.value = value;
+		this.value = (byte) value;
+	}
+	
+	/**
+	 * Finds the first game bar with the value we want
+	 *
+	 * @param value
+	 * 		The value
+	 */
+	public static Optional<GameBarStatus> byValue(byte value) {
+		return Arrays.stream(values()).filter(bar -> bar.value == value).findFirst();
 	}
 	
 }

@@ -32,7 +32,7 @@ Tree stumps
 	+	Login Request
 	+	Contacts
 		-	Friend List
-			+   Messaging
+			+   Messaging [TODO]
 				-   Message is sent to the master server, which then sends it to the right client
 			+   Status updating [TODO]
 				-   Status is sent to the master server, which then tells all the people who have the player on their friend list
@@ -47,3 +47,6 @@ Tree stumps
 		-	Messaging
 		-	Creation
 	+
+
+
+T

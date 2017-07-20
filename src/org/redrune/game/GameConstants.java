@@ -16,7 +16,7 @@ public interface GameConstants {
 	/**
 	 * The path of the cache
 	 */
-	String CACHE_PATH = "./data/cache/";
+	String CACHE_PATH = "./data/fs/";
 	
 	/**
 	 * The maximum amount of players allowed online

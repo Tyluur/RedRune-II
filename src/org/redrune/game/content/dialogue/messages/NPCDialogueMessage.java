@@ -4,8 +4,8 @@ import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.content.dialogue.DialogueMessage;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.InterfaceAnimationBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.InterfaceEntityBuilder;
+import org.redrune.network.world.packet.outgoing.impl.InterfaceAnimationBuilder;
+import org.redrune.network.world.packet.outgoing.impl.InterfaceEntityBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

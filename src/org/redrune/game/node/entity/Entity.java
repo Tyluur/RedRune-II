@@ -335,7 +335,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	/**
 	 * Gets the world the entity is on
 	 */
-	public int getWorld() {
+	public byte getWorld() {
 		return GameFlags.worldId;
 	}
 	

@@ -1,0 +1,2 @@
+Logging out from the world does not remove the character from the master server
+Game window scene packet changed?

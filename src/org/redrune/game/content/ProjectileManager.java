@@ -4,7 +4,7 @@ import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
-import org.redrune.network.rs666.packet.outgoing.impl.ProjectilePacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ProjectilePacketBuilder;
 import org.redrune.utility.rs.Projectile;
 
 import java.util.stream.Stream;

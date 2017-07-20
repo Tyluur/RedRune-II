@@ -6,6 +6,7 @@ import org.redrune.game.node.InitializingNodeList;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
+import org.redrune.utility.backend.SequentialService;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017
  */
-public final class SequencialUpdate {
+public final class SequencialUpdate implements SequentialService {
 	
 	/**
 	 * The players that are renderable
@@ -27,7 +28,8 @@ public final class SequencialUpdate {
 	/**
 	 * Starts the sequence
 	 */
-	void start() {
+	@Override
+	public void start() {
 		try {
 			SystemManager.getScheduler().pulse();
 			for (Player player : getRenderablePlayers()) {
@@ -51,7 +53,8 @@ public final class SequencialUpdate {
 	/**
 	 * Executes the updating part of the sequence
 	 */
-	void execute() {
+	@Override
+	public void execute() {
 		// the countdown latch, for sync'd decrement
 		final CountDownLatch latch = new CountDownLatch(getRenderablePlayers().size());
 		// loop thru the renderable
@@ -75,13 +78,14 @@ public final class SequencialUpdate {
 	/**
 	 * Finishes the sequence
 	 */
-	void end() {
+	@Override
+	public void end() {
 		try {
 			for (Player player : getRenderablePlayers()) {
 				player.getUpdateMasks().finish();
 				player.getRenderData().updateInformation();
 				player.getHitMap().getHitList().clear();
-				player.getNetworkSession().flushPackets();
+				player.getSession().flushPackets();
 			}
 			for (NPC npc : World.get().getNpcs()) {
 				if (npc == null || !npc.isRenderable()) {

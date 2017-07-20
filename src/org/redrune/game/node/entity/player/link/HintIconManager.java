@@ -3,7 +3,7 @@ package org.redrune.game.node.entity.player.link;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.rs666.packet.outgoing.impl.HintIconPacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.HintIconPacketBuilder;
 import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;

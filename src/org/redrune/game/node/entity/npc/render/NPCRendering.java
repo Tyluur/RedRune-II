@@ -2,13 +2,13 @@ package org.redrune.game.node.entity.npc.render;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.Region;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
 import org.redrune.game.world.region.RegionManager;
-import org.redrune.network.rs666.packet.Packet;
-import org.redrune.network.rs666.packet.Packet.PacketType;
-import org.redrune.network.rs666.packet.outgoing.OutgoingPacketBuilder;
+import org.redrune.network.world.packet.Packet;
+import org.redrune.network.world.packet.Packet.PacketType;
+import org.redrune.network.world.packet.outgoing.OutgoingPacketBuilder;
 
 import java.util.Iterator;
 import java.util.List;

@@ -1,13 +1,13 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
 import org.redrune.cache.parse.definition.NPCDefinition;
-import org.redrune.network.rs666.packet.PacketBuilder;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
-import org.redrune.network.rs666.packet.outgoing.impl.CS2ConfigBuilder;
+import org.redrune.network.world.packet.outgoing.impl.CS2ConfigBuilder;
 
 /**
  * Represents a player's appearance update flag.

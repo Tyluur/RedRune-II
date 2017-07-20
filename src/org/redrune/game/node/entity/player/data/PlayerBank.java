@@ -6,8 +6,7 @@ import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
-import org.redrune.network.rs666.packet.outgoing.impl.*;
+import org.redrune.network.world.packet.outgoing.impl.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

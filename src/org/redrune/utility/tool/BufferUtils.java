@@ -1,7 +1,7 @@
 package org.redrune.utility.tool;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.redrune.network.rs666.packet.Packet;
+import io.netty.buffer.ByteBuf;
+import org.redrune.network.world.packet.Packet;
 
 import java.nio.ByteBuffer;
 
@@ -68,7 +68,7 @@ public class BufferUtils {
 		buffer[index++] = (byte) val;
 	}
 	
-	public static void writeRS2String(ChannelBuffer buffer, String string) {
+	public static void writeRS2String(ByteBuf buffer, String string) {
 		buffer.writeBytes(string.getBytes());
 		buffer.writeByte((byte) 0);
 	}
@@ -78,20 +78,10 @@ public class BufferUtils {
 		buffer.put((byte) 0);
 	}
 	
-	public static String readJagString(ChannelBuffer buffer) {
-		buffer.readByte();
+	public static String readRS2String(ByteBuf buffer) {
 		StringBuilder sb = new StringBuilder();
 		byte b;
-		while (buffer.readable() && (b = buffer.readByte()) != 0) {
-			sb.append((char) b);
-		}
-		return sb.toString();
-	}
-	
-	public static String readRS2String(ChannelBuffer buffer) {
-		StringBuilder sb = new StringBuilder();
-		byte b;
-		while (buffer.readable() && (b = buffer.readByte()) != 0) {
+		while (buffer.isReadable() && (b = buffer.readByte()) != 0) {
 			sb.append((char) b);
 		}
 		return sb.toString();
@@ -310,7 +300,7 @@ public class BufferUtils {
 		return offset - position;
 	}
 	
-	public static int readableBytes(ChannelBuffer buffer) {
+	public static int readableBytes(ByteBuf buffer) {
 		return buffer.writerIndex() - buffer.readerIndex();
 	}
 	

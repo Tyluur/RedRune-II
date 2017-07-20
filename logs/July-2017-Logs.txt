@@ -1,3 +1,17 @@
+7/19/17 {
+	+   Converted networking to use netty 4 library
+		-   This came with addition of RSA & ISAAC encryption/decryption
+	+   Changed client src to a better 666 src
+	+  Added 'lobby server' to be the main connection server
+		-   'World server' support is easy and adding another world is as simple as pressing run
+		-   Each world no longer has their own lobby and we have one big lobby server
+	+   This might seem like small tasks but check the second photo for context as to how long it takes to do these things right
+		-   Credits to Walied for answers & support
+
+	[IMG]http://i.imgur.com/kYz6Ndt.png[/IMG]
+	[IMG]http://i.imgur.com/m2cJmM4.png[/IMG]
+}
+
 7/12/17 {
 	+   Progress continued on master server
 	+   Successfully integrated it into the real game server

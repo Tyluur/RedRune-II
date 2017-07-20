@@ -2,14 +2,17 @@ package org.redrune.game.node.entity.player.link.contact;
 
 import lombok.Getter;
 import lombok.Setter;
-import master.client.packet.out.PrivateMessageAttemptPacketOut;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.master.MasterCommunication;
-import org.redrune.network.rs666.packet.outgoing.impl.FriendsListBuilder;
-import org.redrune.network.rs666.packet.outgoing.impl.IgnoreListBuilder;
+import org.redrune.network.world.packet.outgoing.impl.FriendsListBuilder;
+import org.redrune.network.world.packet.outgoing.impl.IgnoreListBuilder;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.tool.Misc;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -41,13 +44,19 @@ public class ContactManager {
 	private transient Player player;
 	
 	/**
+	 * If we have unlocked the friends list yet. We must unlock it each time the player loads up.
+	 */
+	private transient boolean unlocked = false;
+	
+	/**
 	 * Handles the friend chat management when a user logs in
 	 */
 	public void sendLogin() {
-		friendList.add(new Contact("test"));
 		// unlocks the friends list
 		if (friendList.isEmpty()) {
 			player.getTransmitter().send(new FriendsListBuilder().build(player));
+			System.out.println("Sent empty friends list");
+			unlocked = true;
 		} else {
 			updateFriendList();
 		}
@@ -62,7 +71,7 @@ public class ContactManager {
 	 */
 	public void updateFriendList() {
 		// requests friends details from the login server
-		friendList.forEach(this::addToFriendsList);
+		friendList.forEach(this::requestFriendDetails);
 	}
 	
 	/**
@@ -76,7 +85,23 @@ public class ContactManager {
 	 * Shows the status of all my friends onto my friends list
 	 */
 	public void showMyFriendsStatus() {
+		// TODO:
+		System.out.println("ContactManager.showMyFriendsStatus");
+	/*	SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+			@Override
+			public void run() {
+				MasterCommunication.write(new StatusUpdatePacketOut(player.getDetails().getUsername(), getStatus()));
+			}
+		});*/
+	}
 	
+	/**
+	 * Sends our logout status
+	 */
+	public void sendFriendsLogoutStatus() {
+		// TODO:
+		System.out.println("ContactManager.sendFriendsLogoutStatus");
+		//MasterCommunication.write(new StatusUpdatePacketOut(player.getDetails().getUsername(), MasterConstants.OFFLINE_STATUS));
 	}
 	
 	/**
@@ -108,7 +133,7 @@ public class ContactManager {
 		}
 		Contact contact = new Contact(name);
 		friendList.add(contact);
-		addToFriendsList(contact);
+		requestFriendDetails(contact);
 	}
 	
 	/**
@@ -117,9 +142,48 @@ public class ContactManager {
 	 * @param contact
 	 * 		The contact
 	 */
-	private void addToFriendsList(Contact contact) {
-		player.getTransmitter().send(new FriendsListBuilder(contact.getUsername(), contact.getWorldId()).build(player));
-		//RS2MasterCommunication.writeMasterPacket(new ClientFriendRequestBuilder(new ClientFriendRequestContext(player.getNetworkSession().getUid(), name)).build());
+	private void requestFriendDetails(Contact contact) {
+		//MasterCommunication.write(new ContactDetailsRequestPacketOut(player.getNetworkSession().getUid(), player.getDetails().getUsername(), contact.getUsername()));
+	}
+	
+	/**
+	 * Updates details for a contact
+	 *
+	 * @param username
+	 * 		The username of the contact
+	 * @param worldId
+	 * 		The world id of the contact
+	 * @param status
+	 * 		The status of the contact
+	 */
+	public void updateContact(String username, byte worldId, byte status) {
+		// this removes the 'waiting for reply from friends server'
+		// must be sent before anything else
+/*		if (!unlocked) {
+			System.err.println("Unlocked friends list!");
+			player.getTransmitter().send(new FriendsListBuilder().build(player));
+			unlocked = true;
+		}
+		
+		final boolean online = status != MasterConstants.OFFLINE_STATUS;
+		final int clanRank = getClanRank(username);
+		
+		if (worldId == GameConstants.LOBBY_WORLD_ID) {
+			player.getTransmitter().send(new FriendsListBuilder(username, "", worldId, clanRank, true, true, online).build(player));
+		} else {
+			player.getTransmitter().send(new FriendsListBuilder(username, "", worldId, clanRank, true, false, online).build(player));
+		}*/
+	}
+	
+	/**
+	 * Gets the rank of a contact in our settings
+	 *
+	 * @param username
+	 * 		The name of the contact
+	 */
+	public int getClanRank(String username) {
+		// TODO modifying ranks in the interface
+		return 0;
 	}
 	
 	/**
@@ -131,7 +195,9 @@ public class ContactManager {
 	 * 		The message we want to send
 	 */
 	public void sendPrivateMessage(String name, String message) {
-		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), (byte) player.getDetails().getDominantRight().getClientRight(), name, message));
+		// TODO
+		System.out.println("ContactManager.sendPrivateMessage");
+//		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), (byte) player.getDetails().getDominantRight().getClientRight(), name, message));
 	}
 	
 	/**
@@ -193,4 +259,20 @@ public class ContactManager {
 		return false;
 	}
 	
+	/**
+	 * Gets the current status of the player
+	 */
+	public byte getStatus() {
+		Object barStatus = player.getVariables().getAttribute(AttributeKey.PRIVATE, GameBarStatus.ON);
+		GameBarStatus status = GameBarStatus.ON;
+		if (barStatus != null) {
+			if (barStatus.getClass().equals(String.class)) {
+				status = GameBarStatus.valueOf(barStatus.toString());
+			} else {
+				status = (GameBarStatus) barStatus;
+			}
+		}
+		System.out.println("The status we have for " + player + " is " + status + " [" + status.getValue() + "]");
+		return status.getValue();
+	}
 }

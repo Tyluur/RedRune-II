@@ -16,6 +16,6 @@ public class GameFlags {
 	/**
 	 * The id of the world that will be ran
 	 */
-	public static int worldId;
+	public static byte worldId;
 	
 }

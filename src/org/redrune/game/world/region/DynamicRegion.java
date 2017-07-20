@@ -8,7 +8,7 @@ import org.redrune.utility.backend.MapKeyRepository;
 import org.redrune.utility.rs.constant.RegionConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.object.GameObject;
-import org.redrune.utility.rs.CacheFilestore;
+import org.redrune.cache.CacheFileStore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,10 +99,10 @@ public class DynamicRegion extends Region {
 		
 		int mapID = (renderChunkX >> 3) << 8 | (renderChunkY >> 3);
 		final int[] keys = MapKeyRepository.getKeys(mapID);
-		int landArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("l" + (mapID >> 8) + "_" + (mapID & 0xFF));
-		int mapArchiveId = CacheFilestore.STORE.getIndexes()[5].getArchiveId("m" + (mapID >> 8) + "_" + (mapID & 0xFF));
-		byte[] mapContainerData = mapArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
-		byte[] landContainerData = landArchiveId == -1 ? null : CacheFilestore.STORE.getIndexes()[5].getFile(landArchiveId, 0, keys);
+		int landArchiveId = CacheFileStore.STORE.getIndexes()[5].getArchiveId("l" + (mapID >> 8) + "_" + (mapID & 0xFF));
+		int mapArchiveId = CacheFileStore.STORE.getIndexes()[5].getArchiveId("m" + (mapID >> 8) + "_" + (mapID & 0xFF));
+		byte[] mapContainerData = mapArchiveId == -1 ? null : CacheFileStore.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
+		byte[] landContainerData = landArchiveId == -1 ? null : CacheFileStore.STORE.getIndexes()[5].getFile(landArchiveId, 0, keys);
 		byte[][][] mapSettings = mapContainerData == null ? null : new byte[4][64][64];
 		
 		

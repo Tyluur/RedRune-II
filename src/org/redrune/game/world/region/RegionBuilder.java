@@ -3,7 +3,7 @@ package org.redrune.game.world.region;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.AttributeKey;
-import org.redrune.utility.rs.CacheFilestore;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.utility.rs.RegionUtils;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public final class RegionBuilder {
 	public static void init() {
 		for (int mapX = 0; mapX < MAX_REGION_X; mapX++) {
 			for (int mapY = 0; mapY < MAX_REGION_Y; mapY++) {
-				if (CacheFilestore.STORE.getIndexes()[5].getArchiveId("m" + mapX + "_" + mapY) != -1) {
+				if (CacheFileStore.STORE.getIndexes()[5].getArchiveId("m" + mapX + "_" + mapY) != -1) {
 					EXISTING_MAPS.add(RegionUtils.encode(RegionUtils.Structure.REGION, mapX, mapY, 0));
 				}
 			}
