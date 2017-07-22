@@ -1,0 +1,101 @@
+{
+  "drops": [],
+  "bonuses": {
+    "2737": [
+      40,
+      0,
+      0,
+      0,
+      0,
+      45,
+      47,
+      50,
+      70,
+      70
+    ],
+    "2738": [
+      20,
+      0,
+      0,
+      0,
+      0,
+      23,
+      24,
+      25,
+      35,
+      35
+    ]
+  },
+  "combatDefinitions": {
+    "2629": {
+      "hitpoints": 200,
+      "attackAnim": 9233,
+      "defenceAnim": 9235,
+      "deathAnim": 9234,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 75,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "2630": {
+      "hitpoints": 200,
+      "attackAnim": 9233,
+      "defenceAnim": 9235,
+      "deathAnim": 9234,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 75,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "2736": {
+      "hitpoints": 200,
+      "attackAnim": 9233,
+      "defenceAnim": 9235,
+      "deathAnim": 9234,
+      "attackDelay": 5,
+      "deathDelay": 2,
+      "respawnDelay": 60,
+      "maxHit": 75,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 1
+    },
+    "2737": {
+      "hitpoints": 200,
+      "attackAnim": 9233,
+      "defenceAnim": 9235,
+      "deathAnim": 9234,
+      "attackDelay": 5,
+      "deathDelay": 2,
+      "respawnDelay": 60,
+      "maxHit": 75,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "2738": {
+      "hitpoints": 100,
+      "attackAnim": 9233,
+      "defenceAnim": 9235,
+      "deathAnim": 9234,
+      "attackDelay": 5,
+      "deathDelay": 2,
+      "respawnDelay": 60,
+      "maxHit": 75,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    }
+  }
+}

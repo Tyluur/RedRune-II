@@ -52,7 +52,17 @@ public class ActivityManager {
 	 * 		The option
 	 */
 	public boolean handleNodeInteraction(Node node, InteractionOption option) {
-		return activity != null && activity.handleNodeInteraction(node, option);
+		// we don't have an activity, so we assume we can do the interaction
+		if (activity == null) {
+			return true;
+		}
+		// if an activity customly handles the option it will be true
+		if (activity.handleNodeInteraction(node, option)) {
+			return true;
+		}
+		// we must not have an activity, and the activity must not have
+		// handled the option. thus we should be able to use the option
+		return true;
 	}
 	
 	/**

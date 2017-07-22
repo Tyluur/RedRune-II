@@ -1,0 +1,50 @@
+{
+  "drops": [
+    {
+      "itemId": 526,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 100.0
+    },
+    {
+      "itemId": 237,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 100.0
+    },
+    {
+      "itemId": 1523,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 61.0
+    }
+  ],
+  "bonuses": {},
+  "combatDefinitions": {},
+  "charmDrops": [
+    {
+      "itemId": 12158,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 0.3
+    },
+    {
+      "itemId": 12159,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 0.2
+    },
+    {
+      "itemId": 12160,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 0.1
+    },
+    {
+      "itemId": 12163,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 0.05
+    }
+  ]
+}

@@ -95,7 +95,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 		int itemId = (int) params[0];
 		int combatStyle = (int) params[1];
 		int damage = (int) params[2];
-		int blockEmote = target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1; // TODO: npc block emotes
+		int blockEmote = StaticCombatFormulae.getDefenceEmote(target);
 		
 		if (damage > 0) {
 			int xpSlot = StaticCombatFormulae.getXpStyle(itemId, combatStyle);

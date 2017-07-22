@@ -21,8 +21,8 @@ public class MCBootstrap {
 		if (args.length == 0) {
 			throw new IllegalStateException("Arguments must be: { worldId, }");
 		}
-		SystemManager.setDefaults(null);
 		try {
+			SystemManager.setDefaults(null);
 			MCFlags.worldId = Byte.parseByte(args[0]);
 			MCNetworkSystem system = new MCNetworkSystem(MCFlags.worldId);
 			system.connect();

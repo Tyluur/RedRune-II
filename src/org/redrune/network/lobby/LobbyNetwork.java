@@ -8,8 +8,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.redrune.core.system.SystemManager;
 import org.redrune.network.NetworkConstants;
-import org.redrune.network.download.DownloadNetwork;
 import org.redrune.network.lobby.channel.LobbyChannelInitializer;
+import org.redrune.network.lobby.packet.incoming.WorldRequestPacketDecoder;
+import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
 import org.redrune.utility.tool.Misc;
 
 import java.util.logging.Logger;
@@ -21,9 +22,14 @@ import java.util.logging.Logger;
 public class LobbyNetwork {
 	
 	/**
+	 * The instance of the packet repository
+	 */
+	public static final IncomingPacketRepository PACKET_REPOSITORY = new IncomingPacketRepository(WorldRequestPacketDecoder.class.getPackage().getName());
+	
+	/**
 	 * The instance of the logger
 	 */
-	private static final Logger LOGGER = Misc.constructLogger(DownloadNetwork.class);
+	private static final Logger LOGGER = Misc.constructLogger(LobbyNetwork.class);
 	
 	/**
 	 * Binds the lobby port

@@ -1,7 +1,6 @@
 package org.redrune.network.master.server;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.redrune.network.master.MasterConstants;
 
 /**
@@ -28,13 +27,6 @@ public final class MSPlayer implements MasterConstants {
 	@Getter
 	private final String uid;
 	
-	/**
-	 * The friends status of the player
-	 */
-	@Getter
-	@Setter
-	private byte status = ONLINE_STATUS;
-	
 	public MSPlayer(String username, String uid, byte worldId) {
 		this.username = username;
 		this.uid = uid;
@@ -43,6 +35,7 @@ public final class MSPlayer implements MasterConstants {
 	
 	@Override
 	public String toString() {
-		return "MSPlayer{" + "username='" + username + '\'' + ", status=" + status + '}';
+		return "MSPlayer{" + "username='" + username + '\'' + ", worldId=" + worldId + ", uid='" + uid + '\'' + '}';
 	}
+	
 }

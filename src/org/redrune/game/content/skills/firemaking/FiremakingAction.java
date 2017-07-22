@@ -51,7 +51,7 @@ public class FiremakingAction implements Action {
 		// nor add another floor item
 		if (!ground) {
 			player.getInventory().deleteItem(fire.getLogId(), 1);
-			RegionManager.addFloorItem(fire.getLogId(), 1, 180, player.getLocation(), player.getDetails().getUsername());
+			RegionManager.addFloorItem(fire.getLogId(), 1, 200, player.getLocation(), player.getDetails().getUsername());
 		}
 		
 		Long time = player.removeAttribute("Fire");

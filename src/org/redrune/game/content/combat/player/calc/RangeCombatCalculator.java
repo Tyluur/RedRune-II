@@ -3,10 +3,10 @@ package org.redrune.game.content.combat.player.calc;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatTypeCalculator;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -42,19 +42,24 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 	
 	@Override
 	public double totalDefensiveBoost(Entity entity, Object... params) {
+		int style = (int) params[0];
+		int styleBonus = (style == 2 ? 1 : style == 3 ? 3 : 0);
+		int defenceLevel;
+		int bonus;
+		double prayer;
 		if (entity.isPlayer()) {
 			Player player = entity.toPlayer();
-			int style = (int) params[0];
-			int styleBonus = (style == 2 ? 1 : style == 3 ? 3 : 0);
-			int level = player.getSkills().getLevel(DEFENCE);
-			double prayer = player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
-			double effective = Math.floor((level * prayer) + styleBonus);
-			int equipment = player.getEquipment().getBonus(BonusConstants.RANGE_DEFENCE);
-			return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
+			defenceLevel = player.getSkills().getLevel(DEFENCE);
+			prayer = player.getManager().getPrayers().getBasePrayerBoost(DEFENCE);
+			bonus = player.getEquipment().getBonus(RANGE_DEFENCE);
 		} else {
-			// TODO: entity defense bonuses
-			return 0;
+			NPC npc = entity.toNPC();
+			defenceLevel = npc.getDefinitions().getCombatLevel() / 2;
+			prayer = 1.0;
+			bonus = npc.getBonus(RANGE_DEFENCE);
 		}
+		double effective = Math.floor((defenceLevel * prayer) + styleBonus);
+		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
 	}
 	
 	@Override

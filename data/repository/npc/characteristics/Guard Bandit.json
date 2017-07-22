@@ -1,0 +1,86 @@
+{
+  "drops": [
+    {
+      "itemId": 526,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 100.0
+    },
+    {
+      "itemId": 995,
+      "minAmount": 88,
+      "maxAmount": 88,
+      "rate": 1.0
+    },
+    {
+      "itemId": 453,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 76.0
+    },
+    {
+      "itemId": 555,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 1.0
+    },
+    {
+      "itemId": 1617,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 62.0
+    },
+    {
+      "itemId": 211,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 57.0
+    },
+    {
+      "itemId": 1177,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 95.0
+    },
+    {
+      "itemId": 563,
+      "minAmount": 1,
+      "maxAmount": 2,
+      "rate": 1.0
+    },
+    {
+      "itemId": 560,
+      "minAmount": 1,
+      "maxAmount": 2,
+      "rate": 1.0
+    }
+  ],
+  "bonuses": {},
+  "combatDefinitions": {},
+  "charmDrops": [
+    {
+      "itemId": 12158,
+      "minAmount": 1,
+      "maxAmount": 2,
+      "rate": 0.3
+    },
+    {
+      "itemId": 12159,
+      "minAmount": 1,
+      "maxAmount": 2,
+      "rate": 0.2
+    },
+    {
+      "itemId": 12160,
+      "minAmount": 1,
+      "maxAmount": 2,
+      "rate": 0.1
+    },
+    {
+      "itemId": 12163,
+      "minAmount": 1,
+      "maxAmount": 2,
+      "rate": 0.05
+    }
+  ]
+}

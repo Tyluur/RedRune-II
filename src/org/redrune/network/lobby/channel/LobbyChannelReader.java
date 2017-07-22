@@ -6,9 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.NetworkConstants;
+import org.redrune.network.lobby.LobbyNetwork;
 import org.redrune.network.world.WorldSession;
 import org.redrune.network.world.packet.Packet;
-import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
 
 import static org.redrune.network.NetworkConstants.IGNORED_EXCEPTIONS;
 
@@ -28,7 +28,7 @@ public class LobbyChannelReader extends SimpleChannelInboundHandler<Packet> {
 		if (player == null) {
 			return;
 		}
-		IncomingPacketRepository.handlePacket(player, msg);
+		LobbyNetwork.PACKET_REPOSITORY.handlePacket(player, msg);
 	}
 	
 	@Override

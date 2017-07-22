@@ -11,8 +11,8 @@ import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.PlayerCombatDefinitions;
 import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
@@ -84,6 +84,12 @@ public final class Player extends Entity {
 	private final PlayerVariables variables;
 	
 	/**
+	 * The combat definitions of the entity. These are saved
+	 */
+	@Getter
+	private final PlayerCombatDefinitions combatDefinitions = new PlayerCombatDefinitions();
+	
+	/**
 	 * The networkSession attached to the player
 	 */
 	@Getter
@@ -149,7 +155,7 @@ public final class Player extends Entity {
 	@Override
 	public void deregister() {
 		setRenderable(false);
-		session.pushDisconnect(getWorld());
+		session.notifyDisconnection(getWorld());
 		
 		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
@@ -184,11 +190,12 @@ public final class Player extends Entity {
 		this.transmitter = new Transmitter(this);
 		this.renderData = new PlayerRenderData(this);
 		
-		// actual player things
+		// actual player objects
 		this.skills.setPlayer(this);
 		this.equipment.setPlayer(this);
 		this.inventory.setPlayer(this);
 		this.bank.setPlayer(this);
+		this.combatDefinitions.setPlayer(this);
 	}
 	
 	@Override
@@ -231,6 +238,9 @@ public final class Player extends Entity {
 	
 	@Override
 	public void tick() {
+		if (isDead() && isDying()) {
+			return;
+		}
 		super.tick();
 		checkInteractionTask();
 		manager.getActions().process();
@@ -242,10 +252,14 @@ public final class Player extends Entity {
 	@Override
 	public void receiveHit(Hit hit) {
 		// only hitsplats we care about are combat ones
-		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE && hit.getSplat() != HitSplat.MISSED) {
+		if (!hit.getSplat().isDefaultCombatSplat()) {
 			return;
 		}
 		StaticCombatFormulae.autoRetaliate(hit.getSource(), this);
+		// adjust hit so we don't hit too high
+		if (hit.getDamage() > getHealthPoints()) {
+			hit.setDamage(getHealthPoints());
+		}
 		// prayers handle the hit first
 		manager.getPrayers().handleHit(hit);
 		// absorption after prayer so the actual hit isn't affected

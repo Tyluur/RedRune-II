@@ -53,7 +53,7 @@ public class InputDevicePacketDecoder implements IncomingPacketDecoder {
 			short screenClickX = (short) (positionData >> 16);
 			short screenClickY = (short) (positionData & 0xFFFF);
 		} else if (opcode == MOUSE_MOTION) {
-			packet.readByte();
+//			packet.readByte();
 		} else if (opcode == KEYPRESS) {
 			while (packet.remaining() >= 3) {
 				byte keyId = packet.readByte();

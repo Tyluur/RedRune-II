@@ -1,8 +1,6 @@
 package org.redrune.game.node.entity;
 
 import lombok.Getter;
-import org.redrune.utility.AttributeKey;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.npc.NPC;
@@ -12,6 +10,8 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.strategy.EntityStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.tool.Misc;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -91,18 +91,19 @@ public class EntityMovement {
 						entity.putAttribute("direction", Misc.getFaceDirection(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]));
 					}
 				}
-				entity.toPlayer().getTransmitter().refreshRunOrbStatus();
+				if (entity.isPlayer()) {
+					entity.toPlayer().getTransmitter().refreshRunOrbStatus();
+				}
 			}
 		}
 		RegionManager.updateEntityRegion(entity);
-		if (entity.needsMapUpdate()) {
+		if (entity.isPlayer() && entity.needsMapUpdate()) {
 			entity.loadMapRegions();
 		}
 	}
 	
 	/**
-	 * Checks if the player is teleporting, if so does the teleporting and
-	 * returns true.
+	 * Checks if the player is teleporting, if so does the teleporting and returns true.
 	 *
 	 * @return {@code True} if the player is teleporting, {@code false} if not.
 	 */
@@ -510,7 +511,8 @@ public class EntityMovement {
 	}
 	
 	/**
-	 * Finds a basic route to an entity, this doesn't take into consideration any objects, it is a straight path to the target
+	 * Finds a basic route to an entity, this doesn't take into consideration any objects, it is a straight path to the
+	 * target
 	 *
 	 * @param source
 	 * 		The base entity
@@ -582,7 +584,9 @@ public class EntityMovement {
 	}
 	
 	public boolean canWalkNPC(int toX, int toY, boolean checkUnder) {
-		// TODO if (!isAtMultiArea())return true
+		if (!entity.isAtMultiArea()) {
+			return true;
+		}
 		int size = entity.getSize();
 		for (int regionId : entity.getMapRegionsIds()) {
 			CopyOnWriteArraySet<NPC> npcIndexes = RegionManager.getRegion(regionId).getNpcs();

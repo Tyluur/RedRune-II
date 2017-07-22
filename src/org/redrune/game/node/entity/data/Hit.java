@@ -40,7 +40,6 @@ public class Hit {
 	 * The amount of damage to be dealt
 	 */
 	@Getter
-	@Setter
 	private int damage;
 	
 	/**
@@ -156,6 +155,23 @@ public class Hit {
 			this.setMark(mark);
 		}
 		
+		public boolean isDefaultCombatSplat() {
+			return this == MELEE_DAMAGE || this == RANGE_DAMAGE || this == MAGIC_DAMAGE || this == MISSED;
+		}
+	}
+	
+	/**
+	 * Sets the damage
+	 *
+	 * @param damage
+	 * 		The damage
+	 */
+	public void setDamage(int damage) {
+		this.damage = damage;
+		// update the splat
+		if (damage <= 0) {
+			setSplat(HitSplat.MISSED);
+		}
 	}
 	
 	/**

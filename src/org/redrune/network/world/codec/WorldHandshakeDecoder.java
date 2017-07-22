@@ -17,21 +17,20 @@ public class WorldHandshakeDecoder extends ByteToMessageDecoder {
 	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		if (!in.isReadable()) {
-			return;
-		}
+		// remove this first from the pipeline
 		final ChannelPipeline pipeline = ctx.pipeline().remove(this);
-		
+		// the opcode to transfer handshake
 		int opcode = in.readByte() & 0xFF;
+		// the builder we will write to
 		PacketBuilder builder = new PacketBuilder();
+		// we only care about login requests in the world
 		if (opcode == NetworkConstants.LOGIN_REQUEST) {
 			builder.writeByte(0);
+			// transfer the decoder over to the world login
 			pipeline.addBefore("handler", "decoder", new WorldLoginDecoder());
 		} else {
 			System.out.println("Received unhandled opcode: " + opcode);
 		}
-		
 		ctx.writeAndFlush(builder.getBuffer());
-		
 	}
 }

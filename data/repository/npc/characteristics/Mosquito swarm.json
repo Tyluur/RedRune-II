@@ -1,0 +1,12 @@
+{
+  "drops": [
+    {
+      "itemId": 6319,
+      "minAmount": 1,
+      "maxAmount": 5,
+      "rate": 100.0
+    }
+  ],
+  "bonuses": {},
+  "combatDefinitions": {}
+}

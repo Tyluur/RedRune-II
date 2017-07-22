@@ -22,6 +22,10 @@ public enum AttributeKey {
 	
 	FROZEN_BY,
 	
+	ATTACKED_BY,
+	
+	ATTACKED_BY_DELAY,
+	
 	LAST_TIME_HIT,
 	
 	LAST_DIALOGUE_MESSAGE,
@@ -64,4 +68,5 @@ public enum AttributeKey {
 	CLAN,
 	TRADE,
 	ASSIST;
+	
 }

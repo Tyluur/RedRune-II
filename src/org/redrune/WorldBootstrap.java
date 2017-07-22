@@ -1,6 +1,6 @@
 package org.redrune;
 
-import org.redrune.game.GameServer;
+import org.redrune.game.world.World;
 import org.redrune.utility.tool.Misc;
 
 import java.util.logging.Level;
@@ -19,11 +19,6 @@ public class WorldBootstrap {
 	 */
 	private static final Logger LOGGER = Misc.constructLogger(WorldBootstrap.class);
 	
-	/**
-	 * The instance of the rs2 server
-	 */
-	private static GameServer instance;
-	
 	private WorldBootstrap() {
 	
 	}
@@ -36,30 +31,14 @@ public class WorldBootstrap {
 	 */
 	public static void main(String[] args) {
 		try {
-			GameServer server = get(args);
-			server.start();
-			server.execute();
-			server.end();
+			// create a new world
+			World world = World.create(args);
+			// runs the procedure
+			world.run();
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "Unexpected error on initialization", e);
 			System.exit(0);
 		}
 	}
 	
-	/**
-	 * Gets the singleton instance
-	 *
-	 * @param args
-	 * 		The arguments if we must create it
-	 */
-	public static GameServer get(String[] args) {
-		if (instance == null) {
-			synchronized (GameServer.class) {
-				if (instance == null) {
-					instance = new GameServer(args);
-				}
-			}
-		}
-		return instance;
-	}
 }

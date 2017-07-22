@@ -48,7 +48,7 @@ public class ItemDropEvent extends ItemEvent {
 		// otherwise we just delete the item
 		player.getInventory().deleteItem(context.getSlotId(), item);
 		// and the item is added to the floor
-		RegionManager.addFloorItem(item.getId(), item.getAmount(), 180, player.getLocation(), player.getDetails().getUsername());
+		RegionManager.addFloorItem(item.getId(), item.getAmount(), 200, player.getLocation(), player.getDetails().getUsername());
 	}
 	
 }

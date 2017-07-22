@@ -2,9 +2,8 @@ package org.redrune.game.content.combat.player.calc;
 
 import org.redrune.game.content.combat.player.CombatTypeCalculator;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.rs.constant.BonusConstants;
-import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -15,33 +14,45 @@ public class MagicCombatCalculator implements CombatTypeCalculator {
 	@Override
 	public double totalAggressiveBoost(Player player, Object... params) {
 		// the prayer level bonus
-		final int level = player.getSkills().getLevel(SkillConstants.MAGIC);
+		final int level = player.getSkills().getLevel(MAGIC);
 		// the prayer bonus
-		final double prayer = player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.MAGIC);
+		final double prayer = player.getManager().getPrayers().getBasePrayerBoost(MAGIC);
 		// the calculated boost
 		double effective = Math.floor(level * prayer);
 		// the bonus from your equipment
-		int bonus = player.getEquipment().getBonus(BonusConstants.MAGIC_ATTACK);
+		int bonus = player.getEquipment().getBonus(MAGIC_ATTACK);
 		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
 	}
 	
 	@Override
 	public double totalDefensiveBoost(Entity entity, Object... params) {
+		// the targets defence level
+		int defenceLevel;
+		// the targets magic level
+		int magicLevel;
+		// the targets prayer boost
+		double prayer;
+		// the targets magic defence bonus
+		double bonus;
 		if (entity.isPlayer()) {
-			Player p2 = entity.toPlayer();
-			// the targets defence level
-			int level = p2.getSkills().getLevel(SkillConstants.DEFENCE);
-			// the targets prayer boost
-			double prayer = entity.toPlayer().getManager().getPrayers().getBasePrayerBoost(SkillConstants.MAGIC);
-			// the effective calculation
-			double effective = Math.floor((level * prayer) * 0.3) + (p2.getSkills().getLevel(SkillConstants.MAGIC) * 0.7);
-			// the equipment calculation [based on magic defence]
-			int equipment = p2.getEquipment().getBonus(BonusConstants.MAGIC_DEFENCE) + 5;
-			return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
+			Player player = entity.toPlayer();
+			defenceLevel = player.getSkills().getLevel(DEFENCE);
+			magicLevel = player.getSkills().getLevel(MAGIC);
+			prayer = entity.toPlayer().getManager().getPrayers().getBasePrayerBoost(MAGIC);
+			bonus = player.getEquipment().getBonus(MAGIC_DEFENCE);
 		} else {
-			// TODO npc defense bonus
-			return 0;
+			NPC npc = entity.toNPC();
+			int combatLevel = npc.getDefinitions().getCombatLevel();
+			defenceLevel = combatLevel / 2;
+			magicLevel = combatLevel / 2;
+			prayer = 1.0;
+			bonus = npc.getBonus(MAGIC_DEFENCE);
 		}
+		// the effective calculation
+		double effective = Math.floor((defenceLevel * prayer) * 0.3) + (magicLevel * 0.7);
+		// the equipment calculation [based on magic defence]
+		int equipment = (int) (bonus + 5);
+		return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
 	}
 	
 	/**

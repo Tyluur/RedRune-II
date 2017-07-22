@@ -1,16 +1,44 @@
 package org.redrune.game.world;
 
+import com.google.common.base.Stopwatch;
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.Cache;
+import org.redrune.cache.parse.BodyDataParser;
+import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.core.boot.BootHandler;
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameConstants;
+import org.redrune.game.GameFlags;
+import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.combat.player.CombatRegistry;
+import org.redrune.game.content.dialogue.DialogueRepository;
+import org.redrune.game.content.event.EventRepository;
+import org.redrune.game.content.market.shop.ShopRepository;
+import org.redrune.game.module.ModuleRepository;
+import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.EntityList;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.region.RegionBuilder;
+import org.redrune.game.world.region.RegionDeletion;
+import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.world.WorldNetwork;
+import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
+import org.redrune.network.world.packet.incoming.impl.WalkPacketDecoder;
+import org.redrune.utility.backend.MapKeyRepository;
+import org.redrune.utility.backend.SequentialService;
+import org.redrune.utility.backend.UnexpectedArgsException;
+import org.redrune.utility.repository.item.ItemRepository;
+import org.redrune.utility.repository.npc.combat.NPCCombatSwingRepository;
 import org.redrune.utility.repository.npc.spawn.NPCSpawn;
+import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Contains all the collections and data to handle a world.
@@ -18,12 +46,17 @@ import java.util.Optional;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
-public final class World {
+public final class World implements SequentialService {
 	
 	/**
 	 * The world singleton
 	 */
 	private static World singleton = null;
+	
+	/**
+	 * The id of the world
+	 */
+	private final byte id;
 	
 	/**
 	 * The list of all players in the world
@@ -38,6 +71,28 @@ public final class World {
 	private final EntityList<NPC> npcs = new EntityList<>(GameConstants.NPCS_LIMIT, false);
 	
 	/**
+	 * The instance of the packet repository
+	 */
+	@Getter
+	private final IncomingPacketRepository packetRepository = new IncomingPacketRepository(WalkPacketDecoder.class.getPackage().getName());
+	
+	/**
+	 * The logger instance
+	 */
+	private final Logger logger = Misc.constructLogger(World.class);
+	
+	/**
+	 * The instance of the stopwatch
+	 */
+	@Getter
+	private final Stopwatch stopwatch = Stopwatch.createUnstarted();
+	
+	/**
+	 * The arguments of the server in the jvm
+	 */
+	private final String[] args;
+	
+	/**
 	 * If the world is alive
 	 */
 	@Getter
@@ -47,8 +102,77 @@ public final class World {
 	/**
 	 * Constructs a new world object
 	 */
-	private World() {
+	public World(String[] args) {
+		try {
+			SystemManager.setDefaults(args);
+		} catch (UnexpectedArgsException e) {
+			UnexpectedArgsException.push();
+			System.exit(1);
+		}
+		this.id = GameFlags.worldId;
+		this.args = args;
+		packetRepository.storeAll();
 		setAlive(true);
+	}
+	
+	@Override
+	public void start() {
+		// startup necessities
+		stopwatch.start();
+	}
+	
+	@Override
+	public void execute() {
+		BootHandler.addWork(() -> {
+			Cache.init();
+			BodyDataParser.loadAll();
+			RegionBuilder.init();
+			CombatRegistry.registerAll();
+			ItemDefinitionParser.loadEquipmentConfiguration();
+			ShopRepository.load();
+		}, () -> {
+			ItemRepository.initialize(false);
+			MapKeyRepository.readAll();
+		}, () -> {
+			RegionDeletion.prepare();
+			ObjectSpawnRepository.get().loadAll();
+		}, () -> {
+			DialogueRepository.loadSubscriptions();
+			NPCCombatSwingRepository.loadAll();
+		}, () -> {
+			EventRepository.registerEvents(false);
+		}, () -> {
+			ModuleRepository.registerAllModules(false);
+			CommandRepository.populate(false);
+		});
+		BootHandler.await();
+	}
+	
+	@Override
+	public void end() {
+		// finalization
+		SystemManager.start();
+		// master server can now listen
+		MasterCommunication.start();
+		// this waits for the session to close, so anything after this method will not execute until shutdown
+		try {
+			WorldNetwork.bind();
+		} catch (Throwable e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	/**
+	 * Creates a new world
+	 *
+	 * @param args
+	 * 		The arguments of the world
+	 */
+	public static World create(String[] args) {
+		synchronized (World.class) {
+			return singleton = new World(args);
+		}
 	}
 	
 	/**
@@ -57,9 +181,6 @@ public final class World {
 	 * @return A {@code World} {@code Object}
 	 */
 	public static World get() {
-		if (singleton == null) {
-			singleton = new World();
-		}
 		return singleton;
 	}
 	
@@ -107,5 +228,20 @@ public final class World {
 	 */
 	public Optional<Player> getPlayerByUsername(String username) {
 		return players.stream().filter(player -> player.getDetails().getUsername().equalsIgnoreCase(username)).findAny();
+	}
+	
+	/**
+	 * Checks if the tile is a pvp area
+	 *
+	 * @param location
+	 * 		The tile
+	 */
+	public boolean isPvpArea(Location location) {
+		// TODO: pvp area
+		if (id == 2) {
+			return WildernessActivity.isAtWild(location);
+		} else {
+			return WildernessActivity.isAtWild(location);
+		}
 	}
 }

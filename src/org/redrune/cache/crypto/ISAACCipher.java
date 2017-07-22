@@ -1,71 +1,41 @@
 package org.redrune.cache.crypto;
 
 /**
- * <p> An implementation of an ISAAC cipher. See <a href="http://en.wikipedia.org/wiki/ISAAC_(cipher)">
- * http://en.wikipedia.org/wiki/ISAAC_(cipher)</a> for more information. </p> <p> This implementation is based on the
- * one written by Bob Jenkins, which is available at <a href="http://www.burtleburtle.net/bob/java/rand/Rand.java">
- * http://www.burtleburtle.net/bob/java/rand/Rand.java</a>. </p>
- *
  * @author Graham Edgecombe
  */
 public class ISAACCipher {
 	
-	/**
-	 * The golden ratio.
-	 */
+	/** The golden ratio. */
 	public static final int RATIO = 0x9e3779b9;
 	
-	/**
-	 * The log of the size of the results and memory arrays.
-	 */
+	/** The log of the size of the results and memory arrays. */
 	public static final int SIZE_LOG = 8;
 	
-	/**
-	 * The size of the results and memory arrays.
-	 */
-	public static final int SIZE = 1 << SIZE_LOG;
+	/** The size of the results and memory arrays. */
+	public static final int SIZE = 256;
 	
-	/**
-	 * For pseudorandom lookup.
-	 */
+	/** For pseudorandom lookup. */
 	public static final int MASK = (SIZE - 1) << 2;
 	
-	/**
-	 * The count through the results.
-	 */
+	/** The count through the results. */
 	private int count = 0;
 	
-	/**
-	 * The results.
-	 */
+	/** The results. */
 	private int results[] = new int[SIZE];
 	
-	/**
-	 * The internal memory state.
-	 */
+	/** The internal memory state. */
 	private int memory[] = new int[SIZE];
 	
-	/**
-	 * The accumulator.
-	 */
+	/** The accumulator. */
 	private int a;
 	
-	/**
-	 * The last result.
-	 */
+	/** The last result. */
 	private int b;
 	
-	/**
-	 * The counter.
-	 */
+	/** The counter. */
 	private int c;
 	
-	/**
-	 * Creates the ISAAC cipher.
-	 *
-	 * @param seed
-	 * 		The seed.
-	 */
+	/** Creates the ISAAC cipher. * @param seed The generator seed. */
 	public ISAACCipher(int[] seed) {
 		for (int i = 0; i < seed.length; i++) {
 			results[i] = seed[i];
@@ -74,11 +44,22 @@ public class ISAACCipher {
 	}
 	
 	/**
+	 * Reads the key but only peeks
+	 */
+	public int peek() {
+		if (count == 0) {
+			isaac();
+			count = 256;
+		}
+		return results[count - 1];
+	}
+	
+	/**
 	 * Gets the next value.
 	 *
 	 * @return The next value.
 	 */
-	public int getNextValue() {
+	public int take() {
 		if (count-- == 0) {
 			isaac();
 			count = SIZE - 1;
@@ -98,19 +79,16 @@ public class ISAACCipher {
 			a += memory[j++];
 			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
 			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			
 			x = memory[i];
 			a ^= a >>> 6;
 			a += memory[j++];
 			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
 			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			
 			x = memory[i];
 			a ^= a << 2;
 			a += memory[j++];
 			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
 			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			
 			x = memory[i];
 			a ^= a >>> 16;
 			a += memory[j++];
@@ -123,19 +101,16 @@ public class ISAACCipher {
 			a += memory[j++];
 			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
 			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			
 			x = memory[i];
 			a ^= a >>> 6;
 			a += memory[j++];
 			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
 			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			
 			x = memory[i];
 			a ^= a << 2;
 			a += memory[j++];
 			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
 			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			
 			x = memory[i];
 			a ^= a >>> 16;
 			a += memory[j++];
@@ -145,10 +120,7 @@ public class ISAACCipher {
 	}
 	
 	/**
-	 * Initialises the ISAAC.
-	 *
-	 * @param flag
-	 * 		Flag indicating if we should perform a second pass.
+	 * * Initializes the ISAAC. * * @param flag Indicating if we should perform a second pass.
 	 */
 	public void init(boolean flag) {
 		int i;
@@ -271,5 +243,4 @@ public class ISAACCipher {
 		isaac();
 		count = SIZE;
 	}
-	
 }

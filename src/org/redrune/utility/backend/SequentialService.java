@@ -21,4 +21,13 @@ public interface SequentialService {
 	 */
 	void end();
 	
+	/**
+	 * Runs the service in sequence.
+	 */
+	default void run() {
+		start();
+		execute();
+		end();
+	}
+	
 }

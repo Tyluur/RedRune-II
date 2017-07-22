@@ -1,6 +1,5 @@
 package org.redrune.utility.rs.constant;
 
-import lombok.Getter;
 import org.redrune.game.node.Location;
 
 import java.awt.*;
@@ -345,23 +344,20 @@ public class Directions {
 		
 	}
 	
+	/**
+	 * The direction types, with the values being the ordinals
+	 */
 	public enum Direction {
 		
-		NORTH(0),
-		NORTHEAST(1),
-		EAST(2),
-		SOUTHEAST(3),
-		SOUTH(4),
-		SOUTHWEST(5),
-		WEST(6),
-		NORTHWEST(7);
+		NORTH,
+		NORTHEAST,
+		EAST,
+		SOUTHEAST,
+		SOUTH,
+		SOUTHWEST,
+		WEST,
+		NORTHWEST
 		
-		@Getter
-		private int value;
-		
-		Direction(int value) {
-			this.value = value;
-		}
 	}
 	
 	/**

@@ -1,0 +1,137 @@
+{
+  "drops": [],
+  "bonuses": {
+    "13466": [
+      12,
+      0,
+      0,
+      10,
+      15,
+      8,
+      8,
+      8,
+      6,
+      10
+    ],
+    "13467": [
+      15,
+      0,
+      0,
+      12,
+      18,
+      10,
+      10,
+      10,
+      7,
+      12
+    ],
+    "13468": [
+      18,
+      0,
+      0,
+      15,
+      22,
+      12,
+      12,
+      12,
+      8,
+      15
+    ],
+    "13469": [
+      22,
+      0,
+      0,
+      18,
+      27,
+      15,
+      15,
+      15,
+      10,
+      18
+    ]
+  },
+  "combatDefinitions": {
+    "13466": {
+      "hitpoints": 140,
+      "attackAnim": 7449,
+      "defenceAnim": 7450,
+      "deathAnim": 7448,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 120,
+      "attackStyle": 3,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "13467": {
+      "hitpoints": 250,
+      "attackAnim": 7449,
+      "defenceAnim": 7450,
+      "deathAnim": 7448,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 120,
+      "attackStyle": 3,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "13468": {
+      "hitpoints": 300,
+      "attackAnim": 7449,
+      "defenceAnim": 7450,
+      "deathAnim": 7448,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 120,
+      "attackStyle": 3,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "13469": {
+      "hitpoints": 350,
+      "attackAnim": 7449,
+      "defenceAnim": 7450,
+      "deathAnim": 7448,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 120,
+      "attackStyle": 3,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    }
+  },
+  "charmDrops": [
+    {
+      "itemId": 12158,
+      "minAmount": 1,
+      "maxAmount": 3,
+      "rate": 0.3
+    },
+    {
+      "itemId": 12159,
+      "minAmount": 1,
+      "maxAmount": 3,
+      "rate": 0.2
+    },
+    {
+      "itemId": 12160,
+      "minAmount": 1,
+      "maxAmount": 3,
+      "rate": 0.1
+    },
+    {
+      "itemId": 12163,
+      "minAmount": 1,
+      "maxAmount": 3,
+      "rate": 0.05
+    }
+  ]
+}

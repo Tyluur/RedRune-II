@@ -74,9 +74,6 @@ public class MasterCommunication implements PacketConstants {
 	 * 		If the player is headed to the lobby
 	 */
 	private static void handleLoginResponse(String uid, String username, String fileText, byte responseCode, boolean lobby) {
-		System.out.println("MasterCommunication.handleLoginResponse");
-		System.out.println("uid = [" + uid + "], username = [" + username + "], fileText = [" + fileText + "], responseCode = [" + responseCode + "], lobby = [" + lobby + "]");
-		
 		Optional<NetworkSession> optional = NetworkSession.findByUid(uid);
 		if (!optional.isPresent()) {
 			System.err.println("Unable to find session by id " + uid);

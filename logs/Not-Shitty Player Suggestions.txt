@@ -1,6 +1,7 @@
 [VOLK]
 Cerb boots [60 runecrafting from prim crystals
 Better boost than glacor boots
+Yo if you make Username changes like a $5 perk people would donate prob
 
 [DONATOR ZONE]
 
@@ -11,3 +12,8 @@ Zone @ old genericx/runewarp area
 TOP 3 PKERS AT THE END OF THE MONTH GET REWARDS
 TOP 3 SKILLERS AT THE END OF THE MONTH GET REWARDS
 
+[LOTTERY]
+Every time someone dies, some money is added to the pool
+You can buy into the pool for chances of receiving loot
+	-   If nobody buys into the pool when the lottery is drawn the money is deleted
+	-   Randomly selected buyer will 

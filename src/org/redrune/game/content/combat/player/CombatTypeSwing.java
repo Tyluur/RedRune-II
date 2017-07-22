@@ -83,33 +83,6 @@ public abstract class CombatTypeSwing {
 	}
 	
 	/**
-	 * Gets the delay of a ranged/magic hit.
-	 *
-	 * @param attacker
-	 * 		the attacking mob.
-	 * @param victim
-	 * 		the victim mob.
-	 * @param delay
-	 * 		the show delay of the projectile.
-	 * @param speed
-	 * 		the speed of the projectile (or slowness...the higher the speed the slower the delay).
-	 * @return the delay of a hit.
-	 */
-	public static double getDelay(Entity attacker, Entity victim, int delay, int speed) {
-		/* The distance between the entities. */
-		double distance = attacker.getLocation().getDistance(victim.getLocation());
-		
-		/* The speed at which the projectile is traveling. */
-		double projectileSpeed = (delay + speed + distance) * 5;
-		
-		/* The delay of the hit. */
-		double hitDelay = (projectileSpeed * .02857);
-		
-		/* Returns the hit delay. */
-		return hitDelay;
-	}
-	
-	/**
 	 * Calculates a random hit
 	 *
 	 * @param maxHit
@@ -244,17 +217,5 @@ public abstract class CombatTypeSwing {
 	 * 		The parameters
 	 */
 	public abstract void appendExperience(Player player, Entity target, Object... params);
-	
-	/**
-	 * Gets the delay before a projectile can arrive at a target.
-	 *
-	 * @param player
-	 * 		The player
-	 * @param target
-	 * 		The target
-	 */
-	public static int getProjectileDelay(Player player, Entity target) {
-		return 1 + (int) Math.ceil(player.getLocation().getDistance(target.getLocation()) * 0.3);
-	}
 	
 }

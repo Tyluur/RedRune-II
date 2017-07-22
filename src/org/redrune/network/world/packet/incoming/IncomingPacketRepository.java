@@ -1,9 +1,10 @@
 package org.redrune.network.world.packet.incoming;
 
-import org.redrune.core.EngineWorkingSet;
+import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.tool.Misc;
 import org.redrune.network.world.packet.Packet;
+import org.redrune.utility.rs.NetworkUtils;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,22 +19,37 @@ public final class IncomingPacketRepository {
 	/**
 	 * The logger instance
 	 */
-	private static final Logger LOGGER = Misc.constructLogger(IncomingPacketRepository.class);
+	private final Logger logger = Misc.constructLogger(IncomingPacketRepository.class);
 	
 	/**
 	 * The map of {@code IncoingPacketStructure}s
 	 */
-	private static final ConcurrentHashMap<Integer, IncomingPacketDecoder> DECODER_MAP = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<Integer, IncomingPacketDecoder> decoderMap = new ConcurrentHashMap<>();
+	
+	/**
+	 * The name of the package that classes are stored
+	 */
+	private final String packageName;
+	
+	public IncomingPacketRepository(String packageName) {
+		this.packageName = packageName;
+	}
 	
 	/**
 	 * Stores all {@code IncoingPacketStructure}s
 	 */
-	public static void storeAll() {
-		Misc.getClassesInDirectory(IncomingPacketRepository.class.getPackage().getName() + ".impl").stream().filter(IncomingPacketDecoder.class::isInstance).forEach((clazz) -> {
+	public void storeAll() {
+		NetworkUtils.loadPacketLengths();
+		Misc.getClassesInDirectory(packageName).stream().filter(IncomingPacketDecoder.class::isInstance).forEach((clazz) -> {
 			IncomingPacketDecoder decoder = (IncomingPacketDecoder) clazz;
-			Arrays.stream(decoder.bindings()).forEach(key -> DECODER_MAP.put(key, decoder));
+			Arrays.stream(decoder.bindings()).forEach(key -> {
+				if (decoderMap.containsKey(key)) {
+					throw new IllegalStateException("Defined incoming packet " + key + " already and attempted to store " + decoder + " ahead of it.");
+				}
+				decoderMap.put(key, decoder);
+			});
 		});
-		LOGGER.info("Number of incoming packets that are handled: " + DECODER_MAP.size());
+		logger.info("Number of incoming packets that are handled on world " + GameFlags.worldId + " = " + decoderMap.size());
 	}
 	
 	/**
@@ -44,22 +60,18 @@ public final class IncomingPacketRepository {
 	 * @param packet
 	 * 		The packet
 	 */
-	public static void handlePacket(Player player, Packet packet) {
+	public void handlePacket(Player player, Packet packet) {
 		final int opcode = packet.getOpcode();
-		// packet decoding is done instantly but on a separate worker
-		EngineWorkingSet.executePacketWork(() -> {
-			try {
-				IncomingPacketDecoder structure = DECODER_MAP.get(opcode);
-				if (structure == null) {
-					System.out.println("Received packet " + opcode + ", unidentified handler.");
-					return;
-				}
-				structure.read(player, packet);
-				System.out.println("Read packet " + packet + " !");
-			} catch (Exception e) {
-				e.printStackTrace();
+		try {
+			IncomingPacketDecoder structure = decoderMap.get(opcode);
+			if (structure == null) {
+				System.out.println("Received packet " + opcode + ", unidentified handler.");
+				return;
 			}
-		});
+			structure.read(player, packet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -1,7 +1,6 @@
 package org.redrune.network.world.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import org.redrune.utility.tool.BufferUtils;
 
@@ -38,18 +37,14 @@ public class Packet {
 	@Getter
 	private final int length;
 	
+	/**
+	 * Constructs a new packet
+	 */
 	public Packet(int opcode, PacketType type, ByteBuf buffer) {
 		this.opcode = opcode;
 		this.type = type;
 		this.buffer = buffer;
 		this.length = buffer.readableBytes();
-	}
-	
-	public Packet(byte[] buffer) {
-		this.opcode = -1;
-		this.type = PacketType.STANDARD;
-		this.buffer = Unpooled.wrappedBuffer(buffer);
-		this.length = this.buffer.readableBytes();
 	}
 	
 	@Override
@@ -62,10 +57,6 @@ public class Packet {
 	 */
 	public boolean isRaw() {
 		return opcode == -1;
-	}
-	
-	public void read(byte[] b) {
-		buffer.readBytes(b);
 	}
 	
 	/**

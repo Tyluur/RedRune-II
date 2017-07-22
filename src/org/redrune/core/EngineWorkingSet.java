@@ -22,11 +22,6 @@ public class EngineWorkingSet {
 	private static final ExecutorService CACHE_SERVICE_POOL = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new RS2ThreadFactory("JS5-Worker"));
 	
 	/**
-	 * The service that handles incoming packets
-	 */
-	private static final ExecutorService PACKET_SERVICE = Executors.newSingleThreadExecutor();
-	
-	/**
 	 * The logic worker.
 	 */
 	private static final Executor LOGIC_SERVICE = Executors.newSingleThreadExecutor(new RS2ThreadFactory("GameLogic"));
@@ -89,16 +84,6 @@ public class EngineWorkingSet {
 			scheduledExecutorService = SystemManager.PROCESSOR_COUNT >= 6 ? Executors.newScheduledThreadPool(SystemManager.PROCESSOR_COUNT >= 12 ? 4 : 2, new RS2ThreadFactory("Scheduled-Worker")) : Executors.newSingleThreadScheduledExecutor(new RS2ThreadFactory("Scheduled-Worker"));
 		}
 		return scheduledExecutorService;
-	}
-	
-	/**
-	 * Submits work to the packet service thread factory
-	 *
-	 * @param work
-	 * 		The work
-	 */
-	public static void executePacketWork(Runnable work) {
-		PACKET_SERVICE.execute(work);
 	}
 	
 }

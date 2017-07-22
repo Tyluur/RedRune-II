@@ -63,7 +63,7 @@ public class MasterSession {
 		} else {
 			channel.writeAndFlush(packet);
 		}
-		System.out.println("Writing packet " + packet.getId() + " to ip " + ip + ".");
+//		System.out.println("Writing packet " + packet.getId() + " to master server @ " + MasterConstants.IP);
 	}
 	
 	/**

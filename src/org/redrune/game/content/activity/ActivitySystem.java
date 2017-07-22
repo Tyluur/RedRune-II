@@ -15,17 +15,15 @@ public class ActivitySystem {
 	 * @param player
 	 * 		The player
 	 */
-	public static boolean fireAreaActivity(Player player) {
+	public static void fireAreaActivity(Player player) {
 		// we have an activity so we dont force another to start
 		if (player.getManager().getActivities().getActivity().isPresent()) {
-			return false;
+			return;
 		}
 		// first check is the wilderness activity
 		if (WildernessActivity.isAtWild(player.getLocation())) {
 			startActivity(player, new WildernessActivity());
-			return true;
 		}
-		return false;
 	}
 	
 	/**

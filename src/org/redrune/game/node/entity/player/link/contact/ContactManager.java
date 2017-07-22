@@ -55,7 +55,6 @@ public class ContactManager {
 		// unlocks the friends list
 		if (friendList.isEmpty()) {
 			player.getTransmitter().send(new FriendsListBuilder().build(player));
-			System.out.println("Sent empty friends list");
 			unlocked = true;
 		} else {
 			updateFriendList();
@@ -86,7 +85,7 @@ public class ContactManager {
 	 */
 	public void showMyFriendsStatus() {
 		// TODO:
-		System.out.println("ContactManager.showMyFriendsStatus");
+//		System.out.println("ContactManager.showMyFriendsStatus");
 	/*	SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void run() {
@@ -100,7 +99,7 @@ public class ContactManager {
 	 */
 	public void sendFriendsLogoutStatus() {
 		// TODO:
-		System.out.println("ContactManager.sendFriendsLogoutStatus");
+//		System.out.println("ContactManager.sendFriendsLogoutStatus");
 		//MasterCommunication.write(new StatusUpdatePacketOut(player.getDetails().getUsername(), MasterConstants.OFFLINE_STATUS));
 	}
 	
@@ -196,7 +195,7 @@ public class ContactManager {
 	 */
 	public void sendPrivateMessage(String name, String message) {
 		// TODO
-		System.out.println("ContactManager.sendPrivateMessage");
+//		System.out.println("ContactManager.sendPrivateMessage");
 //		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), (byte) player.getDetails().getDominantRight().getClientRight(), name, message));
 	}
 	
@@ -272,7 +271,6 @@ public class ContactManager {
 				status = (GameBarStatus) barStatus;
 			}
 		}
-		System.out.println("The status we have for " + player + " is " + status + " [" + status.getValue() + "]");
 		return status.getValue();
 	}
 }

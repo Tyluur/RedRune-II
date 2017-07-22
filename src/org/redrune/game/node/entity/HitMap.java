@@ -63,6 +63,8 @@ public final class HitMap {
 		
 		// adds the hit to our hitlist [only used for updating]
 		hitList.add(hit);
+		// writes who attacked us
+		entity.addAttackedByDelay(attacker);
 	}
 	
 	/**
@@ -105,11 +107,11 @@ public final class HitMap {
 		int currentMaxDamage = 0;
 		Entity e = (entity instanceof Player ? (Player) entity : (entity));
 		for (Player p : hitRecord.keySet()) {
-			boolean bool = World.get().getPlayerByUsername(p.getDetails().getUsername()).isPresent();
-			if (bool && hitRecord.get(p) > currentMaxDamage) {
+			boolean present = World.get().getPlayerByUsername(p.getDetails().getUsername()).isPresent();
+			if (present && hitRecord.get(p) > currentMaxDamage) {
 				currentMaxDamage = hitRecord.get(p);
 				e = p;
-			} else if (!bool) {
+			} else if (!present) {
 				hitRecord.remove(p);
 			}
 		}

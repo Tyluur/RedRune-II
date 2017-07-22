@@ -29,8 +29,8 @@ public final class GameWindowBuilder implements OutgoingPacketBuilder {
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(100);
-		bldr.writeShort(subWindowId);
-		bldr.writeByte(paneId);
+		bldr.writeByteA(subWindowId);
+		bldr.writeLEShortA(paneId);
 		return bldr.toPacket();
 	}
 }

@@ -73,7 +73,7 @@ public class DarkBowSpecial implements SpecialAttackEvent {
 			visualize(player, target, dragon = false);
 		}
 		final boolean dragonAmmo = dragon;
-		int delay = CombatTypeSwing.getProjectileDelay(player, target);
+		int delay = ProjectileManager.getProjectileDelay(player, target);
 		
 		RangeCombatSwing.sendDamage(player, target, range, weaponId, style, delay - 1, maxHit, damage, () -> target.sendGraphics(dragonAmmo ? 1100 : 1103, 100, 0));
 		RangeCombatSwing.sendDamage(player, target, range, weaponId, style, delay, maxHit, damage2, null);

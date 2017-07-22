@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.network.world.packet.outgoing.impl.ConfigFilePacketBuilder;
@@ -919,9 +918,9 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 		// sending the projectiles
 		ProjectileManager.sendProjectile(from);
 		// a tick after, the next visual effects are done
-		int projectileDelay = CombatTypeSwing.getProjectileDelay(hitter, player);
+		int projectileDelay = ProjectileManager.getProjectileDelay(hitter, player);
 		// add to the delay
-		projectileDelay += CombatTypeSwing.getDelay(hitter, player, projectileDelay, 0);
+		projectileDelay += ProjectileManager.getDelay(hitter, player, projectileDelay, 0);
 		SystemManager.getScheduler().schedule(new ScheduledTask(projectileDelay) {
 			@Override
 			public void run() {

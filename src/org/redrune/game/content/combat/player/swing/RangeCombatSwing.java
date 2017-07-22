@@ -1,6 +1,7 @@
 package org.redrune.game.content.combat.player.swing;
 
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.utility.tool.Misc;
@@ -188,7 +189,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	 */
 	public static void sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, double modifier, boolean specialAttack) {
 		final int style = attacker.getCombatDefinitions().getAttackStyle();
-		final int delay = getProjectileDelay(attacker, target);
+		final int delay = ProjectileManager.getProjectileDelay(attacker, target);
 		final double maxHit = swing.getMaxHit(attacker, weaponId, style, modifier);
 		final int damage = swing.randomizeHit(maxHit, swing.getAttackBonus(attacker, weaponId, style, specialAttack), swing.getDefenceBonus(target, weaponId, style));
 		sendDamage(attacker, target, swing, weaponId, style, delay, maxHit, damage, null);
@@ -237,12 +238,11 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	 * @param delay
 	 * 		Their block emote
 	 */
-	// TODO: npc block emote
 	private static void sendBlockEmote(Entity target, int delay) {
 		SystemManager.getScheduler().schedule(new ScheduledTask(delay - 1) {
 			@Override
 			public void run() {
-				target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
+				target.sendAwaitedAnimation(StaticCombatFormulae.getDefenceEmote(target));
 			}
 		});
 	}

@@ -36,11 +36,6 @@ public interface MasterConstants {
 	AttributeKey<MasterSession> SESSION_KEY = AttributeKey.valueOf("session.key");
 	
 	/**
-	 * The status values for friend communication
-	 */
-	byte ONLINE_STATUS = 0, FRIENDS_STATUS = 1, OFFLINE_STATUS = 2, LOBBY_STATUS = 3;
-	
-	/**
 	 * The id of the lobby world
 	 */
 	byte LOBBY_WORLD_ID = 0;

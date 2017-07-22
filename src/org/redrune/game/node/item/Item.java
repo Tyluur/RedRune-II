@@ -3,9 +3,9 @@ package org.redrune.game.node.item;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.game.node.Node;
 import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.node.Location;
+import org.redrune.game.node.Node;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -30,7 +30,6 @@ public class Item extends Node {
 	/**
 	 * The item definition.
 	 */
-	@Getter
 	@Setter
 	private transient ItemDefinition definitions;
 	
@@ -106,5 +105,15 @@ public class Item extends Node {
 	@Override
 	public int getSize() {
 		return 1;
+	}
+	
+	/**
+	 * Gets the definitions, cached.
+	 */
+	public ItemDefinition getDefinitions() {
+		if (definitions == null) {
+			definitions = ItemDefinitionParser.forId(id);
+		}
+		return definitions;
 	}
 }

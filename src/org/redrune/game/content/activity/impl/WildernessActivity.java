@@ -1,9 +1,10 @@
 package org.redrune.game.content.activity.impl;
 
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.activity.Activity;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.repository.item.ItemRepository;
@@ -27,6 +28,7 @@ public class WildernessActivity extends Activity {
 	@Override
 	public void start() {
 		checkLocations();
+		player.getUpdateMasks().register(new AppearanceUpdate(player));
 	}
 	
 	@Override
@@ -38,6 +40,8 @@ public class WildernessActivity extends Activity {
 	public void end() {
 		super.end();
 		player.setInFightArea(false);
+		player.getUpdateMasks().register(new AppearanceUpdate(player));
+		System.out.println("finished!");
 	}
 	
 	/**
@@ -47,6 +51,7 @@ public class WildernessActivity extends Activity {
 		boolean isAtWild = isAtWild(player.getLocation());
 		boolean isAtWildSafe = isAtWildSafe(player.getLocation());
 		
+		System.out.println(isAtWild + ", " + isAtWildSafe);
 		// we're inside a danger zone
 		if (!showingSkull && isAtWild && !isAtWildSafe) {
 			showingSkull = true;
@@ -57,6 +62,10 @@ public class WildernessActivity extends Activity {
 			player.getManager().getInterfaces().closePrimaryOverlay();
 			player.setInFightArea(false);
 			showingSkull = false;
+			// force end while removing skull
+			if (!isAtWild && !isAtWildSafe) {
+				end();
+			}
 		} else if (isAtWild) {
 			// we moved while we're still in the wild
 		} else if (!isAtWildSafe && !isAtWild) {
@@ -70,9 +79,12 @@ public class WildernessActivity extends Activity {
 		if (option == InteractionOption.ATTACK_OPTION) {
 			if (player.getVariables().isInFightArea() && !target.getVariables().isInFightArea()) {
 				player.getTransmitter().sendMessage("That player is not in the wilderness.", false);
-				return false;
+				return true;
 			}
-			return wildernessLevelsVerified(target);
+			if (!wildernessLevelsVerified(target)) {
+				return true;
+			}
+			return true;
 		} else {
 			return false;
 		}
@@ -122,14 +134,14 @@ public class WildernessActivity extends Activity {
 		System.out.println("Items kept:\t" + itemsKept);
 		System.out.println("Untradebles:\t" + untradeables);
 		*/
-
+		
 		// if the killer is an ironman, the drop is handled differently.
 		final Location lootTile = dead.getLocation();
 		
 		for (Item item : itemsDropped) {
-			RegionManager.addFloorItem(item.getId(), item.getAmount(), 180, lootTile, killer == null || !killer.isPlayer() ? dead.getDetails().getUsername() : killer.toPlayer().getDetails().getUsername());
+			RegionManager.addFloorItem(item.getId(), item.getAmount(), 200, lootTile, killer == null || !killer.isPlayer() ? dead.getDetails().getUsername() : killer.toPlayer().getDetails().getUsername());
 		}
-		RegionManager.addPublicFloorItem(526, 1, 180, lootTile);
+		RegionManager.addPublicFloorItem(526, 1, 200, lootTile);
 		
 		untradeables.stream().filter(item -> item.getDefinitions().isLended()).forEach(dead.getInventory()::addItem);
 		untradeables.stream().filter(item -> !item.getDefinitions().isLended()).forEach(item -> {

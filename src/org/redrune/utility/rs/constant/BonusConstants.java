@@ -14,7 +14,7 @@ public interface BonusConstants {
 	/**
 	 * Defence bonuses
 	 */
-	int STAB_DEFENCE = 5, SLASH_DEFENCE = 6, CRUSH_DEFENCE = 7, RANGE_DEFENCE = 9, MAGIC_DEFENCE = 8, SUMMONING_DEFENCE = 10;
+	int STAB_DEFENCE = 5, SLASH_DEFENCE = 6, CRUSH_DEFENCE = 7, MAGIC_DEFENCE = 8, RANGE_DEFENCE = 9, SUMMONING_DEFENCE = 10;
 	
 	/**
 	 * Absorb bonuses

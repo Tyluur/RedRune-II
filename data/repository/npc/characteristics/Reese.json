@@ -1,0 +1,20 @@
+{
+  "drops": [],
+  "bonuses": {},
+  "combatDefinitions": {
+    "9624": {
+      "hitpoints": 20,
+      "attackAnim": -1,
+      "defenceAnim": -1,
+      "deathAnim": -1,
+      "attackDelay": 3,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 27,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    }
+  }
+}

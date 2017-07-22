@@ -13,6 +13,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.Region;
 
 import java.io.*;
+import java.net.SocketAddress;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -537,19 +538,24 @@ public class Misc {
 		}
 	}
 	
-	public static final int getFaceDirection(int xOffset, int yOffset) {
+	public static int getFaceDirection(int xOffset, int yOffset) {
 		return ((int) (Math.atan2(-xOffset, -yOffset) * 2607.5945876176133)) & 0x3fff;
 	}
 	
-	public static final int getRandom(int maxValue) {
+	public static int getRandom(int maxValue) {
 		return (int) (Math.random() * (maxValue + 1));
 	}
 	
-	public static final int random(int maxValue) {
+	public static int random(int maxValue) {
 		if (maxValue <= 0) {
 			return 0;
 		}
 		return RANDOM.nextInt(maxValue);
+	}
+	
+	public static int random(int min, int max) {
+		final int n = Math.abs(max - min);
+		return Math.min(min, max) + (n == 0 ? 0 : random(n));
 	}
 	
 	public static String formatPlayerNameForProtocol(String name) {
@@ -664,7 +670,12 @@ public class Misc {
 	 * 		The channel
 	 */
 	public static String getIpAddress(Channel channel) {
-		return formatIp(channel.remoteAddress().toString());
+		SocketAddress socketAddress = channel.remoteAddress();
+		if (socketAddress == null) {
+			return "127.0.0.1";
+		} else {
+			return formatIp(socketAddress.toString());
+		}
 	}
 	
 	/**

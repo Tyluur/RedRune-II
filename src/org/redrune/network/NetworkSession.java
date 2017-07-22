@@ -34,7 +34,8 @@ public class NetworkSession {
 	 * The uuid of the session
 	 */
 	@Getter
-	private final String uid;
+	@Setter
+	private String uid;
 	
 	/**
 	 * The channel instance.
@@ -68,11 +69,31 @@ public class NetworkSession {
 	@Setter
 	private ISAACCipher outCipher;
 	
+	/**
+	 * Constructs a session without a uid
+	 *
+	 * @param channel
+	 * 		The channel of the session
+	 */
 	public NetworkSession(Channel channel) {
+		this(channel, false);
+	}
+	
+	/**
+	 * Constructs a session with a uid
+	 *
+	 * @param channel
+	 * 		The channel of the session
+	 * @param generateUid
+	 * 		If we should generate a uid for the session
+	 */
+	public NetworkSession(Channel channel, boolean generateUid) {
 		this.channel = channel;
-		// thread-safe uid generation. we'll never have more than the max long connections anyways
-		this.uid = generateCollisionSafeUuid().toString();
-		connect();
+		// if we should create a uid for the session
+		if (generateUid) {
+			setUid(generateCollisionSafeUuid().toString());
+			storeUid();
+		}
 	}
 	
 	/**
@@ -90,9 +111,8 @@ public class NetworkSession {
 	/**
 	 * Handles the connection of a session
 	 */
-	private void connect() {
+	private void storeUid() {
 		UID_MAP.put(uid, this);
-		System.out.println("NetworkSession.connect[" + uid + "]");
 	}
 	
 	@Override
@@ -164,7 +184,6 @@ public class NetworkSession {
 	 * 		The packet to write
 	 */
 	protected synchronized ChannelFuture writeNoDelay(Packet packet) {
-//		System.out.println("Wrote packet " + packet);
 		return channel.writeAndFlush(packet);
 	}
 	
@@ -194,4 +213,5 @@ public class NetworkSession {
 		setInCipher(inCipher);
 		setOutCipher(outCipher);
 	}
+	
 }

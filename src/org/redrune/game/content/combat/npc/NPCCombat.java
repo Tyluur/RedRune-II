@@ -1,0 +1,268 @@
+package org.redrune.game.content.combat.npc;
+
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.content.combat.StaticCombatFormulae;
+import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.npc.data.NPCCombatDefinitions;
+import org.redrune.utility.AttributeKey;
+import org.redrune.utility.repository.npc.combat.NPCCombatSwingRepository;
+import org.redrune.utility.rs.constant.NPCConstants;
+import org.redrune.utility.tool.Misc;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 6/20/2017
+ */
+public final class NPCCombat {
+	
+	/**
+	 * The npc who owns this combat
+	 */
+	private final NPC npc;
+	
+	/**
+	 * The delay until the next swing
+	 */
+	private int delay;
+	
+	/**
+	 * The target
+	 */
+	private Entity target;
+	
+	/**
+	 * Constructs a new npc combat instance
+	 *
+	 * @param npc
+	 * 		The npc who owns this instance
+	 */
+	public NPCCombat(NPC npc) {
+		this.npc = npc;
+	}
+	
+	/**
+	 * Handles the processing of combat
+	 */
+	public boolean process() {
+		if (delay > 0) {
+			delay--;
+		}
+		if (target != null) {
+			if (!verifyContinuation()) {
+				System.out.println("couldn't do this");
+				removeTarget();
+				return false;
+			}
+			if (delay <= 0) {
+				delay = fireNPCSwing();
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Fires the combat swing
+	 */
+	private int fireNPCSwing() {
+		Entity target = this.target;
+		if (target == null) {
+			return 0;
+		}
+		// the definitions
+		NPCCombatDefinitions definitions = npc.getCombatDefinitions();
+		// gets the default attack style to use
+		int attackStyle = definitions.getAttackStyle();
+		// ensures we aren't frozen
+		if (npc.isFrozen()) {
+			if (attackStyle == NPCConstants.MELEE_COMBAT_STYLE) {
+				return 0;
+			}
+		}
+		// TODO:
+		/*
+		if (target instanceof Familiar && (npc.getLureDelay() == 0 || Utils.random(3) == 0)) {
+			Familiar familiar = (Familiar) target;
+			Player player = familiar.getOwner();
+			if (player != null) {
+				target = player;
+				npc.setTarget(target);
+				addAttackedByDelay(target);
+			}
+		} else if (target instanceof Dreadnip) {
+			Dreadnip dreadnip = (Dreadnip) target;
+			Player player = dreadnip.getOwner();
+			if (player != null) {
+				target = player;
+				npc.setTarget(player);
+			}
+		} */
+		// the distance we must be at
+		int maxDistance = attackStyle == NPCConstants.MELEE_COMBAT_STYLE ? 0 : 9;
+		// if we are distanced
+		boolean distanced = !Misc.isOnRange(npc, target, maxDistance + (npc.getMovement().hasWalkSteps() && target.getMovement().hasWalkSteps() ? (target.getMovement().isRunning() ? 2 : 1) : 0));
+		// if the unfollowable state is set
+		boolean unfollowable = !npc.getCombatManager().isCantFollowDuringCombat() && Misc.colides(npc, target);
+		if ((!npc.getMovement().clippedProjectileToNode(target, maxDistance == 0 && !forceCheckClipAsRange(target))) || distanced || unfollowable) {
+			return 0;
+		}
+		return NPCCombatSwingRepository.fire(npc, target);
+	}
+	
+	private boolean verifyContinuation() {
+		Entity target = this.target;
+		
+		// if we are invalid to fight
+		if (!StaticCombatFormulae.canFight(npc, target)) {
+			System.out.println("cant fite");
+			return false;
+		}
+		// cant move if frozen
+		if (npc.isFrozen()) {
+			System.out.println("cant fite");
+			return true;
+		}
+		int distanceX = npc.getLocation().getX() - npc.getSpawnLocation().getX();
+		int distanceY = npc.getLocation().getY() - npc.getSpawnLocation().getY();
+		int size = npc.getSize();
+		int maxDistance;
+		int agroRatio = npc.getCombatDefinitions().getAggressivenessType();
+		if (!npc.getCombatManager().isNoDistanceCheck() && !npc.getCombatManager().isCantFollowDuringCombat()) {
+			/*TODO: force walk to respawn tile bc we're too far out
+			maxDistance = 32;
+			if (!(npc instanceof Familiar)) {
+
+				if (npc.getMapAreaNameHash() != -1) {
+					// if out his area
+					if (!MapAreas.isAtArea(npc.getMapAreaNameHash(), npc) || (!npc.canBeAttackFromOutOfArea() && !MapAreas.isAtArea(npc.getMapAreaNameHash(), target))) {
+						npc.forceWalkRespawnTile();
+						return false;
+					}
+				} else if (npc.walksToRespawnTile() && distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
+					// if more than 64 distance from respawn place
+					npc.forceWalkRespawnTile();
+					return false;
+				}/* else if (npc.walksToRespawnTile() && !npc.getWorldTile().withinDistance(npc.getRespawnTile(), npc.getForceWalkRespawnTileDistance())) {
+					npc.forceWalkRespawnTile();
+					return false;
+				}*/
+			maxDistance = agroRatio > 16 ? agroRatio : 16;
+			distanceX = target.getLocation().getX() - npc.getLocation().getX();
+			distanceY = target.getLocation().getY() - npc.getLocation().getY();
+			if (distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
+				System.out.println("cant fite");
+				return false; // if target distance higher 16
+			}
+		} else {
+			distanceX = target.getLocation().getX() - npc.getLocation().getX();
+			distanceY = target.getLocation().getY() - npc.getLocation().getY();
+		}
+		if (!target.isAtMultiArea() || !npc.isAtMultiArea()) {
+			Entity attackedBy = npc.getAttribute(AttributeKey.ATTACKED_BY);
+			long attackedDelay = npc.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
+			if (attackedBy != target  && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+				System.out.println("cant fite");
+				return false;
+			}
+			attackedBy = target.getAttribute(AttributeKey.ATTACKED_BY);
+			attackedDelay = target.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
+			if (attackedBy != npc && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+				//System.out.println(attackedBy + ", " + npc + ", " + attackedDelay + "[" + SystemManager.getUpdateWorker().getTicksElapsed() + "]");
+				//System.out.println("cant fite");
+				//return false;
+				System.out.println("FINISH MULTI AREA CHECKS");
+			}
+			
+		}
+		
+		if (!npc.getCombatManager().isCantFollowDuringCombat()) {
+			// if is under
+			int targetSize = target.getSize();
+			if (distanceX < size && distanceX > -targetSize && distanceY < size && distanceY > -targetSize && !target.getMovement().hasWalkSteps()) {
+				npc.getMovement().resetWalkSteps();
+				if (!npc.getMovement().addWalkSteps(target.getLocation().getX() + 1, npc.getLocation().getY())) {
+					npc.getMovement().resetWalkSteps();
+					if (!npc.getMovement().addWalkSteps(target.getLocation().getX() - size, npc.getLocation().getY())) {
+						npc.getMovement().resetWalkSteps();
+						if (!npc.getMovement().addWalkSteps(npc.getLocation().getX(), target.getLocation().getY() + 1)) {
+							npc.getMovement().resetWalkSteps();
+							if (!npc.getMovement().addWalkSteps(npc.getLocation().getX(), target.getLocation().getY() - size)) {
+								return true;
+							}
+						}
+					}
+				}
+				return true;
+			}
+			if (npc.getCombatDefinitions().getAttackStyle() == NPCConstants.MELEE_COMBAT_STYLE && targetSize == 1 && size == 1 && Math.abs(npc.getLocation().getX() - target.getLocation().getX()) == 1 && Math.abs(npc.getLocation().getY() - target.getLocation().getY()) == 1 && !target.getMovement().hasWalkSteps()) {
+				
+				if (!npc.getMovement().addWalkSteps(target.getLocation().getX(), npc.getLocation().getY())) {
+					npc.getMovement().addWalkSteps(npc.getLocation().getX(), target.getLocation().getY());
+				}
+				return true;
+			}
+			
+			int attackStyle = npc.getCombatDefinitions().getAttackStyle();
+			maxDistance = npc.getCombatManager().isForceFollowClose() ? 0 : (attackStyle == NPCConstants.MELEE_COMBAT_STYLE) ? 0 : 9;
+			npc.getMovement().resetWalkSteps();
+			// is far from target, moves to it till can attack
+			if ((!npc.getMovement().clippedProjectileToNode(target, maxDistance == 0 && !forceCheckClipAsRange(target))) || !Misc.isOnRange(npc.getLocation().getX(), npc.getLocation().getY(), size, target.getLocation().getX(), target.getLocation().getY(), targetSize, maxDistance)) {
+				npc.getMovement().addEntityPath(target, 2, npc.getCombatManager().isIntelligentRouteFinder());
+				return true;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * If we are fighting somebody
+	 */
+	public boolean fighting() {
+		return target != null;
+	}
+	
+	/**
+	 * Removes the target
+	 */
+	public void removeTarget() {
+		this.target = null;
+		npc.turnTo(null);
+	}
+	
+	/**
+	 * Resets the combat
+	 */
+	public void reset() {
+		removeTarget();
+		delay = 0;
+	}
+	
+	/**
+	 * If we should check the clipping flags as range
+	 *
+	 * @param target
+	 * 		The target
+	 */
+	private boolean forceCheckClipAsRange(Entity target) {
+		//		return target instanceof PestPortal;
+		return false;
+	}
+	
+	/**
+	 * Handles the setting of a target
+	 *
+	 * @param target
+	 * 		The target
+	 */
+	public void setTarget(Entity target) {
+		this.target = target;
+		if (target != null) {
+			npc.turnTo(target);
+		}
+		if (!verifyContinuation()) {
+			removeTarget();
+		}
+	}
+	
+}

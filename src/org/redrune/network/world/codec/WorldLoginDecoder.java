@@ -8,6 +8,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.crypto.ISAACCipher;
 import org.redrune.game.GameFlags;
+import org.redrune.network.NetworkConstants;
 import org.redrune.network.master.client.MasterCommunication;
 import org.redrune.network.master.client.packet.out.LoginRequestPacketOut;
 import org.redrune.network.world.WorldSession;
@@ -73,6 +74,7 @@ public class WorldLoginDecoder extends ByteToMessageDecoder {
 	 */
 	private void setSession(Channel channel) {
 		session = new WorldSession(channel);
+		channel.attr(NetworkConstants.SESSION_KEY).set(session);
 	}
 	
 	/**
@@ -111,10 +113,10 @@ public class WorldLoginDecoder extends ByteToMessageDecoder {
 		buffer.decodeXTEA(isaacSeed, buffer.getOffset(), buffer.getLength());
 		String username = buffer.readString();
 		buffer.readByte();
-		int displayMode = buffer.readUnsignedByte();
-		int displayWidth = buffer.readUnsignedShort();
-		int displayHeight = buffer.readUnsignedShort();
-		buffer.readByte();// antialiasing.
+		int mode = buffer.readByte();
+		int width = buffer.readShort();
+		int height = buffer.readShort();
+		int displayMode = buffer.readByte();
 		buffer.skipAfter(24);
 		buffer.readString();
 		buffer.readInt();
@@ -128,15 +130,25 @@ public class WorldLoginDecoder extends ByteToMessageDecoder {
 				//return false;
 			}
 		}
+		// build the isaac ciphers
 		int[] inCipher = Arrays.copyOf(isaacSeed, isaacSeed.length);
 		int[] outCipher = new int[4];
 		for (int i = 0; i < isaacSeed.length; i++) {
 			outCipher[i] = isaacSeed[i] + 50;
 		}
 		
+		// finished decoding now we can build the session
 		session.setInLobby(false);
+		session.getViewComponents().setScreenSizeMode(mode);
+		session.getViewComponents().setScreenSizeX(width);
+		session.getViewComponents().setScreenSizeY(height);
+		session.getViewComponents().setDisplayMode(displayMode);
 		session.buildCiphers(new ISAACCipher(inCipher), new ISAACCipher(outCipher));
+		
+		// change the decoders now
 		ctx.pipeline().replace("decoder", "decoder", new RSPacketDecoder(session));
+		
+		// tell the master server we this session to log in
 		MasterCommunication.write(new LoginRequestPacketOut(GameFlags.worldId, false, username, password, session.getUid()));
 		return true;
 	}

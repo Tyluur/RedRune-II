@@ -78,7 +78,6 @@ public class RegionManager {
 		if (entity.isPlayer()) {
 			ActivitySystem.fireLocationUpdate(entity.toPlayer());
 		}
-		// this is where we would check if we are in a multi zone
 	}
 	
 	/**
@@ -273,7 +272,7 @@ public class RegionManager {
 				}
 				GameObject gameObject = optional.get();
 				gameObject.getRegion().removeObject(gameObject);
-				RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 180, gameObject.getLocation(), null);
+				RegionManager.addFloorItem(itemReplaceId, itemReplaceAmount, 200, gameObject.getLocation(), null);
 			}
 		});
 	}

@@ -4,7 +4,7 @@ import org.redrune.cache.Cache;
 import org.redrune.core.system.SystemManager;
 import org.redrune.network.lobby.LobbyNetwork;
 import org.redrune.network.master.client.MasterCommunication;
-import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
+import org.redrune.utility.backend.UnexpectedArgsException;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -13,11 +13,17 @@ import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
 public class LSBootstrap {
 	
 	public static void main(String[] args) {
-		SystemManager.setDefaults(null);
+		try {
+			SystemManager.setDefaults(args);
+		} catch (UnexpectedArgsException e) {
+			UnexpectedArgsException.push();
+			System.exit(1);
+			return;
+		}
 		Cache.init();
 		try {
 			MasterCommunication.start();
-			IncomingPacketRepository.storeAll();
+			LobbyNetwork.PACKET_REPOSITORY.storeAll();
 			LobbyNetwork.bind();
 		} catch (InterruptedException e) {
 			e.printStackTrace();

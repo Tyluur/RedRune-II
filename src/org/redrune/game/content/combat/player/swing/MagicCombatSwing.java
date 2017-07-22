@@ -2,6 +2,7 @@ package org.redrune.game.content.combat.player.swing;
 
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
@@ -155,9 +156,9 @@ public class MagicCombatSwing extends CombatTypeSwing {
 		int damage = randomizeHit(maxHit, calculator.totalAggressiveBoost(player), calculator.totalDefensiveBoost(target));
 		appendExperience(player, target, event.exp(), damage);
 		// the projectile delay speed
-		int projectileDelay = getProjectileDelay(player, target);
+		int projectileDelay = ProjectileManager.getProjectileDelay(player, target);
 		// the extra delay calculation
-		double delayCalc = getDelay(player, target, projectileDelay, 0);
+		double delayCalc = ProjectileManager.getDelay(player, target, projectileDelay, 0);
 		// the final delay
 		final int delay = (int) (projectileDelay + delayCalc);
 		
@@ -184,7 +185,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 			public void run() {
 				// so we don't have to make a new task for blocking.
 				if (delay == 2 && getTicksPassed() == 0 || getTicksPassed() == getGoalTicks() - 1) {
-					target.sendAwaitedAnimation(target.isPlayer() ? StaticCombatFormulae.getDefenceEmote(target.toPlayer()) : -1);
+					target.sendAwaitedAnimation(StaticCombatFormulae.getDefenceEmote(target));
 				} else if (getTicksPassed() == getGoalTicks()) {
 					// the attribute is put when the hit actually appears
 					hit.getAttributes().put(HitAttributes.WEAPON_USED, player.getEquipment().getWeaponId());

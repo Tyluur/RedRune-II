@@ -407,7 +407,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	 */
 	public void closeAll() {
 		closeInputBox();
-		player.getManager().getInterfaces().closeAllInterfaces();
+		closeAllInterfaces();
 	}
 	
 	/**

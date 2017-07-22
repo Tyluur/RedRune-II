@@ -3,13 +3,11 @@ package org.redrune.network.world.packet.incoming.impl;
 import org.redrune.game.content.event.EventRepository;
 import org.redrune.game.content.event.context.WalkEventContext;
 import org.redrune.game.content.event.impl.WalkEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.AttributeKey;
 import org.redrune.utility.tool.Misc;
 
 /**
@@ -44,13 +42,10 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		// when the player is frozen, we don't want to calculate pathfinding
 		// in the case that they shouldn't move.
 		if (player.isFrozen()) {
-			Entity frozenBy = player.getAttribute(AttributeKey.FROZEN_BY);
-			if (frozenBy == null || frozenBy.getLocation().withinDistance(player.getLocation(), 16)) {
-				player.getTransmitter().sendMessage("A magical force prevents you from moving.");
-				return;
-			} else {
-				player.unfreeze();
-			}
+			player.getTransmitter().sendMessage("A magical force prevents you from moving.");
+			return;
+		} else {
+			player.unfreeze();
 		}
 		
 		// calculates the amount of steps in the path

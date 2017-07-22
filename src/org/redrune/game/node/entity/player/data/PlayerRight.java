@@ -35,10 +35,10 @@ public enum PlayerRight {
 	 * The rights the player has in the client
 	 */
 	@Getter
-	private final int clientRight;
+	private final byte clientRight;
 	
 	PlayerRight(int clientRight) {
-		this.clientRight = clientRight;
+		this.clientRight = (byte) clientRight;
 	}
 	
 	PlayerRight() {

@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.redrune.network.NetworkConstants;
-import org.redrune.network.download.codec.DownloadDecoder;
+import org.redrune.network.lobby.codec.download.DownloadDecoder;
 import org.redrune.network.world.packet.PacketBuilder;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class RequestTypeVerificationDecoder extends ByteToMessageDecoder {
 			}
 		} else if (opcode == NetworkConstants.LOGIN_REQUEST) {
 			builder.writeByte(0);
-			pipeline.addBefore("handler", "decoder", new LoginStateDecoder());
+			pipeline.addBefore("handler", "decoder", new LobbyLoginDecoder());
 		} else {
 			System.out.println("Received unhandled opcode: " + opcode);
 		}

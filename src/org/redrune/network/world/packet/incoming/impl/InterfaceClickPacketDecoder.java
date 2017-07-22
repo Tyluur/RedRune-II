@@ -53,7 +53,7 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 						slotId = -1;
 					}
 					if (interfaceId > Cache.getAmountOfInterfaces()) {
-						logger.log(Level.SEVERE, "Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ")");
+						logger.log(Level.SEVERE, "Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ") [packetId=" + packet.getOpcode() + "]");
 						return;
 					}
 					if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {

@@ -2,20 +2,20 @@ package org.redrune.game.node.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.parse.AnimationDefinitionParser;
 import org.redrune.cache.parse.definition.AnimationDefinition;
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.GameFlags;
+import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.game.node.entity.player.render.flag.impl.Animation;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
 import org.redrune.game.world.region.Region;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.Priority;
-import org.redrune.cache.parse.AnimationDefinitionParser;
-import org.redrune.core.system.SystemManager;
-import org.redrune.game.GameFlags;
-import org.redrune.game.node.Location;
-import org.redrune.game.world.region.RegionManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,12 +31,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	public void tick() {
 		checkDeathEvent();
 	}
-	
-	/**
-	 * The combat definitions of the entity. These are saved
-	 */
-	@Getter
-	private final EntityCombatDefinitions combatDefinitions = new EntityCombatDefinitions();
 	
 	/**
 	 * The size of the map
@@ -133,12 +127,10 @@ public abstract class Entity extends Node implements EntityDetails {
 		this.attributes = new ConcurrentHashMap<>();
 		this.movement = new EntityMovement(this);
 		this.mapRegionsIds = new CopyOnWriteArrayList<>();
-		this.combatDefinitions.setEntity(this);
 	}
 	
 	/**
-	 * Removes an attribute from the {@link #attributes} map, if it doesn't exist, the default value is
-	 * returned,
+	 * Removes an attribute from the {@link #attributes} map, if it doesn't exist, the default value is returned,
 	 *
 	 * @param key
 	 * 		The key of the attribute to remove
@@ -333,6 +325,13 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * If we are currently dying
+	 */
+	public boolean isDying() {
+		return getAttribute("dying", false);
+	}
+	
+	/**
 	 * Gets the world the entity is on
 	 */
 	public byte getWorld() {
@@ -340,7 +339,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Checks if we are attackable by an entity. // TODO implement slayer requirements in the npc classes.
+	 * Checks if we are attackable by an entity..
 	 *
 	 * @param entity
 	 * 		The player
@@ -353,7 +352,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Checks if we were in combat recently.
 	 */
 	public boolean combatRecently() {
-		long lastTimeHit = getAttribute(AttributeKey.LAST_TIME_HIT);
+		long lastTimeHit = getAttribute(AttributeKey.LAST_TIME_HIT, -1L);
 		return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastTimeHit) <= 10;
 	}
 	
@@ -409,8 +408,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Gets the attribute from the {@link #attributes} map, and if it doesn't exist, we return the default
-	 * value
+	 * Gets the attribute from the {@link #attributes} map, and if it doesn't exist, we return the default value
 	 *
 	 * @param key
 	 * 		The key of the attribute
@@ -432,7 +430,21 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Checks if we are frozen
 	 */
 	public boolean isFrozen() {
-		return getAttribute(AttributeKey.FROZEN_UNTIL, -1L) >= SystemManager.getUpdateWorker().getTicksElapsed();
+		// who froze us
+		Entity frozenBy = getAttribute(AttributeKey.FROZEN_BY);
+		// person we're frozen by is too far away or they are no longer existent
+		if (frozenBy == null || !frozenBy.isRenderable() || frozenBy.getLocation().withinDistance(getLocation(), 16)) {
+			return false;
+		} else {
+			// if the time till we're unfrozen has lapseed
+			boolean lapsed = SystemManager.getUpdateWorker().getTicksElapsed() > getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
+			// if it has
+			if (lapsed) {
+				return false;
+			}
+			// otherwise we are not frozen
+			return true;
+		}
 	}
 	
 	/**
@@ -441,6 +453,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	public void unfreeze() {
 		removeAttribute(AttributeKey.FROZEN_BY);
 		removeAttribute(AttributeKey.FROZEN_UNTIL);
+		removeAttribute(AttributeKey.FREEZE_DELAY);
 	}
 	
 	/**
@@ -453,7 +466,11 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T removeAttribute(Object key) {
-		return (T) attributes.remove(key);
+		if (attributes.containsKey(key)) {
+			return (T) attributes.remove(key);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
@@ -473,7 +490,7 @@ public abstract class Entity extends Node implements EntityDetails {
 			return;
 		}
 		// avoid duplicates of this method being fired
-		if (getAttribute("dying", false)) {
+		if (isDying()) {
 			return;
 		}
 		// flag the death
@@ -522,5 +539,18 @@ public abstract class Entity extends Node implements EntityDetails {
 	public void setMultiAreaForce(boolean forced) {
 		putAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD, forced);
 		checkMultiArea();
+	}
+	
+	/**
+	 * Adds attacked by information
+	 *
+	 * @param entity
+	 * 		The entity who attacked us
+	 */
+	public void addAttackedByDelay(Entity entity) {
+		final long attackedDelay = SystemManager.getUpdateWorker().getTicksElapsed() + 10;
+		putAttribute(AttributeKey.ATTACKED_BY, entity);
+		putAttribute(AttributeKey.ATTACKED_BY_DELAY, attackedDelay);
+		entity.putAttribute(AttributeKey.ATTACKED_BY_DELAY, attackedDelay);
 	}
 }

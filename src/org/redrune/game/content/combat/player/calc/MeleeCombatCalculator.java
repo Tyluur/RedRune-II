@@ -1,9 +1,11 @@
 package org.redrune.game.content.combat.player.calc;
 
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatTypeCalculator;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 /**
@@ -43,28 +45,37 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 	
 	@Override
 	public double totalDefensiveBoost(Entity entity, Object... params) {
+		// the weapon id of the player
+		final int weaponId = (int) params[0];
+		// the attack style of the player
+		final int attackStyle = (int) params[1];
+		// find the combat style we're on for the selected type
+		int meleeBonusStyle = StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle);
+		// the bonus index
+		final int bonusIndex = StaticCombatFormulae.getMeleeDefenceBonusIndex(meleeBonusStyle);
+		// the attack style of the receiver, npcs have default stab attack.
+		int targetStyle = BonusConstants.STAB_ATTACK;
+		// the defence level
+		int defenceLevel;
+		// the prayer boost
+		double prayer;
+		int bonus;
 		if (entity.isPlayer()) {
-			// the weapon id of the player
-			final int weaponId = (int) params[0];
-			// the attack style of the player
-			final int attackStyle = (int) params[1];
-			
-			// the attack style of the receiver
-			final int targetStyle = entity.getCombatDefinitions().getAttackStyle();
-			
 			Player player = entity.toPlayer();
-			
-			final int level = entity.toPlayer().getSkills().getLevel(DEFENCE);
-			int styleBonus = targetStyle == 2 ? 1 : targetStyle == 3 ? 3 : 0;
-			double prayer = player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
-			double effective = Math.floor((level * prayer) + styleBonus);
-			final int equipment = entity.toPlayer().getEquipment().getBonus(StaticCombatFormulae.getMeleeDefenceBonus(StaticCombatFormulae.getMeleeBonusStyle(weaponId, attackStyle)));
-			
-			return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
+			targetStyle = player.getCombatDefinitions().getAttackStyle();
+			defenceLevel = player.getSkills().getLevel(DEFENCE);
+			prayer = player.getManager().getPrayers().getBasePrayerBoost(SkillConstants.DEFENCE);
+			bonus = player.getEquipment().getBonus(bonusIndex);
 		} else {
-			// TODO: npc defence bonuses
-			return 0;
+			NPC npc = entity.toNPC();
+			prayer = 1.0;
+			defenceLevel = npc.getDefinitions().getCombatLevel() / 2;
+			bonus = npc.getBonus(bonusIndex);
 		}
+		// calculate the bonus of the style we're on after all the setting is done
+		int styleBonus = targetStyle == 2 ? 1 : targetStyle == 3 ? 3 : 0;
+		double effective = Math.floor((defenceLevel * prayer) + styleBonus);
+		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
 	}
 	
 	@Override

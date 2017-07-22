@@ -1,27 +1,24 @@
-[Core]
-+   Master Server [UDP]
-	-
-
 [Wrappers/Systems]
-+   Combat
 +   Trade system
-+	Controller -> Activity (?) system
-
-[Data]
-+	NPC examines
-+	Object examines
 
 [Unfinished]
-+ 	Set interaction modules on creation of nodes. [maybe objects can have names as well as ids in modules, in cases of flagged by object name [trees]]
-+	Proper object facing. [facing tiles/levers is broken]
++   Master Server Unfinished:
+	-   Reconnecting should push all the world list data to the master server
+	-   Send world list size at a scheduled rate for all worlds
 +	NPC combat bonuses in player combat calculation
-+   Finish all range specials
-	-   Hand cannon
-	-   Crossbow bolt [e]
 +   Finish all melee special attacks
 	-   Dragon mace,halberd,spear,longsword,scim,2h
 	-   Whip [vine too]
 	-   Statius warhammer
 	-   Vesta spear
 	-   Barrelchest anchor
++   Finish all range specials
+	-   Hand cannon
+	-   Crossbow bolt [e]
++   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
 +	Granite maul shouldnt use spec if targ is alrd dead.
++	Proper object facing. [facing tiles/levers is broken]
+
+[Data]
++	NPC examines
++	Object examines

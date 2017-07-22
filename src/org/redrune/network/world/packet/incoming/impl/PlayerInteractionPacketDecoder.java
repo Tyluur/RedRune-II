@@ -1,14 +1,17 @@
 package org.redrune.network.world.packet.incoming.impl;
 
+import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.action.interaction.PlayerFollowAction;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
+import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
-import org.redrune.game.world.World;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.InteractionOption;
 
 /**
@@ -159,13 +162,41 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	 * 		The other player we're attacking
 	 */
 	private void decodePlayerAttack(Player player, Player other) {
+		// stop everything
 		player.stop(true, true, true, false);
+		// face the player
 		player.getUpdateMasks().register(new FaceLocationUpdate(player, other.getLocation()));
-		// we can't continue fighting in the activity
-		if (!player.getManager().getActivities().handleNodeInteraction(other, InteractionOption.ATTACK_OPTION)) {
+		
+		if (!player.getVariables().isInFightArea()) {
 			return;
 		}
-		player.getManager().getActions().startAction(new PlayerCombatAction(other));
+		if (!player.getVariables().isInFightArea() || !other.getVariables().isInFightArea()) {
+			player.getTransmitter().sendMessage("You can only attack players in a player-vs-player area.");
+			return;
+		}
+		if (!other.isAtMultiArea() || !player.isAtMultiArea()) {
+			Entity e = player.getAttribute(AttributeKey.ATTACKED_BY);
+			long delay = player.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
+			if (e != other && delay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+				player.getTransmitter().sendMessage("You are already in combat.");
+				return;
+			}
+			e = other.getAttribute(AttributeKey.ATTACKED_BY);
+			delay = other.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
+			if (e != player && delay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+				if (e.isNPC()) {
+					other.putAttribute(AttributeKey.ATTACKED_BY, player);
+				} else {
+					player.getTransmitter().sendMessage("That player is already in combat.");
+					return;
+				}
+			}
+		}
+		
+		// make sure we can fight in the activity
+		if (player.getManager().getActivities().handleNodeInteraction(other, InteractionOption.ATTACK_OPTION)) {
+			player.getManager().getActions().startAction(new PlayerCombatAction(other));
+		}
 	}
 	
 	/**

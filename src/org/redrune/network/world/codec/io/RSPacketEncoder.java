@@ -23,37 +23,51 @@ public final class RSPacketEncoder extends MessageToByteEncoder<Packet> {
 	
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Packet packet, ByteBuf out) throws Exception {
-		// the session
-		NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
-		// the encoded response
-		ByteBuf response;
-		if (packet.isRaw()) {
-			response = packet.getBuffer();
-		} else {
-			int packetLength = packet.getBuffer().readableBytes() + 4;
-			response = Unpooled.buffer(packetLength);
-			int opcode = packet.getOpcode();
-			final ISAACCipher outCipher = session.getOutCipher();
-			if (outCipher == null) {
-				writeSmartByte(response, opcode);
+		try {
+			// the session
+			NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
+			// the encoded response
+			ByteBuf response;
+			if (packet.isRaw()) {
+				response = packet.getBuffer();
 			} else {
-				if (opcode >= 128) {
-					writeSecureByte(response, outCipher, (opcode >> 8) + 128);
+				// the length of the packet
+				final int length = packet.getBuffer().readableBytes();
+				// create the buffer
+				response = Unpooled.buffer(length + 3);
+				// the id of the packet
+				int opcode = packet.getOpcode();
+				// the isaac cipher
+				final ISAACCipher outCipher = session == null ? null : session.getOutCipher();
+				// if there was no cipher
+				if (outCipher == null) {
+					writeSmart(response, opcode);
+	//				System.out.println("encoded opcode " + opcode + " WITHOUT isaac cipher");
+				} else {
+					if (opcode >= 128) {
+						response.writeByte((opcode >> 8) + 128 + outCipher.take());
+					}
+					response.writeByte(opcode + outCipher.take());
+	//				System.out.println("encoded opcode " + opcode + " WITH isaac cipher");
 				}
-				writeSecureByte(response, outCipher, opcode);
-			}
-			if (packet.getType() == PacketType.VAR_BYTE) {
-				response.writeByte(packet.getBuffer().readableBytes());
-			} else if (packet.getType() == PacketType.VAR_SHORT) {
-				if (packetLength > 65535) {
-					throw new IllegalStateException("Could not send a packet with " + packetLength + " bytes within 16 bits.");
+				if (packet.getType() == PacketType.VAR_BYTE) {
+					if (length > 255) { // Stack overflow.
+						throw new IllegalStateException("Could not send a packet with " + length + " bytes within 8 bits.");
+					}
+					response.writeByte(packet.getBuffer().readableBytes());
+				} else if (packet.getType() == PacketType.VAR_SHORT) {
+					if (length > 65535) { // Stack overflow.
+						throw new IllegalStateException("Could not send a packet with " + length + " bytes within 16 bits.");
+					}
+					response.writeByte((byte) (packet.getBuffer().readableBytes() >> 8));
+					response.writeByte((byte) packet.getBuffer().readableBytes());
 				}
-				response.writeByte((byte) (packet.getBuffer().readableBytes() >> 8));
-				response.writeByte((byte) packet.getBuffer().readableBytes());
+				response.writeBytes(packet.getBuffer());
 			}
-			response.writeBytes(packet.getBuffer());
+			ctx.writeAndFlush(response);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
 		}
-		ctx.writeAndFlush(response);
 	}
 	
 	/**
@@ -64,26 +78,11 @@ public final class RSPacketEncoder extends MessageToByteEncoder<Packet> {
 	 * @param value
 	 * 		The value to write
 	 */
-	private void writeSmartByte(ByteBuf buffer, int value) {
+	private void writeSmart(ByteBuf buffer, int value) {
 		if (value >= 128) {
-			buffer.writeByte((value >> 8) + 128);
-			buffer.writeByte(value);
-		} else {
-			buffer.writeByte(value);
+			buffer.writeByte(128);
 		}
+		buffer.writeByte(value);
 	}
 	
-	/**
-	 * Writes a value to the buffer as a byte using isaac encryption
-	 *
-	 * @param buffer
-	 * 		The buffer
-	 * @param cipher
-	 * 		The cipher
-	 * @param value
-	 * 		The value
-	 */
-	public void writeSecureByte(ByteBuf buffer, ISAACCipher cipher, int value) {
-		buffer.writeByte(value + cipher.getNextValue());
-	}
 }

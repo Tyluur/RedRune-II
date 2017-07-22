@@ -1,12 +1,13 @@
 package org.redrune.game.node.entity.player.render.flag.impl;
 
-import org.redrune.cache.parse.definition.NPCDefinition;
-import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.NPCDefinitionParser;
+import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
+import org.redrune.game.world.World;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.CS2ConfigBuilder;
 
 /**
@@ -111,7 +112,7 @@ public class AppearanceUpdate extends UpdateFlag {
 		playerUpdate.writeShort(appearance.getRenderEmote());
 		playerUpdate.writeRS2String(player.getDetails().getDisplayName());
 		
-		boolean pvpArea = true; // TODO: World.isPvpArea(player);
+		boolean pvpArea = World.get().isPvpArea(player.getLocation());
 		
 		// this also updates combat lvl in tab
 		playerUpdate.writeByte(pvpArea ? player.getSkills().getCombatLevel() : player.getSkills().getCombatLevelWithSummoning());

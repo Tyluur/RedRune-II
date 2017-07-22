@@ -38,7 +38,7 @@ public class WorldSession extends NetworkSession {
 	private final ConcurrentLinkedQueue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
 	
 	public WorldSession(Channel channel) {
-		super(channel);
+		super(channel, true);
 		this.viewComponents = new PlayerViewComponents();
 	}
 	
@@ -66,7 +66,6 @@ public class WorldSession extends NetworkSession {
 	public synchronized ChannelFuture write(Packet packet) {
 		try {
 			if (player != null && player.isRenderable() && !player.getSession().isInLobby()) {
-				System.out.println("queued packet " + packet.getOpcode());
 				packetQueue.add(packet);
 				return null;
 			} else {
@@ -115,11 +114,14 @@ public class WorldSession extends NetworkSession {
 	}
 	
 	/**
-	 * Sends the disconnection info to the master
+	 * Notifies the master server that a session has been disconnected
+	 *
+	 * @param worldId
+	 * 		The world of the disconnected session
 	 */
-	public void pushDisconnect(byte worldId) {
+	public void notifyDisconnection(byte worldId) {
 		if (player != null) {
-			MasterCommunication.write(new PlayerDisconnectionPacketOut((byte) worldId, isInLobby(), player.getDetails().getUsername()));
+			MasterCommunication.write(new PlayerDisconnectionPacketOut(worldId, isInLobby(), player.getDetails().getUsername()));
 		}
 	}
 }

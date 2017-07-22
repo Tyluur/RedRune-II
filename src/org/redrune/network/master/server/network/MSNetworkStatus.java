@@ -1,6 +1,7 @@
 package org.redrune.network.master.server.network;
 
 import lombok.Getter;
+import org.redrune.network.master.MasterConstants;
 
 /**
  * The possible states that the network can hold
@@ -14,7 +15,7 @@ public enum MSNetworkStatus {
 	NOT_CONNECTED,
 	
 	// the connected state
-	CONNECTED(() -> System.out.println("Successfully bound the server.")),
+	CONNECTED(() -> System.out.println("Successfully bound the server to port " + MasterConstants.PORT_ID)),
 	
 	// the state that the connection is no longer valid
 	CONNECTION_DROPPED(() -> System.out.println("The lobby server was just dropped."));

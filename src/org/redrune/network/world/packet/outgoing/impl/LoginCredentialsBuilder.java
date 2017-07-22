@@ -15,7 +15,7 @@ public final class LoginCredentialsBuilder implements OutgoingPacketBuilder {
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder();
 		bldr.writeByte(13 + 1); //length
-		bldr.writeByte((byte) player.getDetails().getDominantRight().getClientRight());
+		bldr.writeByte(player.getDetails().getDominantRight().getClientRight());
 		bldr.writeByte(0);
 		bldr.writeByte(0);
 		bldr.writeByte(0);

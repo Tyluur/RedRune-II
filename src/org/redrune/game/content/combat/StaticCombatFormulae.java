@@ -3,24 +3,25 @@ package org.redrune.game.content.combat;
 import com.google.common.base.Preconditions;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.EngineWorkingSet;
+import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.interaction.PlayerCombatAction;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.rs.constant.BonusConstants;
-import org.redrune.utility.tool.Misc;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatType;
 import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+
+import static org.redrune.utility.rs.constant.BonusConstants.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -54,14 +55,9 @@ public class StaticCombatFormulae {
 	}
 	
 	/**
-	 * Gets the range response from the player. The options are as follows:
-	 * <br>
-	 * <ul>
-	 * <li>0 - We are doing melee</li>
-	 * <li>1 - The ammo being used is incorrect</li>
-	 * <li>2 - Range should proceed</li>
-	 * <li>3 - We do not have ammo to use.</li>
-	 * </ul>
+	 * Gets the range response from the player. The options are as follows: <br> <ul> <li>0 - We are doing melee</li>
+	 * <li>1 - The ammo being used is incorrect</li> <li>2 - Range should proceed</li> <li>3 - We do not have ammo to
+	 * use.</li> </ul>
 	 *
 	 * @param player
 	 * 		The player to check.
@@ -462,103 +458,114 @@ public class StaticCombatFormulae {
 	 */
 	public static int getMeleeBonusStyle(int weaponId, int attackStyle) {
 		if (weaponId == -1) {
-			return BonusConstants.CRUSH_ATTACK;
+			return CRUSH_ATTACK;
 		} else {
 			if (weaponId == -2) {
-				return BonusConstants.CRUSH_ATTACK;
+				return CRUSH_ATTACK;
 			}
 			String weaponName = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
 			if (weaponName.contains("whip")) {
-				return BonusConstants.SLASH_ATTACK;
+				return SLASH_ATTACK;
 			}
 			if (weaponName.contains("staff of light")) {
 				switch (attackStyle) {
 					case 0:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 					case 1:
-						return BonusConstants.SLASH_ATTACK;
+						return SLASH_ATTACK;
 					default:
-						return BonusConstants.CRUSH_ATTACK;
+						return CRUSH_ATTACK;
 				}
 			}
 			if (weaponName.contains("staff") || weaponName.contains("granite mace") || weaponName.contains("warhammer") || weaponName.contains("tzhaar-ket-em") || weaponName.contains("tzhaar-ket-om") || weaponName.contains("maul")) {
-				return BonusConstants.CRUSH_ATTACK;
+				return CRUSH_ATTACK;
 			}
 			if (weaponName.contains("godsword") || weaponName.contains("greataxe") || weaponName.contains("2h sword") || weaponName.equals("saradomin sword")) {
 				switch (attackStyle) {
 					case 2:
-						return BonusConstants.CRUSH_ATTACK;
+						return CRUSH_ATTACK;
 					default:
-						return BonusConstants.SLASH_ATTACK;
+						return SLASH_ATTACK;
 				}
 			}
 			if (weaponName.contains("scimitar") || weaponName.contains("hatchet") || weaponName.contains("claws") || weaponName.contains(" sword") || weaponName.contains("longsword")) {
+				System.out.println("using style " + attackStyle + " with weapon " + weaponName);
 				switch (attackStyle) {
 					case 2:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 					default:
-						return BonusConstants.SLASH_ATTACK;
+						return SLASH_ATTACK;
 				}
 			}
 			if (weaponName.contains("mace") || weaponName.contains("anchor")) {
 				switch (attackStyle) {
 					case 2:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 					default:
-						return BonusConstants.CRUSH_ATTACK;
+						return CRUSH_ATTACK;
 				}
 			}
 			if (weaponName.contains("halberd")) {
 				switch (attackStyle) {
 					case 1:
-						return BonusConstants.SLASH_ATTACK;
+						return SLASH_ATTACK;
 					default:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 				}
 			}
 			if (weaponName.contains("spear")) {
 				switch (attackStyle) {
 					case 1:
-						return BonusConstants.SLASH_ATTACK;
+						return SLASH_ATTACK;
 					case 2:
-						return BonusConstants.CRUSH_ATTACK;
+						return CRUSH_ATTACK;
 					default:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 				}
 			}
 			if (weaponName.contains("pickaxe")) {
 				switch (attackStyle) {
 					case 2:
-						return BonusConstants.CRUSH_ATTACK;
+						return CRUSH_ATTACK;
 					default:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 				}
 			}
 			
 			if (weaponName.contains("dagger") || weaponName.contains("rapier")) {
 				switch (attackStyle) {
 					case 2:
-						return BonusConstants.SLASH_ATTACK;
+						return SLASH_ATTACK;
 					default:
-						return BonusConstants.STAB_ATTACK;
+						return STAB_ATTACK;
 				}
 			}
 			
 		}
 		switch (weaponId) {
 			default:
-				return BonusConstants.CRUSH_ATTACK;
+				return CRUSH_ATTACK;
 		}
 	}
 	
 	/**
 	 * Gets the defence bonus based on the attack bonus
 	 *
-	 * @param bonusId
-	 * 		The attack bonus id
+	 * @param style
+	 * 		The attack style
 	 */
-	public static int getMeleeDefenceBonus(int bonusId) {
-		return bonusId == BonusConstants.STAB_ATTACK ? BonusConstants.STAB_DEFENCE : bonusId == BonusConstants.STAB_DEFENCE ? BonusConstants.SLASH_DEFENCE : BonusConstants.CRUSH_DEFENCE;
+	public static int getMeleeDefenceBonusIndex(int style) {
+		System.out.println("finding right bonus for style " + style);
+		switch (style) {
+			case STAB_ATTACK:
+				return STAB_DEFENCE;
+			case SLASH_ATTACK:
+				return SLASH_DEFENCE;
+			case CRUSH_ATTACK:
+				return CRUSH_DEFENCE;
+			default:
+				return STAB_DEFENCE;
+		}
 	}
 	
 	/**
@@ -614,9 +621,7 @@ public class StaticCombatFormulae {
 	}
 	
 	/**
-	 * Checks if we have an armour set equipped. This uses lowercase naming.
-	 * <br>
-	 * Example usage:
+	 * Checks if we have an armour set equipped. This uses lowercase naming. <br> Example usage:
 	 * <br>armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_chest, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok",
 	 * "dharok", "dharok");// armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_AMMY, SLOT_LEGS, SLOT_WEAPON },
 	 * "dharok", "dharok", "dharok", "dharok");
@@ -1007,90 +1012,98 @@ public class StaticCombatFormulae {
 	}
 	
 	/**
-	 * Gets the defence emote of a player
+	 * Gets the defence emote of an entity
 	 *
-	 * @param player
-	 * 		The player
+	 * @param entity
+	 * 		The entity
 	 */
-	public static int getDefenceEmote(Player player) {
-		int shieldId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_SHIELD);
-		String shieldName = shieldId == -1 ? null : ItemDefinitionParser.forId(shieldId).getName().toLowerCase();
-		if (shieldId == -1 || (shieldName.contains("book") && shieldId != 18346)) {
-			int weaponId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_WEAPON);
-			if (weaponId == -1) {
+	public static int getDefenceEmote(Entity entity) {
+		if (entity.isPlayer()) {
+			Player player = entity.toPlayer();
+			int shieldId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_SHIELD);
+			String shieldName = shieldId == -1 ? null : ItemDefinitionParser.forId(shieldId).getName().toLowerCase();
+			if (shieldId == -1 || (shieldName.contains("book") && shieldId != 18346)) {
+				int weaponId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_WEAPON);
+				if (weaponId == -1) {
+					return 424;
+				}
+				String weaponName = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
+				if (!weaponName.equals("null")) {
+					if (weaponName.contains("scimitar") || weaponName.contains("korasi sword")) {
+						return 15074;
+					}
+					if (weaponName.contains("whip")) {
+						return 11974;
+					}
+					if (weaponName.contains("staff of light")) {
+						return 12806;
+					}
+					if (weaponName.contains("longsword") || weaponName.contains("darklight") || weaponName.contains("silverlight") || weaponName.contains("excalibur")) {
+						return 388;
+					}
+					if (weaponName.contains("dagger")) {
+						return 378;
+					}
+					if (weaponName.contains("rapier")) {
+						return 13038;
+					}
+					if (weaponName.contains("pickaxe")) {
+						return 397;
+					}
+					if (weaponName.contains("mace")) {
+						return 403;
+					}
+					if (weaponName.contains("claws")) {
+						return 4177;
+					}
+					if (weaponName.contains("hatchet") || weaponName.contains("battleaxe")) {
+						return 397;
+					}
+					if (weaponName.contains("greataxe")) {
+						return 12004;
+					}
+					if (weaponName.contains("wand")) {
+						return 415;
+					}
+					if (weaponName.contains("chaotic staff")) {
+						return 13046;
+					}
+					if (weaponName.contains("staff")) {
+						return 420;
+					}
+					if (weaponName.contains("warhammer") || weaponName.contains("tzhaar-ket-em")) {
+						return 403;
+					}
+					if (weaponName.contains("maul") || weaponName.contains("tzhaar-ket-om")) {
+						return 1666;
+					}
+					if (weaponName.contains("zamorakian spear")) {
+						return 12008;
+					}
+					if (weaponName.contains("spear") || weaponName.contains("halberd") || weaponName.contains("hasta")) {
+						return 430;
+					}
+					if (weaponName.contains("2h sword") || weaponName.contains("godsword") || weaponName.equals("saradomin sword")) {
+						return 7050;
+					}
+				}
 				return 424;
 			}
-			String weaponName = ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
-			if (!weaponName.equals("null")) {
-				if (weaponName.contains("scimitar") || weaponName.contains("korasi sword")) {
-					return 15074;
-				}
-				if (weaponName.contains("whip")) {
-					return 11974;
-				}
-				if (weaponName.contains("staff of light")) {
-					return 12806;
-				}
-				if (weaponName.contains("longsword") || weaponName.contains("darklight") || weaponName.contains("silverlight") || weaponName.contains("excalibur")) {
-					return 388;
-				}
-				if (weaponName.contains("dagger")) {
-					return 378;
-				}
-				if (weaponName.contains("rapier")) {
-					return 13038;
-				}
-				if (weaponName.contains("pickaxe")) {
-					return 397;
-				}
-				if (weaponName.contains("mace")) {
-					return 403;
-				}
-				if (weaponName.contains("claws")) {
-					return 4177;
-				}
-				if (weaponName.contains("hatchet") || weaponName.contains("battleaxe")) {
-					return 397;
-				}
-				if (weaponName.contains("greataxe")) {
-					return 12004;
-				}
-				if (weaponName.contains("wand")) {
-					return 415;
-				}
-				if (weaponName.contains("chaotic staff")) {
-					return 13046;
-				}
-				if (weaponName.contains("staff")) {
-					return 420;
-				}
-				if (weaponName.contains("warhammer") || weaponName.contains("tzhaar-ket-em")) {
-					return 403;
-				}
-				if (weaponName.contains("maul") || weaponName.contains("tzhaar-ket-om")) {
-					return 1666;
-				}
-				if (weaponName.contains("zamorakian spear")) {
-					return 12008;
-				}
-				if (weaponName.contains("spear") || weaponName.contains("halberd") || weaponName.contains("hasta")) {
-					return 430;
-				}
-				if (weaponName.contains("2h sword") || weaponName.contains("godsword") || weaponName.equals("saradomin sword")) {
-					return 7050;
-				}
+			if (shieldName.contains("shield") || shieldName.contains("toktz-ket-xil")) {
+				return 1156;
 			}
-			return 424;
-		}
-		if (shieldName.contains("shield") || shieldName.contains("toktz-ket-xil")) {
-			return 1156;
-		}
-		if (shieldName.contains("defender")) {
-			return 4177;
-		}
-		switch (shieldId) {
-			default:
-				return 424;
+			if (shieldName.contains("defender")) {
+				return 4177;
+			}
+			switch (shieldId) {
+				default:
+					return 424;
+			}
+		} else if (entity.isNPC()) {
+			return entity.toNPC().getCombatDefinitions().getDefenceAnim();
+		} else {
+			System.out.println("Unable to identify entity type: " + entity);
+			return -1;
 		}
 	}
 	
@@ -1173,18 +1186,16 @@ public class StaticCombatFormulae {
 	 * 		The target of combat
 	 */
 	public static void autoRetaliate(Entity source, Entity target) {
-		// as long as the target isnt moving or fighting already, they'll retaliate to us
-		if (target.getCombatDefinitions().isRetaliating() && !target.fighting() && !target.getMovement().isMoving()) {
+		// as long as the target isn't moving or fighting already, they'll retaliate to us
+		if ((target.isNPC() || (target.isPlayer() && target.toPlayer().getCombatDefinitions().isRetaliating())) && !target.fighting() && !target.getMovement().isMoving()) {
+			System.out.println("yo swing dat ");
 			SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 				@Override
 				public void run() {
-					if (!target.isRenderable()) {
-						return;
-					}
 					if (target.isPlayer()) {
 						target.toPlayer().getManager().getActions().startAction(new PlayerCombatAction(source));
 					} else {
-						// TODO: force the npc to attack us
+						target.toNPC().getCombatManager().getCombat().setTarget(source);
 					}
 				}
 			});
@@ -1422,13 +1433,13 @@ public class StaticCombatFormulae {
 	/**
 	 * Checks if the player can fight the target
 	 *
-	 * @param player
+	 * @param source
 	 * 		The player
 	 * @param target
 	 * 		The target
 	 */
-	public static boolean canFight(Player player, Entity target) {
-		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(player)) || (player.isDead() || !player.isRenderable() || !player.attackable(target)) || !player.getLocation().withinDistance(target.getLocation(), 16)) {
+	public static boolean canFight(Entity source, Entity target) {
+		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(source)) || (source.isDead() || !source.isRenderable() || !source.attackable(target)) || !source.getLocation().withinDistance(target.getLocation(), 16)) {
 			return false;
 		}
 		return true;

@@ -1,3 +1,24 @@
+7/21/17 {
+	+   Encountered an irritating issue with packet decoding & resolved it after spending a day on it.
+		-   Finished ISAAC decryption with decoding
+	+   Finally finished player file synchronization over multiple worlds
+		-   Merged lobby server & download server into one server, with different handshake handling.
+	+   Started PVM System
+		-   Loaded 971 dumped npc combat definitions
+			+   These include 1000+ ids of npcs with different bonuses, attack animations, etc
+			+   As well as charm drops
+			+   As well as drop tables
+		-   Wrote npc drop table system & implemented it [with charms]
+		-   Wrote npc combat system and implemented it with a test class for npcs that don't have custom swings
+			+   Man, guard, woman, hellhound, etc....
+		-   Wrote npc defense bonus calculation for pvm [so realistic hits are done when you're fighting npcs]
+	+   Added wilderness area checking to player appearance update block [126 + 12/138 cb lvl]
+
+	[IMG]http://i.imgur.com/wqdQRDn.gif[/IMG]
+	[img]http://i.imgur.com/SeqPw2l.png[/img]
+	[img]http://i.imgur.com/fCo8MNK.gif[/img]
+}
+
 7/19/17 {
 	+   Converted networking to use netty 4 library
 		-   This came with addition of RSA & ISAAC encryption/decryption

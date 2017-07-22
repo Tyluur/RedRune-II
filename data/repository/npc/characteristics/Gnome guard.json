@@ -1,0 +1,42 @@
+{
+  "drops": [
+    {
+      "itemId": 526,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 100.0
+    },
+    {
+      "itemId": 995,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 98.0
+    },
+    {
+      "itemId": 2169,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 75.0
+    },
+    {
+      "itemId": 2102,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 44.0
+    },
+    {
+      "itemId": 2128,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 29.0
+    },
+    {
+      "itemId": 2120,
+      "minAmount": 1,
+      "maxAmount": 1,
+      "rate": 32.0
+    }
+  ],
+  "bonuses": {},
+  "combatDefinitions": {}
+}

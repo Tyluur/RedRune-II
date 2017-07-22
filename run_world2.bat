@@ -1,4 +1,4 @@
 @Title RR 666
 @echo off
-java -cp bin;data/dependencies/*; org.redrune.Bootstrap true 2 true
+java -cp bin;deps/*; org.redrune.WorldBootstrap true 2
 pause

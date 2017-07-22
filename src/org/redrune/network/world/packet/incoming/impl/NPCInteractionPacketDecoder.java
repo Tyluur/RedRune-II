@@ -1,19 +1,26 @@
 package org.redrune.network.world.packet.incoming.impl;
 
+import org.redrune.core.system.SystemManager;
+import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.event.EventRepository;
-import org.redrune.game.content.event.context.NodeReachEventContext;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.tool.Misc;
-import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.content.event.context.NPCEventContext;
+import org.redrune.game.content.event.context.NodeReachEventContext;
 import org.redrune.game.content.event.impl.NPCEvent;
 import org.redrune.game.content.event.impl.NodeReachEvent;
+import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.InteractionOption;
+import org.redrune.utility.tool.Misc;
 
 import java.util.logging.Logger;
+
+import static org.redrune.utility.rs.InteractionOption.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -57,14 +64,43 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 			LOGGER.severe("Unable to identify interaction option for opcode " + packet.getOpcode());
 			return;
 		}
-		if (option != InteractionOption.EXAMINE) {
-			player.getMovement().reset(forceRun);
-			EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(npc, () -> {
-				// executing the npc interaction event on arrival
-				EventRepository.executeEvent(player, NPCEvent.class, new NPCEventContext(npc, option));
-			}));
-		} else {
-			player.getTransmitter().sendMessage(npc.toString(), true);
+		// different options handled differently
+		switch (option) {
+			case ATTACK_OPTION:
+				// stop everything
+				player.stop(true, true, true, false);
+				// face the player
+				player.getUpdateMasks().register(new FaceLocationUpdate(player, npc.getLocation()));
+				// make sure we aren't at multi
+				if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
+					Entity attackedBy = player.getAttribute(AttributeKey.ATTACKED_BY);
+					long attackedDelay = player.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
+					if (attackedBy != npc && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+						player.getTransmitter().sendMessage("You are already in combat.");
+						return;
+					}
+					attackedBy = npc.getAttribute(AttributeKey.ATTACKED_BY);
+					attackedDelay = npc.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
+					if (attackedBy != player && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+						player.getTransmitter().sendMessage("This npc is already in combat.");
+						return;
+					}
+				}
+				// make sure we can fight in the activity
+				if (player.getManager().getActivities().handleNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
+					player.getManager().getActions().startAction(new PlayerCombatAction(npc));
+				}
+				break;
+			case EXAMINE:
+				player.getTransmitter().sendMessage(npc.toString(), true);
+				break;
+			default:
+				player.getMovement().reset(forceRun);
+				EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(npc, () -> {
+					// executing the npc interaction event on arrival
+					EventRepository.executeEvent(player, NPCEvent.class, new NPCEventContext(npc, option));
+				}));
+				break;
 		}
 	}
 	
@@ -77,17 +113,17 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 	private InteractionOption getOptionByOpcode(int opcode) {
 		switch (opcode) {
 			case ATTACK_NPC_OPTION:
-				return InteractionOption.ATTACK_OPTION;
+				return ATTACK_OPTION;
 			case FIRST_NPC_OPTION:
-				return InteractionOption.FIRST_OPTION;
+				return FIRST_OPTION;
 			case SECOND_NPC_OPTION:
-				return InteractionOption.SECOND_OPTION;
+				return SECOND_OPTION;
 			case THIRD_NPC_OPTION:
-				return InteractionOption.THIRD_OPTION;
+				return THIRD_OPTION;
 			case FOURTH_NPC_OPTION:
-				return InteractionOption.FOURTH_OPTION;
+				return FOURTH_OPTION;
 			case LAST_NPC_OPTION:
-				return InteractionOption.EXAMINE;
+				return EXAMINE;
 			default:
 				return null;
 		}

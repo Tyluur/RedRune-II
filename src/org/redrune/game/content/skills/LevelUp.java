@@ -24,7 +24,7 @@ public final class LevelUp implements SkillConstants {
 		
 		player.putAttribute("leveledUp", skillId);
 		player.putAttribute("leveledUp[" + skillId + "]", Boolean.TRUE);
-		player.sendGraphics(199);
+		player.sendGraphics(199, 100, 0);
 		player.getManager().getInterfaces().sendChatboxInterface(740).sendInterfaceText(740, 0, "Congratulations, you have just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level!").sendInterfaceText(740, 1, "You have now reached level " + level + ".");
 		switchFlash(player, skillId, true);
 		player.getTransmitter().send(new ConfigFilePacketBuilder(4757, getIconValue(skillId)).build(player));
