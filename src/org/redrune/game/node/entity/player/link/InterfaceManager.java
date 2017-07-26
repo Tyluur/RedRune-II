@@ -416,16 +416,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	public InterfaceManager closeAllInterfaces() {
 		if (getScreenInterface() != -1) {
 			closeScreenInterface();
-			System.out.println("closed screen");
+//			System.out.println("closed screen");
 		}
 		if (getChatboxInterface() != -1) {
 			closeChatboxInterface();
 			player.getManager().getDialogues().end();
-			System.out.println("closed chatbox");
+//			System.out.println("closed chatbox");
 		}
 		if (getInventoryInterface() != -1) {
 			closeInventoryInterface();
-			System.out.println("Closed inventory");
+//			System.out.println("Closed inventory");
 		}
 		return this;
 	}

@@ -17,7 +17,7 @@ public class OutLogger extends PrintStream {
 	/**
 	 * The format of a date
 	 */
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM:dd:yyyy hh:mm:ss");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM:dd:yyyy hh:mm:ss.SSS");
 	
 	public OutLogger(OutputStream out) {
 		super(out);
@@ -88,7 +88,7 @@ public class OutLogger extends PrintStream {
 	 * 		The text that is being outputted
 	 */
 	private void prettyLog(String description, String text) {
-		String pretext = "[" + getFormattedDate() + "][" + description + "] " + text;
+		String pretext = "[" + description + "][" + getFormattedDate() + "]  " + text;
 		super.print(pretext);
 	}
 	

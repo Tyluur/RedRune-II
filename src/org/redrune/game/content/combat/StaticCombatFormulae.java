@@ -555,7 +555,6 @@ public class StaticCombatFormulae {
 	 * 		The attack style
 	 */
 	public static int getMeleeDefenceBonusIndex(int style) {
-		System.out.println("finding right bonus for style " + style);
 		switch (style) {
 			case STAB_ATTACK:
 				return STAB_DEFENCE;
@@ -1173,7 +1172,13 @@ public class StaticCombatFormulae {
 		if (target.isPlayer()) {
 			target.toPlayer().getManager().getInterfaces().closeAll();
 		}
-		player.getManager().getInterfaces().closeAll();
+		SystemManager.getScheduler().schedule(new ScheduledTask() {
+			@Override
+			public void run() {
+				player.getManager().getInterfaces().closeAll();
+			}
+		});
+		target.addAttackedByDelay(player);
 	}
 	
 	/**
@@ -1188,7 +1193,6 @@ public class StaticCombatFormulae {
 	public static void autoRetaliate(Entity source, Entity target) {
 		// as long as the target isn't moving or fighting already, they'll retaliate to us
 		if ((target.isNPC() || (target.isPlayer() && target.toPlayer().getCombatDefinitions().isRetaliating())) && !target.fighting() && !target.getMovement().isMoving()) {
-			System.out.println("yo swing dat ");
 			SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 				@Override
 				public void run() {
@@ -1440,6 +1444,10 @@ public class StaticCombatFormulae {
 	 */
 	public static boolean canFight(Entity source, Entity target) {
 		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(source)) || (source.isDead() || !source.isRenderable() || !source.attackable(target)) || !source.getLocation().withinDistance(target.getLocation(), 16)) {
+			return false;
+		}
+		// when force walking we ignore all combat states
+		if (target.isNPC() && target.toNPC().isForceWalking() || (source.isNPC() && source.toNPC().isForceWalking())) {
 			return false;
 		}
 		return true;

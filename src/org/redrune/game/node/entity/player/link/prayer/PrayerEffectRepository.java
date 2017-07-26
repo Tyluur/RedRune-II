@@ -5,7 +5,6 @@ import org.redrune.utility.tool.Misc;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -19,16 +18,11 @@ public class PrayerEffectRepository {
 	private static final Set<DrainPrayer> DRAIN_PRAYERS = new HashSet<>();
 	
 	/**
-	 * The logger instance
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(PrayerEffectRepository.class);
-	
-	/**
 	 * Registers all drain prayers into the database
 	 */
 	public static void registerAll() {
 		Misc.getClassesInDirectory(DrainPrayer.class.getPackage().getName() + ".drain").stream().filter(DrainPrayer.class::isInstance).forEach(clazz -> DRAIN_PRAYERS.add((DrainPrayer) clazz));
-		LOGGER.info("Loaded " + DRAIN_PRAYERS.size() + " drain prayer effects.");
+		System.out.println("Loaded " + DRAIN_PRAYERS.size() + " drain prayer effects.");
 	}
 	
 	/**

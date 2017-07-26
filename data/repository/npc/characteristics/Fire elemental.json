@@ -157,17 +157,30 @@
       "rate": 56.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "1019": [
+      58,
+      0,
+      0,
+      0,
+      0,
+      79,
+      0,
+      0,
+      48,
+      65
+    ]
+  },
   "combatDefinitions": {
     "1019": {
-      "hitpoints": 300,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
+      "hitpoints": 280,
+      "attackAnim": 1029,
+      "defenceAnim": 1030,
+      "deathAnim": 1031,
       "attackDelay": 4,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 60,
+      "deathDelay": 2,
+      "respawnDelay": 50,
+      "maxHit": 50,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,

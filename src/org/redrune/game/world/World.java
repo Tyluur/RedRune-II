@@ -20,6 +20,7 @@ import org.redrune.game.module.command.CommandRepository;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.EntityList;
 import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.npc.extension.RockCrabNPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.RegionBuilder;
 import org.redrune.game.world.region.RegionDeletion;
@@ -35,10 +36,9 @@ import org.redrune.utility.repository.npc.combat.NPCCombatSwingRepository;
 import org.redrune.utility.repository.npc.spawn.NPCSpawn;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.constant.Directions.Direction;
-import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Contains all the collections and data to handle a world.
@@ -77,20 +77,10 @@ public final class World implements SequentialService {
 	private final IncomingPacketRepository packetRepository = new IncomingPacketRepository(WalkPacketDecoder.class.getPackage().getName());
 	
 	/**
-	 * The logger instance
-	 */
-	private final Logger logger = Misc.constructLogger(World.class);
-	
-	/**
 	 * The instance of the stopwatch
 	 */
 	@Getter
 	private final Stopwatch stopwatch = Stopwatch.createUnstarted();
-	
-	/**
-	 * The arguments of the server in the jvm
-	 */
-	private final String[] args;
 	
 	/**
 	 * If the world is alive
@@ -110,7 +100,6 @@ public final class World implements SequentialService {
 			System.exit(1);
 		}
 		this.id = GameFlags.worldId;
-		this.args = args;
 		packetRepository.storeAll();
 		setAlive(true);
 	}
@@ -150,12 +139,13 @@ public final class World implements SequentialService {
 	
 	@Override
 	public void end() {
+		System.out.println("Started world " + id + " in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 		// finalization
 		SystemManager.start();
 		// master server can now listen
 		MasterCommunication.start();
-		// this waits for the session to close, so anything after this method will not execute until shutdown
 		try {
+			// this waits for the session to close, so anything after this method will not execute until shutdown
 			WorldNetwork.bind();
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -202,9 +192,15 @@ public final class World implements SequentialService {
 	 * 		The id of the npc
 	 * @param location
 	 * 		The location of the npc
+	 * @return The npc that was constructed
 	 */
 	public NPC addNPC(int id, Location location, Direction direction) {
-		final NPC npc = new NPC(id, location, direction);
+		final NPC npc;
+		if (id == 1266 || id == 1268 || id == 2453 || id == 2886) {
+			npc = new RockCrabNPC(id, location, direction);
+		} else {
+			npc = new NPC(id, location, direction);
+		}
 		npc.register();
 		npcs.add(npc);
 		return npc;

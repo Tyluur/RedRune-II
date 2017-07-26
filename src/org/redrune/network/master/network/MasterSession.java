@@ -42,7 +42,6 @@ public class MasterSession {
 	public MasterSession(SocketChannel channel) {
 		this.channel = channel;
 		this.ip = Utility.getHost(channel);
-		System.out.println("new master session created: " + channel);
 	}
 	
 	@Override

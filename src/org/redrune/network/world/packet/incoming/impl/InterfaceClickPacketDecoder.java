@@ -1,29 +1,21 @@
 package org.redrune.network.world.packet.incoming.impl;
 
+import org.redrune.cache.Cache;
 import org.redrune.game.content.event.EventRepository;
+import org.redrune.game.content.event.context.item.ItemOnItemContext;
 import org.redrune.game.content.event.impl.item.ItemOnItemEvent;
 import org.redrune.game.module.ModuleRepository;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.tool.Misc;
-import org.redrune.cache.Cache;
-import org.redrune.game.content.event.context.item.ItemOnItemContext;
 import org.redrune.game.node.item.Item;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/22/2017
  */
 public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
-	
-	/**
-	 * The logger instance
-	 */
-	private final Logger logger = Misc.constructLogger(InterfaceClickPacketDecoder.class);
 	
 	@Override
 	public int[] bindings() {
@@ -53,11 +45,11 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 						slotId = -1;
 					}
 					if (interfaceId > Cache.getAmountOfInterfaces()) {
-						logger.log(Level.SEVERE, "Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ") [packetId=" + packet.getOpcode() + "]");
+						System.out.println("Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ") [packetId=" + packet.getOpcode() + "]");
 						return;
 					}
 					if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {
-						logger.log(Level.SEVERE, "Interface " + interfaceId + ", [" + componentId + "] was not existent in the player's mapping of opened interface.");
+						System.out.println( "Interface " + interfaceId + ", [" + componentId + "] was not existent in the player's mapping of opened interface.");
 						return;
 					}
 					if (ModuleRepository.handle(player, interfaceId, componentId, itemId, slotId, packet.getOpcode())) {
@@ -71,7 +63,8 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 					break;
 			}
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Error reading packet: " + packet.getOpcode(), e);
+			System.out.println("Error reading packet: " + packet.getOpcode());
+			e.printStackTrace();
 		}
 	}
 	
@@ -89,11 +82,11 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 		int interfaceId = interfaceHash >> 16;
 		int componentId = interfaceHash & 0xFF;
 		if (interfaceId > Cache.getAmountOfInterfaces()) {
-			logger.log(Level.SEVERE, "Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ")");
+			System.out.println("Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ")");
 			return;
 		}
 		if (!player.getManager().getInterfaces().hasInterfaceOpen(interfaceId)) {
-			logger.log(Level.SEVERE, "Interface " + interfaceId + ", [" + componentId + "] was not existent in the player's mapping of opened interface.");
+			System.out.println("Interface " + interfaceId + ", [" + componentId + "] was not existent in the player's mapping of opened interface.");
 			return;
 		}
 		if (ModuleRepository.handle(player, interfaceId, componentId, -1, -1, packet.getOpcode())) {

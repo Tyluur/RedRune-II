@@ -1,15 +1,14 @@
 package org.redrune.game.world.region;
 
 import org.redrune.game.node.Location;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.object.GameObject;
+import org.redrune.utility.tool.Misc;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -26,11 +25,6 @@ public class RegionDeletion {
 	 * The file that has the data of objects that will be deleted
 	 */
 	private static final String DELETE_FILE_LOCATION = "./data/repository/object/objects_deleted.txt";
-	
-	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(RegionDeletion.class);
 	
 	/**
 	 * Prepares the {@link #OBJECT_DELETE_MAP} of objects to delete
@@ -52,7 +46,7 @@ public class RegionDeletion {
 			enterData(object);
 			count++;
 		}
-		LOGGER.info("Loaded " + count + " objects to delete.");
+		System.out.println("Loaded " + count + " objects to delete.");
 	}
 	
 	/**

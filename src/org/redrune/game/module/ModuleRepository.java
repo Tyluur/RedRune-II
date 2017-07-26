@@ -10,13 +10,12 @@ import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
-import org.redrune.utility.tool.Misc;
 import org.redrune.utility.rs.InteractionOption;
+import org.redrune.utility.tool.Misc;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -24,11 +23,6 @@ import java.util.stream.Collectors;
  * @since 5/27/2017
  */
 public class ModuleRepository {
-	
-	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(ModuleRepository.class);
 	
 	/**
 	 * The list of all interface modules
@@ -63,7 +57,7 @@ public class ModuleRepository {
 		for (String directory : new ArrayList<>(Misc.getSubDirectories(InteractionModule.class))) {
 			Misc.getClassesInDirectory(InteractionModule.class.getPackage().getName() + "." + directory).stream().filter(InteractionModule.class::isInstance).forEach(clazz -> registerBindings((InteractionModule) clazz));
 		}
-		LOGGER.info(INTERFACE_MODULES.size() + " interface modules, " + ITEM_MODULES.size() + " item modules, " + NPC_MODULES.size() + " npc modules, and " + OBJECT_MODULES.size() + " object modules loaded.");
+		System.out.println(INTERFACE_MODULES.size() + " interface modules, " + ITEM_MODULES.size() + " item modules, " + NPC_MODULES.size() + " npc modules, and " + OBJECT_MODULES.size() + " object modules loaded.");
 	}
 	
 	/**

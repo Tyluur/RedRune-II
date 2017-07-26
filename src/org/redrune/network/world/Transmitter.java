@@ -125,14 +125,14 @@ public final class Transmitter {
 	 */
 	public Transmitter sendMessage(String text, boolean... filterable) {
 		// the last message sent is the same as the one we're sending
-		if (player.getAttribute("last_message", "null").equals(text)) {
+	/*	if (player.getAttribute("last_message", "null").equals(text)) {
 			// checks the time of the last message sent.
 			final Long lastMessageTime = player.getAttribute("last_message_time", -1L);
 			// check if its recent though, they have to stay up to date
 			if (!SystemManager.getUpdateWorker().lapsed(lastMessageTime, 3)) {
 				return this;
 			}
-		}
+		}*/
 		
 		// messages should only be filtered if this is sent as NetworkTransmitter#sendMessage("hi", true);
 		// otherwise the parameter is unneeded...

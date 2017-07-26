@@ -14,7 +14,6 @@ import org.redrune.utility.tool.Misc;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,11 +36,6 @@ public class CombatRegistry implements MagicConstants {
 	private static final Map<String, BowFireEvent> BOWS = new HashMap<>();
 	
 	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(CombatRegistry.class);
-	
-	/**
 	 * The list of all spells we can have
 	 */
 	private static final List<MagicSpellEvent<?>> SPELL_EVENTS = new ArrayList<>();
@@ -54,7 +48,7 @@ public class CombatRegistry implements MagicConstants {
 			SpecialAttackEvent special = (SpecialAttackEvent) clazz;
 			for (String name : special.applicableNames()) {
 				if (SPECIALS.containsKey(name)) {
-					LOGGER.info("Attempted duplicate registration of special for '" + name + "'");
+					System.out.println("Attempted duplicate registration of special for '" + name + "'");
 					continue;
 				}
 				SPECIALS.put(name, special);
@@ -64,7 +58,7 @@ public class CombatRegistry implements MagicConstants {
 			BowFireEvent bow = (BowFireEvent) clazz;
 			for (String name : bow.bowNames()) {
 				if (BOWS.containsKey(name)) {
-					LOGGER.info("Attempted duplicate registration of bow for '" + name + "'");
+					System.out.println("Attempted duplicate registration of bow for '" + name + "'");
 					continue;
 				}
 				BOWS.put(name, bow);
@@ -72,7 +66,7 @@ public class CombatRegistry implements MagicConstants {
 		});
 		PrayerEffectRepository.registerAll();
 		Misc.getClassesInDirectory(CombatRegistryEvent.class.getPackage().getName() + ".spell").stream().filter(MagicSpellEvent.class::isInstance).forEach(clazz -> SPELL_EVENTS.add((MagicSpellEvent) clazz));
-		LOGGER.info("Prepared " + SPECIALS.size() + " special attack weapons, " + BOWS.size() + " bow listeners, and " + SPELL_EVENTS.size() + " spells.");
+		System.out.println("Prepared " + SPECIALS.size() + " special attack weapons, " + BOWS.size() + " bow listeners, and " + SPELL_EVENTS.size() + " spells.");
 	}
 	
 	/**

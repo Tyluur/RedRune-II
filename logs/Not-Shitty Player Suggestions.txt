@@ -2,6 +2,11 @@
 Cerb boots [60 runecrafting from prim crystals
 Better boost than glacor boots
 Yo if you make Username changes like a $5 perk people would donate prob
+I was thinking of Donator perks, And I came up with something that would make people want to donate and also keep the cerberus boots rare. If you implemented a system to where Depending on your Donator rank, While pking or other activities you have a chance of recieving a ticket of sort Which gives you time in the Cerb cave. So maybe each ticket equals 30 minutes in the cave or something. And the amount of tickets or length of tickets increase
+The higher donator you are, This resulting in rarer boots and more donations
+(Just a idea)
+daily skill tasks
+	[They wouldn't have to scale but I think tasks like (collect collect 500 logs,  pickpocket 200 times, Get 15 kills in each preset)]
 
 [DONATOR ZONE]
 

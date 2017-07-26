@@ -27,8 +27,8 @@
       190,
       0,
       112,
-      112,
-      112,
+      0,
+      0,
       140,
       112
     ]
@@ -48,5 +48,6 @@
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

@@ -9,27 +9,27 @@
   ],
   "bonuses": {
     "127": [
-      75,
+      49,
       0,
       0,
       0,
       0,
-      50,
-      50,
-      50,
-      50,
-      50
+      22,
+      0,
+      0,
+      15,
+      35
     ]
   },
   "combatDefinitions": {
     "127": {
       "hitpoints": 440,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
-      "attackDelay": 4,
-      "deathDelay": 1,
-      "respawnDelay": 60,
+      "attackAnim": 185,
+      "defenceAnim": 186,
+      "deathAnim": 188,
+      "attackDelay": 5,
+      "deathDelay": 2,
+      "respawnDelay": 20,
       "maxHit": 70,
       "attackStyle": 0,
       "attackGfx": -1,

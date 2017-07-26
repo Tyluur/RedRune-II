@@ -149,4 +149,14 @@ public interface NetworkConstants extends GameConstants {
 	 * The length of a timeout
 	 */
 	Integer TIMEOUT_RATE = 30000; // 1minute;
+	
+	/**
+	 * The ip of the main world
+	 */
+	String MAIN_WORLD_IP = "127.0.0.1";
+	
+	/**
+	 * The ip of pvp world
+	 */
+	String PVP_WORLD_IP = "127.0.0.1";
 }

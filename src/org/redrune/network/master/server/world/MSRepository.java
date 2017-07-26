@@ -16,7 +16,7 @@ public final class MSRepository implements MasterConstants {
 	/**
 	 * The array of worlds that we hold
 	 */
-	private static final MSWorld[] worlds = new MSWorld[10];
+	private static final MSWorld[] WORLDS = new MSWorld[10];
 	
 	/**
 	 * Creates a new world
@@ -26,18 +26,18 @@ public final class MSRepository implements MasterConstants {
 	 */
 	public static MSWorld createNewWorld(byte worldId) {
 		final int index = worldId;
-		if (index < 0 || index >= worlds.length) {
+		if (index < 0 || index >= WORLDS.length) {
 			throw new IllegalStateException("Unexpected world id: " + worldId);
 		}
 		// we've already made this world.
-		if (worlds[index] != null) {
+		if (WORLDS[index] != null) {
 			System.out.println("Attempted to create a new world when it was already made: " + worldId);
 			return null;
 		}
 		// creates a new world
 		final MSWorld world = new MSWorld(worldId);
 		// saves the index of the world
-		worlds[index] = world;
+		WORLDS[index] = world;
 		
 		System.out.println("World " + worldId + " was just registered & verified.");
 		return world;
@@ -67,7 +67,7 @@ public final class MSRepository implements MasterConstants {
 		}
 		
 		// loop through all the worlds
-		for (MSWorld world : worlds) {
+		for (MSWorld world : WORLDS) {
 			if (world == null || world.getId() == LOBBY_WORLD_ID) {
 				continue;
 			}
@@ -89,10 +89,10 @@ public final class MSRepository implements MasterConstants {
 	 */
 	public static Optional<MSWorld> getWorld(int worldId) {
 		final int index = worldId;
-		if (index < 0 || index >= worlds.length) {
+		if (index < 0 || index >= WORLDS.length) {
 			throw new IllegalStateException("Unexpected world id: " + worldId);
 		}
-		return Optional.of(worlds[index]);
+		return Optional.of(WORLDS[index]);
 	}
 	
 	/**
@@ -102,7 +102,7 @@ public final class MSRepository implements MasterConstants {
 	 * 		The world
 	 */
 	public static void unregister(MSWorld world) {
-		worlds[world.getId()] = null;
+		WORLDS[world.getId()] = null;
 		world.unregister();
 		System.out.println("World " + world.getId() + " was just unregistered.");
 	}
@@ -115,7 +115,7 @@ public final class MSRepository implements MasterConstants {
 	 */
 	public static Optional<MSSession> getSessionByUsername(String username) {
 		// loop through all the worlds
-		for (MSWorld world : worlds) {
+		for (MSWorld world : WORLDS) {
 			if (world == null) {
 				continue;
 			}
@@ -134,7 +134,7 @@ public final class MSRepository implements MasterConstants {
 	 * 		The username of the player
 	 */
 	public static Optional<MSPlayer> getPlayer(String username) {
-		for (MSWorld world : worlds) {
+		for (MSWorld world : WORLDS) {
 			if (world == null) {
 				continue;
 			}
@@ -150,7 +150,7 @@ public final class MSRepository implements MasterConstants {
 	 * 		The packet
 	 */
 	public static void sendToAllSessions(OutgoingPacket packet) {
-		for (MSWorld world : worlds) {
+		for (MSWorld world : WORLDS) {
 			if (world == null) {
 				continue;
 			}
@@ -158,4 +158,24 @@ public final class MSRepository implements MasterConstants {
 		}
 	}
 	
+	/**
+	 * Gets the amount of worlds that are active
+	 */
+	public static byte getWorldCount() {
+		byte count = 0;
+		for (MSWorld world : WORLDS) {
+			if (world == null || world.isLobby()) {
+				continue;
+			}
+			count++;
+		}
+		return count;
+	}
+	
+	/**
+	 * Gets all the worlds
+	 */
+	public static MSWorld[] getWorlds() {
+		return WORLDS;
+	}
 }

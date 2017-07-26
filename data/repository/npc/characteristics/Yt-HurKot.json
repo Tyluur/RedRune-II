@@ -1,14 +1,27 @@
 {
   "drops": [],
-  "bonuses": {},
+  "bonuses": {
+    "2746": [
+      95,
+      0,
+      0,
+      0,
+      0,
+      90,
+      0,
+      0,
+      90,
+      90
+    ]
+  },
   "combatDefinitions": {
     "2746": {
       "hitpoints": 600,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
-      "attackDelay": 4,
-      "deathDelay": 6,
+      "attackAnim": 9252,
+      "defenceAnim": 9253,
+      "deathAnim": 9257,
+      "attackDelay": 6,
+      "deathDelay": 4,
       "respawnDelay": 60,
       "maxHit": 140,
       "attackStyle": 0,
@@ -16,5 +29,6 @@
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

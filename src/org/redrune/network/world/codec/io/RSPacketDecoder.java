@@ -41,6 +41,11 @@ public class RSPacketDecoder extends ByteToMessageDecoder {
 				// the session
 				WorldSession session = (WorldSession) ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
 				
+				// we always use the cipher
+				if (session.getInCipher() == null) {
+					return;
+				}
+				
 				// the cipher
 				final ISAACCipher cipher = session.getInCipher();
 				

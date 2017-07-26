@@ -2,8 +2,8 @@ package org.redrune.utility.repository.item;
 
 import com.google.gson.reflect.TypeToken;
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.utility.tool.Misc;
 import org.redrune.cache.parse.definition.ItemDefinition;
+import org.redrune.utility.tool.Misc;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -53,11 +52,6 @@ public final class ItemRepository {
 	 * The map of all the data
 	 */
 	private static final Map<Integer, ItemData> DATA_MAP = new ConcurrentHashMap<>();
-	
-	/**
-	 * The logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(ItemRepository.class);
 	
 	public static void main(String[] args) {
 		HashMap<Integer, Double> itemWeights = new HashMap<>();
@@ -140,7 +134,7 @@ public final class ItemRepository {
 		}
 		List<String> fileText = Misc.getFileText(UNTRADEABLE_ITEMS_LOCATION);
 		UNTRADEABLES.addAll(fileText);
-		LOGGER.info("Loaded " + UNTRADEABLES.size() + " untradeable items.");
+		System.out.println("Loaded " + UNTRADEABLES.size() + " untradeable items.");
 	}
 	
 	/**

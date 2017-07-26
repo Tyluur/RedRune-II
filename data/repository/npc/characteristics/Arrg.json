@@ -127,21 +127,35 @@
       "rate": 49.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "1556": [
+      220,
+      0,
+      0,
+      0,
+      220,
+      200,
+      0,
+      0,
+      100,
+      200
+    ]
+  },
   "combatDefinitions": {
     "1556": {
-      "hitpoints": 1500,
+      "hitpoints": 380,
       "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
-      "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 386,
+      "defenceAnim": 13792,
+      "deathAnim": 13785,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 1500,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

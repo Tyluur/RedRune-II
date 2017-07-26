@@ -90,7 +90,7 @@ public interface NPCCombatSwing extends NPCConstants {
 	 * 		The hits to apply
 	 */
 	default void delayHit(NPC npc, int delay, final Entity target, final Hit... hits) {
-		npc.addAttackedByDelay(target);
+		target.addAttackedByDelay(npc);
 		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
 			@Override
 			public void run() {

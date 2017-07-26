@@ -1,11 +1,14 @@
 [Wrappers/Systems]
 +   Trade system
 
+[Necessities]
++   Stat restoration
++   Player file saving scheduled
++   Can't logotu for 10 secodns after combat
+
 [Unfinished]
 +   Master Server Unfinished:
 	-   Reconnecting should push all the world list data to the master server
-	-   Send world list size at a scheduled rate for all worlds
-+	NPC combat bonuses in player combat calculation
 +   Finish all melee special attacks
 	-   Dragon mace,halberd,spear,longsword,scim,2h
 	-   Whip [vine too]
@@ -22,3 +25,13 @@
 [Data]
 +	NPC examines
 +	Object examines
+
+[Statistics]
++   Amount of players registered
++   Amount of players dead
++   Amount of npcs killed
++   Amount of times people logged in
++   Amount of times people logged out
++   Amount of times people talked [public/pm/friends]
++   Amount of time spent
+	-   Inactivity starts when we don't click/type for > a minute

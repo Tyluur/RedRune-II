@@ -2,17 +2,17 @@
   "drops": [],
   "bonuses": {
     "1125": [
-      325,
+      250,
       0,
       0,
       0,
       0,
       150,
-      150,
-      150,
+      0,
+      0,
       150,
       150
-    ]  
+    ]
   },
   "combatDefinitions": {
     "1125": {
@@ -21,13 +21,14 @@
       "defenceAnim": 13792,
       "deathAnim": 13785,
       "attackDelay": 8,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 280,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 270,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

@@ -1,85 +1,98 @@
 package org.redrune.game.node.entity.npc.data;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.utility.rs.constant.NPCConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/21/2017
  */
-public final class NPCCombatDefinitions {
+public class NPCCombatDefinitions {
 	
 	/**
 	 * The maximum amount of hitpoints the npc has
 	 */
 	@Getter
-	private final int hitpoints;
+	@Setter
+	private int hitpoints;
 	
 	/**
 	 * The default attack animation
 	 */
 	@Getter
-	private final int attackAnim;
+	@Setter
+	private int attackAnim;
 	
 	/**
 	 * The default defence animation
 	 */
 	@Getter
-	private final int defenceAnim;
+	@Setter
+	private int defenceAnim;
 	
 	/**
 	 * The animation to perform on death
 	 */
 	@Getter
-	private final int deathAnim;
+	@Setter
+	private int deathAnim;
 	
 	/**
 	 * How long we should wait between each attack
 	 */
 	@Getter
-	private final int attackDelay;
+	@Setter
+	private int attackDelay;
 	
 	/**
 	 * The amount of ticks between when the death animation starts and when the npc is removed
 	 */
 	@Getter
-	private final int deathDelay;
+	@Setter
+	private int deathDelay;
 	
 	/**
 	 * The amount of ticks between when the npc is removed and when they are added again
 	 */
 	@Getter
-	private final int respawnDelay;
+	@Setter
+	private int respawnDelay;
 	
 	/**
 	 * The maximum hit of the npc
 	 */
 	@Getter
-	private final int maxHit;
+	@Setter
+	private int maxHit;
 	
 	/**
 	 * The combat style the npc uses
 	 */
 	@Getter
-	private final int attackStyle;
+	@Setter
+	private int attackStyle;
 	
 	/**
 	 * The graphic id that is visualized on the npc every time combat is ticked
 	 */
 	@Getter
-	private final int attackGfx;
+	@Setter
+	private int attackGfx;
 	
 	/**
 	 * The projectile that is sent from the npc every time combat is ticked
 	 */
 	@Getter
-	private final int attackProjectile;
+	@Setter
+	private int attackProjectile;
 	
 	/**
 	 * The type of aggressiveness to have
 	 */
 	@Getter
-	private final int aggressivenessType;
+	@Setter
+	private int aggressivenessType;
 	
 	/**
 	 * Constructs default npc combat definitions. All npcs must be attackable so we will have definitions that are
@@ -116,6 +129,45 @@ public final class NPCCombatDefinitions {
 		this.attackGfx = attackGfx;
 		this.attackProjectile = attackProjectile;
 		this.aggressivenessType = aggressivenessType;
+	}
+	
+	public void swap(NPCCombatDefinitions other) {
+		if (other.hitpoints > 0) {
+			this.hitpoints = other.hitpoints;
+		}
+		if (other.attackAnim > 0) {
+			this.attackAnim = other.attackAnim;
+		}
+		if (other.defenceAnim > 0) {
+			this.defenceAnim = other.defenceAnim;
+		}
+		if (other.deathAnim > 0) {
+			this.deathAnim = other.deathAnim;
+		}
+		if (other.attackDelay > 0) {
+			this.attackDelay = other.attackDelay;
+		}
+		if (other.deathDelay > 0) {
+			this.deathDelay = other.deathDelay;
+		}
+		if (other.respawnDelay > 0) {
+			this.respawnDelay = other.respawnDelay;
+		}
+		if (other.maxHit > 0) {
+			this.maxHit = other.maxHit;
+		}
+		if (other.attackStyle != this.attackStyle) {
+			this.attackStyle = other.attackStyle;
+		}
+		if (other.attackGfx != this.attackGfx) {
+			this.attackGfx = other.attackGfx;
+		}
+		if (other.attackProjectile != this.attackProjectile) {
+			this.attackProjectile = other.attackProjectile;
+		}
+		if (other.aggressivenessType != this.aggressivenessType) {
+			this.aggressivenessType = other.aggressivenessType;
+		}
 	}
 	
 	@Override

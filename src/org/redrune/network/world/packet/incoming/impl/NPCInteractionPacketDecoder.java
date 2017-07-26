@@ -1,24 +1,18 @@
 package org.redrune.network.world.packet.incoming.impl;
 
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.event.EventRepository;
 import org.redrune.game.content.event.context.NPCEventContext;
 import org.redrune.game.content.event.context.NodeReachEventContext;
 import org.redrune.game.content.event.impl.NPCEvent;
 import org.redrune.game.content.event.impl.NodeReachEvent;
-import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
-import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.InteractionOption;
-import org.redrune.utility.tool.Misc;
-
-import java.util.logging.Logger;
 
 import static org.redrune.utility.rs.InteractionOption.*;
 
@@ -33,11 +27,6 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 	 */
 	private static final int FIRST_NPC_OPTION = 29, SECOND_NPC_OPTION = 10, THIRD_NPC_OPTION = 69, FOURTH_NPC_OPTION = 61, ATTACK_NPC_OPTION = 70, LAST_NPC_OPTION = 27;
 	
-	/**
-	 * The logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(NPCInteractionPacketDecoder.class);
-	
 	@Override
 	public int[] bindings() {
 		return arguments(FIRST_NPC_OPTION, SECOND_NPC_OPTION, THIRD_NPC_OPTION, FOURTH_NPC_OPTION, ATTACK_NPC_OPTION, LAST_NPC_OPTION);
@@ -49,7 +38,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 		boolean forceRun = packet.readByteC() == 1;
 		
 		if (index < 0) {
-			LOGGER.severe("Invalid npc index found: " + index);
+			System.out.println("Invalid npc index found: " + index);
 			return;
 		}
 		
@@ -61,7 +50,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 		}
 		InteractionOption option = getOptionByOpcode(packet.getOpcode());
 		if (option == null) {
-			LOGGER.severe("Unable to identify interaction option for opcode " + packet.getOpcode());
+			System.out.println("Unable to identify interaction option for opcode " + packet.getOpcode());
 			return;
 		}
 		// different options handled differently
@@ -72,16 +61,13 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				// face the player
 				player.getUpdateMasks().register(new FaceLocationUpdate(player, npc.getLocation()));
 				// make sure we aren't at multi
+				
 				if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
-					Entity attackedBy = player.getAttribute(AttributeKey.ATTACKED_BY);
-					long attackedDelay = player.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
-					if (attackedBy != npc && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+					if (player.getAttackedBy() != npc && player.getAttackedByDelay() > System.currentTimeMillis()) {
 						player.getTransmitter().sendMessage("You are already in combat.");
 						return;
 					}
-					attackedBy = npc.getAttribute(AttributeKey.ATTACKED_BY);
-					attackedDelay = npc.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
-					if (attackedBy != player && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
+					if (npc.getAttackedBy() != player && npc.getAttackedByDelay() > System.currentTimeMillis()) {
 						player.getTransmitter().sendMessage("This npc is already in combat.");
 						return;
 					}

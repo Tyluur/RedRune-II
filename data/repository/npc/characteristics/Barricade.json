@@ -11,7 +11,7 @@
       "deathDelay": 0,
       "respawnDelay": 0,
       "maxHit": 0,
-      "attackStyle": 3,
+      "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
@@ -29,6 +29,21 @@
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
+    },
+    "1534": {
+      "hitpoints": 500,
+      "attackAnim": -1,
+      "defenceAnim": -1,
+      "deathAnim": -1,
+      "attackDelay": -1,
+      "deathDelay": 0,
+      "respawnDelay": -1,
+      "maxHit": -1,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

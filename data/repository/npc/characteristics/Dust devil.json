@@ -235,17 +235,30 @@
       "rate": 51.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "1624": [
+      250,
+      0,
+      0,
+      0,
+      0,
+      150,
+      0,
+      0,
+      60,
+      90
+    ]
+  },
   "combatDefinitions": {
     "1624": {
       "hitpoints": 1050,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
+      "attackAnim": 1557,
+      "defenceAnim": 1555,
+      "deathAnim": 1558,
       "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 90,
+      "deathDelay": 3,
+      "respawnDelay": 50,
+      "maxHit": 80,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,

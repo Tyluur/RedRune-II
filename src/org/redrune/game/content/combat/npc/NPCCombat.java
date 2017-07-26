@@ -1,11 +1,9 @@
 package org.redrune.game.content.combat.npc;
 
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.data.NPCCombatDefinitions;
-import org.redrune.utility.AttributeKey;
 import org.redrune.utility.repository.npc.combat.NPCCombatSwingRepository;
 import org.redrune.utility.rs.constant.NPCConstants;
 import org.redrune.utility.tool.Misc;
@@ -50,7 +48,6 @@ public final class NPCCombat {
 		}
 		if (target != null) {
 			if (!verifyContinuation()) {
-				System.out.println("couldn't do this");
 				removeTarget();
 				return false;
 			}
@@ -74,7 +71,7 @@ public final class NPCCombat {
 		NPCCombatDefinitions definitions = npc.getCombatDefinitions();
 		// gets the default attack style to use
 		int attackStyle = definitions.getAttackStyle();
-		// ensures we aren't frozen
+		// if we are frozen we can't keep fighting
 		if (npc.isFrozen()) {
 			if (attackStyle == NPCConstants.MELEE_COMBAT_STYLE) {
 				return 0;
@@ -110,17 +107,20 @@ public final class NPCCombat {
 		return NPCCombatSwingRepository.fire(npc, target);
 	}
 	
+	/**
+	 * Verifys that combat can continue
+	 */
 	private boolean verifyContinuation() {
 		Entity target = this.target;
 		
 		// if we are invalid to fight
 		if (!StaticCombatFormulae.canFight(npc, target)) {
-			System.out.println("cant fite");
+			System.err.println("stop1");
 			return false;
 		}
 		// cant move if frozen
 		if (npc.isFrozen()) {
-			System.out.println("cant fite");
+			System.err.println("stop2");
 			return true;
 		}
 		int distanceX = npc.getLocation().getX() - npc.getSpawnLocation().getX();
@@ -151,7 +151,7 @@ public final class NPCCombat {
 			distanceX = target.getLocation().getX() - npc.getLocation().getX();
 			distanceY = target.getLocation().getY() - npc.getLocation().getY();
 			if (distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
-				System.out.println("cant fite");
+				System.err.println("stop3");
 				return false; // if target distance higher 16
 			}
 		} else {
@@ -159,21 +159,14 @@ public final class NPCCombat {
 			distanceY = target.getLocation().getY() - npc.getLocation().getY();
 		}
 		if (!target.isAtMultiArea() || !npc.isAtMultiArea()) {
-			Entity attackedBy = npc.getAttribute(AttributeKey.ATTACKED_BY);
-			long attackedDelay = npc.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
-			if (attackedBy != target  && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
-				System.out.println("cant fite");
+			if (npc.getAttackedBy() != target && npc.getAttackedByDelay() > System.currentTimeMillis()) {
+				System.err.println("[1]");
 				return false;
 			}
-			attackedBy = target.getAttribute(AttributeKey.ATTACKED_BY);
-			attackedDelay = target.getAttribute(AttributeKey.ATTACKED_BY_DELAY, -1L);
-			if (attackedBy != npc && attackedDelay > SystemManager.getUpdateWorker().getTicksElapsed()) {
-				//System.out.println(attackedBy + ", " + npc + ", " + attackedDelay + "[" + SystemManager.getUpdateWorker().getTicksElapsed() + "]");
-				//System.out.println("cant fite");
-				//return false;
-				System.out.println("FINISH MULTI AREA CHECKS");
+			if (target.getAttackedBy() != npc && target.getAttackedByDelay() > System.currentTimeMillis()) {
+				System.err.println("[2]");
+				return false;
 			}
-			
 		}
 		
 		if (!npc.getCombatManager().isCantFollowDuringCombat()) {
@@ -204,11 +197,16 @@ public final class NPCCombat {
 			}
 			
 			int attackStyle = npc.getCombatDefinitions().getAttackStyle();
+			// the maximum distance between the npc and target, based on the combat type.
 			maxDistance = npc.getCombatManager().isForceFollowClose() ? 0 : (attackStyle == NPCConstants.MELEE_COMBAT_STYLE) ? 0 : 9;
+			// reset the walk steps
 			npc.getMovement().resetWalkSteps();
-			// is far from target, moves to it till can attack
-			if ((!npc.getMovement().clippedProjectileToNode(target, maxDistance == 0 && !forceCheckClipAsRange(target))) || !Misc.isOnRange(npc.getLocation().getX(), npc.getLocation().getY(), size, target.getLocation().getX(), target.getLocation().getY(), targetSize, maxDistance)) {
+			boolean clippedProjectileToNode = npc.getMovement().clippedProjectileToNode(target, maxDistance == 0 && !forceCheckClipAsRange(target));
+			boolean onRange = !Misc.isOnRange(npc.getLocation().getX(), npc.getLocation().getY(), size, target.getLocation().getX(), target.getLocation().getY(), targetSize, maxDistance);
+			// check if we need to walk to the target
+			if ((!clippedProjectileToNode) || onRange) {
 				npc.getMovement().addEntityPath(target, 2, npc.getCombatManager().isIntelligentRouteFinder());
+				System.out.println("npc { " + npc + " } has to walk to target { " + target + " }");
 				return true;
 			}
 		}
@@ -261,6 +259,7 @@ public final class NPCCombat {
 			npc.turnTo(target);
 		}
 		if (!verifyContinuation()) {
+			System.err.println("removed target");
 			removeTarget();
 		}
 	}

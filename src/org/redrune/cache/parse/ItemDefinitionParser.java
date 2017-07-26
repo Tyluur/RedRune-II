@@ -1,16 +1,14 @@
 package org.redrune.cache.parse;
 
 import com.google.common.base.Stopwatch;
-import org.redrune.utility.tool.Misc;
 import org.redrune.cache.Cache;
 import org.redrune.cache.parse.definition.ItemDefinition;
+import org.redrune.utility.tool.Misc;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -27,11 +25,6 @@ public class ItemDefinitionParser {
 	 * The text in the equip data file, cached for ease of access
 	 */
 	private static final Map<Integer, Integer[]> EQUIPMENT_DATA = new ConcurrentHashMap<>();
-	
-	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(ItemDefinitionParser.class);
 	
 	/**
 	 * The location of the file with equip data
@@ -59,7 +52,7 @@ public class ItemDefinitionParser {
 			def.setEquipSlot(equipmentData[0]);
 			def.setEquipType(equipmentData[1]);
 		}
-		LOGGER.info("Successfully loaded " + EQUIPMENT_DATA.size() + " equipment data and all equipment slots in " + watch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+		System.out.println("Successfully loaded " + EQUIPMENT_DATA.size() + " equipment data and all equipment slots in " + watch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
 	}
 	
 	/**
@@ -95,7 +88,8 @@ public class ItemDefinitionParser {
 			try {
 				def.loadItemDefinition();
 			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "Unable to parse item definitions, error:", e);
+				System.out.println("Unable to parse item definitions, error:");
+				e.printStackTrace();
 			}
 			ITEM_DEFINITIONS.put(itemId, def);
 			return def;

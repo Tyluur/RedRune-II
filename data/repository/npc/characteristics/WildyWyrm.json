@@ -153,32 +153,32 @@
   ],
   "bonuses": {
     "3334": [
-      500,
-      500,
-      500,
-      500,
-      500,
+      520,
+      0,
+      0,
       450,
-      450,
-      450,
-      450,
-      450
+      520,
+      675,
+      0,
+      0,
+      575,
+      675
     ]
   },
   "combatDefinitions": {
     "3334": {
-      "hitpoints": 2000,
+      "hitpoints": 10000,
       "attackAnim": 12791,
       "defenceAnim": 12792,
       "deathAnim": 12793,
       "attackDelay": 4,
-      "deathDelay": 5,
+      "deathDelay": 3,
       "respawnDelay": 60,
-      "maxHit": 170,
-      "attackStyle": 3,
+      "maxHit": 250,
+      "attackStyle": 0,
       "attackGfx": -1,
-      "attackProjectile": 2314,
-      "aggressivenessType": 1
+      "attackProjectile": -1,
+      "aggressivenessType": 0
     }
   },
   "charmDrops": [

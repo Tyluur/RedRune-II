@@ -2,16 +2,16 @@
   "drops": [],
   "bonuses": {
     "6248": [
-      100,
+      275,
       0,
       0,
       0,
       0,
-      300,
-      300,
-      300,
-      200,
-      350
+      250,
+      0,
+      0,
+      175,
+      275
     ]
   },
   "combatDefinitions": {
@@ -20,8 +20,8 @@
       "attackAnim": 6376,
       "defenceAnim": 6375,
       "deathAnim": 6377,
-      "attackDelay": 6,
-      "deathDelay": 2,
+      "attackDelay": 4,
+      "deathDelay": 5,
       "respawnDelay": 150,
       "maxHit": 160,
       "attackStyle": 0,

@@ -205,8 +205,36 @@
       "rate": 35.0
     }
   ],
-  "bonuses": {},
-  "combatDefinitions": {},
+  "bonuses": {
+    "13459": [
+      0,
+      0,
+      0,
+      400,
+      0,
+      500,
+      0,
+      0,
+      300,
+      200
+    ]
+  },
+  "combatDefinitions": {
+    "13459": {
+      "hitpoints": 1200,
+      "attackAnim": 1979,
+      "defenceAnim": 424,
+      "deathAnim": 836,
+      "attackDelay": 5,
+      "deathDelay": 2,
+      "respawnDelay": 50,
+      "maxHit": 207,
+      "attackStyle": 2,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    }
+  },
   "charmDrops": [
     {
       "itemId": 12158,

@@ -417,16 +417,16 @@
   ],
   "bonuses": {
     "9463": [
-      200,
+      140,
       0,
       0,
-      150,
+      250,
       0,
-      379,
-      398,
-      454,
-      377,
-      387
+      210,
+      0,
+      0,
+      205,
+      235
     ]
   },
   "combatDefinitions": {
@@ -435,13 +435,13 @@
       "attackAnim": 12791,
       "defenceAnim": 12792,
       "deathAnim": 12793,
-      "attackDelay": 4,
+      "attackDelay": 5,
       "deathDelay": 5,
-      "respawnDelay": 60,
-      "maxHit": 170,
-      "attackStyle": 3,
+      "respawnDelay": 50,
+      "maxHit": 174,
+      "attackStyle": 0,
       "attackGfx": -1,
-      "attackProjectile": 2314,
+      "attackProjectile": -1,
       "aggressivenessType": 0
     }
   },

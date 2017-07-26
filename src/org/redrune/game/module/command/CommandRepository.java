@@ -1,11 +1,10 @@
 package org.redrune.game.module.command;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.entity.player.data.PlayerRight;
+import org.redrune.utility.tool.Misc;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -19,11 +18,6 @@ public class CommandRepository {
 	private static final Map<String, CommandModule> COMMAND_MODULES = new HashMap<>();
 	
 	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(CommandRepository.class);
-	
-	/**
 	 * Populates the {@link #COMMAND_MODULES}
 	 */
 	public static void populate(boolean reload) {
@@ -33,7 +27,7 @@ public class CommandRepository {
 		for (String directory : Misc.getSubDirectories(CommandRepository.class)) {
 			Optional<PlayerRight> optional = PlayerRight.playerRightOptional(directory);
 			if (!optional.isPresent()) {
-				LOGGER.severe("Unable to find right by directory '" + directory + "'.");
+				System.out.println("Unable to find right by directory '" + directory + "'.");
 				continue;
 			}
 			Misc.getClassesInDirectory(CommandRepository.class.getPackage().getName() + "." + directory).stream().filter(CommandModule.class::isInstance).forEach(clazz -> {
@@ -49,7 +43,7 @@ public class CommandRepository {
 				}
 			});
 		}
-		LOGGER.info("Loaded " + COMMAND_MODULES.size() + " command modules.");
+		System.out.println("Loaded " + COMMAND_MODULES.size() + " command modules.");
 	}
 	
 	/**

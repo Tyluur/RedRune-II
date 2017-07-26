@@ -15,8 +15,8 @@
       0,
       0,
       132,
-      132,
-      132,
+      0,
+      0,
       105,
       111
     ],
@@ -41,7 +41,7 @@
       "deathAnim": 6576,
       "attackDelay": 4,
       "deathDelay": 4,
-      "respawnDelay": 60,
+      "respawnDelay": 50,
       "maxHit": 140,
       "attackStyle": 0,
       "attackGfx": -1,
@@ -61,6 +61,35 @@
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
+    },
+    "5564": {
+      "hitpoints": 1,
+      "attackAnim": -1,
+      "defenceAnim": -1,
+      "deathAnim": -1,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 1,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "5565": {
+      "hitpoints": 1,
+      "attackAnim": -1,
+      "defenceAnim": -1,
+      "deathAnim": -1,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 1,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

@@ -7,6 +7,7 @@ import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
@@ -15,6 +16,7 @@ import org.redrune.game.node.entity.npc.data.NPCCharacteristics;
 import org.redrune.game.node.entity.npc.data.NPCCombatDefinitions;
 import org.redrune.game.node.entity.npc.link.CombatManager;
 import org.redrune.game.node.entity.npc.link.DropManager;
+import org.redrune.game.node.entity.npc.render.flag.impl.TransformationUpdate;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Drop;
 import org.redrune.game.node.item.Item;
@@ -23,9 +25,12 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.repository.npc.characteristic.NPCCharacteristicRepository;
 import org.redrune.utility.rs.constant.Directions.Direction;
+import org.redrune.utility.rs.constant.NPCConstants;
 import org.redrune.utility.tool.Misc;
 import org.redrune.utility.tool.RandomFunction;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +39,18 @@ import java.util.List;
  * @since 5/18/2017
  */
 public class NPC extends Entity {
+	
+	/**
+	 * The location we were spawned at
+	 */
+	@Getter
+	private final Location spawnLocation;
+	
+	/**
+	 * The instance of the combat manager
+	 */
+	@Getter
+	private final CombatManager combatManager;
 	
 	/**
 	 * The id of the npc
@@ -58,6 +75,7 @@ public class NPC extends Entity {
 	/**
 	 * The cache definitions of the npc
 	 */
+	@Setter
 	private NPCDefinition definitions;
 	
 	/**
@@ -75,16 +93,25 @@ public class NPC extends Entity {
 	private boolean respawnable = true;
 	
 	/**
-	 * The location we were spawned at
+	 * If run is toggled
 	 */
 	@Getter
-	private final Location spawnLocation;
+	@Setter
+	private boolean runToggled;
 	
 	/**
-	 * The instance of the combat manager
+	 * If we are force walking
 	 */
 	@Getter
-	private final CombatManager combatManager;
+	@Setter
+	private boolean forceWalking;
+	
+	/**
+	 * The type of walking this npc does
+	 */
+	@Getter
+	@Setter
+	private int walkType;
 	
 	/**
 	 * Constructs a new {@code Entity}
@@ -94,15 +121,30 @@ public class NPC extends Entity {
 	 */
 	public NPC(int id, Location location, Direction direction) {
 		super(location);
+		// necessary for all npcs
 		this.id = id;
 		this.spawnLocation = location;
 		this.faceDirection = direction.ordinal();
 		this.characteristics = NPCCharacteristicRepository.getCharacteristics(this);
 		this.combatManager = new CombatManager(this);
-		// we won't ever be in combat with an npc that doesn't have an attack option
+		// required for map region data
+		super.registerTransients();
+		super.loadMapRegions();
+		loadWalkType();
+		// e won't ever be in combat with an npc that doesn't have an attack option
 		if (getDefinitions().hasAttackOption()) {
 			setHealthPoints(getMaxHealth());
 		}
+	}
+	
+	/**
+	 * Gets the {@link NPCDefinition}s of this npc
+	 */
+	public NPCDefinition getDefinitions() {
+		if (definitions == null) {
+			definitions = NPCDefinitionParser.forId(id);
+		}
+		return definitions;
 	}
 	
 	@Override
@@ -140,17 +182,8 @@ public class NPC extends Entity {
 	}
 	
 	@Override
-	protected void checkDeathEvent() {
-		// we won't ever die if we don't have an attack option
-		if (!combatManager.isHasAttackOption()) {
-			return;
-		}
-		super.checkDeathEvent();
-	}
-	
-	@Override
 	public void fireDeathEvent() {
-		System.out.println("We are dying! [" + this + "]");
+		resetMasks();
 		sendAnimation(getCombatDefinitions().getDeathAnim());
 		getMovement().resetWalkSteps();
 		int goalTicks = getCombatDefinitions().getDeathDelay();
@@ -161,7 +194,6 @@ public class NPC extends Entity {
 			
 			@Override
 			public void run() {
-				System.out.println(this.toString());
 				if (getTicksPassed() == 1) {
 					sendAnimation(getCombatDefinitions().getDeathAnim());
 				} else if (getTicksPassed() == getGoalTicks()) {
@@ -170,9 +202,162 @@ public class NPC extends Entity {
 					restoreAll();
 					// only fire the respawn event for a respawnable npc
 					if (isRespawnable()) {
-						fireRespawnEvent(getId(), getCombatDefinitions().getRespawnDelay(), spawnLocation, Direction.values()[faceDirection]);
+						int respawnDelay = getCombatDefinitions().getRespawnDelay();
+						// ensure the respawn delay is set well
+						if (respawnDelay <= 0) {
+							respawnDelay = 30;
+						}
+						fireRespawnEvent(getId(), respawnDelay, spawnLocation, Direction.values()[faceDirection]);
 					}
 				}
+			}
+		});
+	}
+	
+	@Override
+	public void restoreAll() {
+		setHealthPoints(getMaxHealth());
+		sendAnimation(-1);
+		removeAttribute("dying");
+	}
+	
+	/**
+	 * Gets the combat definitions of the npc. <p>This value is never null because on construct we always set a npc
+	 * combat definition regardless of whether they exist in file.</p>
+	 */
+	public NPCCombatDefinitions getCombatDefinitions() {
+		return characteristics.getCombatDefinitions().get(getId());
+	}
+	
+	@Override
+	public void tick() {
+		// before anything else we must make sure we aren't dead
+		if (isDead() && isDying()) {
+			return;
+		}
+		super.tick();
+		
+		// process combat [false when too far away, wrong multi areas. check doesn't really matter]
+		fireAggressiveCheck();
+		
+		// we aren't in combat
+		if (!combatManager.getCombat().process()) {
+			if (!isFrozen()) {
+				if (getLocation().getDistance(spawnLocation) > 16) {
+					// we walk back to the original tile [1 tile per tick]
+					combatManager.getCombat().reset();
+					// calculates and paths to the spawn loc
+					getMovement().addLocationPath(spawnLocation, 25, true);
+					// we can't walk back home in a good amount of time
+					if (!canWalkHomeTimely()) {
+						setForceWalking(true);
+						// within 16 ticks [about 10 seconds] we arrive at the spawn location
+						SystemManager.getScheduler().schedule(new ScheduledTask(16) {
+							@Override
+							public void run() {
+								teleport(spawnLocation);
+								setForceWalking(false);
+							}
+						});
+					}
+				} else if (getWalkType() != NPCConstants.NO_WALK) {
+					int walkValue = getWalkType() & NPCConstants.NORMAL_WALK;
+					// if the npc isn't a type that walks, we ignore the next blocks
+					if (walkValue == 0) {
+						return;
+					}
+					// if we're lucky & the npc is a type that walks
+					boolean randomWalk = Math.random() * 1000.0 < 100.0;
+					// make sure we should walk
+					if (!randomWalk) {
+						return;
+					}
+					int moveX = getRandomTileDistance();
+					int moveY = getRandomTileDistance();
+					// reset the steps
+					getMovement().resetWalkSteps();
+					// add the random tile to the movement queue
+					getMovement().addWalkSteps(getLocation().getX() + moveX, getLocation().getY() + moveY);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * If we can walk home at a good time
+	 */
+	private boolean canWalkHomeTimely() {
+		int distance = getLocation().getDistance(spawnLocation);
+		return distance <= 16;
+	}
+	
+	@Override
+	public String toString() {
+		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + ", renderable=" + isRenderable() + "]";
+	}
+	
+	@Override
+	public boolean attackable(Entity entity) {
+		// if we don't have an attack option
+		if (!combatManager.isHasAttackOption()) {
+			return false;
+		}
+		// TODO implement slayer requirements in the npc classes
+		return true;
+	}
+	
+	@Override
+	protected void checkDeathEvent() {
+		// we won't ever die if we don't have an attack option
+		if (!combatManager.isHasAttackOption()) {
+			return;
+		}
+		super.checkDeathEvent();
+	}
+	
+	@Override
+	public void register() {
+		getRegion().addEntity(this);
+		
+		setRenderable(true);
+	}
+	
+	@Override
+	public void deregister() {
+		removeAttackedByDelay(getHitMap().getMostDamageEntity());
+		getRegion().removeEntity(this);
+		World.get().getNpcs().remove(this);
+		
+		setRenderable(false);
+	}
+	
+	@Override
+	public NPC toNPC() {
+		return this;
+	}
+	
+	@Override
+	public int getSize() {
+		return getDefinitions().getSize();
+	}
+	
+	/**
+	 * Fires the respawn event
+	 *
+	 * @param id
+	 * 		The id of the npc respawning
+	 * @param delay
+	 * 		The delay to wait
+	 * @param location
+	 * 		The location to respawn them
+	 * @param direction
+	 * 		The direction to face when re-spawned
+	 */
+	private static void fireRespawnEvent(int id, int delay, Location location, Direction direction) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
+			@Override
+			public void run() {
+				World.get().addNPC(id, location, direction);
 			}
 		});
 	}
@@ -248,96 +433,6 @@ public class NPC extends Entity {
 	}
 	
 	/**
-	 * Fires the respawn event
-	 *
-	 * @param id
-	 * 		The id of the npc respawning
-	 * @param delay
-	 * 		The delay to wait
-	 * @param location
-	 * 		The location to respawn them
-	 * @param direction
-	 * 		The direction to face when respawned
-	 */
-	private static void fireRespawnEvent(int id, int delay, Location location, Direction direction) {
-		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
-			@Override
-			public void run() {
-				World.get().addNPC(id, location, direction);
-			}
-		});
-	}
-	
-	@Override
-	public void restoreAll() {
-		setHealthPoints(getMaxHealth());
-		sendAnimation(-1);
-		removeAttribute("dying");
-	}
-	
-	@Override
-	public void tick() {
-		// before anything else we must make sure we aren't dead
-		if (isDead() && isDying()) {
-			return;
-		}
-		super.tick();
-		// we aren't in combat
-		combatManager.getCombat().process();
-	}
-	
-	@Override
-	public String toString() {
-		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + ", renderable=" + isRenderable() + "]";
-	}
-	
-	/**
-	 * Gets the {@link NPCDefinition}s of this npc
-	 */
-	public NPCDefinition getDefinitions() {
-		if (definitions == null) {
-			definitions = NPCDefinitionParser.forId(id);
-		}
-		return definitions;
-	}
-	
-	@Override
-	public boolean attackable(Entity entity) {
-		// if we don't have an attack option
-		if (!combatManager.isHasAttackOption()) {
-			return false;
-		}
-		// TODO implement slayer requirements in the npc classes
-		return true;
-	}
-	
-	@Override
-	public void register() {
-		super.registerTransients();
-		getRegion().addEntity(this);
-		
-		setRenderable(true);
-	}
-	
-	@Override
-	public void deregister() {
-		getRegion().removeEntity(this);
-		World.get().getNpcs().remove(this);
-		
-		setRenderable(false);
-	}
-	
-	@Override
-	public NPC toNPC() {
-		return this;
-	}
-	
-	@Override
-	public int getSize() {
-		return getDefinitions().getSize();
-	}
-	
-	/**
 	 * Starts an interaction with the player by facing them
 	 *
 	 * @param player
@@ -373,11 +468,114 @@ public class NPC extends Entity {
 	}
 	
 	/**
-	 * Gets the combat definitions of the npc. <p>This value is never null because on construct we always set a npc
-	 * combat definition regardless of whether they exist in file.</p>
+	 * Finds the possible targets we can fight
+	 *
+	 * @param npcs
+	 * 		If we should add npcs to the  list
+	 * @param players
+	 * 		If we should add players to the list
 	 */
-	public NPCCombatDefinitions getCombatDefinitions() {
-		return characteristics.getCombatDefinitions().get(getId());
+	private List<Entity> possibleTargets(boolean npcs, boolean players) {
+		List<Entity> targets = new ArrayList<>();
+		int maxDistance = 16;
+		if (players) {
+			for (Player player : getRegion().getPlayers()) {
+				if (player == null || !player.isRenderable()) {
+					continue;
+				}
+				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), player.getLocation().getX(), player.getLocation().getY(), player.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
+					System.out.println("Skipped cuz " + player);
+					continue;
+				}
+				boolean delayed = player.getAttackedByDelay() > System.currentTimeMillis()  /*||player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()*/;
+				if (!multiAreaForced() && (!isAtMultiArea() || !player.isAtMultiArea()) && player.getAttackedBy() != null && player.getAttackedBy() != this && delayed) {
+					System.out.println("Skipped cuz " + player + " [delayed=" + (player.getAttackedByDelay() > System.currentTimeMillis()) + ", " + (player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()) + "]");
+					continue;
+				}
+				if (!getMovement().clippedProjectileToNode(player, false)) {
+					System.out.println("Skipped cuz " + player);
+					continue;
+				}
+				// we skip those who are dangerous to us
+				if (player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2) {
+					continue;
+				}
+				// all npcs in the wilderness are aggressive
+				if (getRegion().getTimeSpent(player) > NPCConstants.UNAGGRESSIVE_REGION_TIME) {
+					System.out.println("Skipped cuz " + player);
+					//System.out.println("Was not aggressive to " + player + " b/c they spent " + getRegion().getTimeSpent(player) + " in my region [" + getRegionId() + "]");
+					continue;
+				}
+				targets.add(player);
+			}
+		}
+		if (npcs) {
+			for (NPC npc : getRegion().getNpcs()) {
+				if (npc == null || !npc.isRenderable() || !npc.getDefinitions().hasAttackOption()) {
+					continue;
+				}
+				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), npc.getLocation().getX(), npc.getLocation().getY(), npc.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
+					continue;
+				}
+				// the multi area check
+				if ((!isAtMultiArea() || !npc.isAtMultiArea()) && npc.getAttackedBy() != this && npc.getAttackedByDelay() > System.currentTimeMillis()) {
+					continue;
+				}
+				// if we can't clip to that target
+				if (!getMovement().clippedProjectileToNode(npc, false)) {
+					continue;
+				}
+				targets.add(npc);
+			}
+		}
+		return targets;
+	}
+	
+	/**
+	 * Gets the combat level of this npc
+	 */
+	public int getCombatLevel() {
+		return definitions.getCombatLevel();
+	}
+	
+	/**
+	 * Attempts to start combat with the best entity we could find to start combat with, if we are an npc who initiates
+	 * fights.
+	 */
+	private void fireAggressiveCheck() {
+		if (!WildernessActivity.isAtWild(getLocation()) && !getCombatManager().isAggressiveForced()) {
+			NPCCombatDefinitions combatDefinitions = getCombatDefinitions();
+			if (combatDefinitions.getAggressivenessType() == NPCConstants.PASSIVE_AGGRESSIVE) {
+				return;
+			}
+		}
+		List<Entity> possibleTargets = possibleTargets(false, true);
+		if (getRegion().getRegionId() == 10554) {
+			System.out.println(this + ": " + possibleTargets);
+		}
+		if (!possibleTargets.isEmpty()) {
+			Entity target = possibleTargets.get(RandomFunction.random(possibleTargets.size()));
+			// sets the attacked by def
+			target.setAttackedBy(this);
+			// can't be found as target for the next 10 secs
+			target.putAttribute(AttributeKey.FIND_TARGET_DELAY, System.currentTimeMillis() + 10_000);
+			// starts the fight with the target
+			startFight(target);
+		}
+	}
+	
+	/**
+	 * Starts a fight with the target
+	 *
+	 * @param target
+	 * 		The target
+	 */
+	public void startFight(Entity target) {
+		// we won't fight if we are force walking
+		if (forceWalking) {
+			return;
+		}
+		combatManager.getCombat().setTarget(target);
 	}
 	
 	/**
@@ -399,9 +597,64 @@ public class NPC extends Entity {
 	}
 	
 	/**
+	 * Loads the walk type from the cache
+	 */
+	private void loadWalkType() {
+		int forceWalkType = NPCConstants.getChangedWalkType(id);
+		int type = (forceWalkType == -1 ? getDefinitions().getWalkMask() : forceWalkType);
+		// sets the type, with priority to the one forced
+		setWalkType(type);
+	}
+	
+	/**
+	 * Gets the random distance that the npc will walk around. For instance, most npcs walk around an area of 10 tiles,
+	 * in some cases we want to reduce this range so the npc is always in the scope of players who teleport to that
+	 * region [npcs that move around but still want to be seen]
+	 */
+	public int getRandomTileDistance() {
+		switch (id) {
+			case 6138:
+				return RandomFunction.random(-1, 1);
+			case 14332:
+				return RandomFunction.random(-2, 2);
+			case 1263:
+			case 961:
+				return RandomFunction.random(-3, 3);
+			default:
+				return RandomFunction.random(-5, 5);
+		}
+	}
+	
+	/**
 	 * Gets the bonuses array, maxed length of 10.
 	 */
 	public int[] getBonuses() {
 		return characteristics.getBonuses().get(getId());
+	}
+	
+	/**
+	 * Transforms the npc to a different one
+	 *
+	 * @param targetId
+	 * 		The id of the npc to transform into
+	 */
+	public void transform(int targetId) {
+		try {
+			getUpdateMasks().register(new TransformationUpdate(targetId));
+			setId(targetId);
+			setDefinitions(NPCDefinition.readDefinitions(targetId));
+			setCharacteristics(NPCCharacteristicRepository.getCharacteristics(this));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof NPC) {
+			NPC n = (NPC) obj;
+			return n.getId() == id && n.getIndex() == getIndex();
+		}
+		return super.equals(obj);
 	}
 }

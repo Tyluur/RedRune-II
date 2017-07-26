@@ -1,18 +1,17 @@
 package org.redrune.utility.repository.object;
 
 import com.google.gson.reflect.TypeToken;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.tool.GsonReadable;
+import org.redrune.utility.tool.Misc;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -36,11 +35,6 @@ public class ObjectSpawnRepository implements GsonReadable<List<GameObject>> {
 	private final Map<Integer, List<GameObject>> OBJECT_SPAWNS = new HashMap<>();
 	
 	/**
-	 * The logger
-	 */
-	private final Logger logger = Misc.constructLogger(ObjectSpawnRepository.class);
-	
-	/**
 	 * Gets the instance of the class
 	 */
 	public static ObjectSpawnRepository get() {
@@ -56,7 +50,7 @@ public class ObjectSpawnRepository implements GsonReadable<List<GameObject>> {
 	public void loadAll() {
 		List<GameObject> objectList = load(new File(OBJECT_SPAWN_FILE_LOCATION));
 		if (objectList == null) {
-			logger.severe("Unable to parse game objects to spawn.");
+			System.out.println("Unable to parse game objects to spawn.");
 			return;
 		}
 		// looping through the object list to add objects by region id
@@ -71,7 +65,7 @@ public class ObjectSpawnRepository implements GsonReadable<List<GameObject>> {
 			// adding the object list by region id
 			OBJECT_SPAWNS.put(regionId, spawns);
 		}
-		logger.info("Loaded " + OBJECT_SPAWNS.size() + " custom object spawns.");
+		System.out.println("Loaded " + OBJECT_SPAWNS.size() + " custom object spawns.");
 	}
 	
 	@Override

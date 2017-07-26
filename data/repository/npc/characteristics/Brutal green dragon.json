@@ -279,16 +279,16 @@
   ],
   "bonuses": {
     "5362": [
-      170,
+      140,
       0,
       0,
+      85,
+      0,
+      160,
       0,
       0,
-      180,
-      180,
-      180,
-      220,
-      140
+      200,
+      144
     ]
   },
   "combatDefinitions": {
@@ -297,14 +297,14 @@
       "attackAnim": 12252,
       "defenceAnim": 12251,
       "deathAnim": 12250,
-      "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 182,
-      "attackStyle": 4,
+      "attackDelay": 4,
+      "deathDelay": 6,
+      "respawnDelay": 25,
+      "maxHit": 189,
+      "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
-      "aggressivenessType": 1
+      "aggressivenessType": 0
     }
   },
   "charmDrops": [

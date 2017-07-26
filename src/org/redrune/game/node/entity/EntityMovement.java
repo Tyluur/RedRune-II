@@ -6,15 +6,17 @@ import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.render.flag.impl.MovementUpdate;
 import org.redrune.game.node.entity.player.render.flag.impl.TeleportUpdate;
-import org.redrune.game.world.region.RegionManager;
 import org.redrune.game.world.route.RouteFinder;
 import org.redrune.game.world.route.strategy.EntityStrategy;
+import org.redrune.game.world.route.strategy.FixedTileStrategy;
 import org.redrune.game.world.route.strategy.ObjectStrategy;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.tool.Misc;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+import static org.redrune.game.world.region.RegionManager.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -74,8 +76,8 @@ public class EntityMovement {
 		nextWalkDirection = getNextWalkStep();
 		if (nextWalkDirection != -1) {
 			
-			moveLocation(RegionManager.DIRECTION_DELTA_X[nextWalkDirection], RegionManager.DIRECTION_DELTA_Y[nextWalkDirection]);
-			entity.putAttribute("direction", Misc.getFaceDirection(RegionManager.DIRECTION_DELTA_X[nextWalkDirection], RegionManager.DIRECTION_DELTA_Y[nextWalkDirection]));
+			moveLocation(DIRECTION_DELTA_X[nextWalkDirection], DIRECTION_DELTA_Y[nextWalkDirection]);
+			entity.putAttribute("direction", Misc.getFaceDirection(DIRECTION_DELTA_X[nextWalkDirection], DIRECTION_DELTA_Y[nextWalkDirection]));
 			
 			if (isRunning()) {
 				if (entity.isPlayer() && entity.toPlayer().getVariables().getRunEnergy() <= 0) {
@@ -87,8 +89,8 @@ public class EntityMovement {
 						if (entity.isPlayer()) {
 							entity.toPlayer().getEquipment().drainRunEnergy();
 						}
-						moveLocation(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]);
-						entity.putAttribute("direction", Misc.getFaceDirection(RegionManager.DIRECTION_DELTA_X[nextRunDirection], RegionManager.DIRECTION_DELTA_Y[nextRunDirection]));
+						moveLocation(DIRECTION_DELTA_X[nextRunDirection], DIRECTION_DELTA_Y[nextRunDirection]);
+						entity.putAttribute("direction", Misc.getFaceDirection(DIRECTION_DELTA_X[nextRunDirection], DIRECTION_DELTA_Y[nextRunDirection]));
 					}
 				}
 				if (entity.isPlayer()) {
@@ -96,8 +98,8 @@ public class EntityMovement {
 				}
 			}
 		}
-		RegionManager.updateEntityRegion(entity);
-		if (entity.isPlayer() && entity.needsMapUpdate()) {
+		updateEntityRegion(entity);
+		if (entity.needsMapUpdate()) {
 			entity.loadMapRegions();
 		}
 	}
@@ -111,7 +113,7 @@ public class EntityMovement {
 		if (entity.getAttribute(AttributeKey.TELEPORT_LOCATION) != null) {
 			resetWalkSteps();
 			entity.setLocation(entity.getAttribute(AttributeKey.TELEPORT_LOCATION));
-			RegionManager.updateEntityRegion(entity);
+			updateEntityRegion(entity);
 			entity.removeAttribute(AttributeKey.TELEPORT_LOCATION);
 			entity.getUpdateMasks().register(new TeleportUpdate());
 			if (entity.needsMapUpdate()) {
@@ -153,7 +155,14 @@ public class EntityMovement {
 	 * NPC is a familiar, <p> {@code false} if not.
 	 */
 	public boolean isRunning() {
-		return entity.isNPC() || (entity.isPlayer() && entity.toPlayer().getVariables().isRunToggled());
+		if (entity.isPlayer()) {
+			if (entity.toPlayer().getVariables().isRunToggled()) {
+				return true;
+			}
+		} else {
+			return entity.toNPC().isRunToggled();
+		}
+		return false;
 	}
 	
 	/**
@@ -202,10 +211,10 @@ public class EntityMovement {
 				return false;
 			}
 			if (checkClose) {
-				if (!RegionManager.isTileFree(entity.getLocation().getPlane(), lastTileX, lastTileY, dir, size)) {
+				if (!isTileFree(entity.getLocation().getPlane(), lastTileX, lastTileY, dir, size)) {
 					return false;
 				}
-			} else if (!RegionManager.checkProjectileStep(entity.getLocation().getPlane(), lastTileX, lastTileY, dir, size)) {
+			} else if (!checkProjectileStep(entity.getLocation().getPlane(), lastTileX, lastTileY, dir, size)) {
 				return false;
 			}
 			lastTileX = myX;
@@ -435,7 +444,7 @@ public class EntityMovement {
 		if (dir == -1) {
 			return false;
 		}
-		if (check && !RegionManager.isTileFree(entity.getLocation().getPlane(), lastX, lastY, dir, entity.getSize())) {
+		if (check && !isTileFree(entity.getLocation().getPlane(), lastX, lastY, dir, entity.getSize())) {
 			return false;
 		}
 		walkSteps.add(new int[] { dir, nextX, nextY });
@@ -508,6 +517,37 @@ public class EntityMovement {
 			return true;
 		}
 		return findBasicRoute(entity, target.getSize(), target.getLocation(), maxStepsCount);
+	}
+	
+	/**
+	 * Adds a path to a tile
+	 *
+	 * @param destination
+	 * 		The destination tile
+	 * @param maxStepsCount
+	 * 		The maximum amount of steps
+	 * @param intelligent
+	 * 		If we should use an intelligent path finder
+	 */
+	public boolean addLocationPath(Location destination, int maxStepsCount, boolean intelligent) {
+		if (intelligent) {
+			int steps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getPlane(), entity.getSize(), new FixedTileStrategy(destination.getX(), destination.getY()), true);
+			if (steps == -1) {
+				return false;
+			}
+			if (steps == 0) {
+				return true;
+			}
+			int[] bufferX = RouteFinder.getLastPathBufferX();
+			int[] bufferY = RouteFinder.getLastPathBufferY();
+			for (int step = steps - 1; step >= 0; step--) {
+				if (!addWalkSteps(bufferX[step], bufferY[step], maxStepsCount, true)) {
+					break;
+				}
+			}
+			return true;
+		}
+		return findBasicRoute(entity, 1, destination, maxStepsCount);
 	}
 	
 	/**
@@ -589,7 +629,7 @@ public class EntityMovement {
 		}
 		int size = entity.getSize();
 		for (int regionId : entity.getMapRegionsIds()) {
-			CopyOnWriteArraySet<NPC> npcIndexes = RegionManager.getRegion(regionId).getNpcs();
+			CopyOnWriteArraySet<NPC> npcIndexes = getRegion(regionId).getNpcs();
 			if (npcIndexes != null) {
 				for (NPC target : npcIndexes) {
 					if (target == null || target == entity || target.isDead() || !target.isRenderable() || target.getLocation().getPlane() != entity.getLocation().getPlane()) {
@@ -599,7 +639,7 @@ public class EntityMovement {
 					if (!checkUnder && target.getMovement().getNextWalkDirection() == -1) {
 						int previewDir = getPreviewNextWalkStep();
 						if (previewDir != -1) {
-							Location tile = target.getLocation().transform(RegionManager.DIRECTION_DELTA_X[previewDir], RegionManager.DIRECTION_DELTA_Y[previewDir], 0);
+							Location tile = target.getLocation().transform(DIRECTION_DELTA_X[previewDir], DIRECTION_DELTA_Y[previewDir], 0);
 							if (colides(tile.getX(), tile.getY(), targetSize, entity.getLocation().getX(), entity.getLocation().getY(), size)) {
 								continue;
 							}

@@ -7,17 +7,56 @@
       "rate": 100.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "96": [
+      60,
+      0,
+      0,
+      0,
+      0,
+      60,
+      0,
+      0,
+      40,
+      60
+    ],
+    "97": [
+      60,
+      0,
+      0,
+      0,
+      0,
+      60,
+      0,
+      0,
+      40,
+      60
+    ]
+  },
   "combatDefinitions": {
     "97": {
-      "hitpoints": 450,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
+      "hitpoints": 340,
+      "attackAnim": 6559,
+      "defenceAnim": 6557,
+      "deathAnim": 6558,
       "attackDelay": 4,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 60,
+      "deathDelay": 2,
+      "respawnDelay": 50,
+      "maxHit": 40,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    },
+    "96": {
+      "hitpoints": 240,
+      "attackAnim": 6559,
+      "defenceAnim": 6557,
+      "deathAnim": 6558,
+      "attackDelay": 4,
+      "deathDelay": 2,
+      "respawnDelay": 50,
+      "maxHit": 30,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,

@@ -1,6 +1,7 @@
 package org.redrune.game.module.command.administrator;
 
 import org.redrune.game.module.command.CommandModule;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.Directions.Direction;
 import org.redrune.game.module.command.CommandManifest;
@@ -20,6 +21,7 @@ public class SpawnNPCCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		World.get().addNPC(intParam(args, 1), player.getLocation(), Direction.NORTH);
+		NPC npc = World.get().addNPC(intParam(args, 1), player.getLocation(), Direction.NORTH);
+		npc.setRespawnable(false);
 	}
 }

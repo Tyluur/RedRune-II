@@ -11,6 +11,7 @@ import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.Region;
+import org.redrune.game.world.region.RegionManager;
 
 import java.io.*;
 import java.net.SocketAddress;
@@ -18,7 +19,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -47,16 +47,6 @@ public class Misc {
 	 */
 	public static boolean allowed(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_' || c == ' ';
-	}
-	
-	/**
-	 * Constructs a logger from the class
-	 *
-	 * @param clazz
-	 * 		The class
-	 */
-	public static Logger constructLogger(Class clazz) {
-		return Logger.getLogger(clazz.getSimpleName());
 	}
 	
 	/**
@@ -803,4 +793,38 @@ public class Misc {
 		return true;
 	}
 	
+	public static int getNpcMoveDirection(int dd) {
+		if (dd < 0) {
+			return -1;
+		}
+		return getNpcMoveDirection(RegionManager.DIRECTION_DELTA_X[dd], RegionManager.DIRECTION_DELTA_Y[dd]);
+	}
+	
+	public static int getNpcMoveDirection(int dx, int dy) {
+		if (dx == 0 && dy > 0) {
+			return 0;
+		}
+		if (dx > 0 && dy > 0) {
+			return 1;
+		}
+		if (dx > 0 && dy == 0) {
+			return 2;
+		}
+		if (dx > 0 && dy < 0) {
+			return 3;
+		}
+		if (dx == 0 && dy < 0) {
+			return 4;
+		}
+		if (dx < 0 && dy < 0) {
+			return 5;
+		}
+		if (dx < 0 && dy == 0) {
+			return 6;
+		}
+		if (dx < 0 && dy > 0) {
+			return 7;
+		}
+		return -1;
+	}
 }

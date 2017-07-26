@@ -1,9 +1,6 @@
 package org.redrune.cache;
 
 import org.redrune.game.GameConstants;
-import org.redrune.utility.tool.Misc;
-
-import java.util.logging.Logger;
 
 /**
  * The cache loading class
@@ -14,18 +11,13 @@ import java.util.logging.Logger;
 public class Cache {
 	
 	/**
-	 * The instance of the logger
-	 */
-	private static final Logger logger = Misc.constructLogger(Cache.class);
-	
-	/**
 	 * Initializes the cache
 	 */
 	public static void init() {
 		try {
 			CacheManager.load(GameConstants.CACHE_PATH);
 			CacheFileStore.init();
-			logger.info("Cache loaded! [items=" + getAmountOfItems() + ", interfaces=" + getAmountOfInterfaces() + ", npcs=" + getAmountOfNpcs() + ", objects=" + getAmountOfObjects() + ", anims=" + getAmountOfAnimations() + ", graphics=" + getAmountOfGraphics() + "]");
+			System.out.println("Cache loaded! [items=" + getAmountOfItems() + ", interfaces=" + getAmountOfInterfaces() + ", npcs=" + getAmountOfNpcs() + ", objects=" + getAmountOfObjects() + ", anims=" + getAmountOfAnimations() + ", graphics=" + getAmountOfGraphics() + "]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(0);

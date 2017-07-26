@@ -1,11 +1,8 @@
 package org.redrune.utility.backend;
 
-import org.redrune.utility.tool.Misc;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Holds the mapdata XTeas.
@@ -27,11 +24,6 @@ public final class MapKeyRepository {
 	private static final Map<Integer, int[]> MAP_DATA_XTEAS = new HashMap<>();
 	
 	/**
-	 * Thet logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(MapKeyRepository.class);
-	
-	/**
 	 * Initializes the mapdata.
 	 */
 	public static void readAll() {
@@ -43,7 +35,7 @@ public final class MapKeyRepository {
 		} else {
 			load();
 		}
-		LOGGER.info("Loaded " + MAP_DATA_XTEAS.size() + " " + (packed ? "packed" : "unpacked") + " map keys.");
+		System.out.println("Loaded " + MAP_DATA_XTEAS.size() + " " + (packed ? "packed" : "unpacked") + " map keys.");
 	}
 	
 	/**

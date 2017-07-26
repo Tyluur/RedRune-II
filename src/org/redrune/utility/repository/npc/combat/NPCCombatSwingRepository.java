@@ -4,12 +4,10 @@ import org.redrune.game.content.combat.npc.NPCCombatSwing;
 import org.redrune.game.content.combat.npc.swing.DefaultCombatSwing;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
-import org.redrune.utility.repository.npc.characteristic.NPCCharacteristicRepository;
 import org.redrune.utility.tool.Misc;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -28,11 +26,6 @@ public class NPCCombatSwingRepository {
 	private static final NPCCombatSwing DEFAULT_SWING = new DefaultCombatSwing();
 	
 	/**
-	 * The logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(NPCCharacteristicRepository.class);
-	
-	/**
 	 * Loads all combat swings
 	 */
 	public static void loadAll() {
@@ -42,7 +35,7 @@ public class NPCCombatSwingRepository {
 				SWING_REPOSITORY.put(binding, swing);
 			}
 		}
-		LOGGER.info("Constructed " + SWING_REPOSITORY.size() + " npc combat swings.");
+		System.out.println("Constructed " + SWING_REPOSITORY.size() + " npc combat swings.");
 	}
 	
 	/**

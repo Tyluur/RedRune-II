@@ -1,26 +1,20 @@
 package org.redrune.game.content.market.shop;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.item.Item;
+import org.redrune.utility.tool.Misc;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/15/2017
  */
 public final class ShopRepository {
-	
-	/**
-	 * The logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(ShopRepository.class);
 	
 	/**
 	 * The map of all shops, the key is the shop identifier
@@ -43,7 +37,7 @@ public final class ShopRepository {
 	public static void load() {
 		List<Shop> shops = Misc.loadGsonData(new File(SHOP_FILE_LOCATION));
 		if (shops == null) {
-			LOGGER.severe("Unable to load shops from " + SHOP_FILE_LOCATION + "!");
+			System.out.println("Unable to load shops from " + SHOP_FILE_LOCATION + "!");
 			return;
 		}
 		// quick example testing instead of gson parsing
@@ -55,7 +49,7 @@ public final class ShopRepository {
 			SHOP_CURRENCIES.put(currency.getClass().getSimpleName(), currency);
 		});
 		shops.forEach(ShopRepository::loadShopCurrency);
-		LOGGER.info("Loaded " + SHOPS.size() + " game shops, and " + SHOP_CURRENCIES.size() + " currencies...");
+		System.out.println("Loaded " + SHOPS.size() + " game shops, and " + SHOP_CURRENCIES.size() + " currencies...");
 	}
 	
 	/**
@@ -68,14 +62,14 @@ public final class ShopRepository {
 		String currencyName = shop.getCurrencyName() + "Currency";
 		ShopCurrency currency = SHOP_CURRENCIES.get(currencyName);
 		if (currency == null) {
-			LOGGER.info("Unable to find currency {" + currencyName + "} for shop {" + shop.getName() + "}");
+			System.out.println("Unable to find currency {" + currencyName + "} for shop {" + shop.getName() + "}");
 			return;
 		}
 		shop.setCurrency(currency);
 		if (!SHOPS.containsKey(shop.getIdentifier())) {
 			SHOPS.put(shop.getIdentifier(), shop);
 		} else {
-			LOGGER.info("Unable to load shop #" + shop.getIdentifier() + " - " + SHOPS.get(shop.getIdentifier()).getName() + " was using it already...");
+			System.out.println("Unable to load shop #" + shop.getIdentifier() + " - " + SHOPS.get(shop.getIdentifier()).getName() + " was using it already...");
 		}
 	}
 	
@@ -90,7 +84,7 @@ public final class ShopRepository {
 	public static void open(Player player, int identifier) {
 		Shop shop = SHOPS.get(identifier);
 		if (shop == null) {
-			LOGGER.info("Unable to find shop #" + identifier);
+			System.out.println("Unable to find shop #" + identifier);
 			return;
 		}
 		shop.open(player);

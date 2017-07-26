@@ -142,8 +142,8 @@ public final class Player extends Entity {
 		
 		setRenderable(true);
 		
-		SequencialUpdate.getRenderablePlayers().add(this);
 		getUpdateMasks().register(new AppearanceUpdate(this));
+		SequencialUpdate.getRenderablePlayers().add(this);
 		RegionManager.updateEntityRegion(this);
 		
 		session.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
@@ -243,6 +243,7 @@ public final class Player extends Entity {
 		}
 		super.tick();
 		checkInteractionTask();
+		getRegion().increaseTimeSpent(this);
 		manager.getActions().process();
 		manager.getPrayers().process();
 		manager.getHintIcons().process();

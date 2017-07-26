@@ -16,7 +16,7 @@ public class RegularBowEvent implements BowFireEvent {
 	
 	@Override
 	public String[] bowNames() {
-		return arguments("* shortbow", "* longbow");
+		return arguments("shortbow", "* shortbow", "* longbow");
 	}
 	
 	@Override

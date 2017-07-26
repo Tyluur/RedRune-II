@@ -1,4 +1,3 @@
 If a new login request is sent [new session made] and the old one registered, you remain online.
-You can easily pj people in fights
-You can easily pj npcs in fights
-	[AttributeKey#attackedby_]
+Multiplayer doesn't work because of new deob.....
+Transforming doesnt work properly [mask does, data isn't set]

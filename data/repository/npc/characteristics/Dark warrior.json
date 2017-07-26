@@ -152,7 +152,22 @@
     }
   ],
   "bonuses": {},
-  "combatDefinitions": {},
+  "combatDefinitions": {
+    "192": {
+      "hitpoints": 120,
+      "attackAnim": 12029,
+      "defenceAnim": 12030,
+      "deathAnim": 836,
+      "attackDelay": 4,
+      "deathDelay": 5,
+      "respawnDelay": 50,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": -1,
+      "attackProjectile": -1,
+      "aggressivenessType": 0
+    }
+  },
   "charmDrops": [
     {
       "itemId": 12158,

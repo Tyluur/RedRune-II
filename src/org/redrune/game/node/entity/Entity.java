@@ -30,6 +30,10 @@ public abstract class Entity extends Node implements EntityDetails {
 	@Override
 	public void tick() {
 		checkDeathEvent();
+		if (isDead() && isDying()) {
+			return;
+		}
+		movement.processMovement();
 	}
 	
 	/**
@@ -102,6 +106,20 @@ public abstract class Entity extends Node implements EntityDetails {
 	@Getter
 	@Setter
 	private boolean atMultiArea;
+	
+	/**
+	 * The entity who we were last attacked by
+	 */
+	@Getter
+	@Setter
+	private transient Entity attackedBy;
+	
+	/**
+	 * The attacked by delay
+	 */
+	@Getter
+	@Setter
+	private transient long attackedByDelay;
 	
 	/**
 	 * Constructs a new {@code Entity}
@@ -234,6 +252,15 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Resets the mask defaults
+	 */
+	public void resetMasks() {
+		sendAnimation(-1);
+		sendGraphics(-1);
+		turnTo(null);
+	}
+	
+	/**
 	 * Sends an animation
 	 *
 	 * @param animation
@@ -299,7 +326,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The id of the graphic
 	 */
 	public void sendGraphics(int graphicsId) {
-		
 		updateMasks.register(new Graphic(graphicsId, 0, 0, isNPC()));
 	}
 	
@@ -352,7 +378,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Checks if we were in combat recently.
 	 */
 	public boolean combatRecently() {
-		long lastTimeHit = getAttribute(AttributeKey.LAST_TIME_HIT, -1L);
+		long lastTimeHit = getAttribute(AttributeKey.ATTACKED_BY_TIME, -1L);
 		return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastTimeHit) <= 10;
 	}
 	
@@ -527,7 +553,14 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Checks if we're at a multi area
 	 */
 	public void checkMultiArea() {
-		atMultiArea = getAttribute(AttributeKey.FORCE_MULTI_AREA, false) || getLocation().isMultiArea();
+		atMultiArea = multiAreaForced() || getLocation().isMultiArea();
+	}
+	
+	/**
+	 * If the multi area is forced on the entity
+	 */
+	public Boolean multiAreaForced() {
+		return getAttribute(AttributeKey.FORCE_MULTI_AREA, false);
 	}
 	
 	/**
@@ -537,20 +570,38 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		If it should be forced
 	 */
 	public void setMultiAreaForce(boolean forced) {
-		putAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD, forced);
+		putAttribute(AttributeKey.FORCE_MULTI_AREA, forced);
 		checkMultiArea();
 	}
 	
 	/**
 	 * Adds attacked by information
 	 *
+	 * @param target
+	 * 		The entity who attacked us
+	 */
+	public void addAttackedByDelay(Entity target) {
+		System.out.println("Setting " + this + " attacked by to " + target);
+		setAttackedBy(target);
+		if (isNPC()) {
+			setAttackedByDelay(System.currentTimeMillis() + toNPC().getCombatDefinitions().getAttackDelay() * 600 + 600);
+		} else {
+			setAttackedByDelay(System.currentTimeMillis() + 8000);
+		}
+		putAttribute(AttributeKey.ATTACKED_BY_TIME, System.currentTimeMillis());
+	}
+	
+	/**
+	 * Removes attacked by information
+	 *
 	 * @param entity
 	 * 		The entity who attacked us
 	 */
-	public void addAttackedByDelay(Entity entity) {
-		final long attackedDelay = SystemManager.getUpdateWorker().getTicksElapsed() + 10;
-		putAttribute(AttributeKey.ATTACKED_BY, entity);
-		putAttribute(AttributeKey.ATTACKED_BY_DELAY, attackedDelay);
-		entity.putAttribute(AttributeKey.ATTACKED_BY_DELAY, attackedDelay);
+	public void removeAttackedByDelay(Entity entity) {
+		if (entity == null) {
+			return;
+		}
+		setAttackedBy(null);
+		setAttackedByDelay(-1L);
 	}
 }

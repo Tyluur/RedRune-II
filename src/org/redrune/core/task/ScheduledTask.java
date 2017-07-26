@@ -48,6 +48,13 @@ public abstract class ScheduledTask {
 	private boolean running = true;
 	
 	/**
+	 * Constructs a scheduled task with a tick delay
+	 */
+	public ScheduledTask() {
+		this(1);
+	}
+	
+	/**
 	 * Creates a new scheduled task.
 	 *
 	 * @param delay

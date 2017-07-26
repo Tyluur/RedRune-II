@@ -54,7 +54,7 @@ public class RangeCombatCalculator implements CombatTypeCalculator {
 			bonus = player.getEquipment().getBonus(RANGE_DEFENCE);
 		} else {
 			NPC npc = entity.toNPC();
-			defenceLevel = npc.getDefinitions().getCombatLevel() / 2;
+			defenceLevel = npc.getCombatLevel() / 2;
 			prayer = 1.0;
 			bonus = npc.getBonus(RANGE_DEFENCE);
 		}

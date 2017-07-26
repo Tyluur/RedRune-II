@@ -236,27 +236,27 @@
       0,
       0,
       0,
-      185,
-      185,
-      185,
-      185,
-      185
+      115,
+      0,
+      0,
+      80,
+      135
     ]
   },
   "combatDefinitions": {
     "1615": {
       "hitpoints": 1500,
-      "attackAnim": -1,
+      "attackAnim": 1537,
       "defenceAnim": -1,
-      "deathAnim": -1,
-      "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 82,
+      "deathAnim": 1538,
+      "attackDelay": 4,
+      "deathDelay": 2,
+      "respawnDelay": 50,
+      "maxHit": 80,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
-      "aggressivenessType": 1
+      "aggressivenessType": 0
     }
   },
   "charmDrops": [

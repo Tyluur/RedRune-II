@@ -18,6 +18,13 @@ public class CombatManager {
 	private final NPCCombat combat;
 	
 	/**
+	 * If we're forced to be aggressive
+	 */
+	@Getter
+	@Setter
+	private boolean aggressiveForced;
+	
+	/**
 	 * If we have an attack option
 	 */
 	@Getter
@@ -44,6 +51,13 @@ public class CombatManager {
 	@Getter
 	@Setter
 	private boolean forceFollowClose;
+	
+	/**
+	 * The radius in which targets are found
+	 */
+	@Getter
+	@Setter
+	private int findTargetRadius;
 	
 	/**
 	 * If we use an intelligent route finder in combat

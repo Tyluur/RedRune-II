@@ -3,7 +3,6 @@ package org.redrune.game.node.entity;
 import lombok.Getter;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.AttributeKey;
 import org.redrune.game.world.World;
 
 import java.util.HashMap;
@@ -54,17 +53,14 @@ public final class HitMap {
 	public void applyHit(Hit hit) {
 		Entity attacker = hit.getSource();
 		
-		// handles the receiving of the hit
-		entity.receiveHit(hit);
+		// submits the damage to the map
 		submitDamage(attacker, hit.getDamage());
-		
-		// stores the last time we were hit
-		storeHitTiming(hit);
 		
 		// adds the hit to our hitlist [only used for updating]
 		hitList.add(hit);
-		// writes who attacked us
-		entity.addAttackedByDelay(attacker);
+		
+		// handles the receiving of the hit
+		entity.receiveHit(hit);
 	}
 	
 	/**
@@ -85,17 +81,6 @@ public final class HitMap {
 			totalDamage = 0;
 		}
 		hitRecord.put(dealer, damage + totalDamage);
-	}
-	
-	/**
-	 * Stores hit timing
-	 *
-	 * @param hit
-	 * 		The hit object
-	 */
-	private void storeHitTiming(Hit hit) {
-		entity.putAttribute(AttributeKey.LAST_HIT_BY_ENTITY, hit.getSource());
-		entity.putAttribute(AttributeKey.LAST_TIME_HIT, System.currentTimeMillis());
 	}
 	
 	/**

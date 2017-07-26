@@ -105,8 +105,8 @@
       0,
       0,
       220,
-      220,
-      220,
+      0,
+      0,
       135,
       205
     ]
@@ -124,7 +124,7 @@
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
-      "aggressivenessType": 1
+      "aggressivenessType": 0
     }
   },
   "charmDrops": [

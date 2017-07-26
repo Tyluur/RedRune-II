@@ -39,4 +39,9 @@ public interface PacketConstants extends MasterConstants {
 	 * The id of the player file update packet
 	 */
 	int PLAYER_FILE_UPDATE_PACKET_ID = 6;
+	
+	/**
+	 * The id of the repository update packet
+	 */
+	int REPOSITORY_UPDATE_PACKET_ID = 7;
 }

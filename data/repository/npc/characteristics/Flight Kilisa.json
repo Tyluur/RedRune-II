@@ -63,26 +63,26 @@
   ],
   "bonuses": {
     "6227": [
-      300,
+      220,
       0,
       0,
       0,
       0,
-      100,
-      300,
-      300,
-      200,
-      200
+      0,
+      0,
+      0,
+      280,
+      340
     ]
   },
   "combatDefinitions": {
     "6227": {
       "hitpoints": 1590,
-      "attackAnim": 6953,
+      "attackAnim": 6954,
       "defenceAnim": 6955,
       "deathAnim": 6956,
       "attackDelay": 4,
-      "deathDelay": 1,
+      "deathDelay": 5,
       "respawnDelay": 60,
       "maxHit": 200,
       "attackStyle": 0,

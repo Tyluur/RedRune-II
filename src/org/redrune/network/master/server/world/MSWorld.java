@@ -2,10 +2,14 @@ package org.redrune.network.master.server.world;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.server.MSPlayer;
 import org.redrune.network.master.server.network.MSSession;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Holds information of a certain game world.
@@ -26,7 +30,7 @@ public class MSWorld {
 	 * The list of players in the world
 	 */
 	@Getter
-	private final Set<MSPlayer> worldPlayers = new LinkedHashSet<>();
+	private final Set<MSPlayer> players = new LinkedHashSet<>();
 	
 	/**
 	 * The session
@@ -41,7 +45,7 @@ public class MSWorld {
 	
 	@Override
 	public String toString() {
-		return "MSWorld{" + "id=" + id + ", worldPlayers=" + worldPlayers + '}';
+		return "MSWorld{" + "id=" + id + ", players=" + players + '}';
 	}
 	
 	/**
@@ -51,7 +55,7 @@ public class MSWorld {
 	 * 		The name of the player
 	 */
 	public boolean isOnline(String username) {
-		for (MSPlayer worldPlayerName : worldPlayers) {
+		for (MSPlayer worldPlayerName : players) {
 			if (worldPlayerName.getUsername().equals(username)) {
 				return true;
 			}
@@ -69,7 +73,8 @@ public class MSWorld {
 	 */
 	public boolean addPlayer(String username, String uid) {
 		System.out.println("MSWorld.addPlayer");
-		return worldPlayers.add(new MSPlayer(username, uid, id));
+		System.out.println("id=[" + id + "], username = [" + username + "]");
+		return players.add(new MSPlayer(username, uid, id));
 	}
 	
 	/**
@@ -81,9 +86,8 @@ public class MSWorld {
 	 */
 	public boolean removePlayer(String username) {
 		System.out.println("MSWorld.removePlayer");
-		System.out.println(this);
-		System.out.println("username = [" + username + "]");
-		return worldPlayers.removeIf(player -> player.getUsername().equals(username));
+		System.out.println("id=[" + id + "], username = [" + username + "]");
+		return players.removeIf(player -> player.getUsername().equals(username));
 	}
 	
 	/**
@@ -93,7 +97,7 @@ public class MSWorld {
 	 * 		The name of the player
 	 */
 	public boolean playerRegistered(String username) {
-		for (MSPlayer worldPlayer : worldPlayers) {
+		for (MSPlayer worldPlayer : players) {
 			if (worldPlayer.getUsername().equals(username)) {
 				return true;
 			}
@@ -108,7 +112,7 @@ public class MSWorld {
 	 * 		The name of the player in the world
 	 */
 	public Optional<MSPlayer> getPlayerByName(String username) {
-		for (MSPlayer worldPlayer : worldPlayers) {
+		for (MSPlayer worldPlayer : players) {
 			if (Objects.equals(worldPlayer.getUsername(), username)) {
 				return Optional.of(worldPlayer);
 			}
@@ -123,7 +127,7 @@ public class MSWorld {
 	 * 		The uid of the player
 	 */
 	public Optional<MSPlayer> getPlayerByUid(String uid) {
-		for (MSPlayer worldPlayer : worldPlayers) {
+		for (MSPlayer worldPlayer : players) {
 			if (Objects.equals(worldPlayer.getUid(), uid)) {
 				return Optional.of(worldPlayer);
 			}
@@ -135,6 +139,13 @@ public class MSWorld {
 	 * Removes the world
 	 */
 	void unregister() {
-		worldPlayers.clear();
+		players.clear();
+	}
+	
+	/**
+	 * If the world is a lobby
+	 */
+	public boolean isLobby() {
+		return id == MasterConstants.LOBBY_WORLD_ID;
 	}
 }

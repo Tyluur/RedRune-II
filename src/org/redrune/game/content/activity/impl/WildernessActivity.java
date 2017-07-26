@@ -41,7 +41,6 @@ public class WildernessActivity extends Activity {
 		super.end();
 		player.setInFightArea(false);
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
-		System.out.println("finished!");
 	}
 	
 	/**
@@ -51,7 +50,6 @@ public class WildernessActivity extends Activity {
 		boolean isAtWild = isAtWild(player.getLocation());
 		boolean isAtWildSafe = isAtWildSafe(player.getLocation());
 		
-		System.out.println(isAtWild + ", " + isAtWildSafe);
 		// we're inside a danger zone
 		if (!showingSkull && isAtWild && !isAtWildSafe) {
 			showingSkull = true;
@@ -128,12 +126,6 @@ public class WildernessActivity extends Activity {
 		List<Item> itemsDropped = deathList.get(0);
 		List<Item> itemsKept = deathList.get(1);
 		List<Item> untradeables = deathList.get(2);
-/*
-		System.out.println("Contained Items:\t" + containedItems);
-		System.out.println("Items dropped:\t" + itemsDropped);
-		System.out.println("Items kept:\t" + itemsKept);
-		System.out.println("Untradebles:\t" + untradeables);
-		*/
 		
 		// if the killer is an ironman, the drop is handled differently.
 		final Location lootTile = dead.getLocation();

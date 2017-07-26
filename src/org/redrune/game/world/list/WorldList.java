@@ -1,11 +1,13 @@
 package org.redrune.game.world.list;
 
+import org.redrune.network.NetworkConstants;
 import org.redrune.network.world.packet.Packet.PacketType;
 import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.utility.rs.constant.WorldConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Holds all the current worlds.
@@ -21,8 +23,8 @@ public class WorldList implements WorldConstants {
 	
 	/* Populates the world list. */
 	static {
-		WORLD_LIST.add(new WorldDefinition(1, 0, FLAG_MEMBERS | FLAG_LOOTSHARE, "Main World", "127.0.0.1", "USA", COUNTRY_CANADA));
-		WORLD_LIST.add(new WorldDefinition(2, 0, FLAG_MEMBERS | FLAG_PVP | FLAG_LOOTSHARE, "PvP World", "127.0.0.1", "USA", COUNTRY_USA));
+		WORLD_LIST.add(new WorldDefinition(1, 0, WorldDefinition.buildFlag(FLAG_LOOTSHARE), "Main World", NetworkConstants.MAIN_WORLD_IP, "USA", COUNTRY_CANADA));
+		WORLD_LIST.add(new WorldDefinition(2, 0, WorldDefinition.buildFlag(FLAG_LOOTSHARE), "PvP World", NetworkConstants.PVP_WORLD_IP, "USA", COUNTRY_USA));
 	}
 	
 	/**
@@ -54,7 +56,7 @@ public class WorldList implements WorldConstants {
 	 * @param buffer
 	 * 		The current packet.
 	 */
-	private static void populateConfiguration(PacketBuilder buffer) {
+	public static void populateConfiguration(PacketBuilder buffer) {
 		buffer.writeSmart(WORLD_LIST.size());
 		setCountry(buffer);
 		buffer.writeSmart(0);
@@ -76,10 +78,10 @@ public class WorldList implements WorldConstants {
 	 * @param buffer
 	 * 		The current packet.
 	 */
-	private static void populateStatus(PacketBuilder buffer) {
+	public static void populateStatus(PacketBuilder buffer) {
 		for (WorldDefinition w : WORLD_LIST) {
 			buffer.writeSmart(w.getWorldId());
-			buffer.writeShort(1337);
+			buffer.writeShort(w.getSize());
 		}
 	}
 	
@@ -95,4 +97,32 @@ public class WorldList implements WorldConstants {
 			buffer.writeGJString(w.getRegion());
 		}
 	}
+	
+	/**
+	 * Updates the amount of players in the world
+	 *
+	 * @param worldId
+	 * 		The world id
+	 * @param value
+	 * 		The amount of players
+	 */
+	public static void updateSize(int worldId, int value) {
+		Optional<WorldDefinition> definition = findDefinitionById(worldId);
+		if (!definition.isPresent()) {
+			System.out.println("unable to find world by " + worldId + ", supposed to update size....");
+			return;
+		}
+		definition.get().setSize((short) value);
+	}
+	
+	/**
+	 * Finds the world definition by the worlds id
+	 *
+	 * @param worldId
+	 * 		The world's id
+	 */
+	private static Optional<WorldDefinition> findDefinitionById(int worldId) {
+		return WORLD_LIST.stream().filter(definition -> definition.getWorldId() == worldId).findFirst();
+	}
+	
 }

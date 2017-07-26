@@ -39,4 +39,10 @@ public class MCSession extends MasterSession {
 		return channel.isWritable() && channel.isOpen() && channel.isActive();
 	}
 	
+	/**
+	 * Gets the readable repository
+	 */
+	public static ReadableRepository getReadableRepository() {
+		return READABLE_REPOSITORY;
+	}
 }

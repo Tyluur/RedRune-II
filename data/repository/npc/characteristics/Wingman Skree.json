@@ -93,31 +93,31 @@
   ],
   "bonuses": {
     "6223": [
-      100,
+      0,
+      0,
+      0,
+      145,
       0,
       0,
       0,
       0,
-      300,
-      300,
-      300,
-      200,
-      200
+      340,
+      280
     ]
   },
   "combatDefinitions": {
     "6223": {
-      "hitpoints": 1210,
-      "attackAnim": 6952,
+      "hitpoints": 1590,
+      "attackAnim": 6954,
       "defenceAnim": 6955,
       "deathAnim": 6956,
-      "attackDelay": 6,
-      "deathDelay": 1,
+      "attackDelay": 4,
+      "deathDelay": 5,
       "respawnDelay": 60,
       "maxHit": 250,
       "attackStyle": 2,
       "attackGfx": -1,
-      "attackProjectile": 1199,
+      "attackProjectile": -1,
       "aggressivenessType": 0
     }
   },

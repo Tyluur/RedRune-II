@@ -7,11 +7,11 @@
       0,
       0,
       0,
-      150,
-      150,
-      150,
-      150,
-      150
+      400,
+      0,
+      0,
+      750,
+      750
     ],
     "3784": [
       0,
@@ -51,7 +51,7 @@
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
-      "aggressivenessType": 1
+      "aggressivenessType": 0
     },
     "3784": {
       "hitpoints": 2000,
@@ -81,5 +81,6 @@
       "attackProjectile": -1,
       "aggressivenessType": 1
     }
-  }
+  },
+  "charmDrops": []
 }

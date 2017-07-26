@@ -205,7 +205,7 @@ public class WalkRouteFinder {
 				Region region = RegionManager.getRegionAndLoad(regionId);
 				RegionMap map = region.getMap();
 				if (map == null || region.getLoadMapStage() != 2 || !region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG]) {
-					System.out.println("[id=" + regionId + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
+//					System.out.println("[id=" + regionId + "][mapNull=" + (map == null ? "true" : "false") + "][getLoadMapStage=" + region.getLoadMapStage() + "][" + region.getLoadedFlags()[RegionConstants.LOADED_OBJECTS_FLAG] + "]");
 					for (int fillX = startX; fillX < endX; fillX++) {
 						for (int fillY = startY; fillY < endY; fillY++) {
 							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;

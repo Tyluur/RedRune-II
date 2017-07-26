@@ -1,10 +1,6 @@
 package org.redrune;
 
 import org.redrune.game.world.World;
-import org.redrune.utility.tool.Misc;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The class used to run the game
@@ -13,11 +9,6 @@ import java.util.logging.Logger;
  * @since 5/18/2017
  */
 public class WorldBootstrap {
-	
-	/**
-	 * The logger instance
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(WorldBootstrap.class);
 	
 	private WorldBootstrap() {
 	
@@ -36,7 +27,8 @@ public class WorldBootstrap {
 			// runs the procedure
 			world.run();
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Unexpected error on initialization", e);
+			System.out.println("Unexpected error on initialization");
+			e.printStackTrace();
 			System.exit(0);
 		}
 	}

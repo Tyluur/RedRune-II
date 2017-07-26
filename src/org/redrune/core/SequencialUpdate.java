@@ -34,7 +34,6 @@ public final class SequencialUpdate implements SequentialService {
 			SystemManager.getScheduler().pulse();
 			for (Player player : getRenderablePlayers()) {
 				player.tick();
-				player.getMovement().processMovement();
 				player.getUpdateMasks().prepare(player);
 			}
 			for (NPC npc : World.get().getNpcs()) {
@@ -43,7 +42,6 @@ public final class SequencialUpdate implements SequentialService {
 				}
 				npc.tick();
 				npc.getUpdateMasks().prepare(npc);
-				npc.getMovement().processMovement();
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();

@@ -8,18 +8,12 @@ import org.redrune.utility.tool.Misc;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
 public final class IncomingPacketRepository {
-	
-	/**
-	 * The logger instance
-	 */
-	private final Logger logger = Misc.constructLogger(IncomingPacketRepository.class);
 	
 	/**
 	 * The map of {@code IncoingPacketStructure}s
@@ -40,16 +34,23 @@ public final class IncomingPacketRepository {
 	 */
 	public void storeAll() {
 		NetworkUtils.loadPacketLengths();
-		Misc.getClassesInDirectory(packageName).stream().filter(IncomingPacketDecoder.class::isInstance).forEach((clazz) -> {
-			IncomingPacketDecoder decoder = (IncomingPacketDecoder) clazz;
-			Arrays.stream(decoder.bindings()).forEach(key -> {
-				if (decoderMap.containsKey(key)) {
-					throw new IllegalStateException("Defined incoming packet " + key + " already and attempted to store " + decoder + " ahead of it.");
-				}
-				decoderMap.put(key, decoder);
-			});
+		Misc.getClassesInDirectory(packageName).stream().filter(IncomingPacketDecoder.class::isInstance).forEach((clazz) -> include((IncomingPacketDecoder) clazz));
+		System.out.println("Number of incoming packets that are handled on world " + GameFlags.worldId + " = " + decoderMap.size());
+	}
+	
+	/**
+	 * Includes the decoder
+	 *
+	 * @param decoder
+	 * 		The decoder instance
+	 */
+	private void include(IncomingPacketDecoder decoder) {
+		Arrays.stream(decoder.bindings()).forEach(key -> {
+			if (decoderMap.containsKey(key)) {
+				throw new IllegalStateException("Defined incoming packet " + key + " already and attempted to store " + decoder + " ahead of it.");
+			}
+			decoderMap.put(key, decoder);
 		});
-		logger.info("Number of incoming packets that are handled on world " + GameFlags.worldId + " = " + decoderMap.size());
 	}
 	
 	/**

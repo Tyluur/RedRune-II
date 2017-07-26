@@ -1,10 +1,12 @@
 package org.redrune.network.master.server.network.packet.in;
 
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.network.packet.IncomingPacket;
 import org.redrune.network.master.network.packet.PacketConstants;
 import org.redrune.network.master.network.packet.readable.Readable;
 import org.redrune.network.master.network.packet.readable.ReadablePacket;
 import org.redrune.network.master.server.network.MSSession;
+import org.redrune.network.master.server.network.packet.out.LobbyRepositoryPacketOut;
 import org.redrune.network.master.server.world.MSRepository;
 
 /**
@@ -20,6 +22,12 @@ public class PlayerDisconnectionPacketIn implements ReadablePacket<MSSession> {
 		boolean lobby = packet.readByte() == 1;
 		String username = packet.readString();
 		
-		MSRepository.getWorld(worldId).ifPresent(world -> world.removePlayer(username));
+		MSRepository.getWorld(worldId).ifPresent(world -> {
+			world.removePlayer(username);
+			// sends the repository update as long as the world isn't a lobby
+			if (!world.isLobby()) {
+				MSRepository.getWorld(MasterConstants.LOBBY_WORLD_ID).ifPresent(lobbyWorld -> lobbyWorld.getSession().write(new LobbyRepositoryPacketOut(world)));
+			}
+		});
 	}
 }

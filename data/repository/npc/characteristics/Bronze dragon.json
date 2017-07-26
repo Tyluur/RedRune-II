@@ -261,29 +261,29 @@
   ],
   "bonuses": {
     "1590": [
-      260,
-      201,
-      201,
-      190,
-      190,
       150,
+      0,
+      0,
+      0,
+      0,
       150,
-      150,
-      280,
-      340
+      0,
+      0,
+      50,
+      150
     ]
   },
   "combatDefinitions": {
     "1590": {
-      "hitpoints": 1220,
+      "hitpoints": 1350,
       "attackAnim": 13158,
-      "defenceAnim": 13163,
-      "deathAnim": 13159,
-      "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 123,
-      "attackStyle": 3,
+      "defenceAnim": 14249,
+      "deathAnim": 14248,
+      "attackDelay": 4,
+      "deathDelay": 5,
+      "respawnDelay": 50,
+      "maxHit": 180,
+      "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0

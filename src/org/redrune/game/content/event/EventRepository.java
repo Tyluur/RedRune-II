@@ -1,17 +1,15 @@
 package org.redrune.game.content.event;
 
-import org.redrune.utility.tool.Misc;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.EventPolicy.AnimationPolicy;
 import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.content.event.impl.*;
 import org.redrune.game.content.event.impl.item.*;
+import org.redrune.game.node.entity.player.Player;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * The class that stores all events
@@ -27,11 +25,6 @@ public final class EventRepository {
 	private static final Map<String, Event> EVENT_MAP = new ConcurrentHashMap<>();
 	
 	/**
-	 * The instance of the logger
-	 */
-	private static final Logger logger = Misc.constructLogger(EventRepository.class);
-	
-	/**
 	 * Executes an event for a player
 	 *
 	 * @param player
@@ -45,7 +38,7 @@ public final class EventRepository {
 	public static void executeEvent(Player player, Class<? extends Event> clazz, EventContext context) {
 		Event event = EVENT_MAP.get(clazz.getSimpleName());
 		if (event == null) {
-			logger.severe("Unable to identify event for class {" + clazz + "}");
+			System.out.println("Unable to identify event for class {" + clazz + "}");
 			return;
 		}
 		if (!sendPreExecuteFlags(player, event, context)) {
@@ -98,7 +91,7 @@ public final class EventRepository {
 		} catch (IllegalAccessException | InstantiationException e) {
 			e.printStackTrace();
 		}
-		logger.info("Registered " + EVENT_MAP.size() + " events.");
+		System.out.println("Registered " + EVENT_MAP.size() + " events.");
 	}
 	
 	/**

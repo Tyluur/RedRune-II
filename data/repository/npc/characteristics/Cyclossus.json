@@ -229,15 +229,28 @@
       "rate": 1.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "3478": [
+      250,
+      0,
+      0,
+      0,
+      0,
+      250,
+      0,
+      0,
+      50,
+      100
+    ]
+  },
   "combatDefinitions": {
     "3478": {
       "hitpoints": 3280,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
-      "attackDelay": 4,
-      "deathDelay": 1,
+      "attackAnim": 15083,
+      "defenceAnim": 15082,
+      "deathAnim": 15085,
+      "attackDelay": 3,
+      "deathDelay": 5,
       "respawnDelay": 60,
       "maxHit": 94,
       "attackStyle": 0,

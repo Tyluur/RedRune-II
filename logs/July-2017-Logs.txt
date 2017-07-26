@@ -1,3 +1,31 @@
+7/25/17 {
+	+   Updated npc movement masks to work
+	+   Updated lobby server to update with realtime playercount for all worlds
+	+   Removed java.util.logging.Logger implementation and replaced with sout
+		-   Planning on using a console to manage worlds down the line
+	+   Added milliseconds to out logging
+		-  [InterfaceManager.java:424#closeAllInterfaces][07:25:2017 02:23:05.149]  closed chatbox
+	+   Added anti-pjing verifications
+		-   'You are already in combat'/'This npc is already in combat' checks
+	+   Updated npc combat with 5.2k new combat definitions
+	+   Added random npc movement using values that seemed reasonable to me (if you know better pls update me)
+		-	Added list of npcs that don't walk from hdpvp
+		-   Most npcs walk a radius of 10 tiles at random so I set this to all npcs except custom cases for RR
+		-   If we've walked too far from home we will traverse back home
+			+   However if we're too far to walk back in within 10 seconds [~ 16 ticks] we will be teleported to our start tile after that time
+	+   Added npc aggressive checks
+		-   All wilderness npcs are aggressice
+			+   Combat level * 2 to be skipped
+	+   Added npc transformation mask
+		-   Will apply tomorrow and perfect npc aggression [i.e. on rock crabs]
+
+	[img]http://i.imgur.com/4FRdQjH.gif[/img]
+	[img]http://i.imgur.com/GUFyBeU.png[/img]
+	[img]http://i.imgur.com/at2oqEt.png[/img]
+	[img]http://i.imgur.com/IRTaR18.png[/img]
+	[img]http://i.imgur.com/pZ6t7pF.png[/img]
+}
+
 7/21/17 {
 	+   Encountered an irritating issue with packet decoding & resolved it after spending a day on it.
 		-   Finished ISAAC decryption with decoding

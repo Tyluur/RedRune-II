@@ -1,6 +1,8 @@
 package org.redrune.game.world.list;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.redrune.utility.rs.constant.WorldConstants;
 
 /**
  * Represents a world's definition.
@@ -52,6 +54,13 @@ class WorldDefinition {
 	private final int worldId;
 	
 	/**
+	 * The size of the world
+	 */
+	@Getter
+	@Setter
+	private short size;
+	
+	/**
 	 * Constructs a new {@code WorldDefinition} {@code Object}.
 	 *
 	 * @param worldId
@@ -79,4 +88,13 @@ class WorldDefinition {
 		this.country = country;
 	}
 	
+	/**
+	 * Builds flags
+	 *
+	 * @param append
+	 * 		The byte to append
+	 */
+	static int buildFlag(int append) {
+		return WorldConstants.FLAG_MEMBERS | append;
+	}
 }

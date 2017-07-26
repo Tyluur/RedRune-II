@@ -300,26 +300,26 @@
       700,
       0,
       0,
-      250,
-      0,
-      400,
-      400,
-      400,
       500,
-      550
+      900,
+      900,
+      0,
+      0,
+      1300,
+      1300
     ]
   },
   "combatDefinitions": {
     "8133": {
       "hitpoints": 20000,
-      "attackAnim": 10057,
+      "attackAnim": 10058,
       "defenceAnim": 10386,
-      "deathAnim": 10385,
+      "deathAnim": 10059,
       "attackDelay": 4,
-      "deathDelay": 3,
-      "respawnDelay": 100,
-      "maxHit": 513,
-      "attackStyle": 3,
+      "deathDelay": 5,
+      "respawnDelay": 50,
+      "maxHit": 510,
+      "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0

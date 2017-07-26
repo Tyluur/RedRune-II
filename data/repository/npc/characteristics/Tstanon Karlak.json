@@ -99,16 +99,16 @@
   ],
   "bonuses": {
     "6204": [
-      300,
+      275,
       0,
       0,
       0,
       0,
-      300,
-      300,
-      300,
-      200,
-      200
+      220,
+      0,
+      0,
+      150,
+      235
     ]
   },
   "combatDefinitions": {
@@ -118,7 +118,7 @@
       "defenceAnim": 65,
       "deathAnim": 67,
       "attackDelay": 4,
-      "deathDelay": 1,
+      "deathDelay": 5,
       "respawnDelay": 60,
       "maxHit": 210,
       "attackStyle": 0,

@@ -361,16 +361,29 @@
       "rate": 47.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "9465": [
+      115,
+      0,
+      0,
+      95,
+      0,
+      165,
+      0,
+      0,
+      155,
+      165
+    ]
+  },
   "combatDefinitions": {
     "9465": {
       "hitpoints": 1200,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
+      "attackAnim": 12791,
+      "defenceAnim": 12792,
+      "deathAnim": 12793,
       "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
+      "deathDelay": 5,
+      "respawnDelay": 50,
       "maxHit": 120,
       "attackStyle": 0,
       "attackGfx": -1,

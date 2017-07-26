@@ -3,28 +3,30 @@ package org.redrune.game.world.region;
 import com.alex.io.InputStream;
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.core.EngineWorkingSet;
-import org.redrune.core.task.impl.FloorItemTask;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.world.packet.outgoing.impl.FloorItemAdditionBuilder;
-import org.redrune.network.world.packet.outgoing.impl.ObjectAdditionBuilder;
-import org.redrune.utility.backend.MapKeyRepository;
-import org.redrune.utility.repository.object.ObjectSpawnRepository;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.definition.ObjectDefinition;
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.impl.FloorItemTask;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.node.object.GameObject.ObjectType;
 import org.redrune.game.world.World;
+import org.redrune.network.world.packet.outgoing.impl.FloorItemAdditionBuilder;
 import org.redrune.network.world.packet.outgoing.impl.FloorItemRemovalBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ObjectAdditionBuilder;
 import org.redrune.network.world.packet.outgoing.impl.ObjectRemovalBuilder;
+import org.redrune.utility.backend.MapKeyRepository;
 import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
-import org.redrune.cache.CacheFileStore;
+import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.constant.RegionConstants;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -49,6 +51,11 @@ public class Region {
 	 */
 	@Getter
 	protected final CopyOnWriteArraySet<NPC> npcs = new CopyOnWriteArraySet<>();
+	
+	/**
+	 * The map of ticks spent in the region, based on the player names as the key
+	 */
+	private final Map<String, Integer> playerExistanceTicks = new HashMap<>();
 	
 	/**
 	 * The id of the region
@@ -540,6 +547,7 @@ public class Region {
 	 */
 	public void removeEntity(Entity entity) {
 		if (entity.isPlayer()) {
+			playerExistanceTicks.remove(entity.toPlayer().getDetails().getUsername());
 			players.remove(entity.toPlayer());
 		} else if (entity.isNPC()) {
 			npcs.remove(entity.toNPC());
@@ -806,5 +814,28 @@ public class Region {
 	 */
 	public boolean isDynamic() {
 		return false;
+	}
+	
+	/**
+	 * Increases the amount of time the player spent in the region
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public void increaseTimeSpent(Player player) {
+		String username = player.getDetails().getUsername();
+		Integer time = playerExistanceTicks.get(username);
+		playerExistanceTicks.put(username, (time == null ? 1 : time + 1));
+	}
+	
+	/**
+	 * Gets the amount of time the player has spent in the region
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public int getTimeSpent(Player player) {
+		Integer time = playerExistanceTicks.get(player.getDetails().getUsername());
+		return time == null ? 0 : time;
 	}
 }

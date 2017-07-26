@@ -44,12 +44,25 @@ public class ReadableRepository {
 			if (!packet.getClass().isAnnotationPresent(Readable.class)) {
 				throw new IllegalStateException("Readable class " + clazz + " must have Readable annotation present.");
 			}
-			Readable readable = packet.getClass().getAnnotation(Readable.class);
-			for (int id : readable.packetIds()) {
-				packets.put(id, packet);
-			}
+			include(packet);
 		});
 		System.out.println("Prepared " + packets.size() + " readable packets.");
+	}
+	
+	/**
+	 * Includes the readable packet into the mapping
+	 *
+	 * @param packet
+	 * 		The packet
+	 */
+	public void include(ReadablePacket packet) {
+		Readable readable = packet.getClass().getAnnotation(Readable.class);
+		for (int key : readable.packetIds()) {
+			if (packets.containsKey(key)) {
+				throw new IllegalStateException("Attempted duplicate key insertion for key " + key);
+			}
+			packets.put(key, packet);
+		}
 	}
 	
 	/**
@@ -70,7 +83,7 @@ public class ReadableRepository {
 				return;
 			}
 			// so we can only read verification packets before we're verified
-			if ((packetId != PacketConstants.SUCCESSFUL_VERIFICATION_PACKET_ID && packetId != PacketConstants.VERIFICATION_ATTEMPT_PACKET_ID) &&!session.isVerified()) {
+			if ((packetId != PacketConstants.SUCCESSFUL_VERIFICATION_PACKET_ID && packetId != PacketConstants.VERIFICATION_ATTEMPT_PACKET_ID) && !session.isVerified()) {
 				System.out.println("Attempted to read packet " + packet + " before session was verified.");
 				return;
 			}

@@ -11,9 +11,6 @@ import org.redrune.network.NetworkConstants;
 import org.redrune.network.lobby.channel.LobbyChannelInitializer;
 import org.redrune.network.lobby.packet.incoming.WorldRequestPacketDecoder;
 import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
-import org.redrune.utility.tool.Misc;
-
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,11 +22,6 @@ public class LobbyNetwork {
 	 * The instance of the packet repository
 	 */
 	public static final IncomingPacketRepository PACKET_REPOSITORY = new IncomingPacketRepository(WorldRequestPacketDecoder.class.getPackage().getName());
-	
-	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(LobbyNetwork.class);
 	
 	/**
 	 * Binds the lobby port
@@ -52,7 +44,7 @@ public class LobbyNetwork {
 			ChannelFuture future = bootstrap.bind(NetworkConstants.LOBBY_PORT_ID).sync();
 			
 			// tell the console that we're bound
-			LOGGER.info("Network bound to port: " + NetworkConstants.LOBBY_PORT_ID);
+			System.out.println("Network bound to port: " + NetworkConstants.LOBBY_PORT_ID);
 			
 			// Wait until the server socket is closed.
 			future.channel().closeFuture().sync();

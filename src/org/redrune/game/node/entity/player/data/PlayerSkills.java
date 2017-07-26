@@ -139,7 +139,7 @@ public class PlayerSkills implements SkillConstants {
 		if (newLevel > oldLevel) {
 			level[skillId] += levelDiff;
 			LevelUp.sendCongratulations(player, skillId);
-			if (skillId == SUMMONING || (skillId >= ATTACK && skillId <= MAGIC)) {
+			if (skillId == SUMMONING || skillId <= MAGIC) {
 				player.getUpdateMasks().register(new AppearanceUpdate(player));
 			}
 			addLevelsAdvanced((short) skillId, levelDiff);

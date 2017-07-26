@@ -376,15 +376,15 @@
   "bonuses": {
     "13820": [
       100,
+      0,
+      0,
+      0,
+      0,
       100,
+      0,
+      0,
       100,
-      100,
-      100,
-      125,
-      125,
-      125,
-      125,
-      125
+      100
     ]
   },
   "combatDefinitions": {
@@ -393,10 +393,10 @@
       "attackAnim": 3009,
       "defenceAnim": 3025,
       "deathAnim": 3011,
-      "attackDelay": 7,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 170,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 150,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,

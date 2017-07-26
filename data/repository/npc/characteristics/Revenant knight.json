@@ -2,32 +2,33 @@
   "drops": [],
   "bonuses": {
     "13480": [
-      235,
+      240,
       0,
       0,
-      188,
-      293,
-      151,
-      151,
-      151,
-      97,
-      188
+      240,
+      240,
+      170,
+      0,
+      0,
+      170,
+      170
     ]
   },
   "combatDefinitions": {
     "13480": {
-      "hitpoints": 1430,
+      "hitpoints": 1750,
       "attackAnim": 7441,
       "defenceAnim": 7443,
       "deathAnim": 7442,
-      "attackDelay": 6,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 300,
-      "attackStyle": 3,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 295,
+      "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

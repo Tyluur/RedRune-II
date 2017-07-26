@@ -2,26 +2,18 @@ package org.redrune.cache.parse;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.utility.tool.Misc;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.parse.definition.BodyData;
 import org.redrune.cache.stream.RSInputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/21/2017
  */
 public final class BodyDataParser {
-	
-	/**
-	 * The instance of the logger
-	 */
-	private static final Logger logger = Misc.constructLogger(BodyDataParser.class);
 	
 	/**
 	 * The array of body data
@@ -35,7 +27,8 @@ public final class BodyDataParser {
 		try {
 			read = BodyDataParser.read();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Unable to parse body data!", e);
+			System.out.println("Unable to parse body data!");
+			e.printStackTrace();
 		}
 		if (read == null) {
 			return;

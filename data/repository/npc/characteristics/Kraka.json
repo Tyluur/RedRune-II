@@ -124,18 +124,19 @@
   "bonuses": {},
   "combatDefinitions": {
     "1098": {
-      "hitpoints": 1200,
+      "hitpoints": 1,
       "attackAnim": -1,
       "defenceAnim": -1,
       "deathAnim": -1,
-      "attackDelay": 6,
-      "deathDelay": 1,
-      "respawnDelay": 60,
-      "maxHit": 233,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 50,
+      "maxHit": 1,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

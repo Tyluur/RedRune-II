@@ -78,6 +78,7 @@ public final class NPCDefinition {
 	
 	private boolean aBoolean852;
 	
+	@Getter
 	private int anInt853;
 	
 	private byte aByte854;
@@ -425,6 +426,9 @@ public final class NPCDefinition {
 		}
 	}
 	
+	/**
+	 * If we have a mark option on the definitions
+	 */
 	public boolean hasMarkOption() {
 		for (String option : options) {
 			if (option != null && option.equalsIgnoreCase("mark")) {
@@ -434,6 +438,12 @@ public final class NPCDefinition {
 		return false;
 	}
 	
+	/**
+	 * If the definition has an option
+	 *
+	 * @param op
+	 * 		The option
+	 */
 	public boolean hasOption(String op) {
 		for (String option : options) {
 			if (option != null && option.equalsIgnoreCase(op)) {
@@ -443,6 +453,9 @@ public final class NPCDefinition {
 		return false;
 	}
 	
+	/**
+	 * If the npc definition has an attack option present
+	 */
 	public boolean hasAttackOption() {
 		for (String option : options) {
 			if (option != null && option.equalsIgnoreCase("attack")) {
@@ -451,4 +464,5 @@ public final class NPCDefinition {
 		}
 		return false;
 	}
+	
 }

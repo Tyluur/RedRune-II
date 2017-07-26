@@ -1,6 +1,7 @@
 package org.redrune.core.boot;
 
 import lombok.launch.AnnotationDefaultProcessor;
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
 
 import java.util.ArrayList;
@@ -9,35 +10,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 10/24/2015
  */
 public class BootHandler {
-
+	
 	/**
 	 * The amount of threads we can construct
 	 */
 	private static final int THREAD_SIZE = SystemManager.PROCESSOR_COUNT;
-
+	
 	/**
 	 * The list of work we must complete
 	 */
 	private static final List<Runnable> WORK_TO_COMPLETE = new ArrayList<>();
-
+	
 	/**
 	 * The list of boot workers
 	 */
 	private static final CopyOnWriteArrayList<BootWorker> BOOT_WORKERS = new CopyOnWriteArrayList<>();
-
+	
 	/**
 	 * The amount of work that must be complete
 	 */
 	private static CountDownLatch countDownLatch;
-
+	
 	/**
 	 * Adds all of the runnables to the {@link #WORK_TO_COMPLETE} list
 	 *
@@ -49,7 +48,7 @@ public class BootHandler {
 		prepareAll();
 		executeWorkers();
 	}
-
+	
 	/**
 	 * Prepares all essentials for work to be done. We first construct the {@link #countDownLatch}, then create {@code
 	 * BootWorker}s into the {@link #BOOT_WORKERS} list, then the {@link #prepareBootWorkers()} method is ran
@@ -62,7 +61,7 @@ public class BootHandler {
 		AnnotationDefaultProcessor.prepareProcessing();
 		prepareBootWorkers();
 	}
-
+	
 	/**
 	 * Prepares the workers by populating them with workload from the {@link #WORK_TO_COMPLETE}
 	 */
@@ -74,17 +73,14 @@ public class BootHandler {
 			index++;
 		}
 	}
-
+	
 	/**
 	 * Executes the workers
 	 */
 	public static void executeWorkers() {
-		ExecutorService service = Executors.newFixedThreadPool(THREAD_SIZE);
-		//System.out.println("submitted to " + service.toString());
-		BOOT_WORKERS.forEach(service::execute);
-//		BOOT_WORKERS.forEach(worker -> new Thread(worker).start());
+		BOOT_WORKERS.forEach(EngineWorkingSet.getScheduledExecutorService()::execute);
 	}
-
+	
 	/**
 	 * Getting the best worker to use for the upcoming workload. This is dependent on the amount of work the worker
 	 * currently has to do
@@ -100,7 +96,7 @@ public class BootHandler {
 		}
 		return bestWorker;
 	}
-
+	
 	/**
 	 * Awaits the completion of the countdown
 	 */
@@ -111,7 +107,7 @@ public class BootHandler {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Performs the finishing operations on the threads after we have completed
 	 */
@@ -119,7 +115,7 @@ public class BootHandler {
 		BOOT_WORKERS.forEach(BootWorker::interrupt);
 		BOOT_WORKERS.clear();
 	}
-
+	
 	/**
 	 * Gets the worker numbers left in a list
 	 */
@@ -128,7 +124,7 @@ public class BootHandler {
 		BOOT_WORKERS.forEach(worker -> worker.getWorkLoad().forEach(load -> result.add(load.getTaskNumber())));
 		return result;
 	}
-
+	
 	/**
 	 * The details of the workers left
 	 */
@@ -140,12 +136,12 @@ public class BootHandler {
 		}
 		return details.toString();
 	}
-
+	
 	/**
 	 * Gets the {@link #countDownLatch}
 	 */
-	public static CountDownLatch getCountDownLatch() {
+	static CountDownLatch getCountDownLatch() {
 		return countDownLatch;
 	}
-
+	
 }

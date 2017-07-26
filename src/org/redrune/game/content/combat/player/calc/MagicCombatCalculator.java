@@ -42,7 +42,7 @@ public class MagicCombatCalculator implements CombatTypeCalculator {
 			bonus = player.getEquipment().getBonus(MAGIC_DEFENCE);
 		} else {
 			NPC npc = entity.toNPC();
-			int combatLevel = npc.getDefinitions().getCombatLevel();
+			int combatLevel = npc.getCombatLevel();
 			defenceLevel = combatLevel / 2;
 			magicLevel = combatLevel / 2;
 			prayer = 1.0;

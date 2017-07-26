@@ -1,7 +1,6 @@
 package org.redrune.game.content.action.interaction;
 
 import lombok.Getter;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.content.action.Action;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
@@ -10,6 +9,7 @@ import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.InteractionOption;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 
@@ -181,6 +181,16 @@ public final class PlayerCombatAction implements Action {
 				player.getMovement().addWalkSteps(player.getLocation().getX(), target.getLocation().getY(), 1, true);
 			}
 			return true;
+		}
+		if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
+			if (player.getAttackedBy() != target && player.getAttackedByDelay() > System.currentTimeMillis()) {
+				player.getTransmitter().sendMessage("You are already in combat");
+				return false;
+			}
+			if (target.getAttackedBy() != player && target.getAttackedByDelay() > System.currentTimeMillis()) {
+				player.getTransmitter().sendMessage((target.isPlayer() ? "That player is" : "This npc is") + " already in combat");
+				return false;
+			}
 		}
 		// we can't continue fighting in the activity
 		if (!player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {

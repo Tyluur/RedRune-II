@@ -4,7 +4,10 @@ import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.network.NetworkSession;
+import org.redrune.network.lobby.packet.readable.LobbyRepositoryPacketIn;
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.client.network.MCNetworkSystem;
+import org.redrune.network.master.client.network.MCSession;
 import org.redrune.network.master.network.packet.OutgoingPacket;
 import org.redrune.network.master.network.packet.PacketConstants;
 import org.redrune.network.world.WorldSession;
@@ -31,6 +34,9 @@ public class MasterCommunication implements PacketConstants {
 	 */
 	public static void start() {
 		SYSTEM.connect();
+		if (GameFlags.worldId == MasterConstants.LOBBY_WORLD_ID) {
+			MCSession.getReadableRepository().include(new LobbyRepositoryPacketIn());
+		}
 	}
 	
 	/**

@@ -6,10 +6,10 @@
       0,
       0,
       0,
+      500,
+      500,
       0,
-      500,
-      500,
-      500,
+      0,
       100,
       500
     ]
@@ -23,11 +23,12 @@
       "attackDelay": 5,
       "deathDelay": 4,
       "respawnDelay": 50,
-      "maxHit": 200,
+      "maxHit": 1,
       "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

@@ -2,25 +2,18 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.GameFlags;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
  */
 public final class PlayerDetails {
-	
-	/**
-	 * Constructs a logger
-	 */
-	private static final Logger logger = Misc.constructLogger(PlayerDetails.class);
 	
 	/**
 	 * The username of the player
@@ -76,7 +69,7 @@ public final class PlayerDetails {
 	 */
 	public PlayerRight getDominantRight() {
 		if (rights.size() == 0) {
-			logger.log(Level.SEVERE, "Unexpected situation - rights set was empty!");
+			System.out.println("Unexpected situation - rights set was empty!");
 			return PlayerRight.PLAYER;
 		} else {
 			return rights.first();

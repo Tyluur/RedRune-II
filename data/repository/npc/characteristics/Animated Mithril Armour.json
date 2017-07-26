@@ -21,26 +21,26 @@
   ],
   "bonuses": {
     "4282": [
-      95,
+      150,
       0,
       0,
       0,
       0,
       150,
-      150,
-      150,
-      150,
-      150
+      0,
+      0,
+      0,
+      70
     ]
   },
   "combatDefinitions": {
     "4282": {
       "hitpoints": 800,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
+      "attackAnim": 390,
+      "defenceAnim": 424,
+      "deathAnim": 836,
       "attackDelay": 5,
-      "deathDelay": 3,
+      "deathDelay": 5,
       "respawnDelay": 60,
       "maxHit": 100,
       "attackStyle": 0,
@@ -48,5 +48,6 @@
       "attackProjectile": -1,
       "aggressivenessType": 0
     }
-  }
+  },
+  "charmDrops": []
 }

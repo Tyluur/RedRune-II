@@ -1,14 +1,15 @@
 package org.redrune.game.node.entity.npc.render;
 
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.region.Region;
-import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
+import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.Packet.PacketType;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.outgoing.OutgoingPacketBuilder;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Iterator;
 import java.util.List;
@@ -75,31 +76,25 @@ public class NPCRendering implements OutgoingPacketBuilder {
 	 *
 	 * @param npc
 	 * 		The npc.
-	 * @param buf
+	 * @param builder
 	 * 		The buffer.
 	 */
-	private static void updateNPCMovement(NPC npc, PacketBuilder buf) {
-		if (npc.getMovement().getNextRunDirection() == -1) {
-			if (npc.getMovement().getNextWalkDirection() == -1) {
-				if (npc.getUpdateMasks().isUpdateRequired()) {
-					buf.writeBits(1, 1);
-					buf.writeBits(2, 0);
-				} else {
-					buf.writeBits(1, 0);
-				}
-			} else {
-				buf.writeBits(1, 1);
-				buf.writeBits(2, 1);
-				buf.writeBits(3, npc.getMovement().getNextWalkDirection());
-				buf.writeBits(1, npc.getUpdateMasks().isUpdateRequired() ? 1 : 0);
+	private static void updateNPCMovement(NPC npc, PacketBuilder builder) {
+		boolean needUpdate = npc.getUpdateMasks().isUpdateRequired();
+		boolean walkUpdate = npc.getMovement().getNextWalkDirection() != -1;
+		builder.writeBits(1, (needUpdate || walkUpdate) ? 1 : 0);
+		if (walkUpdate) {
+			builder.writeBits(2, npc.getMovement().getNextRunDirection() == -1 ? 1 : 2);
+			if (npc.getMovement().getNextRunDirection() != -1) {
+				builder.writeBits(1, 1);
 			}
-		} else {
-			buf.writeBits(1, 1);
-			buf.writeBits(2, 2);
-			buf.writeBits(1, 1);
-			buf.writeBits(3, npc.getMovement().getNextWalkDirection());
-			buf.writeBits(3, npc.getMovement().getNextRunDirection());
-			buf.writeBits(1, npc.getUpdateMasks().isUpdateRequired() ? 1 : 0);
+			builder.writeBits(3, Misc.getNpcMoveDirection(npc.getMovement().getNextWalkDirection()));
+			if (npc.getMovement().getNextRunDirection() != -1) {
+				builder.writeBits(3, Misc.getNpcMoveDirection(npc.getMovement().getNextRunDirection()));
+			}
+			builder.writeBits(1, needUpdate ? 1 : 0);
+		} else if (needUpdate) {
+			builder.writeBits(2, 0);
 		}
 	}
 	

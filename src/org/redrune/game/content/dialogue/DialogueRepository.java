@@ -16,11 +16,6 @@ import java.util.logging.Logger;
 public class DialogueRepository {
 	
 	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(DialogueRepository.class);
-	
-	/**
 	 * The map of dialogues with a {@link DialogueSubscription} subscription
 	 */
 	private static Map<String, Dialogue> NPC_SUBSCRIPTION_DIALOGUES = new HashMap<>();
@@ -39,7 +34,7 @@ public class DialogueRepository {
 			DialogueSubscription subscription = dialogue.getClass().getAnnotation(DialogueSubscription.class);
 			addEntry(dialogue, subscription);
 		});
-		LOGGER.info("Loaded " + NPC_SUBSCRIPTION_DIALOGUES.size() + "/" + OBJECT_SUBSCRIPTION_DIALOGUES.size() + " dialogues with npc/object subscriptions.");
+		System.out.println("Loaded " + NPC_SUBSCRIPTION_DIALOGUES.size() + "/" + OBJECT_SUBSCRIPTION_DIALOGUES.size() + " dialogues with npc/object subscriptions.");
 	}
 	
 	/**
@@ -53,14 +48,14 @@ public class DialogueRepository {
 	private static void addEntry(Dialogue dialogue, DialogueSubscription subscription) {
 		for (String name : subscription.npcNames()) {
 			if (NPC_SUBSCRIPTION_DIALOGUES.containsKey(name)) {
-				LOGGER.info("Unable to register dialogue with subscription: " + dialogue.getClass().getSimpleName() + "[" + subscription + "]");
+				System.out.println("Unable to register dialogue with subscription: " + dialogue.getClass().getSimpleName() + "[" + subscription + "]");
 				return;
 			}
 			NPC_SUBSCRIPTION_DIALOGUES.put(name, dialogue);
 		}
 		for (String name : subscription.objectNames()) {
 			if (OBJECT_SUBSCRIPTION_DIALOGUES.containsKey(name)) {
-				LOGGER.info("Unable to register dialogue with subscription: " + dialogue.getClass().getSimpleName() + "[" + subscription + "]");
+				System.out.println("Unable to register dialogue with subscription: " + dialogue.getClass().getSimpleName() + "[" + subscription + "]");
 				return;
 			}
 			OBJECT_SUBSCRIPTION_DIALOGUES.put(name, dialogue);

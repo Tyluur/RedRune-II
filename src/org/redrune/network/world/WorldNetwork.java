@@ -10,10 +10,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.redrune.core.system.SystemManager;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.world.channel.WorldChannelInitializer;
-import org.redrune.utility.tool.Misc;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * This is the network handler for the main game protocol. This initializes the main game server and the update server.
@@ -23,11 +21,6 @@ import java.util.logging.Logger;
  */
 @Sharable
 public final class WorldNetwork {
-	
-	/**
-	 * The instance of the logger
-	 */
-	private static final Logger LOGGER = Misc.constructLogger(WorldNetwork.class);
 	
 	/**
 	 * Binds the local address to port {@link NetworkConstants#WORLD_PORT_ID}
@@ -52,7 +45,7 @@ public final class WorldNetwork {
 			ChannelFuture future = bootstrap.bind(NetworkConstants.WORLD_PORT_ID).sync();
 			
 			// tell the console that we're bound
-			LOGGER.info("Network bound to port: " + NetworkConstants.WORLD_PORT_ID);
+			System.out.println("Network bound to port: " + NetworkConstants.WORLD_PORT_ID);
 			
 			// Wait until the server socket is closed.
 			future.channel().closeFuture().sync();

@@ -315,14 +315,14 @@
   ],
   "bonuses": {
     "50": [
-      300,
-      10,
-      10,
-      200,
+      220,
       0,
-      250,
-      350,
-      250,
+      0,
+      220,
+      0,
+      275,
+      0,
+      0,
       400,
       310
     ]
@@ -333,14 +333,14 @@
       "attackAnim": 91,
       "defenceAnim": 89,
       "deathAnim": 92,
-      "attackDelay": 5,
-      "deathDelay": 3,
-      "respawnDelay": 60,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 50,
       "maxHit": 254,
-      "attackStyle": 3,
+      "attackStyle": 0,
       "attackGfx": -1,
       "attackProjectile": -1,
-      "aggressivenessType": 1
+      "aggressivenessType": 0
     }
   },
   "charmDrops": [

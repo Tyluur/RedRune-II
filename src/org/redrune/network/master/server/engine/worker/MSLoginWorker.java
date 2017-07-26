@@ -1,8 +1,10 @@
 package org.redrune.network.master.server.engine.worker;
 
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.network.MasterSession;
 import org.redrune.network.master.server.engine.MSEngineWorker;
 import org.redrune.network.master.server.network.packet.out.LoginResponsePacketOut;
+import org.redrune.network.master.server.network.packet.out.LobbyRepositoryPacketOut;
 import org.redrune.network.master.server.world.MSRepository;
 import org.redrune.network.master.utility.Utility;
 import org.redrune.network.master.utility.rs.LoginConstants;
@@ -79,7 +81,14 @@ public class MSLoginWorker extends MSEngineWorker {
 			// if we had a successful login, we can then add the player to the world
 			// as long as they are connecting to a world, not the lobby.
 			if (returnCode == ReturnCode.SUCCESSFUL) {
-				MSRepository.getWorld(worldId).ifPresent(world -> world.addPlayer(username, uid));
+				// add the player and update the lobby if we can
+				MSRepository.getWorld(worldId).ifPresent(world -> {
+					world.addPlayer(username, uid);
+					// sends the repository update as long as the world isn't the lobby world
+					if (!world.isLobby()) {
+						MSRepository.getWorld(MasterConstants.LOBBY_WORLD_ID).ifPresent(lobbyWorld -> lobbyWorld.getSession().write(new LobbyRepositoryPacketOut(world)));
+					}
+				});
 			}
 			
 			// writes the response

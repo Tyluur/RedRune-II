@@ -241,7 +241,32 @@
       "rate": 26.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "1153": [
+      50,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      40,
+      25
+    ],
+    "1156": [
+      50,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      40,
+      25
+    ]
+  },
   "combatDefinitions": {
     "1153": {
       "hitpoints": 400,
@@ -249,8 +274,8 @@
       "defenceAnim": 6227,
       "deathAnim": 6228,
       "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
+      "deathDelay": 5,
+      "respawnDelay": 50,
       "maxHit": 34,
       "attackStyle": 0,
       "attackGfx": -1,
@@ -263,8 +288,8 @@
       "defenceAnim": 6227,
       "deathAnim": 6228,
       "attackDelay": 5,
-      "deathDelay": 1,
-      "respawnDelay": 60,
+      "deathDelay": 5,
+      "respawnDelay": 50,
       "maxHit": 34,
       "attackStyle": 0,
       "attackGfx": -1,

@@ -253,16 +253,29 @@
       "rate": 78.0
     }
   ],
-  "bonuses": {},
+  "bonuses": {
+    "9172": [
+      0,
+      0,
+      0,
+      65,
+      0,
+      155,
+      0,
+      0,
+      125,
+      115
+    ]
+  },
   "combatDefinitions": {
     "9172": {
       "hitpoints": 1250,
-      "attackAnim": -1,
-      "defenceAnim": -1,
-      "deathAnim": -1,
-      "attackDelay": 6,
-      "deathDelay": 1,
-      "respawnDelay": 60,
+      "attackAnim": 12041,
+      "defenceAnim": 12040,
+      "deathAnim": 12039,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 50,
       "maxHit": 134,
       "attackStyle": 2,
       "attackGfx": -1,

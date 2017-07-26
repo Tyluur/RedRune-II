@@ -69,7 +69,7 @@ public final class MeleeCombatCalculator implements CombatTypeCalculator {
 		} else {
 			NPC npc = entity.toNPC();
 			prayer = 1.0;
-			defenceLevel = npc.getDefinitions().getCombatLevel() / 2;
+			defenceLevel = npc.getCombatLevel() / 2;
 			bonus = npc.getBonus(bonusIndex);
 		}
 		// calculate the bonus of the style we're on after all the setting is done
