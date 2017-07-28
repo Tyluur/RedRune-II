@@ -9,7 +9,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerEquipment;
 import org.redrune.utility.rs.Projectile;
 import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

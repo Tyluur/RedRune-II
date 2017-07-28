@@ -6,7 +6,6 @@ import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.PacketBuilder;
-import org.redrune.utility.AttributeKey;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -148,7 +147,6 @@ public class PlayerRenderData {
 				hashLocations[i] = p.getLocation().get18BitsHash();
 			}
 		}
-		player.putAttribute(AttributeKey.PLAYER_TELEPORTED, false);
 	}
 	
 	/**

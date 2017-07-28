@@ -4,7 +4,7 @@ import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.content.combat.player.calc.MeleeCombatCalculator;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
@@ -44,7 +44,7 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 		// custom attack send
 		if (usingSpecial) {
 			special.fire(player, target, this, combatStyle);
-			player.getCombatDefinitions().modifySpecial(energyRequired);
+			player.getCombatDefinitions().reduceSpecial(energyRequired);
 		} else {
 			// the hit (randomized)
 			final double maxHit = getMaxHit(player, weaponId, combatStyle, 1D);
@@ -63,7 +63,9 @@ public class MeleeCombatSwing extends CombatTypeSwing {
 			
 			// handles the leeches aspect of the hit
 			if (target.isPlayer()) {
-				target.toPlayer().getManager().getPrayers().handleLeeches(hit);
+				target.toPlayer().getManager().getPrayers().handlePrayerEffects(hit);
+			} else {
+				target.toNPC().handlePrayerEffects(hit);
 			}
 			
 			// sends the hit after the delay

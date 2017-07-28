@@ -285,14 +285,14 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public void extra(Player player) {
 				/*player.addPoisonImmune(180000);
-				player.getPackets().sendGameMessage("You are now immune to poison.");*/
+				player.getPackets().sendMessage("You are now immune to poison.");*/
 			}
 		},
 		SUPER_ANTIPOISON() {
 			@Override
 			public void extra(Player player) {
 				/*player.addPoisonImmune(360000);
-				player.getPackets().sendGameMessage("You are now immune to poison.");*/
+				player.getPackets().sendMessage("You are now immune to poison.");*/
 			}
 		},
 		ENERGY_POTION() {
@@ -316,7 +316,7 @@ public class PotionConstants implements SkillConstants {
 			public void extra(final Player player) {
 				/*player.addFireImmune(360000);
 				final long current = player.getFireImmune();
-				player.getPackets().sendGameMessage("You are now immune to dragonfire.");
+				player.getPackets().sendMessage("You are now immune to dragonfire.");
 				WorldTasksManager.schedule(new WorldTask() {
 					boolean stop = false;
 					
@@ -327,11 +327,11 @@ public class PotionConstants implements SkillConstants {
 							return;
 						}
 						if (!stop) {
-							player.getPackets().sendGameMessage("<col=480000>Your antifire potion is about to run out...</col>");
+							player.getPackets().sendMessage("<col=480000>Your antifire potion is about to run out...</col>");
 							stop = true;
 						} else {
 							stop();
-							player.getPackets().sendGameMessage("<col=480000>Your antifire potion has ran out...</col>");
+							player.getPackets().sendMessage("<col=480000>Your antifire potion has ran out...</col>");
 						}
 					}
 				}, 500, 100);*/
@@ -342,7 +342,7 @@ public class PotionConstants implements SkillConstants {
 			public void extra(final Player player) {
 				/*player.addFireImmune(720000);
 				final long current = player.getFireImmune();
-				player.getPackets().sendGameMessage("You are now immune to dragonfire.");
+				player.getPackets().sendMessage("You are now immune to dragonfire.");
 				WorldTasksManager.schedule(new WorldTask() {
 					boolean stop = false;
 					
@@ -353,11 +353,11 @@ public class PotionConstants implements SkillConstants {
 							return;
 						}
 						if (!stop) {
-							player.getPackets().sendGameMessage("<col=480000>Your antifire potion is about to run out...</col>");
+							player.getPackets().sendMessage("<col=480000>Your antifire potion is about to run out...</col>");
 							stop = true;
 						} else {
 							stop();
-							player.getPackets().sendGameMessage("<col=480000>Your antifire potion has ran out...</col>");
+							player.getPackets().sendMessage("<col=480000>Your antifire potion has ran out...</col>");
 						}
 					}
 				}, 1000, 100);*/
@@ -422,7 +422,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}*/
 				return true;
@@ -438,7 +438,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}*/
 				return true;
@@ -454,7 +454,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}*/
 				return true;
@@ -470,7 +470,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}*/
 				return true;
@@ -486,7 +486,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}*/
 				return true;
@@ -502,7 +502,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}*/
 				Long time = player.getAttribute("Recover_Special_Pot", -1L);
@@ -517,7 +517,7 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public void extra(Player player) {
 				player.putAttribute("Recover_Special_Pot", System.currentTimeMillis());
-				player.getCombatDefinitions().modifySpecial(-25);
+				player.getCombatDefinitions().reduceSpecial(-25);
 			}
 		},
 		GUTHIX_REST() {
@@ -561,16 +561,16 @@ public class PotionConstants implements SkillConstants {
 			@Override
 			public boolean canDrink(Player player) {
 				/*if (player.getControllerManager().getController() instanceof Wilderness || player.getControllerManager().getController() instanceof CrucibleControler || FfaZone.isOverloadChanged(player)) {
-					player.getPackets().sendGameMessage("You cannot drink this potion here.");
+					player.getPackets().sendMessage("You cannot drink this potion here.");
 					return false;
 				}
 						if (player.getOverloadDelay() > 0) {
-					player.getPackets().sendGameMessage(
+					player.getPackets().sendMessage(
 							"You may only use this potion every five minutes.");
 					return false;
 				}*/
 				/*if (player.getHealthPoints() <= 500 || player.getOverloadDelay() > 480) {
-					player.getPackets().sendGameMessage("You need more than 500 life points to survive the power of overload.");
+					player.getPackets().sendMessage("You need more than 500 life points to survive the power of overload.");
 					return false;
 				}*/
 				return true;

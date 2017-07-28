@@ -18,7 +18,7 @@ public class BankerInteractionModule implements NPCInteractionModule {
 	
 	@Override
 	public boolean handle(Player player, NPC npc, InteractionOption option) {
-		player.getBank().openBank();
+		player.getBank().open();
 		return true;
 	}
 }

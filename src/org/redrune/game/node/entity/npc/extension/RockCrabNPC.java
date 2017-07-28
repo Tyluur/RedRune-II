@@ -27,22 +27,23 @@ public class RockCrabNPC extends NPC {
 		this.originalId = id;
 		getCombatManager().setAggressiveForced(true);
 		getCombatManager().setFindTargetRadius(1);
-		System.out.println("Constructed a rock crab");
-	}
-	
-	@Override
-	public int getCombatLevel() {
-		return 13;
 	}
 	
 	@Override
 	public void startFight(Entity target) {
-		if (getId() == originalId - 1) {
+		if (getId() == originalId) {
 			transform(originalId - 1);
-			setHealthPoints(getMaxHealth());
 			getCombatManager().setFindTargetRadius(16);
-			System.out.println("Started a fight with " + target);
 		}
 		super.startFight(target);
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		// so the npc that re-spawns is the rock crab
+		setId(originalId);
+		// the that the original only finds 1 tile close-by
+		getCombatManager().setFindTargetRadius(1);
 	}
 }

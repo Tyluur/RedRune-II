@@ -6,7 +6,7 @@ import lombok.Getter;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/23/2017
  */
-public interface MagicConstants {
+public interface MagicConstants extends SkillConstants {
 	
 	/**
 	 * The ids of runes

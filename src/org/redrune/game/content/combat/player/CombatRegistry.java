@@ -1,10 +1,12 @@
 package org.redrune.game.content.combat.player;
 
 import org.redrune.cache.parse.ItemDefinitionParser;
-import org.redrune.game.content.combat.player.registry.BowFireEvent;
 import org.redrune.game.content.combat.player.registry.CombatRegistryEvent;
-import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.BowFireEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.MagicSpellEvent;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.prayer.PrayerEffectRepository;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -101,8 +103,8 @@ public class CombatRegistry implements MagicConstants {
 	}
 	
 	/**
-	 * Gets an optional of a bow fire event by the id of the weapon used. The id is then translated into a name
-	 * and we loop through the map to find the right one.
+	 * Gets an optional of a bow fire event by the id of the weapon used. The id is then translated into a name and we
+	 * loop through the map to find the right one.
 	 *
 	 * @param weaponId
 	 * 		The id of the weapon used.
@@ -132,6 +134,48 @@ public class CombatRegistry implements MagicConstants {
 	 */
 	public static Optional<MagicSpellEvent<?>> getSpell(MagicBook book, int spellId) {
 		return SPELL_EVENTS.stream().filter(spell -> spell.book() == book && spell.spellId() == spellId).findFirst();
+	}
+	
+	/**
+	 * Gets a combat spell
+	 *
+	 * @param book
+	 * 		The book the spell should be ok
+	 * @param spellId
+	 * 		The id of the spell
+	 */
+	public static Optional<CombatSpellEvent> getCombatSpell(MagicBook book, int spellId) {
+		for (MagicSpellEvent spellEvent : SPELL_EVENTS) {
+			if (spellEvent.book() != book || spellEvent.spellId() != spellId) {
+				continue;
+			}
+			if (spellEvent instanceof CombatSpellEvent) {
+				return Optional.of((CombatSpellEvent) spellEvent);
+			}
+		}
+		return Optional.empty();
+	}
+	
+	/**
+	 * Fires a spell if it's possible to fire it
+	 *
+	 * @param player
+	 * 		The player
+	 * @param book
+	 * 		The book of the spell
+	 * @param spellId
+	 * 		The id of the spell
+	 */
+	@SuppressWarnings("unchecked")
+	private static void fireSpellIfPossible(Player player, MagicBook book, int spellId) {
+		Optional<MagicSpellEvent<?>> optional = SPELL_EVENTS.stream().filter(spell -> spell.book() == book && spell.spellId() == spellId).findFirst();
+		if (!optional.isPresent()) {
+			player.getTransmitter().sendMessage("Spell #" + spellId + " has not yet been added, please report this on the forums.");
+			return;
+		}
+		MagicSpellEvent event = optional.get();
+		// with default context
+		event.cast(player, new CombatSpellContext(null, null));
 	}
 	
 	/**
@@ -177,13 +221,16 @@ public class CombatRegistry implements MagicConstants {
 					case 98:
 						setAutocastSpell(player, spellId);
 						break;
-					case 27: // crossbow bolt enchant
-					/*	if (player.getSkills().getLevel(Skills.MAGIC) < 4) {
+					default:
+						fireSpellIfPossible(player, MagicBook.REGULAR, spellId);
+						break;
+					/*case 27: // crossbow bolt enchant
+						if (player.getSkills().getLevel(Skills.MAGIC) < 4) {
 							player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 							return;
 						}
 						player.stopAll();
-						player.getInterfaceManager().sendInterface(432);*/
+						player.getInterfaceManager().sendInterface(432);
 						break;
 					case 24:
 						//useHomeTele(player);
@@ -214,7 +261,7 @@ public class CombatRegistry implements MagicConstants {
 						break;
 					case 72: // ape
 						//						sendNormalTeleportSpell(player, 64, 76, new WorldTile(2776, 9103, 0), FIRE_RUNE, 2, WATER_RUNE, 2, LAW_RUNE, 2, 1963, 1);
-						break;
+						break;*/
 				}
 				break;
 			case ANCIENTS:
@@ -241,84 +288,15 @@ public class CombatRegistry implements MagicConstants {
 					case 39:
 						setAutocastSpell(player, spellId);
 						break;
-					case 40:
-						//sendAncientTeleportSpell(player, 54, 64, new WorldTile(3099, 9882, 0), LAW_RUNE, 2, FIRE_RUNE, 1, AIR_RUNE, 1);
-						break;
-					case 41:
-						//sendAncientTeleportSpell(player, 60, 70, new WorldTile(3360, 3387, 0), LAW_RUNE, 2, SOUL_RUNE, 1);
-						break;
-					case 42:
-						//sendAncientTeleportSpell(player, 66, 76, new WorldTile(3492, 3471, 0), LAW_RUNE, 2, BLOOD_RUNE, 1);
-						break;
-					case 43:
-						//sendAncientTeleportSpell(player, 72, 82, new WorldTile(3006, 3471, 0), LAW_RUNE, 2, WATER_RUNE, 4);
-						break;
-					case 44:
-						//sendAncientTeleportSpell(player, 78, 88, new WorldTile(2990, 3696, 0), LAW_RUNE, 2, FIRE_RUNE, 3, AIR_RUNE, 2);
-						break;
-					case 45:
-						//sendAncientTeleportSpell(player, 84, 94, new WorldTile(3217, 3677, 0), LAW_RUNE, 2, SOUL_RUNE, 2);
-						break;
-					case 46:
-						//sendAncientTeleportSpell(player, 90, 100, new WorldTile(3288, 3886, 0), LAW_RUNE, 2, BLOOD_RUNE, 2);
-						break;
-					case 47:
-						//	sendAncientTeleportSpell(player, 96, 106, new WorldTile(2977, 3873, 0), LAW_RUNE, 2, WATER_RUNE, 8);
-						break;
-					case 48:
-						//	useHomeTele(player);
+					default:
+						fireSpellIfPossible(player, MagicBook.ANCIENTS, spellId);
 						break;
 				}
 				break;
 			case LUNARS:
 				switch (spellId) {
-					case 33:
-						/*player.getInterfaceManager().openGameTab(7);
-						final Item target = player.getInventory().getItem(packetId);
-						if (target == null) {
-							return;
-						}
-						if (!checkSpellRequirements(player, 86, true, ASTRAL_RUNE, 2, EARTH_RUNE, 15, NATURE_RUNE, 1)) {
-							return;
-						}
-						Planks plank = Planks.forId(target.getId());
-						if (plank == null) {
-							player.getPackets().sendGameMessage("You can only cast this spell on a log.");
-							return;
-						}
-						player.setNextAnimation(new Animation(6298));
-						player.setNextGraphics(new Graphics(1063, 0, 50));
-						player.getInventory().deleteItem(plank.getLogId(), 1);
-						player.getInventory().addItem(plank.getPlankId(), 1);
-						player.getSkills().addXp(Skills.MAGIC, 90);
-						player.getLockManagement().lockAll(3000);*/
-						break;
-					case 37:
-						/*if (player.getSkills().getLevel(Skills.MAGIC) < 94) {
-							player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
-							return;
-						} else if (player.getSkills().getLevel(Skills.DEFENCE) < 40) {
-							player.getPackets().sendGameMessage("You need a Defence level of 40 for this spell");
-							return;
-						} else if (player.getAttribute("cast_veng", false)) {
-							player.sendMessage("You already have vengeance cast.");
-							return;
-						}
-						Long lastVeng = player.getAttribute("LAST_VENG");
-						if (lastVeng != null && lastVeng + 30000 > Utils.currentTimeMillis()) {
-							player.getPackets().sendGameMessage("You must wait " + (TimeUnit.MILLISECONDS.toSeconds((lastVeng + 30000) - Utils.currentTimeMillis())) + " more seconds to cast vengeance.");
-							return;
-						}
-						if (!checkRunes(player, true, ASTRAL_RUNE, 4, DEATH_RUNE, 2, EARTH_RUNE, 10)) {
-							return;
-						}
-						player.setNextGraphics(new Graphics(726, 0, 100));
-						player.setNextAnimation(new Animation(4410));
-						player.putAttribute("cast_veng", true);
-						player.getAttributes().put("LAST_VENG", Utils.currentTimeMillis());*/
-						break;
-					case 39:
-						//useHomeTele(player);
+					default:
+						fireSpellIfPossible(player, MagicBook.LUNARS, spellId);
 						break;
 				}
 				break;
@@ -690,7 +668,7 @@ public class CombatRegistry implements MagicConstants {
 	 * @param runes
 	 * 		The runes to delete
 	 */
-	private static boolean checkRunes(Player player, boolean delete, int... runes) {
+	public static boolean checkRunes(Player player, boolean delete, int... runes) {
 		int weaponId = player.getEquipment().getWeaponId();
 		int shieldId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_SHIELD);
 		int runesCount = 0;

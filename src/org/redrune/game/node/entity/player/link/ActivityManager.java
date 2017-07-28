@@ -1,9 +1,10 @@
 package org.redrune.game.node.entity.player.link;
 
-import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.activity.Activity;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.TeleportType;
+import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.InteractionOption;
 
 import java.util.Optional;
@@ -54,15 +55,25 @@ public class ActivityManager {
 	public boolean handleNodeInteraction(Node node, InteractionOption option) {
 		// we don't have an activity, so we assume we can do the interaction
 		if (activity == null) {
-			return true;
+			return false;
 		}
 		// if an activity customly handles the option it will be true
 		if (activity.handleNodeInteraction(node, option)) {
 			return true;
 		}
-		// we must not have an activity, and the activity must not have
+		// we must not have an activity, OR the activity must not have
 		// handled the option. thus we should be able to use the option
-		return true;
+		return false;
+	}
+	
+	/**
+	 * Checks if the activity allows the teleport type
+	 *
+	 * @param type
+	 * 		The type of teleport
+	 */
+	public boolean teleportationAllowed(TeleportType type) {
+		return activity == null || activity.teleportationAllowed(type);
 	}
 	
 	/**

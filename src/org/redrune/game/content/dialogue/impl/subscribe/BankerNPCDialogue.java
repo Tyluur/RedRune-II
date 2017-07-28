@@ -19,7 +19,7 @@ public class BankerNPCDialogue extends Dialogue {
 		
 		npc(chattingId, QUESTIONS, "Good day, How may I help you?");
 		options("What would you like to say?", new String[] { "I'd like to access my bank account, please.", "I'd like to check my PIN settings.", "I'd like to see my collection box.", "What is this place?" }, () -> {
-			player.getBank().openBank();
+			player.getBank().open();
 			end(player);
 		}, () -> {
 			player(NORMAL, "I like to set a bank pin.");

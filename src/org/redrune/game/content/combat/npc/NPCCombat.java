@@ -1,6 +1,5 @@
 package org.redrune.game.content.combat.npc;
 
-import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.data.NPCCombatDefinitions;
@@ -113,59 +112,46 @@ public final class NPCCombat {
 	private boolean verifyContinuation() {
 		Entity target = this.target;
 		
+		// make sure we have a target
+		if (target == null) {
+			return false;
+		}
+		
 		// if we are invalid to fight
-		if (!StaticCombatFormulae.canFight(npc, target)) {
-			System.err.println("stop1");
+		if (npc.isDead() || !npc.isRenderable() || npc.isForceWalking() || target.isDead() || !target.isRenderable() || npc.getLocation().getPlane() != target.getLocation().getPlane()) {
 			return false;
 		}
 		// cant move if frozen
 		if (npc.isFrozen()) {
-			System.err.println("stop2");
 			return true;
 		}
 		int distanceX = npc.getLocation().getX() - npc.getSpawnLocation().getX();
 		int distanceY = npc.getLocation().getY() - npc.getSpawnLocation().getY();
 		int size = npc.getSize();
 		int maxDistance;
-		int agroRatio = npc.getCombatDefinitions().getAggressivenessType();
 		if (!npc.getCombatManager().isNoDistanceCheck() && !npc.getCombatManager().isCantFollowDuringCombat()) {
-			/*TODO: force walk to respawn tile bc we're too far out
-			maxDistance = 32;
-			if (!(npc instanceof Familiar)) {
-
-				if (npc.getMapAreaNameHash() != -1) {
-					// if out his area
-					if (!MapAreas.isAtArea(npc.getMapAreaNameHash(), npc) || (!npc.canBeAttackFromOutOfArea() && !MapAreas.isAtArea(npc.getMapAreaNameHash(), target))) {
-						npc.forceWalkRespawnTile();
-						return false;
-					}
-				} else if (npc.walksToRespawnTile() && distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
-					// if more than 64 distance from respawn place
-					npc.forceWalkRespawnTile();
-					return false;
-				}/* else if (npc.walksToRespawnTile() && !npc.getWorldTile().withinDistance(npc.getRespawnTile(), npc.getForceWalkRespawnTileDistance())) {
-					npc.forceWalkRespawnTile();
-					return false;
-				}*/
-			maxDistance = agroRatio > 16 ? agroRatio : 16;
+			maxDistance = 16;
+			if (distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
+				npc.traverseOriginalTile();
+				return false;
+			}
 			distanceX = target.getLocation().getX() - npc.getLocation().getX();
 			distanceY = target.getLocation().getY() - npc.getLocation().getY();
 			if (distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
-				System.err.println("stop3");
 				return false; // if target distance higher 16
 			}
 		} else {
 			distanceX = target.getLocation().getX() - npc.getLocation().getX();
 			distanceY = target.getLocation().getY() - npc.getLocation().getY();
 		}
-		if (!target.isAtMultiArea() || !npc.isAtMultiArea()) {
-			if (npc.getAttackedBy() != target && npc.getAttackedByDelay() > System.currentTimeMillis()) {
-				System.err.println("[1]");
-				return false;
-			}
-			if (target.getAttackedBy() != npc && target.getAttackedByDelay() > System.currentTimeMillis()) {
-				System.err.println("[2]");
-				return false;
+		if (!npc.getCombatManager().isForceMultiAttacked()) {
+			if (!target.isAtMultiArea() || !npc.isAtMultiArea()) {
+				if (npc.getAttackedBy() != target && npc.getAttackedByDelay() > System.currentTimeMillis()) {
+					return false;
+				}
+				if (target.getAttackedBy() != npc && target.getAttackedByDelay() > System.currentTimeMillis()) {
+					return false;
+				}
 			}
 		}
 		
@@ -206,7 +192,6 @@ public final class NPCCombat {
 			// check if we need to walk to the target
 			if ((!clippedProjectileToNode) || onRange) {
 				npc.getMovement().addEntityPath(target, 2, npc.getCombatManager().isIntelligentRouteFinder());
-				System.out.println("npc { " + npc + " } has to walk to target { " + target + " }");
 				return true;
 			}
 		}
@@ -259,7 +244,6 @@ public final class NPCCombat {
 			npc.turnTo(target);
 		}
 		if (!verifyContinuation()) {
-			System.err.println("removed target");
 			removeTarget();
 		}
 	}

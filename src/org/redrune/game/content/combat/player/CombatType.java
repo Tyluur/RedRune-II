@@ -5,7 +5,7 @@ import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.game.content.combat.player.swing.MagicCombatSwing;
 import org.redrune.game.content.combat.player.swing.RangeCombatSwing;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.content.combat.player.swing.MeleeCombatSwing;
 
 import java.util.Optional;
@@ -104,8 +104,8 @@ public enum CombatType {
 	MAGIC(new MagicCombatSwing()) {
 		@Override
 		public int getDelay(Player player, int spellId) {
-			Optional<MagicSpellEvent<?>> optional = CombatRegistry.getSpell(player.getCombatDefinitions().getSpellbook(), spellId);
-			return optional.map(MagicSpellEvent::delay).orElse(-1);
+			Optional<CombatSpellEvent> optional = CombatRegistry.getCombatSpell(player.getCombatDefinitions().getSpellbook(), spellId);
+			return optional.map(CombatSpellEvent::delay).orElse(-1);
 		}
 	};
 	

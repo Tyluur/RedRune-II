@@ -3,8 +3,8 @@ package org.redrune.game.module.command;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.tool.Misc;
 import org.redrune.game.node.entity.player.data.PlayerRight;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -124,6 +124,26 @@ public abstract class CommandModule {
 	 */
 	protected Boolean boolParam(String[] args, int slot) {
 		return Boolean.parseBoolean(args[slot]);
+	}
+	
+	/**
+	 * Gets a boolean from the parameter
+	 *
+	 * @param args
+	 * 		The parameter
+	 * @param slot
+	 * 		The slot
+	 */
+	protected Boolean boolParamOrDefault(String[] args, int slot, Boolean defaultType) {
+		if (slot >= args.length || slot < 0) {
+			return defaultType;
+		}
+		try {
+			return Boolean.parseBoolean(args[slot]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return defaultType;
+		}
 	}
 	
 	/**

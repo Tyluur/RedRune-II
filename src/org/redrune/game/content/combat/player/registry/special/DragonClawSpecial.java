@@ -2,7 +2,7 @@ package org.redrune.game.content.combat.player.registry.special;
 
 import org.redrune.utility.tool.Misc;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;

@@ -19,17 +19,21 @@ public class HitCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("hit");
+		return arguments("hit", "damage");
 	}
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
 		String target = Misc.getArrayEntry(args, 2);
 		if (target == null) {
-			player.getHitMap().getHitList().add(new Hit(player, intParam(args, 1), HitSplat.MELEE_DAMAGE));
+			player.getHitMap().applyHit(new Hit(player, intParam(args, 1), HitSplat.MELEE_DAMAGE));
 		} else {
 			Optional<Player> o = World.get().getPlayerByUsername(target);
-			o.ifPresent(p2 -> p2.getHitMap().getHitList().add(new Hit(player, intParam(args, 1))));
+			if (!o.isPresent()) {
+				player.getTransmitter().sendMessage("Unable to find player by name '" + target + "'");
+				return;
+			}
+			o.get().getHitMap().applyHit(new Hit(player, intParam(args, 1)));
 		}
 	}
 }

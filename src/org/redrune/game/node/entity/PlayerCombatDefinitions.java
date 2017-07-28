@@ -325,12 +325,12 @@ public class PlayerCombatDefinitions {
 	}
 	
 	/**
-	 * Modifies the special attack energy by the given amount. This also verifies that we never have < 0 special energy.
+	 * Reduces the special attack energy by the given amount. This also verifies that we never have < 0 special energy. This can be used with a negative number because we have upper and lower bounds [to add instead of reduce]
 	 *
 	 * @param amount
 	 * 		The amount to reduce it by.
 	 */
-	public void modifySpecial(int amount) {
+	public void reduceSpecial(int amount) {
 		this.specialEnergy -= amount;
 		if (this.specialEnergy <= 0) {
 			this.specialEnergy = 0;

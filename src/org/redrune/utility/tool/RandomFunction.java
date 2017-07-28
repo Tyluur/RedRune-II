@@ -4,7 +4,9 @@ import java.util.Random;
 
 /**
  * Represents a class used for random methods.
+ *
  * @author Vexia
+ * @author Tyluur <itstyluur@gmail.com>
  */
 public class RandomFunction {
 	
@@ -120,5 +122,17 @@ public class RandomFunction {
 			return 0;
 		}
 		return RANDOM.nextInt(value);
+	}
+	
+	/**
+	 * Finds out if a certain event should happen, and if it should, return true;
+	 *
+	 * @param chance
+	 * 		The chance of the event happening
+	 * @return If the event should happen
+	 */
+	public static boolean percentageChance(int chance) {
+		double x = (Math.random() * 100);
+		return x < chance;
 	}
 }

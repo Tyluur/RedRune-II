@@ -45,41 +45,25 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public void read(Player player, Packet packet) {
-		if (packet.getOpcode() == PLAYER_INTERFACE_USAGE) {
-			decodePlayerInterfaceUsage(player, packet);
-			return;
-		}
-		int index = packet.readShort();
-		boolean running = packet.readByte() == 1;
-		if (index > 2047 || index < 1) {
-			return;
-		}
-		Player p2 = World.get().getPlayers().get(index);
-		if (p2 == null) {
-			return;
-		}
 		switch (packet.getOpcode()) {
-			case ATTACK_PLAYER:
-				decodePlayerAttack(player, p2);
+			case PLAYER_INTERFACE_USAGE:
+				readPlayerInterfaceUsage(player, packet);
 				break;
-			case FOLLOW_PLAYER:
-				decodePlayerFollow(player, p2);
-				break;
-			case PLAYER_REQUEST_PROCEED:
-				decodePlayerRequest(player, p2);
+			default:
+				readPlayerOptionPacket(player, packet);
 				break;
 		}
 	}
 	
 	/**
-	 * Decodes the packet received when an interface is used on a player
+	 * Reads the packet received when an interface is used on a player
 	 *
 	 * @param player
 	 * 		The player
 	 * @param packet
 	 * 		The packet
 	 */
-	private void decodePlayerInterfaceUsage(Player player, Packet packet) {
+	private void readPlayerInterfaceUsage(Player player, Packet packet) {
 		int index = packet.readLEShort();
 		boolean running = packet.readByte() == 1;
 		int id = packet.readShortA();
@@ -147,6 +131,37 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 						}
 						break;
 				}
+				break;
+		}
+	}
+	
+	/**
+	 * Reads the packet that is sent when a player option is clicked
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void readPlayerOptionPacket(Player player, Packet packet) {
+		int index = packet.readShort();
+		boolean running = packet.readByte() == 1;
+		if (index > 2047 || index < 1) {
+			return;
+		}
+		Player p2 = World.get().getPlayers().get(index);
+		if (p2 == null) {
+			return;
+		}
+		switch (packet.getOpcode()) {
+			case ATTACK_PLAYER:
+				decodePlayerAttack(player, p2);
+				break;
+			case FOLLOW_PLAYER:
+				decodePlayerFollow(player, p2);
+				break;
+			case PLAYER_REQUEST_PROCEED:
+				decodePlayerRequest(player, p2);
 				break;
 		}
 	}

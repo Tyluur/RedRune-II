@@ -2,25 +2,25 @@ package org.redrune.game.node.entity.player.link.prayer;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
-import org.redrune.network.world.packet.outgoing.impl.ConfigFilePacketBuilder;
-import org.redrune.network.world.packet.outgoing.impl.ConfigPacketBuilder;
-import org.redrune.utility.rs.constant.BonusConstants;
-import org.redrune.utility.tool.Misc;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.network.world.packet.outgoing.impl.AccessMaskBuilder;
 import org.redrune.network.world.packet.outgoing.impl.CS2ConfigBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ConfigFilePacketBuilder;
+import org.redrune.network.world.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.utility.rs.Projectile;
+import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.HeadIcons.PrayerIcon;
 import org.redrune.utility.rs.constant.PrayerConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,11 +40,13 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	/**
 	 * The list of prayers that are active
 	 */
+	@Getter
 	private final CopyOnWriteArraySet<Prayer> activePrayers = new CopyOnWriteArraySet<>();
 	
 	/**
 	 * The set of quick prayers
 	 */
+	@Getter
 	private final CopyOnWriteArraySet<Prayer> quickPrayers = new CopyOnWriteArraySet<>();
 	
 	/**
@@ -56,6 +58,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	/**
 	 * The modifiers that affect bonus rates because of leech/sap prayers
 	 */
+	@Getter
 	private double[] modifiers = new double[5];
 	
 	/**
@@ -150,6 +153,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	public void setBook(PrayerBook book) {
 		this.book = book;
 		sendBook();
+		updateHeadIcon();
+		refreshActivatedConfigs();
 	}
 	
 	/**
@@ -288,7 +293,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	}
 	
 	/**
-	 * Refreshes the configs for activated prayers. This will show the colour behind the prayer indicating that it's on.
+	 * Refreshes the configs for activated prayers. This will show the colour behind the prayer indicating that it's
+	 * on.
 	 */
 	private void refreshActivatedConfigs() {
 		int value = 0;
@@ -780,8 +786,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 				if (prayerOn(PROTECT_FROM_MELEE)) {
 					hit.setDamage(getHitPrayerMultiplier(hitter.isPlayer(), hit.getDamage()));
 				} else if (prayerOn(DEFLECT_MELEE)) {
-					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					hit.setDamage(getHitPrayerMultiplier(hitter.isPlayer(), hit.getDamage()));
+					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					if (deflectedDamage > 0) {
 						hit.getSource().getHitMap().applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
 						player.sendGraphics((2230));
@@ -793,8 +799,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 				if (prayerOn(PROTECT_FROM_MISSILES)) {
 					hit.setDamage(getHitPrayerMultiplier(hitter.isPlayer(), hit.getDamage()));
 				} else if (prayerOn(DEFLECT_MISSILES)) {
-					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					hit.setDamage(getHitPrayerMultiplier(hitter.isPlayer(), hit.getDamage()));
+					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					if (deflectedDamage > 0) {
 						hit.getSource().getHitMap().applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
 						player.sendAnimation(12573);
@@ -807,8 +813,8 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					hit.setDamage(getHitPrayerMultiplier(hitter.isPlayer(), hit.getDamage()));
 					break;
 				} else if (prayerOn(DEFLECT_MAGIC)) {
-					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					hit.setDamage(getHitPrayerMultiplier(hitter.isPlayer(), hit.getDamage()));
+					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					if (deflectedDamage > 0) {
 						hit.getSource().getHitMap().applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
 						player.sendGraphics((2228));
@@ -827,10 +833,10 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * @param hit
 	 * 		The hit
 	 */
-	public void handleLeeches(Hit hit) {
+	public void handlePrayerEffects(Hit hit) {
 		// soulsplit effect doesnt matter if hit  dint land
 		if (hit.getDamage() > 0 && hit.getSource().isPlayer() && hit.getSource().toPlayer().getManager().getPrayers().prayerOn(SOULSPLIT)) {
-			handleSoulsplit(hit, hit.getSource().toPlayer());
+			handleSoulsplit(player, hit);
 		}
 		// leeches only apply to players
 		// and when the hit lands
@@ -846,14 +852,11 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 		// we only want to find the drain prayers
 		List<Prayer> drainers = sourcePrayer.activePrayers.stream().filter(Prayer::isDrainer).collect(Collectors.toList());
 		
+		// the message to sent
 		String message = null;
 		
 		// loops through all the drain prayers
-		for (
-				
-				Prayer prayer : drainers)
-		
-		{
+		for (Prayer prayer : drainers) {
 			// the chance for the prayer to effect, saps have a higher chance
 			int chance = prayer.isSap() ? 6 : 8;
 			
@@ -887,45 +890,45 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			}
 			//			System.out.println("receiver{" + Arrays.toString(modifiers) + "},source{" + Arrays.toString(sourcePrayer.modifiers) + "}");
 		}
-		if (message != null)
-		
-		{
+		if (message != null) {
 			source.getTransmitter().sendMessage(message, false);
 		}
-		
 	}
 	
 	/**
 	 * Handles the soulsplit prayer
 	 *
+	 * @param receiver
+	 * 		The entity who received the soulsplit effect
 	 * @param hit
-	 * 		The hit
-	 * @param hitter
-	 * 		The source of the soulsplit
+	 * 		The hit that landed
 	 */
-	private void handleSoulsplit(Hit hit, Player hitter) {
+	public static void handleSoulsplit(Entity receiver, Hit hit) {
+		Entity source = hit.getSource();
 		// actual modifiers
-		
-		//  TODO: heal the user by 5% of the hit
-		drainPrayer(10);
+		source.heal((int) (hit.getDamage() * 0.05));
+		// drains 10 prayer points if the receiver is a player
+		if (receiver.isPlayer()) {
+			receiver.toPlayer().getManager().getPrayers().drainPrayer(10);
+		}
 		
 		// the speed of the projectiles
-		int speed = ProjectileManager.getSpeedModifier(hitter, player) - 10;
+		int speed = ProjectileManager.getSpeedModifier(receiver, source) - 10;
 		// the projectile from the player who soulsplitted me to me
-		Projectile from = new Projectile(hitter, player, 2263, 11, 5, 10, speed, 10, 0);
+		Projectile from = new Projectile(receiver, source, 2263, 11, 5, 10, speed, 10, 0);
 		// the projectile from me to the player who soulsplitted me
-		Projectile to = new Projectile(player, hitter, 2263, 11, 5, 10, speed, 10, 0);
+		Projectile to = new Projectile(source, receiver, 2263, 11, 5, 10, speed, 10, 0);
 		// sending the projectiles
 		ProjectileManager.sendProjectile(from);
 		// a tick after, the next visual effects are done
-		int projectileDelay = ProjectileManager.getProjectileDelay(hitter, player);
+		int projectileDelay = ProjectileManager.getProjectileDelay(receiver, source);
 		// add to the delay
-		projectileDelay += ProjectileManager.getDelay(hitter, player, projectileDelay, 0);
+		projectileDelay += ProjectileManager.getDelay(receiver, source, projectileDelay, 0);
 		SystemManager.getScheduler().schedule(new ScheduledTask(projectileDelay) {
 			@Override
 			public void run() {
 				ProjectileManager.sendProjectile(to);
-				player.sendGraphics(2264);
+				source.sendGraphics(2264);
 			}
 		});
 	}
@@ -952,7 +955,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * @param increasing
 	 * 		If the modifiers are increasing or decreasing
 	 */
-	private boolean maxed(Player drainTo, Prayer prayer, boolean increasing) {
+	public boolean maxed(Player drainTo, Prayer prayer, boolean increasing) {
 		final double attackModif = modifiers[ATTACK_SLOT];
 		final double strengthModif = modifiers[STRENGTH_SLOT];
 		final double defenceModif = modifiers[DEFENCE_SLOT];
@@ -979,7 +982,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			case SAP_SPIRIT:
 			case LEECH_SPECIAL_ATTACK:
 				if (increasing) {
-					if (drainTo.getCombatDefinitions().getSpecialEnergy() >= 100) {
+					if (drainTo != null && drainTo.getCombatDefinitions().getSpecialEnergy() >= 100) {
 						return true;
 					}
 				} else {
@@ -1037,7 +1040,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 				break;
 			case LEECH_ENERGY:
 				if (increasing) {
-					if (drainTo.getVariables().getRunEnergy() >= 100) {
+					if (drainTo != null && drainTo.getVariables().getRunEnergy() >= 100) {
 						return true;
 					}
 				} else {
@@ -1062,7 +1065,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * @param drainCap
 	 * 		The max amount our drain can be set to by this prayer effect
 	 */
-	private void modify(Player p2, PrayerManager raiser, int[] slots, double[] amounts, double drainCap, double raiseCap, boolean raise) {
+	public void modify(Player p2, PrayerManager raiser, int[] slots, double[] amounts, double drainCap, double raiseCap, boolean raise) {
 		String type = "";
 		for (int i = 0; i < slots.length; i++) {
 			int slot = slots[i];
@@ -1071,17 +1074,23 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 				continue;
 			}
 			final double amount = amounts[i];
-			// the player who was hit will receive a reduction
-			modifiers[slot] -= amount;
-			// if we pass the max amount, we have to make sure it never is out of bounds
-			if (modifiers[slot] <= -drainCap) {
-				modifiers[slot] = -drainCap;
+			
+			// p2 will only be null in the case of npc leeches
+			// if this is not checked we will not have any modifiers when leeching from npcs [same + and - value]
+			if (p2 != null) {
+				// the player who was hit will receive a reduction
+				modifiers[slot] -= amount;
+				// if we pass the max amount, we have to make sure it never is out of bounds
+				if (modifiers[slot] <= -drainCap) {
+					modifiers[slot] = -drainCap;
+				}
 			}
 			
 			// some prayers will only have the drain effect and not raise the source's modifiers
 			if (raise) {
 				// the raiser will receive a boost amount
 				raiser.modifiers[slot] += amount;
+				System.out.println("raised " + slot + " by " + amount);
 				
 				// if we pass the max amount, we have to make sure it never is out of bounds [2]
 				if (raiser.modifiers[slot] >= raiseCap) {
@@ -1093,25 +1102,35 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 			case "energy":
 				double energy = player.getVariables().getRunEnergy();
 				final double reductionAmount = energy * amounts[0];
-				double newTotal = reductionAmount + p2.getVariables().getRunEnergy();
+				double newTotal = reductionAmount + (p2 == null ? 100 : p2.getVariables().getRunEnergy());
 				if (newTotal >= 100) {
 					newTotal = 100;
 				}
-				player.getVariables().setRunEnergy(player.getVariables().getRunEnergy() - reductionAmount);
-				p2.getVariables().setRunEnergy(newTotal);
-				
-				player.getTransmitter().refreshEnergy();
-				p2.getTransmitter().refreshEnergy();
+				// TODO verify this works
+				if (p2 != null) {
+					player.getVariables().setRunEnergy(player.getVariables().getRunEnergy() - reductionAmount);
+					p2.getVariables().setRunEnergy(newTotal);
+					player.getTransmitter().refreshEnergy();
+					p2.getTransmitter().refreshEnergy();
+				} else {
+					player.getVariables().setRunEnergy(newTotal);
+					player.getTransmitter().refreshEnergy();
+				}
 				break;
 			case "special_energy":
 				byte specAmount = player.getCombatDefinitions().getSpecialEnergy();
 				final double specReduced = specAmount * amounts[0];
-				double newSpec = specReduced + p2.getCombatDefinitions().getSpecialEnergy();
+				double newSpec = specReduced + (p2 == null ? 100 : p2.getCombatDefinitions().getSpecialEnergy());
 				if (newSpec >= 100) {
 					newSpec = 100;
 				}
-				p2.getCombatDefinitions().setSpecialEnergy((byte) newSpec);
-				player.getCombatDefinitions().modifySpecial((int) specReduced);
+				// TODO verify this works
+				if (p2 != null) {
+					p2.getCombatDefinitions().setSpecialEnergy((byte) newSpec);
+					player.getCombatDefinitions().reduceSpecial((int) specReduced);
+				} else {
+					player.getCombatDefinitions().reduceSpecial((int) -specReduced);
+				}
 				break;
 		}
 	}
@@ -1126,7 +1145,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * @param projectileId
 	 * 		The id of the projectile
 	 */
-	private void visualizeLeech(Entity source, Entity target, int projectileId, int landingGraphicsId) {
+	public void visualizeLeech(Entity source, Entity target, int projectileId, int landingGraphicsId) {
 		final int speed = ProjectileManager.getSpeedModifier(source, target);
 		ProjectileManager.sendProjectile(new Projectile(source, target, projectileId, 0, 10, 0, speed, 15, 0));
 		SystemManager.getScheduler().schedule(new ScheduledTask(1) {

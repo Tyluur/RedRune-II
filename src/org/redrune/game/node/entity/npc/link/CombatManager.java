@@ -66,6 +66,13 @@ public class CombatManager {
 	@Setter
 	private boolean intelligentRouteFinder;
 	
+	/**
+	 * If we can be attacked by multiple people by force
+	 */
+	@Getter
+	@Setter
+	private boolean forceMultiAttacked;
+	
 	public CombatManager(NPC npc) {
 		this.combat = new NPCCombat(npc);
 		this.hasAttackOption = npc.getDefinitions().hasAttackOption();

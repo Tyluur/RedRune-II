@@ -108,6 +108,21 @@ public class Item extends Node {
 	}
 	
 	/**
+	 * Reduces the amount of the item
+	 *
+	 * @param amount
+	 * 		The amount to reduce by
+	 */
+	public Item reduceAmount(int amount) {
+		this.amount -= amount;
+		// make sure we're not less than 0
+		if (this.amount < 0) {
+			this.amount = 0;
+		}
+		return this;
+	}
+	
+	/**
 	 * Gets the definitions, cached.
 	 */
 	public ItemDefinition getDefinitions() {

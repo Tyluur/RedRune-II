@@ -1,3 +1,42 @@
+7/27/17 {
+	+   Fixed several npc bugs
+		-   Unable to find best target in multi zone
+		-   Player retaliation was off
+		-   Transformation wasn't perfect [death used original definitions]
+		-   Teleportation wasn't perfect
+	+   Added rock crabs to test npc transformation
+		-   You have to walk close to a rock crab to start the fight with them, their drop tables are accurate, etc.
+	+   Fixed instant special events being able to be fired when the target is dead [i.e. gmaul]
+	+   Added leech prayer effects to npcs [including soulsplit + saps] (benefits of good code makes this easy)
+	+   Added interface on npc packet [for magic spells and more]
+		-   Had to fix readIntV1 to implement this
+	+   Added recursion for finding classes in directory [reflection-based operations can now be packaged [check media for info]
+	+   Added magic teleporting [dynamic addition of spells, with support for any spell type using context wrappers]
+		-   Added every regular prayerbook teleport spell
+		-   Added every ancient prayerbook teleport spell
+		-   Started on lunar spellbook spells [home & moonclan teleport added]
+	+   Added vengeance
+		-   Click cast on the spell again to see countdown info, on-screen countdown will be added soon
+		-   Added vengeance group spell as well [with accept-aid requirement]
+	+   Fixed deflect prayers sending the deflected amount instead of just having the damage set to 0 when an npc attacks us
+	+   Added food listener & effects for 20+ foods
+		-   Karambwan combo food eating works too, as well as rocktail hp boosts [pizzas as well]
+		-   Combat delay is 2 ticks
+	+   Added 10 second wait before you can logout from combat
+	+   Made npcs random walk to be centralized around their spawn location, not based on their current location [npcs won't walk randomly around the map now]
+	+   Fixed issue with packet lengths 0 not being received [interface close for example]
+
+	[img]http://i.imgur.com/XfgfWWF.gif[/img]
+	[img]http://i.imgur.com/UFCYcap.gif[/img]
+	[img]http://i.imgur.com/vvjXX9a.gif[/img]
+	[img]http://i.imgur.com/ylrenJD.png[/img]
+	[img]http://i.imgur.com/mWdjTW4.gif[/img]
+	[img]http://i.imgur.com/Hdb4nnp.gif[/img]
+	[img]http://i.imgur.com/wBeV9bR.png[/img]
+	[img]http://i.imgur.com/vh67mgF.png[/img]
+	[img]http://i.imgur.com/TXY0oMH.gif[/img]
+}
+
 7/25/17 {
 	+   Updated npc movement masks to work
 	+   Updated lobby server to update with realtime playercount for all worlds

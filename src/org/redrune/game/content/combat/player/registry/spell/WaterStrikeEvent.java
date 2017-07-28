@@ -1,8 +1,8 @@
 package org.redrune.game.content.combat.player.registry.spell;
 
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.registry.MagicSpellContext;
-import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 
@@ -10,7 +10,7 @@ import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/23/2017
  */
-public class WaterStrikeEvent implements MagicSpellEvent<MagicSpellContext> {
+public class WaterStrikeEvent implements CombatSpellEvent {
 	
 	@Override
 	public int spellId() {
@@ -48,7 +48,7 @@ public class WaterStrikeEvent implements MagicSpellEvent<MagicSpellContext> {
 	}
 	
 	@Override
-	public void cast(Player player, MagicSpellContext context) {
+	public void cast(Player player, CombatSpellContext context) {
 		player.sendGraphics(2701);
 		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, context.getTarget(), 2703, 30, 26, 52, 0, 0));
 		context.getSwing().sendSpell(player, context.getTarget(), this);

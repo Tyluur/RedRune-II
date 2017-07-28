@@ -33,20 +33,20 @@ public class NPCRendering implements OutgoingPacketBuilder {
 		List<NPC> localNpcs = player.getRenderData().getLocalNpcs();
 		bldr.startBitAccess();
 		bldr.writeBits(8, localNpcs.size());
-		for (Iterator<NPC> it$ = localNpcs.iterator(); it$.hasNext(); ) {
-			NPC npc = it$.next();
-			if (npc.isRenderable() && npc.getLocation().isWithinDistance(player.getLocation())) {
+		for (Iterator<NPC> it = localNpcs.iterator(); it.hasNext(); ) {
+			NPC npc = it.next();
+			if (!npc.isRenderable() || !npc.getLocation().isWithinDistance(player.getLocation()) || npc.teleporting()) {
+				// Signify the client that this npc needs to be removed.
+				bldr.writeBits(1, 1);
+				bldr.writeBits(2, 3);
+				// remove it from our list
+				it.remove();
+			} else {
 				updateNPCMovement(npc, bldr);
 				// Update the npc is required, since it is conditionally valid.
 				if (npc.getUpdateMasks().isUpdateRequired()) {
 					updateNPC(player, updateBlock, npc);
 				}
-			} else {
-				// Signify the client that this npc needs to be removed.
-				bldr.writeBits(1, 1);
-				bldr.writeBits(2, 3);
-				
-				it$.remove();
 			}
 		}
 		
@@ -143,7 +143,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 	private static void addNewNpc(Player player, NPC npc, PacketBuilder buf) {
 		try {
 			buf.writeBits(15, npc.getIndex());
-			buf.writeBits(1, npc.getUpdateMasks().isUpdateRequired() ? 1 : 0);
+			buf.writeBits(1, npc.getUpdateMasks().isUpdateRequired() || npc.teleporting() ? 1 : 0);
 			buf.writeBits(2, npc.getLocation().getPlane());
 			int xDelta = npc.getLocation().getX() - player.getLocation().getX();
 			int yDelta = npc.getLocation().getY() - player.getLocation().getY();
@@ -158,6 +158,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 			buf.writeBits(3, npc.getFaceDirection());
 			buf.writeBits(5, yDelta);
 			buf.writeBits(15, npc.getId());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

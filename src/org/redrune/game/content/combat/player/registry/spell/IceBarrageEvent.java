@@ -1,7 +1,7 @@
 package org.redrune.game.content.combat.player.registry.spell;
 
-import org.redrune.game.content.combat.player.registry.MagicSpellContext;
-import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
@@ -10,7 +10,7 @@ import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/28/2017
  */
-public class IceBarrageEvent implements MagicSpellEvent<MagicSpellContext> {
+public class IceBarrageEvent implements CombatSpellEvent {
 	
 	@Override
 	public int spellId() {
@@ -49,7 +49,7 @@ public class IceBarrageEvent implements MagicSpellEvent<MagicSpellContext> {
 	}
 	
 	@Override
-	public void cast(Player player, MagicSpellContext context) {
+	public void cast(Player player, CombatSpellContext context) {
 		// storing vars before spell is cast
 		final Entity target = context.getTarget();
 		final boolean freezeDelayed = target.freezeDelayed();

@@ -42,7 +42,7 @@ public class WalkPacketDecoder implements IncomingPacketDecoder {
 		// when the player is frozen, we don't want to calculate pathfinding
 		// in the case that they shouldn't move.
 		if (player.isFrozen()) {
-			player.getTransmitter().sendMessage("A magical force prevents you from moving.");
+			player.getTransmitter().sendUnrepeatingMessages("A magical force prevents you from moving.");
 			return;
 		} else {
 			player.unfreeze();

@@ -21,4 +21,9 @@ TOP 3 SKILLERS AT THE END OF THE MONTH GET REWARDS
 Every time someone dies, some money is added to the pool
 You can buy into the pool for chances of receiving loot
 	-   If nobody buys into the pool when the lottery is drawn the money is deleted
-	-   Randomly selected buyer will 
+	-   Randomly selected buyer will
+
+[REPORT ABUSE]
+Mod+ can view player logs at ::staffzone via an object
+	They get notified when someone is reported
+Reports are saved and staff is updated when there are pending reports

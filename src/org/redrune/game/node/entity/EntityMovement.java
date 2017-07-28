@@ -65,6 +65,7 @@ public class EntityMovement {
 		if (updateTeleport()) {
 			return;
 		}
+		entity.removeAttribute(AttributeKey.TELEPORTED);
 		if (walkSteps.isEmpty()) {
 			return;
 		}
@@ -110,16 +111,16 @@ public class EntityMovement {
 	 * @return {@code True} if the player is teleporting, {@code false} if not.
 	 */
 	private boolean updateTeleport() {
-		if (entity.getAttribute(AttributeKey.TELEPORT_LOCATION) != null) {
-			resetWalkSteps();
-			entity.setLocation(entity.getAttribute(AttributeKey.TELEPORT_LOCATION));
+		Location location = entity.removeAttribute(AttributeKey.TELEPORT_LOCATION);
+		if (location != null) {
+			entity.setLocation(location);
+			entity.putAttribute(AttributeKey.TELEPORTED, true);
 			updateEntityRegion(entity);
-			entity.removeAttribute(AttributeKey.TELEPORT_LOCATION);
-			entity.getUpdateMasks().register(new TeleportUpdate());
 			if (entity.needsMapUpdate()) {
 				entity.loadMapRegions();
 			}
-			entity.putAttribute(AttributeKey.PLAYER_TELEPORTED, true);
+			resetWalkSteps();
+			entity.getUpdateMasks().register(new TeleportUpdate());
 			return true;
 		}
 		return false;

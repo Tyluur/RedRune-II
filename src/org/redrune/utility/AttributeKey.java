@@ -12,6 +12,8 @@ public enum AttributeKey {
 	// MISC ATTRIBUTES
 	COST_VALUE,
 	
+	FOOD_DELAY,
+	
 	FIND_TARGET_DELAY,
 	
 	LAST_HIT_BY_ENTITY,
@@ -39,7 +41,7 @@ public enum AttributeKey {
 	
 	TELEPORT_LOCATION,
 	
-	PLAYER_TELEPORTED,
+	TELEPORTED,
 	
 	FORCE_NEXT_MAP_LOAD,
 	

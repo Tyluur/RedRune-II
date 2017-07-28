@@ -71,7 +71,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 				}
 				break;
 			case InterfaceConstants.LOGOUT_INTERFACE_ID:
-				player.getTransmitter().sendLogout(componentId == 6);
+				player.logout(componentId == 6);
 				return true;
 			case OPTIONS_INTERFACE_ID:
 				switch (componentId) {

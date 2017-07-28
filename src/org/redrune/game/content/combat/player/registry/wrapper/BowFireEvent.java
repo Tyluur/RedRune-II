@@ -1,7 +1,8 @@
-package org.redrune.game.content.combat.player.registry;
+package org.redrune.game.content.combat.player.registry.wrapper;
 
 import com.google.common.base.Preconditions;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
+import org.redrune.game.content.combat.player.registry.CombatRegistryEvent;
 import org.redrune.game.content.combat.player.swing.RangeCombatSwing;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;

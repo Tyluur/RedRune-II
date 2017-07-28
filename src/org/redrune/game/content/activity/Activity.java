@@ -2,10 +2,11 @@ package org.redrune.game.content.activity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.TeleportType;
 import org.redrune.game.node.Node;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.rs.InteractionOption;
@@ -80,6 +81,16 @@ public class Activity {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Checks if this teleporation type is allowed
+	 *
+	 * @param type
+	 * 		The type
+	 */
+	public boolean teleportationAllowed(TeleportType type) {
+		return true;
 	}
 	
 	/**

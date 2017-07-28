@@ -42,6 +42,12 @@ public final class Location {
 	@Getter
 	private final int plane;
 	
+	public Location(Location tile, int randomize) {
+		this.x = (short) (tile.x + Misc.getRandom(randomize * 2) - randomize);
+		this.y = (short) (tile.y + Misc.getRandom(randomize * 2) - randomize);
+		this.plane = tile.plane;
+	}
+	
 	/**
 	 * Constructs a new {@code Location} {@code Object}.
 	 *
@@ -87,33 +93,7 @@ public final class Location {
 	
 	@Override
 	public String toString() {
-		return "[x=" + x + ", y=" + y + ", plane=" + plane + ", id=" + getRegionId() + ", rX=" + getRegionX() + ", rY=" + getRegionY() + "]";
-	}
-	
-	/**
-	 * The region ID of the location you're in.
-	 */
-	
-	public int getRegionId() {
-		return (getRegionY() >> 3) | ((getRegionX() >> 3) << 8);
-	}
-	
-	/**
-	 * Gets the region y-coordinate.
-	 *
-	 * @return The region y-coordinate.
-	 */
-	public int getRegionY() {
-		return y >> 3;
-	}
-	
-	/**
-	 * Gets the region x-coordinate.
-	 *
-	 * @return The region x-coordinate.
-	 */
-	public int getRegionX() {
-		return x >> 3;
+		return "[" + x + ", " + y + ", " + plane + "]";
 	}
 	
 	/**
@@ -146,6 +126,46 @@ public final class Location {
 	}
 	
 	/**
+	 * Constructs a new {@code Location} {@code Object} with modified coordinates
+	 *
+	 * @param x
+	 * 		The x change
+	 * @param y
+	 * 		The y change
+	 * @param z
+	 * 		The z change
+	 */
+	public static Location create(int x, int y, int z) {
+		return new Location(x, y, z);
+	}
+	
+	/**
+	 * The region ID of the location you're in.
+	 */
+	
+	public int getRegionId() {
+		return (getRegionY() >> 3) | ((getRegionX() >> 3) << 8);
+	}
+	
+	/**
+	 * Gets the region y-coordinate.
+	 *
+	 * @return The region y-coordinate.
+	 */
+	public int getRegionY() {
+		return y >> 3;
+	}
+	
+	/**
+	 * Gets the region x-coordinate.
+	 *
+	 * @return The region x-coordinate.
+	 */
+	public int getRegionX() {
+		return x >> 3;
+	}
+	
+	/**
 	 * Returns a location.
 	 *
 	 * @param diffX
@@ -161,29 +181,14 @@ public final class Location {
 	}
 	
 	/**
-	 * Constructs a new {@code Location} {@code Object} with modified coordinates
+	 * Returns a location calculated by increasing this coordinates with the given location's coordinates..
 	 *
-	 * @param x
-	 * 		The x change
-	 * @param y
-	 * 		The y change
-	 * @param z
-	 * 		The z change
-	 */
-	public static Location create(int x, int y, int z) {
-		return new Location(x, y, z);
-	}
-	
-	/**
-	 * Returns a location calculated by increasing this coordinates with the
-	 * given location's coordinates..
-	 *
-	 * @param l
+	 * @param other
 	 * 		The delta location.
 	 * @return The location.
 	 */
-	public Location transform(Location l) {
-		return create(x + l.x, y + l.y, plane + l.plane);
+	public Location transform(Location other) {
+		return create(x + other.x, y + other.y, plane + other.plane);
 	}
 	
 	/**
@@ -350,46 +355,6 @@ public final class Location {
 	
 	public int getCoordFaceY(int sizeX, int sizeY, int rotation) {
 		return y + ((rotation == 1 || rotation == 3 ? sizeX : sizeY) - 1) / 2;
-	}
-	
-	/**
-	 * Checks if the location is a multi area
-	 */
-	public boolean isMultiArea() {
-		int destX = getX();
-		int destY = getY();
-		return (destX >= 3462 && destX <= 3511 && destY >= 9481 && destY <= 9521 && getPlane() == 0) // kalphite
-				       // queen
-				       // lair
-				       || (destX >= 4540 && destX <= 4799 && destY >= 5052 && destY <= 5183 && getPlane() == 0) // thzaar
-				       // city
-				       || getRegionId() == 11051 || getRegionId() == 16729 // glacors
-				       || getRegionId() == 11589 // dags
-				       || getRegionId() == 10894 // monkey skeles
-				       || getRegionId() == 11573 // sea troll queen
-				       || getRegionId() == 10554 || getRegionId() == 10810 // rock crabs
-				       || (destX >= 1721 && destX <= 1791 && destY >= 5123 && destY <= 5249) // mole
-				       || (destX >= 3029 && destX <= 3374 && destY >= 3759 && destY <= 3903)// wild
-				       || (destX >= 2250 && destX <= 2280 && destY >= 4670 && destY <= 4720) || (destX >= 3198 && destX <= 3380 && destY >= 3904 && destY <= 3970) || (destX >= 3191 && destX <= 3326 && destY >= 3510 && destY <= 3759) || (destX >= 2987 && destX <= 3006 && destY >= 3912 && destY <= 3937) || (destX >= 2245 && destX <= 2295 && destY >= 4675 && destY <= 4720) || (destX >= 2450 && destX <= 3520 && destY >= 9450 && destY <= 9550) || (destX >= 3006 && destX <= 3071 && destY >= 3602 && destY <= 3710) || (destX >= 3134 && destX <= 3192 && destY >= 3519 && destY <= 3646) || (destX >= 2815 && destX <= 2966 && destY >= 5240 && destY <= 5375)// wild
-				       || (destX >= 2840 && destX <= 2950 && destY >= 5190 && destY <= 5230) // godwars
-				       || (destX >= 3547 && destX <= 3555 && destY >= 9690 && destY <= 9699) // zaros
-				       || (destX >= 1490 && destX <= 1515 && destY >= 4696 && destY <= 4714) // chaos dwarf battlefield
-				       // godwars
-				       || (destX >= 2250 && destX <= 2292) && (destY >= 4675 && destY <= 4710) // kbd
-				       || (getX() >= 2560 && getX() <= 2630) && (getY() >= 5710 && getY() <= 5753) // tormenteds
-				       || (getX() >= 3083 && getX() <= 3120) && (getY() >= 5522 && getY() <= 5550) // Bork's area
-				       || getRegionId() == 12590 || (destX >= 2970 && destX <= 3000 && destY >= 4365 && destY <= 4400)// corp
-				       || (destX >= 3195 && destX <= 3327 && destY >= 3520 && destY <= 3970 || (destX >= 2376 && 5127 >= destY && destX <= 2422 && 5168 <= destY)) || (destX >= 2374 && destY >= 5129 && destX <= 2424 && destY <= 5168) // pits
-				       || (destX >= 2622 && destY >= 5696 && destX <= 2573 && destY <= 5752) // torms
-				       || (destX >= 2368 && destY >= 3072 && destX <= 2431 && destY <= 3135) // castlewars
-				       // out
-				       || (destX >= 2365 && destY >= 9470 && destX <= 2436 && destY <= 9532) // castlewars
-				       || (destX >= 2948 && destY >= 5537 && destX <= 3071 && destY <= 5631) // Risk
-				       // ffa.
-				       || (destX >= 2756 && destY >= 5537 && destX <= 2879 && destY <= 5631) // Safe
-				       // ffa
-				       || getRegionId() == 1089 || getRegionId() == 12341 || (getX() >= 3011 && getX() <= 3132 && getY() >= 10052 && getY() <= 10175 && (getY() >= 10066 || getX() >= 3094)); // forinthry dungeon
-				
 	}
 	
 }

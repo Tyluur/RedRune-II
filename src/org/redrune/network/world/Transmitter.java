@@ -116,6 +116,36 @@ public final class Transmitter {
 	}
 	
 	/**
+	 * Sends a message that won't repeat if you received it recently
+	 *
+	 * @param text
+	 * 		The text of the message
+	 * @param filterable
+	 * 		If the message should be filterable. If this parameter is empty or false, messages won't be filtered.
+	 */
+	public Transmitter sendUnrepeatingMessages(String text, boolean... filterable) {
+		// the last message sent is the same as the one we're sending
+		if (player.getAttribute("last_message", "null").equals(text)) {
+			// checks the time of the last message sent.
+			final Long lastMessageTime = player.getAttribute("last_message_time", -1L);
+			// check if its recent though, they have to stay up to date
+			if (!SystemManager.getUpdateWorker().lapsed(lastMessageTime, 3)) {
+				return this;
+			}
+		}
+		
+		// messages should only be filtered if this is sent as NetworkTransmitter#sendMessage("hi", true);
+		// otherwise the parameter is unneeded...
+		boolean shouldFilter = filterable.length != 0 && filterable[0];
+		send(new MessageBuilder(shouldFilter ? 109 : 0, text).build(player));
+		
+		// puts the attributes of the last message sent
+		player.putAttribute("last_message", text);
+		player.putAttribute("last_message_time", SystemManager.getUpdateWorker().getTicksElapsed());
+		return this;
+	}
+	
+	/**
 	 * Sends a message
 	 *
 	 * @param text

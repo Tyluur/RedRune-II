@@ -1,15 +1,15 @@
 package org.redrune.game.world.region;
 
+import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.activity.ActivitySystem;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.item.FloorItem;
+import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.route.Flags;
 import org.redrune.utility.tool.Misc;
-import org.redrune.core.system.SystemManager;
-import org.redrune.game.content.activity.ActivitySystem;
-import org.redrune.game.node.object.GameObject;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -150,14 +150,67 @@ public class RegionManager {
 	 */
 	public static int getMask(int plane, int x, int y) {
 		Location tile = new Location(x, y, plane);
-		int regionId = tile.getRegionId();
-		Region region = getRegion(regionId);
+		Region region = getRegion(tile.getRegionId());
 		if (region == null) {
 			return -1;
 		}
-		int baseLocalX = x - ((regionId >> 8) * 64);
-		int baseLocalY = y - ((regionId & 0xff) * 64);
-		return region.getMask(tile.getPlane(), baseLocalX, baseLocalY);
+		return region.getMask(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion());
+	}
+	
+	/***
+	 * Checks if a tile is free
+	 * @param plane The plane of the tile
+	 * @param x The x of the tile
+	 * @param y The y of the tile
+	 * @param size The size of the entity to check
+	 */
+	public static boolean isTileFree(int plane, int x, int y, int size) {
+		for (int tileX = x; tileX < x + size; tileX++) {
+			for (int tileY = y; tileY < y + size; tileY++) {
+				if (!isFloorFree(plane, tileX, tileY) || !isWallsFree(plane, tileX, tileY)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/***
+	 * Checks if the floor is free via masks
+	 * @param plane The plane of the tile
+	 * @param x The x of the tile
+	 * @param y The y of the tile
+	 * @param size The size of the entity to check
+	 */
+	public static boolean isFloorFree(int plane, int x, int y, int size) {
+		for (int tileX = x; tileX < x + size; tileX++) {
+			for (int tileY = y; tileY < y + size; tileY++) {
+				if (!isFloorFree(plane, tileX, tileY)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/***
+	 * Checks if the floor is free via masks
+	 * @param plane The plane of the tile
+	 * @param x The x of the tile
+	 * @param y The y of the tile
+	 */
+	public static boolean isFloorFree(int plane, int x, int y) {
+		return (getMask(plane, x, y) & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ)) == 0;
+	}
+	
+	/***
+	 * Checks if the walls are free via masks
+	 * @param plane The plane of the tile
+	 * @param x The x of the tile
+	 * @param y The y of the tile
+	 */
+	public static boolean isWallsFree(int plane, int x, int y) {
+		return (getMask(plane, x, y) & (Flags.CORNEROBJ_NORTHEAST | Flags.CORNEROBJ_NORTHWEST | Flags.CORNEROBJ_SOUTHEAST | Flags.CORNEROBJ_SOUTHWEST | Flags.WALLOBJ_EAST | Flags.WALLOBJ_NORTH | Flags.WALLOBJ_SOUTH | Flags.WALLOBJ_WEST)) == 0;
 	}
 	
 	/**
@@ -297,6 +350,47 @@ public class RegionManager {
 				object.getRegion().removeObject(object);
 			}
 		});
+	}
+	
+	/**
+	 * Checks if the location is a multi area
+	 */
+	public static boolean isMultiArea(Location location) {
+		int destX = location.getX();
+		int destY = location.getY();
+		int plane = location.getPlane();
+		int regionId = location.getRegionId();
+		return (destX >= 3462 && destX <= 3511 && destY >= 9481 && destY <= 9521 && plane == 0) // kalphite
+				       // queen
+				       // lair
+				       || (destX >= 4540 && destX <= 4799 && destY >= 5052 && destY <= 5183 && plane == 0) // thzaar
+				       // city
+				       || regionId == 11051 || regionId == 16729 // glacors
+				       || regionId == 11589 // dags
+				       || regionId == 10894 // monkey skeles
+				       || regionId == 11573 // sea troll queen
+				       || regionId == 10554 || regionId == 10810 // rock crabs
+				       || (destX >= 1721 && destX <= 1791 && destY >= 5123 && destY <= 5249) // mole
+				       || (destX >= 3029 && destX <= 3374 && destY >= 3759 && destY <= 3903)// wild
+				       || (destX >= 2250 && destX <= 2280 && destY >= 4670 && destY <= 4720) || (destX >= 3198 && destX <= 3380 && destY >= 3904 && destY <= 3970) || (destX >= 3191 && destX <= 3326 && destY >= 3510 && destY <= 3759) || (destX >= 2987 && destX <= 3006 && destY >= 3912 && destY <= 3937) || (destX >= 2245 && destX <= 2295 && destY >= 4675 && destY <= 4720) || (destX >= 2450 && destX <= 3520 && destY >= 9450 && destY <= 9550) || (destX >= 3006 && destX <= 3071 && destY >= 3602 && destY <= 3710) || (destX >= 3134 && destX <= 3192 && destY >= 3519 && destY <= 3646) || (destX >= 2815 && destX <= 2966 && destY >= 5240 && destY <= 5375)// wild
+				       || (destX >= 2840 && destX <= 2950 && destY >= 5190 && destY <= 5230) // godwars
+				       || (destX >= 3547 && destX <= 3555 && destY >= 9690 && destY <= 9699) // zaros
+				       || (destX >= 1490 && destX <= 1515 && destY >= 4696 && destY <= 4714) // chaos dwarf battlefield
+				       // godwars
+				       || (destX >= 2250 && destX <= 2292) && (destY >= 4675 && destY <= 4710) // kbd
+				       || (destX >= 2560 && destX <= 2630) && (destY >= 5710 && destY <= 5753) // tormenteds
+				       || (destX >= 3083 && destX <= 3120) && (destY >= 5522 && destY <= 5550) // Bork's area
+				       || regionId == 12590 || (destX >= 2970 && destX <= 3000 && destY >= 4365 && destY <= 4400)// corp
+				       || (destX >= 3195 && destX <= 3327 && destY >= 3520 && destY <= 3970 || (destX >= 2376 && 5127 >= destY && destX <= 2422 && 5168 <= destY)) || (destX >= 2374 && destY >= 5129 && destX <= 2424 && destY <= 5168) // pits
+				       || (destX >= 2622 && destY >= 5696 && destX <= 2573 && destY <= 5752) // torms
+				       || (destX >= 2368 && destY >= 3072 && destX <= 2431 && destY <= 3135) // castlewars
+				       // out
+				       || (destX >= 2365 && destY >= 9470 && destX <= 2436 && destY <= 9532) // castlewars
+				       || (destX >= 2948 && destY >= 5537 && destX <= 3071 && destY <= 5631) // Risk
+				       // ffa.
+				       || (destX >= 2756 && destY >= 5537 && destX <= 2879 && destY <= 5631) // Safe
+				       // ffa
+				       || regionId == 1089 || regionId == 12341 || (destX >= 3011 && destX <= 3132 && destY >= 10052 && destY <= 10175 && (destY >= 10066 || destX >= 3094)); // forinthry dungeon
 	}
 	
 	/**

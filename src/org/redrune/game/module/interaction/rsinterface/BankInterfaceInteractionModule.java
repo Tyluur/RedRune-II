@@ -83,6 +83,8 @@ public class BankInterfaceInteractionModule implements InterfaceInteractionModul
 					player.getBank().collapse(tabId);
 				}
 				return true;
+			} else if (componentId == 43) {
+				player.getManager().getInterfaces().closeAll();
 			}
 		} else if (interfaceId == 763) { // bank inventory
 			switch (packetId) {

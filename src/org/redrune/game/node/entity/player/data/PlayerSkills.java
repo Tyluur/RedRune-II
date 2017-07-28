@@ -2,12 +2,12 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.GameConstants;
+import org.redrune.game.content.skills.LevelUp;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.network.world.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.SkillPacketBuilder;
-import org.redrune.game.GameConstants;
-import org.redrune.game.content.skills.LevelUp;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.Map;
@@ -98,19 +98,6 @@ public class PlayerSkills implements SkillConstants {
 			}
 		}
 		return skill == DUNGEONEERING ? 120 : 99;
-	}
-	
-	/**
-	 * Adds experience to the skill without multiplier effects
-	 *
-	 * @param skillId
-	 * 		The id of the skill
-	 * @param experience
-	 * 		The amount of exp to add
-	 */
-	public PlayerSkills addExperienceNoMultiplier(short skillId, double experience) {
-		trackExperienceChange(skillId, experience);
-		return this;
 	}
 	
 	/**
@@ -209,6 +196,19 @@ public class PlayerSkills implements SkillConstants {
 	 */
 	private void updateSkill(int skill) {
 		player.getTransmitter().send(new SkillPacketBuilder(skill).build(player));
+	}
+	
+	/**
+	 * Adds experience to the skill without multiplier effects
+	 *
+	 * @param skillId
+	 * 		The id of the skill
+	 * @param experience
+	 * 		The amount of exp to add
+	 */
+	public PlayerSkills addExperienceNoMultiplier(short skillId, double experience) {
+		trackExperienceChange(skillId, experience);
+		return this;
 	}
 	
 	/**

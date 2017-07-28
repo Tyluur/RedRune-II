@@ -18,9 +18,14 @@ import org.redrune.game.node.entity.npc.link.CombatManager;
 import org.redrune.game.node.entity.npc.link.DropManager;
 import org.redrune.game.node.entity.npc.render.flag.impl.TransformationUpdate;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.link.prayer.DrainPrayer;
+import org.redrune.game.node.entity.player.link.prayer.Prayer;
+import org.redrune.game.node.entity.player.link.prayer.PrayerEffectRepository;
+import org.redrune.game.node.entity.player.link.prayer.PrayerManager;
 import org.redrune.game.node.item.Drop;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.world.World;
+import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.repository.npc.characteristic.NPCCharacteristicRepository;
@@ -30,9 +35,10 @@ import org.redrune.utility.tool.Misc;
 import org.redrune.utility.tool.RandomFunction;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.redrune.game.node.entity.player.link.prayer.Prayer.SOULSPLIT;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -127,14 +133,16 @@ public class NPC extends Entity {
 		this.faceDirection = direction.ordinal();
 		this.characteristics = NPCCharacteristicRepository.getCharacteristics(this);
 		this.combatManager = new CombatManager(this);
+		setHealthPoints(getMaxHealth());
 		// required for map region data
 		super.registerTransients();
 		super.loadMapRegions();
 		loadWalkType();
 		// e won't ever be in combat with an npc that doesn't have an attack option
-		if (getDefinitions().hasAttackOption()) {
-			setHealthPoints(getMaxHealth());
-		}
+		setHealthPoints(getMaxHealth());
+		// used to update the flags
+		RegionManager.updateEntityRegion(this);
+		checkMultiArea();
 	}
 	
 	/**
@@ -199,19 +207,19 @@ public class NPC extends Entity {
 				} else if (getTicksPassed() == getGoalTicks()) {
 					deregister();
 					sendDrops();
+					reset();
 					restoreAll();
-					// only fire the respawn event for a respawnable npc
-					if (isRespawnable()) {
-						int respawnDelay = getCombatDefinitions().getRespawnDelay();
-						// ensure the respawn delay is set well
-						if (respawnDelay <= 0) {
-							respawnDelay = 30;
-						}
-						fireRespawnEvent(getId(), respawnDelay, spawnLocation, Direction.values()[faceDirection]);
-					}
+					respawn();
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Resets the components
+	 */
+	public void reset() {
+		resetMasks();
 	}
 	
 	@Override
@@ -231,12 +239,12 @@ public class NPC extends Entity {
 	
 	@Override
 	public void tick() {
+		super.tick();
 		// before anything else we must make sure we aren't dead
-		if (isDead() && isDying()) {
+		if (isDead() || isDying()) {
+			//			System.out.println("Skipped " + this + " [hp=" + getHealthPoints() + ", max=" + getMaxHealth() + ", dead=" + isDead() + ", dying=" + isDying() + "]");
 			return;
 		}
-		super.tick();
-		
 		// process combat [false when too far away, wrong multi areas. check doesn't really matter]
 		fireAggressiveCheck();
 		
@@ -244,22 +252,7 @@ public class NPC extends Entity {
 		if (!combatManager.getCombat().process()) {
 			if (!isFrozen()) {
 				if (getLocation().getDistance(spawnLocation) > 16) {
-					// we walk back to the original tile [1 tile per tick]
-					combatManager.getCombat().reset();
-					// calculates and paths to the spawn loc
-					getMovement().addLocationPath(spawnLocation, 25, true);
-					// we can't walk back home in a good amount of time
-					if (!canWalkHomeTimely()) {
-						setForceWalking(true);
-						// within 16 ticks [about 10 seconds] we arrive at the spawn location
-						SystemManager.getScheduler().schedule(new ScheduledTask(16) {
-							@Override
-							public void run() {
-								teleport(spawnLocation);
-								setForceWalking(false);
-							}
-						});
-					}
+					traverseOriginalTile();
 				} else if (getWalkType() != NPCConstants.NO_WALK) {
 					int walkValue = getWalkType() & NPCConstants.NORMAL_WALK;
 					// if the npc isn't a type that walks, we ignore the next blocks
@@ -276,10 +269,32 @@ public class NPC extends Entity {
 					int moveY = getRandomTileDistance();
 					// reset the steps
 					getMovement().resetWalkSteps();
-					// add the random tile to the movement queue
-					getMovement().addWalkSteps(getLocation().getX() + moveX, getLocation().getY() + moveY);
+					// add the random tile to the movement queue [we only walk around the spawn location]
+					getMovement().addWalkSteps(getSpawnLocation().getX() + moveX, getSpawnLocation().getY() + moveY);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Walks back to the original tile
+	 */
+	public void traverseOriginalTile() {
+		// we walk back to the original tile [1 tile per tick]
+		combatManager.getCombat().reset();
+		// calculates and paths to the spawn loc
+		getMovement().addLocationPath(spawnLocation, 25, true);
+		// we can't walk back home in a good amount of time
+		if (!canWalkHomeTimely()) {
+			setForceWalking(true);
+			// within 16 ticks [about 10 seconds] we arrive at the spawn location
+			SystemManager.getScheduler().schedule(new ScheduledTask(16) {
+				@Override
+				public void run() {
+					teleport(spawnLocation);
+					setForceWalking(false);
+				}
+			});
 		}
 	}
 	
@@ -293,7 +308,7 @@ public class NPC extends Entity {
 	
 	@Override
 	public String toString() {
-		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + ", renderable=" + isRenderable() + "]";
+		return "[id=" + id + ", name=" + getDefinitions().getName() + ", location=" + getLocation() + "]";
 	}
 	
 	@Override
@@ -478,39 +493,37 @@ public class NPC extends Entity {
 	private List<Entity> possibleTargets(boolean npcs, boolean players) {
 		List<Entity> targets = new ArrayList<>();
 		int maxDistance = 16;
+		Region region = getRegion();
 		if (players) {
-			for (Player player : getRegion().getPlayers()) {
+			for (Player player : region.getPlayers()) {
 				if (player == null || !player.isRenderable()) {
 					continue;
 				}
 				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), player.getLocation().getX(), player.getLocation().getY(), player.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
-					System.out.println("Skipped cuz " + player);
 					continue;
 				}
-				boolean delayed = player.getAttackedByDelay() > System.currentTimeMillis()  /*||player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()*/;
-				if (!multiAreaForced() && (!isAtMultiArea() || !player.isAtMultiArea()) && player.getAttackedBy() != null && player.getAttackedBy() != this && delayed) {
-					System.out.println("Skipped cuz " + player + " [delayed=" + (player.getAttackedByDelay() > System.currentTimeMillis()) + ", " + (player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()) + "]");
+				// check that we can attack them regardless of multi player flags
+				boolean single = !getCombatManager().isForceMultiAttacked() && (!isAtMultiArea() || !player.isAtMultiArea());
+				if (single && (player.getAttackedBy() != this && (player.getAttackedByDelay() > System.currentTimeMillis() || player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()))) {
 					continue;
 				}
+				// we cant clip to them
 				if (!getMovement().clippedProjectileToNode(player, false)) {
-					System.out.println("Skipped cuz " + player);
 					continue;
 				}
 				// we skip those who are dangerous to us
-				if (player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2) {
+				if (!getCombatManager().isAggressiveForced() && !WildernessActivity.isAtWild(getLocation()) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2) {
 					continue;
 				}
-				// all npcs in the wilderness are aggressive
-				if (getRegion().getTimeSpent(player) > NPCConstants.UNAGGRESSIVE_REGION_TIME) {
-					System.out.println("Skipped cuz " + player);
-					//System.out.println("Was not aggressive to " + player + " b/c they spent " + getRegion().getTimeSpent(player) + " in my region [" + getRegionId() + "]");
+				// no longer aggressive
+				if (region.getTimeSpent(player) > NPCConstants.UNAGGRESSIVE_REGION_TIME) {
 					continue;
 				}
 				targets.add(player);
 			}
 		}
 		if (npcs) {
-			for (NPC npc : getRegion().getNpcs()) {
+			for (NPC npc : region.getNpcs()) {
 				if (npc == null || !npc.isRenderable() || !npc.getDefinitions().hasAttackOption()) {
 					continue;
 				}
@@ -550,18 +563,18 @@ public class NPC extends Entity {
 			}
 		}
 		List<Entity> possibleTargets = possibleTargets(false, true);
-		if (getRegion().getRegionId() == 10554) {
-			System.out.println(this + ": " + possibleTargets);
+		// we don't want to check if the list is empty
+		if (possibleTargets.isEmpty()) {
+			return;
 		}
-		if (!possibleTargets.isEmpty()) {
-			Entity target = possibleTargets.get(RandomFunction.random(possibleTargets.size()));
-			// sets the attacked by def
-			target.setAttackedBy(this);
-			// can't be found as target for the next 10 secs
-			target.putAttribute(AttributeKey.FIND_TARGET_DELAY, System.currentTimeMillis() + 10_000);
-			// starts the fight with the target
-			startFight(target);
-		}
+		// find the target
+		Entity target = possibleTargets.get(RandomFunction.random(possibleTargets.size()));
+		// sets the attacked by def
+		target.setAttackedBy(this);
+		// can't be found as target for the next 10 secs
+		target.putAttribute(AttributeKey.FIND_TARGET_DELAY, System.currentTimeMillis() + 10_000);
+		// starts the fight with the target
+		startFight(target);
 	}
 	
 	/**
@@ -611,7 +624,7 @@ public class NPC extends Entity {
 	 * in some cases we want to reduce this range so the npc is always in the scope of players who teleport to that
 	 * region [npcs that move around but still want to be seen]
 	 */
-	public int getRandomTileDistance() {
+	private int getRandomTileDistance() {
 		switch (id) {
 			case 6138:
 				return RandomFunction.random(-1, 1);
@@ -641,11 +654,29 @@ public class NPC extends Entity {
 	public void transform(int targetId) {
 		try {
 			getUpdateMasks().register(new TransformationUpdate(targetId));
+			
 			setId(targetId);
 			setDefinitions(NPCDefinition.readDefinitions(targetId));
 			setCharacteristics(NPCCharacteristicRepository.getCharacteristics(this));
+			setHealthPoints(getMaxHealth());
+			combatManager.setHasAttackOption(definitions.hasAttackOption());
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Respawns the npc
+	 */
+	private void respawn() {
+		// only fire the respawn event for a respawnable npc
+		if (isRespawnable()) {
+			int respawnDelay = getCombatDefinitions().getRespawnDelay();
+			// ensure the respawn delay is set well
+			if (respawnDelay <= 0) {
+				respawnDelay = 30;
+			}
+			fireRespawnEvent(getId(), respawnDelay, spawnLocation, Direction.values()[faceDirection]);
 		}
 	}
 	
@@ -656,5 +687,71 @@ public class NPC extends Entity {
 			return n.getId() == id && n.getIndex() == getIndex();
 		}
 		return super.equals(obj);
+	}
+	
+	/**
+	 * Handles the prayer effects
+	 *
+	 * @param hit
+	 * 		The hit
+	 */
+	public void handlePrayerEffects(Hit hit) {
+		if (!hit.getSource().isPlayer()) {
+			return;
+		}
+		Player source = hit.getSource().toPlayer();
+		// no prayers on
+		if (source.getManager().getPrayers().getPrayersActiveCount() == 0) {
+			return;
+		}
+		// apply soulsplit only when a hit lands
+		if (hit.getDamage() > 0 && source.getManager().getPrayers().prayerOn(SOULSPLIT)) {
+			PrayerManager.handleSoulsplit(this, hit);
+		}
+		// the instance of the sources prayer
+		PrayerManager sourcePrayer = source.getManager().getPrayers();
+		
+		// we only want to find the drain prayers
+		List<Prayer> drainers = sourcePrayer.getActivePrayers().stream().filter(Prayer::isDrainer).collect(Collectors.toList());
+		
+		// the message to sent
+		String message = null;
+		
+		// loops through all the drain prayers
+		for (Prayer prayer : drainers) {
+			// the chance for the prayer to effect, saps have a higher chance
+			int chance = prayer.isSap() ? 6 : 8;
+			
+			// calculate chance based on whether its a leech or a sap
+			boolean shouldUse = Misc.getRandom(chance) == chance - 1;
+			
+			// if we aren't lucky enough to use the effect
+			if (!shouldUse) {
+				continue;
+			}
+			
+			// the optional drain instance
+			Optional<DrainPrayer> optional = PrayerEffectRepository.getDrainPrayer(prayer);
+			if (!optional.isPresent()) {
+				System.out.println("Unable to find drain for " + prayer);
+				continue;
+			}
+			// the drain prayer
+			DrainPrayer drain = optional.get();
+			// if the source has maxed its drain and the receiver has reached its least bonuses
+			if (sourcePrayer.maxed(null, prayer, drain.raiseSource())) {
+				message = ("Your opponent has been weakened so much that your " + (prayer.isSap() ? "sap" : "leech") + " curse has no effect.");
+			} else {
+				source.sendAnimation(drain.startAnimationId());
+				if (drain.startGraphicsId() > 0) {
+					source.sendGraphics(drain.startGraphicsId());
+				}
+				sourcePrayer.modify(null, sourcePrayer, drain.prayerSlots(), drain.amounts(), drain.drainCap(), drain.raiseCap(), drain.raiseSource());
+				sourcePrayer.visualizeLeech(source, this, drain.projectileId(), drain.landingGraphicsId());
+			}
+		}
+		if (message != null) {
+			source.getTransmitter().sendMessage(message, false);
+		}
 	}
 }

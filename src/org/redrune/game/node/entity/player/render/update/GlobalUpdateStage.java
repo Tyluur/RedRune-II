@@ -1,7 +1,6 @@
 package org.redrune.game.node.entity.player.render.update;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.AttributeKey;
 
 /**
  * @author Sean
@@ -29,7 +28,7 @@ public enum GlobalUpdateStage {
 			return ADD_PLAYER;
 		} else if (otherPlayer.getRenderData().getLastLocation() != null && otherPlayer.getLocation().getPlane() != otherPlayer.getRenderData().getLastLocation().getPlane()) {
 			return HEIGHT_UPDATED;
-		} else if (otherPlayer.getAttribute(AttributeKey.PLAYER_TELEPORTED, false) || otherPlayer.getRenderData().isOnFirstCycle()) {
+		} else if (otherPlayer.teleporting() || otherPlayer.getRenderData().isOnFirstCycle()) {
 			return TELEPORTED;
 		}
 		return null;

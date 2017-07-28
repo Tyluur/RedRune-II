@@ -1,10 +1,14 @@
+## HANDLENODEINTERACTION UPDATED ##
+
 [Wrappers/Systems]
 +   Trade system
 
 [Necessities]
 +   Stat restoration
+	-   Managed for poison/antifire
+	-   Potion mixing
 +   Player file saving scheduled
-+   Can't logotu for 10 secodns after combat
+
 
 [Unfinished]
 +   Master Server Unfinished:
@@ -19,8 +23,7 @@
 	-   Hand cannon
 	-   Crossbow bolt [e]
 +   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
-+	Granite maul shouldnt use spec if targ is alrd dead.
-+	Proper object facing. [facing tiles/levers is broken]
++   Lunar spellbook teleports [gather data pls]
 
 [Data]
 +	NPC examines

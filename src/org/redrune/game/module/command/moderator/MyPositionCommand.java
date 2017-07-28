@@ -1,8 +1,14 @@
 package org.redrune.game.module.command.moderator;
 
+import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.module.command.CommandManifest;
+import org.redrune.utility.tool.ColorConstants;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -18,7 +24,25 @@ public class MyPositionCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.getTransmitter().sendMessage("Location[" + player.getLocation().toString() + "]");
-		player.getTransmitter().sendMessage("         My Regions:" + (player.getMapRegionsIds()));
+		boolean toClipboard = boolParamOrDefault(args, 1, false);
+		StringBuilder builder = new StringBuilder();
+		CopyOnWriteArrayList<Integer> mapRegionsIds = player.getMapRegionsIds();
+		// writes the regions the player is in, coloring the current region red and other regions black
+		for (int i = 0; i < mapRegionsIds.size(); i++) {
+			int regionId = mapRegionsIds.get(i);
+			builder.append(regionId == player.getRegion().getRegionId() ? "<col=" + ColorConstants.RED + ">" : "<col=" + ColorConstants.BLACK + ">");
+			builder.append("");
+			builder.append(regionId);
+			builder.append("</col>");
+			builder.append(i == mapRegionsIds.size() - 1 ? "" : ", ");
+		}
+		player.getTransmitter().sendMessage("My Location=" + player.getLocation().toString());
+		player.getTransmitter().sendMessage("My Regions:" + builder.toString());
+		
+		if (toClipboard) {
+			StringSelection stringSelection = new StringSelection("new Location(" + player.getLocation().getX() + ", " + player.getLocation().getY() + ", " + player.getLocation().getPlane() + ")");
+			Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clpbrd.setContents(stringSelection, null);
+		}
 	}
 }

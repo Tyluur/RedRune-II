@@ -656,7 +656,7 @@ public final class PlayerBank {
 	/**
 	 * Opens the bank interfaces
 	 */
-	public void openBank() {
+	public void open() {
 		// removing the equipment stats button
 		player.getTransmitter().send(new InterfaceChangeBuilder(762, 117, true).build(player)).send(new InterfaceChangeBuilder(762, 118, true).build(player));
 		player.getTransmitter().send(new ConfigPacketBuilder(563, 4194304).build(player));

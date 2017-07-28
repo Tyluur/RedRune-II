@@ -5,7 +5,7 @@ import org.redrune.game.content.action.Action;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatType;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.InteractionOption;
@@ -86,7 +86,7 @@ public final class PlayerCombatAction implements Action {
 		// the delay wasn't found [this is only possible when we don't have a magic spell
 		// otherwise, delays are calculated in the swing
 		if (delay == -1) {
-			player.getTransmitter().sendMessage("This spell has not yet been added, please report this on the forums.");
+			player.getTransmitter().sendMessage((type == CombatType.MAGIC ? "Spell #" + id + "" : "Weapon #" + weaponId) + " has not yet been added, please report this on the forums.");
 			player.getCombatDefinitions().resetSpells(true);
 			return 0;
 		}
@@ -139,7 +139,6 @@ public final class PlayerCombatAction implements Action {
 	 * @param player
 	 * 		The player in combat
 	 */
-	// TODO: store data about when we were hit [anti pjing measures]
 	private boolean verifyContinuation(Player player) {
 		Entity target = this.target;
 		// we couldn't find a combat type
@@ -182,18 +181,20 @@ public final class PlayerCombatAction implements Action {
 			}
 			return true;
 		}
-		if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
-			if (player.getAttackedBy() != target && player.getAttackedByDelay() > System.currentTimeMillis()) {
-				player.getTransmitter().sendMessage("You are already in combat");
-				return false;
-			}
-			if (target.getAttackedBy() != player && target.getAttackedByDelay() > System.currentTimeMillis()) {
-				player.getTransmitter().sendMessage((target.isPlayer() ? "That player is" : "This npc is") + " already in combat");
-				return false;
+		if (!(target.isNPC() && target.toNPC().getCombatManager().isForceMultiAttacked())) {
+			if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
+				if (player.getAttackedBy() != target && player.getAttackedByDelay() > System.currentTimeMillis()) {
+					player.getTransmitter().sendMessage("You are already in combat");
+					return false;
+				}
+				if (target.getAttackedBy() != player && target.getAttackedByDelay() > System.currentTimeMillis()) {
+					player.getTransmitter().sendMessage((target.isPlayer() ? "That player is" : "This npc is") + " already in combat");
+					return false;
+				}
 			}
 		}
 		// we can't continue fighting in the activity
-		if (!player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {
+		if (player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {
 			return false;
 		}
 		// anything else ?

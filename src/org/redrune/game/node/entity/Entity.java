@@ -9,9 +9,8 @@ import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
-import org.redrune.game.node.entity.player.render.flag.impl.Animation;
-import org.redrune.game.node.entity.player.render.flag.impl.FaceEntityUpdate;
-import org.redrune.game.node.entity.player.render.flag.impl.Graphic;
+import org.redrune.game.node.entity.player.render.flag.impl.*;
+import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
@@ -30,7 +29,8 @@ public abstract class Entity extends Node implements EntityDetails {
 	@Override
 	public void tick() {
 		checkDeathEvent();
-		if (isDead() && isDying()) {
+		if (isDead() || isDying()) {
+			movement.resetWalkSteps();
 			return;
 		}
 		movement.processMovement();
@@ -216,6 +216,13 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * If we are currently teleporting in the game tick.
+	 */
+	public boolean teleporting() {
+		return getAttribute(AttributeKey.TELEPORTED, false);
+	}
+	
+	/**
 	 * Puts the key into the attributes map
 	 *
 	 * @param key
@@ -341,6 +348,16 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public void sendGraphics(int graphicsId, int height, int speed) {
 		updateMasks.register(new Graphic(graphicsId, height, speed, isNPC()));
+	}
+	
+	/**
+	 * Sends the force text message mask
+	 *
+	 * @param message
+	 * 		The message to send
+	 */
+	public void sendForcedChat(String message) {
+		updateMasks.register(new ForceTextUpdate(message, isNPC()));
 	}
 	
 	/**
@@ -553,7 +570,16 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Checks if we're at a multi area
 	 */
 	public void checkMultiArea() {
-		atMultiArea = multiAreaForced() || getLocation().isMultiArea();
+		boolean atMultiArea = RegionManager.isMultiArea(getLocation());
+		// the default return type is false so only set it if its true
+		if (multiAreaForced()) {
+			atMultiArea = true;
+		}
+		if (atMultiArea != this.atMultiArea) {
+			// TODO: FIRE MULTI EVENT LISTENER
+			// this.atMultiArea = atMultiArea;
+		}
+		this.atMultiArea = atMultiArea;
 	}
 	
 	/**
@@ -581,7 +607,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * 		The entity who attacked us
 	 */
 	public void addAttackedByDelay(Entity target) {
-		System.out.println("Setting " + this + " attacked by to " + target);
 		setAttackedBy(target);
 		if (isNPC()) {
 			setAttackedByDelay(System.currentTimeMillis() + toNPC().getCombatDefinitions().getAttackDelay() * 600 + 600);
@@ -603,5 +628,36 @@ public abstract class Entity extends Node implements EntityDetails {
 		}
 		setAttackedBy(null);
 		setAttackedByDelay(-1L);
+	}
+	
+	/**
+	 * Turns the entity to the object
+	 *
+	 * @param object
+	 * 		The object to turn to
+	 */
+	public void turnToObject(GameObject object) {
+		//		boolean flipped = object.getRotation() == 0 || object.getRotation() == 2;
+		
+		int xDiff = 0;
+		int yDiff = 0;
+		
+		// levers
+		if (object.getType() == 4) {
+			xDiff = -1;
+		}
+		
+		Location faceLocation = object.getLocation().transform(xDiff, yDiff, 0);
+		getUpdateMasks().register(new FaceLocationUpdate(this, faceLocation));
+	}
+	
+	/**
+	 * Turns the entity to a location
+	 *
+	 * @param location
+	 * 		The location
+	 */
+	public void turnToLocation(Location location) {
+		getUpdateMasks().register(new FaceLocationUpdate(this, location));
 	}
 }

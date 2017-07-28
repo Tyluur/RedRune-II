@@ -71,23 +71,6 @@ public final class PlayerVariables {
 	private SkullIcon skullIcon = SkullIcon.NONE;
 	
 	/**
-	 * Gets an attribute and returns the default value if it doesn't exist
-	 *
-	 * @param key
-	 * 		The key of the attribute
-	 * @param defaultValue
-	 * 		The value to return if the key doesnt exist in the map
-	 */
-	@SuppressWarnings("unchecked")
-	public <K> K getAttribute(AttributeKey key, K defaultValue) {
-		K value = (K) storedAttributes.get(key);
-		if (value == null) {
-			return defaultValue;
-		}
-		return value;
-	}
-	
-	/**
 	 * Gets a stored attribute
 	 *
 	 * @param key
@@ -190,5 +173,35 @@ public final class PlayerVariables {
 		}
 	}
 	
+	/**
+	 * If the player is accepting aid
+	 */
+	public Boolean isAcceptingAid() {
+		return getAttribute(AttributeKey.ACCEPTING_AID, true);
+	}
+	
+	/**
+	 * Gets an attribute and returns the default value if it doesn't exist
+	 *
+	 * @param key
+	 * 		The key of the attribute
+	 * @param defaultValue
+	 * 		The value to return if the key doesnt exist in the map
+	 */
+	@SuppressWarnings("unchecked")
+	public <K> K getAttribute(AttributeKey key, K defaultValue) {
+		K value = (K) storedAttributes.get(key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
+	}
+	
+	/**
+	 * If the player is filtering profanity
+	 */
+	public Boolean isFilteringProfanity() {
+		return getAttribute(AttributeKey.FILTERING_PROFANITY, false);
+	}
 }
 

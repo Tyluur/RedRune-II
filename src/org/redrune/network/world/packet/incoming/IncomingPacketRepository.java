@@ -47,7 +47,7 @@ public final class IncomingPacketRepository {
 	private void include(IncomingPacketDecoder decoder) {
 		Arrays.stream(decoder.bindings()).forEach(key -> {
 			if (decoderMap.containsKey(key)) {
-				throw new IllegalStateException("Defined incoming packet " + key + " already and attempted to store " + decoder + " ahead of it.");
+				throw new IllegalStateException("Defined incoming packet [" + decoderMap.get(key) + "] #" + key + " already and attempted to store " + decoder + " ahead of it.");
 			}
 			decoderMap.put(key, decoder);
 		});

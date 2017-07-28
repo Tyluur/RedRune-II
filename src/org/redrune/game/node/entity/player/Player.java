@@ -13,6 +13,7 @@ import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.PlayerCombatDefinitions;
 import org.redrune.game.node.entity.data.Hit;
+import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
@@ -139,12 +140,12 @@ public final class Player extends Entity {
 		manager.getNotes().sendLoginConfiguration();
 		
 		// renderable must be after this because of map region building...
-		
 		setRenderable(true);
 		
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		SequencialUpdate.getRenderablePlayers().add(this);
 		RegionManager.updateEntityRegion(this);
+		checkMultiArea();
 		
 		session.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
 		session.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
@@ -172,6 +173,25 @@ public final class Player extends Entity {
 	@Override
 	public int getSize() {
 		return 1;
+	}
+	
+	@Override
+	public int getMaxHealth() {
+		return skills.getLevelForXp(SkillConstants.HITPOINTS) * 10;
+	}
+	
+	@Override
+	public void tick() {
+		if (isDead() || isDying()) {
+			return;
+		}
+		super.tick();
+		checkInteractionTask();
+		getRegion().increaseTimeSpent(this);
+		manager.getActions().process();
+		manager.getPrayers().process();
+		manager.getHintIcons().process();
+		manager.getActivities().process();
 	}
 	
 	@Override
@@ -226,28 +246,9 @@ public final class Player extends Entity {
 	}
 	
 	@Override
-	public int getMaxHealth() {
-		return skills.getLevelForXp(SkillConstants.HITPOINTS) * 10;
-	}
-	
-	@Override
 	public void setHealthPoints(int healthPoints) {
 		variables.setHealthPoints(healthPoints);
 		transmitter.refreshHealthPoints(healthPoints);
-	}
-	
-	@Override
-	public void tick() {
-		if (isDead() && isDying()) {
-			return;
-		}
-		super.tick();
-		checkInteractionTask();
-		getRegion().increaseTimeSpent(this);
-		manager.getActions().process();
-		manager.getPrayers().process();
-		manager.getHintIcons().process();
-		manager.getActivities().process();
 	}
 	
 	@Override
@@ -272,6 +273,12 @@ public final class Player extends Entity {
 				checkDeathEvent();
 			}
 		}
+		// we don't remove the attribute when the hit is received in case the damage < 4
+		if (getAttribute("cast_veng", false) && hit.getDamage() >= 4) {
+			removeAttribute("cast_veng");
+			sendForcedChat("Taste vengeance!");
+			hit.getSource().getHitMap().applyHit(new Hit(this, (int) Math.floor(hit.getDamage() * 0.75), HitSplat.REGULAR_DAMAGE));
+		}
 		// the hit is no longer modifiable, the actual damage received will be stored now.
 		transmitter.refreshHealthPoints(variables.getHealthPoints());
 	}
@@ -279,6 +286,101 @@ public final class Player extends Entity {
 	@Override
 	public boolean fighting() {
 		return manager.getActions().getAction() instanceof PlayerCombatAction;
+	}
+	
+	/**
+	 * Fire this later
+	 */
+	@Override
+	public void fireDeathEvent() {
+		// if the activity should handle death instead
+		if (manager.getActivities().handleEntityDeath(this)) {
+			return;
+		}
+		// vars
+		final Player player = this;
+		final Entity killer = getHitMap().getMostDamageEntity();
+		
+		// we can't walk anymore
+		getMovement().resetWalkSteps();
+		// we can't do anything while dying.
+		manager.getLocks().lockAll();
+		// the event
+		SystemManager.getScheduler().schedule(new ScheduledTask(1, 6) {
+			@Override
+			public void run() {
+				if (getTicksPassed() == 1) {
+					sendAnimation(836);
+				} else if (getTicksPassed() == 2) {
+					transmitter.sendMessage("Oh dear, you have died.");
+					/*if (source instanceof Player) {
+						Player killer = (Player) source;
+						killer.setAttackedByDelay(4);
+					}*/
+				} else if (getTicksPassed() == 5) {
+					Item[] kept = WildernessActivity.sendDeathContainer(player, killer);
+					
+					player.equipment.getItems().clear();
+					player.inventory.getItems().clear();
+					player.equipment.sendContainer();
+					player.inventory.sendContainer();
+					player.restoreAll();
+					
+					teleport(GameConstants.DEATH_LOCATION);
+					sendAnimation(-1);
+					
+					// add the items we should've kept to our inventory...
+					if (kept != null) {
+						for (Item item : kept) {
+							player.inventory.addItem(item.getId(), item.getAmount());
+						}
+					}
+				} else if (getTicksPassed() == 6) {
+					// TODO:	getPackets().sendMusicEffect(90);
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Sends the settings to the client
+	 */
+	public void sendSettings() {
+		transmitter.send(new ConfigFilePacketBuilder(8780, variables.isFilteringProfanity() ? 0 : 1).build(this));
+		transmitter.send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
+		transmitter.send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
+		transmitter.send(new ConfigPacketBuilder(427, variables.isAcceptingAid() ? 1 : 0).build(this));
+		
+		transmitter.send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
+		transmitter.send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
+		
+		transmitter.refreshRunOrbStatus();
+		transmitter.refreshEnergy();
+		transmitter.refreshHealthPoints(getHealthPoints());
+	}
+	
+	@Override
+	public void restoreAll() {
+		skills.restoreAll();
+		manager.getHintIcons().removeAll();
+		manager.getActions().stopAction();
+		variables.setRunEnergy(100);
+		removeAttribute("dying");
+		
+		getCombatDefinitions().setSpecialEnergy((byte) 100);
+		getCombatDefinitions().setSpecialActivated(false);
+		getCombatDefinitions().resetSpells(true);
+		unfreeze();
+		sendSettings();
+		
+		getUpdateMasks().register(new AppearanceUpdate(this));
+		manager.getLocks().unlockAll();
+	}
+	
+	@Override
+	public void checkMultiArea() {
+		super.checkMultiArea();
+		transmitter.send(new CS2ConfigBuilder(616, isAtMultiArea() ? 1 : 0).build(this));
 	}
 	
 	/**
@@ -307,24 +409,6 @@ public final class Player extends Entity {
 	public void sendUpdating() {
 		transmitter.send(new PlayerRendering().build(this));
 		transmitter.send(new NPCRendering().build(this));
-	}
-	
-	/**
-	 * Sends the settings to the client
-	 */
-	public void sendSettings() {
-		checkMultiArea();
-		transmitter.send(new ConfigFilePacketBuilder(8780, variables.getAttribute(AttributeKey.FILTERING_PROFANITY, false) ? 0 : 1).build(this));
-		transmitter.send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
-		transmitter.send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
-		transmitter.send(new ConfigPacketBuilder(427, getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true) ? 1 : 0).build(this));
-		
-		transmitter.send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
-		transmitter.send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
-		
-		transmitter.refreshRunOrbStatus();
-		transmitter.refreshEnergy();
-		transmitter.refreshHealthPoints(getHealthPoints());
 	}
 	
 	/**
@@ -390,84 +474,6 @@ public final class Player extends Entity {
 	}
 	
 	/**
-	 * Fire this later
-	 */
-	@Override
-	public void fireDeathEvent() {
-		// if the activity should handle death instead
-		if (manager.getActivities().handleEntityDeath(this)) {
-			return;
-		}
-		// vars
-		final Player player = this;
-		final Entity killer = getHitMap().getMostDamageEntity();
-		// we can't walk anymore
-		getMovement().resetWalkSteps();
-		// we can't do anything while dying.
-		manager.getLocks().lockAll();
-		// the event
-		SystemManager.getScheduler().schedule(new ScheduledTask(1, 6) {
-			@Override
-			public void run() {
-				if (getTicksPassed() == 1) {
-					sendAnimation(836);
-				} else if (getTicksPassed() == 2) {
-					transmitter.sendMessage("Oh dear, you have died.");
-					/*if (source instanceof Player) {
-						Player killer = (Player) source;
-						killer.setAttackedByDelay(4);
-					}*/
-				} else if (getTicksPassed() == 5) {
-					Item[] kept = WildernessActivity.sendDeathContainer(player, killer);
-					
-					player.equipment.getItems().clear();
-					player.inventory.getItems().clear();
-					player.equipment.sendContainer();
-					player.inventory.sendContainer();
-					player.restoreAll();
-					
-					teleport(GameConstants.DEATH_LOCATION);
-					sendAnimation(-1);
-					
-					// add the items we should've kept to our inventory...
-					if (kept != null) {
-						for (Item item : kept) {
-							player.inventory.addItem(item.getId(), item.getAmount());
-						}
-					}
-				} else if (getTicksPassed() == 6) {
-					// TODO:	getPackets().sendMusicEffect(90);
-				}
-			}
-		});
-	}
-	
-	@Override
-	public void restoreAll() {
-		skills.restoreAll();
-		manager.getHintIcons().removeAll();
-		manager.getActions().stopAction();
-		manager.getPrayers().setBook(manager.getPrayers().getBook());
-		variables.setRunEnergy(100);
-		removeAttribute("dying");
-		
-		getCombatDefinitions().setSpecialEnergy((byte) 100);
-		getCombatDefinitions().setSpecialActivated(false);
-		getCombatDefinitions().resetSpells(true);
-		unfreeze();
-		sendSettings();
-		
-		getUpdateMasks().register(new AppearanceUpdate(this));
-		manager.getLocks().unlockAll();
-	}
-	
-	@Override
-	public void checkMultiArea() {
-		super.checkMultiArea();
-		transmitter.send(new CS2ConfigBuilder(616, isAtMultiArea() ? 1 : 0).build(this));
-	}
-	
-	/**
 	 * This method finds all the items that the player contains on them.
 	 */
 	public CopyOnWriteArrayList<Item> findContainedItems() {
@@ -492,5 +498,20 @@ public final class Player extends Entity {
 	 */
 	public void save() {
 		MasterCommunication.write(new PlayerFilePacketOut(details.getUsername(), Utility.getJsonText(this, true)));
+	}
+	
+	/**
+	 * Handles the logging out of a player
+	 *
+	 * @param lobby
+	 * 		If the player should be sent to the lobby
+	 */
+	public void logout(boolean lobby) {
+		long currentTime = System.currentTimeMillis();
+		if (getAttackedByDelay() + 10000 > currentTime) {
+			transmitter.sendMessage("You can't log out until 10 seconds after the end of combat.");
+			return;
+		}
+		transmitter.sendLogout(lobby);
 	}
 }

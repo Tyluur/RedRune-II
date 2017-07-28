@@ -1,7 +1,6 @@
 package org.redrune.game.node.entity.player.render.update;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.utility.AttributeKey;
 
 /**
  * @author Sean
@@ -30,7 +29,7 @@ public enum LocalUpdateStage {
 		}
 		if (!player.getLocation().isWithinDistance(otherPlayer.getLocation())) {
 			return REMOVE_PLAYER;
-		} else if (otherPlayer.getAttribute(AttributeKey.PLAYER_TELEPORTED, false)) {
+		} else if (otherPlayer.teleporting()) {
 			return TELEPORTED;
 		} else if (otherPlayer.getMovement().getNextRunDirection() != -1) {
 			return RUNNING;

@@ -8,7 +8,7 @@ import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatType;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.EquipConstants;
@@ -1267,6 +1267,7 @@ public class StaticCombatFormulae {
 			// not enough energy
 			if (energyRequired) {
 				player.getTransmitter().sendMessage("You don't have enough special attack energy.");
+				player.getCombatDefinitions().setSpecialActivated(false);
 				return;
 			}
 			// the combat action
@@ -1274,6 +1275,12 @@ public class StaticCombatFormulae {
 			Entity target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
 			// no target and it was necessary
 			if (target == null && event.requiresFight()) {
+				player.getCombatDefinitions().setSpecialActivated(false);
+				return;
+			}
+			// we can't allow a swing on dead target
+			if (target != null && target.isDead()) {
+				player.getCombatDefinitions().setSpecialActivated(false);
 				return;
 			}
 			// granite maul is instant and requires combat, others like SOL/DBA don't...
@@ -1297,7 +1304,7 @@ public class StaticCombatFormulae {
 				event.fire(player, null, null, player.getCombatDefinitions().getAttackStyle());
 			}
 			// dropping the special attack amount
-			player.getCombatDefinitions().modifySpecial(ItemConstants.getSpecialEnergy(player.getEquipment().getWeaponId()));
+			player.getCombatDefinitions().reduceSpecial(ItemConstants.getSpecialEnergy(player.getEquipment().getWeaponId()));
 			// we used spec so it is triggered off
 			player.getCombatDefinitions().setSpecialActivated(false);
 		}
@@ -1443,7 +1450,9 @@ public class StaticCombatFormulae {
 	 * 		The target
 	 */
 	public static boolean canFight(Entity source, Entity target) {
-		if (target == null || (target.isDead() || !target.isRenderable() || !target.attackable(source)) || (source.isDead() || !source.isRenderable() || !source.attackable(target)) || !source.getLocation().withinDistance(target.getLocation(), 16)) {
+		boolean targetInvalid = target == null || target.isDead() || !target.isRenderable() || !target.attackable(source);
+		boolean sourceInvalid = source == null || source.isDead() || !source.isRenderable() || !source.attackable(target);
+		if (sourceInvalid || targetInvalid || !source.getLocation().withinDistance(target.getLocation(), 16)) {
 			return false;
 		}
 		// when force walking we ignore all combat states

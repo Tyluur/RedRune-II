@@ -1,17 +1,17 @@
 package org.redrune.game.content.combat.player.registry.spell;
 
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.registry.MagicSpellEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
-import org.redrune.game.content.combat.player.registry.MagicSpellContext;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/29/2017
  */
-public class IceBlitzEvent implements MagicSpellEvent<MagicSpellContext> {
+public class IceBlitzEvent implements CombatSpellEvent {
 	
 	@Override
 	public int spellId() {
@@ -49,7 +49,7 @@ public class IceBlitzEvent implements MagicSpellEvent<MagicSpellContext> {
 	}
 	
 	@Override
-	public void cast(Player player, MagicSpellContext context) {
+	public void cast(Player player, CombatSpellContext context) {
 		final Entity target = context.getTarget();
 		final boolean freezeDelayed = target.freezeDelayed();
 		final boolean frozenTarget = target.isFrozen();

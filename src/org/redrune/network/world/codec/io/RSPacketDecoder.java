@@ -35,7 +35,6 @@ public class RSPacketDecoder extends ByteToMessageDecoder {
 	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		Packet packet = null;
 		try {
 			while (in.readableBytes() > 0 && ctx.channel().isActive()) {
 				// the session
@@ -81,14 +80,11 @@ public class RSPacketDecoder extends ByteToMessageDecoder {
 				}
 				byte[] payload = new byte[length];
 				in.readBytes(payload, 0, length);
-				packet = new Packet(opcode, PacketType.STANDARD, Unpooled.wrappedBuffer(payload));
+				out.add(new Packet(opcode, PacketType.STANDARD, Unpooled.wrappedBuffer(payload)));
+				//				System.out.println("Received packet " + packet.getOpcode() + ", " + packet.getLength());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			if (packet != null) {
-				out.add(packet);
-			}
 		}
 	}
 	

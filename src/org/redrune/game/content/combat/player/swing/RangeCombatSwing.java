@@ -9,8 +9,8 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.calc.RangeCombatCalculator;
-import org.redrune.game.content.combat.player.registry.BowFireEvent;
-import org.redrune.game.content.combat.player.registry.SpecialAttackEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.BowFireEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.data.Hit;
@@ -60,7 +60,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 		// custom attack send
 		if (usingSpecial) {
 			special.fire(player, target, this, combatStyle);
-			player.getCombatDefinitions().modifySpecial(energyRequired);
+			player.getCombatDefinitions().reduceSpecial(energyRequired);
 		} else {
 			Optional<BowFireEvent> optional = CombatRegistry.getBow(weaponId);
 			if (!optional.isPresent()) {
@@ -94,7 +94,9 @@ public class RangeCombatSwing extends CombatTypeSwing {
 		appendExperience(attacker, receiver, hit.getDamage());
 		// handles the leeches aspect of the hit
 		if (receiver.isPlayer()) {
-			receiver.toPlayer().getManager().getPrayers().handleLeeches(hit);
+			receiver.toPlayer().getManager().getPrayers().handlePrayerEffects(hit);
+		} else {
+			receiver.toNPC().handlePrayerEffects(hit);
 		}
 		SystemManager.getScheduler().schedule(new ScheduledTask(delay) {
 			@Override

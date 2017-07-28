@@ -68,7 +68,8 @@ public class Misc {
 	 */
 	public static List<Object> getClassesInDirectory(String directory) {
 		List<Object> classes = new ArrayList<>();
-		final File[] files = new File(String.format("./bin/%s", directory.replace(".", "/"))).listFiles();
+		String format = String.format("./bin/%s", directory.replace(".", "/"));
+		final File[] files = new File(format).listFiles();
 		if (files == null) {
 			return classes;
 		}
@@ -76,11 +77,19 @@ public class Misc {
 			if (file.getName().contains("$") || file.getName().contains("dropbox")) {
 				continue;
 			}
-			try {
-				Object objectEvent = (Class.forName(directory + "." + file.getName().replace(".class", "")).newInstance());
-				classes.add(objectEvent);
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				e.printStackTrace();
+			// the file is a directory
+			if (file.isDirectory()) {
+				String fileToDirectory = file.getPath().replace("\\", ".");
+				fileToDirectory = fileToDirectory.substring(fileToDirectory.indexOf(".org") + 1, fileToDirectory.length());
+				List<Object> classesInDirectory = getClassesInDirectory(fileToDirectory);
+				classes.addAll(classesInDirectory);
+			} else {
+				try {
+					Object objectEvent = (Class.forName(directory + "." + file.getName().replace(".class", "")).newInstance());
+					classes.add(objectEvent);
+				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return classes;

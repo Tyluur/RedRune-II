@@ -133,11 +133,11 @@ public class Packet {
 	 * @return A V1 integer.
 	 */
 	public int readInt1() {
-		byte b1 = buffer.readByte();
-		byte b2 = buffer.readByte();
-		byte b3 = buffer.readByte();
-		byte b4 = buffer.readByte();
-		return ((b3 << 24) & 0xFF) | ((b4 << 16) & 0xFF) | ((b1 << 8) & 0xFF) | (b2 & 0xFF);
+		int b1 = buffer.readByte() & 0xFF;
+		int b2 = buffer.readByte() & 0xFF;
+		int b3 = buffer.readByte() & 0xFF;
+		int b4 = buffer.readByte() & 0xFF;
+		return (b3 << 24 | b4 << 16 | b1 << 8 | b2);
 	}
 	
 	/**

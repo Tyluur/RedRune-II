@@ -21,6 +21,7 @@ public class PrayerEffectRepository {
 	 * Registers all drain prayers into the database
 	 */
 	public static void registerAll() {
+		DRAIN_PRAYERS.clear();
 		Misc.getClassesInDirectory(DrainPrayer.class.getPackage().getName() + ".drain").stream().filter(DrainPrayer.class::isInstance).forEach(clazz -> DRAIN_PRAYERS.add((DrainPrayer) clazz));
 		System.out.println("Loaded " + DRAIN_PRAYERS.size() + " drain prayer effects.");
 	}
@@ -31,7 +32,7 @@ public class PrayerEffectRepository {
 	 * @param prayer
 	 * 		The prayer to find it by
 	 */
-	static Optional<DrainPrayer> getDrainPrayer(Prayer prayer) {
+	public static Optional<DrainPrayer> getDrainPrayer(Prayer prayer) {
 		return DRAIN_PRAYERS.stream().filter(drainPrayer -> drainPrayer.getPrayer().equals(prayer)).findFirst();
 	}
 	

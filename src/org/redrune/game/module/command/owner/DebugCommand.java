@@ -18,9 +18,10 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.getSkills().addExperienceNoMultiplier((short) intParam(args, 1), intParam(args, 2));
-//		player.getManager().getInterfaces().sendChatboxInterface(intParamOrDefault(args, 1, 740));
-//		player.getTransmitter().send(new FriendsListBuilder(args[1], "", intParam(args, 2), 0, true, boolParam(args, 3), boolParam(args, 4)).build(player));
+		//		player.getUpdateMasks().register(new FaceLocationUpdate(player, Location.create(intParam(args, 1), intParam(args, 2), player.getLocation().getPlane())));
+		//		player.getSkills().addExperienceNoMultiplier((short) intParam(args, 1), intParam(args, 2));
+		//		player.getManager().getInterfaces().sendChatboxInterface(intParamOrDefault(args, 1, 740));
+		//		player.getTransmitter().send(new FriendsListBuilder(args[1], "", intParam(args, 2), 0, true, boolParam(args, 3), boolParam(args, 4)).build(player));
 		/*if (boolParam(args, 1)) {
 			player.getManager().getInterfaces().sendPrimaryOverlay(intParam(args, 2));
 		} else {

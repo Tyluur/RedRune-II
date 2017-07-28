@@ -24,8 +24,7 @@ public class LockManager {
 	}
 	
 	/**
-	 * This method locks several {@link LockType}s for the given
-	 * delay
+	 * This method locks several {@link LockType}s for the given delay
 	 *
 	 * @param delay
 	 * 		The amount of time (in milliseconds) that we should lock the actions
@@ -90,6 +89,20 @@ public class LockManager {
 	 */
 	public boolean isLocked(LockType type) {
 		return durations[type.ordinal()] > System.currentTimeMillis();
+	}
+	
+	/**
+	 * This method checks if there is any {@code #lockDelays} index that is locked
+	 *
+	 * @return {@code True} if there is any index locked
+	 */
+	public boolean isAnyLocked() {
+		for (long lockDelay : durations) {
+			if (lockDelay > System.currentTimeMillis()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

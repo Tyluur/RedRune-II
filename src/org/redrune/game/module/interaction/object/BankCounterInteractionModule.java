@@ -18,7 +18,7 @@ public class BankCounterInteractionModule implements ObjectInteractionModule {
 	
 	@Override
 	public boolean handle(Player player, GameObject object, InteractionOption option) {
-		player.getBank().openBank();
+		player.getBank().open();
 		return true;
 	}
 }

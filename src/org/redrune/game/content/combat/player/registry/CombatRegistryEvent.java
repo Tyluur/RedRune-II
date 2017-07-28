@@ -15,4 +15,14 @@ public interface CombatRegistryEvent {
 	default String[] arguments(String... varArgs) {
 		return varArgs;
 	}
+	
+	/**
+	 * Converts a varargs parameter to the String[] array
+	 *
+	 * @param varArgs
+	 * 		The var args
+	 */
+	default int[] arguments(int... varArgs) {
+		return varArgs;
+	}
 }

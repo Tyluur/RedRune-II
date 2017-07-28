@@ -79,10 +79,7 @@ public class WildernessActivity extends Activity {
 				player.getTransmitter().sendMessage("That player is not in the wilderness.", false);
 				return true;
 			}
-			if (!wildernessLevelsVerified(target)) {
-				return true;
-			}
-			return true;
+			return !wildernessLevelsVerified(target);
 		} else {
 			return false;
 		}
