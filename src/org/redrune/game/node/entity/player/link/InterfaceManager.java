@@ -405,9 +405,10 @@ public final class InterfaceManager implements InterfaceConstants {
 	/**
 	 * Closes all interfaces
 	 */
-	public void closeAll() {
+	public InterfaceManager closeAll() {
 		closeInputBox();
 		closeAllInterfaces();
+		return this;
 	}
 	
 	/**

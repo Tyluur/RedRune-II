@@ -1,0 +1,71 @@
+[Wrappers/Systems]
++   Trade system
++   Interaction System
+	-   Holds the entity you're interacting with, starts the interacting by facing them, ends the interaction by stopping to face them.
+	-   extensions from an interaction could be tradeinteraction, we can use this to check if the trade should start and the system can run through the interaction system [interface simply calls the interaction class]
+
+[Necessities]
++   Stat restoration
+	-   Managed for poison/antifire
+	-   Potion mixing
++   Player file saving scheduled
++   Lacking a lot of xteas
++   Dropping items in the wilderness makes them automatically public
+	-   If the item is a food/potion it won't be public for the regular time.
++   Change settings to allow for different default values
+	PlayerVariables -> ACCEPTING_AID = false; DUAL_MOUSE_BUTTONS = TRUE;
++   Finish dynamic regions
++   Finish saving for activitys
+	-   They don't really save, but they look like they do!
+		+   [we save the name of the activity if the activity saves on logout, otherwise we set it to null]
+		+   we also save the last parameters used to start the last activity if the activity is saved on logout
+	-   Activites need to be rethought before this system goes anywhere
++   Add skulling
+
+[Unfinished]
++   Master Server Unfinished:
+	-   Reconnecting should push all the world list data to the master server
++   Finish all melee special attacks
+	-   Dragon mace,halberd,spear,longsword,scim,2h
+	-   Whip [vine too]
+	-   Statius warhammer
+	-   Vesta spear
+	-   Barrelchest anchor
++   Finish all range specials
+	-   Hand cannon
+	-   Crossbow bolt [e]
++   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
++   Teleport-other with closeby players [1 tile]
+	-   Interface 326
+	-   Can be done with one attribute
+	-   Example code from arios: https://paste.ee/p/trgn8
++   Magic Combat Spells
+	-   Regular Spellbook
+		-   Need to add all water/earth/fire/air combat spells
+		-   Need to add armadyl storm
+		-   Need to add teleblock
+		-   Need to add alchemy spells
+		-   Need to add bind/snare/entangle
+		-   Need to add vulnerability/enfeeble/stun
+		-   Need to add confuse/weaken/curse
+		-   Need to add god spells & charging
+	-   Ancient Spellbook
+		-   Need to add all ancient combat spells
+		-   Need to add miasmic effects on combat as well
++   'You can't reach that' [stops interaction through walls]
+	-   - you cant reach that when froze and tryna loot something > 1 tile away
++
+
+[Data]
++	NPC examines
++	Object examines
+
+[Statistics]
++   Amount of players registered
++   Amount of players dead
++   Amount of npcs killed
++   Amount of times people logged in
++   Amount of times people logged out
++   Amount of times people talked [public/pm/friends]
++   Amount of time spent
+	-   Inactivity starts when we don't click/type for > a minute

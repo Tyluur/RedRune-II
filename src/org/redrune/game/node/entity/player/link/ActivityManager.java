@@ -35,6 +35,7 @@ public class ActivityManager {
 		this.activity = activity;
 		this.activity.setPlayer(player);
 		this.activity.start();
+		System.out.println("started activity: " + activity);
 	}
 	
 	/**
@@ -101,7 +102,11 @@ public class ActivityManager {
 	 * Gets the activity
 	 */
 	public Optional<Activity> getActivity() {
-		return Optional.ofNullable(activity);
+		if (activity == null) {
+			return Optional.empty();
+		} else {
+			return Optional.of(activity);
+		}
 	}
 	
 	/**

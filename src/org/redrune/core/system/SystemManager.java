@@ -2,7 +2,6 @@ package org.redrune.core.system;
 
 import org.redrune.core.MajorUpdateWorker;
 import org.redrune.core.task.Scheduler;
-import org.redrune.core.task.impl.EnergyRestorationTask;
 import org.redrune.game.GameFlags;
 import org.redrune.utility.backend.OutLogger;
 import org.redrune.utility.backend.UnexpectedArgsException;
@@ -56,15 +55,7 @@ public class SystemManager {
 	 */
 	public static void start() {
 		MAJOR_UPDATE_WORKER.start();
-		dumpTasks();
 		Runtime.getRuntime().addShutdownHook(FINALIZATION);
-	}
-	
-	/**
-	 * Dumps all the tasks
-	 */
-	private static void dumpTasks() {
-		SCHEDULER.schedule(new EnergyRestorationTask());
 	}
 	
 	/**

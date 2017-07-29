@@ -205,7 +205,7 @@ public class ItemEvent extends Event<ItemEventContext> {
 	 */
 	public static void handleItemEquipping(Player player, Item item, int slotId) {
 		Object[] equipData = canEquip(player, item);
-		if (equipData == null || equipData.length != 3 || !(boolean) equipData[1]) {
+		if (equipData == null || equipData.length != 3 || !(boolean) equipData[1] || player.isDying() || player.isDead()) {
 			return;
 		}
 		int targetSlot = (int) equipData[0];

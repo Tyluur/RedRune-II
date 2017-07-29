@@ -10,7 +10,7 @@
 # [PVM] #
 1.  Use all the npc data in json from HDPvP for npcs which do not need custom scripts
 	-   Rock crabs, baby blue dragons, that kind of shit
-2.   Use a formula for multi zone checking, for npcs not stacking on the same tile [i.e. you have rock crabs in a row ready to fight you]
+2.  Use a formula for multi zone checking, for npcs not stacking on the same tile [i.e. you have rock crabs in a row ready to fight you]
 
 # [EXCHANGE] #
 1.  Trade system
@@ -35,6 +35,7 @@
 2.  Grand Exchange
 	-   This is completely player - player, but with some stock items so that it's simple enough
 	-   The code from hdpvp can be used - bug and dupe free.
+	-	For multi-world engagement, this will require a sql database for saving.
 
 # [FORUM INTEGRATION]
 

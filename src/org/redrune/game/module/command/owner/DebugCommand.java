@@ -18,6 +18,62 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
+		player.getTransmitter().sendSettings();
+		/*List<Entity> entityList = new ArrayList<>();
+		entityList.addAll(player.getRegion().getNpcs());
+		for (Player o : player.getRegion().getPlayers()) {
+			if (o == null || o == player) {
+				continue;
+			}
+			entityList.add(o);
+		}
+		if (entityList.isEmpty()) {
+			System.out.println("Empty");
+			return;
+		}
+		entityList.sort(Comparator.comparingInt(o -> o.getLocation().getDistance(player.getLocation())));
+		Entity e = entityList.get(0);
+		System.out.println("E = " + e);
+		Hit hit = new Hit(player, 0, HitSplat.MELEE_DAMAGE);
+		
+		
+		Player source = player;
+		// the instance of the sources prayer
+		PrayerManager sourcePrayer = source.getManager().getPrayers();
+		
+		// we only want to find the drain prayers
+		List<Prayer> drainers = sourcePrayer.getActivePrayers().stream().filter(Prayer::isDrainer).collect(Collectors.toList());
+		
+		// the message to sent
+		String message = null;
+		
+		// loops through all the drain prayers
+		for (Prayer prayer : drainers) {
+			// the optional drain instance
+			Optional<DrainPrayer> optional = PrayerEffectRepository.getDrainPrayer(prayer);
+			if (!optional.isPresent()) {
+				System.out.println("Unable to find drain for " + prayer);
+				continue;
+			}
+			// the drain prayer
+			DrainPrayer drain = optional.get();
+			// if the source has maxed its drain and the receiver has reached its least bonuses
+			if (sourcePrayer.maxed(null, prayer, drain.raiseSource())) {
+				message = ("Your opponent has been weakened so much that your " + (prayer.isSap() ? "sap" : "leech") + " curse has no effect.");
+			} else {
+				source.sendAnimation(drain.startAnimationId());
+				if (drain.startGraphicsId() > 0) {
+					source.sendGraphics(drain.startGraphicsId());
+				}
+				sourcePrayer.modify(null, sourcePrayer, drain.prayerSlots(), drain.amounts(), drain.drainCap(), drain.raiseCap(), drain.raiseSource());
+				sourcePrayer.visualizeLeech(source, e, drain.projectileId(), drain.landingGraphicsId());
+			}
+		}
+		if (message != null) {
+			source.getTransmitter().sendMessage(message, false);
+		}
+		*/
+		
 		//		player.getUpdateMasks().register(new FaceLocationUpdate(player, Location.create(intParam(args, 1), intParam(args, 2), player.getLocation().getPlane())));
 		//		player.getSkills().addExperienceNoMultiplier((short) intParam(args, 1), intParam(args, 2));
 		//		player.getManager().getInterfaces().sendChatboxInterface(intParamOrDefault(args, 1, 740));

@@ -219,9 +219,10 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 					}
 				}
 				// make sure we can fight in the activity
-				if (!player.getManager().getActivities().handleNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
-					player.getManager().getActions().startAction(new PlayerCombatAction(npc));
+				if (player.getManager().getActivities().handleNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
+					return;
 				}
+				player.getManager().getActions().startAction(new PlayerCombatAction(npc));
 				break;
 			case EXAMINE:
 				player.getTransmitter().sendMessage(npc.toString(), true);

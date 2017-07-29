@@ -33,7 +33,7 @@ public class RegionDeletion {
 		int count = 0;
 		for (String line : Misc.getFileText(DELETE_FILE_LOCATION)) {
 			line = line.trim();
-			if (line.startsWith("/")) {
+			if (line.startsWith("/") || line.length() <= 0) {
 				continue;
 			}
 			String[] split = line.split(" ");

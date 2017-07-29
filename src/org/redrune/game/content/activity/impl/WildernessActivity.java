@@ -23,7 +23,7 @@ public class WildernessActivity extends Activity {
 	/**
 	 * If we're showing the skull on the wilderness level component
 	 */
-	private boolean showingSkull;
+	private transient boolean showingSkull;
 	
 	@Override
 	public void start() {
@@ -66,7 +66,7 @@ public class WildernessActivity extends Activity {
 			}
 		} else if (isAtWild) {
 			// we moved while we're still in the wild
-		} else if (!isAtWildSafe && !isAtWild) {
+		} else if (!isAtWildSafe) {
 			// we're not in the wilderness anymore
 			end();
 		}
@@ -103,6 +103,27 @@ public class WildernessActivity extends Activity {
 		}
 		return true;
 	}
+	
+	/*
+	TODO:
+	@Override
+	public boolean keepCombating(Entity target) {
+		if (target instanceof NPC) {
+			return true;
+		}
+		if (!canAttack(target)) {
+			return false;
+		}
+		if (target.getAttackedBy() != player && player.getAttackedBy() != target) {
+			player.setWildernessSkull();
+		}
+		if (player.getCombatDefinitions().getSpellId() <= 0 && Utils.inCircle(new WorldTile(3105, 3933, 0), target, 24)) {
+			player.getPackets().sendGameMessage("You can only use magic in the arena.");
+			return false;
+		}
+		return true;
+	}
+	 */
 	
 	/**
 	 * Sends the death container

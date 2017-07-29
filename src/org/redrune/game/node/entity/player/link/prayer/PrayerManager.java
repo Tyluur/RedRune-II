@@ -1146,9 +1146,14 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 * 		The id of the projectile
 	 */
 	public void visualizeLeech(Entity source, Entity target, int projectileId, int landingGraphicsId) {
+		final int projectileDelay = ProjectileManager.getProjectileDelay(source, target);
+		double delayCalc = ProjectileManager.getDelay(source, target, projectileDelay, 0);
+		int totalDelay = (int) (delayCalc + projectileDelay);
+		
+		// the additional calculation
 		final int speed = ProjectileManager.getSpeedModifier(source, target);
 		ProjectileManager.sendProjectile(new Projectile(source, target, projectileId, 0, 10, 0, speed, 15, 0));
-		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+		SystemManager.getScheduler().schedule(new ScheduledTask(totalDelay) {
 			@Override
 			public void run() {
 				target.sendGraphics(landingGraphicsId);

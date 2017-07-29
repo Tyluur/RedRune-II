@@ -1,4 +1,4 @@
-package org.redrune.game.content.combat.player.registry.spell;
+package org.redrune.game.content.combat.player.registry.spell.modern;
 
 import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
@@ -10,16 +10,16 @@ import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/23/2017
  */
-public class WaterStrikeEvent implements CombatSpellEvent {
+public class WindRushEvent implements CombatSpellEvent {
 	
 	@Override
 	public int spellId() {
-		return 28;
+		return 98;
 	}
 	
 	@Override
 	public int delay() {
-		return 5;
+		return 3;
 	}
 	
 	@Override
@@ -29,17 +29,17 @@ public class WaterStrikeEvent implements CombatSpellEvent {
 	
 	@Override
 	public int hitGfx() {
-		return 2708;
+		return 2700;
 	}
 	
 	@Override
 	public int maxHit() {
-		return 40;
+		return 10;
 	}
 	
 	@Override
 	public double exp() {
-		return 7.5;
+		return 2.5;
 	}
 	
 	@Override
@@ -49,8 +49,7 @@ public class WaterStrikeEvent implements CombatSpellEvent {
 	
 	@Override
 	public void cast(Player player, CombatSpellContext context) {
-		player.sendGraphics(2701);
-		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, context.getTarget(), 2703, 30, 26, 52, 0, 0));
+		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, context.getTarget(), 2699, 30, 26, 52, 0, 0));
 		context.getSwing().sendSpell(player, context.getTarget(), this);
 	}
 }

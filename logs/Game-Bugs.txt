@@ -1,4 +1,0 @@
-If a new login request is sent [new session made] and the old one registered, you remain online.
-Multiplayer doesn't work because of new deob.....
-Transforming doesnt work properly [mask does, data isn't set]
-Dialogues still open using 12345 keys when closed

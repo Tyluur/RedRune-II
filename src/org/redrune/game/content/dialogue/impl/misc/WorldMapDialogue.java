@@ -12,6 +12,9 @@ public class WorldMapDialogue extends Dialogue {
 	
 	@Override
 	public void constructMessages(Player player) {
-		construct(new OptionDialogueMessage("Open World Map?", new String[] { "Yes", "No" }, () -> player.getManager().getInterfaces().openWorldMap(), () -> end(player)));
+		construct(new OptionDialogueMessage("Open World Map?", new String[] { "Yes", "No" }, () -> {
+			player.getManager().getInterfaces().openWorldMap();
+			end(player);
+		}, () -> end(player)));
 	}
 }

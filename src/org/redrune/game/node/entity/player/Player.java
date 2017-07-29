@@ -17,6 +17,7 @@ import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
+import org.redrune.game.node.entity.player.link.prayer.Prayer;
 import org.redrune.game.node.entity.player.render.PlayerRendering;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
@@ -177,7 +178,7 @@ public final class Player extends Entity {
 	
 	@Override
 	public int getMaxHealth() {
-		return skills.getLevelForXp(SkillConstants.HITPOINTS) * 10;
+		return skills.getLevelForXp(SkillConstants.HITPOINTS) * 10 + equipment.getMaxHealthBoost();
 	}
 	
 	@Override
@@ -237,6 +238,21 @@ public final class Player extends Entity {
 		getRegion().handleRegionEntry(this);
 	}
 	
+	@Override
+	public boolean restoreHitPoints() {
+		boolean update = super.restoreHitPoints();
+		if (update) {
+			if (getManager().getPrayers().prayerOn(Prayer.RAPID_HEAL)) {
+				super.restoreHitPoints();
+			}
+			if (getAttribute("resting", false)) {
+				super.restoreHitPoints();
+			}
+			transmitter.refreshHealthPoints();
+		}
+		return update;
+	}
+	
 	/**
 	 * Gets the amount of health points we have
 	 */
@@ -248,7 +264,7 @@ public final class Player extends Entity {
 	@Override
 	public void setHealthPoints(int healthPoints) {
 		variables.setHealthPoints(healthPoints);
-		transmitter.refreshHealthPoints(healthPoints);
+		transmitter.refreshHealthPoints();
 	}
 	
 	@Override
@@ -280,7 +296,7 @@ public final class Player extends Entity {
 			hit.getSource().getHitMap().applyHit(new Hit(this, (int) Math.floor(hit.getDamage() * 0.75), HitSplat.REGULAR_DAMAGE));
 		}
 		// the hit is no longer modifiable, the actual damage received will be stored now.
-		transmitter.refreshHealthPoints(variables.getHealthPoints());
+		transmitter.refreshHealthPoints();
 	}
 	
 	@Override
@@ -342,23 +358,6 @@ public final class Player extends Entity {
 		});
 	}
 	
-	/**
-	 * Sends the settings to the client
-	 */
-	public void sendSettings() {
-		transmitter.send(new ConfigFilePacketBuilder(8780, variables.isFilteringProfanity() ? 0 : 1).build(this));
-		transmitter.send(new ConfigPacketBuilder(170, getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 0 : 1).build(this));
-		transmitter.send(new ConfigPacketBuilder(171, getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true) ? 0 : 1).build(this));
-		transmitter.send(new ConfigPacketBuilder(427, variables.isAcceptingAid() ? 1 : 0).build(this));
-		
-		transmitter.send(new ConfigPacketBuilder(1240, getVariables().getHealthPoints() * 2).build(this));
-		transmitter.send(new ConfigPacketBuilder(2382, getVariables().getPrayerPoints()).build(this));
-		
-		transmitter.refreshRunOrbStatus();
-		transmitter.refreshEnergy();
-		transmitter.refreshHealthPoints(getHealthPoints());
-	}
-	
 	@Override
 	public void restoreAll() {
 		skills.restoreAll();
@@ -371,7 +370,7 @@ public final class Player extends Entity {
 		getCombatDefinitions().setSpecialActivated(false);
 		getCombatDefinitions().resetSpells(true);
 		unfreeze();
-		sendSettings();
+		transmitter.sendSettings();
 		
 		getUpdateMasks().register(new AppearanceUpdate(this));
 		manager.getLocks().unlockAll();
@@ -509,7 +508,7 @@ public final class Player extends Entity {
 	public void logout(boolean lobby) {
 		long currentTime = System.currentTimeMillis();
 		if (getAttackedByDelay() + 10000 > currentTime) {
-			transmitter.sendMessage("You can't log out until 10 seconds after the end of combat.");
+			transmitter.sendUnrepeatingMessages("You can't log out until 10 seconds after the end of combat.");
 			return;
 		}
 		transmitter.sendLogout(lobby);

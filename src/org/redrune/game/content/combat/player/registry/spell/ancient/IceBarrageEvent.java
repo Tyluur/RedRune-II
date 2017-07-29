@@ -1,4 +1,4 @@
-package org.redrune.game.content.combat.player.registry.spell;
+package org.redrune.game.content.combat.player.registry.spell.ancient;
 
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;

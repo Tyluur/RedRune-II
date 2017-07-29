@@ -8,6 +8,8 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.link.prayer.Prayer;
 import org.redrune.game.node.entity.player.render.UpdateMasks;
 import org.redrune.game.node.entity.player.render.flag.impl.*;
 import org.redrune.game.node.object.GameObject;
@@ -15,6 +17,7 @@ import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.backend.Priority;
+import org.redrune.utility.tool.RandomFunction;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -389,6 +392,36 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public boolean attackable(Entity entity) {
 		return true;
+	}
+	
+	/**
+	 * Restores the entity's hitpoints by 1
+	 */
+	public boolean restoreHitPoints() {
+		int maxHp = getMaxHealth();
+		int healthPoints = getHealthPoints();
+		if (healthPoints > maxHp) {
+			if (isPlayer()) {
+				Player player = (Player) this;
+				if (player.getManager().getPrayers().prayerOn(Prayer.BERSERKER) && RandomFunction.getRandom(100) <= 15) {
+					return false;
+				}
+			}
+			setHealthPoints(healthPoints - 1);
+			return true;
+		} else if (healthPoints < maxHp) {
+			setHealthPoints(healthPoints + 1);
+			if (isPlayer()) {
+				Player player = toPlayer();
+				if (player.getManager().getPrayers().prayerOn(Prayer.RAPID_HEAL) && healthPoints < maxHp) {
+					setHealthPoints(healthPoints + 1);
+				} else if (player.getManager().getPrayers().prayerOn(Prayer.RAPID_RENEWAL) && healthPoints < maxHp) {
+					setHealthPoints(healthPoints + (healthPoints + 4 > maxHp ? maxHp - healthPoints : 4));
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	/**

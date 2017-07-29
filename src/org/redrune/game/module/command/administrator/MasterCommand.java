@@ -30,6 +30,6 @@ public class MasterCommand extends CommandModule {
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
 		player.getVariables().setHealthPoints(player.getSkills().getLevelForXp(SkillConstants.HITPOINTS) * 10);
 		player.getVariables().setPrayerPoints(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10);
-		player.sendSettings();
+		player.getTransmitter().sendSettings();
 	}
 }

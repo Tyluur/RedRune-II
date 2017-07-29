@@ -49,7 +49,7 @@ public enum AttributeKey {
 	
 	FILTERING_PROFANITY,
 	
-	MOUSE_BUTTONS,
+	DUAL_MOUSE_BUTTONS,
 	
 	CHAT_EFFECTS,
 	

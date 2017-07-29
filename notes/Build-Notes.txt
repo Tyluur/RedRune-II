@@ -6,15 +6,6 @@ Combat notes:
 
 Tree stumps
 	https://www.rune-server.ee/runescape-development/rs2-server/requests/590826-tree-stump-ids.html#post4839115
-	
-- blood blitz
-- blood barrage
-- teleblock
-- you cant reach that when froze and tryna loot something > 1 tile away
-- activity system [controllers v2]
-- stop interacting through walls
-- interaction system [trading/duelling]
-	-   could be applicable to npc interacting with a player...
 
 1. Master Server Goes Online
 2. Master Client [Communication] connects to master server

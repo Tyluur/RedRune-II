@@ -8,6 +8,9 @@ import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.boot.BootHandler;
 import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.impl.EnergyRestorationTask;
+import org.redrune.core.task.impl.HitpointsRestorationTask;
+import org.redrune.core.task.impl.SkillRestorationTask;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.game.content.activity.impl.WildernessActivity;
@@ -144,6 +147,8 @@ public final class World implements SequentialService {
 		SystemManager.start();
 		// master server can now listen
 		MasterCommunication.start();
+		// start the world tasks now that everything has loaded
+		generateWorldTasks();
 		try {
 			// this waits for the session to close, so anything after this method will not execute until shutdown
 			WorldNetwork.bind();
@@ -151,6 +156,15 @@ public final class World implements SequentialService {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	/**
+	 * Generates tasks that operate for the world
+	 */
+	private void generateWorldTasks() {
+		SystemManager.getScheduler().schedule(new EnergyRestorationTask());
+		SystemManager.getScheduler().schedule(new SkillRestorationTask());
+		SystemManager.getScheduler().schedule(new HitpointsRestorationTask());
 	}
 	
 	/**

@@ -236,7 +236,7 @@ public final class PlayerAppearance {
 	 * @param color
 	 * 		The colour.
 	 */
-	public void setColor(byte slot, byte color) {
+	public void setColor(int slot, int color) {
 		this.colors[slot] = color;
 	}
 	

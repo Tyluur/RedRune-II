@@ -129,6 +129,25 @@ public class Hit {
 	}
 	
 	/**
+	 * Gets an attribute
+	 *
+	 * @param key
+	 * 		The key of the attribute
+	 * @param defaultValue
+	 * 		The default value to return
+	 * @param <K>
+	 * 		The attribute tyle
+	 */
+	@SuppressWarnings("unchecked")
+	public <K> K getAttribute(HitAttributes key, K defaultValue) {
+		K value = (K) attributes.get(key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
+	}
+	
+	/**
 	 * Represents the damage types.
 	 *
 	 * @author Emperor
@@ -180,6 +199,7 @@ public class Hit {
 	public enum HitAttributes {
 		HIT_SOUND,
 		WEAPON_USED,
-		SPECIAL_ATTACK_USED
+		SPECIAL_ATTACK_USED,
+		FORCE_LEECH
 	}
 }

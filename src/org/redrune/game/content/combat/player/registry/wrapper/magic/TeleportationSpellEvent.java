@@ -2,6 +2,7 @@ package org.redrune.game.content.combat.player.registry.wrapper.magic;
 
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
+import org.redrune.game.content.activity.ActivitySystem;
 import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.registry.CombatRegistryEvent;
@@ -33,17 +34,24 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 	 */
 	Location destination();
 	
+	/**
+	 * If the teleport spell should randomize the coordinates to arrive at
+	 */
+	default boolean randomize() {
+		return true;
+	}
+	
 	@Override
 	default void cast(Player player, MagicSpellContext context) {
 		switch (book()) {
 			case REGULAR:
-				sendModernTeleport(player, destination(), levelRequired(), exp(), runesRequired());
+				sendModernTeleport(player, destination(), levelRequired(), exp(), randomize(), runesRequired());
 				break;
 			case ANCIENTS:
-				sendAncientsTeleport(player, destination(), levelRequired(), exp(), runesRequired());
+				sendAncientsTeleport(player, destination(), levelRequired(), exp(), randomize(), runesRequired());
 				break;
 			case LUNARS:
-				sendLunarTeleport(player, destination(), levelRequired(), exp(), runesRequired());
+				sendLunarTeleport(player, destination(), levelRequired(), exp(), randomize(), runesRequired());
 				break;
 		}
 	}
@@ -56,8 +64,8 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 	 * @param destination
 	 * 		The destination
 	 */
-	static void sendModernTeleport(Player player, Location destination, int level, double xp, int... runes) {
-		sendTeleportSpell(player, 8939, 8941, 1576, 1577, level, xp, destination, 3, true, TeleportType.SPELL, runes);
+	static void sendModernTeleport(Player player, Location destination, int level, double xp, boolean randomize, int... runes) {
+		sendTeleportSpell(player, 8939, 8941, 1576, 1577, level, xp, destination, 3, randomize, TeleportType.SPELL, runes);
 	}
 	
 	/**
@@ -68,8 +76,8 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 	 * @param destination
 	 * 		The destination
 	 */
-	static void sendAncientsTeleport(Player player, Location destination, int level, double xp, int... runes) {
-		sendTeleportSpell(player, 1979, -1, 1681, -1, level, xp, destination, 5, true, TeleportType.SPELL, runes);
+	static void sendAncientsTeleport(Player player, Location destination, int level, double xp, boolean randomize, int... runes) {
+		sendTeleportSpell(player, 1979, -1, 1681, -1, level, xp, destination, 5, randomize, TeleportType.SPELL, runes);
 		
 	}
 	
@@ -81,8 +89,8 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 	 * @param destination
 	 * 		The destination
 	 */
-	static void sendLunarTeleport(Player player, Location destination, int level, double xp, int... runes) {
-		sendTeleportSpell(player, 9606, -1, 1685, -1, level, xp, destination, 6, true, TeleportType.SPELL, runes);
+	static void sendLunarTeleport(Player player, Location destination, int level, double xp, boolean randomize, int... runes) {
+		sendTeleportSpell(player, 9606, -1, 1685, -1, level, xp, destination, 6, randomize, TeleportType.SPELL, runes);
 	}
 	
 	/**
@@ -162,6 +170,7 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 						}
 						//player.getPackets().sendSound(5524, 0, 2);
 						player.turnToLocation(Location.create(location.getX(), location.getY() - 1, location.getPlane()));
+						ActivitySystem.fireLocationUpdate(player, location);
 					}
 					if (xp != 0) {
 						player.getSkills().addExperienceWithMultiplier(SkillConstants.MAGIC, xp);

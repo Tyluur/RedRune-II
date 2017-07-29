@@ -44,7 +44,7 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 				if (componentId == 1) {
 					if (packetId == FIRST_PACKET_ID) {
 						player.getVariables().setRunToggled(!player.getVariables().isRunToggled());
-						player.sendSettings();
+						player.getTransmitter().sendSettings();
 						return true;
 					} else if (packetId == SECOND_PACKET_ID) {
 						player.getManager().getActions().startAction(new PlayerRestAction());
@@ -77,22 +77,22 @@ public class GameframeInteractionModule implements InterfaceInteractionModule, N
 				switch (componentId) {
 					case 3:
 						player.getVariables().putAttribute(AttributeKey.FILTERING_PROFANITY, !player.getVariables().getAttribute(AttributeKey.FILTERING_PROFANITY, false));
-						player.sendSettings();
+						player.getTransmitter().sendSettings();
 						return true;
 					case 4:
-						player.getVariables().putAttribute(AttributeKey.CHAT_EFFECTS, !player.getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, true));
-						player.sendSettings();
+						player.getVariables().putAttribute(AttributeKey.CHAT_EFFECTS, !player.getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, false));
+						player.getTransmitter().sendSettings();
 						return true;
 					case 5:
 						player.getManager().getInterfaces().sendTab(GameTab.OPTIONS, CHAT_SETUP_INTERFACE_ID);
 						return true;
 					case 6:
-						player.getVariables().putAttribute(AttributeKey.MOUSE_BUTTONS, player.getVariables().getAttribute(AttributeKey.MOUSE_BUTTONS, 0) == 0 ? 1 : 0);
-						player.sendSettings();
+						player.getVariables().putAttribute(AttributeKey.DUAL_MOUSE_BUTTONS, !player.getVariables().getAttribute(AttributeKey.DUAL_MOUSE_BUTTONS, false));
+						player.getTransmitter().sendSettings();
 						return true;
 					case 7:
 						player.getVariables().putAttribute(AttributeKey.ACCEPTING_AID, !player.getVariables().getAttribute(AttributeKey.ACCEPTING_AID, true));
-						player.sendSettings();
+						player.getTransmitter().sendSettings();
 						return true;
 					case 14:
 						player.getManager().getInterfaces().sendInterface(742, false);

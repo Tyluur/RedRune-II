@@ -1,4 +1,4 @@
-package org.redrune.game.content.combat.player.registry.spell;
+package org.redrune.game.content.combat.player.registry.spell.modern;
 
 import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;

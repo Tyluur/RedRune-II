@@ -5,6 +5,7 @@ import org.redrune.game.GameConstants;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.outgoing.impl.*;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 import org.redrune.utility.rs.input.InputResponse;
@@ -37,7 +38,7 @@ public final class Transmitter {
 		
 		player.loadMapRegions();
 		player.getManager().getInterfaces().sendLogin();
-		player.sendSettings();
+		player.getTransmitter().sendSettings();
 		sendDefaultConfigs();
 		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!");
 		return this;
@@ -387,11 +388,9 @@ public final class Transmitter {
 	/**
 	 * Refreshes the amount of health points we have
 	 *
-	 * @param amount
-	 * 		The amount
 	 */
-	public void refreshHealthPoints(int amount) {
-		send(new ConfigPacketBuilder(1240, amount << 1).build(player));
+	public void refreshHealthPoints() {
+		send(new ConfigPacketBuilder(1240, player.getHealthPoints() << 1).build(player));
 	}
 	
 	/**
@@ -404,4 +403,22 @@ public final class Transmitter {
 		send(new LogoutBuilder(lobby).build(player));
 	}
 	
+	/**
+	 * Sends the settings to the client
+	 */
+	public void sendSettings() {
+		// these use 0 for on and 1 for off for some reason
+		send(new ConfigFilePacketBuilder(8780, player.getVariables().isFilteringProfanity() ? 0 : 1).build(player));
+		send(new ConfigPacketBuilder(170, player.getVariables().getAttribute(AttributeKey.DUAL_MOUSE_BUTTONS, false) ? 0 : 1).build(player));
+		send(new ConfigPacketBuilder(171, player.getVariables().getAttribute(AttributeKey.CHAT_EFFECTS, false) ? 0 : 1).build(player));
+		// accept aid builds regular
+		send(new ConfigPacketBuilder(427, player.getVariables().isAcceptingAid() ? 1 : 0).build(player));
+		// these have custom values anyway
+		send(new ConfigPacketBuilder(1240, player.getVariables().getHealthPoints() * 2).build(player));
+		send(new ConfigPacketBuilder(2382, player.getVariables().getPrayerPoints()).build(player));
+		
+		refreshRunOrbStatus();
+		refreshEnergy();
+		refreshHealthPoints();
+	}
 }

@@ -76,7 +76,7 @@ public class RegionManager {
 		entity.checkMultiArea();
 		// we update the location to the activities
 		if (entity.isPlayer()) {
-			ActivitySystem.fireLocationUpdate(entity.toPlayer());
+			ActivitySystem.fireLocationUpdate(entity.toPlayer(), entity.getLocation());
 		}
 	}
 	

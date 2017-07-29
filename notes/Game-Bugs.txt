@@ -1,0 +1,6 @@
+If a new login request is sent [new session made] and the old one registered, you remain online.
+Multiplayer doesn't work because of new deob.....
+Dialogues still open using 12345 keys when closed
+Activitys don't save on logout
+	-   Lets save everything about the activity using serialization, objects that will be circular reference will not be saved [transient] and incase of a saving glitch, we will save only username for players in that case.
+Removed objects from region don't remove the clipping masks

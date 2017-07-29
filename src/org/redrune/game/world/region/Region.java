@@ -289,6 +289,9 @@ public class Region {
 	void spawnObject(GameObject object, int localX, int localY, boolean original) {
 		if (original) {
 			if (deleteListContains(object)) {
+				System.out.println("[" + object + "][" + localX + "][" + localY + "]");
+				unclip(object, localX, localY);
+				removedObjects.add(object);
 				return;
 			}
 			addDefaultObject(object);
@@ -436,6 +439,7 @@ public class Region {
 		int type = object.getType();
 		int rotation = object.getRotation();
 		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
+			System.out.println("Unable to unclip " + object);
 			return;
 		}
 		ObjectDefinition objectDefinition = object.getDefinitions();

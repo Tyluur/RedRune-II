@@ -235,7 +235,7 @@ public class EntityMovement {
 	public void reset(boolean forceRun) {
 		if (forceRun && entity.isPlayer()) {
 			entity.toPlayer().getVariables().setRunToggled(true);
-			entity.toPlayer().sendSettings();
+			entity.toPlayer().getTransmitter().sendSettings();
 		}
 		resetWalkSteps();
 	}

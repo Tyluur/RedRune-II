@@ -27,7 +27,7 @@ public class RouteFinder {
 			case WALK_ROUTEFINDER:
 				return WalkRouteFinder.findRoute(srcX, srcY, srcZ, srcSizeXY, strategy, findAlternative);
 			default:
-				throw new RuntimeException("Unknown routefinder type.");
+				throw new RuntimeException("Unknown route finder type.");
 		}
 	}
 	

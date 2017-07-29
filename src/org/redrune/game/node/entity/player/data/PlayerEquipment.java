@@ -3,17 +3,17 @@ package org.redrune.game.node.entity.player.data;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.data.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
+import org.redrune.network.world.packet.outgoing.impl.ContainerPacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.ContainerUpdateBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.cache.parse.definition.ItemDefinition;
-import org.redrune.network.world.packet.outgoing.impl.ContainerPacketBuilder;
 
 import java.util.HashMap;
 
@@ -48,6 +48,13 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	private transient double weight;
 	
 	/**
+	 * The boost past max health that the equipment gives the player [torva etc]
+	 */
+	@Getter
+	@Setter
+	private transient int maxHealthBoost;
+	
+	/**
 	 * Sends the full container of items
 	 */
 	public void sendContainer() {
@@ -60,7 +67,7 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 			weight += ItemRepository.getWeight(item.getId(), true);
 		}
 		this.weight = weight;
-		player.getTransmitter().sendWeight();
+		refresh();
 	}
 	
 	/**
@@ -74,6 +81,7 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 			player.getTransmitter().send(new ContainerUpdateBuilder(94, items.toArray(), slots).build(player));
 		}
 		updateBonuses();
+		updateHealthBoosts();
 	}
 	
 	/**
@@ -100,6 +108,26 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 		}
 		this.weight = weight;
 		player.getTransmitter().sendWeight();
+	}
+	
+	/**
+	 * Updates the health boost
+	 */
+	private void updateHealthBoosts() {
+		double hpIncrease = calculateEquipmentHpBoost();
+		// the boosts changed, the player should not be able to maintain boosts
+		int previousBoost = maxHealthBoost;
+		if (hpIncrease != maxHealthBoost) {
+			maxHealthBoost = (int) hpIncrease;
+		}
+		// the new boost is less than the old one, so we must reduce if necessary
+		// this is so we don't have 1390 hp after removing torva
+		if (hpIncrease < previousBoost) {
+			if (player.getHealthPoints() >= player.getMaxHealth()) {
+				player.setHealthPoints(player.getMaxHealth() + (int) hpIncrease);
+				player.getTransmitter().refreshHealthPoints();
+			}
+		}
 	}
 	
 	/**
@@ -250,4 +278,52 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 		return 1;
 	}
 	
+	/**
+	 * Calculates the hitpoints from the equipped armour boost
+	 */
+	private double calculateEquipmentHpBoost() {
+		double hpBoost = 0;
+		for (int index = 0; index < items.getSize(); index++) {
+			Item item = items.get(index);
+			if (item == null) {
+				continue;
+			}
+			int id = item.getId();
+			if (index == SLOT_HAT) {
+				switch (id) {
+					case 20135:
+					case 20137:
+					case 20147:
+					case 20149:
+					case 20159:
+					case 20161:
+						hpBoost += 66;
+						break;
+				}
+			} else if (index == SLOT_CHEST) {
+				switch (id) {
+					case 20139:
+					case 20141:
+					case 20151:
+					case 20153:
+					case 20163:
+					case 20165:
+						hpBoost += 200;
+						break;
+				}
+			} else if (index == SLOT_LEGS) {
+				switch (id) {
+					case 20143:
+					case 20145:
+					case 20155:
+					case 20157:
+					case 20167:
+					case 20169:
+						hpBoost += 134;
+						break;
+				}
+			}
+		}
+		return hpBoost;
+	}
 }

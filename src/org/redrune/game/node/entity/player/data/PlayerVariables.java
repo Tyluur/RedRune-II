@@ -17,10 +17,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class PlayerVariables {
 	
+	public PlayerVariables() {
+		this.storedAttributes = new ConcurrentHashMap<>();
+		putAttributeIfEmpty(AttributeKey.FILTERING_PROFANITY, false);
+		putAttributeIfEmpty(AttributeKey.CHAT_EFFECTS, true);
+		putAttributeIfEmpty(AttributeKey.ACCEPTING_AID, false);
+		putAttributeIfEmpty(AttributeKey.DUAL_MOUSE_BUTTONS, true);
+	}
+	
 	/**
 	 * The map of saved attributes
 	 */
-	private final ConcurrentHashMap<AttributeKey, Object> storedAttributes = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<AttributeKey, Object> storedAttributes;
 	
 	/**
 	 * The health points of the player
@@ -137,6 +145,21 @@ public final class PlayerVariables {
 	 * @param value
 	 * 		The value
 	 */
+	public <K> K putAttributeIfEmpty(AttributeKey key, K value) {
+		if (!storedAttributes.containsKey(key)) {
+			storedAttributes.put(key, value);
+		}
+		return value;
+	}
+	
+	/**
+	 * Puts the key into the attributes map
+	 *
+	 * @param key
+	 * 		The key
+	 * @param value
+	 * 		The value
+	 */
 	public <K> K putAttribute(AttributeKey key, K value) {
 		storedAttributes.put(key, value);
 		return value;
@@ -189,6 +212,7 @@ public final class PlayerVariables {
 	 * 		The value to return if the key doesnt exist in the map
 	 */
 	@SuppressWarnings("unchecked")
+	
 	public <K> K getAttribute(AttributeKey key, K defaultValue) {
 		K value = (K) storedAttributes.get(key);
 		if (value == null) {
