@@ -131,7 +131,7 @@ public class PlayerFoodAction implements Action {
 			return false;
 		}
 		// that item is interacted with differently in the activity
-		if (player.getManager().getActivities().handleNodeInteraction(item, InteractionOption.FIRST_OPTION)) {
+		if (player.getManager().getActivities().handlesNodeInteraction(item, InteractionOption.FIRST_OPTION)) {
 			return false;
 		}
 		// can't eat yet

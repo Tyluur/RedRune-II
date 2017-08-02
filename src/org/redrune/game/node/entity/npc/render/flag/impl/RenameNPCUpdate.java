@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.npc.render.flag.impl;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.world.packet.PacketBuilder;
-import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
+import org.redrune.game.node.entity.render.flag.UpdateFlag;
 
 /**
  * Represents the rename NPC update mask.

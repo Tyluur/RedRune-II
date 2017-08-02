@@ -1,0 +1,41 @@
+8/1/17 {
+	+   Refactored client object definitions
+	+   Updated xtea keys [i didnt't have accurate 666 xtea keys thus some places like varrock/fishing guild/ardougne wouldn't build properly]
+	+   Added temporary movement mask
+	+   Fixed activity data not saving on logout [you wouldn't be in the wilderness activity if u logged in and out]
+	+   Dropping items in the wilderness will make them automatically public
+		-   Except if they're edible - this will drop them at the regular rate
+	+   Added multi-target spell support
+		-   This means spells like ice barrage/ice burst that hit multiple targets at one time work properly in multi area [pking with clans is proper now]
+	+   Removed x75 combat multiplier - the server will be setlevel for combat skills [exp drops will be accurate now]
+	+   Fixed npcs not always facing the target when fighting
+	+   Fixed frozen npcs still walking in combat
+	+   Added more combat spells
+		-   Ice Burst
+		-   Ice Rush
+		-   Blood barrage
+		-   Blood blitz
+		-   Blood burst
+		-   Blood rush
+		-   Shadow barrage
+		-   Shadow blitz
+		-   Shadow burst
+		-   Shadow rush
+		-   Smoke barrage
+		-   Smoke blitz
+		-   Smoke burst
+		-   Smoke rush
+	+   Added poison management
+		-   Added anti poison potion effects
+		-   You are unable to rest when you are poisoned
+
+	[IMG]http://i.imgur.com/A4bgwhh.png[/IMG]
+	[img]http://i.imgur.com/FbhIdzM.png[/img]
+	[img]http://i.imgur.com/QC8pxp2.png[/img]
+	[img]http://i.imgur.com/XAEmssM.gif[/img]
+	[img]http://i.imgur.com/yCsNKDG.gif[/img]
+	[img]http://i.imgur.com/EOubJzU.gif[/img]
+	[img]http://i.imgur.com/VzmMupf.gif[/img]
+	[img]http://i.imgur.com/S9u9OV4.gif[/img]
+	[img]http://i.imgur.com/rrBKMWF.gif[/img]
+}

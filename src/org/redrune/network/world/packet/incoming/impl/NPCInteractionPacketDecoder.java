@@ -10,7 +10,7 @@ import org.redrune.game.content.event.impl.NodeReachEvent;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
+import org.redrune.game.node.entity.render.flag.impl.FaceLocationUpdate;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
@@ -94,7 +94,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 					case 23:
 						if (CombatRegistry.checkCombatSpell(player, componentId, 1, false)) {
 							player.turnToLocation(Location.create(npc.getLocation().getCoordFaceX(npc.getSize()), npc.getLocation().getCoordFaceY(npc.getSize()), npc.getLocation().getPlane()));
-							if (player.getManager().getActivities().handleNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
+							if (player.getManager().getActivities().handlesNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
 								return;
 							}
 							if (!npc.getCombatManager().isForceMultiAttacked()) {
@@ -146,7 +146,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 					case 81: // entangle
 						if (CombatRegistry.checkCombatSpell(player, componentId, 1, false)) {
 							player.turnToLocation(Location.create(npc.getLocation().getCoordFaceX(npc.getSize()), npc.getLocation().getCoordFaceY(npc.getSize()), npc.getLocation().getPlane()));
-							if (player.getManager().getActivities().handleNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
+							if (player.getManager().getActivities().handlesNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
 								return;
 							}
 							if (!npc.getCombatManager().isForceMultiAttacked()) {
@@ -219,7 +219,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 					}
 				}
 				// make sure we can fight in the activity
-				if (player.getManager().getActivities().handleNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
+				if (player.getManager().getActivities().handlesNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
 					return;
 				}
 				player.getManager().getActions().startAction(new PlayerCombatAction(npc));

@@ -40,14 +40,10 @@ public class PlayerRestAction implements Action {
 	
 	@Override
 	public boolean process(Player player) {
-		/*
-		// TODO: these
-		if (player.getPoison().isPoisoned()) {
-			player.getPackets().sendGameMessage("You can't rest while you're poisoned.");
+		if (player.getPoisonManager().isPoisoned()) {
+			player.getTransmitter().sendMessage("You can't rest while you're poisoned.");
 			return false;
 		}
-		return true;
-		 */
 		if (player.combatRecently()) {
 			player.getTransmitter().sendMessage("You can't rest until 10 seconds after the end of combat.");
 			return false;

@@ -6,7 +6,7 @@ import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
+import org.redrune.game.node.entity.render.flag.impl.FaceLocationUpdate;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
@@ -204,9 +204,10 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 		}
 		
 		// make sure we can fight in the activity
-		if (player.getManager().getActivities().handleNodeInteraction(p2, InteractionOption.ATTACK_OPTION)) {
-			player.getManager().getActions().startAction(new PlayerCombatAction(p2));
+		if (player.getManager().getActivities().handlesNodeInteraction(p2, InteractionOption.ATTACK_OPTION)) {
+			return;
 		}
+		player.getManager().getActions().startAction(new PlayerCombatAction(p2));
 	}
 	
 	/**

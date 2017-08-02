@@ -21,7 +21,8 @@ public class Activity {
 	 * The parameters of the activity
 	 */
 	@Getter
-	protected final Object[] parameters;
+	@Setter
+	protected transient Object[] parameters;
 	
 	/**
 	 * The player doing the activity
@@ -113,7 +114,7 @@ public class Activity {
 	 * @param option
 	 * 		The option
 	 */
-	protected boolean handleNPCOption(NPC npc, InteractionOption option) {
+	private boolean handleNPCOption(NPC npc, InteractionOption option) {
 		return false;
 	}
 	
@@ -125,7 +126,7 @@ public class Activity {
 	 * @param option
 	 * 		The option clicked
 	 */
-	protected boolean handleObject(GameObject object, InteractionOption option) {
+	private boolean handleObject(GameObject object, InteractionOption option) {
 		return false;
 	}
 	
@@ -137,8 +138,18 @@ public class Activity {
 	 * @param option
 	 * 		The option
 	 */
-	protected boolean handleItem(Item item, InteractionOption option) {
+	private boolean handleItem(Item item, InteractionOption option) {
 		return false;
+	}
+	
+	/**
+	 * Checks that combat can continue with the target
+	 *
+	 * @param target
+	 * 		The target
+	 */
+	public boolean combatAcceptable(Entity target) {
+		return true;
 	}
 	
 	/**

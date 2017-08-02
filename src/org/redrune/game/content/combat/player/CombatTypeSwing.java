@@ -4,10 +4,15 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitAttributes;
+import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.region.Region;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitAttributes;
 import org.redrune.utility.tool.RandomFunction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles the swing of the combat type.
@@ -169,11 +174,11 @@ public abstract class CombatTypeSwing {
 			do {
 				acc = RandomFunction.getRandomDouble(ratio);
 				def = RandomFunction.getRandomDouble(block);
-//				System.out.println("low random roll {" + acc + ", " + def + "} #" + count);
+				//				System.out.println("low random roll {" + acc + ", " + def + "} #" + count);
 				count++;
 			} while ((acc > def) && count < 10);
 		}
-//		System.out.println("attackBonus = [" + attackBonus + "], defenceBonus = [" + defenceBonus + "], chance=" + chance + ", ratio=" + ratio + ", block=" + block + ", attack=" + attack + ", defence=" + def + ", acc = { " + acc + "}, def = { " + def + "}");
+		//		System.out.println("attackBonus = [" + attackBonus + "], defenceBonus = [" + defenceBonus + "], chance=" + chance + ", ratio=" + ratio + ", block=" + block + ", attack=" + attack + ", defence=" + def + ", acc = { " + acc + "}, def = { " + def + "}");
 		return acc >= def;
 	}
 	
@@ -217,5 +222,81 @@ public abstract class CombatTypeSwing {
 	 * 		The parameters
 	 */
 	public abstract void appendExperience(Player player, Entity target, Object... params);
+	
+	/**
+	 * Gets the attackable entities in a radius of 1 around the target, with a capacity of 9
+	 *
+	 * @param source
+	 * 		The source player
+	 * @param target
+	 * 		The target entity
+	 */
+	public static List<Entity> getAttackableEntities(Player source, Entity target) {
+		return getAttackableEntities(source, target, 1, 9);
+	}
+	
+	/**
+	 * Constructs a list of all the entities that the player can attack within a distance
+	 *
+	 * @param source
+	 * 		The player we want to find attackable entities for
+	 * @param target
+	 * 		The base target we're in combat with
+	 * @param maxDistance
+	 * 		The max distance we should look for targets in
+	 * @param capacity
+	 * 		The maximum amount of targets we can attack
+	 */
+	public static List<Entity> getAttackableEntities(Player source, Entity target, int maxDistance, int capacity) {
+		List<Entity> possibleTargets = new ArrayList<>();
+		if (target == null) {
+			return possibleTargets;
+		}
+		// add the target into the list
+		possibleTargets.add(target);
+		if (target.isAtMultiArea()) {
+			Region region = target.getRegion();
+			if (target.isPlayer()) {
+				for (Player p2 : region.getPlayers()) {
+					// skip the players that can't be rendered
+					if (p2 == null || p2.isDead() || !p2.isRenderable()) {
+						continue;
+					}
+					// avoiding duplicates
+					if (p2 == source || p2 == target) {
+						continue;
+					}
+					// make sure the player can fight us and is local
+					if (!p2.getVariables().isInFightArea() || !p2.isAtMultiArea() || !p2.getLocation().withinDistance(target.getLocation(), maxDistance) || !source.getManager().getActivities().combatAcceptable(p2)) {
+						continue;
+					}
+					// everything is good we can add to the list
+					possibleTargets.add(p2);
+					// reached max size so we must stop the operation
+					if (possibleTargets.size() == capacity) {
+						break;
+					}
+				}
+			} else {
+				for (NPC n : region.getNpcs()) {
+					// skip the npcs that can't be rendered
+					if (n == null || n == target || n.isDead() || !n.isRenderable()) {
+						continue;
+					}
+					// make sure the npc can fight us and is local
+					if (!n.isAtMultiArea() || !n.getDefinitions().hasAttackOption() || !source.getManager().getActivities().combatAcceptable(n) || !n.getLocation().withinDistance(target.getLocation(), maxDistance)) {
+						continue;
+					}
+					// everything is good we can add to the list
+					possibleTargets.add(n);
+					// reached max size so we must stop the operation
+					if (possibleTargets.size() == capacity) {
+						break;
+					}
+				}
+			}
+		}
+		return possibleTargets;
+	}
 	
 }

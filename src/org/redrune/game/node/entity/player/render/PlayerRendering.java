@@ -2,8 +2,8 @@ package org.redrune.game.node.entity.player.render;
 
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.data.PlayerRenderData;
-import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
+import org.redrune.game.node.entity.player.data.RenderInformation;
+import org.redrune.game.node.entity.render.flag.UpdateFlag;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.entity.player.render.update.GlobalUpdateStage;
 import org.redrune.game.node.entity.player.render.update.LocalUpdateStage;
@@ -13,6 +13,7 @@ import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.Packet.PacketType;
 import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.outgoing.OutgoingPacketBuilder;
+import org.redrune.utility.rs.constant.Directions.DirectionUtilities;
 import org.redrune.utility.tool.Misc;
 
 import java.util.PriorityQueue;
@@ -42,9 +43,9 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 	 * 		The packet.
 	 */
 	private static void writePlayerRendering(Player player, PacketBuilder packet) {
-		PlayerRenderData info = player.getRenderData();
-		int skipCount = -1;
+		RenderInformation info = player.getRenderInformation();
 		PacketBuilder flagBased = new PacketBuilder();
+		int skipCount = -1;
 		packet.startBitAccess();
 		for (int i = 0; i < info.localsCount; i++) {
 			int index = info.getLocals()[i];
@@ -73,7 +74,6 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 			}
 		}
 		putSkip(skipCount, packet);
-		skipCount = -1;
 		packet.finishBitAccess();
 		packet.writeBytes(flagBased.getBuffer());
 	}
@@ -105,7 +105,7 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 				if (p != null) {
 					if (p.teleporting()) {
 						updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.TELEPORTED, flagBased);
-					} else if (p.getLocation().getPlane() != p.getRenderData().getLastLocation().getPlane()) {
+					} else if (p.getLocation().getPlane() != p.getRenderInformation().getLastLocation().getPlane()) {
 						updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.HEIGHT_UPDATED, flagBased);
 					} else {
 						buffer.writeBits(1, 0);
@@ -113,7 +113,7 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 				} else {
 					buffer.writeBits(1, 0);
 				}
-				player.getRenderData().getIsLocal()[index] = false;
+				player.getRenderInformation().getIsLocal()[index] = false;
 				break;
 			case WALKING:
 			case RUNNING:
@@ -143,7 +143,7 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 				buffer.writeBits(running ? 4 : 3, opcode);
 				break;
 			case TELEPORTED:
-				Location delta = Location.getDelta(p.getRenderData().getLastLocation(), p.getLocation());
+				Location delta = Location.getDelta(p.getRenderInformation().getLastLocation(), p.getLocation());
 				int deltaX = delta.getX() < 0 ? -delta.getX() : delta.getX();
 				int deltaY = delta.getY() < 0 ? -delta.getY() : delta.getY();
 				if (deltaX <= 15 && deltaY <= 15) {
@@ -166,15 +166,28 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 		}
 	}
 	
+	public static byte GetGlobalUpdateType(Player player) {
+		Location delta = Location.GetDelta(player.getLastLoadedLocation(), player.getLocation().getRegionLocation());
+		if (delta.getX() == 0 && delta.getY() == 0 && delta.getPlane() == 0) {
+			return 0; // no update needed
+		} else if (delta.getX() == 0 && delta.getY() == 0 && delta.getPlane() != 0) {
+			return 1; // z update requested
+		} else if (delta.getX() >= -1 && delta.getX() <= 1 && delta.getY() >= -1 && delta.getY() <= 1 && DirectionUtilities.RegionMovementType[delta.getX() + 1][delta.getY() + 1] != -1) {
+			return 2; // map direction update requed
+		} else {
+			return 3; // full update requed
+		}
+	}
+	
 	/**
 	 * Updates the global player
 	 *
 	 * @param player
 	 * 		The player
 	 * @param p
-	 * 		The player to write for
+	 * 		The player to update
 	 * @param buffer
-	 * 		The bufffer
+	 * 		The buffer
 	 * @param stage
 	 * 		The global update stage
 	 * @param flagBased
@@ -185,23 +198,29 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 		buffer.writeBits(2, stage.ordinal());
 		switch (stage) {
 			case ADD_PLAYER:
-				if (p.getRenderData().getLastLocation() != null && p.getLocation().getPlane() != p.getRenderData().getLastLocation().getPlane()) {
-					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.HEIGHT_UPDATED, flagBased);
+				byte updateType = GetGlobalUpdateType(p);
+				if (updateType != 0) {
+					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.values()[updateType], flagBased);
 				} else {
-					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.TELEPORTED, flagBased);
+					buffer.writeBits(1, 0);
+					//					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.TELEPORTED, flagBased);
 				}
-				buffer.writeBits(6, p.getLocation().getX() - (p.getLocation().getRegionX() << 6)); // 6
-				buffer.writeBits(6, p.getLocation().getY() - (p.getLocation().getRegionY() << 6)); // 6
+				buffer.writeBits(6, p.getLocation().getX() - (p.getLocation().getRegionLocation().getX() << 6)); // 6
+				buffer.writeBits(6, p.getLocation().getY() - (p.getLocation().getRegionLocation().getY() << 6)); // 6
 				buffer.writeBits(1, 1);
-				player.getRenderData().getIsLocal()[p.getIndex()] = true;
+				player.getRenderInformation().getIsLocal()[p.getIndex()] = true;
 				writeMasks(player, p, flagBased, true);
 				break;
 			case HEIGHT_UPDATED:
-				int z = p.getLocation().getPlane() - p.getRenderData().getLastLocation().getPlane();
-				buffer.writeBits(2, z);
+				int z = p.getLocation().getPlane() - p.getRenderInformation().getLastLocation().getPlane();
+				buffer.writeBits(2, (z & 0x3));
+				break;
+			case MAP_REGION_DIRECTION:
 				break;
 			case TELEPORTED:
-				buffer.writeBits(18, (p.getLocation().getPlane() << 16) | (((p.getLocation().getRegionX() >> 3) & 0xFF) << 8) | ((p.getLocation().getRegionY() >> 3) & 0xFF));
+				Location delta = Location.GetDelta(p.getLastLoadedLocation(), p.getLocation().getRegionLocation());
+				int hash = ((delta.getY() & 0xFF) | ((delta.getX() & 0xFF) << 8) | ((delta.getPlane() & 0x3) << 16)) & 0x3FFFF;
+				buffer.writeBits(18, hash);
 				break;
 			default:
 				break;
@@ -221,27 +240,27 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 	 * 		If we should force the appearance update mask.
 	 */
 	private static void writeMasks(Player writingFor, Player updatable, PacketBuilder composer, boolean forceSync) {
-		int maskdata = 0;
+		int maskData = 0;
 		PriorityQueue<UpdateFlag> flags = new PriorityQueue<>(updatable.getUpdateMasks().getFlagQueue());
 		for (UpdateFlag flag : flags) {
-			maskdata |= flag.getMaskData();
+			maskData |= flag.getMaskData();
 		}
-		if (forceSync && (maskdata & 0x2) == 0) {
-			maskdata |= 0x2;
+		if (forceSync && (maskData & 0x2) == 0) {
+			maskData |= 0x2;
 			flags.add(new AppearanceUpdate(updatable));
 		}
-		if (maskdata > 128) {
-			maskdata |= 0x1;
+		if (maskData > 128) {
+			maskData |= 0x1;
 		}
-		if (maskdata > 32768) {
-			maskdata |= 0x200;
+		if (maskData > 32768) {
+			maskData |= 0x200;
 		}
-		composer.writeByte((byte) maskdata);
-		if (maskdata > 128) {
-			composer.writeByte((byte) (maskdata >> 8));
+		composer.writeByte((byte) maskData);
+		if (maskData > 128) {
+			composer.writeByte((byte) (maskData >> 8));
 		}
-		if (maskdata > 32768) {
-			composer.writeByte((byte) (maskdata >> 16));
+		if (maskData > 32768) {
+			composer.writeByte((byte) (maskData >> 16));
 		}
 		while (!flags.isEmpty()) {
 			flags.poll().write(writingFor, composer);

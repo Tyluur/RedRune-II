@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.npc.render;
 
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
+import org.redrune.game.node.entity.render.flag.UpdateFlag;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.world.packet.Packet;
@@ -30,7 +30,7 @@ public class NPCRendering implements OutgoingPacketBuilder {
 		// The update block. Any updates that are pending will be added to this block.
 		PacketBuilder updateBlock = new PacketBuilder();
 		
-		List<NPC> localNpcs = player.getRenderData().getLocalNpcs();
+		List<NPC> localNpcs = player.getRenderInformation().getLocalNpcs();
 		bldr.startBitAccess();
 		bldr.writeBits(8, localNpcs.size());
 		for (Iterator<NPC> it = localNpcs.iterator(); it.hasNext(); ) {

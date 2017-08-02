@@ -46,6 +46,7 @@ public final class NPCCombat {
 			delay--;
 		}
 		if (target != null) {
+			npc.turnTo(target);
 			if (!verifyContinuation()) {
 				removeTarget();
 				return false;
@@ -111,12 +112,10 @@ public final class NPCCombat {
 	 */
 	private boolean verifyContinuation() {
 		Entity target = this.target;
-		
 		// make sure we have a target
 		if (target == null) {
 			return false;
 		}
-		
 		// if we are invalid to fight
 		if (npc.isDead() || !npc.isRenderable() || npc.isForceWalking() || target.isDead() || !target.isRenderable() || npc.getLocation().getPlane() != target.getLocation().getPlane()) {
 			return false;

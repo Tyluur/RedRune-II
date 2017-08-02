@@ -6,8 +6,8 @@ import org.redrune.cache.CacheConstants;
 import org.redrune.cache.CacheManager;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.utility.rs.constant.EquipConstants;
-import org.redrune.utility.tool.BufferUtils;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.BufferUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -653,5 +653,12 @@ public final class ItemDefinition {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Checks if these are the definitions of an edible item
+	 */
+	public boolean isEdible() {
+		return hasOption("eat") || hasOption("drink");
 	}
 }

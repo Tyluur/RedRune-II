@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.cache.parse.definition.ItemDefinition;
-import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitSplat;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
@@ -116,10 +116,12 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 	private void updateHealthBoosts() {
 		double hpIncrease = calculateEquipmentHpBoost();
 		// the boosts changed, the player should not be able to maintain boosts
-		int previousBoost = maxHealthBoost;
+		// int previousBoost = maxHealthBoost;
 		if (hpIncrease != maxHealthBoost) {
 			maxHealthBoost = (int) hpIncrease;
 		}
+		/*
+		IT WASN'T LIKE THIS ON RS
 		// the new boost is less than the old one, so we must reduce if necessary
 		// this is so we don't have 1390 hp after removing torva
 		if (hpIncrease < previousBoost) {
@@ -127,7 +129,7 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 				player.setHealthPoints(player.getMaxHealth() + (int) hpIncrease);
 				player.getTransmitter().refreshHealthPoints();
 			}
-		}
+		}*/
 	}
 	
 	/**

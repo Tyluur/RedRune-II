@@ -23,7 +23,17 @@ public class ActivityManager {
 	/**
 	 * The instance of the activity
 	 */
-	private Activity activity;
+	private transient Activity activity;
+	
+	/**
+	 * The name of the last activity
+	 */
+	private String lastActivityName;
+	
+	/**
+	 * The params of the last activity
+	 */
+	private Object[] lastActivityParameters;
 	
 	/**
 	 * Sets and starts an activity
@@ -35,7 +45,8 @@ public class ActivityManager {
 		this.activity = activity;
 		this.activity.setPlayer(player);
 		this.activity.start();
-		System.out.println("started activity: " + activity);
+		this.lastActivityName = activity.getClass().getName();
+		this.lastActivityParameters = activity.getParameters();
 	}
 	
 	/**
@@ -46,14 +57,14 @@ public class ActivityManager {
 	}
 	
 	/**
-	 * Handles custom node interaction
+	 * Checks if the activity we're in handles the interaction for the node customly
 	 *
 	 * @param node
 	 * 		The node
 	 * @param option
 	 * 		The option
 	 */
-	public boolean handleNodeInteraction(Node node, InteractionOption option) {
+	public boolean handlesNodeInteraction(Node node, InteractionOption option) {
 		// we don't have an activity, so we assume we can do the interaction
 		if (activity == null) {
 			return false;
@@ -65,6 +76,25 @@ public class ActivityManager {
 		// we must not have an activity, OR the activity must not have
 		// handled the option. thus we should be able to use the option
 		return false;
+	}
+	
+	/**
+	 * If combat is acceptable in this activity
+	 *
+	 * @param target
+	 * 		The target we're in combat with
+	 */
+	public boolean combatAcceptable(Entity target) {
+		// if we dont have an activity
+		if (activity == null) {
+			return true;
+		}
+		// if the activity says no, we will not continue
+		if (!activity.combatAcceptable(target)) {
+			return false;
+		}
+		// otherwise we can continue
+		return true;
 	}
 	
 	/**
@@ -106,6 +136,43 @@ public class ActivityManager {
 			return Optional.empty();
 		} else {
 			return Optional.of(activity);
+		}
+	}
+	
+	/**
+	 * Handles the login aspect of activities
+	 */
+	@SuppressWarnings("unchecked")
+	public void login() {
+		if (lastActivityName == null) {
+			return;
+		}
+		try {
+			Class<Activity> clazz = (Class<Activity>) Class.forName(lastActivityName);
+			Activity activity = clazz.newInstance();
+			startActivity(activity);
+			activity.setParameters(lastActivityParameters);
+		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+			System.err.println("Unable to find activity by name '" + lastActivityName + "'");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Handles the logout aspect of activities
+	 */
+	public void logout() {
+		Optional<Activity> optional = getActivity();
+		if (!optional.isPresent()) {
+			return;
+		}
+		Activity activity = optional.get();
+		if (!activity.savesOnLogout()) {
+			lastActivityName = null;
+			lastActivityParameters = null;
+		} else {
+			lastActivityName = activity.getClass().getName();
+			lastActivityParameters = activity.getParameters();
 		}
 	}
 	

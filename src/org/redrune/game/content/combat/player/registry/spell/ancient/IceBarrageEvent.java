@@ -54,7 +54,7 @@ public class IceBarrageEvent implements CombatSpellEvent {
 		final Entity target = context.getTarget();
 		final boolean freezeDelayed = target.freezeDelayed();
 		final boolean frozenTarget = target.isFrozen();
-		context.getSwing().sendSpell(player, context.getTarget(), this, () -> {
+		context.getSwing().sendMultiSpell(player, context.getTarget(), this, () -> {
 			if (frozenTarget || freezeDelayed) {
 				return;
 			}
@@ -72,6 +72,5 @@ public class IceBarrageEvent implements CombatSpellEvent {
 			}
 			target.sendGraphics(gfx, height, 0);
 		});
-		
 	}
 }

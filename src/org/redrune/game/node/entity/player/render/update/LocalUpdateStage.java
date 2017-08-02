@@ -24,10 +24,7 @@ public enum LocalUpdateStage {
 	 * @return The stage of a certain update.
 	 */
 	public static LocalUpdateStage getStage(Player player, Player otherPlayer) {
-		if (otherPlayer == null) {
-			return REMOVE_PLAYER;
-		}
-		if (!player.getLocation().isWithinDistance(otherPlayer.getLocation())) {
+		if (otherPlayer == null || !player.getLocation().isWithinDistance(otherPlayer.getLocation())) {
 			return REMOVE_PLAYER;
 		} else if (otherPlayer.teleporting()) {
 			return TELEPORTED;

@@ -5,7 +5,7 @@ import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
-import org.redrune.game.node.entity.player.render.flag.UpdateFlag;
+import org.redrune.game.node.entity.render.flag.UpdateFlag;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.CS2ConfigBuilder;

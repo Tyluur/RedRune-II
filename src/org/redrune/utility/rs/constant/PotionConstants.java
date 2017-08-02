@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 6/29/2017
  */
-// TODO: poisons, antifire, familiar, locations for extremes, healing, prayer renewal delay
+// TODO: antifire, familiar, locations for extremes, healing, prayer renewal delay
 public class PotionConstants implements SkillConstants {
 	
 	/**
@@ -281,21 +281,21 @@ public class PotionConstants implements SkillConstants {
 				}*/
 			}
 		},
-		ANTIPOISON() {
+		ANTIPOISON {
 			@Override
 			public void extra(Player player) {
-				/*player.addPoisonImmune(180000);
-				player.getPackets().sendMessage("You are now immune to poison.");*/
+				player.getPoisonManager().addPoisonImmune(180_000);
+				player.getTransmitter().sendMessage("You are now immune to poison.");
 			}
 		},
-		SUPER_ANTIPOISON() {
+		SUPER_ANTIPOISON {
 			@Override
 			public void extra(Player player) {
-				/*player.addPoisonImmune(360000);
-				player.getPackets().sendMessage("You are now immune to poison.");*/
+				player.getPoisonManager().addPoisonImmune(360_000);
+				player.getTransmitter().sendMessage("You are now immune to poison.");
 			}
 		},
-		ENERGY_POTION() {
+		ENERGY_POTION {
 			@Override
 			public void extra(Player player) {
 				double restoredEnergy = player.getVariables().getRunEnergy() + 20;
@@ -311,7 +311,7 @@ public class PotionConstants implements SkillConstants {
 				player.getTransmitter().refreshEnergy();
 			}
 		},
-		ANTI_FIRE() {
+		ANTI_FIRE {
 			@Override
 			public void extra(final Player player) {
 				/*player.addFireImmune(360000);

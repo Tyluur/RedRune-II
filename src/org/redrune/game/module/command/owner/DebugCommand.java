@@ -18,7 +18,7 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		player.getTransmitter().sendSettings();
+		player.getPoisonManager().makePoisoned(intParam(args, 1));
 		/*List<Entity> entityList = new ArrayList<>();
 		entityList.addAll(player.getRegion().getNpcs());
 		for (Player o : player.getRegion().getPlayers()) {

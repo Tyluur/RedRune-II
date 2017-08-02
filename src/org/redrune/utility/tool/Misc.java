@@ -691,7 +691,7 @@ public class Misc {
 		return ipAddress;
 	}
 	
-	public static final int getDistance(int coordX1, int coordY1, int coordX2, int coordY2) {
+	public static int getDistance(int coordX1, int coordY1, int coordX2, int coordY2) {
 		int deltaX = Math.abs(coordX2 - coordX1);
 		int deltaY = Math.abs(coordY2 - coordY1);
 		return ((int) Math.ceil(Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2))));
@@ -836,4 +836,13 @@ public class Misc {
 		}
 		return -1;
 	}
+	
+	public static boolean inCircle(Location location, Location center, int radius) {
+		return getDistance(center, location) < radius;
+	}
+	
+	public static int getDistance(Location t1, Location t2) {
+		return getDistance(t1.getX(), t1.getY(), t2.getX(), t2.getY());
+	}
+	
 }

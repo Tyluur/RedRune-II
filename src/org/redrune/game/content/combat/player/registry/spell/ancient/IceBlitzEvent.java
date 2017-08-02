@@ -53,7 +53,7 @@ public class IceBlitzEvent implements CombatSpellEvent {
 		final Entity target = context.getTarget();
 		final boolean freezeDelayed = target.freezeDelayed();
 		final boolean frozenTarget = target.isFrozen();
-		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, target, 368, 40, 36, 52, 15, 0));
+		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, target, 368, 18, 9, 52, 15, 0));
 		context.getSwing().sendSpell(player, context.getTarget(), this, () -> {
 			if (frozenTarget || freezeDelayed) {
 				return;

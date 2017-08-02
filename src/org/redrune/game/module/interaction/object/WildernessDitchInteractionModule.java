@@ -5,8 +5,8 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.core.system.SystemManager;
 import org.redrune.game.module.type.ObjectInteractionModule;
 import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.player.render.flag.impl.FaceLocationUpdate;
-import org.redrune.game.node.entity.player.render.flag.impl.ForceMovement;
+import org.redrune.game.node.entity.render.flag.impl.FaceLocationUpdate;
+import org.redrune.game.node.entity.render.flag.impl.ForceMovement;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.utility.rs.InteractionOption;
 

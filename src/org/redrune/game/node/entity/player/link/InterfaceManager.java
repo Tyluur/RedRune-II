@@ -10,6 +10,7 @@ import org.redrune.utility.rs.GameTab;
 import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.rs.constant.InterfaceConstants;
 import org.redrune.utility.rs.input.InputType;
+import org.redrune.utility.tool.ColorConstants;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,6 +103,18 @@ public final class InterfaceManager implements InterfaceConstants {
 	private InterfaceManager sendDefaultTabs() {
 		for (GameTab data : GameTab.values()) {
 			sendInterface(usingFixedMode() ? data.getFixedChildId() : data.getResizedChildId(), data.getInterfaceId());
+			switch (data) {
+				case ACHIEVEMENT_TAB:
+					int interfaceId = data.getInterfaceId();
+					sendInterfaceText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
+					sendInterfaceText(interfaceId, 16, "");
+					for (byte i = 17; i < 25; i++) {
+						sendInterfaceChange(930, i, true);
+					}
+					break;
+				default:
+					break;
+			}
 		}
 		return this;
 	}
@@ -417,16 +430,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	public InterfaceManager closeAllInterfaces() {
 		if (getScreenInterface() != -1) {
 			closeScreenInterface();
-//			System.out.println("closed screen");
+			//			System.out.println("closed screen");
 		}
 		if (getChatboxInterface() != -1) {
 			closeChatboxInterface();
 			player.getManager().getDialogues().end();
-//			System.out.println("closed chatbox");
+			//			System.out.println("closed chatbox");
 		}
 		if (getInventoryInterface() != -1) {
 			closeInventoryInterface();
-//			System.out.println("Closed inventory");
+			//			System.out.println("Closed inventory");
 		}
 		return this;
 	}
@@ -567,4 +580,5 @@ public final class InterfaceManager implements InterfaceConstants {
 		player.getTransmitter().send(new PrivateStatusBuilder(privateStatus).build(player));
 		player.getTransmitter().send(new GameStatusBuilder(publicStatus, trade).build(player));
 	}
+	
 }

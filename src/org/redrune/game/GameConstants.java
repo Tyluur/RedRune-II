@@ -41,7 +41,7 @@ public interface GameConstants {
 	/**
 	 * The experience multiplier for combat skills
 	 */
-	int COMBAT_EXPERIENCE_MULTIPLIER = 75;
+	int COMBAT_EXPERIENCE_MULTIPLIER = 1;
 	
 	/**
 	 * The experience multiplier for non-combat skills (excluding prayer)

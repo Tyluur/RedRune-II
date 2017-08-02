@@ -11,7 +11,6 @@ import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.data.Hit;
 import org.redrune.game.node.entity.npc.data.NPCCharacteristics;
 import org.redrune.game.node.entity.npc.data.NPCCombatDefinitions;
 import org.redrune.game.node.entity.npc.link.CombatManager;
@@ -29,6 +28,7 @@ import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.repository.npc.characteristic.NPCCharacteristicRepository;
+import org.redrune.utility.rs.Hit;
 import org.redrune.utility.rs.constant.Directions.Direction;
 import org.redrune.utility.rs.constant.NPCConstants;
 import org.redrune.utility.tool.Misc;
@@ -245,37 +245,42 @@ public class NPC extends Entity {
 		super.tick();
 		// before anything else we must make sure we aren't dead
 		if (isDead() || isDying()) {
-			//			System.out.println("Skipped " + this + " [hp=" + getHealthPoints() + ", max=" + getMaxHealth() + ", dead=" + isDead() + ", dying=" + isDying() + "]");
+			//System.out.println("Skipped " + this + " [hp=" + getHealthPoints() + ", max=" + getMaxHealth() + ", dead=" + isDead() + ", dying=" + isDying() + "]");
 			return;
 		}
-		// process combat [false when too far away, wrong multi areas. check doesn't really matter]
-		fireAggressiveCheck();
-		
-		// we aren't in combat
-		if (!combatManager.getCombat().process()) {
-			if (!isFrozen()) {
-				if (getLocation().getDistance(spawnLocation) > 16) {
-					traverseOriginalTile();
-				} else if (getWalkType() != NPCConstants.NO_WALK) {
-					int walkValue = getWalkType() & NPCConstants.NORMAL_WALK;
-					// if the npc isn't a type that walks, we ignore the next blocks
-					if (walkValue == 0) {
-						return;
-					}
-					// if we're lucky & the npc is a type that walks
-					boolean randomWalk = Math.random() * 1000.0 < 100.0;
-					// make sure we should walk
-					if (!randomWalk) {
-						return;
-					}
-					int moveX = getRandomTileDistance();
-					int moveY = getRandomTileDistance();
-					// reset the steps
-					getMovement().resetWalkSteps();
-					// add the random tile to the movement queue [we only walk around the spawn location]
-					getMovement().addWalkSteps(getSpawnLocation().getX() + moveX, getSpawnLocation().getY() + moveY);
-				}
+		// we are in combat
+		if (combatManager.getCombat().process()) {
+			return;
+		}
+		// we couldn't set a target
+		if (fireAggressiveCheck()) {
+			return;
+		}
+		// we are frozen
+		if (isFrozen()) {
+			return;
+		}
+		// we can walk back home
+		if (getLocation().getDistance(spawnLocation) > 16) {
+			traverseOriginalTile();
+		} else if (getWalkType() != NPCConstants.NO_WALK) {
+			int walkValue = getWalkType() & NPCConstants.NORMAL_WALK;
+			// if the npc isn't a type that walks, we ignore the next blocks
+			if (walkValue == 0) {
+				return;
 			}
+			// if we're lucky & the npc is a type that walks
+			boolean randomWalk = Math.random() * 1000.0 < 100.0;
+			// make sure we should walk
+			if (!randomWalk) {
+				return;
+			}
+			int moveX = getRandomTileDistance();
+			int moveY = getRandomTileDistance();
+			// reset the steps
+			getMovement().resetWalkSteps();
+			// add the random tile to the movement queue [we only walk around the spawn location]
+			getMovement().addWalkSteps(getSpawnLocation().getX() + moveX, getSpawnLocation().getY() + moveY);
 		}
 	}
 	
@@ -495,7 +500,8 @@ public class NPC extends Entity {
 	 */
 	private List<Entity> possibleTargets(boolean npcs, boolean players) {
 		List<Entity> targets = new ArrayList<>();
-		int maxDistance = 16;
+		boolean atWild = WildernessActivity.isAtWild(getLocation());
+		int maxDistance = atWild ? 8 : 16;
 		Region region = getRegion();
 		if (players) {
 			for (Player player : region.getPlayers()) {
@@ -514,12 +520,12 @@ public class NPC extends Entity {
 				if (!getMovement().clippedProjectileToNode(player, false)) {
 					continue;
 				}
-				// we skip those who are dangerous to us
-				if (!getCombatManager().isAggressiveForced() && !WildernessActivity.isAtWild(getLocation()) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2) {
-					continue;
-				}
 				// no longer aggressive
 				if (region.getTimeSpent(player) > NPCConstants.UNAGGRESSIVE_REGION_TIME) {
+					continue;
+				}
+				// Most monsters in the wilderness are aggressive regardless of level
+				if (!getCombatManager().isAggressiveForced() && !atWild && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2) {
 					continue;
 				}
 				targets.add(player);
@@ -558,17 +564,17 @@ public class NPC extends Entity {
 	 * Attempts to start combat with the best entity we could find to start combat with, if we are an npc who initiates
 	 * fights.
 	 */
-	private void fireAggressiveCheck() {
+	private boolean fireAggressiveCheck() {
 		if (!WildernessActivity.isAtWild(getLocation()) && !getCombatManager().isAggressiveForced()) {
 			NPCCombatDefinitions combatDefinitions = getCombatDefinitions();
 			if (combatDefinitions.getAggressivenessType() == NPCConstants.PASSIVE_AGGRESSIVE) {
-				return;
+				return false;
 			}
 		}
 		List<Entity> possibleTargets = possibleTargets(false, true);
 		// we don't want to check if the list is empty
 		if (possibleTargets.isEmpty()) {
-			return;
+			return false;
 		}
 		// find the target
 		Entity target = possibleTargets.get(RandomFunction.random(possibleTargets.size()));
@@ -578,6 +584,7 @@ public class NPC extends Entity {
 		target.putAttribute(AttributeKey.FIND_TARGET_DELAY, System.currentTimeMillis() + 10_000);
 		// starts the fight with the target
 		startFight(target);
+		return true;
 	}
 	
 	/**
@@ -757,4 +764,5 @@ public class NPC extends Entity {
 			source.getTransmitter().sendMessage(message, false);
 		}
 	}
+	
 }

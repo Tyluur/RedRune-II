@@ -29,7 +29,7 @@ public final class MapRegionBuilder implements OutgoingPacketBuilder {
 		PacketBuilder bldr = new PacketBuilder(19, PacketType.VAR_SHORT);
 		Location pos = player.getLocation();
 		if (onLogin) {
-			player.getRenderData().enterWorld(bldr);
+			player.getRenderInformation().enterWorld(bldr);
 		}
 		int regionX = pos.getRegionX();
 		int regionY = pos.getRegionY();

@@ -1,8 +1,8 @@
 package org.redrune.utility.rs.constant;
 
 import lombok.Getter;
-import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitSplat;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.tool.Misc;
 import org.redrune.utility.tool.RandomFunction;

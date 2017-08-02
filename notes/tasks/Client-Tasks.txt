@@ -11,3 +11,7 @@
 			2.  Always right click
 			3.  Left click where available
 			4.  Hidden
+
+[Interfaces]
++   Quest tab interface [usage for presets]
++   Freeze overlay/veng cooldown overlay

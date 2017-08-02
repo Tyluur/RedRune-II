@@ -5,7 +5,7 @@
 	-   When your friend updates their status, the world sends that data to the master server and all the people in both worlds with friends receive that update
 
 [Friends Chat]
-- Write about this after friends communication done
+-   Write about this after friends communication done
 
 # [PVM] #
 1.  Use all the npc data in json from HDPvP for npcs which do not need custom scripts
@@ -34,8 +34,23 @@
 		+   Interactions can be used for clan invitations, duel arena challenges,
 2.  Grand Exchange
 	-   This is completely player - player, but with some stock items so that it's simple enough
-	-   The code from hdpvp can be used - bug and dupe free.
+	-   Reference hdpvp code
 	-	For multi-world engagement, this will require a sql database for saving.
+	-   We must have support for stock items
+		+   Players will use grand exchange for purchasing of non-default items [d scim etc will be in bank]
+		+   These items will not reduce in quantity
+		+   There can be a flag in the database for isStock
+3.  Barrows
+4.  Home area design
+	-   Add dicing area
+5.  Custom Quest Tab
+	-   Manage presets from this interface
+6.  Wilderness Targets
+	-   In the wilderness your potential will increase by 15% every minute
+		+   When it's at maximum you'll receive a target
+	-   If your target is in a fight you can pj them
+	-   Use the bounty hunter interface
+	-   If you kill your target you'll be legible for pvp armour rewards
 
 # [FORUM INTEGRATION]
 

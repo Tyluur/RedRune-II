@@ -114,13 +114,18 @@ public class MasterCommunication implements PacketConstants {
 			return;
 		}
 		
-		// syncs the session variables
-		((WorldSession) session).sync(player);
-		
-		if (lobby) {
-			player.registerToLobby();
-		} else {
-			player.register();
+		try {
+			// syncs the session variables
+			((WorldSession) session).sync(player);
+			
+			if (lobby) {
+				player.registerToLobby();
+			} else {
+				player.register();
+			}
+		} catch (Exception e) {
+			player.getSession().getChannel().close();
+			e.printStackTrace();
 		}
 		
 		System.out.println("Registered player! Lobby = " + lobby + ", session=" + session);

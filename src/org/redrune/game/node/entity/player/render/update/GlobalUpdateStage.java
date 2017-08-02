@@ -26,9 +26,9 @@ public enum GlobalUpdateStage {
 			return null;
 		} else if (player != otherPlayer && player.getLocation().isWithinDistance(otherPlayer.getLocation())) {
 			return ADD_PLAYER;
-		} else if (otherPlayer.getRenderData().getLastLocation() != null && otherPlayer.getLocation().getPlane() != otherPlayer.getRenderData().getLastLocation().getPlane()) {
+		} else if (otherPlayer.getRenderInformation().getLastLocation() != null && otherPlayer.getLocation().getPlane() != otherPlayer.getRenderInformation().getLastLocation().getPlane()) {
 			return HEIGHT_UPDATED;
-		} else if (otherPlayer.teleporting() || otherPlayer.getRenderData().isOnFirstCycle()) {
+		} else if (otherPlayer.teleporting() || otherPlayer.getRenderInformation().isOnFirstCycle()) {
 			return TELEPORTED;
 		}
 		return null;

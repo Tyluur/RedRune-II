@@ -1,13 +1,14 @@
 package org.redrune.game.content.event.impl.item;
 
+import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.context.item.ItemEventContext;
+import org.redrune.game.module.interaction.rsinterface.DestroyItemInteractionModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.world.World;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.repository.item.ItemRepository;
-import org.redrune.game.module.interaction.rsinterface.DestroyItemInteractionModule;
-import org.redrune.game.content.event.EventPolicy.ActionPolicy;
-import org.redrune.game.node.item.Item;
-import org.redrune.game.world.region.RegionManager;
 
 import java.util.Objects;
 
@@ -47,8 +48,36 @@ public class ItemDropEvent extends ItemEvent {
 		}
 		// otherwise we just delete the item
 		player.getInventory().deleteItem(context.getSlotId(), item);
-		// and the item is added to the floor
-		RegionManager.addFloorItem(item.getId(), item.getAmount(), 200, player.getLocation(), player.getDetails().getUsername());
+		addFloorItem(player, item);
+	}
+	
+	/**
+	 * Handles the addition of the item to the floor
+	 *
+	 * @param player
+	 * 		The player dropping the item
+	 * @param item
+	 * 		The item being dropped
+	 */
+	private void addFloorItem(Player player, Item item) {
+		boolean shouldPublicize = false;
+		boolean isEdible = false;
+		if (item.getDefinitions().isEdible()) {
+			isEdible = true;
+		}
+		// if we are in a pvp area we will auto publicize all items that aren't edible
+		if (World.get().isPvpArea(player.getLocation())) {
+			shouldPublicize = true;
+		}
+		// edible items should not be automatically public
+		if (isEdible && shouldPublicize) {
+			shouldPublicize = false;
+		}
+		if (shouldPublicize) {
+			RegionManager.addPublicFloorItem(item.getId(), item.getAmount(), 200, player.getLocation());
+		} else {
+			RegionManager.addFloorItem(item.getId(), item.getAmount(), 200, player.getLocation(), player.getDetails().getUsername());
+		}
 	}
 	
 }

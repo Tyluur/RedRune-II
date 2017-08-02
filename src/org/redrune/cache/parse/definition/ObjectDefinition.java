@@ -253,25 +253,25 @@ public final class ObjectDefinition {
 		} else if (opcode >= 30 && opcode < 35) {
 			options[opcode - 30] = stream.readRS2String();
 		} else if (opcode == 40) {
-			int i_53_ = (stream.readUnsignedByte());
-			originalColors = new short[i_53_];
-			modifiedColors = new short[i_53_];
-			for (int i_54_ = 0; i_53_ > i_54_; i_54_++) {
-				originalColors[i_54_] = (short) (stream.readUnsignedShort());
-				modifiedColors[i_54_] = (short) (stream.readUnsignedShort());
+			int length = (stream.readUnsignedByte());
+			originalColors = new short[length];
+			modifiedColors = new short[length];
+			for (int i = 0; length > i; i++) {
+				originalColors[i] = (short) (stream.readUnsignedShort());
+				modifiedColors[i] = (short) (stream.readUnsignedShort());
 			}
 		} else if (opcode == 41) {
-			int i_71_ = stream.readUnsignedByte();
-			aShortArray3920 = new short[i_71_];
-			aShortArray3919 = new short[i_71_];
-			for (int i_72_ = 0; i_71_ > i_72_; i_72_++) {
-				aShortArray3920[i_72_] = (short) stream.readUnsignedShort();
-				aShortArray3919[i_72_] = (short) stream.readUnsignedShort();
+			int length = stream.readUnsignedByte();
+			aShortArray3920 = new short[length];
+			aShortArray3919 = new short[length];
+			for (int i = 0; length > i; i++) {
+				aShortArray3920[i] = (short) stream.readUnsignedShort();
+				aShortArray3919[i] = (short) stream.readUnsignedShort();
 			}
 		} else if (opcode == 42) {
-			int i_69_ = stream.readUnsignedByte();
-			aByteArray3858 = new byte[i_69_];
-			for (int i_70_ = 0; i_70_ < i_69_; i_70_++) {
+			int i = stream.readUnsignedByte();
+			aByteArray3858 = new byte[i];
+			for (int i_70_ = 0; i_70_ < i; i_70_++) {
 				aByteArray3858[i_70_] = stream.readByte();
 			}
 		} else if (opcode == 62) {

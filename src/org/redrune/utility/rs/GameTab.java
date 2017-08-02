@@ -10,7 +10,7 @@ import org.redrune.utility.rs.constant.InterfaceConstants;
 public enum GameTab {
 	
 	COMBAT_STYLES(884, 203, 89),
-	TASK_SYSTEM(1056, 204, 90),
+	ACHIEVEMENT_TAB(930, 204, 90),
 	STATS(320, 205, 91),
 	QUEST_JOURNALS(190, 206, 92),
 	INVENTORY(InterfaceConstants.INVENTORY_INTERFACE_ID, 207, 93),

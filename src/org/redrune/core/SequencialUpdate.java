@@ -81,7 +81,7 @@ public final class SequencialUpdate implements SequentialService {
 		try {
 			for (Player player : getRenderablePlayers()) {
 				player.getUpdateMasks().finish();
-				player.getRenderData().updateInformation();
+				player.getRenderInformation().updateInformation();
 				player.getHitMap().getHitList().clear();
 				player.getSession().flushPackets();
 			}

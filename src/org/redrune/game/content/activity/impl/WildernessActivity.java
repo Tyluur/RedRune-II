@@ -10,6 +10,7 @@ import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.rs.constant.ItemConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -104,26 +105,23 @@ public class WildernessActivity extends Activity {
 		return true;
 	}
 	
-	/*
-	TODO:
 	@Override
-	public boolean keepCombating(Entity target) {
-		if (target instanceof NPC) {
+	public boolean combatAcceptable(Entity target) {
+		if (player.getCombatDefinitions().getSpellId() <= 0 && Misc.inCircle(new Location(3105, 3933, 0), target.getLocation(), 24)) {
+			player.getTransmitter().sendMessage("You can only use magic in the arena.");
+			return false;
+		}
+		if (target.isNPC()) {
 			return true;
 		}
-		if (!canAttack(target)) {
+		if (target.isPlayer() && !handlePlayerOption(target.toPlayer(), InteractionOption.ATTACK_OPTION)) {
 			return false;
 		}
 		if (target.getAttackedBy() != player && player.getAttackedBy() != target) {
-			player.setWildernessSkull();
+			// TODO: Set skull player.setWildernessSkull();
 		}
-		if (player.getCombatDefinitions().getSpellId() <= 0 && Utils.inCircle(new WorldTile(3105, 3933, 0), target, 24)) {
-			player.getPackets().sendGameMessage("You can only use magic in the arena.");
-			return false;
-		}
-		return true;
+		return false;
 	}
-	 */
 	
 	/**
 	 * Sends the death container

@@ -57,23 +57,26 @@ public class ObjectInteractionPacketDecoder implements IncomingPacketDecoder {
 			if (option == null) {
 				throw new IllegalStateException("Unexpected packet id " + packetId + ", could not find option.");
 			}
-			if (option != InteractionOption.EXAMINE) {
-				player.getMovement().reset(forceRun);
-				EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
-					// executing the object interaction event
-					EventRepository.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, option));
-				}));
-			} else {
-				if (!player.getAttribute("remove_spawns", false)) {
-					if (GameFlags.debugMode) {
-						// TODO object examines
-						player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + ", " + regionId + "], " + object.getType() + ", " + object.getRotation(), true);
-						System.out.println(object.toGameObject());
+			switch (option) {
+				// TODO object examines
+				case EXAMINE:
+					if (player.getAttribute("remove_spawns", false)) {
+						player.getRegion().removeObject(object);
+						RegionDeletion.dumpObject(object);
+					} else {
+						if (GameFlags.debugMode) {
+							player.getTransmitter().sendMessage("Examining: [" + object.getDefinitions().getName() + ": " + id + ", [" + x + ", " + y + ", " + regionId + "], " + object.getType() + ", " + object.getRotation(), true);
+							System.out.println(object.toGameObject());
+						}
 					}
-				} else {
-					player.getRegion().removeObject(object);
-					RegionDeletion.dumpObject(object);
-				}
+					break;
+				default:
+					player.getMovement().reset(forceRun);
+					EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(object, () -> {
+						// executing the object interaction event
+						EventRepository.executeEvent(player, ObjectEvent.class, new ObjectEventContext(object, option));
+					}));
+					break;
 			}
 		}
 	}

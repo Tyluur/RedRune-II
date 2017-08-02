@@ -11,9 +11,9 @@ import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.PlayerCombatDefinitions;
-import org.redrune.game.node.entity.data.Hit;
-import org.redrune.game.node.entity.data.Hit.HitSplat;
+import org.redrune.game.node.entity.player.data.PlayerCombatDefinitions;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
@@ -29,7 +29,10 @@ import org.redrune.network.master.client.packet.out.PlayerFilePacketOut;
 import org.redrune.network.master.utility.Utility;
 import org.redrune.network.world.Transmitter;
 import org.redrune.network.world.WorldSession;
-import org.redrune.network.world.packet.outgoing.impl.*;
+import org.redrune.network.world.packet.outgoing.impl.CS2ConfigBuilder;
+import org.redrune.network.world.packet.outgoing.impl.DynamicMapRegionBuilder;
+import org.redrune.network.world.packet.outgoing.impl.MapRegionBuilder;
+import org.redrune.network.world.packet.outgoing.impl.PlayerOptionPacketBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -108,7 +111,7 @@ public final class Player extends Entity {
 	 * The render information object
 	 */
 	@Getter
-	private transient PlayerRenderData renderData;
+	private transient RenderInformation renderInformation;
 	
 	/**
 	 * The path event
@@ -139,6 +142,7 @@ public final class Player extends Entity {
 		inventory.initialize();
 		skills.refreshAll();
 		manager.getNotes().sendLoginConfiguration();
+		manager.getActivities().login();
 		
 		// renderable must be after this because of map region building...
 		setRenderable(true);
@@ -197,7 +201,7 @@ public final class Player extends Entity {
 	
 	@Override
 	public String toString() {
-		return "[username=" + details.getUsername() + ", index=" + getIndex() + ", right=" + details.getDominantRight() + "]";
+		return "[username=" + details.getUsername() + ", loc=" + getLocation() + ", right=" + details.getDominantRight() + "]";
 	}
 	
 	/**
@@ -209,7 +213,7 @@ public final class Player extends Entity {
 		
 		this.manager.registerTransients(this);
 		this.transmitter = new Transmitter(this);
-		this.renderData = new PlayerRenderData(this);
+		this.renderInformation = new RenderInformation(this);
 		
 		// actual player objects
 		this.skills.setPlayer(this);
@@ -226,12 +230,12 @@ public final class Player extends Entity {
 		if (isAtDynamicRegion()) {
 			transmitter.send(new DynamicMapRegionBuilder().build(this));
 			if (!wasAtDynamicRegion) {
-				getRenderData().getLocalNpcs().clear();
+				getRenderInformation().getLocalNpcs().clear();
 			}
 		} else {
 			transmitter.send(new MapRegionBuilder(!isRenderable()).build(this));
 			if (wasAtDynamicRegion) {
-				getRenderData().getLocalNpcs().clear();
+				getRenderInformation().getLocalNpcs().clear();
 			}
 		}
 		removeAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD);
@@ -406,8 +410,16 @@ public final class Player extends Entity {
 	 * Sends the updating required
 	 */
 	public void sendUpdating() {
-		transmitter.send(new PlayerRendering().build(this));
-		transmitter.send(new NPCRendering().build(this));
+		PlayerRendering playerRendering = getAttribute("player_rendering", null);
+		NPCRendering npcRendering = getAttribute("npc_rendering", null);
+		if (playerRendering == null) {
+			putAttribute("player_rendering", playerRendering = new PlayerRendering());
+		}
+		if (npcRendering == null) {
+			putAttribute("npc_rendering", npcRendering = new NPCRendering());
+		}
+		transmitter.send(playerRendering.build(this));
+		transmitter.send(npcRendering.build(this));
 	}
 	
 	/**
@@ -511,6 +523,7 @@ public final class Player extends Entity {
 			transmitter.sendUnrepeatingMessages("You can't log out until 10 seconds after the end of combat.");
 			return;
 		}
+		manager.getActivities().logout();
 		transmitter.sendLogout(lobby);
 	}
 }

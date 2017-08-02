@@ -9,17 +9,9 @@
 	-   Managed for poison/antifire
 	-   Potion mixing
 +   Player file saving scheduled
-+   Lacking a lot of xteas
 +   Dropping items in the wilderness makes them automatically public
 	-   If the item is a food/potion it won't be public for the regular time.
-+   Change settings to allow for different default values
-	PlayerVariables -> ACCEPTING_AID = false; DUAL_MOUSE_BUTTONS = TRUE;
 +   Finish dynamic regions
-+   Finish saving for activitys
-	-   They don't really save, but they look like they do!
-		+   [we save the name of the activity if the activity saves on logout, otherwise we set it to null]
-		+   we also save the last parameters used to start the last activity if the activity is saved on logout
-	-   Activites need to be rethought before this system goes anywhere
 +   Add skulling
 
 [Unfinished]
@@ -34,11 +26,6 @@
 +   Finish all range specials
 	-   Hand cannon
 	-   Crossbow bolt [e]
-+   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
-+   Teleport-other with closeby players [1 tile]
-	-   Interface 326
-	-   Can be done with one attribute
-	-   Example code from arios: https://paste.ee/p/trgn8
 +   Magic Combat Spells
 	-   Regular Spellbook
 		-   Need to add all water/earth/fire/air combat spells
@@ -50,11 +37,14 @@
 		-   Need to add confuse/weaken/curse
 		-   Need to add god spells & charging
 	-   Ancient Spellbook
-		-   Need to add all ancient combat spells
 		-   Need to add miasmic effects on combat as well
 +   'You can't reach that' [stops interaction through walls]
 	-   - you cant reach that when froze and tryna loot something > 1 tile away
-+
++   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
++   Teleport-other with closeby players [1 tile]
+	-   Interface 326
+	-   Can be done with one attribute
+	-   Example code from arios: https://paste.ee/p/trgn8
 
 [Data]
 +	NPC examines

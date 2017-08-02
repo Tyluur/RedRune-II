@@ -194,7 +194,7 @@ public final class PlayerCombatAction implements Action {
 			}
 		}
 		// we can't continue fighting in the activity
-		if (player.getManager().getActivities().handleNodeInteraction(target, InteractionOption.ATTACK_OPTION)) {
+		if (player.getManager().getActivities().handlesNodeInteraction(target, InteractionOption.ATTACK_OPTION) || !player.getManager().getActivities().combatAcceptable(target)) {
 			return false;
 		}
 		// anything else ?

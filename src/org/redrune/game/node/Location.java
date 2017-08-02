@@ -357,4 +357,7 @@ public final class Location {
 		return y + ((rotation == 1 || rotation == 3 ? sizeX : sizeY) - 1) / 2;
 	}
 	
+	public Location getRegionLocation() {
+		return Location.create(getX() >> 6, getY() >> 6, plane);
+	}
 }

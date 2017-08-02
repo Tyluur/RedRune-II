@@ -256,12 +256,14 @@ public class SkillTabInteractionModule implements InterfaceInteractionModule {
 					}
 					break;
 			}
+			// so we won't have level up if we click set level skills
 			if (lvlupSkill != -1) {
 				LevelUp.switchFlash(player, lvlupSkill, false);
 			}
 			if (skillMenu != -1) {
 				player.putAttribute(SKILL_MENU, skillMenu);
 			}
+			player.getManager().getInterfaces().closeAll();
 			if (getSkillId(componentId) != -1) {
 				handleSkillSetting(player, getSkillId(componentId));
 				return true;
@@ -310,6 +312,10 @@ public class SkillTabInteractionModule implements InterfaceInteractionModule {
 	 * 		The id of the skill to set a level to
 	 */
 	private void handleSkillSetting(Player player, int skillId) {
+		if (player.getManager().getActivities().getActivity().isPresent()) {
+			player.getTransmitter().sendMessage("You can't set levels in this place.");
+			return;
+		}
 		player.getTransmitter().requestInput(input -> {
 			int level = InputResponse.getInput(input);
 			if (level <= 0) {

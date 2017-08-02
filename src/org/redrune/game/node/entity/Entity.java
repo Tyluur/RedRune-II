@@ -8,10 +8,14 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
+import org.redrune.game.node.entity.data.EntityDetails;
+import org.redrune.game.node.entity.data.EntityHitMap;
+import org.redrune.game.node.entity.data.EntityMovement;
+import org.redrune.game.node.entity.data.EntityPoisonManager;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.prayer.Prayer;
-import org.redrune.game.node.entity.player.render.UpdateMasks;
-import org.redrune.game.node.entity.player.render.flag.impl.*;
+import org.redrune.game.node.entity.render.UpdateMasks;
+import org.redrune.game.node.entity.render.flag.impl.*;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
@@ -29,16 +33,6 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class Entity extends Node implements EntityDetails {
 	
-	@Override
-	public void tick() {
-		checkDeathEvent();
-		if (isDead() || isDying()) {
-			movement.resetWalkSteps();
-			return;
-		}
-		movement.processMovement();
-	}
-	
 	/**
 	 * The size of the map
 	 */
@@ -47,10 +41,23 @@ public abstract class Entity extends Node implements EntityDetails {
 	private int mapSize = 0;
 	
 	/**
+	 * If we're at a multi area
+	 */
+	@Getter
+	@Setter
+	private boolean atMultiArea;
+	
+	/**
+	 * The poison manager
+	 */
+	@Getter
+	private EntityPoisonManager poisonManager = new EntityPoisonManager();
+	
+	/**
 	 * The {@code HitMap} {@code Object} instance for this entity
 	 */
 	@Getter
-	private transient HitMap hitMap;
+	private transient EntityHitMap hitMap;
 	
 	/**
 	 * The index of the entity
@@ -104,13 +111,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	private transient boolean isAtDynamicRegion;
 	
 	/**
-	 * If we're at a multi area
-	 */
-	@Getter
-	@Setter
-	private boolean atMultiArea;
-	
-	/**
 	 * The entity who we were last attacked by
 	 */
 	@Getter
@@ -135,6 +135,17 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	@Override
+	public void tick() {
+		checkDeathEvent();
+		if (isDead() || isDying()) {
+			movement.resetWalkSteps();
+			return;
+		}
+		movement.processMovement();
+		poisonManager.processPoison();
+	}
+	
+	@Override
 	public String toString() {
 		return "Entity{" + "index=" + index + ", isPlayer=" + isPlayer() + ", lastRegion=" + lastRegion + ", lastLoadedLocation=" + lastLoadedLocation + '}';
 	}
@@ -143,11 +154,12 @@ public abstract class Entity extends Node implements EntityDetails {
 	 * Registers all transient variables
 	 */
 	public void registerTransients() {
-		this.hitMap = new HitMap(this);
+		this.hitMap = new EntityHitMap(this);
 		this.updateMasks = new UpdateMasks();
 		this.attributes = new ConcurrentHashMap<>();
 		this.movement = new EntityMovement(this);
 		this.mapRegionsIds = new CopyOnWriteArrayList<>();
+		this.poisonManager.setEntity(this);
 	}
 	
 	/**
@@ -219,13 +231,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * If we are currently teleporting in the game tick.
-	 */
-	public boolean teleporting() {
-		return getAttribute(AttributeKey.TELEPORTED, false);
-	}
-	
-	/**
 	 * Puts the key into the attributes map
 	 *
 	 * @param key
@@ -236,6 +241,66 @@ public abstract class Entity extends Node implements EntityDetails {
 	public <T> T putAttribute(Object key, T value) {
 		attributes.put(key, value);
 		return value;
+	}
+	
+	/**
+	 * If we are currently teleporting in the game tick.
+	 */
+	public boolean teleporting() {
+		return getAttribute(AttributeKey.TELEPORTED, false);
+	}
+	
+	/**
+	 * Gets the attribute from the {@link #attributes} map, and if it doesn't exist, we return the default value
+	 *
+	 * @param key
+	 * 		The key of the attribute
+	 * @param defaultValue
+	 * 		The default value
+	 * @param <T>
+	 * 		The return type
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(Object key, T defaultValue) {
+		T value = (T) attributes.get(key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
+	}
+	
+	/**
+	 * Resets the mask defaults
+	 */
+	public void resetMasks() {
+		sendAnimation(-1);
+		sendGraphics(-1);
+		turnTo(null);
+	}
+	
+	/**
+	 * Sends an animation mask
+	 *
+	 * @param animationId
+	 * 		The id of the animation
+	 */
+	public void sendAnimation(int animationId) {
+		updateMasks.register(new Animation(animationId, 0, isNPC(), Priority.NORMAL));
+		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
+		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
+		if (definition != null) {
+			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
+		}
+	}
+	
+	/**
+	 * Sends a graphic mask
+	 *
+	 * @param graphicsId
+	 * 		The id of the graphic
+	 */
+	public void sendGraphics(int graphicsId) {
+		updateMasks.register(new Graphic(graphicsId, 0, 0, isNPC()));
 	}
 	
 	/**
@@ -262,15 +327,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Resets the mask defaults
-	 */
-	public void resetMasks() {
-		sendAnimation(-1);
-		sendGraphics(-1);
-		turnTo(null);
-	}
-	
-	/**
 	 * Sends an animation
 	 *
 	 * @param animation
@@ -280,21 +336,6 @@ public abstract class Entity extends Node implements EntityDetails {
 		updateMasks.register(animation);
 		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
 		AnimationDefinition definition = AnimationDefinitionParser.forId(animation.getId());
-		if (definition != null) {
-			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
-		}
-	}
-	
-	/**
-	 * Sends an animation mask
-	 *
-	 * @param animationId
-	 * 		The id of the animation
-	 */
-	public void sendAnimation(int animationId) {
-		updateMasks.register(new Animation(animationId, 0, isNPC(), Priority.NORMAL));
-		//	lastAnimationEnd = Utils.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
-		AnimationDefinition definition = AnimationDefinitionParser.forId(animationId);
 		if (definition != null) {
 			updateMasks.setLastAnimationEndTime(System.currentTimeMillis() + definition.getEmoteTime());
 		}
@@ -327,16 +368,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public void sendAnimation(int animationId, int speed, Priority priority) {
 		updateMasks.register(new Animation(animationId, speed, isNPC(), priority));
-	}
-	
-	/**
-	 * Sends a graphic mask
-	 *
-	 * @param graphicsId
-	 * 		The id of the graphic
-	 */
-	public void sendGraphics(int graphicsId) {
-		updateMasks.register(new Graphic(graphicsId, 0, 0, isNPC()));
 	}
 	
 	/**
@@ -425,24 +456,18 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Gets the hitpoints of the entity
+	 */
+	public int getHealthPoints() {
+		return (isPlayer() ? toPlayer().getHealthPoints() : toNPC().getHealthPoints());
+	}
+	
+	/**
 	 * Checks if we were in combat recently.
 	 */
 	public boolean combatRecently() {
 		long lastTimeHit = getAttribute(AttributeKey.ATTACKED_BY_TIME, -1L);
 		return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastTimeHit) <= 10;
-	}
-	
-	/**
-	 * Gets an attribute from the {@link #attributes} map
-	 *
-	 * @param key
-	 * 		The key of the attribute
-	 * @param <T>
-	 * 		The return type
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Object key) {
-		return (T) attributes.get(key);
 	}
 	
 	/**
@@ -484,32 +509,13 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
-	 * Gets the attribute from the {@link #attributes} map, and if it doesn't exist, we return the default value
-	 *
-	 * @param key
-	 * 		The key of the attribute
-	 * @param defaultValue
-	 * 		The default value
-	 * @param <T>
-	 * 		The return type
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getAttribute(Object key, T defaultValue) {
-		T value = (T) attributes.get(key);
-		if (value == null) {
-			return defaultValue;
-		}
-		return value;
-	}
-	
-	/**
 	 * Checks if we are frozen
 	 */
 	public boolean isFrozen() {
 		// who froze us
 		Entity frozenBy = getAttribute(AttributeKey.FROZEN_BY);
 		// person we're frozen by is too far away or they are no longer existent
-		if (frozenBy == null || !frozenBy.isRenderable() || frozenBy.getLocation().withinDistance(getLocation(), 16)) {
+		if (frozenBy == null || !frozenBy.isRenderable() || !frozenBy.getLocation().withinDistance(getLocation(), 16)) {
 			return false;
 		} else {
 			// if the time till we're unfrozen has lapseed
@@ -521,6 +527,19 @@ public abstract class Entity extends Node implements EntityDetails {
 			// otherwise we are not frozen
 			return true;
 		}
+	}
+	
+	/**
+	 * Gets an attribute from the {@link #attributes} map
+	 *
+	 * @param key
+	 * 		The key of the attribute
+	 * @param <T>
+	 * 		The return type
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getAttribute(Object key) {
+		return (T) attributes.get(key);
 	}
 	
 	/**
@@ -547,13 +566,6 @@ public abstract class Entity extends Node implements EntityDetails {
 		} else {
 			return null;
 		}
-	}
-	
-	/**
-	 * Gets the hitpoints of the entity
-	 */
-	public int getHealthPoints() {
-		return (isPlayer() ? toPlayer().getHealthPoints() : toNPC().getHealthPoints());
 	}
 	
 	/**
@@ -600,6 +612,17 @@ public abstract class Entity extends Node implements EntityDetails {
 	}
 	
 	/**
+	 * Forces the entity to be in a multi area
+	 *
+	 * @param forced
+	 * 		If it should be forced
+	 */
+	public void setMultiAreaForce(boolean forced) {
+		putAttribute(AttributeKey.FORCE_MULTI_AREA, forced);
+		checkMultiArea();
+	}
+	
+	/**
 	 * Checks if we're at a multi area
 	 */
 	public void checkMultiArea() {
@@ -620,17 +643,6 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public Boolean multiAreaForced() {
 		return getAttribute(AttributeKey.FORCE_MULTI_AREA, false);
-	}
-	
-	/**
-	 * Forces the entity to be in a multi area
-	 *
-	 * @param forced
-	 * 		If it should be forced
-	 */
-	public void setMultiAreaForce(boolean forced) {
-		putAttribute(AttributeKey.FORCE_MULTI_AREA, forced);
-		checkMultiArea();
 	}
 	
 	/**
