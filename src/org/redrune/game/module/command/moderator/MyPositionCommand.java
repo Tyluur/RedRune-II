@@ -36,8 +36,7 @@ public class MyPositionCommand extends CommandModule {
 			builder.append("</col>");
 			builder.append(i == mapRegionsIds.size() - 1 ? "" : ", ");
 		}
-		player.getTransmitter().sendMessage("My Location=" + player.getLocation().toString());
-		player.getTransmitter().sendMessage("My Regions:" + builder.toString());
+		player.getTransmitter().sendMessage("My Location=" + player.getLocation().toString() + ". Regions["+ builder.toString() + "]");
 		
 		if (toClipboard) {
 			StringSelection stringSelection = new StringSelection("new Location(" + player.getLocation().getX() + ", " + player.getLocation().getY() + ", " + player.getLocation().getPlane() + ")");

@@ -21,6 +21,12 @@ public class FloorItemTask extends ScheduledTask {
 	
 	@Override
 	public void run() {
+		// make sure that the item still exists before any of this. if it doesn't we can stop the task
+		if (!item.isRenderable()) {
+			stop();
+			System.out.println("stopped ticking an unrenedab");
+			return;
+		}
 		item.addTicksPassed();
 		// the time hasn't passed yet, hold on.
 		if (!item.ticksElapsed()) {

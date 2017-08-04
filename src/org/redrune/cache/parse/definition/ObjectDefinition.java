@@ -479,14 +479,11 @@ public final class ObjectDefinition {
 		return aByte3912;
 	}
 	
-	public boolean containsOption(int index, String option) {
-		if (options == null || options.length <= index || options[index] == null) {
-			return false;
-		}
-		return options[index].equals(option);
+	public boolean hasOption(int index, String option) {
+		return options != null && options.length > index && options[index] != null && options[index].equalsIgnoreCase(option);
 	}
 	
-	public boolean containsOption(String option) {
+	public boolean hasOption(String option) {
 		if (options == null) {
 			return false;
 		}

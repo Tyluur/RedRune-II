@@ -1,6 +1,7 @@
 package org.redrune.game.content.event.impl;
 
 import org.redrune.game.module.ModuleRepository;
+import org.redrune.game.node.entity.link.interaction.NPCInteraction;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 import org.redrune.game.content.dialogue.DialogueRepository;
@@ -20,8 +21,8 @@ public class NPCEvent extends Event<NPCEventContext> {
 		NPC npc = context.getNpc();
 		InteractionOption option = context.getOption();
 		
-		player.turnTo(npc);
-		npc.startPlayerInteraction(player);
+		player.getInteractionManager().startInteraction(new NPCInteraction(player, npc));
+		npc.getInteractionManager().startInteraction(new NPCInteraction(player, npc));
 		
 		if (option == InteractionOption.FIRST_OPTION && DialogueRepository.handleNPC(player, npc)) {
 			return;

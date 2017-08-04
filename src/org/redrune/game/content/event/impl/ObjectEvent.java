@@ -35,80 +35,80 @@ public class ObjectEvent extends Event<ObjectEventContext> {
 		}
 		if (context.getOption().equals(InteractionOption.FIRST_OPTION)) {
 			if (id == 61190 || id == 61191 || id == 61192 || id == 61193) {
-				if (objectDef.containsOption(0, "Chop down")) {
+				if (objectDef.hasOption(0, "Chop down")) {
 					player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.NORMAL));
 					return;
 				}
 			}
 			switch (name) {
 				case "tree":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.NORMAL));
 						return;
 					}
 					break;
 				case "evergreen":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.EVERGREEN));
 						return;
 					}
 					break;
 				case "dead tree":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.DEAD));
 						return;
 					}
 					break;
 				case "oak":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.OAK));
 						return;
 					}
 					break;
 				case "willow":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.WILLOW));
 						return;
 					}
 					break;
 				case "mahogany":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.MAHOGANY));
 						return;
 					}
 					break;
 				case "teak":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.TEAK));
 						return;
 					}
 					break;
 				case "maple tree":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.MAPLE));
 						return;
 					}
 					break;
 				case "ivy":
-					if (objectDef.containsOption(0, "Chop")) {
+					if (objectDef.hasOption(0, "Chop")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.IVY));
 						return;
 					}
 					break;
 				case "yew":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.YEW));
 						return;
 					}
 					break;
 				case "magic tree":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.MAGIC));
 						return;
 					}
 					break;
 				case "cursed magic tree":
-					if (objectDef.containsOption(0, "Chop down")) {
+					if (objectDef.hasOption(0, "Chop down")) {
 						player.getManager().getActions().startAction(new WoodcuttingAction(object, TreeDefinitions.CURSED_MAGIC));
 						return;
 					}

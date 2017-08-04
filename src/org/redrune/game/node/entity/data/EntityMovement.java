@@ -1,6 +1,8 @@
 package org.redrune.game.node.entity.data;
 
 import lombok.Getter;
+import org.redrune.game.content.event.EventListener;
+import org.redrune.game.content.event.EventListener.EventType;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
@@ -91,6 +93,7 @@ public final class EntityMovement {
 					entity.toPlayer().getVariables().setRunToggled(false);
 				} else {
 					nextRunDirection = getNextWalkStep();
+//					System.out.println("next direction=" + nextRunDirection);
 					if (nextRunDirection != -1) {
 						// draining energy
 						if (entity.isPlayer()) {
@@ -99,6 +102,7 @@ public final class EntityMovement {
 						byte xOffset = DIRECTION_DELTA_X[nextRunDirection];
 						byte yOffset = DIRECTION_DELTA_Y[nextRunDirection];
 						moveLocation(xOffset, yOffset);
+						entity.getUpdateMasks().register(new TemporaryMovement(RUN_MOVE_TYPE));
 						entity.putAttribute("direction", Misc.getFaceDirection(xOffset, yOffset));
 					} else if (entity.isPlayer()) {
 						entity.getUpdateMasks().register(new TemporaryMovement(WALK_MOVE_TYPE));
@@ -156,7 +160,8 @@ public final class EntityMovement {
 	 * 		The y offset
 	 */
 	private void moveLocation(int xOffset, int yOffset) {
-		entity.setLocation(entity.getLocation().transform(xOffset, yOffset, 0));
+		Location transform = entity.getLocation().transform(xOffset, yOffset, 0);
+		entity.setLocation(transform);
 	}
 	
 	/**
@@ -462,6 +467,7 @@ public final class EntityMovement {
 		if (entity.isPlayer()) {
 			entity.getUpdateMasks().register(new MovementUpdate(entity.toPlayer()));
 		}
+//		RegionManager.addPublicFloorItem(995, 1, 5, Location.create(nextX, nextY, 0));
 		return true;
 	}
 	

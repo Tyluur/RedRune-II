@@ -3,10 +3,10 @@ package org.redrune.game.node.entity.player.render;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.RenderInformation;
-import org.redrune.game.node.entity.render.flag.UpdateFlag;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.entity.player.render.update.GlobalUpdateStage;
 import org.redrune.game.node.entity.player.render.update.LocalUpdateStage;
+import org.redrune.game.node.entity.render.flag.UpdateFlag;
 import org.redrune.game.world.World;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.world.packet.Packet;
@@ -103,10 +103,9 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 		switch (stage) {
 			case REMOVE_PLAYER:
 				if (p != null) {
-					if (p.teleporting()) {
-						updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.TELEPORTED, flagBased);
-					} else if (p.getLocation().getPlane() != p.getRenderInformation().getLastLocation().getPlane()) {
-						updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.HEIGHT_UPDATED, flagBased);
+					int updateType = getGlobalUpdateType(p);
+					if (updateType != 0) {
+						updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.values()[updateType], flagBased);
 					} else {
 						buffer.writeBits(1, 0);
 					}
@@ -166,8 +165,8 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 		}
 	}
 	
-	public static byte GetGlobalUpdateType(Player player) {
-		Location delta = Location.GetDelta(player.getLastLoadedLocation(), player.getLocation().getRegionLocation());
+	private static byte getGlobalUpdateType(Player player) {
+		Location delta = Location.getDelta(World.get().getHash((short) player.getIndex()), player.getLocation().getRegionLocation());
 		if (delta.getX() == 0 && delta.getY() == 0 && delta.getPlane() == 0) {
 			return 0; // no update needed
 		} else if (delta.getX() == 0 && delta.getY() == 0 && delta.getPlane() != 0) {
@@ -184,7 +183,7 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 	 *
 	 * @param player
 	 * 		The player
-	 * @param p
+	 * @param updatable
 	 * 		The player to update
 	 * @param buffer
 	 * 		The buffer
@@ -193,37 +192,36 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 	 * @param flagBased
 	 * 		The flag based buffer
 	 */
-	private static void updateGlobalPlayer(Player player, Player p, PacketBuilder buffer, GlobalUpdateStage stage, PacketBuilder flagBased) {
+	private static void updateGlobalPlayer(Player player, Player updatable, PacketBuilder buffer, GlobalUpdateStage stage, PacketBuilder flagBased) {
 		buffer.writeBits(1, 1);
 		buffer.writeBits(2, stage.ordinal());
-		switch (stage) {
-			case ADD_PLAYER:
-				byte updateType = GetGlobalUpdateType(p);
-				if (updateType != 0) {
-					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.values()[updateType], flagBased);
-				} else {
-					buffer.writeBits(1, 0);
-					//					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.TELEPORTED, flagBased);
-				}
-				buffer.writeBits(6, p.getLocation().getX() - (p.getLocation().getRegionLocation().getX() << 6)); // 6
-				buffer.writeBits(6, p.getLocation().getY() - (p.getLocation().getRegionLocation().getY() << 6)); // 6
-				buffer.writeBits(1, 1);
-				player.getRenderInformation().getIsLocal()[p.getIndex()] = true;
-				writeMasks(player, p, flagBased, true);
-				break;
-			case HEIGHT_UPDATED:
-				int z = p.getLocation().getPlane() - p.getRenderInformation().getLastLocation().getPlane();
-				buffer.writeBits(2, (z & 0x3));
-				break;
-			case MAP_REGION_DIRECTION:
-				break;
-			case TELEPORTED:
-				Location delta = Location.GetDelta(p.getLastLoadedLocation(), p.getLocation().getRegionLocation());
-				int hash = ((delta.getY() & 0xFF) | ((delta.getX() & 0xFF) << 8) | ((delta.getPlane() & 0x3) << 16)) & 0x3FFFF;
-				buffer.writeBits(18, hash);
-				break;
-			default:
-				break;
+		if (stage == GlobalUpdateStage.ADD_PLAYER) {
+			byte updateType = getGlobalUpdateType(updatable);
+			if (updateType != 0) {
+				updateGlobalPlayer(player, updatable, buffer, GlobalUpdateStage.values()[updateType], flagBased);
+			} else {
+				buffer.writeBits(1, 0);
+				//					updateGlobalPlayer(player, p, buffer, GlobalUpdateStage.TELEPORTED, flagBased);
+			}
+			buffer.writeBits(6, updatable.getLocation().getX() - (updatable.getLocation().getRegionX() << 6)); // 6
+			buffer.writeBits(6, updatable.getLocation().getY() - (updatable.getLocation().getRegionY() << 6)); // 6
+			buffer.writeBits(1, 1);
+			player.getRenderInformation().getIsLocal()[updatable.getIndex()] = true;
+			writeMasks(player, updatable, flagBased, true);
+		} else if (stage == GlobalUpdateStage.HEIGHT_UPDATED) {
+			Location hashLoc = World.get().getHash((short) updatable.getIndex());
+			int z = updatable.getLocation().getPlane() - hashLoc.getPlane();
+			buffer.writeBits(2, (z & 0x3));
+		} else if (stage == GlobalUpdateStage.MAP_REGION_DIRECTION) {
+			Location hashLoc = World.get().getHash((short) updatable.getIndex());
+			Location delta = Location.getDelta(hashLoc, updatable.getLocation().getRegionLocation());
+			int z = updatable.getLocation().getPlane() - hashLoc.getPlane();
+			buffer.writeBits(5, ((z & 0x3) << 3) | (DirectionUtilities.RegionMovementType[delta.getX() + 1][delta.getY() + 1] & 0x7));
+		} else if (stage == GlobalUpdateStage.TELEPORTED) {
+			Location hashLoc = World.get().getHash((short) updatable.getIndex());
+			Location delta = Location.getDelta(hashLoc, updatable.getLocation().getRegionLocation());
+			int hash = ((delta.getY() & 0xFF) | ((delta.getX() & 0xFF) << 8) | ((delta.getPlane() & 0x3) << 16)) & 0x3FFFF;
+			buffer.writeBits(18, hash);
 		}
 	}
 	

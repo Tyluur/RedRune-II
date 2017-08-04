@@ -387,7 +387,6 @@ public final class Transmitter {
 	
 	/**
 	 * Refreshes the amount of health points we have
-	 *
 	 */
 	public void refreshHealthPoints() {
 		send(new ConfigPacketBuilder(1240, player.getHealthPoints() << 1).build(player));
@@ -420,5 +419,19 @@ public final class Transmitter {
 		refreshRunOrbStatus();
 		refreshEnergy();
 		refreshHealthPoints();
+	}
+	
+	/**
+	 * Rquests an interaction
+	 *
+	 * @param id
+	 * 		The id of the interaction
+	 * @param message
+	 * 		The message of the interaction
+	 * @param requestee
+	 * 		The name of the requestee
+	 */
+	public void requestInteraction(int id, String message, String requestee) {
+		send(new MessageBuilder(id, message, requestee).build(player));
 	}
 }

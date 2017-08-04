@@ -135,7 +135,6 @@ public class RenderInformation {
 		globalsCount = 0;
 		added = 0;
 		onFirstCycle = false;
-		lastLocation = player.getLocation();
 		for (short i = 1; i < 2048; i++) {
 			skips[i] >>= 1;
 			if (isLocal[i]) {
@@ -148,6 +147,8 @@ public class RenderInformation {
 				hashLocations[i] = p.getLocation().get18BitsHash();
 			}
 		}
+		World.get().updateHash((short) player.getIndex(), player.getLocation().getRegionLocation());
+		lastLocation = player.getLocation().copy();
 	}
 	
 	/**

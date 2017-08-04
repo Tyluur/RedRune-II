@@ -106,6 +106,7 @@ public class MasterCommunication implements PacketConstants {
 		
 		if (player == null) {
 			System.err.println("Unable to read file text for user '" + username + "'.");
+			session.getChannel().close();
 			return;
 		}
 		
@@ -124,7 +125,7 @@ public class MasterCommunication implements PacketConstants {
 				player.register();
 			}
 		} catch (Exception e) {
-			player.getSession().getChannel().close();
+			session.getChannel().close();
 			e.printStackTrace();
 		}
 		

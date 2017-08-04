@@ -4,6 +4,10 @@ import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.action.interaction.PlayerFollowAction;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
+import org.redrune.game.content.event.EventRepository;
+import org.redrune.game.content.event.context.NodeReachEventContext;
+import org.redrune.game.content.event.impl.NodeReachEvent;
+import org.redrune.game.node.entity.link.interaction.TradeInteraction;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.render.flag.impl.FaceLocationUpdate;
@@ -31,16 +35,21 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	/**
 	 * The trade player opcode
 	 */
-	private static final byte PLAYER_REQUEST_PROCEED = 90;
+	private static final byte PLAYER_TRADE_REQUEST = 90;
 	
 	/**
 	 * The interface on player packet
 	 */
 	private static final byte PLAYER_INTERFACE_USAGE = 65;
 	
+	/**
+	 * The request accept opcode
+	 */
+	private static final byte PLAYER_REQUEST_ACCEPT = 83;
+	
 	@Override
 	public int[] bindings() {
-		return arguments(ATTACK_PLAYER, FOLLOW_PLAYER, PLAYER_REQUEST_PROCEED, PLAYER_INTERFACE_USAGE);
+		return arguments(ATTACK_PLAYER, FOLLOW_PLAYER, PLAYER_TRADE_REQUEST, PLAYER_INTERFACE_USAGE, PLAYER_REQUEST_ACCEPT);
 	}
 	
 	@Override
@@ -48,6 +57,9 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 		switch (packet.getOpcode()) {
 			case PLAYER_INTERFACE_USAGE:
 				readPlayerInterfaceUsage(player, packet);
+				break;
+			case PLAYER_REQUEST_ACCEPT:
+				readPlayerRequestAcceptPacket(player, packet);
 				break;
 			default:
 				readPlayerOptionPacket(player, packet);
@@ -160,8 +172,34 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 			case FOLLOW_PLAYER:
 				decodePlayerFollow(player, p2);
 				break;
-			case PLAYER_REQUEST_PROCEED:
-				decodePlayerRequest(player, p2);
+			case PLAYER_TRADE_REQUEST:
+				handleTradeRequest(player, p2);
+				break;
+		}
+	}
+	
+	/**
+	 * Reads the player request accept packet
+	 *
+	 * @param player
+	 * 		The player
+	 * @param packet
+	 * 		The packet
+	 */
+	private void readPlayerRequestAcceptPacket(Player player, Packet packet) {
+		int index = packet.readShort();
+		int type = packet.readByte();
+		if (index < 1 || index > 2047) {
+			return;
+		}
+		Player p2 = World.get().getPlayers().get(index);
+		if (p2 == null) {
+			return;
+		}
+		switch(type) {
+			// trade request type
+			case 0:
+				handleTradeRequest(player, p2);
 				break;
 		}
 	}
@@ -231,7 +269,19 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	 * @param other
 	 * 		The other player we're requesting
 	 */
-	private void decodePlayerRequest(Player player, Player other) {
-	
+	private void handleTradeRequest(Player player, Player other) {
+		player.stop(true, true, true, false);
+		int distance = player.getLocation().getDistance(other.getLocation());
+		if (distance == 0 || distance > 1) {
+			EventRepository.executeEvent(player, NodeReachEvent.class, new NodeReachEventContext(other, () -> {
+				if (!other.isRenderable()) {
+					return;
+				}
+				TradeInteraction.handleTradeRequesting(player, other);
+			}));
+		} else {
+			TradeInteraction.handleTradeRequesting(player, other);
+		}
 	}
+	
 }

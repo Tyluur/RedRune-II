@@ -1,12 +1,12 @@
 package org.redrune.game.content.event.impl;
 
-import org.redrune.game.node.Location;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.event.Event;
 import org.redrune.game.content.event.EventPolicy.ActionPolicy;
 import org.redrune.game.content.event.EventPolicy.InterfacePolicy;
 import org.redrune.game.content.event.EventPolicy.WalkablePolicy;
 import org.redrune.game.content.event.context.WalkEventContext;
+import org.redrune.game.node.Location;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.LockManager.LockType;
 
 /**

@@ -269,6 +269,10 @@ public class NPC extends Entity {
 			if (walkValue == 0) {
 				return;
 			}
+			// we don't randomly walk if we're interacting
+			if (getInteractionManager().hasInteraction()) {
+				return;
+			}
 			// if we're lucky & the npc is a type that walks
 			boolean randomWalk = Math.random() * 1000.0 < 100.0;
 			// make sure we should walk
@@ -456,38 +460,11 @@ public class NPC extends Entity {
 	}
 	
 	/**
-	 * Starts an interaction with the player by facing them
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	public void startPlayerInteraction(Player player) {
-		putAttribute(AttributeKey.INTERACTING_PLAYER, player);
-		player.putAttribute(AttributeKey.INTERACTING_NPC, this);
-		
-		turnTo(player);
-	}
-	
-	/**
 	 * Gets the middle world tile
 	 */
 	public Location getMiddleWorldTile() {
 		int size = getSize();
 		return new Location(getLocation().getCoordFaceX(size), getLocation().getCoordFaceY(size), getLocation().getPlane());
-	}
-	
-	/**
-	 * Ends the interaction with the player. If we're still interacting with them it will stop facing them. If we have
-	 * moved onto somebody else, it will not update.
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	public void endPlayerInteraction(Player player) {
-		Player interactingWith = getAttribute(AttributeKey.INTERACTING_PLAYER, null);
-		if (interactingWith.equals(player)) {
-			turnTo(null);
-		}
 	}
 	
 	/**
@@ -501,23 +478,11 @@ public class NPC extends Entity {
 	private List<Entity> possibleTargets(boolean npcs, boolean players) {
 		List<Entity> targets = new ArrayList<>();
 		boolean atWild = WildernessActivity.isAtWild(getLocation());
-		int maxDistance = atWild ? 8 : 16;
+		int maxDistance = getSize() * 2;
 		Region region = getRegion();
 		if (players) {
 			for (Player player : region.getPlayers()) {
 				if (player == null || !player.isRenderable()) {
-					continue;
-				}
-				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), player.getLocation().getX(), player.getLocation().getY(), player.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
-					continue;
-				}
-				// check that we can attack them regardless of multi player flags
-				boolean single = !getCombatManager().isForceMultiAttacked() && (!isAtMultiArea() || !player.isAtMultiArea());
-				if (single && (player.getAttackedBy() != this && (player.getAttackedByDelay() > System.currentTimeMillis() || player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()))) {
-					continue;
-				}
-				// we cant clip to them
-				if (!getMovement().clippedProjectileToNode(player, false)) {
 					continue;
 				}
 				// no longer aggressive
@@ -528,6 +493,19 @@ public class NPC extends Entity {
 				if (!getCombatManager().isAggressiveForced() && !atWild && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2) {
 					continue;
 				}
+				// check that we can attack them regardless of multi player flags
+				boolean single = !getCombatManager().isForceMultiAttacked() && (!isAtMultiArea() || !player.isAtMultiArea());
+				if (single && (player.getAttackedBy() != this && (player.getAttackedByDelay() > System.currentTimeMillis() || player.getAttribute(AttributeKey.FIND_TARGET_DELAY, -1L) > System.currentTimeMillis()))) {
+					continue;
+				}
+				// out of bounds
+				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), player.getLocation().getX(), player.getLocation().getY(), player.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
+					continue;
+				}
+				// we cant clip to them
+				if (!getMovement().clippedProjectileToNode(player, false)) {
+					continue;
+				}
 				targets.add(player);
 			}
 		}
@@ -536,11 +514,12 @@ public class NPC extends Entity {
 				if (npc == null || !npc.isRenderable() || !npc.getDefinitions().hasAttackOption()) {
 					continue;
 				}
-				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), npc.getLocation().getX(), npc.getLocation().getY(), npc.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
-					continue;
-				}
 				// the multi area check
 				if ((!isAtMultiArea() || !npc.isAtMultiArea()) && npc.getAttackedBy() != this && npc.getAttackedByDelay() > System.currentTimeMillis()) {
+					continue;
+				}
+				// out of bounds
+				if (!Misc.isOnRange(getLocation().getX(), getLocation().getY(), getSize(), npc.getLocation().getX(), npc.getLocation().getY(), npc.getSize(), getCombatManager().getFindTargetRadius() > 0 ? getCombatManager().getFindTargetRadius() : maxDistance)) {
 					continue;
 				}
 				// if we can't clip to that target

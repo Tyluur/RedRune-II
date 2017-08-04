@@ -10,6 +10,7 @@ import org.redrune.core.boot.BootHandler;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.impl.EnergyRestorationTask;
 import org.redrune.core.task.impl.HitpointsRestorationTask;
+import org.redrune.core.task.impl.PlayerSavingTask;
 import org.redrune.core.task.impl.SkillRestorationTask;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
@@ -40,8 +41,12 @@ import org.redrune.utility.repository.npc.spawn.NPCSpawn;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
 import org.redrune.utility.rs.constant.Directions.Direction;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.Arrays.fill;
 
 /**
  * Contains all the collections and data to handle a world.
@@ -93,6 +98,11 @@ public final class World implements SequentialService {
 	private boolean isAlive;
 	
 	/**
+	 * The array of global player hash information
+	 */
+	private Location[] locationHashInformation = new Location[2048];
+	
+	/**
 	 * Constructs a new world object
 	 */
 	public World(String[] args) {
@@ -103,7 +113,8 @@ public final class World implements SequentialService {
 			System.exit(1);
 		}
 		this.id = GameFlags.worldId;
-		packetRepository.storeAll();
+		this.packetRepository.storeAll();
+		fill(locationHashInformation, Location.create(0, 0, 0));
 		setAlive(true);
 	}
 	
@@ -165,6 +176,7 @@ public final class World implements SequentialService {
 		SystemManager.getScheduler().schedule(new EnergyRestorationTask());
 		SystemManager.getScheduler().schedule(new SkillRestorationTask());
 		SystemManager.getScheduler().schedule(new HitpointsRestorationTask());
+		SystemManager.getScheduler().schedule(new PlayerSavingTask());
 	}
 	
 	/**
@@ -186,6 +198,28 @@ public final class World implements SequentialService {
 	 */
 	public static World get() {
 		return singleton;
+	}
+	
+	/**
+	 * Gets the hash of a player
+	 *
+	 * @param playerIndex
+	 * 		The index of the player
+	 */
+	public Location getHash(short playerIndex) {
+		return this.locationHashInformation[playerIndex];
+	}
+	
+	/**
+	 * Updates the hash of the player
+	 *
+	 * @param playerIndex
+	 * 		The index of the player
+	 * @param loc
+	 * 		The location of the player
+	 */
+	public void updateHash(short playerIndex, Location loc) {
+		this.locationHashInformation[playerIndex] = loc;
 	}
 	
 	/**
@@ -253,5 +287,16 @@ public final class World implements SequentialService {
 		} else {
 			return WildernessActivity.isAtWild(location);
 		}
+	}
+	
+	/**
+	 * Constructs a new list of all the players in the world and adds their names and their uid into the string entry.
+	 */
+	public List<String> getPlayersAsString() {
+		List<String> playerList = new ArrayList<>();
+		for (Player player : players) {
+			playerList.add(player.getDetails().getUsername() + ":::::" + player.getSession().getUid());
+		}
+		return playerList;
 	}
 }

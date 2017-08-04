@@ -81,6 +81,21 @@ public interface InterfaceConstants extends InterfaceRepository {
 	int GAMEFRAME_INTERFACE_ID = 751;
 	
 	/**
+	 * The id of the first trade interface [containers]
+	 */
+	int FIRST_TRADE_INTERFACE_ID = 335;
+	
+	/**
+	 * The id of the second trade interface [confirmation]
+	 */
+	int SECOND_TRADE_INTERFACE_ID = 334;
+	
+	/**
+	 * The id of the trade inventory interface
+	 */
+	int TRADE_INVENTORY_INTERFACE_ID = 336;
+	
+	/**
 	 * Sends the quest interface to the player with the parameterized title and
 	 * list of messages. The messages will be formatted to never overlap one
 	 * line, but to go to the next one if it passes the limit of characters on a

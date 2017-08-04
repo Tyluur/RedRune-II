@@ -19,7 +19,7 @@ public class HitCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("hit", "damage");
+		return arguments("hit", "dmg");
 	}
 	
 	@Override

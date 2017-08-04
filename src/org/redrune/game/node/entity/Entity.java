@@ -11,7 +11,8 @@ import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.data.EntityDetails;
 import org.redrune.game.node.entity.data.EntityHitMap;
 import org.redrune.game.node.entity.data.EntityMovement;
-import org.redrune.game.node.entity.data.EntityPoisonManager;
+import org.redrune.game.node.entity.link.EntityInteractionManager;
+import org.redrune.game.node.entity.link.EntityPoisonManager;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.link.prayer.Prayer;
 import org.redrune.game.node.entity.render.UpdateMasks;
@@ -125,6 +126,12 @@ public abstract class Entity extends Node implements EntityDetails {
 	private transient long attackedByDelay;
 	
 	/**
+	 * The interaction manager
+	 */
+	@Getter
+	private transient EntityInteractionManager interactionManager;
+	
+	/**
 	 * Constructs a new {@code Entity}
 	 *
 	 * @param location
@@ -159,7 +166,9 @@ public abstract class Entity extends Node implements EntityDetails {
 		this.attributes = new ConcurrentHashMap<>();
 		this.movement = new EntityMovement(this);
 		this.mapRegionsIds = new CopyOnWriteArrayList<>();
+		this.interactionManager = new EntityInteractionManager();
 		this.poisonManager.setEntity(this);
+		this.interactionManager.setEntity(this);
 	}
 	
 	/**

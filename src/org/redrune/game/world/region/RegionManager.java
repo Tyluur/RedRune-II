@@ -3,6 +3,8 @@ package org.redrune.game.world.region;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.activity.ActivitySystem;
+import org.redrune.game.content.event.EventListener;
+import org.redrune.game.content.event.EventListener.EventType;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
@@ -58,6 +60,7 @@ public class RegionManager {
 	 */
 	// TODO: region-music support
 	public static void updateEntityRegion(Entity entity) {
+		EventListener.fireListener(entity, EventType.MOVE);
 		if (!entity.isRenderable()) {
 			entity.getRegion().removeEntity(entity);
 			return;

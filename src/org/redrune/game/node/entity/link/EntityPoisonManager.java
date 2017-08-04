@@ -1,4 +1,4 @@
-package org.redrune.game.node.entity.data;
+package org.redrune.game.node.entity.link;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,6 @@ import org.redrune.network.world.packet.outgoing.impl.ConfigPacketBuilder;
 import org.redrune.utility.rs.Hit;
 import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.utility.rs.RSTimeUnit;
-import org.redrune.utility.tool.RandomFunction;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -63,7 +62,7 @@ public final class EntityPoisonManager {
 		if (entity.isPlayer()) {
 			Player player = entity.toPlayer();
 			if (poisonDamage == 0) {
-				player.getTransmitter().sendMessage("You are poisoned.");
+				player.getTransmitter().sendMessage("<col=990000>You have been poisoned!</col>");
 			}
 		}
 		delay = 3;
@@ -103,7 +102,7 @@ public final class EntityPoisonManager {
 			// poison is uneffective after 3 minutes
 			if (tickAmount > 0 && RSTimeUnit.TICKS.toSeconds(tickAmount) >= 180) {
 				if (entity.isPlayer()) {
-					entity.toPlayer().getTransmitter().sendMessage("The poison has worn off.");
+					entity.toPlayer().getTransmitter().sendMessage("The poison has wore off.");
 				}
 				reset();
 				return;
@@ -119,15 +118,15 @@ public final class EntityPoisonManager {
 			// hits the player
 			entity.getHitMap().applyHit(new Hit(entity, poisonDamage, HitSplat.POISON_DAMAGE));
 			poisonDamage -= 2;
-			// sets the next time for poison to be used
+			// poison is appended at 15 seconds
 			if (isPoisoned()) {
-				delay = RandomFunction.random(25, 35);
+				delay = 25;
 				return;
 			}
 			// we aren't poisoned anymore
 			reset();
 			if (entity.isPlayer()) {
-				entity.toPlayer().getTransmitter().sendMessage("The poison has worn off.");
+				entity.toPlayer().getTransmitter().sendMessage("The poison has wore off.");
 			}
 		}
 	}

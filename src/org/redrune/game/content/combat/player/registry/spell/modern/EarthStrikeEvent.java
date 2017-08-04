@@ -1,55 +1,53 @@
 package org.redrune.game.content.combat.player.registry.spell.modern;
 
-import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
+import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
- * @since 6/23/2017
+ * @since 8/2/2017
  */
-public class AirStrikeEvent implements CombatSpellEvent {
-	
-	@Override
-	public int spellId() {
-		return 25;
-	}
+public class EarthStrikeEvent implements CombatSpellEvent {
 	
 	@Override
 	public int delay() {
-		return 5;
+		return 0;
 	}
 	
 	@Override
 	public int animationId() {
-		return 14221;
+		return 0;
 	}
 	
 	@Override
 	public int hitGfx() {
-		return 2700;
+		return 0;
 	}
 	
 	@Override
 	public int maxHit() {
-		return 20;
+		return 0;
+	}
+	
+	@Override
+	public int spellId() {
+		return 0;
 	}
 	
 	@Override
 	public double exp() {
-		return 5.5;
+		return 0;
 	}
 	
 	@Override
 	public MagicBook book() {
-		return MagicBook.REGULAR;
+		return null;
 	}
 	
 	@Override
 	public void cast(Player player, CombatSpellContext context) {
-		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(player, context.getTarget(), 2699, 30, 26, 52, 0, 0));
-		context.getSwing().sendSpell(player, context.getTarget(), this);
+	
 	}
 }

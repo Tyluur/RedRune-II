@@ -28,7 +28,7 @@ public class DefaultCombatSwing implements NPCCombatSwing {
 		int projectile = combatDefinitions.getAttackProjectile();
 		int graphics = combatDefinitions.getAttackGfx();
 		if (style == MELEE_COMBAT_STYLE) {
-			delayHit(npc, 0, target, constructMeleeHit(npc, damage));
+			delayHit(npc, 1, target, constructMeleeHit(npc, damage));
 		} else {
 			// the projectile delay speed
 			int projectileDelay = ProjectileManager.getProjectileDelay(npc, target);

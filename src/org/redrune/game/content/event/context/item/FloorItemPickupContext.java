@@ -16,7 +16,14 @@ public class FloorItemPickupContext implements EventContext {
 	@Getter
 	private final FloorItem floorItem;
 	
-	public FloorItemPickupContext(FloorItem floorItem) {
+	/**
+	 * The distance from the player and the floor item
+	 */
+	@Getter
+	private final int distance;
+	
+	public FloorItemPickupContext(FloorItem floorItem, int distance) {
 		this.floorItem = floorItem;
+		this.distance = distance;
 	}
 }

@@ -2,12 +2,13 @@ package org.redrune.game.module.type;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.module.interaction.InteractionModule;
+import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/27/2017
  */
-public interface InterfaceInteractionModule extends InteractionModule {
+public interface InterfaceInteractionModule extends InteractionModule,InterfaceConstants {
 	
 	/**
 	 * The ids of the interfaces that subscribe to the module.

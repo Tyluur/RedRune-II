@@ -1,6 +1,8 @@
 package org.redrune.game.node.entity.data;
 
 import lombok.Getter;
+import org.redrune.game.content.event.EventListener;
+import org.redrune.game.content.event.EventListener.EventType;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.utility.rs.Hit;
 import org.redrune.game.node.entity.player.Player;
@@ -62,6 +64,9 @@ public final class EntityHitMap {
 		
 		// handles the receiving of the hit
 		entity.receiveHit(hit);
+		
+		// fires the listener for damage
+		EventListener.fireListener(entity, EventType.DAMAGE);
 	}
 	
 	/**

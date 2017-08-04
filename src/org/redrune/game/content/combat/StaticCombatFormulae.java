@@ -1218,7 +1218,13 @@ public class StaticCombatFormulae {
 	 */
 	public static boolean isWithinDistance(Player player, Entity target, CombatType type) {
 		// the distance change
-		final int distance = player.getMovement().isRunning() /*&& target.getMovement().isRunning()*/ ? 2 : 1;
+		int distance = player.getMovement().isRunning() /*&& target.getMovement().isRunning()*/ ? 2 : 1;
+		int weaponId = player.getEquipment().getWeaponId();
+		String weaponName = weaponId == -1 ? "unarmed" : ItemDefinitionParser.forId(weaponId).getName().toLowerCase();
+		boolean halberd = weaponName.contains("halberd");
+		if (type == CombatType.MELEE && halberd) {
+			distance += 1;
+		}
 		// if we should check closeby tiles [close 1v1 melee only]
 		final boolean checkClose = type == CombatType.MELEE && !checkAttackPathAsRange(target);
 		// the distance modifier

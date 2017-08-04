@@ -44,4 +44,9 @@ public interface PacketConstants extends MasterConstants {
 	 * The id of the repository update packet
 	 */
 	int REPOSITORY_UPDATE_PACKET_ID = 7;
+	
+	/**
+	 * The id of the reconnection packet
+	 */
+	int RECONNECTION_PACKET_ID = 8;
 }

@@ -72,11 +72,6 @@ public class Hit {
 		this.attributes = new ConcurrentHashMap<>();
 	}
 	
-	@Override
-	public String toString() {
-		return "Hit{" + "splat=" + splat + ", damage=" + damage + ", maxHit=" + maxHit + ", soaked=" + soaked + '}';
-	}
-	
 	/**
 	 * Checks if the person who hit the player is the player
 	 *
@@ -121,7 +116,7 @@ public class Hit {
 			return false;
 		}
 		// we can only set combat splats to critical
-		if (!(splat == HitSplat.MELEE_DAMAGE || splat == HitSplat.RANGE_DAMAGE || splat == HitSplat.MAGIC_DAMAGE)) {
+		if (!splat.isDefaultCombatSplat()) {
 			return false;
 		}
 		double criticalMinimum = maxHit * 0.90;
@@ -145,6 +140,11 @@ public class Hit {
 			return defaultValue;
 		}
 		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return "Hit{" + "source=" + source + ", splat=" + splat + ", damage=" + damage + ", maxHit=" + maxHit + '}';
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public class Hit {
 		}
 		
 		public boolean isDefaultCombatSplat() {
-			return this == MELEE_DAMAGE || this == RANGE_DAMAGE || this == MAGIC_DAMAGE || this == MISSED;
+			return this == MELEE_DAMAGE || this == RANGE_DAMAGE || this == MAGIC_DAMAGE;
 		}
 	}
 	

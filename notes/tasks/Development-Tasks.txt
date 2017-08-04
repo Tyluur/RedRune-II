@@ -1,22 +1,19 @@
 [Wrappers/Systems]
 +   Trade system
-+   Interaction System
-	-   Holds the entity you're interacting with, starts the interacting by facing them, ends the interaction by stopping to face them.
-	-   extensions from an interaction could be tradeinteraction, we can use this to check if the trade should start and the system can run through the interaction system [interface simply calls the interaction class]
 
 [Necessities]
 +   Stat restoration
-	-   Managed for poison/antifire
+	-   Managed for antifire
 	-   Potion mixing
-+   Player file saving scheduled
-+   Dropping items in the wilderness makes them automatically public
-	-   If the item is a food/potion it won't be public for the regular time.
 +   Finish dynamic regions
 +   Add skulling
++   Barrows
+	[3549, 9695, 0] is the location of the chest
+	plane 3 is the location where the barrows brothers are
 
 [Unfinished]
 +   Master Server Unfinished:
-	-   Reconnecting should push all the world list data to the master server
+	-   Lobby needs to hold a list of the players in it
 +   Finish all melee special attacks
 	-   Dragon mace,halberd,spear,longsword,scim,2h
 	-   Whip [vine too]
@@ -39,7 +36,6 @@
 	-   Ancient Spellbook
 		-   Need to add miasmic effects on combat as well
 +   'You can't reach that' [stops interaction through walls]
-	-   - you cant reach that when froze and tryna loot something > 1 tile away
 +   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
 +   Teleport-other with closeby players [1 tile]
 	-   Interface 326

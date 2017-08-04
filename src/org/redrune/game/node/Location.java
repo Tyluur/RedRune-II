@@ -97,19 +97,6 @@ public final class Location {
 	}
 	
 	/**
-	 * Gets a delta location.
-	 *
-	 * @param l
-	 * 		The location.
-	 * @param o
-	 * 		The other location.
-	 * @return The delta location.
-	 */
-	public static Location getDelta(Location l, Location o) {
-		return new Location(o.x - l.x, o.y - l.y, o.plane - l.plane);
-	}
-	
-	/**
 	 * Gets the id of a region from the x coordinate and the y coordinate
 	 *
 	 * @param x
@@ -121,8 +108,16 @@ public final class Location {
 		return ((y >> 3) >> 3) | (((x >> 3) >> 3)) << 8;
 	}
 	
-	public static Location GetDelta(Location from, Location to) {
-		return Location.create((short) (to.x - from.x), (short) (to.y - from.y), (byte) (to.plane - from.plane));
+	/**
+	 * Get's delta location.
+	 *
+	 * @param from
+	 * 		The location from
+	 * @param to
+	 * 		The location to
+	 */
+	public static Location getDelta(Location from, Location to) {
+		return Location.create(to.x - from.x, to.y - from.y, to.plane - from.plane);
 	}
 	
 	/**
@@ -163,6 +158,13 @@ public final class Location {
 	 */
 	public int getRegionX() {
 		return x >> 3;
+	}
+	
+	/**
+	 * Gets the hash of the region the player is in
+	 */
+	public int getRegionHash() {
+		return getRegionY() + (getRegionX() << 8) + (plane << 16);
 	}
 	
 	/**
@@ -358,6 +360,10 @@ public final class Location {
 	}
 	
 	public Location getRegionLocation() {
-		return Location.create(getX() >> 6, getY() >> 6, plane);
+		return create(x >> 6, y >> 6, plane );
+	}
+	
+	public Location copy() {
+		return create(x, y, plane);
 	}
 }

@@ -3,6 +3,8 @@ package org.redrune.game.node.entity.player.link;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.Cache;
+import org.redrune.game.content.event.EventListener;
+import org.redrune.game.content.event.EventListener.EventType;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.world.packet.outgoing.impl.*;
 import org.redrune.utility.AttributeKey;
@@ -253,6 +255,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			return this;
 		}
 		closeInputBox();
+		EventListener.fireListener(player, EventType.INTERFACE_OPEN);
 		return sendInterface(getScreenPaneId(usingFixedMode()), getScreenComponentId(usingFixedMode()), interfaceId, false);
 	}
 	
@@ -453,6 +456,7 @@ public final class InterfaceManager implements InterfaceConstants {
 		if (values == null) {
 			return this;
 		}
+		EventListener.fireListener(player, EventType.INTERFACE_CLOSE);
 		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
 	}
 	

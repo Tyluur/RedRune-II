@@ -11,10 +11,6 @@ import org.redrune.game.content.activity.impl.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.player.data.PlayerCombatDefinitions;
-import org.redrune.utility.rs.Hit;
-import org.redrune.utility.rs.Hit.HitSplat;
-import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.npc.render.NPCRendering;
 import org.redrune.game.node.entity.player.data.*;
 import org.redrune.game.node.entity.player.link.prayer.Prayer;
@@ -34,6 +30,8 @@ import org.redrune.network.world.packet.outgoing.impl.DynamicMapRegionBuilder;
 import org.redrune.network.world.packet.outgoing.impl.MapRegionBuilder;
 import org.redrune.network.world.packet.outgoing.impl.PlayerOptionPacketBuilder;
 import org.redrune.utility.AttributeKey;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -448,10 +446,6 @@ public final class Player extends Entity {
 		}
 		if (actions) {
 			getManager().getActions().stopAction();
-		}
-		NPC interactingNPC = getAttribute(AttributeKey.INTERACTING_NPC);
-		if (interactingNPC != null) {
-			interactingNPC.endPlayerInteraction(this);
 		}
 		turnTo(null);
 	}

@@ -1,3 +1,46 @@
+8/3/17 {
+	+   Made halberds able to attack the target from 2 tiles away
+	+   Fixed multiplayer issue with player updating [this was broken since i changed to the new client]
+		-   Tested dropping items in the wilderness to make sure food/pots wouldn't be visible for other people automatically as well
+	+   Fixed a small floor item bug [after an item was picked up it would be public but not really existent in the game]
+	+   Added an interaction system
+		-   Support for npc interactions
+			+   NPCs cant walk randomly while they're interacting with somebody. When the interaction ends [you walk away/interface is opened/closed] the npc will then be allowed to get back to regular traversing
+			+   The animated gif had random walk paths being calculated every tick, which is why I had to spam click the npc
+		-   Support for trade interactions
+			+   Requesting is part of the interaction system, we store the last person you wished to trade with
+	+   Added a scheduled player saving task [every 10 minutes all player files save this is done over the network]
+	+   Added a reconnection packet for the master server
+		-   If the master server goes offline and the master client(s) reconnect to it, they must push all the data over to the server again. This is what that is for, otherwise the server won't be synchronized on reconnection
+
+	[img]http://i.imgur.com/A8NYgN2.gif[/img]
+	[img]http://i.imgur.com/r6pe10L.png[/img]
+	[img]http://i.imgur.com/N7pNcBC.gif[/img]
+}
+
+8/2/17 {
+	+   Changed npc aggression radius to their size * 2
+	+   Changed poison to happen at a 15 second interval
+	+   Fixed picking up floor items
+		-   If you're 1 tile away from the item and you're frozen or you can't clip to it, you can still grab it
+			+   The animation for taking items plays when this starts
+		-   If you're on the same tile as the item, pathfinding isn't necessary and you grab it as soon as possible
+		-   If you're > 1 tile away, you path to the item and grab it when you arrive at its location
+			+   If you're frozen you won't be able to path to the item, but you'll still face it
+	+   Added a command to find any npc in the cache, using their right click options to filter [if entered]
+	+   Added a command to find any object in the cache, using their right click options to filter [if entered]
+	+   Added object definition manipulation
+	+   Added npc removal via right click [owner only]
+	+   Added custom quest tab [will be used for presets/more]
+	+   Redesigned edgeville slightly via cache
+
+	[img]http://i.imgur.com/IKlHEhf.gif[/img]
+	[img]http://i.imgur.com/YBc4xVn.png[/img]
+	[img]http://i.imgur.com/RqGaUPA.png[/img]
+	[img]http://i.imgur.com/SmlVpGi.png[/img]
+
+}
+
 8/1/17 {
 	+   Refactored client object definitions
 	+   Updated xtea keys [i didnt't have accurate 666 xtea keys thus some places like varrock/fishing guild/ardougne wouldn't build properly]

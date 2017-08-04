@@ -1,5 +1,6 @@
 package org.redrune.network.world.packet.incoming.impl;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.action.interaction.PlayerCombatAction;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.event.EventRepository;
@@ -14,6 +15,7 @@ import org.redrune.game.node.entity.render.flag.impl.FaceLocationUpdate;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.repository.npc.spawn.NPCSpawnRepository;
 import org.redrune.utility.rs.InteractionOption;
 
 import static org.redrune.utility.rs.InteractionOption.*;
@@ -225,7 +227,18 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				player.getManager().getActions().startAction(new PlayerCombatAction(npc));
 				break;
 			case EXAMINE:
-				player.getTransmitter().sendMessage(npc.toString(), true);
+				if (player.getAttribute("remove_npc_spawns", false)) {
+					if (NPCSpawnRepository.removeNPC(npc)) {
+						npc.deregister();
+					} else {
+						player.getTransmitter().sendMessage("Couldn't remove this npc!");
+					}
+				} else {
+					if (GameFlags.debugMode) {
+						player.getTransmitter().sendMessage(npc.toString(), true);
+						System.out.println(npc.toString());
+					}
+				}
 				break;
 			default:
 				player.getMovement().reset(forceRun);

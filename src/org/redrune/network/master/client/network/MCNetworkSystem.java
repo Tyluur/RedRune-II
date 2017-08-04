@@ -32,6 +32,12 @@ public class MCNetworkSystem implements MasterConstants {
 	private final Bootstrap bootstrap = new Bootstrap();
 	
 	/**
+	 * The id of the world for this system
+	 */
+	@Getter
+	private final byte worldId;
+	
+	/**
 	 * The status of the system
 	 */
 	@Getter
@@ -51,7 +57,7 @@ public class MCNetworkSystem implements MasterConstants {
 	 * 		The id of the world
 	 */
 	public MCNetworkSystem(byte worldId) {
-		MCFlags.worldId = worldId;
+		this.worldId = MCFlags.worldId = worldId;
 	}
 	
 	/**

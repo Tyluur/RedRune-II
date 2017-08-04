@@ -49,14 +49,18 @@ public final class ObjectDefinitionParser {
 		// bar, bank booth
 		final String name = objectDef.getName().toLowerCase();
 		
-		// falador bar & bank booths
-		if (objectDef.getId() == 11763 || (name.equalsIgnoreCase("bank booth") || name.equalsIgnoreCase("counter"))) {
+		// energy barrier
+		if (objectId == 30141) {
+			objectDef.setNotClipped(true);
+		} else if (objectId == 11763 || (name.equalsIgnoreCase("bank booth") || name.equalsIgnoreCase("counter"))) {
+			// falador bar & bank booths
 			objectDef.setNotClipped(false);
 			objectDef.setProjectileClipped(true);
 			if (objectDef.getActionCount() == 0) {
 				objectDef.setActionCount(1);
 			}
 		}
+		// set flag data now
 		if (objectDef.isNotClipped()) {
 			objectDef.setProjectileClipped(false);
 			objectDef.setActionCount(0);

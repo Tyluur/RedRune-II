@@ -2,6 +2,8 @@ package org.redrune.network.master.client.network;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.world.World;
+import org.redrune.network.master.client.packet.out.ReconnectionPacketOut;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -26,9 +28,7 @@ public enum MCNetworkStatus {
 	RECONNECTED {
 		@Override
 		public StatusChangeEvent setEvent() {
-			return () -> {
-//				this.system.write(new ReconnectionPacket(....));
-			};
+			return () -> this.system.write(new ReconnectionPacketOut(this.system.getWorldId(), World.get().getPlayersAsString()));
 		}
 	},
 	
@@ -42,7 +42,7 @@ public enum MCNetworkStatus {
 	 */
 	@Getter
 	@Setter
-	private MCNetworkSystem system;
+	protected MCNetworkSystem system;
 	
 	/**
 	 * The event that is invoked when the status is changed to this flag.

@@ -1,6 +1,7 @@
 package org.redrune.utility.repository.object;
 
 import com.google.gson.reflect.TypeToken;
+import org.redrune.core.EngineWorkingSet;
 import org.redrune.game.node.object.GameObject;
 import org.redrune.game.world.region.Region;
 import org.redrune.game.world.region.RegionManager;
@@ -104,7 +105,7 @@ public class ObjectSpawnRepository implements GsonReadable<List<GameObject>> {
 		}
 		// the region of the object
 		Region region = RegionManager.getRegion(regionId);
-		// spawns all objects
-		objects.forEach(region::spawnObject);
+		// spawning them on a separate worker
+		EngineWorkingSet.submitLogic(() -> objects.forEach(region::spawnObject));
 	}
 }
