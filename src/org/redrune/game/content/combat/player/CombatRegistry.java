@@ -332,9 +332,6 @@ public class CombatRegistry implements MagicConstants {
 	 * 		If we should delete runes
 	 */
 	public static boolean checkCombatSpell(Player player, int spellId, int set, boolean delete) {
-		if (spellId == 65535) {
-			return true;
-		}
 		switch (player.getCombatDefinitions().getSpellbook()) {
 			case REGULAR:
 				switch (spellId) {
@@ -348,6 +345,11 @@ public class CombatRegistry implements MagicConstants {
 							return false;
 						}
 						break;
+					case 26:
+						if (!checkSpellRequirements(player, 1, delete, WATER_RUNE, 3, EARTH_RUNE, 2, BODY_RUNE, 1)) {
+							return false;
+						}
+						break;
 					case 28:
 						if (!checkSpellRequirements(player, 5, delete, WATER_RUNE, 1, AIR_RUNE, 1, MIND_RUNE, 1)) {
 							return false;
@@ -358,6 +360,11 @@ public class CombatRegistry implements MagicConstants {
 							return false;
 						}
 						break;
+					case 31:
+						if (!checkSpellRequirements(player, 1, delete, WATER_RUNE, 3, EARTH_RUNE, 2, BODY_RUNE, 1)) {
+							return false;
+						}
+						break;
 					case 32:
 						if (!checkSpellRequirements(player, 13, delete, FIRE_RUNE, 3, AIR_RUNE, 2, MIND_RUNE, 1)) {
 							return false;
@@ -365,6 +372,11 @@ public class CombatRegistry implements MagicConstants {
 						break;
 					case 34: // air bolt
 						if (!checkSpellRequirements(player, 17, delete, AIR_RUNE, 2, CHAOS_RUNE, 1)) {
+							return false;
+						}
+						break;
+					case 35: // curse
+						if (!checkSpellRequirements(player, 1, delete, WATER_RUNE, 2, EARTH_RUNE, 3, BODY_RUNE, 1)) {
 							return false;
 						}
 						break;
@@ -495,8 +507,21 @@ public class CombatRegistry implements MagicConstants {
 							return false;
 						}
 						break;
-					default:
-						return false;
+					case 75:
+						if (!checkSpellRequirements(player, 1, delete, EARTH_RUNE, 5, WATER_RUNE, 5, SOUL_RUNE, 1)) {
+							return false;
+						}
+						break;
+					case 78:
+						if (!checkSpellRequirements(player, 1, delete, EARTH_RUNE, 8, WATER_RUNE, 8, SOUL_RUNE, 1)) {
+							return false;
+						}
+						break;
+					case 82:
+						if (!checkSpellRequirements(player, 1, delete, EARTH_RUNE, 12, WATER_RUNE, 12, SOUL_RUNE, 1)) {
+							return false;
+						}
+						break;
 				}
 				break;
 			case ANCIENTS:
@@ -621,11 +646,10 @@ public class CombatRegistry implements MagicConstants {
 							return false;
 						}
 						break;
-					default:
-						return false;
 				}
 				break;
 			default:
+				System.out.println("Spell # " + spellId + " did not have rune requirements in place.");
 				return false;
 		}
 		if (set >= 0) {

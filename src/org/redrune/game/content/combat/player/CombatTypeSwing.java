@@ -119,6 +119,39 @@ public abstract class CombatTypeSwing {
 	}
 	
 	/**
+	 * Calculates a random hit
+	 *
+	 * @param minimumHit
+	 * 		The minimum damage
+	 * @param maxHit
+	 * 		The max hit
+	 * @param attackBonus
+	 * 		The attack bonus
+	 * @param defenceBonus
+	 * 		The defence bonus
+	 */
+	public int randomizeHit(double minimumHit, double maxHit, double attackBonus, double defenceBonus, boolean roll) {
+		if (roll && !rollHit(attackBonus, defenceBonus)) {
+			//System.out.println("rolled a miss [" + maxHit + ", " + attackBonus + ", " + defenceBonus + "]");
+			return 0;
+		}
+		// the random hit
+		int random = (int) RandomFunction.random(minimumHit, maxHit);
+		// the count index used for re-rolls
+		int count = 0;
+		// we dont want too low too often, so we reroll
+		while (random <= (maxHit * 0.25) && count < 3) {
+			random = (int) RandomFunction.random(minimumHit, maxHit);
+			//System.out.println("rerolled a " + random + " and we got " + random + "[#" + count + "]");
+			count++;
+		}
+		if (random == 0) {
+			//System.out.println("Rerolled " + count + " times and got a " + random);
+		}
+		return random;
+	}
+	
+	/**
 	 * Calculates the two modifiers and checks if the hit should randomly miss
 	 *
 	 * @param attackBonus

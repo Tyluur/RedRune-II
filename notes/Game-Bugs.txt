@@ -4,3 +4,4 @@ Player Rendering Bugs
 	http://i.imgur.com/kfHZOT7.gifv
 Lumbridge doesnt have clip masks
 	[maybe it wasn't generated]
+Poison is every 18 seconds [30 ticks]

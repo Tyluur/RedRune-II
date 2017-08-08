@@ -7,8 +7,8 @@ import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.content.combat.player.calc.MagicCombatCalculator;
-import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.CombatSpellDetail;
+import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.MagicSpellEvent;
@@ -191,8 +191,14 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * @return The amount of damage that landed
 	 */
 	public CombatSpellDetail sendSpell(Player player, Entity target, CombatSpellEvent event, Runnable spellCastTask, Runnable hitLandTask) {
-		int maxHit = event.maxHit();
-		int damage = randomizeHit(maxHit, calculator.totalAggressiveBoost(player), calculator.totalDefensiveBoost(target));
+		int damage;
+		int maxHit = event.maxHit(player, target);
+		int minimum = event.minimumHit(player);
+		if (minimum != -1) {
+			damage = randomizeHit(minimum, maxHit, calculator.totalAggressiveBoost(player), calculator.totalDefensiveBoost(target), false);
+		} else {
+			damage = randomizeHit(maxHit, calculator.totalAggressiveBoost(player), calculator.totalDefensiveBoost(target));
+		}
 		appendExperience(player, target, event.exp(), damage);
 		// the projectile delay speed
 		int projectileDelay = ProjectileManager.getProjectileDelay(player, target);
@@ -238,7 +244,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 						if (event.hitGfx() != -1) {
 							target.sendGraphics(event.hitGfx(), event.gfxHeight(), 0);
 						}
-						if (hitLandTask != null) {
+						if (damage > 0 && hitLandTask != null) {
 							hitLandTask.run();
 						}
 					}

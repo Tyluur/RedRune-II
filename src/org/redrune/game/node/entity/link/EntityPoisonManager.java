@@ -92,42 +92,43 @@ public final class EntityPoisonManager {
 	 * Processes the poison every tick.
 	 */
 	public void processPoison() {
-		if (!entity.isDead() && isPoisoned()) {
-			tickAmount++;
-			// reduce delay
-			if (delay > 0) {
-				delay--;
-				return;
-			}
-			// poison is uneffective after 3 minutes
-			if (tickAmount > 0 && RSTimeUnit.TICKS.toSeconds(tickAmount) >= 180) {
-				if (entity.isPlayer()) {
-					entity.toPlayer().getTransmitter().sendMessage("The poison has wore off.");
-				}
-				reset();
-				return;
-			}
-			// we aren't hit if we have an interface open
-			if (entity.isPlayer()) {
-				Player player = ((Player) entity);
-				// inter opened we dont poison while inter opened like at rs
-				if (player.getManager().getInterfaces().getScreenInterface() != -1) {
-					return;
-				}
-			}
-			// hits the player
-			entity.getHitMap().applyHit(new Hit(entity, poisonDamage, HitSplat.POISON_DAMAGE));
-			poisonDamage -= 2;
-			// poison is appended at 15 seconds
-			if (isPoisoned()) {
-				delay = 25;
-				return;
-			}
-			// we aren't poisoned anymore
-			reset();
+		if (entity.isDead() || !isPoisoned()) {
+			return;
+		}
+		tickAmount++;
+		// reduce delay
+		if (delay > 0) {
+			delay--;
+			return;
+		}
+		// poison is uneffective after 3 minutes
+		if (tickAmount > 0 && RSTimeUnit.TICKS.toSeconds(tickAmount) >= 180) {
 			if (entity.isPlayer()) {
 				entity.toPlayer().getTransmitter().sendMessage("The poison has wore off.");
 			}
+			reset();
+			return;
+		}
+		// we aren't hit if we have an interface open
+		if (entity.isPlayer()) {
+			Player player = ((Player) entity);
+			// inter opened we dont poison while inter opened like at rs
+			if (player.getManager().getInterfaces().getScreenInterface() != -1) {
+				return;
+			}
+		}
+		// hits the player
+		entity.getHitMap().applyHit(new Hit(entity, poisonDamage, HitSplat.POISON_DAMAGE));
+		poisonDamage -= 2;
+		// poison is appended at 15 seconds
+		if (isPoisoned()) {
+			delay = 3;
+			return;
+		}
+		// we aren't poisoned anymore
+		reset();
+		if (entity.isPlayer()) {
+			entity.toPlayer().getTransmitter().sendMessage("The poison has wore off.");
 		}
 	}
 	

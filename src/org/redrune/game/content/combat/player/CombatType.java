@@ -105,7 +105,7 @@ public enum CombatType {
 		@Override
 		public int getDelay(Player player, int spellId) {
 			Optional<CombatSpellEvent> optional = CombatRegistry.getCombatSpell(player.getCombatDefinitions().getSpellbook(), spellId);
-			return optional.map(CombatSpellEvent::delay).orElse(-1);
+			return optional.map(combatSpellEvent -> combatSpellEvent.delay(player)).orElse(-1);
 		}
 	};
 	

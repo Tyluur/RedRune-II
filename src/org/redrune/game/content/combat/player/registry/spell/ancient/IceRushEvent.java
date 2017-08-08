@@ -14,7 +14,7 @@ import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 public class IceRushEvent implements CombatSpellEvent {
 	
 	@Override
-	public int delay() {
+	public int delay(Player player) {
 		return 4;
 	}
 	
@@ -29,7 +29,7 @@ public class IceRushEvent implements CombatSpellEvent {
 	}
 	
 	@Override
-	public int maxHit() {
+	public int maxHit(Player player, Entity target) {
 		return 190;
 	}
 	

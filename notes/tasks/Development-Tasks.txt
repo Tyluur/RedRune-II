@@ -13,9 +13,9 @@
 
 [Unfinished]
 +   Master Server Unfinished:
-	-   Lobby needs to hold a list of the players in it
+	-   Lobby needs to hold a list of the players in it [master server disconnects then reconnects, it needs to hold all the players]
 +   Finish all melee special attacks
-	-   Dragon mace,halberd,spear,longsword,scim,2h
+	-   spear,scim,2h
 	-   Whip [vine too]
 	-   Statius warhammer
 	-   Vesta spear
@@ -25,16 +25,7 @@
 	-   Crossbow bolt [e]
 +   Magic Combat Spells
 	-   Regular Spellbook
-		-   Need to add all water/earth/fire/air combat spells
-		-   Need to add armadyl storm
-		-   Need to add teleblock
 		-   Need to add alchemy spells
-		-   Need to add bind/snare/entangle
-		-   Need to add vulnerability/enfeeble/stun
-		-   Need to add confuse/weaken/curse
-		-   Need to add god spells & charging
-	-   Ancient Spellbook
-		-   Need to add miasmic effects on combat as well
 +   'You can't reach that' [stops interaction through walls]
 +   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
 +   Teleport-other with closeby players [1 tile]

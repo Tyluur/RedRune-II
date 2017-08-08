@@ -76,54 +76,16 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 		}
 		
 		switch (interfaceId) {
-			case 193:
-				switch (componentId) {
-					case 28:
-					case 32:
-					case 24:
-					case 20:
-					case 30:
-					case 34:
-					case 26:
-					case 22:
-					case 29:
-					case 33:
-					case 25:
-					case 21:
-					case 31:
-					case 35:
-					case 27:
-					case 23:
-						if (CombatRegistry.checkCombatSpell(player, componentId, 1, false)) {
-							player.turnToLocation(Location.create(npc.getLocation().getCoordFaceX(npc.getSize()), npc.getLocation().getCoordFaceY(npc.getSize()), npc.getLocation().getPlane()));
-							if (player.getManager().getActivities().handlesNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
-								return;
-							}
-							if (!npc.getCombatManager().isForceMultiAttacked()) {
-								if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
-									if (player.getAttackedBy() != npc && player.getAttackedByDelay() > System.currentTimeMillis()) {
-										player.getTransmitter().sendMessage("You are already in combat.");
-										return;
-									}
-									if (npc.getAttackedBy() != player && npc.getAttackedByDelay() > System.currentTimeMillis()) {
-										player.getTransmitter().sendMessage("This npc is already in combat.");
-										return;
-									}
-								}
-							}
-							player.getManager().getActions().startAction(new PlayerCombatAction(npc));
-						}
-						break;
-				}
-				break;
-			case 192:
+			case 192: // regular
+			case 193: // ancients
+				// we put them all into one switch statement because the actual logic is in the
+				// CombatRegistry#checkCombatSpell
 				switch (componentId) {
 					case 25: // air strike
 					case 28: // water strike
 					case 30: // earth strike
 					case 32: // fire strike
 					case 34: // air bolt
-					case 39: // water bolt
 					case 42: // earth bolt
 					case 45: // fire bolt
 					case 49: // air blast
@@ -143,9 +105,27 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 					case 93:
 					case 91: // fire surge
 					case 99: // storm of Armadyl
-					case 36: // bind
 					case 55: // snare
 					case 81: // entangle
+					case 24:
+					case 20:
+					case 26:
+					case 22:
+					case 29:
+					case 33:
+					case 21:
+					case 31:
+					case 35:
+					case 27:
+					case 23:
+					case 75:
+					case 78:
+					case 82:
+					case 86: // teleblock
+					case 36: // bind
+					case 37:
+					case 38:
+					case 39: // water bolt
 						if (CombatRegistry.checkCombatSpell(player, componentId, 1, false)) {
 							player.turnToLocation(Location.create(npc.getLocation().getCoordFaceX(npc.getSize()), npc.getLocation().getCoordFaceY(npc.getSize()), npc.getLocation().getPlane()));
 							if (player.getManager().getActivities().handlesNodeInteraction(npc, InteractionOption.ATTACK_OPTION)) {
@@ -166,7 +146,13 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 							player.getManager().getActions().startAction(new PlayerCombatAction(npc));
 						}
 						break;
+					default:
+						System.out.println("Spell " + componentId + " was not added");
+						break;
 				}
+				break;
+			default:
+				System.out.println("Interface on npc [" + interfaceId + "," + componentId + "] unhandled");
 				break;
 		}
 	}

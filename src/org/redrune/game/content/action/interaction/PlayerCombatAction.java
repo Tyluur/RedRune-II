@@ -8,6 +8,7 @@ import org.redrune.game.content.combat.player.CombatType;
 import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.InteractionOption;
 import org.redrune.utility.tool.Misc;
 
@@ -83,12 +84,18 @@ public final class PlayerCombatAction implements Action {
 		final int id = type == CombatType.MAGIC ? spellId : weaponId;
 		// the delay we will have
 		final int delay = type.getDelay(player, id);
+		// the multiplier on the speed of the combat action
+		double multiplier = 1.0;
 		// the delay wasn't found [this is only possible when we don't have a magic spell
 		// otherwise, delays are calculated in the swing
 		if (delay == -1) {
 			player.getTransmitter().sendMessage((type == CombatType.MAGIC ? "Spell #" + id + "" : "Weapon #" + weaponId) + " has not yet been added, please report this on the forums.");
 			player.getCombatDefinitions().resetSpells(true);
-			return 0;
+			return -1;
+		}
+		
+		if (player.getAttribute(AttributeKey.MIASMIC_EFFECT) == Boolean.TRUE) {
+			multiplier = 1.5;
 		}
 		// if we're using special
 		final boolean usingSpecial = player.getCombatDefinitions().isSpecialActivated();
@@ -100,7 +107,7 @@ public final class PlayerCombatAction implements Action {
 		}
 		// after combat has been sent, we must send listeners
 		StaticCombatFormulae.fireCombatListeners(player, target);
-		return delay;
+		return (int) (delay * multiplier);
 	}
 	
 	/**
@@ -195,6 +202,7 @@ public final class PlayerCombatAction implements Action {
 		}
 		// we can't continue fighting in the activity
 		if (player.getManager().getActivities().handlesNodeInteraction(target, InteractionOption.ATTACK_OPTION) || !player.getManager().getActivities().combatAcceptable(target)) {
+			System.out.println("h");
 			return false;
 		}
 		// anything else ?

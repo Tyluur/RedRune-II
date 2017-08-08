@@ -392,4 +392,27 @@ public class PlayerSkills implements SkillConstants {
 		updateSkill(skill);
 		return drainLeft;
 	}
+	
+	/**
+	 * Drains a skill level with a cap on it
+	 *
+	 * @param skill
+	 * 		The skill id to drain
+	 * @param drainAmount
+	 * 		The amount to drain
+	 * @param drainCap
+	 * 		The amount we are capped by
+	 */
+	public void drainLevel(int skill, double drainAmount, double drainCap) {
+		int skillLevel = level[skill];
+		int levelForXp = getLevelForXp(skill);
+		int lowestAllowed = levelForXp - (int) Math.round(levelForXp * drainCap);
+		// can no longer drain past this
+		if (skillLevel <= lowestAllowed) {
+			return;
+		}
+		int drain = (int) Math.round(levelForXp * drainAmount);
+		drainLevel(skill, drain);
+	}
+	
 }

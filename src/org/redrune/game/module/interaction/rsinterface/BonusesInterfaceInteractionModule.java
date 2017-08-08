@@ -1,6 +1,7 @@
 package org.redrune.game.module.interaction.rsinterface;
 
 import org.redrune.game.content.event.impl.item.ItemEvent;
+import org.redrune.game.module.type.InterfaceInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
 import org.redrune.game.node.item.Item;
@@ -11,7 +12,6 @@ import org.redrune.network.world.packet.outgoing.impl.CS2StringBuilder;
 import org.redrune.network.world.packet.outgoing.impl.InterfaceChangeBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.constant.BonusConstants;
-import org.redrune.game.module.type.InterfaceInteractionModule;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -133,7 +133,68 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 		if (bonuses == null) {
 			bonuses = new int[18];
 		}
-		StringBuilder attack = new StringBuilder();
+		
+		StringBuilder titles = new StringBuilder();
+		StringBuilder names = new StringBuilder();
+		StringBuilder stats = new StringBuilder();
+		
+		String namesArray[] = { "Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range", "Summoning", "Absorb Melee", "Absorb Magic", "Absorb Range", "Strength", "Ranged Str", "Prayer", "Magic Damage" };
+		int count = 0;
+		boolean title1Done = false;
+		boolean title2Done = false;
+		boolean title3Done = false;
+		boolean namesIndentDone = false;
+		
+		for (int i = 0; i < bonuses.length; i++) {
+			if (bonuses[i] != 0) {
+				if (i <= 4 && !title1Done) {
+					title1Done = true;
+					titles.append("Attack Bonus");
+					titles.append("                 ");
+					stats.append("<br>");
+					names.append("<br>");
+				} else if (i >= 5 && i <= 13 && !title2Done) {
+					for (int j = 0; j <= count; j++) {
+						if (title1Done) {
+							titles.append("<br>");
+						}
+					}
+					count = 0;
+					title2Done = true;
+					titles.append("Defence Bonus");
+					titles.append("                 ");
+					stats.append("<br>");
+					names.append("<br>");
+				} else if (i >= 14 && !title3Done) {
+					for (int j = 0; j <= count; j++) {
+						titles.append("<br>");
+					}
+					count = 0;
+					title3Done = true;
+					titles.append("Other");
+					titles.append("                 ");
+					stats.append("<br>");
+					names.append("<br>");
+				}
+				names.append(namesArray[i]).append(":");
+				if (!namesIndentDone) {
+					namesIndentDone = true;
+					names.append("                       ");
+				}
+				names.append("<br>");
+				stats.append(bonuses[i] > 0 ? "+" : "").append(bonuses[i]);
+				stats.append("<br>");
+				count++;
+			}
+		}
+		
+		player.getTransmitter().send(new CS2StringBuilder(321, item.getName()).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(324, stats.toString()).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(323, names.toString()).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(322, titles.toString()).build(player));
+		
+		
+		/*StringBuilder attack = new StringBuilder();
 		attack.append("Attack Bonuses<br><br>");
 		StringBuilder defence = new StringBuilder();
 		defence.append("Defence Bonuses<br><br>");
@@ -151,7 +212,7 @@ public class BonusesInterfaceInteractionModule implements InterfaceInteractionMo
 		player.getTransmitter().send(new CS2StringBuilder(321, "Stats for " + item.getName()).build(player));
 		player.getTransmitter().send(new CS2StringBuilder(323, attack.toString()).build(player));
 		player.getTransmitter().send(new CS2StringBuilder(324, defence.toString()).build(player));
-		player.getTransmitter().send(new CS2StringBuilder(325, other.toString()).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(325, other.toString()).build(player));*/
 	}
 	
 	/**

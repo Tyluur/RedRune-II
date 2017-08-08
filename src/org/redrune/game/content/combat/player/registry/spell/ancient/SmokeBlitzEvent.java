@@ -15,7 +15,7 @@ import org.redrune.utility.tool.RandomFunction;
 public class SmokeBlitzEvent implements CombatSpellEvent{
 	
 	@Override
-	public int delay() {
+	public int delay(Player player) {
 		return 4;
 	}
 	
@@ -30,7 +30,7 @@ public class SmokeBlitzEvent implements CombatSpellEvent{
 	}
 	
 	@Override
-	public int maxHit() {
+	public int maxHit(Player player, Entity target) {
 		return 230;
 	}
 	

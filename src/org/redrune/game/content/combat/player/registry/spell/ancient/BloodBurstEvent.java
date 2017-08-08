@@ -2,6 +2,7 @@ package org.redrune.game.content.combat.player.registry.spell.ancient;
 
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 
@@ -12,7 +13,7 @@ import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 public class BloodBurstEvent implements CombatSpellEvent {
 	
 	@Override
-	public int delay() {
+	public int delay(Player player) {
 		return 4;
 	}
 	
@@ -27,7 +28,7 @@ public class BloodBurstEvent implements CombatSpellEvent {
 	}
 	
 	@Override
-	public int maxHit() {
+	public int maxHit(Player player, Entity target) {
 		return 210;
 	}
 	

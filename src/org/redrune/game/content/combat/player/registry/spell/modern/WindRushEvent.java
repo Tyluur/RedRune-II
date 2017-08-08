@@ -3,6 +3,7 @@ package org.redrune.game.content.combat.player.registry.spell.modern;
 import org.redrune.game.content.ProjectileManager;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
+import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 
@@ -18,7 +19,7 @@ public class WindRushEvent implements CombatSpellEvent {
 	}
 	
 	@Override
-	public int delay() {
+	public int delay(Player player) {
 		return 3;
 	}
 	
@@ -33,7 +34,7 @@ public class WindRushEvent implements CombatSpellEvent {
 	}
 	
 	@Override
-	public int maxHit() {
+	public int maxHit(Player player, Entity target) {
 		return 10;
 	}
 	

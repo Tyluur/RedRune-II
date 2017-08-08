@@ -10,6 +10,7 @@ import org.redrune.game.content.combat.player.registry.wrapper.context.MagicSpel
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.RegionManager;
+import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.MagicConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -133,6 +134,10 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 			return false;
 		}
 		if (!player.getManager().getActivities().teleportationAllowed(type)) {
+			return false;
+		}
+		if (player.getVariables().getAttribute(AttributeKey.TELEBLOCKED_UNTIL, -1L) >= System.currentTimeMillis()) {
+			player.getTransmitter().sendMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
 		CombatRegistry.checkRunes(player, true, runes);

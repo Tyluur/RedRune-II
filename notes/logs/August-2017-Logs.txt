@@ -1,3 +1,34 @@
+8/7/17 {
+	+   Fixed the 'view stats' on equipment bonuses screen to use the right components [credits simbiotic]
+	+   Added all wind/water/earth/fire spells [strike/bolt/blast/wave/surge]
+	+   Added all god spells in regular spellbook [saradomin strike/flames of zamorak/claws of guthix/storm of armadyl]
+		-   Charging brings their max hit up to 300 for 600 ticks [6 minutes]
+		-   Storm of armadyl hits up to 270 damage without any other boosts [ignore the last 310 in my gif i updated it]
+		-   Storm of armadyl also has a minimum damage of 0 - 110 [dependent on your magic level, 110 being minimum at 110 magic]
+	+   Added all curse spells in regular spellbook
+		-   Confuse/weaken/curse
+		-   Vulnerability/enfeeble/stun
+			+   They drain your opponent's skills like they're supposed to [and don't stack]
+		-   Bind/snare/entangle
+			+   Freeze your target for the right amount of time [with about 3 seconds of getaway][no overlapping]
+	+   Added teleblock
+		-   Without mage protection you're tbed for 5 mins, with mage protection your tbed for 2 1/2 minutes
+		-   Note that in the gif I had multiple tbs being able to be applied, but if you're tbed once you won't be able to be tbed again until it lapses
+	+   Updated shadow spells to drain capped with a new method
+	+   Added all miasmic spells + their combat speed effect
+	+   Added dragon longsword, dragon halberd, and dragon mace special attacks
+
+	[img]http://i.imgur.com/CK4Xkmx.png[/img]
+	[img]http://i.imgur.com/ALXmN50.gif[/img]
+	[img]http://i.imgur.com/SPf5MKi.gif[/img]
+	[img]http://i.imgur.com/enNWDPs.gif[/img]
+	[img]http://i.imgur.com/XvLMeua.gif[/img]
+}
+
+8/4/17 {
+	+   Changed poison to damage people at an 18 second interval instead of a 15 second interval
+}
+
 8/3/17 {
 	+   Made halberds able to attack the target from 2 tiles away
 	+   Fixed multiplayer issue with player updating [this was broken since i changed to the new client]

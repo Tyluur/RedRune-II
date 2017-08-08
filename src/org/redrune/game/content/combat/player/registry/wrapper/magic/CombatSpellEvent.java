@@ -1,6 +1,8 @@
 package org.redrune.game.content.combat.player.registry.wrapper.magic;
 
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
+import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -11,7 +13,7 @@ public interface CombatSpellEvent extends MagicSpellEvent<CombatSpellContext> {
 	/**
 	 * The delay on the spell, only used to find the next combat swing time
 	 */
-	int delay();
+	int delay(Player player);
 	
 	/**
 	 * The animation id for the spell
@@ -25,8 +27,23 @@ public interface CombatSpellEvent extends MagicSpellEvent<CombatSpellContext> {
 	
 	/**
 	 * The base damage of the spell
+	 *
+	 * @param player
+	 * 		The player casting
+	 * @param target
+	 * 		The target of the spell
 	 */
-	int maxHit();
+	int maxHit(Player player, Entity target);
+	
+	/**
+	 * The minimum damage the spell will do. If the spell splashes it must do atleast this damage.
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	default int minimumHit(Player player) {
+		return -1;
+	}
 	
 	/**
 	 * The default height of the hit land gfx

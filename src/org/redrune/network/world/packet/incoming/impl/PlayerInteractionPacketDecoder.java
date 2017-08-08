@@ -96,45 +96,51 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 				// we put them all into one switch statement because the actual logic is in the
 				// CombatRegistry#checkCombatSpell
 				switch (componentId) {
-					case 28:
-					case 32:
+					case 25: // air strike
+					case 28: // water strike
+					case 30: // earth strike
+					case 32: // fire strike
+					case 34: // air bolt
+					case 42: // earth bolt
+					case 45: // fire bolt
+					case 49: // air blast
+					case 52: // water blast
+					case 58: // earth blast
+					case 63: // fire blast
+					case 70: // air wave
+					case 73: // water wave
+					case 77: // earth wave
+					case 80: // fire wave
+					case 84: // air surge
+					case 87: // water surge
+					case 89: // earth surge
+					case 66: // Sara Strike
+					case 67: // Guthix Claws
+					case 68: // Flame of Zammy
+					case 93:
+					case 91: // fire surge
+					case 99: // storm of Armadyl
+					case 55: // snare
+					case 81: // entangle
 					case 24:
 					case 20:
-					case 30:
-					case 34:
 					case 26:
 					case 22:
 					case 29:
 					case 33:
-					case 25:
 					case 21:
 					case 31:
 					case 35:
 					case 27:
 					case 23:
-					case 39:
-					case 42:
-					case 45:
-					case 49:
-					case 52:
-					case 58:
-					case 63:
-					case 70:
-					case 73:
-					case 77:
-					case 80:
-					case 86:
-					case 84:
-					case 87:
-					case 89:
-					case 91:
-					case 99:
-					case 36:
-					case 66:
-					case 67:
-					case 68:
-					case 55:
-					case 81:
+					case 75:
+					case 78:
+					case 82:
+					case 86: // teleblock
+					case 36: // bind
+					case 37:
+					case 38:
+					case 39: // water bolt
 						if (CombatRegistry.checkCombatSpell(player, componentId, 1, false)) {
 							if (!StaticCombatFormulae.canFight(player, p2)) {
 								return;

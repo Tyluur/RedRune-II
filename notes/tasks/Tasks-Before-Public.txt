@@ -67,3 +67,7 @@
 	-	Corporeal Beast
 	-	PVP ARMOUR NPCS [or leave pvp armour to EP/BH/SHOPS (vote/donate?)]
 	-	
++	Minigames [dungeoneering wave based for chaotics/etc [convert to bm on death]]
+	-	Items untradeable
++	BOB not allowed in wildy
++	Fishing spots in wilderness

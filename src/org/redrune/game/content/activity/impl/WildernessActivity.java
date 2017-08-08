@@ -114,13 +114,10 @@ public class WildernessActivity extends Activity {
 		if (target.isNPC()) {
 			return true;
 		}
-		if (target.isPlayer() && !handlePlayerOption(target.toPlayer(), InteractionOption.ATTACK_OPTION)) {
-			return false;
-		}
 		if (target.getAttackedBy() != player && player.getAttackedBy() != target) {
 			// TODO: Set skull player.setWildernessSkull();
 		}
-		return false;
+		return true;
 	}
 	
 	/**

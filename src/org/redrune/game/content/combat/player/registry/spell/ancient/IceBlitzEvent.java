@@ -19,7 +19,7 @@ public class IceBlitzEvent implements CombatSpellEvent {
 	}
 	
 	@Override
-	public int delay() {
+	public int delay(Player player) {
 		return 4;
 	}
 	
@@ -34,7 +34,7 @@ public class IceBlitzEvent implements CombatSpellEvent {
 	}
 	
 	@Override
-	public int maxHit() {
+	public int maxHit(Player player, Entity target) {
 		return 260;
 	}
 	
