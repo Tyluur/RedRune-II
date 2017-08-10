@@ -3,6 +3,8 @@ package org.redrune.game.module.command.owner;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.world.packet.outgoing.impl.CS2ScriptBuilder;
+import org.redrune.network.world.packet.outgoing.impl.CS2StringBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -18,6 +20,11 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
+		
+		player.getTransmitter().send(new CS2ScriptBuilder(677, 8).build(player));
+		player.getTransmitter().send(new CS2StringBuilder(211, "title").build(player));
+		player.getManager().getInterfaces().sendInterface(156, true);
+		
 		/*List<Entity> entityList = new ArrayList<>();
 		entityList.addAll(player.getRegion().getNpcs());
 		for (Player o : player.getRegion().getPlayers()) {

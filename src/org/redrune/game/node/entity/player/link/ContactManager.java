@@ -1,8 +1,13 @@
-package org.redrune.game.node.entity.player.link.contact;
+package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.master.MasterConstants;
+import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.client.packet.out.FriendRequestPacketOut;
 import org.redrune.network.world.packet.outgoing.impl.FriendsListBuilder;
 import org.redrune.network.world.packet.outgoing.impl.IgnoreListBuilder;
 import org.redrune.utility.AttributeKey;
@@ -24,7 +29,7 @@ public class ContactManager {
 	 * The list of friends a player has
 	 */
 	@Getter
-	private final Set<Contact> friendList = new LinkedHashSet<>();
+	private final Set<String> friendList = new LinkedHashSet<>();
 	
 	/**
 	 * The list of usernames a player has on their ignore list
@@ -57,18 +62,17 @@ public class ContactManager {
 			player.getTransmitter().send(new FriendsListBuilder().build(player));
 			unlocked = true;
 		} else {
-			updateFriendList();
+			requestAllFriendsDetails();
 		}
 		// send all the users on our ignore list
 		updateIgnoreList();
-		showMyFriendsStatus();
+		showMyFriendsStatus(true);
 	}
 	
 	/**
-	 * Updates all of our friend list data. This will keep adding more and more users onto the friend list, we cannot
-	 * clear it.
+	 * Requests details for all the friends in our list
 	 */
-	public void updateFriendList() {
+	private void requestAllFriendsDetails() {
 		// requests friends details from the login server
 		friendList.forEach(this::requestFriendDetails);
 	}
@@ -76,31 +80,27 @@ public class ContactManager {
 	/**
 	 * Updates the ignore list
 	 */
-	public void updateIgnoreList() {
+	private void updateIgnoreList() {
 		player.getTransmitter().send(new IgnoreListBuilder(ignoreList, getDisplayNameList()).build(player));
 	}
 	
 	/**
 	 * Shows the status of all my friends onto my friends list
+	 *
+	 * @param online
+	 * 		If the player is online
 	 */
-	public void showMyFriendsStatus() {
-		// TODO:
-//		System.out.println("ContactManager.showMyFriendsStatus");
-	/*	SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+	public void showMyFriendsStatus(boolean online) {
+		final String username = player.getDetails().getUsername();
+		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 			@Override
 			public void run() {
-				MasterCommunication.write(new StatusUpdatePacketOut(player.getDetails().getUsername(), getStatus()));
+				byte privateStatus = getPrivateStatus();
+				byte world = player.getWorld();
+				System.out.println("sent status update: [" + username + ", " + online + ", " + privateStatus + ", " + world + "]");
+				//MasterCommunication.write(new StatusUpdatePacketOut(username, online, privateStatus, world));
 			}
-		});*/
-	}
-	
-	/**
-	 * Sends our logout status
-	 */
-	public void sendFriendsLogoutStatus() {
-		// TODO:
-//		System.out.println("ContactManager.sendFriendsLogoutStatus");
-		//MasterCommunication.write(new StatusUpdatePacketOut(player.getDetails().getUsername(), MasterConstants.OFFLINE_STATUS));
+		});
 	}
 	
 	/**
@@ -108,6 +108,22 @@ public class ContactManager {
 	 */
 	private Map<String, String> getDisplayNameList() {
 		return new HashMap<>();
+	}
+	
+	/**
+	 * Gets the current status of the player
+	 */
+	public byte getPrivateStatus() {
+		Object barStatus = player.getVariables().getAttribute(AttributeKey.PRIVATE, GameBarStatus.ON);
+		GameBarStatus status = GameBarStatus.ON;
+		if (barStatus != null) {
+			if (barStatus.getClass().equals(String.class)) {
+				status = GameBarStatus.valueOf(barStatus.toString());
+			} else {
+				status = (GameBarStatus) barStatus;
+			}
+		}
+		return status.getValue();
 	}
 	
 	/**
@@ -130,48 +146,56 @@ public class ContactManager {
 			player.getTransmitter().sendMessage("This player is already on your friends list.");
 			return;
 		}
-		Contact contact = new Contact(name);
-		friendList.add(contact);
-		requestFriendDetails(contact);
+		friendList.add(name);
+		requestFriendDetails(name);
 	}
 	
 	/**
-	 * Adds the contact to the player's client friend list
+	 * Checks if we have a friend by the name
 	 *
-	 * @param contact
+	 * @param name
+	 * 		The name of the friend.
+	 */
+	public boolean hasFriend(String name) {
+		return friendList.contains(name);
+	}
+	
+	/**
+	 * Requests details of a friend
+	 *
+	 * @param requested
 	 * 		The contact
 	 */
-	private void requestFriendDetails(Contact contact) {
-		//MasterCommunication.write(new ContactDetailsRequestPacketOut(player.getNetworkSession().getUid(), player.getDetails().getUsername(), contact.getUsername()));
+	private void requestFriendDetails(String requested) {
+		MasterCommunication.write(new FriendRequestPacketOut(player.getDetails().getUsername(), player.getWorld(), requested));
+		System.err.println("requested details of " + requested);
 	}
 	
 	/**
-	 * Updates details for a contact
+	 * Updates details for a friend
 	 *
 	 * @param username
-	 * 		The username of the contact
+	 * 		The username of the friend
 	 * @param worldId
-	 * 		The world id of the contact
-	 * @param status
-	 * 		The status of the contact
+	 * 		The world id of the friend
+	 * @param online
+	 * 		The if the friend was online
 	 */
-	public void updateContact(String username, byte worldId, byte status) {
+	public void updateFriend(String username, byte worldId, boolean online) {
 		// this removes the 'waiting for reply from friends server'
 		// must be sent before anything else
-/*		if (!unlocked) {
+		if (!unlocked) {
 			System.err.println("Unlocked friends list!");
 			player.getTransmitter().send(new FriendsListBuilder().build(player));
 			unlocked = true;
 		}
 		
-		final boolean online = status != MasterConstants.OFFLINE_STATUS;
+		// the rank of the user
 		final int clanRank = getClanRank(username);
+		// if the received world is a lobby
+		boolean lobby = worldId == MasterConstants.LOBBY_WORLD_ID;
 		
-		if (worldId == GameConstants.LOBBY_WORLD_ID) {
-			player.getTransmitter().send(new FriendsListBuilder(username, "", worldId, clanRank, true, true, online).build(player));
-		} else {
-			player.getTransmitter().send(new FriendsListBuilder(username, "", worldId, clanRank, true, false, online).build(player));
-		}*/
+		player.getTransmitter().send(new FriendsListBuilder(username, "", worldId, clanRank, true, lobby, online).build(player));
 	}
 	
 	/**
@@ -195,8 +219,8 @@ public class ContactManager {
 	 */
 	public void sendPrivateMessage(String name, String message) {
 		// TODO
-//		System.out.println("ContactManager.sendPrivateMessage");
-//		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), (byte) player.getDetails().getDominantRight().getClientRight(), name, message));
+		//		System.out.println("ContactManager.sendPrivateMessage");
+		//		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), (byte) player.getDetails().getDominantRight().getClientRight(), name, message));
 	}
 	
 	/**
@@ -230,7 +254,7 @@ public class ContactManager {
 	 * 		The name
 	 */
 	public void removeFriend(String name) {
-		friendList.removeIf(contact -> contact.getUsername().equals(name));
+		friendList.remove(name);
 	}
 	
 	/**
@@ -241,36 +265,5 @@ public class ContactManager {
 	 */
 	public void removeIgnore(String name) {
 		ignoreList.remove(name);
-	}
-	
-	/**
-	 * Checks if we have a friend by the name
-	 *
-	 * @param name
-	 * 		The name of the friend.
-	 */
-	public boolean hasFriend(String name) {
-		for (Contact contact : friendList) {
-			if (contact.getUsername().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Gets the current status of the player
-	 */
-	public byte getStatus() {
-		Object barStatus = player.getVariables().getAttribute(AttributeKey.PRIVATE, GameBarStatus.ON);
-		GameBarStatus status = GameBarStatus.ON;
-		if (barStatus != null) {
-			if (barStatus.getClass().equals(String.class)) {
-				status = GameBarStatus.valueOf(barStatus.toString());
-			} else {
-				status = (GameBarStatus) barStatus;
-			}
-		}
-		return status.getValue();
 	}
 }

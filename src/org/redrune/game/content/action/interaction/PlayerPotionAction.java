@@ -59,7 +59,7 @@ public class PlayerPotionAction implements Action {
 		player.sendAnimation(829);
 		player.getTransmitter().sendMessage(potion.getImpact().getDrinkMessage() != null ? potion.getImpact().getDrinkMessage() : "You drink some of your " + name.toLowerCase().replace(" (1)", "").replace(" (2)", "").replace(" (3)", "").replace(" (4)", "").replace(" (5)", "").replace(" (6)", "") + ".", true);
 		player.getTransmitter().sendMessage(dosesLeft == 0 ? "You have finished your " + (name.contains("flask") ? "flask and the glass shatters to peices." : "potion.") : "You have " + dosesLeft + " dose of potion left.", true);
-		player.putAttribute("next_sip_allowed", SystemManager.getUpdateWorker().getTicksElapsed() + 2);
+		player.putAttribute("next_sip_allowed", SystemManager.getUpdateWorker().getTicks() + 2);
 		return true;
 	}
 	
@@ -85,6 +85,6 @@ public class PlayerPotionAction implements Action {
 	 * 		The player
 	 */
 	private boolean canSip(Player player) {
-		return SystemManager.getUpdateWorker().getTicksElapsed() > player.getAttribute("next_sip_allowed", -1L);
+		return SystemManager.getUpdateWorker().getTicks() > player.getAttribute("next_sip_allowed", -1L);
 	}
 }

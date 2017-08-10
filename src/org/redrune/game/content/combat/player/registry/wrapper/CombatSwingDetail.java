@@ -10,39 +10,40 @@ import java.util.function.Consumer;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class CombatSpellDetail {
+public class CombatSwingDetail {
 	
 	/**
-	 * The source of the spell
+	 * The source of the swing
 	 */
 	@Getter
 	private final Entity source;
 	
 	/**
-	 * The target of the spell
+	 * The target of the swing
 	 */
 	@Getter
 	private final Entity target;
 	
 	/**
-	 * The hit of the spell
+	 * The hit of the swing
 	 */
 	@Getter
 	private final Hit hit;
 	
-	public CombatSpellDetail(Entity source, Entity target, Hit hit) {
+	public CombatSwingDetail(Entity source, Entity target, Hit hit) {
 		this.source = source;
 		this.target = target;
 		this.hit = hit;
 	}
 	
 	/**
-	 * Accepts the spell to the consumer
+	 * Accepts the swing to the consumer
 	 *
 	 * @param consumer
 	 * 		The consumer
 	 */
-	public void consume(Consumer<CombatSpellDetail> consumer) {
+	public CombatSwingDetail consume(Consumer<CombatSwingDetail> consumer) {
 		consumer.accept(this);
+		return this;
 	}
 }

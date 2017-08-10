@@ -80,13 +80,15 @@ public class WorldSession extends NetworkSession {
 	@Override
 	public void disconnect() {
 		if (player != null) {
+			player.save();
+			System.out.println("saved");
+			player.getManager().getContacts().showMyFriendsStatus(false);
 			if (player.isRenderable()) {
 				player.deregister();
 			} else {
 				player.deregisterLobby();
+				System.out.println("removed from lobby");
 			}
-			player.save();
-			player.getManager().getContacts().sendFriendsLogoutStatus();
 		}
 		this.player = null;
 		super.disconnect();

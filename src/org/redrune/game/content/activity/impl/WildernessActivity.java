@@ -9,17 +9,21 @@ import org.redrune.game.node.item.Item;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.rs.InteractionOption;
+import org.redrune.utility.rs.constant.HeadIcons.SkullIcon;
 import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.tool.Misc;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/5/2017
  */
 public class WildernessActivity extends Activity {
+	
+	public static final int INTERFACE_ID = 381;
 	
 	/**
 	 * If we're showing the skull on the wilderness level component
@@ -42,6 +46,7 @@ public class WildernessActivity extends Activity {
 		super.end();
 		player.setInFightArea(false);
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
+		player.getManager().getInterfaces().closePrimaryOverlay();
 	}
 	
 	/**
@@ -55,7 +60,7 @@ public class WildernessActivity extends Activity {
 		if (!showingSkull && isAtWild && !isAtWildSafe) {
 			showingSkull = true;
 			player.setInFightArea(true);
-			player.getManager().getInterfaces().sendPrimaryOverlay(381);
+			player.getManager().getInterfaces().sendPrimaryOverlay(INTERFACE_ID);
 		} else if (showingSkull && (isAtWildSafe || !isAtWild)) {
 			// we're inside the safe area
 			player.getManager().getInterfaces().closePrimaryOverlay();
@@ -83,6 +88,14 @@ public class WildernessActivity extends Activity {
 			return !wildernessLevelsVerified(target);
 		} else {
 			return false;
+		}
+	}
+	
+	@Override
+	public void tick() {
+		// if the screen mode is changed for example
+		if (showingSkull && player.getManager().getInterfaces().getPrimaryOverlayInterfac() != INTERFACE_ID) {
+			player.getManager().getInterfaces().sendPrimaryOverlay(INTERFACE_ID);
 		}
 	}
 	
@@ -115,7 +128,7 @@ public class WildernessActivity extends Activity {
 			return true;
 		}
 		if (target.getAttackedBy() != player && player.getAttackedBy() != target) {
-			// TODO: Set skull player.setWildernessSkull();
+			player.setSkull(SkullIcon.DEFAULT, TimeUnit.MINUTES.toMillis(10));
 		}
 		return true;
 	}

@@ -2,6 +2,7 @@ package org.redrune;
 
 import org.redrune.cache.Cache;
 import org.redrune.core.system.SystemManager;
+import org.redrune.game.world.World;
 import org.redrune.network.lobby.LobbyNetwork;
 import org.redrune.network.master.client.MasterCommunication;
 import org.redrune.utility.backend.UnexpectedArgsException;
@@ -22,8 +23,15 @@ public class LSBootstrap {
 		}
 		Cache.init();
 		try {
+			// starts the communication to the master server
 			MasterCommunication.start();
+			// loads all lobby packets
 			LobbyNetwork.PACKET_REPOSITORY.storeAll();
+			// create a new world
+			World world = World.create(args);
+			// runs the procedure
+			world.run();
+			// binds the network port
 			LobbyNetwork.bind();
 		} catch (InterruptedException e) {
 			e.printStackTrace();

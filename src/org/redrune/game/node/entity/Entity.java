@@ -491,7 +491,7 @@ public abstract class Entity extends Node implements EntityDetails {
 	 */
 	public void freeze(Entity by, int ticks, String message) {
 		// time we will be unfrozen at
-		final long frozenUntil = SystemManager.getUpdateWorker().getTicksElapsed() + ticks;
+		final long frozenUntil = SystemManager.getUpdateWorker().getTicks() + ticks;
 		// storing the time
 		putAttribute(AttributeKey.FROZEN_UNTIL, frozenUntil);
 		// they can't be frozen again instantly.
@@ -513,7 +513,7 @@ public abstract class Entity extends Node implements EntityDetails {
 		// when freezing is delayed until
 		long delay = getAttribute(AttributeKey.FREEZE_DELAY, -1L);
 		// the current tick we're on
-		long ticks = SystemManager.getUpdateWorker().getTicksElapsed();
+		long ticks = SystemManager.getUpdateWorker().getTicks();
 		return delay > ticks;
 	}
 	
@@ -528,7 +528,7 @@ public abstract class Entity extends Node implements EntityDetails {
 			return false;
 		} else {
 			// if the time till we're unfrozen has lapseed
-			boolean lapsed = SystemManager.getUpdateWorker().getTicksElapsed() > getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
+			boolean lapsed = SystemManager.getUpdateWorker().getTicks() > getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
 			// if it has
 			if (lapsed) {
 				return false;

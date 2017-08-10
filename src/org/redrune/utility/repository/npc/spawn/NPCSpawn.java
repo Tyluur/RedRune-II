@@ -1,8 +1,8 @@
 package org.redrune.utility.repository.npc.spawn;
 
 import lombok.Getter;
-import org.redrune.utility.rs.constant.Directions.Direction;
 import org.redrune.game.node.Location;
+import org.redrune.utility.rs.constant.Directions.Direction;
 
 /**
  * @author Tyluur<itstyluur@gmail.com>
@@ -39,7 +39,7 @@ public class NPCSpawn {
 	 * 		The direction of the spawn
 	 */
 	public NPCSpawn(int npcId, Location location, Direction direction) {
-		this(npcId, location.getX(), location.getY(), location.getPlane(), Direction.NORTH);
+		this(npcId, location.getX(), location.getY(), location.getPlane(), direction);
 	}
 	
 	/**

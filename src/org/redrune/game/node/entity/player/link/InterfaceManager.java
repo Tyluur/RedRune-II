@@ -234,6 +234,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
+	 * Gets the component id of the screen
+	 *
+	 * @param fixedMode
+	 * 		If we are using fixed mode.
+	 */
+	private static int getPrimaryOverlayComponentId(boolean fixedMode) {
+		return fixedMode ? 7 : 9;
+	}
+	
+	/**
 	 * If the player is using the fixed client mode.
 	 */
 	public boolean usingFixedMode() {
@@ -264,6 +274,18 @@ public final class InterfaceManager implements InterfaceConstants {
 	 */
 	public int getScreenInterface() {
 		int[] values = interfaceBindings.get(getScreenComponentId(usingFixedMode()));
+		if (values == null) {
+			return -1;
+		} else {
+			return values[0];
+		}
+	}
+	
+	/**
+	 * Gets the primary interface we are displaying on the screen
+	 */
+	public int getPrimaryOverlayInterfac() {
+		int[] values = interfaceBindings.get(getPrimaryOverlayComponentId(usingFixedMode()));
 		if (values == null) {
 			return -1;
 		} else {
@@ -352,14 +374,14 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		The id of the interface
 	 */
 	public InterfaceManager sendPrimaryOverlay(int interfaceId) {
-		return sendWalkableInterface(usingFixedMode() ? 20 : 9, interfaceId);
+		return sendWalkableInterface(getPrimaryOverlayComponentId(usingFixedMode()), interfaceId);
 	}
 	
 	/**
 	 * Closes the primary overlay
 	 */
 	public InterfaceManager closePrimaryOverlay() {
-		return closeInterface(getPaneId(), usingFixedMode() ? 20 : 9);
+		return closeInterface(getPaneId(), getPrimaryOverlayComponentId(usingFixedMode()));
 	}
 	
 	/**

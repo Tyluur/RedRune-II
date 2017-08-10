@@ -1,3 +1,21 @@
+8/9/17 {
+	+   Added crossbow bolt special attacks [dragon bolts, onyx bolts, ruby bolts, diamond bolts, jade bolts] (e)
+	+   Added skulling in the wilderness
+	+   Updated overlay component id to be the right one [not overlapping interfaces, but rather behind them] [thanks to aero for noticing]
+	+   Fixed custom region object spawns not being visible sometimes
+	+   Fixed a bug with auto retaliate where npcs wouldn't retaliate when they were moving
+	+   Added an information tab that automatically updates every 5 ticks [3 seconds]
+	+   Customized the edgeville room out some more
+	+   Re-added the hdpvp "quest" scroll that's clickable
+	+   Re-added the hdpvp teleportation interface
+	+   Added prayer/spell book switching via altar
+
+	[img]http://i.imgur.com/EZBqp5U.gif[/img]
+	[img]http://i.imgur.com/YdL6d7S.png[/img]
+	[img]http://i.imgur.com/Y6b8CKe.png[/img]
+	[img]http://i.imgur.com/2eCdQNh.gif[/img]
+}
+
 8/7/17 {
 	+   Fixed the 'view stats' on equipment bonuses screen to use the right components [credits simbiotic]
 	+   Added all wind/water/earth/fire spells [strike/bolt/blast/wave/surge]

@@ -845,4 +845,63 @@ public class Misc {
 		return getDistance(t1.getX(), t1.getY(), t2.getX(), t2.getY());
 	}
 	
+	public static String convertMillisecondsToTime(long milliseconds) {
+		long days = (milliseconds / 86400000L);
+		long hours = ((milliseconds / 3600000L) % 24L);
+		long minutes = ((milliseconds / 60000L) % 60L);
+		//long seconds = ((milliseconds / 1000L) % 60L);
+		String string = "";
+		if (days > 0) {
+			String s = days == 1 ? " day " : " days ";
+			string += days + s;
+		}
+		if (hours > 0) {
+			String s = hours == 1 ? " hour " : " hours ";
+			string += hours + s;
+		}
+		if (minutes > 0) {
+			String s = minutes == 1 ? " min " : " mins ";
+			string += minutes + s;
+		}
+	/*	if (seconds > 0) {
+			String s = seconds == 1 ? " sec " : " secs ";
+			string += seconds + s;
+		}*/
+		if (string.equals("")) {
+			string = "1 minute ";
+		}
+		return string;
+	}
+	
+	public static String getLagPercentage(long lastCycleDuration) {
+		double percentage = ((double) (lastCycleDuration == 0 ? 600 : lastCycleDuration) / 600) * 100;
+		double total = 100 - percentage;
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		//System.out.println("[speed=" + speed + ", percentage=" + percentage + "]");
+		return formatter.format(total);
+	}
+	
+	public static double round(double value, int precision) {
+		StringBuilder zeros = new StringBuilder();
+		for (int i = 0; i < precision; i++) {
+			zeros.append("" + 0);
+		}
+		return Double.parseDouble(new DecimalFormat("#." + zeros).format(value));
+	}
+	
+	public static <K> K randomArraySlot(K[] array) {
+		return array[random(array.length)];
+	}
+	
+	public static NPC findLocalNPC(Player player, int npcId) {
+		for (NPC npc : player.getRegion().getNpcs()) {
+			if (npc == null || !npc.isRenderable()) {
+				continue;
+			}
+			if (npc.getId() == npcId) {
+				return npc;
+			}
+		}
+		return null;
+	}
 }

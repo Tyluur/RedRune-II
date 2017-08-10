@@ -49,4 +49,24 @@ public interface PacketConstants extends MasterConstants {
 	 * The id of the reconnection packet
 	 */
 	int RECONNECTION_PACKET_ID = 8;
+	
+	/**
+	 * The id of the packet that contacts data about the player requesting friend information
+	 */
+	int FRIEND_REQUEST_PACKET_ID = 9;
+	
+	/**
+	 * The id of the packet that contains the details of a friend
+	 */
+	int FRIEND_DETAILS_PACKET_ID = 10;
+	
+	/**
+	 * The id of the packet sent to the master server saying a player updated their status
+	 */
+	int STATUS_UPDATE_PACKET_ID = 11;
+	
+	/**
+	 * The id of the packet sent to all master clients saying a player updated their status
+	 */
+	int STATUS_RECEIVE_PACKET_ID = 12;
 }

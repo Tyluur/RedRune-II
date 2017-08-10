@@ -32,6 +32,7 @@ import org.redrune.network.world.packet.outgoing.impl.PlayerOptionPacketBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.Hit;
 import org.redrune.utility.rs.Hit.HitSplat;
+import org.redrune.utility.rs.constant.HeadIcons.SkullIcon;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -195,6 +196,7 @@ public final class Player extends Entity {
 		manager.getPrayers().process();
 		manager.getHintIcons().process();
 		manager.getActivities().process();
+		processSkull();
 	}
 	
 	@Override
@@ -237,7 +239,6 @@ public final class Player extends Entity {
 			}
 		}
 		removeAttribute(AttributeKey.FORCE_NEXT_MAP_LOAD);
-		getRegion().handleRegionEntry(this);
 	}
 	
 	@Override
@@ -366,6 +367,8 @@ public final class Player extends Entity {
 		manager.getHintIcons().removeAll();
 		manager.getActions().stopAction();
 		variables.setRunEnergy(100);
+		setAttackedBy(null);
+		removeSkull();
 		removeAttribute("dying");
 		
 		getCombatDefinitions().setSpecialEnergy((byte) 100);
@@ -398,6 +401,7 @@ public final class Player extends Entity {
 	 */
 	public void registerToLobby() {
 		registerTransients();
+		World.get().getPlayers().add(this);
 		
 		session.write(new LobbyResponseBuilder().build(this));
 		manager.getContacts().sendLogin();
@@ -454,6 +458,10 @@ public final class Player extends Entity {
 	 * De-registers a player from the lobby
 	 */
 	public void deregisterLobby() {
+		setRenderable(false);
+		session.notifyDisconnection(getWorld());
+		
+		World.get().removePlayer(this);
 		System.out.println("Player deregistered from lobby:" + this);
 	}
 	
@@ -519,5 +527,41 @@ public final class Player extends Entity {
 		}
 		manager.getActivities().logout();
 		transmitter.sendLogout(lobby);
+	}
+	
+	/**
+	 * Sets the skull for the duration
+	 *
+	 * @param icon
+	 * 		The icon
+	 * @param delay
+	 * 		The delay
+	 */
+	public void setSkull(SkullIcon icon, long delay) {
+		variables.setSkullIcon(this, icon);
+		variables.setSkullIconTimer(System.currentTimeMillis() + delay);
+	}
+	
+	/**
+	 * Processes the skull
+	 */
+	private void processSkull() {
+		// we must have a skull
+		if (variables.getSkullIconTimer() == -1L) {
+			return;
+		}
+		// skull timer has lapsed so we reset it
+		if (System.currentTimeMillis() > variables.getSkullIconTimer()) {
+			removeSkull();
+			System.out.println("removed skull fofr " + this);
+		}
+	}
+	
+	/**
+	 * Removes the skull
+	 */
+	private void removeSkull() {
+		variables.setSkullIcon(this, SkullIcon.NONE);
+		variables.setSkullIconTimer(-1L);
 	}
 }

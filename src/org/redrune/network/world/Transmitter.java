@@ -142,7 +142,7 @@ public final class Transmitter {
 		
 		// puts the attributes of the last message sent
 		player.putAttribute("last_message", text);
-		player.putAttribute("last_message_time", SystemManager.getUpdateWorker().getTicksElapsed());
+		player.putAttribute("last_message_time", SystemManager.getUpdateWorker().getTicks());
 		return this;
 	}
 	
@@ -172,7 +172,7 @@ public final class Transmitter {
 		
 		// puts the attributes of the last message sent
 		player.putAttribute("last_message", text);
-		player.putAttribute("last_message_time", SystemManager.getUpdateWorker().getTicksElapsed());
+		player.putAttribute("last_message_time", SystemManager.getUpdateWorker().getTicks());
 		return this;
 	}
 	

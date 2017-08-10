@@ -28,7 +28,7 @@ public class ObjectSpawnRepository implements GsonReadable<List<GameObject>> {
 	/**
 	 * The file with object spawn information
 	 */
-	private final String OBJECT_SPAWN_FILE_LOCATION = "./data/repository/object/object_spawns.txt";
+	private final String OBJECT_SPAWN_FILE_LOCATION = "./data/repository/object/object_spawns.json";
 	
 	/**
 	 * The map of objects to spawn

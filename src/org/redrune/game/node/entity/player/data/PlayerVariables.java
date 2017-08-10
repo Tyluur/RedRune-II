@@ -79,6 +79,34 @@ public final class PlayerVariables {
 	private SkullIcon skullIcon = SkullIcon.NONE;
 	
 	/**
+	 * The time until the player is unskulled
+	 */
+	@Getter
+	@Setter
+	private long skullIconTimer = -1L;
+	
+	/**
+	 * The amount of players that we have killed
+	 */
+	@Getter
+	@Setter
+	private int playersKilled = 0;
+	
+	/**
+	 * The amount of times we have die from another player
+	 */
+	@Getter
+	@Setter
+	private int playerDeaths = 0;
+	
+	/**
+	 * The kill streak the player is on
+	 */
+	@Getter
+	@Setter
+	private int killstreak = 0;
+	
+	/**
 	 * Gets a stored attribute
 	 *
 	 * @param key
@@ -226,6 +254,13 @@ public final class PlayerVariables {
 	 */
 	public Boolean isFilteringProfanity() {
 		return getAttribute(AttributeKey.FILTERING_PROFANITY, false);
+	}
+	
+	/**
+	 * If the skull timer is more than the current time
+	 */
+	public boolean isSkulled() {
+		return skullIconTimer > System.currentTimeMillis();
 	}
 }
 

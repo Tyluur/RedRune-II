@@ -14,6 +14,7 @@ import org.redrune.network.world.WorldSession;
 import org.redrune.network.world.packet.outgoing.impl.LoginResponseCodeBuilder;
 import org.redrune.network.world.packet.outgoing.impl.PrivateMessageReceiveBuilder;
 import org.redrune.network.world.packet.outgoing.impl.PrivateMessageSendBuilder;
+import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
@@ -61,6 +62,12 @@ public class MasterCommunication implements PacketConstants {
 		switch (packetId) {
 			case LOGIN_RESPONSE_PACKET_ID:
 				handleLoginResponse((String) params[0], (String) params[1], (String) params[2], (byte) params[3], (boolean) params[4]);
+				break;
+			case FRIEND_DETAILS_PACKET_ID:
+				handleFriendDetails((String) params[0], (String) params[1], (boolean) params[2], (byte) params[3]);
+				break;
+			case STATUS_RECEIVE_PACKET_ID:
+				handleStatusUpdate((String) params[0], (boolean) params[1], (byte) params[2], (byte) params[3]);
 				break;
 		}
 	}
@@ -174,23 +181,25 @@ public class MasterCommunication implements PacketConstants {
 		session.write(new PrivateMessageReceiveBuilder(fromName, message, fromRights).build(null));
 	}
 	
-	private static void handleContactDetails(String uid, String username, byte worldId, byte status) {
-		// TODO this
-		System.out.println("MasterCommunication.handleContactDetails");
-		System.out.println("uid = [" + uid + "], username = [" + username + "], worldId = [" + worldId + "], status = [" + status + "]");
-/*		Optional<NetworkSession> optional = NetworkSession.findByUid(uid);
+	/**
+	 * Handles the receiving of friend details
+	 *
+	 * @param requester
+	 * 		The name of the player who requested the details
+	 * @param requested
+	 * 		The username of the player who was requested
+	 * @param online
+	 * 		If the requested player was online
+	 * @param worldId
+	 * 		The world id of the player requested
+	 */
+	private static void handleFriendDetails(String requester, String requested, boolean online, byte worldId) {
+		Optional<Player> optional = World.get().getPlayerByUsername(requester);
 		if (!optional.isPresent()) {
-			System.err.println("Unable to find session by uid " + uid);
 			return;
 		}
-		NetworkSession session = optional.get();
-		if (session.getPlayer() == null) {
-			System.err.println("Unable to identify player for session " + session);
-			return;
-		}
-		session.getPlayer().getManager().getContacts().updateContact(username, worldId, status);
-		System.err.println("uid = [" + uid + "], username = [" + username + "], worldId = [" + worldId + "], status = [" + status + "]");
-		System.err.println("uid = [" + uid + "], username = [" + username + "], worldId = [" + worldId + "], status = [" + status + "]");*/
+		Player player = optional.get();
+		player.getManager().getContacts().updateFriend(requested, worldId, online);
 	}
 	
 	/**
@@ -201,13 +210,31 @@ public class MasterCommunication implements PacketConstants {
 	 * @param status
 	 * 		The new status
 	 */
-	private static void handleStatusUpdate(String username, byte worldId, byte status) {
+	private static void handleStatusUpdate(String username, boolean online, byte status, byte worldId) {
+		Optional<GameBarStatus> optional = GameBarStatus.byValue(status);
+		if (!optional.isPresent()) {
+			// corrupt status id
+			System.out.println("received bad status: " + status);
+			return;
+		}
+		GameBarStatus gameBarStatus = optional.get();
+		switch (gameBarStatus) {
+			case ON:
+			case FRIENDS:
+				break;
+			case OFF:
+				online = false;
+				break;
+			default:
+				return;
+		}
+		System.out.println("username = [" + username + "], online = [" + online + "], status = [" + status + "], worldId = [" + worldId + "]");
 		for (Player player : World.get().getPlayers()) {
 			if (player == null) {
 				continue;
 			}
 			if (player.getManager().getContacts().hasFriend(username)) {
-				player.getManager().getContacts().updateContact(username, worldId, status);
+				player.getManager().getContacts().updateFriend(username, worldId, online);
 			}
 		}
 	}

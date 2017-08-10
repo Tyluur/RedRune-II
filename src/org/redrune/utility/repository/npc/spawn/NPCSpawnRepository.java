@@ -114,9 +114,9 @@ public class NPCSpawnRepository {
 		if (spawns == null) {
 			spawns = new ArrayList<>();
 		}
+		spawns.add(new NPCSpawn(npcId, location, direction));
 		saveData(location.getRegionId(), spawns);
 		World.get().addNPC(npcId, location, direction);
-		spawns.add(new NPCSpawn(npcId, location, direction));
 		System.out.println("Spawned " + npcId + " on " + location + " facing " + direction + " at region " + location.getRegionId());
 	}
 	

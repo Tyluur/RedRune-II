@@ -31,7 +31,7 @@ public class SaradominStrikeEvent implements CombatSpellEvent {
 	
 	@Override
 	public int maxHit(Player player, Entity target) {
-		if (player.getVariables().getAttribute(AttributeKey.GOD_CHARGED, -1L) >= SystemManager.getUpdateWorker().getTicksElapsed()) {
+		if (player.getVariables().getAttribute(AttributeKey.GOD_CHARGED, -1L) >= SystemManager.getUpdateWorker().getTicks()) {
 			return 300;
 		} else {
 			return 200;

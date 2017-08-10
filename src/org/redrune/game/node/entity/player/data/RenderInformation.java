@@ -109,7 +109,6 @@ public class RenderInformation {
 		locals[localsCount++] = (short) myIndex;
 		isLocal[myIndex] = true;
 		hashLocations[myIndex] = 0;
-		lastLocation = player.getLocation();
 		packet.startBitAccess();
 		packet.writeBits(30, player.getLocation().get30BitsHash());
 		for (short index = 1; index < 2048; index++) {

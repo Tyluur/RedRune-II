@@ -84,7 +84,7 @@ public class Item extends Node {
 	 * Gets the name of the item
 	 */
 	public String getName() {
-		return definitions.getName();
+		return getDefinitions().getName();
 	}
 	
 	@Override

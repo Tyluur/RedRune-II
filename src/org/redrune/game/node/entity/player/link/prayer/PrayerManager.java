@@ -471,7 +471,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 	 */
 	private void restoreModifiers() {
 		long lastRestoreTick = player.getAttribute("last_prayer_modifier_time", -1L);
-		if (lastRestoreTick == -1 || SystemManager.getUpdateWorker().getTicksElapsed() - lastRestoreTick >= 25) {
+		if (lastRestoreTick == -1 || SystemManager.getUpdateWorker().getTicks() - lastRestoreTick >= 25) {
 			for (int i = 0; i < modifiers.length; i++) {
 				if (modifiers[i] < 0) {
 					modifiers[i] += 0.01;
@@ -485,7 +485,7 @@ public final class PrayerManager implements SkillConstants, PrayerConstants {
 					}
 				}
 			}
-			player.putAttribute("last_prayer_modifier_time", SystemManager.getUpdateWorker().getTicksElapsed());
+			player.putAttribute("last_prayer_modifier_time", SystemManager.getUpdateWorker().getTicks());
 		}
 	}
 	

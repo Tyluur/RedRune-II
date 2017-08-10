@@ -79,7 +79,29 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 	 */
 	static void sendAncientsTeleport(Player player, Location destination, int level, double xp, boolean randomize, int... runes) {
 		sendTeleportSpell(player, 1979, -1, 1681, -1, level, xp, destination, 5, randomize, TeleportType.SPELL, runes);
-		
+	}
+	
+	/**
+	 * Sends a lever teleportation
+	 *
+	 * @param player
+	 * 		The player
+	 * @param destination
+	 * 		The destination of the teleportation
+	 */
+	static void sendLeverTeleport(Player player, Location destination) {
+		if (!player.getManager().getActivities().teleportationAllowed(TeleportType.OBJECT)) {
+			return;
+		}
+		player.getManager().getLocks().lockAll();
+		player.sendAnimation(2140);
+		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+			@Override
+			public void run() {
+				player.getManager().getLocks().unlockAll();
+				sendTeleportSpell(player, 8939, 8941, 1576, 1577, 0, 0, destination, 3, false, TeleportType.OBJECT);
+			}
+		});
 	}
 	
 	/**

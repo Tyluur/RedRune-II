@@ -7,7 +7,7 @@ import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.content.combat.player.calc.MagicCombatCalculator;
-import org.redrune.game.content.combat.player.registry.wrapper.CombatSpellDetail;
+import org.redrune.game.content.combat.player.registry.wrapper.CombatSwingDetail;
 import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.context.CombatSpellContext;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.CombatSpellEvent;
@@ -136,7 +136,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * 		The magic spell event
 	 * @return The damage that landed
 	 */
-	public CombatSpellDetail sendSpell(Player player, Entity target, CombatSpellEvent event) {
+	public CombatSwingDetail sendSpell(Player player, Entity target, CombatSpellEvent event) {
 		return sendSpell(player, target, event, null, null);
 	}
 	
@@ -154,19 +154,19 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * @param hitLandTask
 	 * 		The task for when the hit lands
 	 */
-	public List<CombatSpellDetail> sendMultiSpell(Player player, Entity target, CombatSpellEvent event, Runnable spellCastTask, Runnable hitLandTask) {
+	public List<CombatSwingDetail> sendMultiSpell(Player player, Entity target, CombatSpellEvent event, Runnable spellCastTask, Runnable hitLandTask) {
 		// the list consisting of all the entities to attacak, and the first index being the
 		// entity we cast the spell on
 		List<Entity> entityList = CombatTypeSwing.getAttackableEntities(player, target);
 		// the list of all contexts
-		List<CombatSpellDetail> detailList = new ArrayList<>();
+		List<CombatSwingDetail> detailList = new ArrayList<>();
 		if (entityList.size() == 0) {
 			return detailList;
 		}
 		// if the first hit was a splash we don't want to keep trying
 		for (int i = 0; i < entityList.size(); i++) {
 			Entity entity = entityList.get(i);
-			CombatSpellDetail context = sendSpell(player, entity, event, spellCastTask, hitLandTask);
+			CombatSwingDetail context = sendSpell(player, entity, event, spellCastTask, hitLandTask);
 			detailList.add(context);
 			if (i == 0 && context.getHit().getDamage() == 0) {
 				return detailList;
@@ -190,7 +190,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 	 * 		The task that is executed when the hit lands.
 	 * @return The amount of damage that landed
 	 */
-	public CombatSpellDetail sendSpell(Player player, Entity target, CombatSpellEvent event, Runnable spellCastTask, Runnable hitLandTask) {
+	public CombatSwingDetail sendSpell(Player player, Entity target, CombatSpellEvent event, Runnable spellCastTask, Runnable hitLandTask) {
 		int damage;
 		int maxHit = event.maxHit(player, target);
 		int minimum = event.minimumHit(player);
@@ -252,7 +252,7 @@ public class MagicCombatSwing extends CombatTypeSwing {
 				}
 			}
 		});
-		return new CombatSpellDetail(player, target, hit);
+		return new CombatSwingDetail(player, target, hit);
 	}
 	
 }

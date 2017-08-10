@@ -2,7 +2,6 @@ package org.redrune.network.master.server.world;
 
 import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.network.packet.OutgoingPacket;
-import org.redrune.network.master.server.MSPlayer;
 import org.redrune.network.master.server.network.MSSession;
 
 import java.util.Optional;
@@ -138,7 +137,10 @@ public final class MSRepository implements MasterConstants {
 			if (world == null) {
 				continue;
 			}
-			return world.getPlayerByName(username);
+			Optional<MSPlayer> optional = world.getPlayerByName(username);
+			if (optional.isPresent()) {
+				return optional;
+			}
 		}
 		return Optional.empty();
 	}
@@ -156,6 +158,17 @@ public final class MSRepository implements MasterConstants {
 			}
 			world.getSession().write(packet);
 		}
+	}
+	
+	/**
+	 * Gets the player details in an object array. [0] = username, [1] = online/offline, [2] = world id
+	 *
+	 * @param username
+	 * 		The name of the player
+	 */
+	public static Object[] getPlayerDetails(String username) {
+		Optional<MSPlayer> optional = getPlayer(username);
+		return optional.map(player -> new Object[] { username, true, player.getWorldId() }).orElseGet(() -> new Object[] { username, false, (byte) 0 });
 	}
 	
 	/**

@@ -53,6 +53,6 @@ public class ChargeEvent implements CombatSpellEvent {
 	public void cast(Player player, CombatSpellContext context) {
 		player.sendAnimation(811);
 		player.sendGraphics(6);
-		player.getVariables().putAttribute(AttributeKey.GOD_CHARGED, SystemManager.getUpdateWorker().getTicksElapsed() + 600);
+		player.getVariables().putAttribute(AttributeKey.GOD_CHARGED, SystemManager.getUpdateWorker().getTicks() + 600);
 	}
 }

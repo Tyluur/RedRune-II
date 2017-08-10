@@ -8,10 +8,7 @@ import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.boot.BootHandler;
 import org.redrune.core.system.SystemManager;
-import org.redrune.core.task.impl.EnergyRestorationTask;
-import org.redrune.core.task.impl.HitpointsRestorationTask;
-import org.redrune.core.task.impl.PlayerSavingTask;
-import org.redrune.core.task.impl.SkillRestorationTask;
+import org.redrune.core.task.impl.*;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.game.content.activity.impl.WildernessActivity;
@@ -28,6 +25,7 @@ import org.redrune.game.node.entity.npc.extension.RockCrabNPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.RegionBuilder;
 import org.redrune.game.world.region.RegionDeletion;
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.client.MasterCommunication;
 import org.redrune.network.world.WorldNetwork;
 import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
@@ -113,7 +111,9 @@ public final class World implements SequentialService {
 			System.exit(1);
 		}
 		this.id = GameFlags.worldId;
-		this.packetRepository.storeAll();
+		if (id != MasterConstants.LOBBY_WORLD_ID) {
+			this.packetRepository.storeAll();
+		}
 		fill(locationHashInformation, Location.create(0, 0, 0));
 		setAlive(true);
 	}
@@ -126,46 +126,54 @@ public final class World implements SequentialService {
 	
 	@Override
 	public void execute() {
-		BootHandler.addWork(() -> {
-			Cache.init();
-			BodyDataParser.loadAll();
-			RegionBuilder.init();
-			CombatRegistry.registerAll();
-			ItemDefinitionParser.loadEquipmentConfiguration();
-			ShopRepository.load();
-		}, () -> {
-			ItemRepository.initialize(false);
-			MapKeyRepository.readAll();
-		}, () -> {
-			RegionDeletion.prepare();
-			ObjectSpawnRepository.get().loadAll();
-		}, () -> {
-			DialogueRepository.loadSubscriptions();
-			NPCCombatSwingRepository.loadAll();
-		}, () -> {
-			EventRepository.registerEvents(false);
-		}, () -> {
-			ModuleRepository.registerAllModules(false);
-			CommandRepository.populate(false);
-		});
+		if (!isLobby()) {
+			BootHandler.addWork(() -> {
+				Cache.init();
+				BodyDataParser.loadAll();
+				RegionBuilder.init();
+				CombatRegistry.registerAll();
+				ItemDefinitionParser.loadEquipmentConfiguration();
+				ShopRepository.load();
+			}, () -> {
+				ItemRepository.initialize(false);
+				MapKeyRepository.readAll();
+			}, () -> {
+				RegionDeletion.prepare();
+				ObjectSpawnRepository.get().loadAll();
+			}, () -> {
+				DialogueRepository.loadSubscriptions();
+				NPCCombatSwingRepository.loadAll();
+			}, () -> {
+				EventRepository.registerEvents(false);
+			}, () -> {
+				ModuleRepository.registerAllModules(false);
+				CommandRepository.populate(false);
+			});
+		} else {
+			BootHandler.addWork();
+		}
 		BootHandler.await();
 	}
 	
 	@Override
 	public void end() {
-		System.out.println("Started world " + id + " in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-		// finalization
-		SystemManager.start();
-		// master server can now listen
-		MasterCommunication.start();
-		// start the world tasks now that everything has loaded
-		generateWorldTasks();
-		try {
-			// this waits for the session to close, so anything after this method will not execute until shutdown
-			WorldNetwork.bind();
-		} catch (Throwable e) {
-			e.printStackTrace();
-			System.exit(1);
+		if (isLobby()) {
+			SystemManager.start();
+		} else {
+			System.out.println("Started world " + id + " in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+			// finalization
+			SystemManager.start();
+			// master server can now listen
+			MasterCommunication.start();
+			// start the world tasks now that everything has loaded
+			generateWorldTasks();
+			try {
+				// this waits for the session to close, so anything after this method will not execute until shutdown
+				WorldNetwork.bind();
+			} catch (Throwable e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
 		}
 	}
 	
@@ -177,6 +185,7 @@ public final class World implements SequentialService {
 		SystemManager.getScheduler().schedule(new SkillRestorationTask());
 		SystemManager.getScheduler().schedule(new HitpointsRestorationTask());
 		SystemManager.getScheduler().schedule(new PlayerSavingTask());
+		SystemManager.getScheduler().schedule(new InformationTabTask());
 	}
 	
 	/**
@@ -298,5 +307,19 @@ public final class World implements SequentialService {
 			playerList.add(player.getDetails().getUsername() + ":::::" + player.getSession().getUid());
 		}
 		return playerList;
+	}
+	
+	/**
+	 * Gets the amount of players
+	 */
+	public int getPlayerCount() {
+		return players.size();
+	}
+	
+	/**
+	 * If this world is a lobby
+	 */
+	public boolean isLobby() {
+		return id == MasterConstants.LOBBY_WORLD_ID;
 	}
 }

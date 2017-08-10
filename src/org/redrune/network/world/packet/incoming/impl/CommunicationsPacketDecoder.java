@@ -28,12 +28,12 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 	/**
 	 * The private chat message opcode
 	 */
-	private static final int PRIVATE_MESSAGE = 13;
+	public static final int PRIVATE_MESSAGE = 13;
 	
 	/**
 	 * The  opcode of the game bar settings flag
 	 */
-	private static final int BAR_SETTINGS = 78;
+	public static final int BAR_SETTINGS = 78;
 	
 	@Override
 	public int[] bindings() {
@@ -103,7 +103,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 	 * @param packet
 	 * 		The packet
 	 */
-	private void readGameBarPacket(Player player, Packet packet) {
+	public void readGameBarPacket(Player player, Packet packet) {
 		byte publicFlag = packet.readByte();
 		byte privateFlag = packet.readByte();
 		byte friendsFlag = packet.readByte();
@@ -122,16 +122,10 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		final GameBarStatus privateStatus = GameBarStatus.byValue(privateFlag).orElse(GameBarStatus.ON);
 		final GameBarStatus friendsStatus = GameBarStatus.byValue(friendsFlag).orElse(GameBarStatus.ON);
 		
-		byte currentPrivate = player.getAttribute(AttributeKey.PRIVATE, (byte) 0);
-		boolean changed = privateFlag != currentPrivate;
-		
 		GameframeInteractionModule.updateGameBar(player, AttributeKey.PUBLIC, publicStatus);
 		GameframeInteractionModule.updateGameBar(player, AttributeKey.PRIVATE, privateStatus);
 		GameframeInteractionModule.updateGameBar(player, AttributeKey.FRIENDS, friendsStatus);
 		
-		if (changed) {
-			player.getManager().getContacts().showMyFriendsStatus();
-			System.out.println(player + " changed their status");
-		}
+		player.getManager().getContacts().showMyFriendsStatus(true);
 	}
 }

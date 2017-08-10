@@ -3,7 +3,6 @@ package org.redrune.network.master.server.world;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.network.master.MasterConstants;
-import org.redrune.network.master.server.MSPlayer;
 import org.redrune.network.master.server.network.MSSession;
 
 import java.util.LinkedHashSet;

@@ -1,6 +1,5 @@
 package org.redrune.game.content.combat.player.registry.wrapper;
 
-import com.google.common.base.Preconditions;
 import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.content.combat.player.registry.CombatRegistryEvent;
 import org.redrune.game.content.combat.player.swing.RangeCombatSwing;
@@ -46,11 +45,26 @@ public interface BowFireEvent extends CombatRegistryEvent {
 	 * @param weaponId
 	 * 		The weapon id
 	 */
-	default void sendDamage(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, double... modifier) {
-		// make sure we can cast
-		Preconditions.checkArgument(swing instanceof RangeCombatSwing, "Combat type attempting to send damage was not range!");
+	default CombatSwingDetail sendDamage(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, double... modifier) {
 		// sends the damage
-		RangeCombatSwing.sendDamage(attacker, target, (RangeCombatSwing) swing, weaponId, modifier.length != 0 ? modifier[0] : 1D, false);
+		return RangeCombatSwing.sendDamage(attacker, target, (RangeCombatSwing) swing, weaponId, modifier.length != 0 ? modifier[0] : 1D, false);
+	}
+	
+	/**
+	 * Sends the damage to the target
+	 *
+	 * @param attacker
+	 * 		The attacker
+	 * @param target
+	 * 		The target
+	 * @param swing
+	 * 		The swing
+	 * @param weaponId
+	 * 		The weapon id
+	 */
+	default CombatSwingDetail sendDamage(Player attacker, Entity target, CombatTypeSwing swing, int weaponId, int damage) {
+		// sends the damage
+		return RangeCombatSwing.sendDamage(attacker, target, (RangeCombatSwing) swing, weaponId, damage);
 	}
 	
 }

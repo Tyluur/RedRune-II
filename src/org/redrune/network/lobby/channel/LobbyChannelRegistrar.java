@@ -26,7 +26,7 @@ public class LobbyChannelRegistrar extends ChannelInboundHandlerAdapter {
 			return;
 		}
 		WorldSession session = (WorldSession) networkSession;
-		session.notifyDisconnection((byte) 0);
+		session.disconnect();
 	}
 	
 }

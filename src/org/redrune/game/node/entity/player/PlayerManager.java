@@ -3,7 +3,7 @@ package org.redrune.game.node.entity.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.link.*;
-import org.redrune.game.node.entity.player.link.contact.ContactManager;
+import org.redrune.game.node.entity.player.link.ContactManager;
 import org.redrune.game.node.entity.player.link.prayer.PrayerManager;
 
 import java.util.HashMap;

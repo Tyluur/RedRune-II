@@ -29,6 +29,6 @@ public class StoreNPCSpawnCommand extends CommandModule {
 		// the direction we want to go to
 		Optional<Direction> optional = Optional.of(Direction.valueOf(directionName));
 		// store the entered detail
-		NPCSpawnRepository.addSpawn(npcId, player.getLocation(), optional.orElse(Direction.NORTH));
+		NPCSpawnRepository.addSpawn(npcId, player.getLocation(), optional.get());
 	}
 }

@@ -6,7 +6,6 @@
 	-   Managed for antifire
 	-   Potion mixing
 +   Finish dynamic regions
-+   Add skulling
 +   Barrows
 	[3549, 9695, 0] is the location of the chest
 	plane 3 is the location where the barrows brothers are
@@ -22,7 +21,6 @@
 	-   Barrelchest anchor
 +   Finish all range specials
 	-   Hand cannon
-	-   Crossbow bolt [e]
 +   Magic Combat Spells
 	-   Regular Spellbook
 		-   Need to add alchemy spells
@@ -46,3 +44,6 @@
 +   Amount of times people talked [public/pm/friends]
 +   Amount of time spent
 	-   Inactivity starts when we don't click/type for > a minute
+
+[Punishments]
++   SQL based

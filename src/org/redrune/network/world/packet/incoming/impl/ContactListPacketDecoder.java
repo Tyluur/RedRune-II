@@ -13,7 +13,7 @@ public class ContactListPacketDecoder implements IncomingPacketDecoder {
 	/**
 	 * The packet opcodes
 	 */
-	private static final int ADD_FRIEND = 31, REMOVE_FRIEND = 35, ADD_IGNORE = 68, REMOVE_IGNORE = 2;
+	public static final int ADD_FRIEND = 31, REMOVE_FRIEND = 35, ADD_IGNORE = 68, REMOVE_IGNORE = 2;
 	
 	@Override
 	public int[] bindings() {

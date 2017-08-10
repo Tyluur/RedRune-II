@@ -42,6 +42,13 @@ public final class MajorUpdateWorker implements Runnable {
 	@Setter
 	private long lastEndTime;
 	
+	/**
+	 * The time the last cycle took to loop
+	 */
+	@Getter
+	@Setter
+	private long lastCycleTime;
+	
 	@Override
 	public void run() {
 		while (World.get().isAlive()) {
@@ -77,6 +84,7 @@ public final class MajorUpdateWorker implements Runnable {
 	private void sleep() throws InterruptedException {
 		long duration = 600 - ((System.currentTimeMillis() - start) % 600);
 		if (duration > 0) {
+			setLastCycleTime(duration);
 			Thread.sleep(duration);
 			setLastEndTime(System.currentTimeMillis());
 		} else {
@@ -98,7 +106,7 @@ public final class MajorUpdateWorker implements Runnable {
 	/**
 	 * Gets the amount of ticks that have passed successfully
 	 */
-	public long getTicksElapsed() {
+	public long getTicks() {
 		return ticks.get();
 	}
 	
@@ -111,7 +119,7 @@ public final class MajorUpdateWorker implements Runnable {
 	 * 		The ticks we want to check for
 	 */
 	public boolean lapsed(long time, long ticks) {
-		long current = getTicksElapsed();
+		long current = getTicks();
 		long difference = current - time;
 		return time == -1 || time > current || difference > ticks;
 	}

@@ -63,6 +63,10 @@ public enum AttributeKey {
 	
 	LAST_LONGIN_STAMP,
 	
+	LAST_UNCOLLAPSED_TELEPORT,
+	
+	LAST_SELECTED_TELEPORT,
+	
 	// game bar status
 	
 	FILTER,

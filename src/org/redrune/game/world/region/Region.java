@@ -536,6 +536,7 @@ public class Region {
 	public void addEntity(Entity entity) {
 		if (entity.isPlayer()) {
 			players.add(entity.toPlayer());
+			handleRegionEntry(entity.toPlayer());
 		} else if (entity.isNPC()) {
 			if (!npcs.contains(entity.toNPC())) {
 				npcs.add(entity.toNPC());
@@ -760,7 +761,6 @@ public class Region {
 	private void refreshAllObjects(Player player) {
 		deletedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
 		removedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
-		
 		spawnedObjects.forEach(object -> player.getTransmitter().send(new ObjectAdditionBuilder(object).build(player)));
 	}
 	

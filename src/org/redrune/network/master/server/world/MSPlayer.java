@@ -1,4 +1,4 @@
-package org.redrune.network.master.server;
+package org.redrune.network.master.server.world;
 
 import lombok.Getter;
 import org.redrune.network.master.MasterConstants;

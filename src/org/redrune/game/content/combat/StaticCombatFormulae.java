@@ -1182,6 +1182,23 @@ public class StaticCombatFormulae {
 	}
 	
 	/**
+	 * Checks if the entity has anti dragon protection
+	 *
+	 * @param entity
+	 * 		The entity
+	 */
+	public static boolean hasAntiDragProtection(Entity entity) {
+		if (entity.isNPC()) {
+			String name = entity.toNPC().getDefinitions().getName().toLowerCase();
+			return name.contains("fire") || name.contains("dragon");
+		} else {
+			Player p2 = (Player) entity;
+			int shieldId = p2.getEquipment().getIdInSlot(EquipConstants.SLOT_SHIELD);
+			return shieldId == 1540 || shieldId == 11283 || shieldId == 11284;
+		}
+	}
+	
+	/**
 	 * Forces the target to get into combat with the source, 1 tick after the calling of the method. This requires the
 	 * target not to be moving and not to be fighting already
 	 *
@@ -1192,7 +1209,7 @@ public class StaticCombatFormulae {
 	 */
 	public static void autoRetaliate(Entity source, Entity target) {
 		// as long as the target isn't moving or fighting already, they'll retaliate to us
-		if ((target.isNPC() || (target.isPlayer() && target.toPlayer().getCombatDefinitions().isRetaliating())) && !target.fighting() && !target.getMovement().isMoving()) {
+		if ((target.isNPC() || (target.isPlayer() && target.toPlayer().getCombatDefinitions().isRetaliating()) && !target.fighting() && !target.getMovement().isMoving())) {
 			SystemManager.getScheduler().schedule(new ScheduledTask(1) {
 				@Override
 				public void run() {

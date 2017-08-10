@@ -1,27 +1,28 @@
 package org.redrune.game.content.combat.player.swing;
 
+import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.ProjectileManager;
-import org.redrune.game.content.combat.player.CombatTypeSwing;
-import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
-import org.redrune.utility.tool.Misc;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.content.combat.player.CombatRegistry;
+import org.redrune.game.content.combat.player.CombatTypeSwing;
 import org.redrune.game.content.combat.player.calc.RangeCombatCalculator;
 import org.redrune.game.content.combat.player.registry.wrapper.BowFireEvent;
+import org.redrune.game.content.combat.player.registry.wrapper.CombatSwingDetail;
 import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
+import org.redrune.game.node.item.Item;
+import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.Hit;
 import org.redrune.utility.rs.Hit.HitAttributes;
 import org.redrune.utility.rs.Hit.HitSplat;
-import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.node.item.Item;
-import org.redrune.game.world.region.RegionManager;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.ItemConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 
@@ -189,12 +190,32 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	 * @param specialAttack
 	 * 		If we are using a special attack
 	 */
-	public static void sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, double modifier, boolean specialAttack) {
+	public static CombatSwingDetail sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, double modifier, boolean specialAttack) {
 		final int style = attacker.getCombatDefinitions().getAttackStyle();
 		final int delay = ProjectileManager.getProjectileDelay(attacker, target);
 		final double maxHit = swing.getMaxHit(attacker, weaponId, style, modifier);
 		final int damage = swing.randomizeHit(maxHit, swing.getAttackBonus(attacker, weaponId, style, specialAttack), swing.getDefenceBonus(target, weaponId, style));
-		sendDamage(attacker, target, swing, weaponId, style, delay, maxHit, damage, null);
+		return sendDamage(attacker, target, swing, weaponId, style, delay, maxHit, damage, null);
+	}
+	
+	/**
+	 * Sends the damage to the target with predefined damage
+	 *
+	 * @param attacker
+	 * 		The attacker
+	 * @param target
+	 * 		The target
+	 * @param swing
+	 * 		The swing
+	 * @param weaponId
+	 * 		The weapon id
+	 * @param damage
+	 * 		The damage to append
+	 */
+	public static CombatSwingDetail sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int damage) {
+		final int style = attacker.getCombatDefinitions().getAttackStyle();
+		final int delay = ProjectileManager.getProjectileDelay(attacker, target);
+		return sendDamage(attacker, target, swing, weaponId, style, delay, damage, damage, null);
 	}
 	
 	/**
@@ -217,7 +238,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 	 * @param damage
 	 * 		The damage
 	 */
-	public static void sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int style, int delay, double maxHit, int damage, Runnable landTask) {
+	public static CombatSwingDetail sendDamage(Player attacker, Entity target, RangeCombatSwing swing, int weaponId, int style, int delay, double maxHit, int damage, Runnable landTask) {
 		// hit, ammo, defend
 		final Hit hit = new Hit(attacker, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit);
 		swing.applyHit(attacker, target, hit, weaponId, style, delay);
@@ -230,6 +251,7 @@ public class RangeCombatSwing extends CombatTypeSwing {
 				}
 			});
 		}
+		return new CombatSwingDetail(attacker, target, hit);
 	}
 	
 	/**
