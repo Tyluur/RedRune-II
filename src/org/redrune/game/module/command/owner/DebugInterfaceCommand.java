@@ -1,6 +1,6 @@
 package org.redrune.game.module.command.owner;
 
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
@@ -21,7 +21,7 @@ public class DebugInterfaceCommand extends CommandModule {
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
 		int interId = intParam(args, 1);
-		int length = Cache.getAmountOfComponents(interId);
+		int length = CacheFileStore.getAmountOfComponents(interId);
 		for (int index = 0; index < length; index++) {
 			player.getManager().getInterfaces().sendInterfaceText(interId, index, "" + index);
 		}

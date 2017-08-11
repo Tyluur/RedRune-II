@@ -1,6 +1,6 @@
 package org.redrune.game.module.command.administrator;
 
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.game.module.command.CommandManifest;
@@ -33,7 +33,7 @@ public class FindItemByNameCommand extends CommandModule {
 		
 		// the list of items that were found
 		List<String> found = new ArrayList<>();
-		for (int itemId = 0; itemId < Cache.getAmountOfItems(); itemId++) {
+		for (int itemId = 0; itemId < CacheFileStore.getItemDefinitionsSize(); itemId++) {
 			// the definition instance
 			ItemDefinition definition = ItemDefinitionParser.forId(itemId);
 			if (definition == null) {

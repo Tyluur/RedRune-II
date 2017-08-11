@@ -1,7 +1,7 @@
 package org.redrune.cache.parse;
 
 import com.google.common.base.Stopwatch;
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.definition.ItemDefinition;
 import org.redrune.utility.tool.Misc;
 
@@ -40,7 +40,7 @@ public class ItemDefinitionParser {
 			cacheData();
 		}
 		int equipId = 0;
-		for (int itemId = 0; itemId < Cache.getAmountOfItems(); itemId++) {
+		for (int itemId = 0; itemId < CacheFileStore.getItemDefinitionsSize(); itemId++) {
 			ItemDefinition def = forId(itemId);
 			if (def.getMaleWornModelId1() >= 0 || def.getMaleWornModelId2() >= 0) {
 				def.setEquipId(equipId++);

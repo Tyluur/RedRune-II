@@ -32,7 +32,7 @@ public class RequestTypeVerificationDecoder extends ByteToMessageDecoder {
 			} else {
 				builder.writeByte((byte) 0);
 				for (int i = 0; i < 27; i++) {
-					builder.writeInt(NetworkConstants.DATA[i]);
+					builder.writeInt(NetworkConstants.UPDATE_SERVER_KEYS[i]);
 				}
 				pipeline.addBefore("handler", "decoder", new DownloadDecoder());
 			}
@@ -42,7 +42,6 @@ public class RequestTypeVerificationDecoder extends ByteToMessageDecoder {
 		} else {
 			System.out.println("Received unhandled opcode: " + opcode);
 		}
-		
 		ctx.writeAndFlush(builder.getBuffer());
 	}
 }

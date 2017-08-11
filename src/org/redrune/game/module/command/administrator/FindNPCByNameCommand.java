@@ -1,6 +1,6 @@
 package org.redrune.game.module.command.administrator;
 
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.module.command.CommandManifest;
@@ -32,7 +32,7 @@ public class FindNPCByNameCommand extends CommandModule {
 		final String optionFlag = stringParamOrDefault(args, 2, null);
 		// the list of items that were found
 		List<String> found = new ArrayList<>();
-		for (int npcId = 0; npcId < Cache.getAmountOfNpcs(); npcId++) {
+		for (int npcId = 0; npcId < CacheFileStore.getNPCDefinitionsSize(); npcId++) {
 			// the definition instance
 			NPCDefinition definition = NPCDefinitionParser.forId(npcId);
 			if (definition == null) {

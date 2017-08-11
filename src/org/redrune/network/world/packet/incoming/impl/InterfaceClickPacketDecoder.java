@@ -1,6 +1,6 @@
 package org.redrune.network.world.packet.incoming.impl;
 
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.game.content.event.EventRepository;
 import org.redrune.game.content.event.context.item.ItemOnItemContext;
 import org.redrune.game.content.event.impl.item.ItemOnItemEvent;
@@ -44,7 +44,7 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 					if (slotId == 65535) {
 						slotId = -1;
 					}
-					if (interfaceId > Cache.getAmountOfInterfaces()) {
+					if (interfaceId > CacheFileStore.getInterfaceDefinitionsSize()) {
 						System.out.println("Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ") [packetId=" + packet.getOpcode() + "]");
 						return;
 					}
@@ -81,7 +81,7 @@ public class InterfaceClickPacketDecoder implements IncomingPacketDecoder {
 		packet.readLEShortA();
 		int interfaceId = interfaceHash >> 16;
 		int componentId = interfaceHash & 0xFF;
-		if (interfaceId > Cache.getAmountOfInterfaces()) {
+		if (interfaceId > CacheFileStore.getInterfaceDefinitionsSize()) {
 			System.out.println("Unable to handle interface post-decoding! (" + interfaceId + ", " + componentId + ")");
 			return;
 		}

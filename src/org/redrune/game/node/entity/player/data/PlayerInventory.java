@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
@@ -80,7 +80,7 @@ public class PlayerInventory {
 	 * 		The  item instance
 	 */
 	public boolean addItem(Item item) {
-		if (item.getId() < 0 || item.getAmount() < 0 || item.getId() > Cache.getAmountOfItems()) {
+		if (item.getId() < 0 || item.getAmount() < 0 || item.getId() > CacheFileStore.getItemDefinitionsSize()) {
 			return false;
 		}
 		Item[] itemsBefore = items.getItemsCopy();
@@ -152,7 +152,7 @@ public class PlayerInventory {
 	 * 		The amount of the item to delete
 	 */
 	public boolean deleteItem(int itemId, int amount) {
-		if (itemId < 0 || amount < 0 || itemId > Cache.getAmountOfItems()) {
+		if (itemId < 0 || amount < 0 || itemId > CacheFileStore.getItemDefinitionsSize()) {
 			return false;
 		}
 		Item[] itemsBefore = items.getItemsCopy();

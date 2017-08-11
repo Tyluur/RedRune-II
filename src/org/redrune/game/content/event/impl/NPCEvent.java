@@ -31,7 +31,6 @@ public class NPCEvent extends Event<NPCEventContext> {
 			return;
 		}
 		player.getTransmitter().sendMessage("Nothing interesting happens.");
-		// TODO npc dialogues next
 	}
 	
 	@Override

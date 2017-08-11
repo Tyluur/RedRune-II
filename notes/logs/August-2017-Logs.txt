@@ -5,9 +5,14 @@
 	+   Added trade interactions
 		-   Flashing for when an item is removed
 		-   They are handled as part of the interaction system [used for npc interactions as well, will be implemented into duel arena too]
+	+   Added client zooming [credits chyronic]
+	+   Added middle mouse movement [credits chryonic]
+	+   Fixed x-logging and made it so if you're in combat you're only kicked from the server after a minute
+		-   If you're dying when you attempt to log out the same countdown will happen.
 
 	[img]http://i.imgur.com/kAj2kgE.gif[/img]
 	[img]http://i.imgur.com/gKyuMCJ.gif[/img]
+	[img]http://i.imgur.com/7yoYKCV.png[/img]
 }
 
 8/9/17 {

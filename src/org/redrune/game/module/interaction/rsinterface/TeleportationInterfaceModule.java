@@ -253,12 +253,12 @@ public class TeleportationInterfaceModule implements InterfaceInteractionModule 
 			}
 		},
 		
-/*		MINIGAMES("Minigames") {
+		MINIGAMES("Minigames") {
 			@Override
 			public void populateDestinations() {
-				add("Duel Arena", DUEL_ARENA, "Pest Control", PEST_CONTROL, "Fight Caves", TZHAAR, "Barrows", BARROW, "Warriors Guild", WARRIORS_GUILD, "Clan Wars", CLAN_WARS, "Dicing", DICING_AREA, "Castle Wars", CASTLE_WARS);
+				add("Barrows", BARROW);
 			}
-		},*/
+		},
 		
 /*		BOSSES("Bosses") {
 			@Override

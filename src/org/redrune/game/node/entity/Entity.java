@@ -714,4 +714,11 @@ public abstract class Entity extends Node implements EntityDetails {
 	public void turnToLocation(Location location) {
 		getUpdateMasks().register(new FaceLocationUpdate(this, location));
 	}
+	
+	/**
+	 * If we were in combat recently
+	 */
+	public boolean isUnderCombat() {
+		return getAttackedByDelay() + 10000 >= System.currentTimeMillis();
+	}
 }

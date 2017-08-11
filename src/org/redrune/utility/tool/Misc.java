@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import io.netty.channel.Channel;
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
@@ -380,7 +380,7 @@ public class Misc {
 	}
 	
 	public static void clearInterface(Player player, int interfaceId) {
-		int componentLength = Cache.getAmountOfComponents(interfaceId);
+		int componentLength = CacheFileStore.getAmountOfComponents(interfaceId);
 		for (int i = 0; i < componentLength; i++) {
 			player.getManager().getInterfaces().sendInterfaceText(interfaceId, i, "");
 		}

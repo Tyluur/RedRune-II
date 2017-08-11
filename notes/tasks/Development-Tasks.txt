@@ -30,7 +30,6 @@
 	-   Interface 326
 	-   Can be done with one attribute
 	-   Example code from arios: https://paste.ee/p/trgn8
-+   Proper logging out [60 seconds max to wait]
 
 [Data]
 +	NPC examines

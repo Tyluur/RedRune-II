@@ -2,7 +2,7 @@ package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.game.content.event.EventListener;
 import org.redrune.game.content.event.EventListener.EventType;
 import org.redrune.game.node.entity.player.Player;
@@ -173,7 +173,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		If the interface should be walkable
 	 */
 	public InterfaceManager sendInterface(int paneId, int componentId, int interfaceId, boolean walkable) {
-		if (interfaceId >= Cache.getAmountOfInterfaces()) {
+		if (interfaceId >= CacheFileStore.getInterfaceDefinitionsSize()) {
 			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
 		}
 		if (interfaceBindings.get(componentId) != null) {
@@ -324,10 +324,10 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		When the component/interface id is out of bounds
 	 */
 	public InterfaceManager sendInterfaceText(int interfaceId, int componentId, String text) {
-		if (interfaceId >= Cache.getAmountOfInterfaces()) {
+		if (interfaceId >= CacheFileStore.getInterfaceDefinitionsSize()) {
 			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
 		}
-		if (componentId >= Cache.getAmountOfComponents(interfaceId)) {
+		if (componentId >= CacheFileStore.getAmountOfComponents(interfaceId)) {
 			throw new IllegalStateException("Unable to send text on component " + componentId + " using interface " + interfaceId);
 		}
 		player.getTransmitter().send(new InterfaceStringBuilder(interfaceId, componentId, text).build(player));
@@ -345,10 +345,10 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * 		If the button should be hidden
 	 */
 	public InterfaceManager sendInterfaceChange(int interfaceId, int componentId, boolean hide) {
-		if (interfaceId >= Cache.getAmountOfInterfaces()) {
+		if (interfaceId >= CacheFileStore.getInterfaceDefinitionsSize()) {
 			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
 		}
-		if (componentId >= Cache.getAmountOfComponents(interfaceId)) {
+		if (componentId >= CacheFileStore.getAmountOfComponents(interfaceId)) {
 			throw new IllegalStateException("Unable to send text on component " + componentId + " using interface " + interfaceId);
 		}
 		player.getTransmitter().send(new InterfaceChangeBuilder(interfaceId, componentId, hide).build(player));

@@ -159,14 +159,43 @@ public final class Player extends Entity {
 	
 	@Override
 	public void deregister() {
+		save();
 		setRenderable(false);
 		session.notifyDisconnection(getWorld());
+		manager.getContacts().showMyFriendsStatus(false);
 		
 		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
 		
 		System.out.println("Player de-registered from game:\t" + this);
+	}
+	
+	/**
+	 * Calls the termination of a player to start, using an attempt-based system
+	 */
+	public void terminate() {
+		terminate(0);
+	}
+	
+	/**
+	 * Terminates the player, using an attempt-based system
+	 *
+	 * @param attempt
+	 * 		The attempt
+	 */
+	private void terminate(final int attempt) {
+		if ((isDead() || isDying() || isUnderCombat()) && attempt < 6) {
+			System.out.println("scheduled termination because ");
+			SystemManager.getScheduler().schedule(new ScheduledTask(16) {
+				@Override
+				public void run() {
+					terminate(attempt + 1);
+				}
+			});
+			return;
+		}
+		deregister();
 	}
 	
 	@Override
