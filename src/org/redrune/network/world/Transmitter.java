@@ -434,4 +434,17 @@ public final class Transmitter {
 	public void requestInteraction(int id, String message, String requestee) {
 		send(new MessageBuilder(id, message, requestee).build(player));
 	}
+	
+	/**
+	 * Sends a flash on an interface
+	 */
+	public void sendSlotFlash(int interfaceId, int componentId, int width, int height, int slot) {
+		Object[] parameters = new Object[4];
+		int index = 0;
+		parameters[index++] = slot;
+		parameters[index++] = height;
+		parameters[index++] = width;
+		parameters[index++] = interfaceId << 16 | componentId;
+		send(new CS2ScriptBuilder(143, parameters).build(player));
+	}
 }

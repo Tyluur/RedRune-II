@@ -20,7 +20,7 @@ public class NPCInteraction extends Interaction {
 		source.getMovement().getWalkSteps().clear();
 		target.turnTo(source);
 		target.getMovement().getWalkSteps().clear();
-		EventListener.setListener(source, this::end, EventType.MOVE, EventType.DAMAGE, EventType.INTERFACE_CLOSE);
+		EventListener.setListener(source, this::end, EventType.MOVE, EventType.DAMAGE, EventType.SCREEN_INTERFACE_CLOSE);
 	}
 	
 	@Override

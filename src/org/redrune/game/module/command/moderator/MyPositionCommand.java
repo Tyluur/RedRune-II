@@ -6,7 +6,6 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.tool.ColorConstants;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -30,18 +29,19 @@ public class MyPositionCommand extends CommandModule {
 		// writes the regions the player is in, coloring the current region red and other regions black
 		for (int i = 0; i < mapRegionsIds.size(); i++) {
 			int regionId = mapRegionsIds.get(i);
-			builder.append(regionId == player.getRegion().getRegionId() ? "<col=" + ColorConstants.RED + ">" : "<col=" + ColorConstants.BLACK + ">");
-			builder.append("");
+			boolean dominant = regionId == player.getRegion().getRegionId();
+			builder.append(dominant ? "<col=" + ColorConstants.RED + ">" : "");
 			builder.append(regionId);
-			builder.append("</col>");
+			if (dominant) {
+				builder.append("</col>");
+			}
 			builder.append(i == mapRegionsIds.size() - 1 ? "" : ", ");
 		}
-		player.getTransmitter().sendMessage("My Location=" + player.getLocation().toString() + ". Regions["+ builder.toString() + "]");
+		player.getTransmitter().sendMessage("My Location=" + player.getLocation().toString() + ". Regions[" + builder.toString() + "]");
 		
 		if (toClipboard) {
 			StringSelection stringSelection = new StringSelection("new Location(" + player.getLocation().getX() + ", " + player.getLocation().getY() + ", " + player.getLocation().getPlane() + ")");
-			Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-			clpbrd.setContents(stringSelection, null);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 		}
 	}
 }

@@ -50,6 +50,7 @@ public enum AttributeKey {
 	FORCE_NEXT_MAP_LOAD,
 	
 	// saved vars
+	LAST_RESTORE_TIME,
 	
 	FILTERING_PROFANITY,
 	

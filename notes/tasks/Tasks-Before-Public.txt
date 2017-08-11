@@ -32,14 +32,6 @@
 				}
 		+   Interactions close on walk listeners
 		+   Interactions can be used for clan invitations, duel arena challenges,
-2.  Grand Exchange
-	-   This is completely player - player, but with some stock items so that it's simple enough
-	-   Reference hdpvp code
-	-	For multi-world engagement, this will require a sql database for saving.
-	-   We must have support for stock items
-		+   Players will use grand exchange for purchasing of non-default items [d scim etc will be in bank]
-		+   These items will not reduce in quantity
-		+   There can be a flag in the database for isStock
 # [FORUM INTEGRATION]
 
 1.  Display names can be changed over the forums 31 days and will be 12 characters MAX. [DONOR ONLY]
@@ -53,8 +45,6 @@
 +	Barrows
 +	Home area design
 	-   Add dicing area
-+	Custom Quest Tab
-	-   Manage presets from this interface
 + 	Wilderness Targets
 	-   In the wilderness your potential will increase by 15% every minute
 		+   When it's at maximum you'll receive a target

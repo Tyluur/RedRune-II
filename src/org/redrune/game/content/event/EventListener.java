@@ -34,7 +34,7 @@ public class EventListener {
 	 */
 	public static void fireListener(Entity entity, EventType... types) {
 		for (EventType type : types) {
-			Runnable task = entity.getAttribute(type.key());
+			Runnable task = entity.removeAttribute(type.key());
 			if (task == null) {
 				continue;
 			}
@@ -48,8 +48,8 @@ public class EventListener {
 	public enum EventType {
 		MOVE,
 		DAMAGE,
-		INTERFACE_CLOSE,
-		INTERFACE_OPEN;
+		SCREEN_INTERFACE_CLOSE,
+		SCREEN_INTERFACE_OPEN;
 		
 		public String key() {
 			return name().toLowerCase() + "_event_listener";

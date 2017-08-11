@@ -43,7 +43,7 @@ public class InformationTabTask extends ScheduledTask {
 			bldr.append("Online: <col=" + ColorConstants.WHITE + ">").append(World.get().getPlayerCount()).append("<br>");
 			bldr.append("Wilderness: <col=" + ColorConstants.WHITE + ">").append(wildernessActivitySize).append("<br>");
 			bldr.append("Uptime: <col=" + ColorConstants.WHITE + ">").append(Misc.convertMillisecondsToTime(World.get().getStopwatch().elapsed(TimeUnit.MILLISECONDS))).append("<br>");
-			if (player.getDetails().getDominantRight().isStaff()) {
+			if (player.getDetails().isStaff()) {
 				bldr.append("Lag: <col=" + ColorConstants.WHITE + ">").append(Misc.getLagPercentage(SystemManager.getUpdateWorker().getLastCycleTime())).append("%<br>");
 			}
 			bldr.append("<br><col=FF0000>Wilderness<br><br>");

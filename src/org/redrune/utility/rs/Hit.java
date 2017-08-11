@@ -3,9 +3,7 @@ package org.redrune.utility.rs;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.Entity;
-import org.redrune.game.node.entity.player.Player;
 
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -70,18 +68,6 @@ public class Hit {
 		this.splat = splat;
 		this.soaked = 0;
 		this.attributes = new ConcurrentHashMap<>();
-	}
-	
-	/**
-	 * Checks if the person who hit the player is the player
-	 *
-	 * @param player
-	 * 		The player
-	 * @param victim
-	 * 		The victim
-	 */
-	public boolean interactingWith(Player player, Entity victim) {
-		return Objects.equals(player, victim) || Objects.equals(player, source);
 	}
 	
 	/**

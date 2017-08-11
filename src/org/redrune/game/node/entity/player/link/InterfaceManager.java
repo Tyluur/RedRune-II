@@ -265,7 +265,7 @@ public final class InterfaceManager implements InterfaceConstants {
 			return this;
 		}
 		closeInputBox();
-		EventListener.fireListener(player, EventType.INTERFACE_OPEN);
+		EventListener.fireListener(player, EventType.SCREEN_INTERFACE_OPEN);
 		return sendInterface(getScreenPaneId(usingFixedMode()), getScreenComponentId(usingFixedMode()), interfaceId, false);
 	}
 	
@@ -455,6 +455,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	public InterfaceManager closeAllInterfaces() {
 		if (getScreenInterface() != -1) {
 			closeScreenInterface();
+			EventListener.fireListener(player, EventType.SCREEN_INTERFACE_CLOSE);
 			//			System.out.println("closed screen");
 		}
 		if (getChatboxInterface() != -1) {
@@ -478,7 +479,7 @@ public final class InterfaceManager implements InterfaceConstants {
 		if (values == null) {
 			return this;
 		}
-		EventListener.fireListener(player, EventType.INTERFACE_CLOSE);
+		EventListener.fireListener(player, EventType.SCREEN_INTERFACE_CLOSE);
 		return closeInterface(getScreenPaneId(usingFixedMode()), componentId);
 	}
 	

@@ -199,10 +199,11 @@ public class TeleportationInterfaceModule implements InterfaceInteractionModule 
 				@Override
 				public void constructMessages(Player player) {
 					npc(1263, HAPPY, "This destination is in the wilderness.", "Are you sure you wish to travel here?");
-					options(DEFAULT_OPTION, new String[] { "Yes, I want to travel to the wilderness." ,"No, thank you!"}, () -> {
-						npc(1263, HAPPY, "Off you go!");
-						player.getVariables().putAttribute(AttributeKey.LAST_SELECTED_TELEPORT, new TransportationLocation(destination, travelLocations, optionIndex));
-						teleportPlayer(player, destination, () -> travelLocations.handlePostTeleportation(player, optionIndex));
+					options(DEFAULT_OPTION, new String[] { "Yes, I want to travel to the wilderness.", "No, thank you!" }, () -> {
+						action(() -> {
+							player.getVariables().putAttribute(AttributeKey.LAST_SELECTED_TELEPORT, new TransportationLocation(destination, travelLocations, optionIndex));
+							teleportPlayer(player, destination, () -> travelLocations.handlePostTeleportation(player, optionIndex));
+						});
 					}, () -> {
 						player(HAPPY, "No, thank you!");
 					});
@@ -228,7 +229,7 @@ public class TeleportationInterfaceModule implements InterfaceInteractionModule 
 		player.getManager().getInterfaces().closeAll();
 		
 		TeleportationSpellEvent.sendTeleportSpell(player, 14293, -1, 94, -1, 0, 0, destination, 6, false, TeleportType.SPELL);
-		EventListener.setListener(player, task, EventType.INTERFACE_CLOSE);
+		EventListener.setListener(player, task, EventType.SCREEN_INTERFACE_CLOSE);
 		
 		NPC wizard = Misc.findLocalNPC(player, 14332);
 		

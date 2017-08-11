@@ -2,15 +2,15 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.Cache;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
 import org.redrune.network.world.packet.outgoing.impl.AccessMaskBuilder;
-import org.redrune.utility.repository.item.ItemRepository;
-import org.redrune.utility.rs.constant.InterfaceConstants;
-import org.redrune.cache.Cache;
 import org.redrune.network.world.packet.outgoing.impl.ContainerPacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.ContainerUpdateBuilder;
+import org.redrune.utility.repository.item.ItemRepository;
+import org.redrune.utility.rs.constant.InterfaceConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -80,7 +80,18 @@ public class PlayerInventory {
 	 * 		The  item instance
 	 */
 	public boolean addItem(Item item) {
-		return addItem(item.getId(), item.getAmount());
+		if (item.getId() < 0 || item.getAmount() < 0 || item.getId() > Cache.getAmountOfItems()) {
+			return false;
+		}
+		Item[] itemsBefore = items.getItemsCopy();
+		if (!items.add(item)) {
+			items.add(new Item(item.getId(), items.getFreeSlots()));
+			player.getTransmitter().sendMessage("Not enough space in your inventory.", true);
+			refreshItems(itemsBefore);
+			return false;
+		}
+		refreshItems(itemsBefore);
+		return true;
 	}
 	
 	/**
@@ -92,18 +103,7 @@ public class PlayerInventory {
 	 * 		The amount of the item
 	 */
 	public boolean addItem(int itemId, int amount) {
-		if (itemId < 0 || amount < 0 || itemId > Cache.getAmountOfItems()) {
-			return false;
-		}
-		Item[] itemsBefore = items.getItemsCopy();
-		if (!items.add(new Item(itemId, amount))) {
-			items.add(new Item(itemId, items.getFreeSlots()));
-			player.getTransmitter().sendMessage("Not enough space in your inventory.", true);
-			refreshItems(itemsBefore);
-			return false;
-		}
-		refreshItems(itemsBefore);
-		return true;
+		return addItem(new Item(itemId, amount));
 	}
 	
 	/**

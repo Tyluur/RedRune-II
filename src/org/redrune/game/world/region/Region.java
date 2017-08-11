@@ -7,6 +7,7 @@ import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.definition.ObjectDefinition;
 import org.redrune.core.EngineWorkingSet;
 import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.core.task.impl.FloorItemTask;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
@@ -289,7 +290,6 @@ public class Region {
 	void spawnObject(GameObject object, int localX, int localY, boolean original) {
 		if (original) {
 			if (deleteListContains(object)) {
-				System.out.println("[" + object + "][" + localX + "][" + localY + "]");
 				unclip(object, localX, localY);
 				removedObjects.add(object);
 				return;
@@ -439,7 +439,6 @@ public class Region {
 		int type = object.getType();
 		int rotation = object.getRotation();
 		if (localX < 0 || localY < 0 || localX >= map.getMasks()[plane].length || localY >= map.getMasks()[plane][localX].length) {
-			System.out.println("Unable to unclip " + object);
 			return;
 		}
 		ObjectDefinition objectDefinition = object.getDefinitions();
@@ -759,9 +758,14 @@ public class Region {
 	 * 		The player
 	 */
 	private void refreshAllObjects(Player player) {
-		deletedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
-		removedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
-		spawnedObjects.forEach(object -> player.getTransmitter().send(new ObjectAdditionBuilder(object).build(player)));
+		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
+			@Override
+			public void run() {
+				deletedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
+				removedObjects.forEach(object -> player.getTransmitter().send(new ObjectRemovalBuilder(object).build(player)));
+				spawnedObjects.forEach(object -> player.getTransmitter().send(new ObjectAdditionBuilder(object).build(player)));
+			}
+		});
 	}
 	
 	/**

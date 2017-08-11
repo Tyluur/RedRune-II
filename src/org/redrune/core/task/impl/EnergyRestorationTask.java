@@ -2,7 +2,6 @@ package org.redrune.core.task.impl;
 
 import org.redrune.core.SequencialUpdate;
 import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.node.InitializingNodeList;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.SkillConstants;
 
@@ -23,8 +22,7 @@ public class EnergyRestorationTask extends ScheduledTask {
 	
 	@Override
 	public void run() {
-		InitializingNodeList<Player> players = SequencialUpdate.getRenderablePlayers();
-		for (Player player : players) {
+		for (Player player : SequencialUpdate.getRenderablePlayers()) {
 			int amount = player.getAttribute("resting", false) ? 3 : ((180 - player.getSkills().getLevel(SkillConstants.AGILITY)) / 10);
 			if (cycle % amount != 0) {
 				continue;

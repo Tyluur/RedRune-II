@@ -84,6 +84,13 @@ public final class PlayerDetails {
 	}
 	
 	/**
+	 * If this right is a staff right
+	 */
+	public boolean isStaff() {
+		return rights.contains(PlayerRight.OWNER) || rights.contains(PlayerRight.ADMINISTRATOR) || rights.contains(PlayerRight.MODERATOR);
+	}
+	
+	/**
 	 * If the {@link #rights} set has any of these parameters, this is true
 	 *
 	 * @param rights

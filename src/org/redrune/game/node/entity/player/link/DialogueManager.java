@@ -90,7 +90,7 @@ public final class DialogueManager {
 		Optional<DialogueMessage> optional = dialogue.getMessageAtStage(stage);
 		if (lastDialogue instanceof OptionDialogueMessage) {
 			lastDialogue.handleOption(player, getOptionByComponent(interfaceId, componentId));
-			optional = dialogue.getMessageAtStage(stage);
+			optional = Optional.ofNullable(dialogue.getMessageAtStage(stage).orElse(null));
 		}
 		if (!optional.isPresent()) {
 			dialogue.end(player);
@@ -99,7 +99,7 @@ public final class DialogueManager {
 		DialogueMessage message = optional.get();
 		player.putAttribute(AttributeKey.LAST_DIALOGUE_MESSAGE, message);
 		message.send(player);
-		if (dialogue.isOver()) {
+		if (dialogue == null || dialogue.isOver()) {
 			end();
 		}
 	}

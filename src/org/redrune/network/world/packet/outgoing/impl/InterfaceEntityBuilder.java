@@ -22,32 +22,32 @@ public class InterfaceEntityBuilder implements OutgoingPacketBuilder {
 	private final int componentId;
 	
 	/**
-	 * The id of the npc to draw
+	 * The id of the entity to draw
 	 */
-	private final int npcId;
+	private final int entityId;
 	
 	public InterfaceEntityBuilder(int interfaceId, int componentId) {
 		this.interfaceId = interfaceId;
 		this.componentId = componentId;
-		this.npcId = -1;
+		this.entityId = -1;
 	}
 	
-	public InterfaceEntityBuilder(int interfaceId, int componentId, int npcId) {
+	public InterfaceEntityBuilder(int interfaceId, int componentId, int entityId) {
 		this.interfaceId = interfaceId;
 		this.componentId = componentId;
-		this.npcId = npcId;
+		this.entityId = entityId;
 	}
 	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr;
-		if (npcId == -1) {
+		if (entityId == -1) {
 			bldr = new PacketBuilder(48);
 			bldr.writeInt1(interfaceId << 16 | componentId);
 		} else {
 			bldr = new PacketBuilder(136);
 			bldr.writeInt(interfaceId << 16 | componentId);
-			bldr.writeLEShortA(npcId);
+			bldr.writeLEShortA(entityId);
 		}
 		return bldr.toPacket();
 	}

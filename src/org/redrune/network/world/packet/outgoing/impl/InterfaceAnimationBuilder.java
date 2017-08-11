@@ -36,7 +36,7 @@ public class InterfaceAnimationBuilder implements OutgoingPacketBuilder {
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(131);
 		bldr.writeShort(animationId);
-		bldr.writeInt2(interfaceId << 16 | componentId);
+		bldr.writeInt(interfaceId << 16 | componentId);
 		return bldr.toPacket();
 	}
 }

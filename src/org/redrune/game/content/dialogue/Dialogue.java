@@ -2,8 +2,8 @@ package org.redrune.game.content.dialogue;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.dialogue.messages.*;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.DialogueConstants;
 
 import java.util.HashMap;
@@ -46,6 +46,7 @@ public abstract class Dialogue implements DialogueConstants {
 	/**
 	 * The parameters that are sent
 	 */
+	@Getter
 	@Setter
 	private Object[] parameters;
 	
@@ -184,6 +185,16 @@ public abstract class Dialogue implements DialogueConstants {
 	 */
 	protected void item(int itemId, int itemAmount, String... messages) {
 		construct(new ItemDialogueMessage(itemId, itemAmount, messages));
+	}
+	
+	/**
+	 * Adds an action dialogue
+	 *
+	 * @param action
+	 * 		The action to perform
+	 */
+	protected void action(Runnable action) {
+		construct(new ActionDialogueMessage(action));
 	}
 }
 

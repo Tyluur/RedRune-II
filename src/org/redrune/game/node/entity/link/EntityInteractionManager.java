@@ -71,6 +71,7 @@ public class EntityInteractionManager {
 	public void startInteraction(Interaction interaction) {
 		this.interaction = interaction;
 		this.interaction.start();
+		this.interaction.getTarget().getInteractionManager().interaction = interaction;
 		this.interaction.getTarget().getInteractionManager().requestMap.remove(interaction.getClass().getSimpleName());
 		this.interaction.getSource().getInteractionManager().requestMap.remove(interaction.getClass().getSimpleName());
 	}

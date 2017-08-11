@@ -65,10 +65,4 @@ public enum PlayerRight {
 		return player.getDetails().rightsContains(this);
 	}
 	
-	/**
-	 * If this right is a staff right
-	 */
-	public boolean isStaff() {
-		return this == OWNER || this == ADMINISTRATOR || this == MODERATOR;
-	}
 }

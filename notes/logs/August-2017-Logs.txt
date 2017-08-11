@@ -1,3 +1,15 @@
+8/10/17 {
+	+   Added dragon battleaxe special attack
+	+   Fixed animate entity over interface packet, animations now properly work for npcs/players over dialogues
+	+   Fixed hitsplats colors [dark red for hits that aren't yours/bright red for hits that are yours]
+	+   Added trade interactions
+		-   Flashing for when an item is removed
+		-   They are handled as part of the interaction system [used for npc interactions as well, will be implemented into duel arena too]
+
+	[img]http://i.imgur.com/kAj2kgE.gif[/img]
+	[img]http://i.imgur.com/gKyuMCJ.gif[/img]
+}
+
 8/9/17 {
 	+   Added crossbow bolt special attacks [dragon bolts, onyx bolts, ruby bolts, diamond bolts, jade bolts] (e)
 	+   Added skulling in the wilderness

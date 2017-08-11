@@ -53,7 +53,7 @@ public class HitUpdate extends UpdateFlag {
 				} else if (hit.isCritical()) {
 					type += 10;
 				}
-				if (hit.interactingWith(outgoing, hit.getSource())) {
+				if (hit.getSource() == outgoing || entity == outgoing) {
 					bldr.writeSmart(type);
 				} else {
 					bldr.writeSmart(type + 14);
@@ -63,7 +63,7 @@ public class HitUpdate extends UpdateFlag {
 			}
 			bldr.writeSmart(hit.getDamage());
 			if (hit.getSoaked() > 0) {
-				if (hit.interactingWith(outgoing, hit.getSource())) {
+				if (hit.getSource() == outgoing || entity == outgoing) {
 					bldr.writeSmart(5);
 				} else {
 					bldr.writeSmart(19);

@@ -186,6 +186,7 @@ public final class World implements SequentialService {
 		SystemManager.getScheduler().schedule(new HitpointsRestorationTask());
 		SystemManager.getScheduler().schedule(new PlayerSavingTask());
 		SystemManager.getScheduler().schedule(new InformationTabTask());
+		SystemManager.getScheduler().schedule(new SpecialEnergyRestorationTask());
 	}
 	
 	/**

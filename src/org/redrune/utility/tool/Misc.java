@@ -904,4 +904,20 @@ public class Misc {
 		}
 		return null;
 	}
+	
+	/**
+	 * Formats a number to a long
+	 *
+	 * @param value
+	 * 		The number
+	 */
+	public static long formatNumber(Object value) {
+		String string = value.toString();
+		string = string.replace(".", "");
+		if (string.contains("E")) {
+			string = string.substring(0, string.indexOf("E"));
+		}
+		return Long.parseLong(string);
+	}
+	
 }

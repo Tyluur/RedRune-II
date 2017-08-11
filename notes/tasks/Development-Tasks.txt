@@ -30,6 +30,7 @@
 	-   Interface 326
 	-   Can be done with one attribute
 	-   Example code from arios: https://paste.ee/p/trgn8
++   Proper logging out [60 seconds max to wait]
 
 [Data]
 +	NPC examines
@@ -46,4 +47,8 @@
 	-   Inactivity starts when we don't click/type for > a minute
 
 [Punishments]
-+   SQL based
++   Once somebody has been punished, send the information over the network
+	-   IP/MAC punishments only
+	-   We receive punishment data and add it to the punishment repository
+	-   We just do a check (PunishmentRepository.isPunished(player, IP_BAN)) which calls the local repository
++   Regular punishments save to the character file
