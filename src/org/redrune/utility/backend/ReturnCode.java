@@ -91,9 +91,9 @@ public enum ReturnCode {
 	TOO_MANY_INCORRECT_LOGINS(16),
 	
 	/**
-	 * When logging on a free world while standing in members area.
+	 * We requested an account that was not created
 	 */
-	STANDING_IN_MEMBER(17),
+	INVALID_ACCOUNT_REQUESTED(17),
 	
 	/**
 	 * This account is locked as it might have been stolen.

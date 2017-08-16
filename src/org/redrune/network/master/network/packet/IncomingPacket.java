@@ -1,5 +1,7 @@
 package org.redrune.network.master.network.packet;
 
+import io.netty.buffer.ByteBuf;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/11/2017
@@ -7,26 +9,15 @@ package org.redrune.network.master.network.packet;
 public class IncomingPacket extends Packet {
 	
 	/**
-	 * The data
-	 */
-	private final byte[] bytes;
-	
-	/**
-	 * The position we're reading at
-	 */
-	private int position;
-	
-	/**
 	 * Constructs a new incoming packet
 	 *
 	 * @param id
 	 * 		The id of the packet
-	 * @param bytes
-	 * 		The data in the packet
+	 * @param buf
+	 * 		The buffer of the packet
 	 */
-	public IncomingPacket(int id, byte[] bytes) {
-		super(id, null);
-		this.bytes = bytes;
+	public IncomingPacket(int id, ByteBuf buf) {
+		super(id, buf);
 	}
 	
 	/**
@@ -35,7 +26,7 @@ public class IncomingPacket extends Packet {
 	 * @return An integer.
 	 */
 	public int readInt() {
-		return readShort() << 16 | readShort();
+		return buffer.readInt();
 	}
 	
 	/**
@@ -44,7 +35,7 @@ public class IncomingPacket extends Packet {
 	 * @return A Short
 	 */
 	public int readShort() {
-		return (readByte() << 8 | readByte());
+		return buffer.readShort();
 	}
 	
 	/**
@@ -53,7 +44,7 @@ public class IncomingPacket extends Packet {
 	 * @return The byte.
 	 */
 	public int readByte() {
-		return (bytes[position++] & 0xff);
+		return buffer.readByte();
 	}
 	
 	/**
@@ -62,16 +53,7 @@ public class IncomingPacket extends Packet {
 	 * @return A long.
 	 */
 	public long readLong() {
-		long value = 0;
-		value |= (long) readByte() << 56L;
-		value |= (long) readByte() << 48L;
-		value |= (long) readByte() << 40L;
-		value |= (long) readByte() << 32L;
-		value |= (long) readByte() << 24L;
-		value |= (long) readByte() << 16L;
-		value |= (long) readByte() << 8L;
-		value |= readByte();
-		return value;
+		return buffer.readLong();
 	}
 	
 	/**

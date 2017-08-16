@@ -218,6 +218,16 @@ public abstract class Buffer {
 	}
 	
 	/**
+	 * Reads a versioned string
+	 */
+	public String readVString() {
+		if (readByte() != 0) {
+			throw new RuntimeException("GJSTR2 - bad magic number");
+		}
+		return readString();
+	}
+	
+	/**
 	 * Reads a string literal from the buffer.
 	 *
 	 * @return the read string value.
@@ -542,4 +552,7 @@ public abstract class Buffer {
 		return data.length;
 	}
 	
+	public int read24BitInt() {
+		return (readUnsignedByte() << 16) + (readUnsignedByte() << 8) + (readUnsignedByte());
+	}
 }

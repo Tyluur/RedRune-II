@@ -7,12 +7,11 @@
 	-   Potion mixing
 +   Finish dynamic regions
 +   Barrows
-	[3549, 9695, 0] is the location of the chest
-	plane 3 is the location where the barrows brothers are
+	-   [3549, 9695, 0] is the location of the chest
+	-   plane 3 is the location where the barrows brothers are
++
 
 [Unfinished]
-+   Master Server Unfinished:
-	-   Lobby needs to hold a list of the players in it [master server disconnects then reconnects, it needs to hold all the players]
 +   Finish all melee special attacks
 	-   spear,scim,2h
 	-   Whip [vine too]

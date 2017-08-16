@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerViewComponents;
 import org.redrune.network.NetworkSession;
-import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.master.client.packet.out.PlayerDisconnectionPacketOut;
 import org.redrune.network.world.packet.Packet;
 

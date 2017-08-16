@@ -28,7 +28,7 @@ public interface MasterConstants {
 	/**
 	 * The keys
 	 */
-	String[] KEYS = new String[] { "LOBBY PASSWORD", "WORLD 1 PASSWORD", "WORLD 2 PASSWORD" };
+	String[] KEYS = new String[] { "WORLD 0 PASSWORD", "WORLD 1 PASSWORD", "WORLD 2 PASSWORD", "WORLD 3 PASSWORD", "WORLD 4 PASSWORD", "WORLD 5 PASSWORD", "WORLD 6 PASSWORD", "WORLD 7 PASSWORD", "WORLD 8 PASSWORD", "WORLD 9 PASSWORD", "LOBBY PASSWORD" };
 	
 	/**
 	 * The attribute that contains the key for a session.
@@ -38,5 +38,5 @@ public interface MasterConstants {
 	/**
 	 * The id of the lobby world
 	 */
-	byte LOBBY_WORLD_ID = 0;
+	byte LOBBY_WORLD_ID = 10;
 }

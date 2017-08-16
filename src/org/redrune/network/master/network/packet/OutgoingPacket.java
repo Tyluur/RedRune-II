@@ -83,9 +83,10 @@ public abstract class OutgoingPacket extends Packet implements PacketConstants {
 	public ByteBuf encode() {
 		ByteBuf response = Unpooled.buffer(buffer.readableBytes() + 3);
 		
-		response.writeShort(length());
-		response.writeInt(getId());
+		response.writeByte(getId());
+		response.writeInt(length());
 		response.writeBytes(buffer);
+		
 		return response;
 	}
 }

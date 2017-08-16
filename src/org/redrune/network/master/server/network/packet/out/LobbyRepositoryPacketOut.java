@@ -1,13 +1,13 @@
 package org.redrune.network.master.server.network.packet.out;
 
-import org.redrune.network.master.network.packet.writeable.WriteablePacket;
+import org.redrune.network.master.network.packet.writeable.WritablePacket;
 import org.redrune.network.master.server.world.MSWorld;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/25/2017
  */
-public class LobbyRepositoryPacketOut extends WriteablePacket {
+public class LobbyRepositoryPacketOut extends WritablePacket {
 	
 	/**
 	 * The world we're writing for
@@ -23,7 +23,7 @@ public class LobbyRepositoryPacketOut extends WriteablePacket {
 	}
 	
 	@Override
-	public WriteablePacket create() {
+	public WritablePacket create() {
 		writeByte(world.getId());
 		writeInt(world.getId());
 		return this;

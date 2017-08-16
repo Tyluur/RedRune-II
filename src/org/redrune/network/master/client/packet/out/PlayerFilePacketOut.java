@@ -1,12 +1,14 @@
 package org.redrune.network.master.client.packet.out;
 
-import org.redrune.network.master.network.packet.writeable.WriteablePacket;
+import org.redrune.game.GameConstants;
+import org.redrune.network.master.network.packet.writeable.WritablePacket;
+import org.redrune.utility.backend.SecureOperations;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/12/2017
  */
-public class PlayerFilePacketOut extends WriteablePacket {
+public class PlayerFilePacketOut extends WritablePacket {
 	
 	/**
 	 * The name of the file
@@ -16,18 +18,21 @@ public class PlayerFilePacketOut extends WriteablePacket {
 	/**
 	 * The contents of the file
 	 */
-	private final String fileContents;
+	private final byte[] fileContents;
 	
 	public PlayerFilePacketOut(String fileName, String fileContents) {
 		super(PLAYER_FILE_UPDATE_PACKET_ID);
 		this.fileName = fileName;
-		this.fileContents = fileContents;
+		this.fileContents = SecureOperations.getCompressedEncrypted(fileContents, GameConstants.FILE_ENCRYPTION_KEY);
 	}
 	
 	@Override
-	public WriteablePacket create() {
+	public WritablePacket create() {
 		writeString(fileName);
-		writeString(fileContents);
+		writeInt(fileContents.length);
+		for (byte content : fileContents) {
+			writeByte(content);
+		}
 		return this;
 	}
 	

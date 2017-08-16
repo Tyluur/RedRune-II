@@ -253,35 +253,31 @@ public class Misc {
 	/**
 	 * Optimizes the text for a chat message
 	 *
-	 * @param text
+	 * @param message
 	 * 		The text
 	 */
-	public static String optimizeText(String text) {
-		StringBuilder sb = new StringBuilder();
-		char buf[] = text.toCharArray();
-		boolean wasSpace = false;
-		boolean firstChar = false;
-		boolean lastEndMark = false;
-		for (char c : buf) {
-			if (!firstChar) {
-				if (c != ' ') {
-					firstChar = true;
-					wasSpace = c == ':' || c == ';';
-					sb.append(Character.toUpperCase(c));
+	public static String formatTextToSentence(String message) {
+		StringBuilder newText = new StringBuilder();
+		boolean wasSpace = true;
+		boolean exception = false;
+		for (int i = 0; i < message.length(); i++) {
+			if (!exception) {
+				if (wasSpace) {
+					newText.append(("" + message.charAt(i)).toUpperCase());
+					if (!String.valueOf(message.charAt(i)).equals(" ")) {
+						wasSpace = false;
+					}
+				} else {
+					newText.append(("" + message.charAt(i)).toLowerCase());
 				}
-				continue;
+			} else {
+				newText.append("").append(message.charAt(i));
 			}
-			if (!wasSpace && Character.isUpperCase(c)) {
-				c = Character.toLowerCase(c);
+			if (String.valueOf(message.charAt(i)).contains(".") || String.valueOf(message.charAt(i)).contains("!") || String.valueOf(message.charAt(i)).contains("?")) {
+				wasSpace = true;
 			}
-			if (lastEndMark) {
-				c = Character.toUpperCase(c);
-			}
-			sb.append(c);
-			wasSpace = c == ' ' || c == ':' || c == ';';
-			lastEndMark = c == '.' || c == '!' || c == '?';
 		}
-		return sb.toString();
+		return newText.toString();
 	}
 	
 	/**

@@ -20,7 +20,7 @@ import org.redrune.game.node.item.Item;
 import org.redrune.game.world.World;
 import org.redrune.game.world.region.RegionManager;
 import org.redrune.network.lobby.packet.outgoing.LobbyResponseBuilder;
-import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.master.client.packet.out.PlayerFilePacketOut;
 import org.redrune.network.master.utility.Utility;
 import org.redrune.network.world.Transmitter;
@@ -154,6 +154,8 @@ public final class Player extends Entity {
 		session.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
 		session.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
 		
+		manager.getContacts().pushLoginStatusChange();
+		
 		System.out.println("Player registered to game:\t" + this);
 	}
 	
@@ -162,7 +164,7 @@ public final class Player extends Entity {
 		save();
 		setRenderable(false);
 		session.notifyDisconnection(getWorld());
-		manager.getContacts().showMyFriendsStatus(false);
+		manager.getContacts().sendMyStatusChange(false);
 		
 		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
@@ -434,6 +436,7 @@ public final class Player extends Entity {
 		
 		session.write(new LobbyResponseBuilder().build(this));
 		manager.getContacts().sendLogin();
+		manager.getContacts().pushLoginStatusChange();
 		System.out.println("Player registered to lobby:\t" + this);
 	}
 	

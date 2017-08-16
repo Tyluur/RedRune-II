@@ -2,8 +2,6 @@
 +   Write information about osrs data to store in this so we can C&P to client devs
 
 [Misc]
-+   Middle-mouse camera wheel movement
-+   Zoom scroll with ctrl + middle mouse wheel
 +   Left click priority changing
 	-   Remember OSRS Client has:
 		'Player/NPC "Attack" options:'
@@ -13,5 +11,4 @@
 			4.  Hidden
 
 [Interfaces]
-+   Quest tab interface [usage for presets]
 +   Freeze overlay/veng cooldown overlay

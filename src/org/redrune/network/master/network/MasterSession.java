@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.network.master.network.packet.IncomingPacket;
 import org.redrune.network.master.network.packet.OutgoingPacket;
-import org.redrune.network.master.network.packet.writeable.WriteablePacket;
+import org.redrune.network.master.network.packet.writeable.WritablePacket;
 import org.redrune.network.master.utility.Utility;
 
 /**
@@ -57,12 +57,12 @@ public class MasterSession {
 	 */
 	public void write(OutgoingPacket packet) {
 		// built in the create method
-		if (packet instanceof WriteablePacket) {
-			channel.writeAndFlush(((WriteablePacket) packet).create());
+		if (packet instanceof WritablePacket) {
+			channel.writeAndFlush(((WritablePacket) packet).create());
 		} else {
 			channel.writeAndFlush(packet);
 		}
-//		System.out.println("Writing packet " + packet.getId() + " to master server @ " + MasterConstants.IP);
+		System.out.println("Writing master packet " + packet.getId() + ", class = [" + packet.getClass().getSimpleName() + "]");
 	}
 	
 	/**

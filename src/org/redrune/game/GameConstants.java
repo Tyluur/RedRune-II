@@ -19,6 +19,11 @@ public interface GameConstants {
 	String CACHE_PATH = "./data/fs/";
 	
 	/**
+	 * The key used for player-file encryption
+	 */
+	String FILE_ENCRYPTION_KEY = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgFoPEhAf5C/G1AsCURrAXBAKKxLV";
+	
+	/**
 	 * The maximum amount of players allowed online
 	 */
 	int PLAYERS_LIMIT = 2048;

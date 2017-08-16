@@ -21,11 +21,6 @@ public interface NetworkConstants extends GameConstants {
 	int MASTER_SERVER_PORT_ID = 4444;
 	
 	/**
-	 * The id of the social server port
-	 */
-	int SOCIAL_SERVER_PORT_ID = 5555;
-	
-	/**
 	 * The id of the port that is opened by the lobby
 	 */
 	int LOBBY_PORT_ID = 43594;
@@ -44,26 +39,6 @@ public interface NetworkConstants extends GameConstants {
 	 * The attribute that contains the key for a session.
 	 */
 	AttributeKey<NetworkSession> SESSION_KEY = AttributeKey.valueOf("session.key");
-	
-	/**
-	 * The opcode that symbolizes a js5 request
-	 */
-	int JS5_REQUEST = 15;
-	
-	/**
-	 * The opcode that symbolizes a login request
-	 */
-	int LOGIN_REQUEST = 14;
-	
-	/**
-	 * The opcode to check the email received is good
-	 */
-	int EMAIL_VERIFICATION = 28;
-	
-	/**
-	 * The opcode that is sent for account creation
-	 */
-	int CREATE_ACCOUNT = 22;
 	
 	/**
 	 * The update server keys

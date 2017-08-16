@@ -66,7 +66,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 	private void readPublicChatPacket(Player player, Packet packet) {
 		int effects = packet.readShort();
 		int length = packet.readByte() & 0xFF;
-		String text = Misc.optimizeText(BufferUtils.decompressHuffman(packet, length));
+		String text = Misc.formatTextToSentence(BufferUtils.decompressHuffman(packet, length));
 		if (text.startsWith("::")) {
 			EventRepository.executeEvent(player, CommandEvent.class, new CommandEventContext(text.replaceFirst("::", "").split(" "), false));
 			return;
@@ -88,7 +88,7 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 	 * 		The packet
 	 */
 	private void readPrivateMessagePacket(Player player, Packet packet) {
-		String name = packet.readRS2String();
+		String name = Misc.formatPlayerNameForProtocol(packet.readRS2String());
 		byte length = packet.readByte();
 		String message = BufferUtils.decompressHuffman(packet, length);
 		
@@ -126,6 +126,6 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		GameframeInteractionModule.updateGameBar(player, AttributeKey.PRIVATE, privateStatus);
 		GameframeInteractionModule.updateGameBar(player, AttributeKey.FRIENDS, friendsStatus);
 		
-		player.getManager().getContacts().showMyFriendsStatus(true);
+		player.getManager().getContacts().sendMyStatusChange(!privateStatus.equals(GameBarStatus.OFF));
 	}
 }

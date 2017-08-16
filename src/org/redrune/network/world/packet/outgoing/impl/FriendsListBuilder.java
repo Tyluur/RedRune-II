@@ -1,6 +1,7 @@
 package org.redrune.network.world.packet.outgoing.impl;
 
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.Packet.PacketType;
 import org.redrune.network.world.packet.PacketBuilder;
@@ -54,7 +55,7 @@ public class FriendsListBuilder implements OutgoingPacketBuilder {
 	 */
 	public FriendsListBuilder(String name, String previousName, int worldId, int clanRank, boolean warn, boolean lobby, boolean online) {
 		if (lobby) {
-			worldId = 10;
+			worldId = MasterConstants.LOBBY_WORLD_ID;
 		}
 		if (!online) {
 			worldId = 0;

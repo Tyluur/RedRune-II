@@ -4,7 +4,7 @@ import org.redrune.cache.Cache;
 import org.redrune.core.system.SystemManager;
 import org.redrune.game.world.World;
 import org.redrune.network.lobby.LobbyNetwork;
-import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.MasterCommunication;
 import org.redrune.utility.backend.UnexpectedArgsException;
 
 /**

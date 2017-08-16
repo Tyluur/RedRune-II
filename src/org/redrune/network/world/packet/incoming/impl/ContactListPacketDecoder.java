@@ -3,6 +3,7 @@ package org.redrune.network.world.packet.incoming.impl;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
+import org.redrune.utility.tool.Misc;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -22,7 +23,7 @@ public class ContactListPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public void read(Player player, Packet packet) {
-		String name = packet.readRS2String();
+		String name = Misc.formatPlayerNameForProtocol(packet.readRS2String());
 		switch (packet.getOpcode()) {
 			case ADD_FRIEND:
 				player.getManager().getContacts().addFriend(name);

@@ -29,7 +29,11 @@ public class MCSession extends MasterSession {
 	
 	@Override
 	public void read(IncomingPacket packet) {
-		READABLE_REPOSITORY.read(this, packet);
+		try {
+			READABLE_REPOSITORY.read(this, packet);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 	
 	/**

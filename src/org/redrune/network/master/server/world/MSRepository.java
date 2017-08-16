@@ -3,6 +3,7 @@ package org.redrune.network.master.server.world;
 import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.network.packet.OutgoingPacket;
 import org.redrune.network.master.server.network.MSSession;
+import org.redrune.utility.tool.Misc;
 
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ public final class MSRepository implements MasterConstants {
 	/**
 	 * The array of worlds that we hold
 	 */
-	private static final MSWorld[] WORLDS = new MSWorld[10];
+	private static final MSWorld[] WORLDS = new MSWorld[20];
 	
 	/**
 	 * Creates a new world
@@ -72,7 +73,6 @@ public final class MSRepository implements MasterConstants {
 			}
 			// found the player is online, loop doesn't need to continue.
 			if (world.isOnline(username)) {
-				System.out.println("Found username " + username + " in world " + world.getId());
 				online = true;
 				break;
 			}
@@ -91,7 +91,11 @@ public final class MSRepository implements MasterConstants {
 		if (index < 0 || index >= WORLDS.length) {
 			throw new IllegalStateException("Unexpected world id: " + worldId);
 		}
-		return Optional.of(WORLDS[index]);
+		MSWorld world = WORLDS[index];
+		if (world == null) {
+			return Optional.empty();
+		}
+		return Optional.of(world);
 	}
 	
 	/**
@@ -113,13 +117,14 @@ public final class MSRepository implements MasterConstants {
 	 * 		The name of the player
 	 */
 	public static Optional<MSSession> getSessionByUsername(String username) {
+		String formattedName = Misc.formatPlayerNameForProtocol(username);
 		// loop through all the worlds
 		for (MSWorld world : WORLDS) {
 			if (world == null) {
 				continue;
 			}
 			// there is a player by that name in this world so this is the right world
-			if (world.playerRegistered(username)) {
+			if (world.playerRegistered(formattedName)) {
 				return Optional.of(world.getSession());
 			}
 		}
@@ -138,9 +143,10 @@ public final class MSRepository implements MasterConstants {
 				continue;
 			}
 			Optional<MSPlayer> optional = world.getPlayerByName(username);
-			if (optional.isPresent()) {
-				return optional;
+			if (!optional.isPresent()) {
+				continue;
 			}
+			return optional;
 		}
 		return Optional.empty();
 	}

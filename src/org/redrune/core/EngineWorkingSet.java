@@ -27,6 +27,11 @@ public class EngineWorkingSet {
 	private static final Executor LOGIC_SERVICE = Executors.newSingleThreadExecutor(new RS2ThreadFactory("GameLogic"));
 	
 	/**
+	 * The database working thread executor
+	 */
+	public static final ScheduledExecutorService WEB_WORKER = Executors.newSingleThreadScheduledExecutor(new RS2ThreadFactory("DatabaseWorker"));
+	
+	/**
 	 * The executor used for the update server
 	 */
 	private static final ExecutorService UPDATE_SERVICE = Executors.newFixedThreadPool(SystemManager.PROCESSOR_COUNT);

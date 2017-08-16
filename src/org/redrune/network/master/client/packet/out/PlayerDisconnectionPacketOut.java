@@ -1,12 +1,12 @@
 package org.redrune.network.master.client.packet.out;
 
-import org.redrune.network.master.network.packet.writeable.WriteablePacket;
+import org.redrune.network.master.network.packet.writeable.WritablePacket;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/12/2017
  */
-public class PlayerDisconnectionPacketOut extends WriteablePacket {
+public class PlayerDisconnectionPacketOut extends WritablePacket {
 	
 	/**
 	 * The name of the player who disconnected
@@ -31,7 +31,7 @@ public class PlayerDisconnectionPacketOut extends WriteablePacket {
 	}
 	
 	@Override
-	public WriteablePacket create() {
+	public WritablePacket create() {
 		writeByte(worldId);
 		writeByte((byte) (lobby ? 1 : 0));
 		writeString(username);

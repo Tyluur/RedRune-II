@@ -1,6 +1,6 @@
 package org.redrune.network.master.client.packet.out;
 
-import org.redrune.network.master.network.packet.writeable.WriteablePacket;
+import org.redrune.network.master.network.packet.writeable.WritablePacket;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/3/2017
  */
-public class ReconnectionPacketOut extends WriteablePacket {
+public class ReconnectionPacketOut extends WritablePacket {
 	
 	/**
 	 * The id of the world this packet is for
@@ -30,7 +30,7 @@ public class ReconnectionPacketOut extends WriteablePacket {
 	}
 	
 	@Override
-	public WriteablePacket create() {
+	public WritablePacket create() {
 		writeByte(worldId);
 		writeInt(playerData.size());
 		for (String data : playerData) {

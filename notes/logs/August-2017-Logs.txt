@@ -1,18 +1,38 @@
-8/10/17 {
-	+   Added dragon battleaxe special attack
-	+   Fixed animate entity over interface packet, animations now properly work for npcs/players over dialogues
-	+   Fixed hitsplats colors [dark red for hits that aren't yours/bright red for hits that are yours]
-	+   Added trade interactions
-		-   Flashing for when an item is removed
-		-   They are handled as part of the interaction system [used for npc interactions as well, will be implemented into duel arena too]
-	+   Added client zooming [credits chyronic]
-	+   Added middle mouse movement [credits chryonic]
-	+   Fixed x-logging and made it so if you're in combat you're only kicked from the server after a minute
-		-   If you're dying when you attempt to log out the same countdown will happen.
+8/15/17 {
+	+   Started work on osrs data loading
+	+   Added an animation for the teleporation wizard at home
+	+   Fixed a lot of issues with the master server/client communication [overlooked something severe in the inital writing process]
+	+   Added private messaging/status updating/friend list requesting [friend server]
+		-   Also removal of people from your friend/ignore list
+	+   Added a new function with a safe algorithm for [de][encoding/compression] data, to speed up the rate at which player files are transmitted over the network
+		-   Using secure keys to ensure files aren't exposed
+	+   Fixed a client bug that would make you have to select a world before logging in [default world is main world now]
+	+   Added cache crc verification on lobby login
+	+   Added cache crc verification on world login
+	+   Added complete login decoding [identified misc. data [ex: isWebclient, javascriptEnabled, operatingSystemId, javaVendorId, javaVersionId]]
+	+   Updated the registration page to show username input/hovers instead of email
 
-	[img]http://i.imgur.com/kAj2kgE.gif[/img]
-	[img]http://i.imgur.com/gKyuMCJ.gif[/img]
-	[img]http://i.imgur.com/7yoYKCV.png[/img]
+	[img]http://i.imgur.com/isTcvyi.png[/img]
+	[img]http://i.imgur.com/bCMgb7m.png[/img]
+	[img]https://imgur.com/4kvDvlQ[/img]
+	[IMG]http://i.imgur.com/g6IWHJW.png[/IMG]
+}
+
+8/10/17 {
++   Added dragon battleaxe special attack
++   Fixed animate entity over interface packet, animations now properly work for npcs/players over dialogues
++   Fixed hitsplats colors [dark red for hits that aren't yours/bright red for hits that are yours]
++   Added trade interactions
+	-   Flashing for when an item is removed
+	-   They are handled as part of the interaction system [used for npc interactions as well, will be implemented into duel arena too]
++   Added client zooming [credits chyronic]
++   Added middle mouse movement [credits chryonic]
++   Fixed x-logging and made it so if you're in combat you're only kicked from the server after a minute
+	-   If you're dying when you attempt to log out the same countdown will happen.
+
+[img]http://i.imgur.com/kAj2kgE.gif[/img]
+[img]http://i.imgur.com/gKyuMCJ.gif[/img]
+[img]http://i.imgur.com/7yoYKCV.png[/img]
 }
 
 8/9/17 {

@@ -8,7 +8,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.crypto.ISAACCipher;
 import org.redrune.network.NetworkConstants;
-import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.MasterCommunication;
+import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.client.packet.out.LoginRequestPacketOut;
 import org.redrune.network.world.WorldSession;
 import org.redrune.network.world.codec.io.RSPacketDecoder;
@@ -40,12 +41,18 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 		int opcode = in.readUnsignedByte();
 		int size = in.readUnsignedShort();
 		if (in.readableBytes() != size) {
-			System.out.println("Bad size");
 			ctx.close();
 			return;
 		}
-		if (in.readInt() != REVISION) {
-			System.out.println("Bad rev");
+		if (opcode != 19) {
+			System.out.println("Received unexpected lobby login opcode: " + opcode);
+			setSession(ctx.channel());
+			session.sendLoginResponse(10);
+			return;
+		}
+		int revision = in.readInt();
+		if (revision != REVISION) {
+			setSession(ctx.channel());
 			session.sendLoginResponse(10);
 			return;
 		}
@@ -74,31 +81,30 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 	 * @param ctx
 	 * 		The context
 	 * @param buffer
-	 * 		The buffer
+	 * 		the buffer with data
+	 * @param out
+	 * 		The outgoing response
 	 */
-	private boolean decodeLobbyLogin(ChannelHandlerContext ctx, FixedBuffer buffer, List<Object> out) {
+	private void decodeLobbyLogin(ChannelHandlerContext ctx, FixedBuffer buffer, List<Object> out) {
 		int rsaSize = buffer.readUnsignedShort();
 		if (rsaSize > buffer.getRemaining()) {
-			System.out.println("here");
 			session.sendLoginResponse(10);
-			return false;
+			return;
 		}
 		byte[] rsaData = new byte[rsaSize];
 		buffer.read(rsaData);
 		FixedBuffer rsaBuffer = new FixedBuffer(Utils.cryptRSA(rsaData, LOGIN_EXPONENT, LOGIN_MODULUS));
 		if (rsaBuffer.readUnsignedByte() != 10) {
-			System.out.println("here");
 			session.sendLoginResponse(10);
-			return false;
+			return;
 		}
 		int[] isaacSeed = new int[4];
 		for (int i = 0; i < isaacSeed.length; i++) {
 			isaacSeed[i] = rsaBuffer.readInt();
 		}
 		if (rsaBuffer.readLong() != 0) {
-			System.out.println("here");
 			session.sendLoginResponse(10);
-			return false;
+			return;
 		}
 		String password = rsaBuffer.readString();
 		rsaBuffer.readLong();
@@ -112,28 +118,24 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 		buffer.readInt();
 		for (int index = 0; index < 36; index++) {
 			int crc = CacheFileStore.STORE.getIndexes()[index] == null ? 0 : CacheFileStore.STORE.getIndexes()[index].getCRC();
-			int receivedCRC = buffer.readInt();
-			if (crc != receivedCRC && index < 32) {
-				System.out.println("here");
+			int receivedCrc = buffer.readInt();
+			if (crc != receivedCrc && index < 32) {
 				session.sendLoginResponse(6);
-				System.out.println("Invalid CRC at index: " + index + ", " + receivedCRC + ", " + crc);
-				return false;
+				System.out.println("index=" + index + ", crc=" + crc + ", receivedCrc=" + receivedCrc);
+				return;
 			}
 		}
 		if (Misc.invalidAccountName(username)) {
-			System.out.println("here [" + username + "]");
 			session.sendLoginResponse(ReturnCode.INVALID_CREDENTIALS.getValue());
-			return false;
+			return;
 		}
 		if (password.length() >= 30) {
-			System.out.println("here");
 			session.sendLoginResponse(ReturnCode.INVALID_CREDENTIALS.getValue());
-			return false;
+			return;
 		}
 		if (!MasterCommunication.isConnected()) {
-			System.out.println("here");
 			session.sendLoginResponse(ReturnCode.LOGIN_SERVER_OFFLINE.getValue());
-			return false;
+			return;
 		}
 		int[] inCipher = Arrays.copyOf(isaacSeed, isaacSeed.length);
 		int[] outCipher = new int[4];
@@ -141,13 +143,15 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 			outCipher[i] = isaacSeed[i] + 50;
 		}
 		
-		System.out.println("Username = " + username + ", password = " + password);
-		
+		// set the session data
 		session.setInLobby(true);
 		session.buildCiphers(new ISAACCipher(inCipher), new ISAACCipher(outCipher));
+		
+		// change decoders
 		ctx.pipeline().replace("decoder", "decoder", new RSPacketDecoder(session));
-		MasterCommunication.write(new LoginRequestPacketOut((byte) 0, true, username, password, session.getUid()));
-		return true;
+		
+		// write the login request to the master server
+		MasterCommunication.write(new LoginRequestPacketOut(MasterConstants.LOBBY_WORLD_ID, true, username, password, session.getUid()));
 	}
 	
 	/**

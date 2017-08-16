@@ -119,16 +119,11 @@ public class MCNetworkSystem implements MasterConstants {
 	 */
 	public boolean write(OutgoingPacket packet) {
 		if (session == null || !session.isConnected()) {
-			System.out.println("unable to write a packet, session: " + session);
+			System.err.println("Unable to write a packet, session: " + session);
 			return false;
 		}
-		try {
 			session.write(packet);
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 	
 	/**

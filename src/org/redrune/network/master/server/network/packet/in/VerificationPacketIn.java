@@ -29,6 +29,7 @@ public class VerificationPacketIn implements ReadablePacket<MSSession> {
 		
 		// the id of the world connecting to us
 		if (worldId < 0 || worldId >= KEYS.length) {
+			System.out.println("World " + worldId + " attempted to connect.");
 			return;
 		}
 		
@@ -37,7 +38,7 @@ public class VerificationPacketIn implements ReadablePacket<MSSession> {
 		
 		// keys didn't match
 		if (!expectedKey.equals(key)) {
-			System.out.println("Keys were not equal!");
+			System.out.println("Keys were not equal, we received " + key + " for world " + worldId);
 			return;
 		}
 		

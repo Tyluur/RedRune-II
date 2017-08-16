@@ -43,6 +43,7 @@ public class SystemManager {
 			try {
 				GameFlags.debugMode = Boolean.parseBoolean(args[0]);
 				GameFlags.worldId = Byte.parseByte(args[1]);
+				GameFlags.sqlEnabled = Boolean.parseBoolean(args[2]);
 			} catch (Throwable e) {
 				throw new UnexpectedArgsException();
 			}

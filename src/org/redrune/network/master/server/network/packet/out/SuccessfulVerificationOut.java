@@ -1,12 +1,12 @@
 package org.redrune.network.master.server.network.packet.out;
 
-import org.redrune.network.master.network.packet.writeable.WriteablePacket;
+import org.redrune.network.master.network.packet.writeable.WritablePacket;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/11/2017
  */
-public class SuccessfulVerificationOut extends WriteablePacket {
+public class SuccessfulVerificationOut extends WritablePacket {
 	
 	/**
 	 * If the world was also created during the verification process. This should always be true, unless the world was
@@ -23,7 +23,7 @@ public class SuccessfulVerificationOut extends WriteablePacket {
 	}
 	
 	@Override
-	public WriteablePacket create() {
+	public WritablePacket create() {
 		writeByte((byte) (success ? 1 : 0));
 		writeString(WELCOME_MESSAGE);
 		return this;

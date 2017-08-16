@@ -9,13 +9,18 @@ package org.redrune.game;
 public class GameFlags {
 	
 	/**
+	 * The id of the world that will be ran
+	 */
+	public static byte worldId;
+	
+	/**
 	 * If the game is running on developer mode (debug)
 	 */
 	public static boolean debugMode;
 	
 	/**
-	 * The id of the world that will be ran
+	 * If sql is enabled
 	 */
-	public static byte worldId;
+	public static boolean sqlEnabled;
 	
 }

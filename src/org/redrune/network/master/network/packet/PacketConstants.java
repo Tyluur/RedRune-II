@@ -53,20 +53,40 @@ public interface PacketConstants extends MasterConstants {
 	/**
 	 * The id of the packet that contacts data about the player requesting friend information
 	 */
-	int FRIEND_REQUEST_PACKET_ID = 9;
+	int FRIEND_DETAILS_REQUEST_PACKET_ID = 9;
 	
 	/**
 	 * The id of the packet that contains the details of a friend
 	 */
-	int FRIEND_DETAILS_PACKET_ID = 10;
+	int FRIEND_DETAILS_COMPLETE_PACKET_ID = 10;
 	
 	/**
 	 * The id of the packet sent to the master server saying a player updated their status
 	 */
-	int STATUS_UPDATE_PACKET_ID = 11;
+	int FRIEND_STATUS_CHANGE_RECEIVE_PACKET_ID = 11;
 	
 	/**
 	 * The id of the packet sent to all master clients saying a player updated their status
 	 */
-	int STATUS_RECEIVE_PACKET_ID = 12;
+	int FRIEND_STATUS_CHANGE_DELIVER_PACKET_ID = 12;
+	
+	/**
+	 * The id of the packet sent to the master server with information about a private message to be delivered
+	 */
+	int PRIVATE_MESSAGE_ATTEMPT_PACKET_ID = 13;
+	
+	/**
+	 * The id of the packet that is sent to the player who sent the private message
+	 */
+	int PRIVATE_MESSAGE_DELIVERY_PACKET_ID = 14;
+	
+	/**
+	 * The id of the packet that is sent to the player who receives the private message
+	 */
+	int PRIVATE_MESSAGE_RECEIVED_PACKET_ID = 15;
+	
+	/**
+	 * The id of the packet that contains an account creation request
+	 */
+	int ACCOUNT_CREATION_REQUEST_PACKET_ID = 16;
 }

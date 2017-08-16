@@ -66,7 +66,7 @@ public final class IncomingPacketRepository {
 		try {
 			IncomingPacketDecoder structure = decoderMap.get(opcode);
 			if (structure == null) {
-				System.out.println("Received packet " + opcode + ", unidentified handler.");
+				System.out.println("Received game packet #" + opcode + ", unidentified handler.");
 				return;
 			}
 			structure.read(player, packet);

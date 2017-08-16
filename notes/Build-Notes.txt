@@ -23,11 +23,11 @@ Tree stumps
 	+	Login Request
 	+	Contacts
 		-	Friend List
-			+   Messaging [TODO]
+			+   Messaging [DONE]
 				-   Message is sent to the master server, which then sends it to the right client
-			+   Status updating [TODO]
+			+   Status updating [DONE]
 				-   Status is sent to the master server, which then tells all the people who have the player on their friend list
-			+   Friend List [TODO]
+			+   Friend List [DONE]
 				-   We save the list of contacts that we have
 					+   When the player logs in, we send a request for the contact
 					+   The master server then delivers each friend back to the client as an individual packet

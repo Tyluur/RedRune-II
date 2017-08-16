@@ -2,22 +2,18 @@ package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.core.system.SystemManager;
-import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.master.MasterConstants;
-import org.redrune.network.master.client.MasterCommunication;
-import org.redrune.network.master.client.packet.out.FriendRequestPacketOut;
+import org.redrune.network.master.MasterCommunication;
+import org.redrune.network.master.client.packet.out.FriendDetailsRequestPacketOut;
+import org.redrune.network.master.client.packet.out.FriendStatusChangePacketOut;
+import org.redrune.network.master.client.packet.out.PrivateMessageAttemptPacketOut;
 import org.redrune.network.world.packet.outgoing.impl.FriendsListBuilder;
 import org.redrune.network.world.packet.outgoing.impl.IgnoreListBuilder;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.GameBarStatus;
 import org.redrune.utility.tool.Misc;
 
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -49,31 +45,20 @@ public class ContactManager {
 	private transient Player player;
 	
 	/**
-	 * If we have unlocked the friends list yet. We must unlock it each time the player loads up.
-	 */
-	private transient boolean unlocked = false;
-	
-	/**
 	 * Handles the friend chat management when a user logs in
 	 */
 	public void sendLogin() {
+		player.getTransmitter().send(new FriendsListBuilder().build(player));
 		// unlocks the friends list
-		if (friendList.isEmpty()) {
-			player.getTransmitter().send(new FriendsListBuilder().build(player));
-			unlocked = true;
-		} else {
-			requestAllFriendsDetails();
-		}
+		requestAllFriendsDetails();
 		// send all the users on our ignore list
 		updateIgnoreList();
-		showMyFriendsStatus(true);
 	}
 	
 	/**
 	 * Requests details for all the friends in our list
 	 */
 	private void requestAllFriendsDetails() {
-		// requests friends details from the login server
 		friendList.forEach(this::requestFriendDetails);
 	}
 	
@@ -85,29 +70,20 @@ public class ContactManager {
 	}
 	
 	/**
-	 * Shows the status of all my friends onto my friends list
-	 *
-	 * @param online
-	 * 		If the player is online
-	 */
-	public void showMyFriendsStatus(boolean online) {
-		final String username = player.getDetails().getUsername();
-		SystemManager.getScheduler().schedule(new ScheduledTask(1) {
-			@Override
-			public void run() {
-				byte privateStatus = getPrivateStatus();
-				byte world = player.getWorld();
-				System.out.println("sent status update: [" + username + ", " + online + ", " + privateStatus + ", " + world + "]");
-				//MasterCommunication.write(new StatusUpdatePacketOut(username, online, privateStatus, world));
-			}
-		});
-	}
-	
-	/**
 	 * Gets the list of all the players, with their display names matching
 	 */
 	private Map<String, String> getDisplayNameList() {
 		return new HashMap<>();
+	}
+	
+	/**
+	 * Pushes the status change for the login
+	 */
+	public void pushLoginStatusChange() {
+		// as long as we're not on appear offline, all our friends will know we updated our status
+		if (getPrivateStatus() != 2) {
+			sendMyStatusChange(true);
+		}
 	}
 	
 	/**
@@ -127,16 +103,24 @@ public class ContactManager {
 	}
 	
 	/**
+	 * Shows the status of all my friends onto my friends list
+	 *
+	 * @param online
+	 * 		If the player is online
+	 */
+	public void sendMyStatusChange(boolean online) {
+		MasterCommunication.write(new FriendStatusChangePacketOut(player.getDetails().getUsername(), getPrivateStatus(), player.getWorld(), online, player.getSession().isInLobby()));
+	}
+	
+	/**
 	 * Handles the addition of a name to our friend list
 	 *
 	 * @param name
 	 * 		The name of our friend
 	 */
 	public void addFriend(String name) {
-		for (char c : name.toCharArray()) {
-			if (!Misc.allowed(c)) {
-				return;
-			}
+		if (Misc.invalidAccountName(name)) {
+			return;
 		}
 		if (friendList.size() >= 200) {
 			player.getTransmitter().sendMessage("Your friends list is full.", false);
@@ -164,49 +148,10 @@ public class ContactManager {
 	 * Requests details of a friend
 	 *
 	 * @param requested
-	 * 		The contact
+	 * 		The name of the player whose details we requested
 	 */
 	private void requestFriendDetails(String requested) {
-		MasterCommunication.write(new FriendRequestPacketOut(player.getDetails().getUsername(), player.getWorld(), requested));
-		System.err.println("requested details of " + requested);
-	}
-	
-	/**
-	 * Updates details for a friend
-	 *
-	 * @param username
-	 * 		The username of the friend
-	 * @param worldId
-	 * 		The world id of the friend
-	 * @param online
-	 * 		The if the friend was online
-	 */
-	public void updateFriend(String username, byte worldId, boolean online) {
-		// this removes the 'waiting for reply from friends server'
-		// must be sent before anything else
-		if (!unlocked) {
-			System.err.println("Unlocked friends list!");
-			player.getTransmitter().send(new FriendsListBuilder().build(player));
-			unlocked = true;
-		}
-		
-		// the rank of the user
-		final int clanRank = getClanRank(username);
-		// if the received world is a lobby
-		boolean lobby = worldId == MasterConstants.LOBBY_WORLD_ID;
-		
-		player.getTransmitter().send(new FriendsListBuilder(username, "", worldId, clanRank, true, lobby, online).build(player));
-	}
-	
-	/**
-	 * Gets the rank of a contact in our settings
-	 *
-	 * @param username
-	 * 		The name of the contact
-	 */
-	public int getClanRank(String username) {
-		// TODO modifying ranks in the interface
-		return 0;
+		MasterCommunication.write(new FriendDetailsRequestPacketOut(player.getDetails().getUsername(), player.getWorld(), requested));
 	}
 	
 	/**
@@ -218,9 +163,33 @@ public class ContactManager {
 	 * 		The message we want to send
 	 */
 	public void sendPrivateMessage(String name, String message) {
-		// TODO
-		//		System.out.println("ContactManager.sendPrivateMessage");
-		//		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), (byte) player.getDetails().getDominantRight().getClientRight(), name, message));
+		MasterCommunication.write(new PrivateMessageAttemptPacketOut(player.getDetails().getUsername(), player.getWorld(), player.getDetails().getDominantRight().getClientRight(), name, message));
+	}
+	
+	/**
+	 * Updates the status of a friend on our list
+	 *
+	 * @param friendUsername
+	 * 		The name of the friend
+	 * @param friendWorldId
+	 * 		The id of the world the friend is on
+	 * @param lobby
+	 * 		If the friend is in the lobby
+	 * @param online
+	 * 		If the friend is online
+	 * @param warn
+	 * 		If we should be warned about their status update
+	 */
+	public void updateFriendStatus(String friendUsername, byte friendWorldId, boolean lobby, boolean online, boolean warn) {
+		String displayName = Misc.formatPlayerNameForDisplay(friendUsername);
+		player.getTransmitter().send(new FriendsListBuilder(displayName, "", friendWorldId, getClanRank(friendUsername), warn, lobby, online).build(player));
+	}
+	
+	/**
+	 * Gets the rank of a user in our clan
+	 */
+	public int getClanRank(String username) {
+		return clanRankMap.getOrDefault(username, 0);
 	}
 	
 	/**
@@ -230,10 +199,8 @@ public class ContactManager {
 	 * 		The name
 	 */
 	public void addIgnore(String name) {
-		for (char c : name.toCharArray()) {
-			if (!Misc.allowed(c)) {
-				return;
-			}
+		if (Misc.invalidAccountName(name)) {
+			return;
 		}
 		if (ignoreList.size() >= 200) {
 			player.getTransmitter().sendMessage("Your ignore list is full.", false);
@@ -254,7 +221,14 @@ public class ContactManager {
 	 * 		The name
 	 */
 	public void removeFriend(String name) {
-		friendList.remove(name);
+		for (Iterator<String> iterator = friendList.iterator(); iterator.hasNext(); ) {
+			String ignored = iterator.next();
+			String protocolName = Misc.formatPlayerNameForProtocol(ignored);
+			if (protocolName.equals(name)) {
+				iterator.remove();
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -264,6 +238,13 @@ public class ContactManager {
 	 * 		The name
 	 */
 	public void removeIgnore(String name) {
-		ignoreList.remove(name);
+		for (Iterator<String> iterator = ignoreList.iterator(); iterator.hasNext(); ) {
+			String ignored = iterator.next();
+			String protocolName = Misc.formatPlayerNameForProtocol(ignored);
+			if (protocolName.equals(name)) {
+				iterator.remove();
+				break;
+			}
+		}
 	}
 }

@@ -1,10 +1,11 @@
 package org.redrune.game.node.entity;
 
+import lombok.Getter;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -13,16 +14,19 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	/**
 	 * The array of entities
 	 */
+	@Getter
 	private T[] entities;
 	
 	/**
 	 * The lowest free index available
 	 */
+	@Getter
 	private int lowestFreeIndex;
 	
 	/**
 	 * The size of entities
 	 */
+	@Getter
 	private int size;
 	
 	@SuppressWarnings("unchecked")
@@ -30,9 +34,15 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 		entities = (T[]) (player ? new Player[capacity] : new NPC[capacity]);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<T> iterator() {
-		return new EntityIterator();
+		return new EntityIterator(this);
+	}
+	
+	@Override
+	public String toString() {
+		return Arrays.toString(entities);
 	}
 	
 	/**
@@ -108,58 +118,6 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	 */
 	public Stream<T> stream() {
 		return StreamSupport.stream(spliterator(), false);
-	}
-	
-	private final class EntityIterator implements Iterator<T> {
-		
-		/**
-		 * The previous index of this iterator.
-		 */
-		private int previousIndex = -1;
-		
-		/**
-		 * The current index of this iterator.
-		 */
-		private int index = 0;
-		
-		@Override
-		public boolean hasNext() {
-			for (int i = index; i < entities.length; i++) {
-				if (entities[i] != null) {
-					index = i;
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		@Override
-		public T next() {
-			T entity = null;
-			for (int i = index; i < entities.length; i++) {
-				if (entities[i] != null) {
-					entity = entities[i];
-					index = i;
-					break;
-				}
-			}
-			if (entity == null) {
-				throw new NoSuchElementException();
-			}
-			previousIndex = index;
-			index++;
-			return entity;
-		}
-		
-		@Override
-		public void remove() {
-			if (previousIndex == -1) {
-				throw new IllegalStateException();
-			}
-			EntityList.this.remove(entities[previousIndex]);
-			previousIndex = -1;
-		}
-		
 	}
 	
 }

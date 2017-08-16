@@ -26,7 +26,7 @@ import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.RegionBuilder;
 import org.redrune.game.world.region.RegionDeletion;
 import org.redrune.network.master.MasterConstants;
-import org.redrune.network.master.client.MasterCommunication;
+import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.world.WorldNetwork;
 import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
 import org.redrune.network.world.packet.incoming.impl.WalkPacketDecoder;

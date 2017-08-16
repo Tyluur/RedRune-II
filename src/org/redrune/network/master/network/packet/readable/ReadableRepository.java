@@ -75,23 +75,19 @@ public class ReadableRepository {
 	 */
 	@SuppressWarnings("unchecked")
 	public void read(MasterSession session, IncomingPacket packet) {
-		try {
-			final int packetId = packet.getId();
-			ReadablePacket readable = packets.get(packetId);
-			if (readable == null) {
-				System.out.println("Unable to find readable packet with id " + packetId);
-				return;
-			}
-			// so we can only read verification packets before we're verified
-			if ((packetId != PacketConstants.SUCCESSFUL_VERIFICATION_PACKET_ID && packetId != PacketConstants.VERIFICATION_ATTEMPT_PACKET_ID) && !session.isVerified()) {
-				System.out.println("Attempted to read packet " + packet + " before session was verified.");
-				return;
-			}
-			readable.read(session, packet);
-			System.out.println("Read packet #" + packetId + " [" + readable.getClass().getSimpleName() + "]");
-		} catch (Exception e) {
-			e.printStackTrace();
+		int packetId = packet.getId();
+		ReadablePacket readable = packets.get(packetId);
+		if (readable == null) {
+			System.out.println("Unable to find master packet with id " + packetId);
+			return;
 		}
+		// so we can only read verification packets before we're verified
+		if ((packetId != PacketConstants.SUCCESSFUL_VERIFICATION_PACKET_ID && packetId != PacketConstants.VERIFICATION_ATTEMPT_PACKET_ID) && !session.isVerified()) {
+			System.out.println("Attempted to receive master packet #" + packet + " before session was verified.");
+			return;
+		}
+		readable.read(session, packet);
+		System.out.println("Received master packet #" + packetId + " [" + readable.getClass().getSimpleName() + "]");
 	}
 	
 }

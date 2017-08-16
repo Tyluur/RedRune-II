@@ -34,7 +34,7 @@ public class LoginRequest {
 	private final String password;
 	
 	/**
-	 * The session the request a came from
+	 * The session that the login request came from
 	 */
 	@Getter
 	private final MasterSession session;
@@ -54,8 +54,15 @@ public class LoginRequest {
 		this.uuid = uuid;
 	}
 	
+	/**
+	 * If the request is an account creation request
+	 */
+	public boolean isCreation() {
+		return worldId == -1;
+	}
+	
 	@Override
 	public String toString() {
-		return "LoginRequest{" + "worldId=" + worldId + ", lobby=" + lobby + ", username='" + username + '\'' + ", password='" + password + '\'' + ", session=" + session + ", uuid='" + uuid + '\'' + '}';
+		return "LoginRequest{" + "worldId=" + worldId + ", lobby=" + lobby + ", username='" + username + '\'' + ", password='" + password + '\'' + ", uuid='" + uuid + '\'' + '}';
 	}
 }

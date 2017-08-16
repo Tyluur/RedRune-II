@@ -9,6 +9,11 @@ import lombok.Getter;
 public enum CreationResponse {
 	
 	/**
+	 * No return code can describe problem.
+	 */
+	NONE(2),
+	
+	/**
 	 * The successful response code
 	 */
 	SUCCESSFUL(2),

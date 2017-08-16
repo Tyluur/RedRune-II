@@ -233,14 +233,12 @@ public class TeleportationInterfaceModule implements InterfaceInteractionModule 
 		
 		NPC wizard = Misc.findLocalNPC(player, 14332);
 		
-		System.out.println(wizard);
-		
 		if (wizard == null) {
 			return;
 		}
 		
+		wizard.sendAnimation(1979);
 		wizard.getMovement().resetWalkSteps();
-		wizard.turnTo(player);
 		wizard.sendForcedChat(Misc.randomArraySlot(WIZARD_MESSAGES));
 	}
 	

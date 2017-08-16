@@ -70,7 +70,7 @@ public class Utility {
 	}
 	
 	/**
-	 * Saves data using gson
+	 * Saves data using json
 	 *
 	 * @param file
 	 * 		The file to save to
