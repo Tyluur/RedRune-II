@@ -28,6 +28,7 @@ public class AccountCreationDecoder extends PassableDecoder {
 	private WorldSession session;
 	
 	@Override
+	@SuppressWarnings("unused")
 	public void decode(ChannelHandlerContext ctx, ByteBuf in, PacketBuilder builder) throws Exception {
 		final Channel channel = ctx.channel();
 		
@@ -65,12 +66,24 @@ public class AccountCreationDecoder extends PassableDecoder {
 		boolean sendUpdatesToEmail = buffer.readByte() == 1;
 		
 		// bad credentials
-		if (password.length() == 0 || password.length() > 20 || Misc.invalidAccountName(username)) {
+		if (Misc.invalidAccountName(username)) {
 			ProtocolType.sendCreationResponse(channel, CreationResponse.INVALID_EMAIL);
+			return;
+		} else if (password.length() == 0 || password.length() > 20) {
+			ProtocolType.sendCreationResponse(channel, CreationResponse.INVALID_PASSWORD);
+			return;
+		} else if (Misc.invalidAccountName(password)) {
+			ProtocolType.sendCreationResponse(channel, CreationResponse.NOT_LETTERS_AND_NUMBERS);
+			return;
+		} else if (!MasterCommunication.isConnected()) {
+			ProtocolType.sendCreationResponse(channel, CreationResponse.BUSY_SERVER);
 			return;
 		}
 		
+		// sets the session so we can write back to this specific session
 		setSession(channel);
+		
+		// write the request id
 		MasterCommunication.write(new AccountCreationRequestPacketOut(username, password, session.getUid()));
 	}
 	

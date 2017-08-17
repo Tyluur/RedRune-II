@@ -29,7 +29,7 @@ public final class InterfaceDisplayBuilder implements OutgoingPacketBuilder {
 	/**
 	 * If the interface is an overlay.
 	 */
-	private boolean transparent;
+	private boolean walkable;
 	
 	/**
 	 * Constructs a new interface display builder
@@ -40,20 +40,20 @@ public final class InterfaceDisplayBuilder implements OutgoingPacketBuilder {
 	 * 		The component id of the interface (where to display it)
 	 * @param interfaceId
 	 * 		The id of the interface
-	 * @param transparent
-	 * 		If we should display the interface as transparent
+	 * @param walkable
+	 * 		If we should display the interface as walkable
 	 */
-	public InterfaceDisplayBuilder(int paneId, int componentId, int interfaceId, boolean transparent) {
+	public InterfaceDisplayBuilder(int paneId, int componentId, int interfaceId, boolean walkable) {
 		this.paneId = paneId;
 		this.componentId = componentId;
 		this.interfaceId = interfaceId;
-		this.transparent = transparent;
+		this.walkable = walkable;
 	}
 	
 	@Override
 	public Packet build(Player player) {
 		PacketBuilder bldr = new PacketBuilder(139);
-		bldr.writeByteS(transparent ? 1 : 0);
+		bldr.writeByteS(walkable ? 1 : 0);
 		bldr.writeShortA(interfaceId);
 		bldr.writeInt(paneId << 16 | componentId);
 		return bldr.toPacket();

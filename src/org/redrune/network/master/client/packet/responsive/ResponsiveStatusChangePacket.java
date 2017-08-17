@@ -66,7 +66,6 @@ public class ResponsiveStatusChangePacket extends ResponsiveGamePacket {
 			}
 			// we don't have that person on our friends list so we don't care their status was changed
 			if (!player.getManager().getContacts().hasFriend(name)) {
-				System.out.println("Skipped " + name + " for " + player);
 				continue;
 			}
 			if (barStatus == GameBarStatus.ON) {
@@ -74,6 +73,7 @@ public class ResponsiveStatusChangePacket extends ResponsiveGamePacket {
 			} else if (barStatus == GameBarStatus.FRIENDS) {
 				// TODO: friend status requires us to know if the person who changed their status has us on their list
 				// if they don't, we show them as offline
+				player.getManager().getContacts().updateFriendStatus(name, worldId, lobby, online, true);
 			} else if (barStatus == GameBarStatus.OFF) {
 				player.getManager().getContacts().updateFriendStatus(name, worldId, false, false, true);
 			}

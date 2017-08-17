@@ -17,7 +17,7 @@ public class OutLogger extends PrintStream {
 	/**
 	 * The format of a date
 	 */
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM:dd:yyyy hh:mm:ss.SSS");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm:ss.SSS");
 	
 	public OutLogger(OutputStream out) {
 		super(out);

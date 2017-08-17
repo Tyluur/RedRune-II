@@ -5,9 +5,8 @@ import lombok.Setter;
 import org.redrune.game.GameFlags;
 import org.redrune.utility.tool.Misc;
 
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,7 +24,7 @@ public final class PlayerDetails {
 	 * The set of the rights the player has
 	 */
 	@Getter
-	private final SortedSet<PlayerRight> rights;
+	private final Set<PlayerRight> rights;
 	
 	/**
 	 * The player's appearance
@@ -55,10 +54,12 @@ public final class PlayerDetails {
 	 */
 	public PlayerDetails(String username) {
 		this.username = username;
-		this.rights = new TreeSet<>(Comparator.comparingInt(Enum::ordinal));
+		this.rights = new LinkedHashSet<>();
 		this.appearance = new PlayerAppearance();
-		this.rights.add(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER);
-		this.rights.add(PlayerRight.PLAYER);
+		if (!GameFlags.webIntegrated) {
+			this.rights.add(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER);
+			this.rights.add(PlayerRight.PLAYER);
+		}
 	}
 	
 	/**
@@ -68,11 +69,11 @@ public final class PlayerDetails {
 	 * @return A {@code Right} instance
 	 */
 	public PlayerRight getDominantRight() {
-		if (rights.size() == 0) {
-			System.out.println("Unexpected situation - rights set was empty!");
-			return PlayerRight.PLAYER;
+		if (rights.size() != 0) {
+			return rights.iterator().next();
 		} else {
-			return rights.first();
+			System.err.println("Unexpected situation - rights set was empty!");
+			return PlayerRight.PLAYER;
 		}
 	}
 	
@@ -80,14 +81,14 @@ public final class PlayerDetails {
 	 * If there are donator rights in the {@link #rights} set
 	 */
 	public boolean isDonator() {
-		return rights.contains(PlayerRight.DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
+		return rights.contains(PlayerRight.PREMIUM_DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
 	}
 	
 	/**
 	 * If this right is a staff right
 	 */
 	public boolean isStaff() {
-		return rights.contains(PlayerRight.OWNER) || rights.contains(PlayerRight.ADMINISTRATOR) || rights.contains(PlayerRight.MODERATOR);
+		return rights.contains(PlayerRight.OWNER) || rights.contains(PlayerRight.ADMINISTRATOR) || rights.contains(PlayerRight.SERVER_MODERATOR);
 	}
 	
 	/**
@@ -103,6 +104,17 @@ public final class PlayerDetails {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Stores a new list of rights
+	 *
+	 * @param rights
+	 * 		The rights to store
+	 */
+	public void storeRights(Set<PlayerRight> rights) {
+		this.rights.clear();
+		this.rights.addAll(rights);
 	}
 	
 	/**

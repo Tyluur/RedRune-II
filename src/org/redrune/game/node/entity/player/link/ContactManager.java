@@ -2,6 +2,8 @@ package org.redrune.game.node.entity.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.core.system.SystemManager;
+import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.master.client.packet.out.FriendDetailsRequestPacketOut;
@@ -81,9 +83,15 @@ public class ContactManager {
 	 */
 	public void pushLoginStatusChange() {
 		// as long as we're not on appear offline, all our friends will know we updated our status
-		if (getPrivateStatus() != 2) {
-			sendMyStatusChange(true);
+		if (getPrivateStatus() == 2) {
+			return;
 		}
+		SystemManager.getScheduler().schedule(new ScheduledTask(5) {
+			@Override
+			public void run() {
+				sendMyStatusChange(true);
+			}
+		});
 	}
 	
 	/**

@@ -89,4 +89,9 @@ public interface PacketConstants extends MasterConstants {
 	 * The id of the packet that contains an account creation request
 	 */
 	int ACCOUNT_CREATION_REQUEST_PACKET_ID = 16;
+	
+	/**
+	 * The id of the packet that contains the account creation response data
+	 */
+	int ACCOUNT_CREATION_RESPONSE_PACKET_ID = 17;
 }

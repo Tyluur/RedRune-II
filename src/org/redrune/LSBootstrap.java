@@ -5,6 +5,7 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.game.world.World;
 import org.redrune.network.lobby.LobbyNetwork;
 import org.redrune.network.master.MasterCommunication;
+import org.redrune.network.web.sql.SQLRepository;
 import org.redrune.utility.backend.UnexpectedArgsException;
 
 /**
@@ -25,6 +26,8 @@ public class LSBootstrap {
 		try {
 			// starts the communication to the master server
 			MasterCommunication.start();
+			// stores the sql configuration data
+			SQLRepository.storeConfiguration();
 			// loads all lobby packets
 			LobbyNetwork.PACKET_REPOSITORY.storeAll();
 			// create a new world

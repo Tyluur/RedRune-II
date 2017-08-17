@@ -73,11 +73,18 @@ public final class PlayerManager {
 	@Setter
 	private transient DialogueManager dialogues;
 	
+	/**
+	 * The web manager
+	 */
+	@Getter
+	private transient WebManager webManager;
+	
 	PlayerManager() {
 		this.notes = new NoteManager();
 		this.prayers = new PrayerManager();
 		this.contacts = new ContactManager();
 		this.activities = new ActivityManager();
+		this.webManager = new WebManager();
 	}
 	
 	/**
@@ -93,7 +100,7 @@ public final class PlayerManager {
 		this.setDialogues(new DialogueManager(player));
 		this.setHintIcons(new HintIconManager());
 		this.activities.setPlayer(player);
-		
+		this.webManager.setPlayer(player);
 		this.interfaces.setPlayer(player);
 		this.notes.setPlayer(player);
 		this.actions.setPlayer(player);

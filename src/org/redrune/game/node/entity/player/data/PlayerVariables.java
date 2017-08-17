@@ -107,6 +107,20 @@ public final class PlayerVariables {
 	private int killstreak = 0;
 	
 	/**
+	 * The id of the row in the sql database that the player's data is in
+	 */
+	@Getter
+	@Setter
+	private int rowId;
+	
+	/**
+	 * The amount of earning potential the player has
+	 */
+	@Getter
+	@Setter
+	private int earningPotential = 0;
+	
+	/**
 	 * Gets a stored attribute
 	 *
 	 * @param key
@@ -261,6 +275,23 @@ public final class PlayerVariables {
 	 */
 	public boolean isSkulled() {
 		return skullIconTimer > System.currentTimeMillis();
+	}
+	
+	/**
+	 * Gets the formatted amount of earning potential
+	 */
+	public String getFormattedEarningPotential() {
+		String colour;
+		if (earningPotential < 25) {
+			colour = "990000";
+		} else if (earningPotential >= 25 && earningPotential < 50) {
+			colour = "FF6633";
+		} else if (earningPotential >= 50 && earningPotential < 75) {
+			colour = "FFCC33";
+		} else {
+			colour = "33FF33";
+		}
+		return "EP: <col=" + colour + ">" + (int) earningPotential + "%</col>";
 	}
 }
 

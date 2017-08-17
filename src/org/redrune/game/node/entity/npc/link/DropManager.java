@@ -1,6 +1,6 @@
 package org.redrune.game.node.entity.npc.link;
 
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Drop;
@@ -29,7 +29,7 @@ public final class DropManager {
 	 */
 	public static List<Drop> generateDrops(Player killer, NPC npc, List<Drop> drops) {
 		List<Drop> dropList = generateDrops(killer, drops, npc.getDefinitions().getName());
-		if (WildernessActivity.isAtWild(killer.getLocation())) {
+		if (PvPLocation.isAtWild(killer.getLocation())) {
 			// dj khaled code
 			boolean anotherOne = false;
 			for (Drop drop : dropList) {

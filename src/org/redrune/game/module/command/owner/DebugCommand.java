@@ -1,10 +1,9 @@
 package org.redrune.game.module.command.owner;
 
+import org.redrune.game.content.activity.impl.pvp.PvPAreaActivity;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.world.packet.outgoing.impl.PrivateMessageReceiveBuilder;
-import org.redrune.network.world.packet.outgoing.impl.PrivateMessageSendBuilder;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -20,12 +19,8 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-		String name = args[1];
-		String message = args[2];
-		int rights = intParam(args, 3);
-
-		player.getTransmitter().send(new PrivateMessageReceiveBuilder(name, message, rights).build(player));
-		player.getTransmitter().send(new PrivateMessageSendBuilder(name, message).build(player));
+//		PvPAreaActivity.sendSafeTimeLeft(player, intParam(args, 1));
+		PvPAreaActivity.updateDangerousLevels(player, intParam(args, 1));
 
 		/*List<Entity> entityList = new ArrayList<>();
 		entityList.addAll(player.getRegion().getNpcs());

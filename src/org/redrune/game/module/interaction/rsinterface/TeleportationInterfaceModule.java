@@ -1,7 +1,7 @@
 package org.redrune.game.module.interaction.rsinterface;
 
 import lombok.Getter;
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.TeleportType;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.TeleportationSpellEvent;
 import org.redrune.game.content.dialogue.Dialogue;
@@ -194,7 +194,7 @@ public class TeleportationInterfaceModule implements InterfaceInteractionModule 
 	 * 		The option index of the teleport
 	 */
 	private static void teleport(Player player, Location destination, TravelLocations travelLocations, int optionIndex) {
-		if (WildernessActivity.isAtWild(destination)) {
+		if (PvPLocation.isAtWild(destination)) {
 			player.getManager().getDialogues().startDialogue(new Dialogue() {
 				@Override
 				public void constructMessages(Player player) {

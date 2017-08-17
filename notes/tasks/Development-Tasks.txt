@@ -9,7 +9,18 @@
 +   Barrows
 	-   [3549, 9695, 0] is the location of the chest
 	-   plane 3 is the location where the barrows brothers are
-+
++   PvP Areas in world 2
+	-   Pvp armour drops
++   Appearance modification
+	-   Classes
+	-   Beard/gender/shoes/clothing
+
+[Punishments]
++   Once somebody has been punished, send the information over the network
+	-   IP/MAC punishments only
+	-   We receive punishment data and add it to the punishment repository
+	-   We just do a check (PunishmentRepository.isPunished(player, IP_BAN)) which calls the local repository
++   Regular punishments save to the character file
 
 [Unfinished]
 +   Finish all melee special attacks
@@ -43,10 +54,3 @@
 +   Amount of times people talked [public/pm/friends]
 +   Amount of time spent
 	-   Inactivity starts when we don't click/type for > a minute
-
-[Punishments]
-+   Once somebody has been punished, send the information over the network
-	-   IP/MAC punishments only
-	-   We receive punishment data and add it to the punishment repository
-	-   We just do a check (PunishmentRepository.isPunished(player, IP_BAN)) which calls the local repository
-+   Regular punishments save to the character file

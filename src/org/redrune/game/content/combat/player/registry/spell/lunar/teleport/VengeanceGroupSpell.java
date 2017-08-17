@@ -61,6 +61,7 @@ public class VengeanceGroupSpell implements RegularSpellEvent {
 			other.sendGraphics(725, 100, 0);
 			// attributes
 			other.putAttribute("cast_veng", true);
+			other.putAttribute("LAST_VENG", System.currentTimeMillis());
 			// increment total amount
 			affectedPeopleCount++;
 		}

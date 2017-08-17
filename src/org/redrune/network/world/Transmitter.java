@@ -34,12 +34,21 @@ public final class Transmitter {
 	 * @return A {@code NetworkTransmitter} {@code Object}
 	 */
 	public Transmitter sendLoginComponents() {
+		player.getManager().getWebManager().handleLogin();
+		
 		send(new LoginCredentialsBuilder().build(player));
 		
 		player.loadMapRegions();
 		player.getManager().getInterfaces().sendLogin();
 		player.getTransmitter().sendSettings();
+		player.getEquipment().sendContainer();
+		player.getInventory().initialize();
+		player.getSkills().refreshAll();
+		player.getManager().getNotes().sendLoginConfiguration();
+		player.getManager().getActivities().login();
 		sendDefaultConfigs();
+		send(new PlayerOptionPacketBuilder("Follow", false, 2).build(player));
+		send(new PlayerOptionPacketBuilder("Trade with", false, 3).build(player));
 		sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::cmds to see your commands!");
 		return this;
 	}

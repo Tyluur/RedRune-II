@@ -16,12 +16,17 @@ public interface GameConstants {
 	/**
 	 * The path of the cache
 	 */
-	String CACHE_PATH = "./data/fs/";
+	String CACHE_PATH = "C:\\Users\\Tyler\\Desktop\\cache - Copy/"; /*"./data/fs/";*/
 	
 	/**
 	 * The key used for player-file encryption
 	 */
 	String FILE_ENCRYPTION_KEY = "MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgFoPEhAf5C/G1AsCURrAXBAKKxLV";
+	
+	/**
+	 * The path to the file with sql configuration
+	 */
+	String SQL_CONFIGURATION_FILE = "./data/sql.conf";
 	
 	/**
 	 * The maximum amount of players allowed online
@@ -44,6 +49,11 @@ public interface GameConstants {
 	Location DEATH_LOCATION = new Location(3102, 3492);
 	
 	/**
+	 * The id of the pvp world
+	 */
+	int PVP_WORLD_ID = 2;
+	
+	/**
 	 * The experience multiplier for combat skills
 	 */
 	int COMBAT_EXPERIENCE_MULTIPLIER = 1;
@@ -57,5 +67,4 @@ public interface GameConstants {
 	 * The experience multiplier for prayer
 	 */
 	int PRAYER_EXPERIENCE_MULTIPLIER = 5;
-	
 }

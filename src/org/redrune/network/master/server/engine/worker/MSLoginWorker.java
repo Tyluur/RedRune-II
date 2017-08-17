@@ -1,9 +1,11 @@
 package org.redrune.network.master.server.engine.worker;
 
 import org.redrune.game.GameFlags;
+import org.redrune.game.node.entity.player.Player;
 import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.network.MasterSession;
 import org.redrune.network.master.server.engine.MSEngineWorker;
+import org.redrune.network.master.server.network.packet.out.AccountCreationResponsePacketOut;
 import org.redrune.network.master.server.network.packet.out.LobbyRepositoryPacketOut;
 import org.redrune.network.master.server.network.packet.out.LoginResponsePacketOut;
 import org.redrune.network.master.server.world.MSRepository;
@@ -11,8 +13,13 @@ import org.redrune.network.master.server.world.MSWorld;
 import org.redrune.network.master.utility.Utility;
 import org.redrune.network.master.utility.rs.LoginConstants;
 import org.redrune.network.master.utility.rs.LoginRequest;
+import org.redrune.network.web.http.HTTPFunctions;
+import org.redrune.network.web.sql.SQLFunctions;
+import org.redrune.network.web.sql.impl.WebLoginDetail;
+import org.redrune.utility.backend.CreationResponse;
 import org.redrune.utility.backend.ReturnCode;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -67,18 +74,42 @@ public final class MSLoginWorker extends MSEngineWorker {
 				
 				// if the player is online we change the return code
 				if (online) {
-					returnCode = ReturnCode.ALREADY_ONLINE;
+					session.write(new LoginResponsePacketOut(uid, ReturnCode.ALREADY_ONLINE.getValue(), "empty", username, lobby, 0));
+					return;
+				}
+				// we must have the player file before this stage
+				if (!Utility.playerFileExists(username)) {
+					session.write(new LoginResponsePacketOut(uid, ReturnCode.INVALID_ACCOUNT_REQUESTED.getValue(), "empty", username, lobby, 0));
+					return;
 				}
 				
-				String fileText = "empty";
+				// the id of the row that the player's data is in
+				int rowId = 0;
+				
+				// as long as we're web integrated we will check the credentials with the database
+				if (GameFlags.webIntegrated) {
+					WebLoginDetail loginDetail = SQLFunctions.getLoginDetail(username, password);
+					switch(loginDetail.getResponse()) {
+						case NON_EXISTENT_USERNAME:
+							returnCode = ReturnCode.INVALID_ACCOUNT_REQUESTED;
+							break;
+						case WRONG_CREDENTIALS:
+							returnCode = ReturnCode.INVALID_CREDENTIALS;
+							break;
+						case SQL_ERROR:
+							returnCode = ReturnCode.ERROR_LOADING_PROFILE;
+							break;
+						case CORRECT:
+							returnCode = ReturnCode.SUCCESSFUL;
+							break;
+					}
+					rowId = loginDetail.getRowId();
+				}
 				
 				// the player file existed, so we use the text in it
-				if (Utility.playerFileExists(username)) {
-					fileText = Utility.getCollapsedText(LoginConstants.getLocation(username));
-				}
+				String fileText = Utility.getCollapsedText(LoginConstants.getLocation(username));
 				
-				// the return code was not successful so we
-				// dont need to send the file over the network anyway
+				// the return code was not successful so we dont need to send the file over the network anyway
 				if (returnCode != ReturnCode.SUCCESSFUL) {
 					fileText = "empty";
 				}
@@ -103,7 +134,8 @@ public final class MSLoginWorker extends MSEngineWorker {
 					}
 				}
 				
-				session.write(new LoginResponsePacketOut(uid, responseCode, fileText, username, lobby));
+				// send the response now
+				session.write(new LoginResponsePacketOut(uid, responseCode, fileText, username, lobby, rowId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,12 +149,48 @@ public final class MSLoginWorker extends MSEngineWorker {
 	 * 		The request
 	 */
 	private void handleCreationRequest(LoginRequest request) {
-		// TODO: create the account on the forums if it doesn't exist, otherwise we create a regular player account
-		// at the end of this procedure is when we fire back the successful response [most delayed part of login]
-		if (GameFlags.sqlEnabled) {
-			// ....
+		// the username of the request
+		final String username = request.getUsername();
+		
+		// the response
+		CreationResponse response = CreationResponse.NONE;
+		
+		// there's already a file in the server by that name, we won't be making an account
+		if (Utility.playerFileExists(username)) {
+			request.getSession().write(new AccountCreationResponsePacketOut(request.getUuid(), CreationResponse.ALREADY_TAKEN.getValue()));
+			return;
 		}
 		
+		// as long as integration is on
+		if (GameFlags.webIntegrated) {
+			WebLoginDetail detail = SQLFunctions.getLoginDetail(request.getUsername(), request.getPassword());
+			switch (detail.getResponse()) {
+				case NON_EXISTENT_USERNAME:
+					if (!HTTPFunctions.registerUser(request.getUsername(), request.getPassword())) {
+						System.out.println("Unable to register user from request " + request);
+						response = CreationResponse.BUSY_SERVER;
+					} else {
+						System.out.println("Successfully registered user from request " + request);
+						response = CreationResponse.SUCCESSFUL;
+					}
+					break;
+				case WRONG_CREDENTIALS:
+					response = CreationResponse.ALREADY_TAKEN;
+					break;
+				case SQL_ERROR:
+					response = CreationResponse.BUSY_SERVER;
+					break;
+			}
+		}
+		
+		
+		// if we could make the account successfully, we will create an account in the file server
+		if (response == CreationResponse.SUCCESSFUL) {
+			Utility.saveData(new File(LoginConstants.getLocation(username)), Utility.getJsonText(new Player(username), true));
+			System.out.println("Created a new player because of request = " + request);
+		}
+		
+		request.getSession().write(new AccountCreationResponsePacketOut(request.getUuid(), response.getValue()));
 	}
 	
 	/**

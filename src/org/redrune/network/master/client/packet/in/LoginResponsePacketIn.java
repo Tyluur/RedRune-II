@@ -30,6 +30,7 @@ public class LoginResponsePacketIn implements ReadablePacket<MCSession> {
 		byte responseCode = (byte) packet.readByte();
 		boolean lobby = (byte) packet.readByte() == 1;
 		String username = packet.readString();
+		int rowId = packet.readInt();
 		int dataLength = packet.readInt();
 		byte[] data = new byte[dataLength];
 		for (int i = 0; i < dataLength; i++) {
@@ -41,7 +42,7 @@ public class LoginResponsePacketIn implements ReadablePacket<MCSession> {
 			// convert to text now
 			fileText = new String(SecureOperations.getDecryptedDecompressed(data, GameConstants.FILE_ENCRYPTION_KEY), "UTF-8");
 			// handle the reading now
-			MasterCommunication.read(new ResponsiveLoginPacket(username, fileText, uuid, lobby, responseCode));
+			MasterCommunication.read(new ResponsiveLoginPacket(username, fileText, uuid, lobby, responseCode, rowId));
 		} catch (UnsupportedEncodingException e) {
 			sendSessionResponse(uuid, ReturnCode.ERROR_LOADING_PROFILE.getValue());
 			e.printStackTrace();

@@ -10,7 +10,7 @@ public class UnexpectedArgsException extends Exception {
 		super("Unexpected jvm arguments!");
 		System.err.println("args[0]=[true/false] - debug mode");
 		System.err.println("args[1]=[byte] - worldId");
-		System.err.println("args[2]=[true/false] - sql enabled");
+		System.err.println("args[2]=[true/false] - web integrated");
 	}
 	
 	public static void push() {

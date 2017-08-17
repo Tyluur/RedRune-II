@@ -11,7 +11,7 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.impl.*;
 import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.dialogue.DialogueRepository;
 import org.redrune.game.content.event.EventRepository;
@@ -25,8 +25,9 @@ import org.redrune.game.node.entity.npc.extension.RockCrabNPC;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.region.RegionBuilder;
 import org.redrune.game.world.region.RegionDeletion;
-import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.MasterCommunication;
+import org.redrune.network.master.MasterConstants;
+import org.redrune.network.web.sql.SQLRepository;
 import org.redrune.network.world.WorldNetwork;
 import org.redrune.network.world.packet.incoming.IncomingPacketRepository;
 import org.redrune.network.world.packet.incoming.impl.WalkPacketDecoder;
@@ -62,6 +63,7 @@ public final class World implements SequentialService {
 	/**
 	 * The id of the world
 	 */
+	@Getter
 	private final byte id;
 	
 	/**
@@ -145,6 +147,7 @@ public final class World implements SequentialService {
 				NPCCombatSwingRepository.loadAll();
 			}, () -> {
 				EventRepository.registerEvents(false);
+				SQLRepository.storeConfiguration();
 			}, () -> {
 				ModuleRepository.registerAllModules(false);
 				CommandRepository.populate(false);
@@ -291,11 +294,10 @@ public final class World implements SequentialService {
 	 * 		The tile
 	 */
 	public boolean isPvpArea(Location location) {
-		// TODO: pvp area
-		if (id == 2) {
-			return WildernessActivity.isAtWild(location);
+		if (id == GameConstants.PVP_WORLD_ID) {
+			return PvPLocation.isAtPvpLocation(location);
 		} else {
-			return WildernessActivity.isAtWild(location);
+			return PvPLocation.isAtWild(location);
 		}
 	}
 	

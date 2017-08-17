@@ -25,7 +25,7 @@ public class CommandRepository {
 			COMMAND_MODULES.clear();
 		}
 		for (String directory : Misc.getSubDirectories(CommandRepository.class)) {
-			Optional<PlayerRight> optional = PlayerRight.playerRightOptional(directory);
+			Optional<PlayerRight> optional = PlayerRight.getRightByName(directory);
 			if (!optional.isPresent()) {
 				System.out.println("Unable to find right by directory '" + directory + "'.");
 				continue;

@@ -7,7 +7,7 @@ import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.GameConstants;
 import org.redrune.game.content.action.interaction.PlayerCombatAction;
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.WildernessActivity;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.NodeInteractionTask;
 import org.redrune.game.node.entity.Entity;
@@ -36,6 +36,7 @@ import org.redrune.utility.rs.constant.HeadIcons.SkullIcon;
 import org.redrune.utility.rs.constant.SkillConstants;
 
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The player that renderable in the game.
@@ -137,11 +138,6 @@ public final class Player extends Entity {
 		World.get().getPlayers().add(this);
 		
 		transmitter.sendLoginComponents();
-		equipment.sendContainer();
-		inventory.initialize();
-		skills.refreshAll();
-		manager.getNotes().sendLoginConfiguration();
-		manager.getActivities().login();
 		
 		// renderable must be after this because of map region building...
 		setRenderable(true);
@@ -150,9 +146,6 @@ public final class Player extends Entity {
 		SequencialUpdate.getRenderablePlayers().add(this);
 		RegionManager.updateEntityRegion(this);
 		checkMultiArea();
-		
-		session.write(new PlayerOptionPacketBuilder("Follow", false, 2).build(this));
-		session.write(new PlayerOptionPacketBuilder("Trade with", false, 3).build(this));
 		
 		manager.getContacts().pushLoginStatusChange();
 		
@@ -228,6 +221,7 @@ public final class Player extends Entity {
 		manager.getHintIcons().process();
 		manager.getActivities().process();
 		processSkull();
+		refreshTimers();
 	}
 	
 	@Override
@@ -434,6 +428,7 @@ public final class Player extends Entity {
 		registerTransients();
 		World.get().getPlayers().add(this);
 		
+		manager.getWebManager().handleLogin();
 		session.write(new LobbyResponseBuilder().build(this));
 		manager.getContacts().sendLogin();
 		manager.getContacts().pushLoginStatusChange();
@@ -490,8 +485,10 @@ public final class Player extends Entity {
 	 * De-registers a player from the lobby
 	 */
 	public void deregisterLobby() {
-		setRenderable(false);
+		manager.getContacts().sendMyStatusChange(false);
 		session.notifyDisconnection(getWorld());
+		
+		setRenderable(false);
 		
 		World.get().removePlayer(this);
 		System.out.println("Player deregistered from lobby:" + this);
@@ -585,7 +582,55 @@ public final class Player extends Entity {
 		// skull timer has lapsed so we reset it
 		if (System.currentTimeMillis() > variables.getSkullIconTimer()) {
 			removeSkull();
-			System.out.println("removed skull fofr " + this);
+		}
+	}
+	
+	/**
+	 * Refreshes the onscreen timers
+	 */
+	public void refreshTimers() {
+		Long lastTimeCast = getAttribute("LAST_VENG", -1L);
+		Long frozenUtil = getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
+		boolean showVeng = lastTimeCast != -1 && lastTimeCast + 30_000 > System.currentTimeMillis();
+		boolean showFreeze = isFrozen();
+		int interfaceId = 614;
+		int combatOverlayInterface = manager.getInterfaces().getCombatOverlayInterface();
+		if (showVeng || showFreeze) {
+			if (combatOverlayInterface == -1) {
+				manager.getInterfaces().sendCombatOverlay(interfaceId);
+				for (int i = 3; i <= 6; i++) {
+					manager.getInterfaces().sendInterfaceChange(interfaceId, i, true);
+				}
+				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
+				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
+			}
+		} else {
+			if (combatOverlayInterface != -1) {
+				manager.getInterfaces().closeCombatOverlay();
+			}
+		}
+		if (combatOverlayInterface == interfaceId) {
+			if (showVeng) {
+				long difference = (lastTimeCast + 30_000) - System.currentTimeMillis();
+				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
+				
+				manager.getInterfaces().sendInterfaceChange(interfaceId, 5, false);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "" + seconds);
+			} else {
+				manager.getInterfaces().sendInterfaceChange(interfaceId, 5, true);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
+			}
+			if (showFreeze) {
+				long difference = frozenUtil - System.currentTimeMillis();
+				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
+				
+				manager.getInterfaces().sendInterfaceChange(interfaceId, 4, false);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "" + seconds);
+			} else {
+				
+				manager.getInterfaces().sendInterfaceChange(interfaceId, 4, true);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
+			}
 		}
 	}
 	

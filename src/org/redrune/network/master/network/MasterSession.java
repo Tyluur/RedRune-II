@@ -62,7 +62,7 @@ public class MasterSession {
 		} else {
 			channel.writeAndFlush(packet);
 		}
-		System.out.println("Writing master packet " + packet.getId() + ", class = [" + packet.getClass().getSimpleName() + "]");
+//		System.out.println("Writing master packet " + packet.getId() + ", class = [" + packet.getClass().getSimpleName() + "]");
 	}
 	
 	/**

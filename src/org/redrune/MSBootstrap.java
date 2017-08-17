@@ -3,6 +3,7 @@ package org.redrune;
 import org.redrune.core.system.SystemManager;
 import org.redrune.network.master.server.engine.MSEngineFactory;
 import org.redrune.network.master.server.network.MSNetworkSystem;
+import org.redrune.network.web.sql.SQLRepository;
 
 /**
  * The lobby server bootstrap, used to start the master server on its own.
@@ -25,7 +26,8 @@ public class MSBootstrap {
 	 */
 	public static void main(String[] args) {
 		try {
-			SystemManager.setDefaults(null);
+			SystemManager.setDefaults(args);
+			SQLRepository.storeConfiguration();
 			MSEngineFactory.startUp();
 			NETWORK_SYSTEM.bind();
 		} catch (Exception e) {

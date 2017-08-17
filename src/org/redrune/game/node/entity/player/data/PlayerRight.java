@@ -4,7 +4,9 @@ import lombok.Getter;
 import org.redrune.game.node.entity.player.Player;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * The rights the player can have
@@ -14,22 +16,70 @@ import java.util.Optional;
  */
 public enum PlayerRight {
 	
-	OWNER(2),
-	ADMINISTRATOR(2) {
+	OWNER(2, 19),
+	ADMINISTRATOR(2, 14) {
 		@Override
-		public boolean playerHasRights(Player player) {
-			return player.getDetails().rightsContains(OWNER, ADMINISTRATOR);
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
 		}
 	},
-	MODERATOR(1) {
+	DEVELOPER(2, 10) {
 		@Override
-		public boolean playerHasRights(Player player) {
-			return player.getDetails().rightsContains(OWNER, ADMINISTRATOR, MODERATOR);
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
 		}
 	},
-	EXTREME_DONATOR,
-	DONATOR,
-	PLAYER;
+	COMMUNITY_MANAGER(2, 4) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
+		}
+	},
+	ADVERTISEMENT_TEAM(2, 20) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
+		}
+	},
+	GLOBAL_MODERATOR(1, 11) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
+		}
+	},
+	SERVER_MODERATOR(1, 7) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR);
+		}
+	},
+	TRIAL_MODERATOR(1, 16) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, SERVER_MODERATOR);
+		}
+	},
+	FORUM_MODERATOR(6) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR);
+		}
+	},
+	SERVER_SUPPORT(12) {
+		@Override
+		public void create() {
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, SERVER_MODERATOR);
+		}
+	},
+	EXTREME_DONATOR(9),
+	PREMIUM_DONATOR(8),
+	YOUTUBER(18),
+	VETERAN(13),
+	GRAPHIC_DESIGNER(17),
+	THEME_EDITOR(22),
+	RESPECTED_MEMBER(15),
+	BETA_TESTER(21),
+	PLAYER(3);
 	
 	/**
 	 * The rights the player has in the client
@@ -37,12 +87,49 @@ public enum PlayerRight {
 	@Getter
 	private final byte clientRight;
 	
-	PlayerRight(int clientRight) {
-		this.clientRight = (byte) clientRight;
+	/**
+	 * The member group id of the right
+	 */
+	@Getter
+	private final byte memberGroupId;
+	
+	/**
+	 * The rights that can also access this right
+	 */
+	private final Set<PlayerRight> rightsWithAccess;
+	
+	/**
+	 * Constructs a right with a client right of 0
+	 *
+	 * @param memberGroupId
+	 * 		The id of the member group for the forum
+	 */
+	PlayerRight(int memberGroupId) {
+		this(0, memberGroupId);
 	}
 	
-	PlayerRight() {
-		this.clientRight = 0;
+	/**
+	 * Constructs a right
+	 *
+	 * @param clientRight
+	 * 		The client right
+	 * @param memberGroupId
+	 * 		The id of the member group for the forum
+	 */
+	PlayerRight(int clientRight, int memberGroupId) {
+		this.clientRight = (byte) clientRight;
+		this.memberGroupId = (byte) memberGroupId;
+		this.rightsWithAccess = new LinkedHashSet<>();
+		this.rightsWithAccess.add(this);
+		this.create();
+	}
+	
+	/**
+	 * Called on the creation of a right, due to enums not being able to call other values below them while
+	 * constructing
+	 */
+	public void create() {
+	
 	}
 	
 	/**
@@ -51,8 +138,25 @@ public enum PlayerRight {
 	 * @param name
 	 * 		The name to look for.
 	 */
-	public static Optional<PlayerRight> playerRightOptional(String name) {
+	public static Optional<PlayerRight> getRightByName(String name) {
 		return Arrays.stream(values()).filter(right -> right.name().equalsIgnoreCase(name)).findFirst();
+	}
+	
+	/**
+	 * Finds the right by the group id
+	 *
+	 * @param memberGroupId
+	 * 		The group id to look for
+	 */
+	public static Optional<PlayerRight> getRightByGroupId(int memberGroupId) {
+		return Arrays.stream(values()).filter(right -> right.getMemberGroupId() == memberGroupId).findFirst();
+	}
+	
+	/**
+	 * Adds other rights that can access this right
+	 */
+	public void addOtherRights(PlayerRight... rights) {
+		this.rightsWithAccess.addAll(Arrays.asList(rights));
 	}
 	
 	/**
@@ -61,8 +165,13 @@ public enum PlayerRight {
 	 * @param player
 	 * 		The player
 	 */
-	public boolean playerHasRights(Player player) {
-		return player.getDetails().rightsContains(this);
+	public final boolean playerHasRights(Player player) {
+		for (PlayerRight right : rightsWithAccess) {
+			if (player.getDetails().rightsContains(right)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

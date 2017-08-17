@@ -1,3 +1,35 @@
+8/16/17 {
+	+   Completed account creation [username verification & account creation has two different blocks of data to decode]
+		-   Replaced all email entry data with username entry data in account creation
+	+   Added forum account integration for login
+		-   You must have a forum account to login, but you will automatically be made one when you create an account with the 'Create Account Now'
+		-   If you don't have a forum account when you're logging in, it will tell you to create one [will make the create account popup box show instead of making you click later]
+	+   Added forum account integration for lobby
+		-   Unread messages will show
+		-   Unregistered email will show [you have a fake default email set when you register for the first time, you have to change it for this to be set]
+			+   Adding changing email ingame later
+	+   Added forum member group integration
+		-   All your forum ranks will be pushed onto your ingame account
+		-   Your primary grup on the forums will act as your primary group on the game, but you will still have the benefits of secondary groups [so you can be moderator + youtuber/donator/respected and alternate the primary one if you want on the forum]
+		-   All your forum data is stored into your player file every time you login, so we can grab anything from your forum profile [passwords are encrypted and can't be leaked though]
+	+   Added combat timers for freeze + veng
+		-   Shows how long until you can veng again
+		-   Shows how long until you are unfrozen [entangle/barrage/all freeze types]
+		-   Also changed freeze timer to use milliseconds instead of ticks for visual purposes
+	+   Added world 2 pvp area mapping
+		-   Also added dangerous countdown
+		-   Also added pvp area wilderness level of 20
+		-   Also added default earning potential
+		-   Also added verification that you can only be in a pvp instance on world 2
+
+	[img]http://i.imgur.com/F2Tf9iX.png[/img]
+	[img]http://i.imgur.com/4dTMbs3.gif[/img]
+	[img]http://i.imgur.com/9Ul2iF2.png[/img]
+	[img]http://i.imgur.com/eQ67svs.png[/img]
+	[img]http://i.imgur.com/X5wpUdk.png[/img]
+	[img]http://i.imgur.com/MymCWqC.png[/img]
+}
+
 8/15/17 {
 	+   Started work on osrs data loading
 	+   Added an animation for the teleporation wizard at home

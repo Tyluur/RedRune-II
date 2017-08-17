@@ -152,21 +152,6 @@ public final class MSRepository implements MasterConstants {
 	}
 	
 	/**
-	 * Sends a packet to all the connected sessions
-	 *
-	 * @param packet
-	 * 		The packet
-	 */
-	public static void sendToAllSessions(OutgoingPacket packet) {
-		for (MSWorld world : WORLDS) {
-			if (world == null) {
-				continue;
-			}
-			world.getSession().write(packet);
-		}
-	}
-	
-	/**
 	 * Gets the player details in an object array. [0] = username, [1] = online/offline, [2] = world id
 	 *
 	 * @param username

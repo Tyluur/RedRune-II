@@ -34,7 +34,7 @@ public class LobbyResponseBuilder implements OutgoingPacketBuilder {
 		builder.writeInt(0); // unused in client
 		builder.writeShort(1); // recovery questions, 0 - not set,
 		// otherwise goes bitencoded date.
-		builder.writeShort(0); // unread messages
+		builder.writeShort(player.getManager().getWebManager().getUnreadMessages()); // unread messages
 		
 		// leave the cast because of json boxing.
 		long lastLogin = ((Number) player.getVariables().getAttribute(AttributeKey.LAST_LONGIN_STAMP, System.currentTimeMillis())).longValue();
@@ -50,7 +50,7 @@ public class LobbyResponseBuilder implements OutgoingPacketBuilder {
 			lastIp = Misc.getIpAddress(player.getSession().getChannel());
 		}
 		builder.writeInt(Misc.IPAddressToNumber(lastIp)); // last login ip
-		builder.writeByte(3);
+		builder.writeByte(player.getManager().getWebManager().isEmailVerified() ? 3 : 0);
 		// 0 - no email
 		// 1 - pending parental confirmation
 		// 2 - pending confirmation.

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.AnimationDefinitionParser;
 import org.redrune.cache.parse.definition.AnimationDefinition;
-import org.redrune.core.system.SystemManager;
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
@@ -484,18 +483,18 @@ public abstract class Entity extends Node implements EntityDetails {
 	 *
 	 * @param by
 	 * 		The entity we were frozen by
-	 * @param ticks
+	 * @param milliseconds
 	 * 		The amount of ticks
 	 * @param message
 	 * 		The message to send when we're frozen
 	 */
-	public void freeze(Entity by, int ticks, String message) {
+	public void freeze(Entity by, long milliseconds, String message) {
 		// time we will be unfrozen at
-		final long frozenUntil = SystemManager.getUpdateWorker().getTicks() + ticks;
+		final long frozenUntil = System.currentTimeMillis() + milliseconds;
 		// storing the time
 		putAttribute(AttributeKey.FROZEN_UNTIL, frozenUntil);
 		// they can't be frozen again instantly.
-		putAttribute(AttributeKey.FREEZE_DELAY, frozenUntil + 6);
+		putAttribute(AttributeKey.FREEZE_DELAY, frozenUntil + TimeUnit.SECONDS.toMillis(3));
 		// stores who froze us [16 tile calc]
 		putAttribute(AttributeKey.FROZEN_BY, by);
 		// sending the message
@@ -513,7 +512,7 @@ public abstract class Entity extends Node implements EntityDetails {
 		// when freezing is delayed until
 		long delay = getAttribute(AttributeKey.FREEZE_DELAY, -1L);
 		// the current tick we're on
-		long ticks = SystemManager.getUpdateWorker().getTicks();
+		long ticks = System.currentTimeMillis();
 		return delay > ticks;
 	}
 	
@@ -527,8 +526,8 @@ public abstract class Entity extends Node implements EntityDetails {
 		if (frozenBy == null || !frozenBy.isRenderable() || !frozenBy.getLocation().withinDistance(getLocation(), 16)) {
 			return false;
 		} else {
-			// if the time till we're unfrozen has lapseed
-			boolean lapsed = SystemManager.getUpdateWorker().getTicks() > getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
+			// if the time till we're unfrozen has lapsed
+			boolean lapsed = System.currentTimeMillis() > getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
 			// if it has
 			if (lapsed) {
 				return false;

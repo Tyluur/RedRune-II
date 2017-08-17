@@ -35,13 +35,19 @@ public class LoginResponsePacketOut extends WritablePacket {
 	 */
 	private final byte[] data;
 	
-	public LoginResponsePacketOut(String uid, byte responseCode, String fileText, String username, boolean lobby) {
+	/**
+	 * The id of the row that the player's sql data is in
+	 */
+	private final int rowId;
+	
+	public LoginResponsePacketOut(String uid, byte responseCode, String fileText, String username, boolean lobby, int rowId) {
 		super(LOGIN_RESPONSE_PACKET_ID);
 		this.uid = uid;
 		this.responseCode = responseCode;
 		this.username = username;
 		this.lobby = lobby;
 		this.data = SecureOperations.getCompressedEncrypted(fileText, GameConstants.FILE_ENCRYPTION_KEY);
+		this.rowId = rowId;
 	}
 	
 	@Override
@@ -50,6 +56,7 @@ public class LoginResponsePacketOut extends WritablePacket {
 		writeByte(responseCode);
 		writeByte((byte) (lobby ? 1 : 0));
 		writeString(username);
+		writeInt(rowId);
 		writeInt(data.length);
 		for (byte datum : data) {
 			writeByte(datum);

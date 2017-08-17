@@ -1,4 +1,4 @@
-package org.redrune.game.module.command.moderator;
+package org.redrune.game.module.command.server_moderator;
 
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;

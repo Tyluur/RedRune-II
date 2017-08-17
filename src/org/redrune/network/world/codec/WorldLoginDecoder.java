@@ -64,17 +64,8 @@ public class WorldLoginDecoder extends ByteToMessageDecoder {
 		FixedBuffer buffer = new FixedBuffer(data);
 		
 		// handle the correct login case
-		switch (opcode) {
-			case WORLD_OPCODE:
-				setSession(ctx.channel());
-				decodeWorldLogin(ctx, buffer, out);
-				break;
-			default:
-				System.out.println("Unhandled login opcode:" + opcode);
-				ctx.close();
-				break;
-		}
-		
+		setSession(ctx.channel());
+		decodeWorldLogin(ctx, buffer, out);
 	}
 	
 	/**
@@ -125,7 +116,7 @@ public class WorldLoginDecoder extends ByteToMessageDecoder {
 		rsaBuffer.readLong();
 		rsaBuffer.readLong();
 		buffer.decodeXTEA(isaacSeed, buffer.getOffset(), buffer.getLength());
-		String username = buffer.readString();
+		String username = Misc.formatPlayerNameForProtocol(buffer.readString());
 		buffer.readByte();
 		int mode = buffer.readByte();
 		int width = buffer.readShort();

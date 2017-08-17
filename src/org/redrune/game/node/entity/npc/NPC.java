@@ -7,7 +7,7 @@ import org.redrune.cache.parse.NPCDefinitionParser;
 import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
 import org.redrune.game.content.combat.StaticCombatFormulae;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.Entity;
@@ -477,7 +477,7 @@ public class NPC extends Entity {
 	 */
 	private List<Entity> possibleTargets(boolean npcs, boolean players) {
 		List<Entity> targets = new ArrayList<>();
-		boolean atWild = WildernessActivity.isAtWild(getLocation());
+		boolean atWild = PvPLocation.isAtWild(getLocation());
 		int maxDistance = getSize() * 2;
 		Region region = getRegion();
 		if (players) {
@@ -544,7 +544,7 @@ public class NPC extends Entity {
 	 * fights.
 	 */
 	private boolean fireAggressiveCheck() {
-		if (!WildernessActivity.isAtWild(getLocation()) && !getCombatManager().isAggressiveForced()) {
+		if (!PvPLocation.isAtWild(getLocation()) && !getCombatManager().isAggressiveForced()) {
 			NPCCombatDefinitions combatDefinitions = getCombatDefinitions();
 			if (combatDefinitions.getAggressivenessType() == NPCConstants.PASSIVE_AGGRESSIVE) {
 				return false;

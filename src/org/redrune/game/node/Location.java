@@ -360,10 +360,14 @@ public final class Location {
 	}
 	
 	public Location getRegionLocation() {
-		return create(x >> 6, y >> 6, plane );
+		return create(x >> 6, y >> 6, plane);
 	}
 	
 	public Location copy() {
 		return create(x, y, plane);
+	}
+	
+	public boolean withinArea(int bottomX, int bottomY, int topX, int topY) {
+		return getX() >= bottomX && getY() >= bottomY && getX() <= topX && getY() <= topY;
 	}
 }

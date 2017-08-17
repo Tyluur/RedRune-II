@@ -1,11 +1,13 @@
 package org.redrune.game.content.combat.player.registry.special;
 
 import org.redrune.game.content.combat.player.CombatTypeSwing;
-import org.redrune.utility.rs.Hit;
-import org.redrune.utility.rs.Hit.HitSplat;
-import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.content.combat.player.registry.wrapper.SpecialAttackEvent;
 import org.redrune.game.node.entity.Entity;
+import org.redrune.game.node.entity.player.Player;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitSplat;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -35,7 +37,7 @@ public class ZamorakGodswordSpecial implements SpecialAttackEvent {
 		player.sendGraphics(1221);
 		if (damage > 0 && target.getSize() == 1) {
 			target.sendGraphics(2104);
-			target.freeze(player, 30, "You have been frozen!");
+			target.freeze(player, TimeUnit.SECONDS.toMillis(20), "You have been frozen!");
 		}
 		swing.applyHit(player, target, hit, player.getEquipment().getWeaponId(), combatStyle, 1);
 	}

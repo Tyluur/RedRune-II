@@ -40,18 +40,18 @@ public class LoginRequest {
 	private final MasterSession session;
 	
 	/**
-	 * The uuid of the session the packet came from
+	 * The uid of the session the packet came from
 	 */
 	@Getter
 	private final String uuid;
 	
-	public LoginRequest(byte worldId, boolean lobby, String username, String password, MasterSession session, String uuid) {
+	public LoginRequest(byte worldId, boolean lobby, String username, String password, MasterSession session, String uid) {
 		this.worldId = worldId;
 		this.lobby = lobby;
 		this.username = username;
 		this.password = password;
 		this.session = session;
-		this.uuid = uuid;
+		this.uuid = uid;
 	}
 	
 	/**

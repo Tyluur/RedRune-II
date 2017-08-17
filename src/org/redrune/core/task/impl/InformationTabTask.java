@@ -3,7 +3,7 @@ package org.redrune.core.task.impl;
 import org.redrune.core.SequencialUpdate;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
 import org.redrune.utility.tool.ColorConstants;
@@ -62,7 +62,7 @@ public class InformationTabTask extends ScheduledTask {
 	private int getWildernessActivitySize() {
 		int size = 0;
 		for (Player player : SequencialUpdate.getRenderablePlayers()) {
-			if (WildernessActivity.isAtWild(player.getLocation()) || WildernessActivity.isAtWildSafe(player.getLocation())) {
+			if (PvPLocation.isAtWild(player.getLocation()) || PvPLocation.isAtWildSafe(player.getLocation())) {
 				size++;
 			}
 		}

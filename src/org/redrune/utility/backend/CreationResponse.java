@@ -2,6 +2,9 @@ package org.redrune.utility.backend;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 5/18/2017
@@ -29,9 +32,9 @@ public enum CreationResponse {
 	YOU_CANNOT_CREATE_AT_THE_MOMENT(10),
 	
 	/***
-	 * The response code that says the email is taken
+	 * The response code that says the account is taken
 	 */
-	TAKEN_EMAIL(20),
+	ALREADY_TAKEN(20),
 	
 	/**
 	 * The response code that says the email is invalid
@@ -67,5 +70,15 @@ public enum CreationResponse {
 	 */
 	CreationResponse(int value) {
 		this.value = (byte) value;
+	}
+	
+	/**
+	 * Gets an optional response by the value
+	 *
+	 * @param value
+	 * 		The value to find
+	 */
+	public static Optional<CreationResponse> getByValue(int value) {
+		return Arrays.stream(values()).filter(response -> response.getValue() == value).findAny();
 	}
 }

@@ -52,8 +52,13 @@ public final class PlayerCombatAction implements Action {
 		if (!verifyContinuation(player)) {
 			return false;
 		}
+		if (target != null) {
+			target.putAttribute("last_target", player);
+			target.putAttribute("last_time_combatted", System.currentTimeMillis());
+		}
 		checkSpecials(player);
 		player.putAttribute("combat_target", target);
+		player.putAttribute("last_time_combatted", System.currentTimeMillis());
 		return true;
 	}
 	

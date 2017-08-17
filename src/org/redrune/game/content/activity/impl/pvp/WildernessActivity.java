@@ -1,4 +1,4 @@
-package org.redrune.game.content.activity.impl;
+package org.redrune.game.content.activity.impl.pvp;
 
 import org.redrune.game.content.activity.Activity;
 import org.redrune.game.node.Location;
@@ -53,8 +53,8 @@ public class WildernessActivity extends Activity {
 	 * Checks what to do based on our location
 	 */
 	private void checkLocations() {
-		boolean isAtWild = isAtWild(player.getLocation());
-		boolean isAtWildSafe = isAtWildSafe(player.getLocation());
+		boolean isAtWild = PvPLocation.isAtWild(player.getLocation());
+		boolean isAtWildSafe = PvPLocation.isAtWildSafe(player.getLocation());
 		
 		// we're inside a danger zone
 		if (!showingSkull && isAtWild && !isAtWildSafe) {
@@ -82,7 +82,7 @@ public class WildernessActivity extends Activity {
 	protected boolean handlePlayerOption(Player target, InteractionOption option) {
 		if (option == InteractionOption.ATTACK_OPTION) {
 			if (player.getVariables().isInFightArea() && !target.getVariables().isInFightArea()) {
-				player.getTransmitter().sendMessage("That player is not in the wilderness.", false);
+				player.getTransmitter().sendMessage("You can only attack players in a player-vs-player area.", false);
 				return true;
 			}
 			return !wildernessLevelsVerified(target);
@@ -94,7 +94,7 @@ public class WildernessActivity extends Activity {
 	@Override
 	public void tick() {
 		// if the screen mode is changed for example
-		if (showingSkull && player.getManager().getInterfaces().getPrimaryOverlayInterfac() != INTERFACE_ID) {
+		if (showingSkull && player.getManager().getInterfaces().getPrimaryOverlayInterface() != INTERFACE_ID) {
 			player.getManager().getInterfaces().sendPrimaryOverlay(INTERFACE_ID);
 		}
 	}
@@ -111,7 +111,7 @@ public class WildernessActivity extends Activity {
 	 * 		The target
 	 */
 	private boolean wildernessLevelsVerified(Player target) {
-		if (!(Math.abs(player.getSkills().getCombatLevel() - target.getSkills().getCombatLevel()) <= getWildLevel(player.getLocation()) && Math.abs(player.getSkills().getCombatLevel() - target.getSkills().getCombatLevel()) <= getWildLevel(target.getLocation()))) {
+		if (!(Math.abs(player.getSkills().getCombatLevel() - target.getSkills().getCombatLevel()) <= PvPLocation.getWildLevel(player.getLocation()) && Math.abs(player.getSkills().getCombatLevel() - target.getSkills().getCombatLevel()) <= PvPLocation.getWildLevel(target.getLocation()))) {
 			player.getTransmitter().sendMessage("You must travel deeper into the wilderness to attack that player.");
 			return false;
 		}
@@ -183,7 +183,7 @@ public class WildernessActivity extends Activity {
 	 * 		The amount of items a player should keep
 	 */
 	@SuppressWarnings("unchecked")
-	private static Map<Integer, List<Item>> getItemsOnDeath(List<Item> containedItems, int amountToKeep) {
+	public static Map<Integer, List<Item>> getItemsOnDeath(List<Item> containedItems, int amountToKeep) {
 		List<Item> itemsDropped = new ArrayList<>(containedItems);
 		List<Item> itemsKept = new ArrayList<>();
 		List<Item> untradeables = new ArrayList<>();
@@ -226,41 +226,4 @@ public class WildernessActivity extends Activity {
 		return items;
 	}
 	
-	/**
-	 * If we are in the wilderness
-	 *
-	 * @param tile
-	 * 		The tile to check for
-	 */
-	public static boolean isAtWild(Location tile) {
-		return isAtWildSafe(tile) || getWildLevel(tile) > 0;
-	}
-	
-	/**
-	 * If the tile is at the safe area of the wilderness
-	 */
-	public static boolean isAtWildSafe(Location tile) {
-		return (tile.getX() >= 2940 && tile.getX() <= 3395 && tile.getY() <= 3524 && tile.getY() >= 3523);
-	}
-	
-	/**
-	 * Gets the wilderness level at a lcoation
-	 *
-	 * @param tile
-	 * 		The location
-	 */
-	public static int getWildLevel(Location tile) {
-		int x = tile.getX(), y = tile.getY();
-		int level = 0;
-		if (y >= 10302 && y <= 10357) {
-			level = (byte) ((y - 9912) / 8 + 1);
-		}
-		if (x > 2935 && x < 3400 && y > 3524 && y < 4000) {
-			level = (byte) ((Math.ceil((y) - 3520D) / 8D) + 1);
-		}
-		if (y > 10050 && y < 10179 && x > 3008 && x < 3144) {
-			level = (byte) ((Math.ceil((y) - 10048D) / 8D) + 17);
-		}
-		return level;
-	}
 }

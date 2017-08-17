@@ -123,4 +123,9 @@ public class WorldSession extends NetworkSession {
 			MasterCommunication.write(new PlayerDisconnectionPacketOut(worldId, isInLobby(), player.getDetails().getUsername()));
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "WorldSession{player=" + player + ", open=" + getChannel().isOpen() + ", active=" + getChannel().isOpen() + ", registered=" + getChannel().isRegistered() + ", writable=" + getChannel().isWritable() + "}";
+	}
 }

@@ -11,4 +11,3 @@
 			4.  Hidden
 
 [Interfaces]
-+   Freeze overlay/veng cooldown overlay

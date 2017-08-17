@@ -66,13 +66,8 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 		FixedBuffer buffer = new FixedBuffer(data);
 		
 		// handle the correct login case
-		if (opcode == LOBBY_OPCODE) {
-			setSession(ctx.channel());
-			decodeLobbyLogin(ctx, buffer, out);
-		} else {
-			System.out.println("Unhandled login opcode:" + opcode);
-			ctx.close();
-		}
+		setSession(ctx.channel());
+		decodeLobbyLogin(ctx, buffer, out);
 	}
 	
 	/**

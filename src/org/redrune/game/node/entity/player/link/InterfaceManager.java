@@ -244,6 +244,16 @@ public final class InterfaceManager implements InterfaceConstants {
 	}
 	
 	/**
+	 * Gets the component id of the combat overlay
+	 *
+	 * @param fixedMode
+	 * 		If we are on fixed mode
+	 */
+	private static int getCombatOverlayComponentId(boolean fixedMode) {
+		return fixedMode ? 240 : 245;
+	}
+	
+	/**
 	 * If the player is using the fixed client mode.
 	 */
 	public boolean usingFixedMode() {
@@ -284,8 +294,20 @@ public final class InterfaceManager implements InterfaceConstants {
 	/**
 	 * Gets the primary interface we are displaying on the screen
 	 */
-	public int getPrimaryOverlayInterfac() {
+	public int getPrimaryOverlayInterface() {
 		int[] values = interfaceBindings.get(getPrimaryOverlayComponentId(usingFixedMode()));
+		if (values == null) {
+			return -1;
+		} else {
+			return values[0];
+		}
+	}
+	
+	/**
+	 * Gets the primary interface we are displaying on the screen
+	 */
+	public int getCombatOverlayInterface() {
+		int[] values = interfaceBindings.get(getCombatOverlayComponentId(usingFixedMode()));
 		if (values == null) {
 			return -1;
 		} else {
@@ -382,6 +404,23 @@ public final class InterfaceManager implements InterfaceConstants {
 	 */
 	public InterfaceManager closePrimaryOverlay() {
 		return closeInterface(getPaneId(), getPrimaryOverlayComponentId(usingFixedMode()));
+	}
+	
+	/**
+	 * Sends an interface over the combat overlay component
+	 *
+	 * @param interfaceId
+	 * 		The id of the interface
+	 */
+	public InterfaceManager sendCombatOverlay(int interfaceId) {
+		return sendInterface(getCombatOverlayComponentId(usingFixedMode()), interfaceId);
+	}
+	
+	/**
+	 * Closes the primary overlay
+	 */
+	public InterfaceManager closeCombatOverlay() {
+		return closeInterface(getPaneId(), getCombatOverlayComponentId(usingFixedMode()));
 	}
 	
 	/**

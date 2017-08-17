@@ -1,8 +1,12 @@
 package org.redrune.game.content.activity;
 
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.GameConstants;
+import org.redrune.game.content.activity.impl.pvp.PvPAreaActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
+import org.redrune.game.content.activity.impl.pvp.WildernessActivity;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.World;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -38,9 +42,16 @@ public class ActivitySystem {
 		if (player.getManager().getActivities().getActivity().isPresent()) {
 			return;
 		}
-		// first check is the wilderness activity
-		if (WildernessActivity.isAtWild(location)) {
-			startActivity(player, new WildernessActivity());
+		// starting the pvp activity if we're in a pvp world and a pvp location
+		if (World.get().getId() == GameConstants.PVP_WORLD_ID) {
+			if (PvPLocation.isAtPvpLocation(location)) {
+				startActivity(player, new PvPAreaActivity());
+			}
+		} else {
+			// first check is the wilderness activity
+			if (PvPLocation.isAtWild(location)) {
+				startActivity(player, new WildernessActivity());
+			}
 		}
 	}
 	

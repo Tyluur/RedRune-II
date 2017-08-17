@@ -19,6 +19,7 @@ import static org.redrune.network.NetworkConstants.REVISION;
 public class NameVerificationDecoder extends PassableDecoder {
 	
 	@Override
+	@SuppressWarnings("unused")
 	public void decode(ChannelHandlerContext ctx, ByteBuf in, PacketBuilder builder) throws Exception {
 		if (in.readableBytes() < 2) {
 			ctx.disconnect();
@@ -52,8 +53,6 @@ public class NameVerificationDecoder extends PassableDecoder {
 		
 		// as long as the username is acceptable, we can continue
 		ProtocolType.sendCreationResponse(channel, CreationResponse.SUCCESSFUL);
-		
-		System.out.println("finished verification of " + username);
 	}
 	
 }

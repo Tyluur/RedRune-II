@@ -42,12 +42,18 @@ public class ResponsiveLoginPacket extends ResponsiveGamePacket {
 	 */
 	private final byte responseCode;
 	
-	public ResponsiveLoginPacket(String username, String fileText, String uid, boolean lobby, byte responseCode) {
+	/**
+	 * The id of the row that the player's sql data is in
+	 */
+	private final int rowId;
+	
+	public ResponsiveLoginPacket(String username, String fileText, String uid, boolean lobby, byte responseCode, int rowId) {
 		this.username = username;
 		this.fileText = fileText;
 		this.uid = uid;
 		this.lobby = lobby;
 		this.responseCode = responseCode;
+		this.rowId = rowId;
 	}
 	
 	@Override
@@ -58,12 +64,11 @@ public class ResponsiveLoginPacket extends ResponsiveGamePacket {
 			return;
 		}
 		NetworkSession session = optional.get();
-//		System.out.println("uid = [" + uid + "], username = [" + username + "], fileText = [" + fileText + "], responseCode = [" + responseCode + "], lobby = [" + lobby + "]");
+		
 		try {
-			
 			// simply show the response
 			if (responseCode != 2) {
-				System.out.println("Response received: " + responseCode);
+				session.write(new LoginResponseCodeBuilder(responseCode).build(null));
 				return;
 			}
 			
@@ -96,6 +101,8 @@ public class ResponsiveLoginPacket extends ResponsiveGamePacket {
 			
 			// syncs the session variables
 			((WorldSession) session).sync(player);
+			// sets the player's row
+			player.getVariables().setRowId(rowId);
 			
 			if (lobby) {
 				player.registerToLobby();

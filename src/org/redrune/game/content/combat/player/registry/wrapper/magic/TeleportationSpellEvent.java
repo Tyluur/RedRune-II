@@ -3,7 +3,7 @@ package org.redrune.game.content.combat.player.registry.wrapper.magic;
 import org.redrune.core.system.SystemManager;
 import org.redrune.core.task.ScheduledTask;
 import org.redrune.game.content.activity.ActivitySystem;
-import org.redrune.game.content.activity.impl.WildernessActivity;
+import org.redrune.game.content.activity.impl.pvp.PvPLocation;
 import org.redrune.game.content.combat.player.CombatRegistry;
 import org.redrune.game.content.combat.player.registry.CombatRegistryEvent;
 import org.redrune.game.content.combat.player.registry.wrapper.context.MagicSpellContext;
@@ -192,7 +192,7 @@ public interface TeleportationSpellEvent extends MagicSpellEvent, CombatRegistry
 					}
 					if (location != null) {
 						player.teleport(location);
-						if (!WildernessActivity.isAtWild(location)) {
+						if (!PvPLocation.isAtWild(location)) {
 							player.unfreeze();
 						}
 						//player.getPackets().sendSound(5524, 0, 2);

@@ -21,6 +21,6 @@ public class GameFlags {
 	/**
 	 * If sql is enabled
 	 */
-	public static boolean sqlEnabled;
+	public static boolean webIntegrated;
 	
 }

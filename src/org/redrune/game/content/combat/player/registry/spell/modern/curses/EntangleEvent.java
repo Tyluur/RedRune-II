@@ -7,6 +7,8 @@ import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.utility.rs.constant.MagicConstants.MagicBook;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
@@ -61,7 +63,7 @@ public class EntangleEvent implements CombatSpellEvent {
 			// we send the graphics here because we don't always freeze them
 			context.getTarget().sendGraphics(179);
 			// only freeze the player if they are unfreezeable when the spell is cast.
-			context.getTarget().freeze(player, 30, "You have been frozen!");
+			context.getTarget().freeze(player, TimeUnit.SECONDS.toMillis(15), "You have been frozen!");
 		}, null);
 	}
 }

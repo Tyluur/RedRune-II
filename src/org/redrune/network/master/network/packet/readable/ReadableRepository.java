@@ -87,7 +87,7 @@ public class ReadableRepository {
 			return;
 		}
 		readable.read(session, packet);
-		System.out.println("Received master packet #" + packetId + " [" + readable.getClass().getSimpleName() + "]");
+//		System.out.println("Received master packet #" + packetId + " [" + readable.getClass().getSimpleName() + "]");
 	}
 	
 }
