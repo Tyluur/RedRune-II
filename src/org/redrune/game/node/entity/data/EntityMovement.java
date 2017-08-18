@@ -1,18 +1,16 @@
 package org.redrune.game.node.entity.data;
 
 import lombok.Getter;
-import org.redrune.game.content.event.EventListener;
-import org.redrune.game.content.event.EventListener.EventType;
 import org.redrune.game.node.Location;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.entity.npc.NPC;
 import org.redrune.game.node.entity.player.render.flag.impl.MovementUpdate;
 import org.redrune.game.node.entity.render.flag.impl.TemporaryMovement;
-import org.redrune.game.world.route.RouteFinder;
-import org.redrune.game.world.route.strategy.EntityStrategy;
-import org.redrune.game.world.route.strategy.FixedTileStrategy;
-import org.redrune.game.world.route.strategy.ObjectStrategy;
+import org.redrune.game.world.region.route.RouteFinder;
+import org.redrune.game.world.region.route.strategy.EntityStrategy;
+import org.redrune.game.world.region.route.strategy.FixedTileStrategy;
+import org.redrune.game.world.region.route.strategy.ObjectStrategy;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.tool.Misc;
 

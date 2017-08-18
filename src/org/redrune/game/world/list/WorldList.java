@@ -23,8 +23,8 @@ public class WorldList implements WorldConstants {
 	
 	/* Populates the world list. */
 	static {
-		WORLD_LIST.add(new WorldDefinition(1, 0, WorldDefinition.buildFlag(FLAG_LOOTSHARE), "Main World", NetworkConstants.MAIN_WORLD_IP, "USA", COUNTRY_CANADA));
-		WORLD_LIST.add(new WorldDefinition(2, 0, WorldDefinition.buildFlag(FLAG_LOOTSHARE), "PvP World", NetworkConstants.PVP_WORLD_IP, "USA", COUNTRY_USA));
+		WORLD_LIST.add(new WorldDefinition(1, 0, FLAG_MEMBERS | FLAG_LOOTSHARE | FLAG_HIGHLIGHT, "Main World", NetworkConstants.MAIN_WORLD_IP, "USA", COUNTRY_CANADA));
+		WORLD_LIST.add(new WorldDefinition(2, 0, FLAG_MEMBERS | FLAG_LOOTSHARE | FLAG_HIGH_RISK, "PvP World", NetworkConstants.PVP_WORLD_IP, "USA", COUNTRY_USA));
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class WorldList implements WorldConstants {
 		buffer.writeSmart(WORLD_LIST.size());
 		for (WorldDefinition w : WORLD_LIST) {
 			buffer.writeSmart(w.getWorldId());
-			buffer.writeByte(w.getLocation());
+			buffer.writeByte(0);
 			buffer.writeInt(w.getFlag());
 			buffer.writeGJString(w.getActivity());
 			buffer.writeGJString(w.getIp());

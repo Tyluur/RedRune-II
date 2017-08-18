@@ -2,10 +2,10 @@ package org.redrune.game.content.action.interaction;
 
 import org.redrune.game.content.action.Action;
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.game.world.route.RouteFinder;
+import org.redrune.game.world.region.route.RouteFinder;
 import org.redrune.game.node.Location;
 import org.redrune.game.world.World;
-import org.redrune.game.world.route.strategy.EntityStrategy;
+import org.redrune.game.world.region.route.strategy.EntityStrategy;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

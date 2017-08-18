@@ -13,6 +13,11 @@ import org.redrune.network.world.packet.outgoing.OutgoingPacketBuilder;
 public class MessageBuilder implements OutgoingPacketBuilder {
 	
 	/**
+	 * The identifier for a url message
+	 */
+	public static final int URL_MESSAGE_IDENTIFIER = 120;
+	
+	/**
 	 * The id of this message.
 	 */
 	private final int id;

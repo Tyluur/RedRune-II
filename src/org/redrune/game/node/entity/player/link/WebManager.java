@@ -5,12 +5,8 @@ import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerRight;
 import org.redrune.network.web.sql.SQLRepository;
-import org.redrune.network.web.sql.database.DatabaseConnection;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -37,14 +33,17 @@ public class WebManager {
 		if (!GameFlags.webIntegrated) {
 			return;
 		}
-		Optional<DatabaseConnection> optional = Optional.empty();
+		Connection connection = null;
+		PreparedStatement statement = null;
 		try {
-			optional = Optional.ofNullable(SQLRepository.getConnectionPool().nextFree());
-			if (!optional.isPresent()) {
+			connection = SQLRepository.getDataSource().getConnection();
+			if (connection == null) {
 				return;
 			}
-			Statement stmt = optional.get().createStatement();
-			ResultSet resultSet = stmt.executeQuery("SELECT * FROM `core_members` WHERE member_id='" + player.getVariables().getRowId() + "'");
+			statement = connection.prepareStatement("SELECT * FROM `core_members` WHERE member_id=?");
+			statement.setInt(1, player.getVariables().getRowId());
+			
+			ResultSet resultSet = statement.executeQuery();
 			ResultSetMetaData metaData = resultSet.getMetaData();
 			int count = metaData.getColumnCount();
 			if (resultSet.next()) {
@@ -54,11 +53,20 @@ public class WebManager {
 					storeData(columnName, data);
 				}
 			}
-			stmt.close();
+			connection.close();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} finally {
-			optional.ifPresent(DatabaseConnection::returnConnection);
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		player.getDetails().storeRights(getPlayerRights());
 	}
@@ -151,21 +159,37 @@ public class WebManager {
 	 * 		The value to entry
 	 */
 	public void updateForumTable(String column, Object value) throws SQLException {
-		Optional<DatabaseConnection> optional = Optional.empty();
+		Connection connection = null;
+		PreparedStatement statement = null;
 		try {
-			optional = Optional.ofNullable(SQLRepository.getConnectionPool().nextFree());
-			if (!optional.isPresent()) {
+			connection = SQLRepository.getDataSource().getConnection();
+			if (connection == null) {
 				return;
 			}
-			Statement stmt = optional.get().createStatement();
-			stmt.executeUpdate("UPDATE `core_members` SET `" + column + "` = '" + value + "' WHERE " + "member_id='" + player.getVariables().getRowId() + "';");
-			stmt.close();
+			String sql = "UPDATE `core_members` SET `" + column + "` = ? WHERE " + "member_id=?;";
+			statement = connection.prepareStatement(sql);
+			statement.setObject(1, value);
+			statement.setInt(2, player.getVariables().getRowId());
+			
+			// execute the statement
+			statement.executeUpdate();
+			statement.close();
+			connection.close();
 			// update the data now, this will make it so we don't need to relog if we update anything
 			storeData(column, value);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} finally {
-			optional.ifPresent(DatabaseConnection::returnConnection);
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

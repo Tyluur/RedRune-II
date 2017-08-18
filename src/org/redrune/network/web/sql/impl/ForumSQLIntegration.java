@@ -1,13 +1,12 @@
 package org.redrune.network.web.sql.impl;
 
 import org.redrune.network.web.sql.SQLRepository;
-import org.redrune.network.web.sql.database.DatabaseConnection;
 import org.redrune.utility.backend.BCryptService;
-import org.redrune.utility.tool.Misc;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Optional;
+import java.sql.SQLException;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -26,37 +25,46 @@ public class ForumSQLIntegration {
 	 * the user did not exist.</li><li>Otherwise, any number greater than 0 is a valid member id.</li></ul>
 	 */
 	public static int validateCredentials(String username, String password) {
-		Optional<DatabaseConnection> optional = Optional.empty();
+		Connection connection = null;
+		PreparedStatement statement = null;
 		try {
-			optional = Optional.ofNullable(SQLRepository.getConnectionPool().nextFree());
-			if (!optional.isPresent()) {
+			connection = SQLRepository.getDataSource().getConnection();
+			if (connection == null) {
 				return -3;
 			}
-			Statement stmt = optional.get().createStatement();
-			if (stmt == null) {
-				return -3;
-			}
+			statement = connection.prepareStatement("SELECT * FROM `core_members` WHERE name=? LIMIT 1");
+			statement.setString(1, username);
 			int responseCode;
-			ResultSet rs = stmt.executeQuery("SELECT * FROM `core_members` WHERE " + "name='" + Misc.formatPlayerNameForDisplay(username) + "' LIMIT 1");
-			if (rs.next()) {
-				String salt = rs.getString("members_pass_salt");
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				String salt = resultSet.getString("members_pass_salt");
 				String encryptedHash = encryptPassword(password, salt);
-				String storedHash = rs.getString("members_pass_hash");
+				String storedHash = resultSet.getString("members_pass_hash");
 				if (storedHash.equals(encryptedHash)) {
-					responseCode = rs.getInt("member_id");
+					responseCode = resultSet.getInt("member_id");
 				} else {
 					responseCode = -2;
 				}
 			} else {
 				responseCode = -1;
 			}
-			stmt.close();
+			connection.close();
+			statement.close();
 			return responseCode;
 		} catch (Throwable t) {
 			t.printStackTrace();
 			return -3;
 		} finally {
-			optional.ifPresent(DatabaseConnection::returnConnection);
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

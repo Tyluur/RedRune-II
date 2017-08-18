@@ -34,7 +34,6 @@ public class RequestTypeVerificationDecoder extends ByteToMessageDecoder {
 		
 		// constructs a new builder
 		PacketBuilder builder = new PacketBuilder();
-		System.out.println("Handling protocol: " + type);
 		switch (type) {
 			case LOGIN_REQUEST:
 				builder.writeByte(0);

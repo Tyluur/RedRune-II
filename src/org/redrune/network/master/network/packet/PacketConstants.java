@@ -94,4 +94,44 @@ public interface PacketConstants extends MasterConstants {
 	 * The id of the packet that contains the account creation response data
 	 */
 	int ACCOUNT_CREATION_RESPONSE_PACKET_ID = 17;
+	
+	/**
+	 * The id of the packet that contains a punishment request to the master server
+	 */
+	int PUNISHMENT_ADDITION_REQUEST_PACKET_ID = 18;
+	
+	/**
+	 * The id of the packet that contains a punishment attempt to the world
+	 */
+	int PUNISHMENT_ADDITION_ATTEMPT_PACKET_ID = 19;
+	
+	/**
+	 * The id of the packet that alerts the master server that the punishment was delivered
+	 */
+	int PUNISHMENT_ADDITION_SUCCESS_ALERT_PACKET_ID = 20;
+	
+	/**
+	 * The id of the packet that alerts the punisher that their punishment successfully went through
+	 */
+	int PUNISHMENT_ADDITION_SUCCESS_DELIVERY_PACKET_ID = 21;
+	
+	/**
+	 * The id of the punishment removal request that is sent to the master server
+	 */
+	int PUNISHMENT_REMOVAL_REQUEST_PACKET_ID = 22;
+	
+	/**
+	 * The id of the packet that is sent to all worlds for a punishment removal attempt
+	 */
+	int PUNISHMENT_REMOVAL_ATTEMPT_PACKET_ID = 23;
+	
+	/**
+	 * The id of the packet that contains the alert to the master server of a successful punishment removal
+	 */
+	int PUNISHMENT_REMOVAL_SUCCESS_ALERT_PACKET_ID = 24;
+	
+	/**
+	 * The id of the packet that is sent to the receiving world of a successful removal
+	 */
+	int PUNISHMENT_REMOVAL_SUCCESS_DELIVERY_PACKET = 25;
 }

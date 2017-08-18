@@ -10,11 +10,8 @@ import org.redrune.game.world.World;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.outgoing.impl.PingPacketBuilder;
 
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -134,6 +131,13 @@ public class NetworkSession {
 			}
 		}
 		return Optional.empty();
+	}
+	
+	/**
+	 * Gets all the sessions that are connected
+	 */
+	public static Collection<NetworkSession> getAllSessions() {
+		return UID_MAP.values();
 	}
 	
 	/**

@@ -1,15 +1,13 @@
 package org.redrune.network.web.sql;
 
-import lombok.Getter;
-import org.redrune.core.system.SystemManager;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.redrune.game.GameConstants;
-import org.redrune.network.web.sql.database.ConnectionPool;
-import org.redrune.network.web.sql.database.DatabaseConnection;
-import org.redrune.network.web.sql.database.ThreadedSQL;
-import org.redrune.network.web.sql.database.mysql.MySQLDatabaseConfiguration;
 import org.redrune.utility.backend.configuration.ConfigurationNode;
 import org.redrune.utility.backend.configuration.ConfigurationParser;
+import org.redrune.utility.backend.configuration.MySQLDatabaseConfiguration;
 
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -20,10 +18,39 @@ import java.io.IOException;
 public class SQLRepository {
 	
 	/**
-	 * The MySQL Connection pool
+	 * The source from which the database will be connected
 	 */
-	@Getter
-	private static ConnectionPool<? extends DatabaseConnection> connectionPool;
+	private static DataSource dataSource;
+	
+	/**
+	 * The database configuration
+	 */
+	private static MySQLDatabaseConfiguration configuration = new MySQLDatabaseConfiguration();
+	
+	/**
+	 * Gets the data source
+	 */
+	public static DataSource getDataSource() {
+		if (dataSource == null) {
+			HikariConfig config = new HikariConfig();
+			
+			config.setJdbcUrl("jdbc:mysql://" + configuration.getHost() + ":" + configuration.getPort() + "/" + configuration.getDatabase());
+			config.setUsername(configuration.getUsername());
+			config.setPassword(configuration.getPassword());
+			
+			config.setConnectionTimeout(8000);
+			config.setAutoCommit(false);
+			config.setMinimumIdle(0);
+			config.setMaximumPoolSize(10);
+			
+			config.addDataSourceProperty("cachePrepStmts", "true");
+			config.addDataSourceProperty("prepStmtCacheSize", "256");
+			config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+			config.addDataSourceProperty("useServerPrepStmts", true);
+			dataSource = new HikariDataSource(config);
+		}
+		return dataSource;
+	}
 	
 	/**
 	 * Loads server configuration.
@@ -37,13 +64,11 @@ public class SQLRepository {
 				return;
 			}
 			ConfigurationNode databaseNode = mainNode.nodeFor("database");
-			MySQLDatabaseConfiguration config = new MySQLDatabaseConfiguration();
-			config.setHost(databaseNode.getString("host"));
-			config.setPort(databaseNode.getInteger("port"));
-			config.setDatabase(databaseNode.getString("database"));
-			config.setUsername(databaseNode.getString("username"));
-			config.setPassword(databaseNode.getString("password"));
-			connectionPool = new ThreadedSQL(config, SystemManager.PROCESSOR_COUNT).getConnectionPool();
+			configuration.setHost(databaseNode.getString("host"));
+			configuration.setPort(databaseNode.getInteger("port"));
+			configuration.setDatabase(databaseNode.getString("database"));
+			configuration.setUsername(databaseNode.getString("username"));
+			configuration.setPassword(databaseNode.getString("password"));
 			System.out.println("Stored sql database configuration from " + GameConstants.SQL_CONFIGURATION_FILE);
 		} catch (IOException e) {
 			e.printStackTrace();

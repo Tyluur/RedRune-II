@@ -37,9 +37,17 @@ public class WorldSession extends NetworkSession {
 	 */
 	private final ConcurrentLinkedQueue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
 	
+	/**
+	 * The time of creation, this is used to figure out if a session in the world has no player for a long period of
+	 * time
+	 */
+	@Getter
+	private final long creationTime;
+	
 	public WorldSession(Channel channel) {
 		super(channel, true);
 		this.viewComponents = new PlayerViewComponents();
+		this.creationTime = System.currentTimeMillis();
 	}
 	
 	/**
@@ -79,16 +87,20 @@ public class WorldSession extends NetworkSession {
 	
 	@Override
 	public void disconnect() {
-		if (player != null) {
-			if (player.isRenderable()) {
-				player.terminate();
-			} else {
-				player.save();
-				player.deregisterLobby();
+		try {
+			if (player != null) {
+				if (player.isRenderable()) {
+					player.terminate();
+				} else {
+					player.save();
+					player.deregisterLobby();
+				}
 			}
+			this.player = null;
+			super.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		this.player = null;
-		super.disconnect();
 	}
 	
 	/**
@@ -127,5 +139,12 @@ public class WorldSession extends NetworkSession {
 	@Override
 	public String toString() {
 		return "WorldSession{player=" + player + ", open=" + getChannel().isOpen() + ", active=" + getChannel().isOpen() + ", registered=" + getChannel().isRegistered() + ", writable=" + getChannel().isWritable() + "}";
+	}
+	
+	/**
+	 * Gets the time between creation and now
+	 */
+	public long getElapsedCreationTime() {
+		return System.currentTimeMillis() - creationTime;
 	}
 }

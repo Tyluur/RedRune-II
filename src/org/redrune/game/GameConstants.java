@@ -67,4 +67,19 @@ public interface GameConstants {
 	 * The experience multiplier for prayer
 	 */
 	int PRAYER_EXPERIENCE_MULTIPLIER = 5;
+	
+	/**
+	 * The url that the players can change their email at
+	 */
+	String EMAIL_MODIFICATION_URL = "http://redrune.org/settings/email/";
+	
+	/**
+	 * The url that players can see their inbox at
+	 */
+	String INBOX_URL = "http://redrune.org/messenger/";
+	
+	/**
+	 * The url that players can donate at
+	 */
+	String DONATION_URL = "http://redrune.org/donate";
 }

@@ -158,6 +158,7 @@ public final class Player extends Entity {
 		setRenderable(false);
 		session.notifyDisconnection(getWorld());
 		manager.getContacts().sendMyStatusChange(false);
+		manager.getActivities().logout();
 		
 		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
@@ -554,7 +555,6 @@ public final class Player extends Entity {
 			transmitter.sendUnrepeatingMessages("You can't log out until 10 seconds after the end of combat.");
 			return;
 		}
-		manager.getActivities().logout();
 		transmitter.sendLogout(lobby);
 	}
 	

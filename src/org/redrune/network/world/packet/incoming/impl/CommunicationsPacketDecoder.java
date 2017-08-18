@@ -6,6 +6,7 @@ import org.redrune.game.content.event.impl.CommandEvent;
 import org.redrune.game.module.interaction.rsinterface.GameframeInteractionModule;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.world.World;
+import org.redrune.game.world.punishment.PunishmentType;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.incoming.IncomingPacketDecoder;
 import org.redrune.network.world.packet.outgoing.impl.PublicChatBuilder;
@@ -71,6 +72,10 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 			EventRepository.executeEvent(player, CommandEvent.class, new CommandEventContext(text.replaceFirst("::", "").split(" "), false));
 			return;
 		}
+		if (player.getVariables().hasPunishment(PunishmentType.MUTE) || player.getVariables().hasPunishment(PunishmentType.ADDRESS_MUTE)) {
+			player.getTransmitter().sendUnrepeatingMessages("You are muted.");
+			return;
+		}
 		for (Player p : World.get().getPlayers()) {
 			if (p == null || p.getLocation().getRegionId() != player.getLocation().getRegionId()) {
 				continue;
@@ -91,6 +96,11 @@ public class CommunicationsPacketDecoder implements IncomingPacketDecoder {
 		String name = Misc.formatPlayerNameForProtocol(packet.readRS2String());
 		byte length = packet.readByte();
 		String message = BufferUtils.decompressHuffman(packet, length);
+		
+		if (player.getVariables().hasPunishment(PunishmentType.MUTE) || player.getVariables().hasPunishment(PunishmentType.ADDRESS_MUTE)) {
+			player.getTransmitter().sendUnrepeatingMessages("You are muted.");
+			return;
+		}
 		
 		player.getManager().getContacts().sendPrivateMessage(name, message);
 	}

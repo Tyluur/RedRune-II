@@ -2,6 +2,7 @@ package org.redrune.network.master.server.engine.worker;
 
 import org.redrune.game.GameFlags;
 import org.redrune.game.node.entity.player.Player;
+import org.redrune.game.world.punishment.PunishmentType;
 import org.redrune.network.master.MasterConstants;
 import org.redrune.network.master.network.MasterSession;
 import org.redrune.network.master.server.engine.MSEngineWorker;
@@ -18,6 +19,7 @@ import org.redrune.network.web.sql.SQLFunctions;
 import org.redrune.network.web.sql.impl.WebLoginDetail;
 import org.redrune.utility.backend.CreationResponse;
 import org.redrune.utility.backend.ReturnCode;
+import org.redrune.utility.tool.Misc;
 
 import java.io.File;
 import java.util.Optional;
@@ -108,6 +110,15 @@ public final class MSLoginWorker extends MSEngineWorker {
 				
 				// the player file existed, so we use the text in it
 				String fileText = Utility.getCollapsedText(LoginConstants.getLocation(username));
+				
+				// the player , so we can load variables
+				Player player = Misc.loadPlayer(fileText);
+				
+				if (player == null) {
+					returnCode = ReturnCode.ERROR_LOADING_PROFILE;
+				} else if (player.getVariables().hasPunishment(PunishmentType.BAN)) {
+					returnCode = ReturnCode.ACCOUNT_DISABLED;
+				}
 				
 				// the return code was not successful so we dont need to send the file over the network anyway
 				if (returnCode != ReturnCode.SUCCESSFUL) {

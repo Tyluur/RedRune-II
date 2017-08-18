@@ -7,7 +7,9 @@ import org.redrune.network.master.network.packet.readable.ReadablePacket;
 import org.redrune.network.master.server.network.MSSession;
 import org.redrune.network.master.server.network.packet.out.FriendStatusDeliveryPacketOut;
 import org.redrune.network.master.server.world.MSRepository;
-import org.redrune.network.master.server.world.MSWorld;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,11 +27,6 @@ public class FriendStatusChangePacketIn implements ReadablePacket<MSSession> {
 		boolean lobby = packet.readByte() == 1;
 		
 		// sending the update to all worlds available
-		for (MSWorld world : MSRepository.getWorlds()) {
-			if (world == null) {
-				continue;
-			}
-			world.getSession().write(new FriendStatusDeliveryPacketOut(name, status, worldId, online, lobby) );
-		}
+		Arrays.stream(MSRepository.getWorlds()).filter(Objects::nonNull).forEach(world -> world.getSession().write(new FriendStatusDeliveryPacketOut(name, status, worldId, online, lobby)));
 	}
 }

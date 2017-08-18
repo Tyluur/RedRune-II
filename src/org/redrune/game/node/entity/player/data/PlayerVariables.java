@@ -4,9 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.render.flag.impl.AppearanceUpdate;
+import org.redrune.game.world.punishment.Punishment;
+import org.redrune.game.world.punishment.PunishmentType;
 import org.redrune.utility.AttributeKey;
 import org.redrune.utility.rs.constant.HeadIcons.SkullIcon;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -119,6 +124,11 @@ public final class PlayerVariables {
 	@Getter
 	@Setter
 	private int earningPotential = 0;
+	
+	/**
+	 * The list of punishments the player has
+	 */
+	private final List<Punishment> punishmentList = new ArrayList<>();
 	
 	/**
 	 * Gets a stored attribute
@@ -291,7 +301,53 @@ public final class PlayerVariables {
 		} else {
 			colour = "33FF33";
 		}
-		return "EP: <col=" + colour + ">" + (int) earningPotential + "%</col>";
+		return "EP: <col=" + colour + ">" + earningPotential + "%</col>";
+	}
+	
+	/**
+	 * Checks if the player has a punishment of a certain type
+	 *
+	 * @param type
+	 * 		The type of punishment
+	 */
+	public boolean hasPunishment(PunishmentType type) {
+		for (Punishment punishment : punishmentList) {
+			if (punishment.getType() != type) {
+				continue;
+			}
+			if (punishment.getTime() > System.currentTimeMillis()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Adds a punishment to the list
+	 *
+	 * @param punishment
+	 * 		The punishment
+	 */
+	public boolean addPunishment(Punishment punishment) {
+		return punishmentList.add(punishment);
+	}
+	
+	/**
+	 * Handles the removal of a punishment
+	 *
+	 * @param punishment
+	 * 		The punishment to remove
+	 */
+	public boolean removePunishment(Punishment punishment) {
+		boolean removed = false;
+		for (Iterator<Punishment> iterator = punishmentList.iterator(); iterator.hasNext(); ) {
+			Punishment p = iterator.next();
+			if (p.equals(punishment)) {
+				iterator.remove();
+				removed = true;
+			}
+		}
+		return removed;
 	}
 }
 

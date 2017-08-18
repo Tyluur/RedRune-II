@@ -67,29 +67,34 @@ public interface WorldConstants {
 	int COUNTRY_UK = 77;
 	
 	/**
-	 * If the world should be highlighted.
-	 */
-	int FLAG_HIGHLIGHT = 16;
-	
-	/**
-	 * If the world is a lootshare world.
-	 */
-	int FLAG_LOOTSHARE = 8;
-	
-	/**
 	 * If the world is free to play.
 	 */
-	int FLAG_NON_MEMBERS = 0;
-	
-	/**
-	 * If the world is a PvP-world.
-	 */
-	int FLAG_PVP = 4;
+	int FLAG_NON_MEMBERS = 0x0;
 	
 	/**
 	 * If the world is a members world.
 	 */
-	int FLAG_MEMBERS = 1;
+	int FLAG_MEMBERS = 0x1;
+	
+	/**
+	 * If the world is a PvP-world.
+	 */
+	int FLAG_PVP = 0x4;
+	
+	/**
+	 * If the world is a lootshare world.
+	 */
+	int FLAG_LOOTSHARE = 0x8;
+	
+	/**
+	 * If the world should be highlighted.
+	 */
+	int FLAG_HIGHLIGHT = 0x10;
+	
+	/**
+	 * If the world is a high risk wilderness world
+	 */
+	int FLAG_HIGH_RISK = 0x400;
 	
 	/**
 	 * The value for USA.

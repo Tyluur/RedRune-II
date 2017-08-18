@@ -10,7 +10,7 @@ import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
 import org.redrune.game.node.item.FloorItem;
 import org.redrune.game.node.object.GameObject;
-import org.redrune.game.world.route.Flags;
+import org.redrune.game.world.region.route.Flags;
 import org.redrune.utility.tool.Misc;
 
 import java.util.*;

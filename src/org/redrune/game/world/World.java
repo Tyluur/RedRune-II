@@ -160,23 +160,21 @@ public final class World implements SequentialService {
 	
 	@Override
 	public void end() {
+		SystemManager.start();
 		if (isLobby()) {
-			SystemManager.start();
-		} else {
-			System.out.println("Started world " + id + " in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-			// finalization
-			SystemManager.start();
-			// master server can now listen
-			MasterCommunication.start();
-			// start the world tasks now that everything has loaded
-			generateWorldTasks();
-			try {
-				// this waits for the session to close, so anything after this method will not execute until shutdown
-				WorldNetwork.bind();
-			} catch (Throwable e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
+			return;
+		}
+		System.out.println("Started world " + id + " in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+		// master server can now listen
+		MasterCommunication.start();
+		// start the world tasks now that everything has loaded
+		generateWorldTasks();
+		try {
+			// this waits for the session to close, so anything after this method will not execute until shutdown
+			WorldNetwork.bind();
+		} catch (Throwable e) {
+			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
