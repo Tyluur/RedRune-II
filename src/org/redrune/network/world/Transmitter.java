@@ -456,4 +456,5 @@ public final class Transmitter {
 		parameters[index++] = interfaceId << 16 | componentId;
 		send(new CS2ScriptBuilder(143, parameters).build(player));
 	}
+	
 }

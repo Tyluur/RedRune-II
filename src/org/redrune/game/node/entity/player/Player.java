@@ -599,7 +599,7 @@ public final class Player extends Entity {
 			if (combatOverlayInterface == -1) {
 				manager.getInterfaces().sendCombatOverlay(interfaceId);
 				for (int i = 3; i <= 6; i++) {
-					manager.getInterfaces().sendInterfaceChange(interfaceId, i, true);
+					manager.getInterfaces().sendInterfaceComponentChange(interfaceId, i, true);
 				}
 				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
 				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
@@ -614,21 +614,21 @@ public final class Player extends Entity {
 				long difference = (lastTimeCast + 30_000) - System.currentTimeMillis();
 				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
 				
-				manager.getInterfaces().sendInterfaceChange(interfaceId, 5, false);
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 5, false);
 				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "" + seconds);
 			} else {
-				manager.getInterfaces().sendInterfaceChange(interfaceId, 5, true);
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 5, true);
 				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
 			}
 			if (showFreeze) {
 				long difference = frozenUtil - System.currentTimeMillis();
 				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
 				
-				manager.getInterfaces().sendInterfaceChange(interfaceId, 4, false);
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 4, false);
 				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "" + seconds);
 			} else {
 				
-				manager.getInterfaces().sendInterfaceChange(interfaceId, 4, true);
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 4, true);
 				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
 			}
 		}

@@ -1,5 +1,6 @@
 package org.redrune.game.module.command.owner;
 
+import org.redrune.game.content.play.AppearanceModification;
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;
 import org.redrune.game.node.entity.player.Player;
@@ -18,10 +19,16 @@ public class DebugCommand extends CommandModule {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console) {
-//		PvPAreaActivity.sendSafeTimeLeft(player, intParam(args, 1));
-//		PvPAreaActivity.updateDangerousLevels(player, intParam(args, 1));
-
-		player.freeze(player, 5000, "frozen");
+		/*
+		  player.getPackets().sendItems(91, storeItems);
+            player.getPackets().sendUnlockIComponentOptionSlots(860, 23, 0, count, 0,
+        1, 2, 3, 4,5,6);
+      player.getPackets().sendInterSetItemsOptionsScript(860, 23, 91, 8, 150,
+                    "Take", "Take 10", "Take 1000", "", "");
+		 */
+		AppearanceModification.openCharacterStyling(player);
+		
+		
 		/*List<Entity> entityList = new ArrayList<>();
 		entityList.addAll(player.getRegion().getNpcs());
 		for (Player o : player.getRegion().getPlayers()) {

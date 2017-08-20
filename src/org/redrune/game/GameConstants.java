@@ -16,7 +16,7 @@ public interface GameConstants {
 	/**
 	 * The path of the cache
 	 */
-	String CACHE_PATH = "C:\\Users\\Tyler\\Desktop\\cache - Copy/"; /*"./data/fs/";*/
+	String CACHE_PATH = "./data/fs/";
 	
 	/**
 	 * The key used for player-file encryption

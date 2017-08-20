@@ -181,11 +181,11 @@ public class PvPAreaActivity extends Activity {
 			player.getManager().getInterfaces().sendInterfaceText(!player.getManager().getInterfaces().usingFixedMode() ? 746 : 548, !player.getManager().getInterfaces().usingFixedMode() ? 17 : 11, "");
 		}
 		// till safe
-		player.getManager().getInterfaces().sendInterfaceChange(745, 4, true);
-		player.getManager().getInterfaces().sendInterfaceChange(745, 5, true);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 4, true);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 5, true);
 		player.getManager().getInterfaces().sendInterfaceText(745, 5, "");
 		
-		player.getManager().getInterfaces().sendInterfaceChange(745, 6, true);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 6, true);
 		player.getUpdateMasks().register(new AppearanceUpdate(player));
 		player.getEquipment().refresh();
 	}
@@ -196,12 +196,12 @@ public class PvPAreaActivity extends Activity {
 	public void showSkull() {
 		updateDangerousLevels(player, WILDERNESS_LEVEL);
 		// till safe
-		player.getManager().getInterfaces().sendInterfaceChange(745, 4, true);
-		player.getManager().getInterfaces().sendInterfaceChange(745, 5, true);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 4, true);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 5, true);
 		player.getManager().getInterfaces().sendInterfaceText(745, 5, "");
 		
 		// dangerous skull
-		player.getManager().getInterfaces().sendInterfaceChange(745, 6, false);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 6, false);
 	}
 	
 	/**
@@ -226,9 +226,9 @@ public class PvPAreaActivity extends Activity {
 	 * 		The time
 	 */
 	public static void sendSafeTimeLeft(Player player, int time) {
-		player.getManager().getInterfaces().sendInterfaceChange(745, 6, true);
-		player.getManager().getInterfaces().sendInterfaceChange(745, 4, false);
-		player.getManager().getInterfaces().sendInterfaceChange(745, 5, false);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 6, true);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 4, false);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 5, false);
 		player.getManager().getInterfaces().sendInterfaceText(745, 5, "" + time);
 	}
 	
@@ -242,15 +242,15 @@ public class PvPAreaActivity extends Activity {
 	 */
 	private static void toggleSafeIcon(Player player, boolean show) {
 		if (show) {
-			player.getManager().getInterfaces().sendInterfaceChange(745, 4, true);
-			player.getManager().getInterfaces().sendInterfaceChange(745, 5, true);
-			player.getManager().getInterfaces().sendInterfaceChange(745, 6, true);
+			player.getManager().getInterfaces().sendInterfaceComponentChange(745, 4, true);
+			player.getManager().getInterfaces().sendInterfaceComponentChange(745, 5, true);
+			player.getManager().getInterfaces().sendInterfaceComponentChange(745, 6, true);
 		} else {
-			player.getManager().getInterfaces().sendInterfaceChange(745, 4, false);
-			player.getManager().getInterfaces().sendInterfaceChange(745, 5, false);
-			player.getManager().getInterfaces().sendInterfaceChange(745, 6, false);
+			player.getManager().getInterfaces().sendInterfaceComponentChange(745, 4, false);
+			player.getManager().getInterfaces().sendInterfaceComponentChange(745, 5, false);
+			player.getManager().getInterfaces().sendInterfaceComponentChange(745, 6, false);
 		}
-		player.getManager().getInterfaces().sendInterfaceChange(745, 3, !show);
+		player.getManager().getInterfaces().sendInterfaceComponentChange(745, 3, !show);
 	}
 	
 	/**

@@ -1,13 +1,23 @@
+8/19/17 {
+	+   Added player character styling
+	+	Added basic supplies interface modification
+	+	Renamed interface changing command
+	+	Updated cache in the fs folder
+
+	[img]http://i.imgur.com/JXuOcFG.png[/img]
+}
+
 8/17/17 {
 	+   Added a notification before you log into a pvp world that it is a pvp world
 	+   Added inbox/email verification/donation popups from lobby when you click 'email'... etc
 	+   Added a packet to open urls
 	+   Added account creation popup when you log in with an account that doesn't yet exist [instead of making you click back and login yourself]
 	+   Started on punishments that are applied on all worlds
-		-   We can punish somebody in world 1, 2, or  the lobby, from world 1 [useful if people spam friend chats/pms from the lobby etc]
+		-   We can punish somebody in world 1, 2, or the lobby, from world 1 [useful if people spam friend chats/pms from the lobby etc]
 	+	
 
 	[IMG]http://i.imgur.com/M7c3xGq.gif[/IMG]
+	[img]http://i.imgur.com/TD0Ww9x.png[/img]
 	[IMG]http://i.imgur.com/WNJfz8q.gif[/img]
 
 }

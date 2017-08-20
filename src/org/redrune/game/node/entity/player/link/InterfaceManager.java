@@ -111,7 +111,7 @@ public final class InterfaceManager implements InterfaceConstants {
 					sendInterfaceText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
 					sendInterfaceText(interfaceId, 16, "");
 					for (byte i = 17; i < 25; i++) {
-						sendInterfaceChange(930, i, true);
+						sendInterfaceComponentChange(930, i, true);
 					}
 					break;
 				default:
@@ -366,7 +366,7 @@ public final class InterfaceManager implements InterfaceConstants {
 	 * @param hide
 	 * 		If the button should be hidden
 	 */
-	public InterfaceManager sendInterfaceChange(int interfaceId, int componentId, boolean hide) {
+	public InterfaceManager sendInterfaceComponentChange(int interfaceId, int componentId, boolean hide) {
 		if (interfaceId >= CacheFileStore.getInterfaceDefinitionsSize()) {
 			throw new IllegalStateException("Unable to send an interface with id " + interfaceId);
 		}

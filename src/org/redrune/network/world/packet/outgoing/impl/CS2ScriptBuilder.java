@@ -1,9 +1,9 @@
 package org.redrune.network.world.packet.outgoing.impl;
 
 import org.redrune.game.node.entity.player.Player;
-import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.Packet;
 import org.redrune.network.world.packet.Packet.PacketType;
+import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.outgoing.OutgoingPacketBuilder;
 
 /**
@@ -66,5 +66,24 @@ public class CS2ScriptBuilder implements OutgoingPacketBuilder {
 		}
 		bldr.writeInt(scriptId);
 		return bldr.toPacket();
+	}
+	
+	public static CS2ScriptBuilder getInterfaceUnlockScript(int interfaceId, int componentId, int key, int width, int height, String... options) {
+		return new CS2ScriptBuilder(150, getParameters(interfaceId, componentId, key, width, height, options));
+	}
+	
+	private static Object[] getParameters(int interfaceId, int componentId, int key, int width, int height, String... options) {
+		Object[] parameters = new Object[6 + options.length];
+		int index = 0;
+		for (int count = options.length - 1; count >= 0; count--) {
+			parameters[index++] = options[count];
+		}
+		parameters[index++] = -1; // dunno but always this
+		parameters[index++] = 0;// dunno but always this
+		parameters[index++] = height;
+		parameters[index++] = width;
+		parameters[index++] = key;
+		parameters[index++] = interfaceId << 16 | componentId;
+		return parameters;
 	}
 }

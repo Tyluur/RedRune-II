@@ -14,7 +14,7 @@ public class ReloadCommandRepositoryCommand extends CommandModule {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("reloadcommands");
+		return arguments("reloadcommands", "rlc");
 	}
 	
 	@Override
