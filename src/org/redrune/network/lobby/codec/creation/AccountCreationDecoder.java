@@ -72,9 +72,6 @@ public class AccountCreationDecoder extends PassableDecoder {
 		} else if (password.length() == 0 || password.length() > 20) {
 			ProtocolType.sendCreationResponse(channel, CreationResponse.INVALID_PASSWORD);
 			return;
-		} else if (Misc.invalidAccountName(password)) {
-			ProtocolType.sendCreationResponse(channel, CreationResponse.NOT_LETTERS_AND_NUMBERS);
-			return;
 		} else if (!MasterCommunication.isConnected()) {
 			ProtocolType.sendCreationResponse(channel, CreationResponse.BUSY_SERVER);
 			return;

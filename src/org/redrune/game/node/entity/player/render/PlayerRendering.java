@@ -195,10 +195,10 @@ public class PlayerRendering implements OutgoingPacketBuilder {
 	private static void updateGlobalPlayer(Player player, Player updatable, PacketBuilder buffer, GlobalUpdateStage stage, PacketBuilder flagBased) {
 		buffer.writeBits(1, 1);
 		buffer.writeBits(2, stage.ordinal());
-		System.err.println("player " + player + ", updatable=" + updatable + ", stage = " + stage);
+//		System.err.println("player " + player + ", updatable=" + updatable + ", stage = " + stage);
 		if (stage == GlobalUpdateStage.ADD_PLAYER) {
 			byte updateType = getGlobalUpdateType(updatable);
-			System.err.println("player " + player + " updateType = " + updateType);
+//			System.err.println("player " + player + " updateType = " + updateType);
 			if (updateType != 0) {
 				updateGlobalPlayer(player, updatable, buffer, GlobalUpdateStage.values()[updateType], flagBased);
 			} else {

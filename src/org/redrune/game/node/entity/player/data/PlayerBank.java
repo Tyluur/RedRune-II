@@ -834,6 +834,161 @@ public final class PlayerBank {
 	}
 	
 	/**
+	 * Sets the starter bank up
+	 */
+	public void setDefaultBank() {
+		{
+			bankTabs = new Item[3][0];
+			bankTabs[0] = new Item[44];
+			bankTabs[0][0] = new Item(6685, 100_000);
+			bankTabs[0][1] = new Item(3024, 100_000);
+			bankTabs[0][2] = new Item(10925, 100_000);
+			bankTabs[0][3] = new Item(2434, 100_000);
+			bankTabs[0][4] = new Item(3040, 100_000);
+			bankTabs[0][5] = new Item(2444, 100_000);
+			bankTabs[0][6] = new Item(2448, 100_000);
+			bankTabs[0][7] = new Item(2440, 100_000);
+			bankTabs[0][8] = new Item(2436, 100_000);
+			bankTabs[0][9] = new Item(2442, 100_000);
+			bankTabs[0][10] = new Item(6687, 100_000);
+			bankTabs[0][11] = new Item(3026, 100_000);
+			bankTabs[0][12] = new Item(10927, 100_000);
+			bankTabs[0][13] = new Item(139, 100_000);
+			bankTabs[0][14] = new Item(3042, 100_000);
+			bankTabs[0][15] = new Item(169, 100_000);
+			bankTabs[0][16] = new Item(181, 100_000);
+			bankTabs[0][17] = new Item(157, 100_000);
+			bankTabs[0][18] = new Item(145, 100_000);
+			bankTabs[0][19] = new Item(163, 100_000);
+			bankTabs[0][20] = new Item(6689, 100_000);
+			bankTabs[0][21] = new Item(3028, 100_000);
+			bankTabs[0][22] = new Item(10929, 100_000);
+			bankTabs[0][23] = new Item(141, 100_000);
+			bankTabs[0][24] = new Item(3044, 100_000);
+			bankTabs[0][25] = new Item(171, 100_000);
+			bankTabs[0][26] = new Item(183, 100_000);
+			bankTabs[0][27] = new Item(159, 100_000);
+			bankTabs[0][28] = new Item(147, 100_000);
+			bankTabs[0][29] = new Item(165, 100_000);
+			bankTabs[0][30] = new Item(6691, 100_000);
+			bankTabs[0][31] = new Item(3030, 100_000);
+			bankTabs[0][32] = new Item(10931, 100_000);
+			bankTabs[0][33] = new Item(143, 100_000);
+			bankTabs[0][34] = new Item(3046, 100_000);
+			bankTabs[0][35] = new Item(173, 100_000);
+			bankTabs[0][36] = new Item(185, 100_000);
+			bankTabs[0][37] = new Item(161, 100_000);
+			bankTabs[0][38] = new Item(149, 100_000);
+			bankTabs[0][39] = new Item(167, 100_000);
+			bankTabs[0][40] = new Item(385, 100_000);
+			bankTabs[0][41] = new Item(3144, 100_000);
+			bankTabs[0][42] = new Item(8013, 100_000);
+			bankTabs[0][43] = new Item(5, 100_000);
+			
+			bankTabs[1] = new Item[14];
+			bankTabs[1][0] = new Item(554, 100_000);
+			bankTabs[1][1] = new Item(555, 100_000);
+			bankTabs[1][2] = new Item(556, 100_000);
+			bankTabs[1][3] = new Item(557, 100_000);
+			bankTabs[1][4] = new Item(558, 100_000);
+			bankTabs[1][5] = new Item(559, 100_000);
+			bankTabs[1][6] = new Item(560, 100_000);
+			bankTabs[1][7] = new Item(561, 100_000);
+			bankTabs[1][8] = new Item(562, 100_000);
+			bankTabs[1][9] = new Item(563, 100_000);
+			bankTabs[1][10] = new Item(564, 100_000);
+			bankTabs[1][11] = new Item(565, 100_000);
+			bankTabs[1][12] = new Item(566, 100_000);
+			bankTabs[1][13] = new Item(9075, 100_000);
+			
+			bankTabs[2] = new Item[83];
+			bankTabs[2][0] = new Item(7459, 100_000);
+			bankTabs[2][1] = new Item(7462, 100_000);
+			bankTabs[2][2] = new Item(4587, 100_000);
+			bankTabs[2][3] = new Item(1215, 100_000);
+			bankTabs[2][4] = new Item(5698, 100_000);
+			bankTabs[2][5] = new Item(1434, 100_000);
+			bankTabs[2][6] = new Item(1305, 100_000);
+			bankTabs[2][7] = new Item(4675, 100_000);
+			bankTabs[2][8] = new Item(1383, 100_000);
+			bankTabs[2][9] = new Item(9185, 100_000);
+			bankTabs[2][10] = new Item(10499, 100_000);
+			bankTabs[2][11] = new Item(2503, 100_000);
+			bankTabs[2][12] = new Item(2497, 100_000);
+			bankTabs[2][13] = new Item(1129, 100_000);
+			bankTabs[2][14] = new Item(3105, 100_000);
+			bankTabs[2][15] = new Item(3842, 100_000);
+			bankTabs[2][16] = new Item(6108, 100_000);
+			bankTabs[2][17] = new Item(6107, 100_000);
+			bankTabs[2][18] = new Item(6109, 100_000);
+			bankTabs[2][19] = new Item(6106, 100_000);
+			bankTabs[2][20] = new Item(4089, 100_000);
+			bankTabs[2][21] = new Item(4091, 100_000);
+			bankTabs[2][22] = new Item(4093, 100_000);
+			bankTabs[2][23] = new Item(4095, 100_000);
+			bankTabs[2][24] = new Item(4097, 100_000);
+			bankTabs[2][25] = new Item(4099, 100_000);
+			bankTabs[2][26] = new Item(4101, 100_000);
+			bankTabs[2][27] = new Item(4103, 100_000);
+			bankTabs[2][28] = new Item(4105, 100_000);
+			bankTabs[2][29] = new Item(4107, 100_000);
+			bankTabs[2][30] = new Item(4109, 100_000);
+			bankTabs[2][31] = new Item(4111, 100_000);
+			bankTabs[2][32] = new Item(4113, 100_000);
+			bankTabs[2][33] = new Item(4115, 100_000);
+			bankTabs[2][34] = new Item(4117, 100_000);
+			bankTabs[2][35] = new Item(7400, 100_000);
+			bankTabs[2][36] = new Item(7399, 100_000);
+			bankTabs[2][37] = new Item(7398, 100_000);
+			bankTabs[2][38] = new Item(2890, 100_000);
+			bankTabs[2][39] = new Item(861, 100_000);
+			bankTabs[2][40] = new Item(1153, 100_000);
+			bankTabs[2][41] = new Item(1115, 100_000);
+			bankTabs[2][42] = new Item(1067, 100_000);
+			bankTabs[2][43] = new Item(1081, 100_000);
+			bankTabs[2][44] = new Item(1191, 100_000);
+			bankTabs[2][45] = new Item(5574, 100_000);
+			bankTabs[2][46] = new Item(5575, 100_000);
+			bankTabs[2][47] = new Item(5576, 100_000);
+			bankTabs[2][48] = new Item(9672, 100_000);
+			bankTabs[2][49] = new Item(9674, 100_000);
+			bankTabs[2][50] = new Item(9676, 100_000);
+			bankTabs[2][51] = new Item(1163, 100_000);
+			bankTabs[2][52] = new Item(1127, 100_000);
+			bankTabs[2][53] = new Item(1079, 100_000);
+			bankTabs[2][54] = new Item(1093, 100_000);
+			bankTabs[2][55] = new Item(8850, 100_000);
+			bankTabs[2][56] = new Item(1201, 100_000);
+			bankTabs[2][57] = new Item(1052, 100_000);
+			bankTabs[2][58] = new Item(6568, 100_000);
+			bankTabs[2][59] = new Item(2412, 100_000);
+			bankTabs[2][60] = new Item(2414, 100_000);
+			bankTabs[2][61] = new Item(2413, 100_000);
+			bankTabs[2][62] = new Item(868, 100_000);
+			bankTabs[2][63] = new Item(4131, 100_000);
+			bankTabs[2][64] = new Item(6328, 100_000);
+			bankTabs[2][65] = new Item(9144, 100_000);
+			bankTabs[2][66] = new Item(9143, 100_000);
+			bankTabs[2][67] = new Item(9142, 100_000);
+			bankTabs[2][68] = new Item(9141, 100_000);
+			bankTabs[2][69] = new Item(892, 100_000);
+			bankTabs[2][70] = new Item(9241, 100_000);
+			bankTabs[2][71] = new Item(9242, 100_000);
+			bankTabs[2][72] = new Item(9243, 100_000);
+			bankTabs[2][73] = new Item(9244, 100_000);
+			bankTabs[2][74] = new Item(9245, 100_000);
+			bankTabs[2][75] = new Item(10828, 100_000);
+			bankTabs[2][76] = new Item(3751, 100_000);
+			bankTabs[2][77] = new Item(3753, 100_000);
+			bankTabs[2][78] = new Item(3755, 100_000);
+			bankTabs[2][79] = new Item(3749, 100_000);
+			bankTabs[2][80] = new Item(1712, 100_000);
+			bankTabs[2][81] = new Item(1725, 100_000);
+			bankTabs[2][82] = new Item(1727, 100_000);
+		}
+	}
+	
+	/**
 	 * The details of the bank
 	 */
 	public static class PlayerBankDetails {

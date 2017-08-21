@@ -2,9 +2,10 @@ package org.redrune.core.system;
 
 import org.redrune.core.MajorUpdateWorker;
 import org.redrune.core.task.Scheduler;
-import org.redrune.game.GameFlags;
 import org.redrune.utility.backend.OutLogger;
 import org.redrune.utility.backend.UnexpectedArgsException;
+
+import static org.redrune.game.GameFlags.*;
 
 /**
  * Manages all system operations.
@@ -36,17 +37,21 @@ public class SystemManager {
 	
 	/**
 	 * Sets default system configuration values
-	 * @throws IllegalStateException If we were unable to parse the arguments
+	 *
+	 * @throws IllegalStateException
+	 * 		If we were unable to parse the arguments
 	 */
 	public static void setDefaults(String[] args) throws UnexpectedArgsException {
 		if (args != null) {
 			try {
-				GameFlags.debugMode = Boolean.parseBoolean(args[0]);
-				GameFlags.worldId = Byte.parseByte(args[1]);
-				GameFlags.webIntegrated = Boolean.parseBoolean(args[2]);
+				debugMode = Boolean.parseBoolean(args[0].trim());
+				worldId = Byte.parseByte(args[1].trim());
+				webIntegrated = Boolean.parseBoolean(args[2].trim());
 			} catch (Throwable e) {
 				throw new UnexpectedArgsException();
 			}
+		} else {
+			throw new UnexpectedArgsException();
 		}
 		System.setOut(new OutLogger(System.out));
 	}

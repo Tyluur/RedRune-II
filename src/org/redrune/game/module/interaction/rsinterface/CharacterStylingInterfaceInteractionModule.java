@@ -2,6 +2,8 @@ package org.redrune.game.module.interaction.rsinterface;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.game.content.activity.Activity;
+import org.redrune.game.content.activity.impl.TutorialActivity;
 import org.redrune.game.module.interaction.rsinterface.CharacterStylingInterfaceInteractionModule.DefaultDesign.DefaultSubDesign;
 import org.redrune.game.module.interaction.rsinterface.CharacterStylingInterfaceInteractionModule.DesignState.CustomizeCategory;
 import org.redrune.game.module.type.InterfaceInteractionModule;
@@ -40,6 +42,7 @@ public class CharacterStylingInterfaceInteractionModule implements InterfaceInte
 			player.removeAttribute("ViewWearDesign");
 			player.removeAttribute("ViewWearDesignD");
 			player.getUpdateMasks().register(new AppearanceUpdate(player));
+			player.getManager().getActivities().getActivityOptional(TutorialActivity.class).ifPresent(Activity::end);
 		} else if (componentId == 95 || componentId == 96 || componentId == 97 || componentId == 98 || componentId == 99 || componentId == 100) {
 			int ordinal = componentId - 95;
 			state.customIndex = CustomizeCategory.getCustomIndex(ordinal);
@@ -140,48 +143,18 @@ public class CharacterStylingInterfaceInteractionModule implements InterfaceInte
 				app.setLook(1, 9); // TODO check if correct
 				setDefaultLook(app, state.designIndex, state.secondaryDesignIndex);
 			}
-		} else {
-			switch (componentId) {
-				case 48:
-				case 49:
-				case 50:
-				case 51:
-				case 52:
-				case 53:
-				case 54:
-				case 55:
-				case 56:
-				case 57:
-				case 58:
-				case 59:
-				case 60:
-				case 61:
-				case 62:
-				case 63:
-				case 64:
-				case 65:
-				case 66:
-				case 67:
-					setDefaultLook(app, componentId - 48, 0);
-					state.designIndex = componentId - 48;
-					break;
-				case 83:
-				case 84:
-				case 85:
-				case 86:
-				case 87:
-				case 88:
-					setDefaultLook(app, state.designIndex, componentId - 83);
-					state.secondaryDesignIndex = componentId - 83;
-					break;
-				case 120:
-					int index = CLOTH_COLOURS[RandomFunction.random(CLOTH_COLOURS.length)];
-					app.setColor(1, index);
-					index = CLOTH_COLOURS[RandomFunction.random(CLOTH_COLOURS.length)];
-					app.setColor(2, index);
-					player.getTransmitter().send(new ConfigPacketBuilder(1016, index).build(player));
-					break;
-			}
+		} else if (componentId == 48 || componentId == 49 || componentId == 50 || componentId == 51 || componentId == 52 || componentId == 53 || componentId == 54 || componentId == 55 || componentId == 56 || componentId == 57 || componentId == 58 || componentId == 59 || componentId == 60 || componentId == 61 || componentId == 62 || componentId == 63 || componentId == 64 || componentId == 65 || componentId == 66 || componentId == 67) {
+			setDefaultLook(app, componentId - 48, 0);
+			state.designIndex = componentId - 48;
+		} else if (componentId == 83 || componentId == 84 || componentId == 85 || componentId == 86 || componentId == 87 || componentId == 88) {
+			setDefaultLook(app, state.designIndex, componentId - 83);
+			state.secondaryDesignIndex = componentId - 83;
+		} else if (componentId == 120) {
+			int index = CLOTH_COLOURS[RandomFunction.random(CLOTH_COLOURS.length)];
+			app.setColor(1, index);
+			index = CLOTH_COLOURS[RandomFunction.random(CLOTH_COLOURS.length)];
+			app.setColor(2, index);
+			player.getTransmitter().send(new ConfigPacketBuilder(1016, index).build(player));
 		}
 		return true;
 	}

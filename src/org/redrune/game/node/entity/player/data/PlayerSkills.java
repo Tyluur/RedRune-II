@@ -101,6 +101,19 @@ public class PlayerSkills implements SkillConstants {
 	}
 	
 	/**
+	 * Adds experience to the skill without multiplier effects
+	 *
+	 * @param skillId
+	 * 		The id of the skill
+	 * @param experience
+	 * 		The amount of exp to add
+	 */
+	public PlayerSkills addExperienceNoMultiplier(short skillId, double experience) {
+		trackExperienceChange(skillId, experience);
+		return this;
+	}
+	
+	/**
 	 * Tracks experience change in a skillId
 	 *
 	 * @param skillId
@@ -196,19 +209,6 @@ public class PlayerSkills implements SkillConstants {
 	 */
 	private void updateSkill(int skill) {
 		player.getTransmitter().send(new SkillPacketBuilder(skill).build(player));
-	}
-	
-	/**
-	 * Adds experience to the skill without multiplier effects
-	 *
-	 * @param skillId
-	 * 		The id of the skill
-	 * @param experience
-	 * 		The amount of exp to add
-	 */
-	public PlayerSkills addExperienceNoMultiplier(short skillId, double experience) {
-		trackExperienceChange(skillId, experience);
-		return this;
 	}
 	
 	/**
@@ -373,27 +373,6 @@ public class PlayerSkills implements SkillConstants {
 	}
 	
 	/**
-	 * Drains a level
-	 *
-	 * @param skill
-	 * 		The skill
-	 * @param drain
-	 * 		The amount to drain
-	 */
-	public int drainLevel(int skill, int drain) {
-		int drainLeft = drain - level[skill];
-		if (drainLeft < 0) {
-			drainLeft = 0;
-		}
-		level[skill] -= drain;
-		if (level[skill] < 0) {
-			level[skill] = 0;
-		}
-		updateSkill(skill);
-		return drainLeft;
-	}
-	
-	/**
 	 * Drains a skill level with a cap on it
 	 *
 	 * @param skill
@@ -415,4 +394,35 @@ public class PlayerSkills implements SkillConstants {
 		drainLevel(skill, drain);
 	}
 	
+	/**
+	 * Drains a level
+	 *
+	 * @param skill
+	 * 		The skill
+	 * @param drain
+	 * 		The amount to drain
+	 */
+	public int drainLevel(int skill, int drain) {
+		int drainLeft = drain - level[skill];
+		if (drainLeft < 0) {
+			drainLeft = 0;
+		}
+		level[skill] -= drain;
+		if (level[skill] < 0) {
+			level[skill] = 0;
+		}
+		updateSkill(skill);
+		return drainLeft;
+	}
+	
+	public void passLevels(Player p) {
+		System.arraycopy(p.getSkills().level, 0, this.level, 0, p.getSkills().level.length);
+		System.arraycopy(p.getSkills().experience, 0, this.experience, 0, p.getSkills().experience.length);
+	}
+	
+	public void updateAllSkills() {
+		for (int skill = 0; skill < level.length; skill++) {
+			updateSkill(skill);
+		}
+	}
 }

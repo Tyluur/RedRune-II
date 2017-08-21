@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.cache.parse.definition.ItemDefinition;
-import org.redrune.utility.rs.Hit;
-import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.item.Item;
 import org.redrune.game.node.item.ItemsContainer;
 import org.redrune.network.world.packet.outgoing.impl.ContainerPacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.ContainerUpdateBuilder;
 import org.redrune.utility.repository.item.ItemRepository;
+import org.redrune.utility.rs.Hit;
+import org.redrune.utility.rs.Hit.HitSplat;
 import org.redrune.utility.rs.constant.BonusConstants;
 import org.redrune.utility.rs.constant.EquipConstants;
 
@@ -82,6 +82,12 @@ public class PlayerEquipment implements EquipConstants, BonusConstants {
 		}
 		updateBonuses();
 		updateHealthBoosts();
+	}
+	
+	public void refreshAll() {
+		for (int i = 0; i < 15; i++) {
+			refresh(i);
+		}
 	}
 	
 	/**

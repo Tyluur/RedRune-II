@@ -1,5 +1,6 @@
 package org.redrune;
 
+import org.redrune.cache.Cache;
 import org.redrune.core.system.SystemManager;
 import org.redrune.network.master.server.engine.MSEngineFactory;
 import org.redrune.network.master.server.network.MSNetworkSystem;
@@ -26,6 +27,7 @@ public class MSBootstrap {
 	 */
 	public static void main(String[] args) {
 		try {
+			Cache.init();
 			SystemManager.setDefaults(args);
 			SQLRepository.storeConfiguration();
 			MSEngineFactory.startUp();

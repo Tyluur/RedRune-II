@@ -1,4 +1,4 @@
-package org.redrune.game.module.command.administrator;
+package org.redrune.game.module.command.player;
 
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerSkills;

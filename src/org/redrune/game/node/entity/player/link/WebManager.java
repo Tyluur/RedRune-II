@@ -31,6 +31,7 @@ public class WebManager {
 	 */
 	public void handleLogin() {
 		if (!GameFlags.webIntegrated) {
+			System.out.println("We're not web integrated, no need to sql .");
 			return;
 		}
 		Connection connection = null;
@@ -38,6 +39,7 @@ public class WebManager {
 		try {
 			connection = SQLRepository.getDataSource().getConnection();
 			if (connection == null) {
+				System.out.println("Unable to find a connection.");
 				return;
 			}
 			statement = connection.prepareStatement("SELECT * FROM `core_members` WHERE member_id=?");
@@ -46,7 +48,8 @@ public class WebManager {
 			ResultSet resultSet = statement.executeQuery();
 			ResultSetMetaData metaData = resultSet.getMetaData();
 			int count = metaData.getColumnCount();
-			if (resultSet.next()) {
+			boolean next = resultSet.next();
+			if (next) {
 				for (int i = 1; i <= count; i++) {
 					String columnName = metaData.getColumnName(i);
 					Object data = resultSet.getObject(i);
@@ -68,6 +71,7 @@ public class WebManager {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("Stored right " + getPlayerRights() + " for " + player);
 		player.getDetails().storeRights(getPlayerRights());
 	}
 	
@@ -80,7 +84,7 @@ public class WebManager {
 	 * 		The data to store
 	 */
 	private void storeData(String columnName, Object data) {
-		//		System.out.println("columnName = [" + columnName + "], data = [" + data + "], type = [" + (data == null ? "null" : data.getClass().getSimpleName()) + "]");
+//		System.out.println("columnName = [" + columnName + "], data = [" + data + "], type = [" + (data == null ? "null" : data.getClass().getSimpleName()) + "]");
 		tableData.put(columnName, data);
 	}
 	

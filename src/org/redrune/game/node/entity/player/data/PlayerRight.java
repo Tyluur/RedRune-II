@@ -53,19 +53,19 @@ public enum PlayerRight {
 			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR);
 		}
 	},
-	TRIAL_MODERATOR(1, 16) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, SERVER_MODERATOR);
-		}
-	},
 	FORUM_MODERATOR(6) {
 		@Override
 		public void create() {
 			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR);
 		}
 	},
-	SERVER_SUPPORT(12) {
+	TRIAL_MODERATOR(16) {
+		@Override
+		public void create() {
+			addOtherRights(GLOBAL_MODERATOR, FORUM_MODERATOR);
+		}
+	},
+	SERVER_ASSISTANT(12) {
 		@Override
 		public void create() {
 			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, SERVER_MODERATOR);

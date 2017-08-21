@@ -82,8 +82,18 @@ public final class EntityMovement {
 		}
 		nextWalkDirection = getNextWalkStep();
 		if (nextWalkDirection != -1) {
+			byte directionDeltaX = DIRECTION_DELTA_X[nextWalkDirection];
+			byte directionDeltaY = DIRECTION_DELTA_Y[nextWalkDirection];
 			
-			moveLocation(DIRECTION_DELTA_X[nextWalkDirection], DIRECTION_DELTA_Y[nextWalkDirection]);
+			if (entity.isPlayer()) {
+				if (!entity.toPlayer().getManager().getActivities().canMove(directionDeltaX, directionDeltaY, nextWalkDirection)) {
+					nextWalkDirection = -1;
+					resetWalkSteps();
+					return;
+				}
+			}
+			
+			moveLocation(directionDeltaX, directionDeltaY);
 			entity.putAttribute("direction", Misc.getFaceDirection(DIRECTION_DELTA_X[nextWalkDirection], DIRECTION_DELTA_Y[nextWalkDirection]));
 			
 			if (isRunning()) {

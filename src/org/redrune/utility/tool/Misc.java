@@ -79,13 +79,14 @@ public class Misc {
 			}
 			// the file is a directory
 			if (file.isDirectory()) {
-				String fileToDirectory = file.getPath().replace("\\", ".");
+				String fileToDirectory = file.getPath().replace("\\", ".").replace("/", ".");
 				fileToDirectory = fileToDirectory.substring(fileToDirectory.indexOf(".org") + 1, fileToDirectory.length());
 				List<Object> classesInDirectory = getClassesInDirectory(fileToDirectory);
 				classes.addAll(classesInDirectory);
 			} else {
 				try {
-					Object objectEvent = (Class.forName(directory + "." + file.getName().replace(".class", "")).newInstance());
+					String className = directory + "." + file.getName().replace(".class", "");
+					Object objectEvent = (Class.forName(className).newInstance());
 					classes.add(objectEvent);
 				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 					e.printStackTrace();
@@ -916,4 +917,27 @@ public class Misc {
 		return Long.parseLong(string);
 	}
 	
+	public static String fixChatMessage(String message) {
+		StringBuilder newText = new StringBuilder();
+		boolean wasSpace = true;
+		boolean exception = false;
+		for (int i = 0; i < message.length(); i++) {
+			if (!exception) {
+				if (wasSpace) {
+					newText.append(("" + message.charAt(i)).toUpperCase());
+					if (!String.valueOf(message.charAt(i)).equals(" ")) {
+						wasSpace = false;
+					}
+				} else {
+					newText.append(("" + message.charAt(i)).toLowerCase());
+				}
+			} else {
+				newText.append("").append(message.charAt(i));
+			}
+			if (String.valueOf(message.charAt(i)).contains(".") || String.valueOf(message.charAt(i)).contains("!") || String.valueOf(message.charAt(i)).contains("?")) {
+				wasSpace = true;
+			}
+		}
+		return newText.toString();
+	}
 }

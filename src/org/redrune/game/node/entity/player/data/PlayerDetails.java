@@ -2,7 +2,6 @@ package org.redrune.game.node.entity.player.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.game.GameFlags;
 import org.redrune.utility.tool.Misc;
 
 import java.util.LinkedHashSet;
@@ -55,11 +54,8 @@ public final class PlayerDetails {
 	public PlayerDetails(String username) {
 		this.username = username;
 		this.rights = new LinkedHashSet<>();
+		this.rights.add(PlayerRight.PLAYER);
 		this.appearance = new PlayerAppearance();
-		if (!GameFlags.webIntegrated) {
-			this.rights.add(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER);
-			this.rights.add(PlayerRight.PLAYER);
-		}
 	}
 	
 	/**
@@ -99,6 +95,9 @@ public final class PlayerDetails {
 	 */
 	public boolean rightsContains(PlayerRight... rights) {
 		for (PlayerRight right : rights) {
+			if (right == PlayerRight.PLAYER) {
+				return true;
+			}
 			if (this.rights.contains(right)) {
 				return true;
 			}

@@ -154,44 +154,18 @@ public final class Player extends Entity {
 	
 	@Override
 	public void deregister() {
-		save();
-		setRenderable(false);
-		session.notifyDisconnection(getWorld());
-		manager.getContacts().sendMyStatusChange(false);
 		manager.getActivities().logout();
+		setRenderable(false);
+		save();
+		
+		manager.getContacts().sendMyStatusChange(false);
+		session.notifyDisconnection(getWorld());
 		
 		World.get().removePlayer(this);
 		RegionManager.updateEntityRegion(this);
 		SequencialUpdate.getRenderablePlayers().remove(this);
 		
 		System.out.println("Player de-registered from game:\t" + this);
-	}
-	
-	/**
-	 * Calls the termination of a player to start, using an attempt-based system
-	 */
-	public void terminate() {
-		terminate(0);
-	}
-	
-	/**
-	 * Terminates the player, using an attempt-based system
-	 *
-	 * @param attempt
-	 * 		The attempt
-	 */
-	private void terminate(final int attempt) {
-		if ((isDead() || isDying() || isUnderCombat()) && attempt < 6) {
-			System.out.println("scheduled termination because ");
-			SystemManager.getScheduler().schedule(new ScheduledTask(16) {
-				@Override
-				public void run() {
-					terminate(attempt + 1);
-				}
-			});
-			return;
-		}
-		deregister();
 	}
 	
 	@Override
@@ -423,6 +397,104 @@ public final class Player extends Entity {
 	}
 	
 	/**
+	 * Processes the skull
+	 */
+	private void processSkull() {
+		// we must have a skull
+		if (variables.getSkullIconTimer() == -1L) {
+			return;
+		}
+		// skull timer has lapsed so we reset it
+		if (System.currentTimeMillis() > variables.getSkullIconTimer()) {
+			removeSkull();
+		}
+	}
+	
+	/**
+	 * Refreshes the onscreen timers
+	 */
+	public void refreshTimers() {
+		Long lastTimeCast = getAttribute("LAST_VENG", -1L);
+		Long frozenUtil = getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
+		boolean showVeng = lastTimeCast != -1 && lastTimeCast + 30_000 > System.currentTimeMillis();
+		boolean showFreeze = isFrozen();
+		int interfaceId = 614;
+		int combatOverlayInterface = manager.getInterfaces().getCombatOverlayInterface();
+		if (showVeng || showFreeze) {
+			if (combatOverlayInterface == -1) {
+				manager.getInterfaces().sendCombatOverlay(interfaceId);
+				for (int i = 3; i <= 6; i++) {
+					manager.getInterfaces().sendInterfaceComponentChange(interfaceId, i, true);
+				}
+				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
+				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
+			}
+		} else {
+			if (combatOverlayInterface != -1) {
+				manager.getInterfaces().closeCombatOverlay();
+			}
+		}
+		if (combatOverlayInterface == interfaceId) {
+			if (showVeng) {
+				long difference = (lastTimeCast + 30_000) - System.currentTimeMillis();
+				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
+				
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 5, false);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "" + seconds);
+			} else {
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 5, true);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
+			}
+			if (showFreeze) {
+				long difference = frozenUtil - System.currentTimeMillis();
+				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
+				
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 4, false);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "" + seconds);
+			} else {
+				
+				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 4, true);
+				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
+			}
+		}
+	}
+	
+	/**
+	 * Removes the skull
+	 */
+	private void removeSkull() {
+		variables.setSkullIcon(this, SkullIcon.NONE);
+		variables.setSkullIconTimer(-1L);
+	}
+	
+	/**
+	 * Calls the termination of a player to start, using an attempt-based system
+	 */
+	public void terminate() {
+		terminate(0);
+	}
+	
+	/**
+	 * Terminates the player, using an attempt-based system
+	 *
+	 * @param attempt
+	 * 		The attempt
+	 */
+	private void terminate(final int attempt) {
+		if ((isDead() || isDying() || isUnderCombat()) && attempt < 6) {
+			System.out.println("scheduled termination because ");
+			SystemManager.getScheduler().schedule(new ScheduledTask(16) {
+				@Override
+				public void run() {
+					terminate(attempt + 1);
+				}
+			});
+			return;
+		}
+		deregister();
+	}
+	
+	/**
 	 * Registers a player to the lobby
 	 */
 	public void registerToLobby() {
@@ -572,73 +644,10 @@ public final class Player extends Entity {
 	}
 	
 	/**
-	 * Processes the skull
+	 * Sets data for the first time an account is made
 	 */
-	private void processSkull() {
-		// we must have a skull
-		if (variables.getSkullIconTimer() == -1L) {
-			return;
-		}
-		// skull timer has lapsed so we reset it
-		if (System.currentTimeMillis() > variables.getSkullIconTimer()) {
-			removeSkull();
-		}
-	}
-	
-	/**
-	 * Refreshes the onscreen timers
-	 */
-	public void refreshTimers() {
-		Long lastTimeCast = getAttribute("LAST_VENG", -1L);
-		Long frozenUtil = getAttribute(AttributeKey.FROZEN_UNTIL, -1L);
-		boolean showVeng = lastTimeCast != -1 && lastTimeCast + 30_000 > System.currentTimeMillis();
-		boolean showFreeze = isFrozen();
-		int interfaceId = 614;
-		int combatOverlayInterface = manager.getInterfaces().getCombatOverlayInterface();
-		if (showVeng || showFreeze) {
-			if (combatOverlayInterface == -1) {
-				manager.getInterfaces().sendCombatOverlay(interfaceId);
-				for (int i = 3; i <= 6; i++) {
-					manager.getInterfaces().sendInterfaceComponentChange(interfaceId, i, true);
-				}
-				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
-				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
-			}
-		} else {
-			if (combatOverlayInterface != -1) {
-				manager.getInterfaces().closeCombatOverlay();
-			}
-		}
-		if (combatOverlayInterface == interfaceId) {
-			if (showVeng) {
-				long difference = (lastTimeCast + 30_000) - System.currentTimeMillis();
-				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
-				
-				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 5, false);
-				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "" + seconds);
-			} else {
-				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 5, true);
-				manager.getInterfaces().sendInterfaceText(interfaceId, 8, "");
-			}
-			if (showFreeze) {
-				long difference = frozenUtil - System.currentTimeMillis();
-				long seconds = TimeUnit.MILLISECONDS.toSeconds(difference);
-				
-				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 4, false);
-				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "" + seconds);
-			} else {
-				
-				manager.getInterfaces().sendInterfaceComponentChange(interfaceId, 4, true);
-				manager.getInterfaces().sendInterfaceText(interfaceId, 7, "");
-			}
-		}
-	}
-	
-	/**
-	 * Removes the skull
-	 */
-	private void removeSkull() {
-		variables.setSkullIcon(this, SkullIcon.NONE);
-		variables.setSkullIconTimer(-1L);
+	public void setCreationData() {
+		manager.getActivities().setDefaultActivity();
+		bank.setDefaultBank();
 	}
 }

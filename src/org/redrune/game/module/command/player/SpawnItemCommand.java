@@ -1,4 +1,4 @@
-package org.redrune.game.module.command.owner;
+package org.redrune.game.module.command.player;
 
 import org.redrune.game.module.command.CommandManifest;
 import org.redrune.game.module.command.CommandModule;

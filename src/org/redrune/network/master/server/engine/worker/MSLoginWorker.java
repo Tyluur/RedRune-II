@@ -79,6 +79,7 @@ public final class MSLoginWorker extends MSEngineWorker {
 					session.write(new LoginResponsePacketOut(uid, ReturnCode.ALREADY_ONLINE.getValue(), "empty", username, lobby, 0));
 					return;
 				}
+				
 				// we must have the player file before this stage
 				if (!Utility.playerFileExists(username)) {
 					session.write(new LoginResponsePacketOut(uid, ReturnCode.INVALID_ACCOUNT_REQUESTED.getValue(), "empty", username, lobby, 0));
@@ -164,7 +165,7 @@ public final class MSLoginWorker extends MSEngineWorker {
 		final String username = request.getUsername();
 		
 		// the response
-		CreationResponse response = CreationResponse.NONE;
+		CreationResponse response = CreationResponse.SUCCESSFUL;
 		
 		// there's already a file in the server by that name, we won't be making an account
 		if (Utility.playerFileExists(username)) {
@@ -197,7 +198,9 @@ public final class MSLoginWorker extends MSEngineWorker {
 		
 		// if we could make the account successfully, we will create an account in the file server
 		if (response == CreationResponse.SUCCESSFUL) {
-			Utility.saveData(new File(LoginConstants.getLocation(username)), Utility.getJsonText(new Player(username), true));
+			Player player = new Player(username);
+			player.setCreationData();
+			Utility.saveData(new File(LoginConstants.getLocation(username)), Utility.getJsonText(player, true));
 			System.out.println("Created a new player because of request = " + request);
 		}
 		

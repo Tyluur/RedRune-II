@@ -1,6 +1,7 @@
 package org.redrune.game.node.entity.player.link;
 
 import org.redrune.game.content.activity.Activity;
+import org.redrune.game.content.activity.impl.TutorialActivity;
 import org.redrune.game.content.combat.player.registry.wrapper.magic.TeleportType;
 import org.redrune.game.node.Node;
 import org.redrune.game.node.entity.Entity;
@@ -16,14 +17,9 @@ import java.util.Optional;
 public class ActivityManager {
 	
 	/**
-	 * The instance of the player
+	 * The default activity class
 	 */
-	private transient Player player;
-	
-	/**
-	 * The instance of the activity
-	 */
-	private transient Activity activity;
+	public static final Class<? extends Activity> DEFAULT_ACTIVITY = TutorialActivity.class;
 	
 	/**
 	 * The name of the last activity
@@ -36,24 +32,47 @@ public class ActivityManager {
 	private Object[] lastActivityParameters;
 	
 	/**
-	 * Sets and starts an activity
-	 *
-	 * @param activity
-	 * 		The activity
+	 * The instance of the player
 	 */
-	public void startActivity(Activity activity) {
-		this.activity = activity;
-		this.activity.setPlayer(player);
-		this.activity.start();
-		this.lastActivityName = activity.getClass().getName();
-		this.lastActivityParameters = activity.getParameters();
-	}
+	private transient Player player;
+	
+	/**
+	 * The instance of the activity
+	 */
+	private transient Activity activity;
 	
 	/**
 	 * Ticks the activity
 	 */
 	public void process() {
 		getActivity().ifPresent(Activity::tick);
+	}
+	
+	/**
+	 * Sets the default activity
+	 */
+	public void setDefaultActivity() {
+		lastActivityName = DEFAULT_ACTIVITY.getName();
+		lastActivityParameters = new Object[0];
+	}
+	
+	/**
+	 * Gets the activity
+	 */
+	public Optional<Activity> getActivity() {
+		if (activity == null) {
+			return Optional.empty();
+		} else {
+			return Optional.of(activity);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> Optional<T> getActivityOptional(Class<T> clazz) {
+		if (activity == null || !clazz.equals(activity.getClass())) {
+			return Optional.empty();
+		}
+		return Optional.of((T) activity);
 	}
 	
 	/**
@@ -108,6 +127,20 @@ public class ActivityManager {
 	}
 	
 	/**
+	 * Checks if we can move during the activity
+	 *
+	 * @param x
+	 * 		The x of the movement request
+	 * @param y
+	 * 		The y of the movement request
+	 * @param dir
+	 * 		The direction of the movement request
+	 */
+	public boolean canMove(int x, int y, int dir) {
+		return activity == null || activity.canMove(x, y, dir);
+	}
+	
+	/**
 	 * If the activity handles the entity's death
 	 *
 	 * @param entity
@@ -126,17 +159,6 @@ public class ActivityManager {
 	public void setPlayer(Player player) {
 		this.player = player;
 		getActivity().ifPresent(activity -> activity.setPlayer(player));
-	}
-	
-	/**
-	 * Gets the activity
-	 */
-	public Optional<Activity> getActivity() {
-		if (activity == null) {
-			return Optional.empty();
-		} else {
-			return Optional.of(activity);
-		}
 	}
 	
 	/**
@@ -159,11 +181,27 @@ public class ActivityManager {
 	}
 	
 	/**
+	 * Sets and starts an activity
+	 *
+	 * @param activity
+	 * 		The activity
+	 */
+	public void startActivity(Activity activity) {
+		this.activity = activity;
+		this.activity.setPlayer(player);
+		this.activity.start();
+		this.lastActivityName = activity.getClass().getName();
+		this.lastActivityParameters = activity.getParameters();
+	}
+	
+	/**
 	 * Handles the logout aspect of activities
 	 */
 	public void logout() {
 		Optional<Activity> optional = getActivity();
 		if (!optional.isPresent()) {
+			lastActivityName = null;
+			lastActivityParameters = null;
 			return;
 		}
 		Activity activity = optional.get();
@@ -182,4 +220,5 @@ public class ActivityManager {
 	public void end() {
 		this.activity = null;
 	}
+	
 }

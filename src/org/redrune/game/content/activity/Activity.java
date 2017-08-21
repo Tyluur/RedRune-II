@@ -143,6 +143,20 @@ public class Activity {
 	}
 	
 	/**
+	 * If the activity can move
+	 *
+	 * @param x
+	 * 		The x
+	 * @param y
+	 * 		The y
+	 * @param dir
+	 * 		The direction
+	 */
+	public boolean canMove(int x, int y, int dir) {
+		return true;
+	}
+	
+	/**
 	 * Checks that combat can continue with the target
 	 *
 	 * @param target
