@@ -12,8 +12,9 @@
 +   PvP Areas in world 2
 	-   Pvp armour drops
 +   Appearance modification
-	-   Classes
 	-   Beard/gender/shoes/clothing
++	Finish dynamic support for worlds
+	-	Lobby should show the last pushed updated, and we should know if any worlds are offline
 
 [Punishments]
 +   Once somebody has been punished, send the information over the network

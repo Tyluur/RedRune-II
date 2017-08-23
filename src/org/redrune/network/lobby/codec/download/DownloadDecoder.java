@@ -1,14 +1,14 @@
 package org.redrune.network.lobby.codec.download;
 
+import com.alex.store.Index;
+import com.alex.store.Store;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.redrune.cache.CacheFileStore;
-import org.redrune.core.EngineWorkingSet;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -21,17 +21,12 @@ public class DownloadDecoder extends ByteToMessageDecoder {
 	 */
 	private LinkedList<DownloadRequest> requests = new LinkedList<>();
 	
-	/**
-	 * If the checksum was sent [255, 255]
-	 */
-	private AtomicBoolean checksumSent = new AtomicBoolean(false);
-	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		while(in.readableBytes() >= 4) {
+		while (in.readableBytes() > 0) {
 			serveRequest(ctx, in, in.readByte() & 0xFF);
 		}
-		pushAwaiting(ctx, true);
+		requests.clear();
 	}
 	
 	/**
@@ -47,48 +42,38 @@ public class DownloadDecoder extends ByteToMessageDecoder {
 	private void serveRequest(ChannelHandlerContext ctx, ByteBuf in, int priority) {
 		final int indexId = in.readByte() & 0xFF;
 		final int archiveId = in.readShort() & 0xFFFF;
+		
+		final Store store = CacheFileStore.STORE;
+		final Index[] indexes = store.getIndexes();
 		if (indexId != 255) {
-			if (CacheFileStore.STORE.getIndexes().length <= indexId || CacheFileStore.STORE.getIndexes()[indexId] == null || !CacheFileStore.STORE.getIndexes()[indexId].archiveExists(archiveId)) {
-				System.out.println("Index did not exist: " + indexId);
+			if (indexes.length <= indexId || indexes[indexId] == null || !store.getIndexes()[indexId].archiveExists(archiveId)) {
+				System.out.println("Unable to find index " + indexId + ".");
 				return;
 			}
 		} else if (archiveId != 255) {
-			if (CacheFileStore.STORE.getIndexes().length <= archiveId || CacheFileStore.STORE.getIndexes()[archiveId] == null) {
-				System.out.println("Archive did not exist: " + archiveId);
+			if (indexes.length <= archiveId || indexes[archiveId] == null) {
+				System.out.println("Unable to find archive " + archiveId + ".");
 				return;
 			}
 		}
-		final DownloadRequest downloadRequest = new DownloadRequest(indexId, archiveId, priority);
+		final DownloadRequest request = new DownloadRequest(indexId, archiveId, priority);
 		switch (priority) {
 			case 0:
-				requests.addLast(downloadRequest);
+				requests.addLast(request);
 				break;
 			case 1:
-				requests.addFirst(downloadRequest);
+				requests.addFirst(request);
+				break;
+			case 2:
+			case 3:
+				requests.clear();
 				break;
 			default:
 				break;
 		}
-		if (checksumSent.get()) {
-			pushAwaiting(ctx, false);
-		}
-	}
-	
-	private void pushAwaiting(ChannelHandlerContext ctx, boolean setVerified) {
-		if (setVerified) {
-			this.checksumSent.set(true);
-		}
-		DownloadRequest request;
-		while ((request = requests.poll()) != null) {
-			final DownloadRequest finalRequest = request;
-			EngineWorkingSet.submitJs5Work(() -> {
-				try {
-					finalRequest.push(ctx);
-					checksumSent.compareAndSet(false, true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+		while (!requests.isEmpty()) {
+			DownloadRequest downloadRequest = requests.poll();
+			downloadRequest.push(ctx);
 		}
 	}
 	

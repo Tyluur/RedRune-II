@@ -1,8 +1,7 @@
 package org.redrune.cache.parse.definition;
 
 import lombok.Getter;
-import org.redrune.cache.CacheConstants;
-import org.redrune.cache.CacheManager;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.stream.RSInputStream;
 
 import java.io.ByteArrayInputStream;
@@ -189,7 +188,7 @@ public final class NPCDefinition {
 	public static NPCDefinition readDefinitions(int npcId) throws IOException {
 		NPCDefinition def = new NPCDefinition(npcId);
 		def.constructModelIds();
-		byte[] data = CacheManager.getData(CacheConstants.NPCDEF_IDX_ID, npcId >>> 7, npcId & 0x7f);
+		byte[] data = CacheFileStore.STORE.getIndexes()[18].getFile(npcId >>> 7, npcId & 0x7f);
 		def.readValueLoop(new RSInputStream(new ByteArrayInputStream(data)));
 		return def;
 	}

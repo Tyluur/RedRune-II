@@ -30,9 +30,9 @@ public final class Constants {
 
 	public static final int LOADER_INDEXED_IMAGES_INDEX = 34;
 
-	public static final int CLIENT_BUILD = 666;
+	public static final int CLIENT_BUILD = 667;
 
-	public static final boolean ENCRYPTED_CACHE = true;
+	public static final boolean ENCRYPTED_CACHE = false;
 	
 	private Constants() {
 		

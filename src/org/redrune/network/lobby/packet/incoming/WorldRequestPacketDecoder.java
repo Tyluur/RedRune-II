@@ -14,7 +14,7 @@ public class WorldRequestPacketDecoder implements IncomingPacketDecoder {
 	
 	@Override
 	public int[] bindings() {
-		return Misc.arguments(33);
+		return Misc.arguments(16);
 	}
 	
 	@Override

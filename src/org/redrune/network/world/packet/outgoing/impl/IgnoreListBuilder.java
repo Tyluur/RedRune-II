@@ -32,7 +32,7 @@ public class IgnoreListBuilder implements OutgoingPacketBuilder {
 	
 	@Override
 	public Packet build(Player player) {
-		PacketBuilder bldr = new PacketBuilder(11, PacketType.VAR_SHORT);
+		PacketBuilder bldr = new PacketBuilder(57, PacketType.VAR_SHORT);
 		bldr.writeByte(ignoreList.size());
 		for (final String name : ignoreList) {
 			final String previousName = displayNames.getOrDefault(name, "");

@@ -2,9 +2,9 @@ package org.redrune.cache.parse.definition;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.cache.CacheConstants;
-import org.redrune.cache.CacheManager;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.ItemDefinitionParser;
+import org.redrune.utility.rs.ItemEquipIds;
 import org.redrune.utility.rs.constant.EquipConstants;
 import org.redrune.utility.rs.constant.SkillConstants;
 import org.redrune.utility.tool.BufferUtils;
@@ -28,7 +28,6 @@ public final class ItemDefinition {
 	@Getter
 	private int id;
 	
-	@Getter
 	@Setter
 	private int equipId;
 	
@@ -149,7 +148,7 @@ public final class ItemDefinition {
 	public void loadItemDefinition() throws IOException {
 		setDefaultsVariableValules();
 		setDefaultOptions();
-		byte[] is = CacheManager.getData(CacheConstants.ITEMDEF_IDX_ID, id >>> 8, id & 0xFF);
+		byte[] is = CacheFileStore.STORE.getIndexes()[19].getFile(id >>> 8, 0xff & id);
 		readOpcodeValues(ByteBuffer.wrap(is));
 		if (noteTemplateId != -1) // done
 		{
@@ -660,5 +659,12 @@ public final class ItemDefinition {
 	 */
 	public boolean isEdible() {
 		return hasOption("eat") || hasOption("drink");
+	}
+	
+	/**
+	 * Gets the equip id of this item
+	 */
+	public int getEquipId() {
+		return ItemEquipIds.getEquipId(id);
 	}
 }

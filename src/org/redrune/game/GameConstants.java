@@ -16,7 +16,7 @@ public interface GameConstants {
 	/**
 	 * The path of the cache
 	 */
-	String CACHE_PATH = "./data/fs/";
+	String CACHE_PATH = "./data/fs667/";
 	
 	/**
 	 * The key used for player-file encryption
@@ -27,6 +27,11 @@ public interface GameConstants {
 	 * The path to the file with sql configuration
 	 */
 	String SQL_CONFIGURATION_FILE = "./data/sql.conf";
+	
+	/**
+	 * The revision of the game
+	 */
+	int REVISION = 667;
 	
 	/**
 	 * The maximum amount of players allowed online
@@ -82,4 +87,5 @@ public interface GameConstants {
 	 * The url that players can donate at
 	 */
 	String DONATION_URL = "http://redrune.org/donate";
+	
 }

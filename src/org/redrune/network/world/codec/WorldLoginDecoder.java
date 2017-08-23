@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.crypto.ISAACCipher;
+import org.redrune.game.GameConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.master.MasterCommunication;
@@ -52,7 +53,7 @@ public class WorldLoginDecoder extends ByteToMessageDecoder {
 			return;
 		}
 		int revision = in.readInt();
-		if (revision != REVISION) {
+		if (revision != GameConstants.REVISION) {
 			setSession(ctx.channel());
 			session.sendLoginResponse(10);
 			return;

@@ -31,11 +31,6 @@ public interface NetworkConstants extends GameConstants {
 	int WORLD_PORT_ID = 43594 + GameFlags.worldId;
 	
 	/**
-	 * The revision of the game
-	 */
-	int REVISION = 666;
-	
-	/**
 	 * The attribute that contains the key for a session.
 	 */
 	AttributeKey<NetworkSession> SESSION_KEY = AttributeKey.valueOf("session.key");
@@ -43,7 +38,7 @@ public interface NetworkConstants extends GameConstants {
 	/**
 	 * The update server keys
 	 */
-	int[] UPDATE_SERVER_KEYS = { 56, 79325, 55568, 46770, 24563, 299978, 44375, 0, 4176, 3589, 109125, 604031, 176138, 292288, 350498, 686783, 18008, 20836, 16339, 1244, 8142, 743, 119, 699632, 932831, 3931, 2974, };
+	int[] UPDATE_SERVER_KEYS = { 1393, 78700, 44880, 39771, 363186, 44375, 0, 16140, 6028, 263849, 778481, 209109, 372444, 444388, 892700, 20013, 24356, 16747, 1244, 1, 13271, 1321, 119, 853169, 1748783, 3963, 3323 };
 	
 	/**
 	 * The packet id for the first click on the item

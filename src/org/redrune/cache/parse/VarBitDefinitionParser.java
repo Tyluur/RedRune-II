@@ -1,10 +1,9 @@
 package org.redrune.cache.parse;
 
-import org.redrune.cache.CacheManager;
 import org.redrune.cache.Cache;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.definition.VarBitDefinition;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,12 +35,7 @@ public final class VarBitDefinitionParser {
 		if (script != null) {
 			return script;
 		}
-		byte[] data = new byte[0];
-		try {
-			data = CacheManager.getData(22, id >>> 10, id & 0x3ff);
-		} catch (IOException e) {
-			System.out.println("Varbit " + id + " doesn't exist in the cache");
-		}
+		byte[] data = CacheFileStore.STORE.getIndexes()[22].getFile(id >>> 10, id & 0x3ff);
 		script = new VarBitDefinition();
 		script.setId(id);
 		if (data != null) {

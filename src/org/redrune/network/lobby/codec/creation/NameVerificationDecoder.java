@@ -10,7 +10,7 @@ import org.redrune.utility.backend.CreationResponse;
 import org.redrune.utility.rs.buffer.FixedBuffer;
 import org.redrune.utility.tool.Misc;
 
-import static org.redrune.network.NetworkConstants.REVISION;
+import static org.redrune.game.GameConstants.REVISION;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

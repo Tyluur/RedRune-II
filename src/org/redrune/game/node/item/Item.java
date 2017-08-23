@@ -131,4 +131,11 @@ public class Item extends Node {
 		}
 		return definitions;
 	}
+	
+	/**
+	 * Gets the equip id from the definitions
+	 */
+	public int getEquipId() {
+		return getDefinitions().getEquipId();
+	}
 }

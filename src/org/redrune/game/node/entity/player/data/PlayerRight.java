@@ -62,7 +62,7 @@ public enum PlayerRight {
 	TRIAL_MODERATOR(16) {
 		@Override
 		public void create() {
-			addOtherRights(GLOBAL_MODERATOR, FORUM_MODERATOR);
+			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, FORUM_MODERATOR);
 		}
 	},
 	SERVER_ASSISTANT(12) {

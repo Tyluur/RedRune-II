@@ -71,7 +71,7 @@ public class MSWorld {
 	 * 		The unique identification of the player
 	 */
 	public boolean addPlayer(String username, String uid) {
-		System.out.println("MSWorld.addPlayer(" + username + ", " + uid + ", " + id + ")");
+		System.out.println("MSWorld.addPlayer(" + username + ", " + uid + ", " + id + ", " + (players.size() + 1) + ")");
 		return players.add(new MSPlayer(username, uid, id));
 	}
 	
@@ -83,7 +83,7 @@ public class MSWorld {
 	 * @return <tt>true</tt> if the list contained the username
 	 */
 	public boolean removePlayer(String username) {
-		System.out.println("MSWorld.addPlayer(" + username + ", " + id + ")");
+		System.out.println("MSWorld.removePlayer(" + username + ", " + id + "," + (players.size() - 1) + ")");
 		return players.removeIf(player -> player.getUsername().equals(username));
 	}
 	

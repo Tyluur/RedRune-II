@@ -73,9 +73,9 @@ public class FriendsListBuilder implements OutgoingPacketBuilder {
 	@Override
 	public Packet build(Player player) {
 		if (name == null) {
-			return new PacketBuilder(5, PacketType.VAR_SHORT).toPacket();
+			return new PacketBuilder(85, PacketType.VAR_SHORT).toPacket();
 		} else {
-			PacketBuilder bldr = new PacketBuilder(5, PacketType.VAR_SHORT);
+			PacketBuilder bldr = new PacketBuilder(85, PacketType.VAR_SHORT);
 			
 			// if we should tell the client that their status changed
 			bldr.writeByte(warn ? 0 : 1);

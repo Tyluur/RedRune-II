@@ -24,7 +24,7 @@ public final class WorldListBuilder implements OutgoingPacketBuilder {
 	
 	@Override
 	public Packet build(Player player) {
-		PacketBuilder bldr = new PacketBuilder(23, PacketType.VAR_SHORT);
+		PacketBuilder bldr = new PacketBuilder(88, PacketType.VAR_SHORT);
 		bldr.writeByte(1);
 		bldr.writeByte(worldConfiguration ? 2 : 0);
 		bldr.writeByte(worldStatus ? 1 : 0);

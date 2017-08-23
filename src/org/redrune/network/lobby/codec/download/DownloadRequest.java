@@ -2,7 +2,7 @@ package org.redrune.network.lobby.codec.download;
 
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
-import org.redrune.cache.CacheManager;
+import org.redrune.cache.CacheFileStore;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -28,10 +28,15 @@ public class DownloadRequest {
 	@Getter
 	private final int priority;
 	
-	public DownloadRequest(int indexId, int archiveId, int priority) {
+	DownloadRequest(int indexId, int archiveId, int priority) {
 		this.indexId = indexId;
 		this.archiveId = archiveId;
 		this.priority = priority;
+	}
+	
+	@Override
+	public String toString() {
+		return "DownloadRequest{" + "indexId=" + indexId + ", archiveId=" + archiveId + ", priority=" + priority + '}';
 	}
 	
 	/**
@@ -40,12 +45,11 @@ public class DownloadRequest {
 	 * @param ctx
 	 * 		The channel handler context
 	 */
-	public void push(ChannelHandlerContext ctx) {
-		ctx.writeAndFlush(CacheManager.generateFile(indexId, archiveId, priority).getBuffer());
-	}
-	
-	@Override
-	public String toString() {
-		return "DownloadRequest{" + "indexId=" + indexId + ", archiveId=" + archiveId + ", priority=" + priority + '}';
+	void push(ChannelHandlerContext ctx) {
+		if (indexId == 255 && archiveId == 255) {
+			ctx.writeAndFlush(CacheFileStore.getUkeysFile());
+		} else {
+			ctx.writeAndFlush(CacheFileStore.getArchivePacketData(indexId, archiveId, priority == 1));
+		}
 	}
 }

@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.crypto.ISAACCipher;
+import org.redrune.game.GameConstants;
 import org.redrune.network.NetworkConstants;
 import org.redrune.network.master.MasterCommunication;
 import org.redrune.network.master.MasterConstants;
@@ -20,7 +21,8 @@ import org.redrune.utility.tool.Misc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.redrune.network.NetworkConstants.*;
+import static org.redrune.network.NetworkConstants.LOGIN_EXPONENT;
+import static org.redrune.network.NetworkConstants.LOGIN_MODULUS;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -45,15 +47,16 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 			return;
 		}
 		if (opcode != 19) {
-			System.out.println("Received unexpected lobby login opcode: " + opcode);
 			setSession(ctx.channel());
 			session.sendLoginResponse(10);
+			System.out.println("Received unexpected lobby login opcode: " + opcode);
 			return;
 		}
 		int revision = in.readInt();
-		if (revision != REVISION) {
+		if (revision != GameConstants.REVISION) {
 			setSession(ctx.channel());
-			session.sendLoginResponse(10);
+			session.sendLoginResponse(6);
+			System.out.println("Received unexpected revision: " + revision);
 			return;
 		}
 		// the data of the login
@@ -84,13 +87,16 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 		int rsaSize = buffer.readUnsignedShort();
 		if (rsaSize > buffer.getRemaining()) {
 			session.sendLoginResponse(10);
+			System.err.println("Rsa size is wrong");
 			return;
 		}
 		byte[] rsaData = new byte[rsaSize];
 		buffer.read(rsaData);
 		FixedBuffer rsaBuffer = new FixedBuffer(Utils.cryptRSA(rsaData, LOGIN_EXPONENT, LOGIN_MODULUS));
-		if (rsaBuffer.readUnsignedByte() != 10) {
-			session.sendLoginResponse(10);
+		int rsaHeaderKey = rsaBuffer.readUnsignedByte();
+		if (rsaHeaderKey != 10) {
+			session.sendLoginResponse(6);
+			System.err.println("Rsa != 10 [ " + rsaHeaderKey + "]");
 			return;
 		}
 		int[] isaacSeed = new int[4];
@@ -146,7 +152,7 @@ public class LobbyLoginDecoder extends ByteToMessageDecoder {
 		ctx.pipeline().replace("decoder", "decoder", new RSPacketDecoder(session));
 		
 		// write the login request to the master server
-		MasterCommunication.write(new LoginRequestPacketOut(MasterConstants.LOBBY_WORLD_ID, true, username, password, session.getUid()));
+		 MasterCommunication.write(new LoginRequestPacketOut(MasterConstants.LOBBY_WORLD_ID, true, username, password, session.getUid()));
 	}
 	
 	/**

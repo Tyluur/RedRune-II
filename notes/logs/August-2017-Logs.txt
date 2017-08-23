@@ -1,3 +1,22 @@
+8/22/17 {
+	+   Started 666 -> 667 conversion
+		-   667's QOL updates made this necessary [proper middle mouse movements, camera chat changes, and more]
+			+   Read them here: http://runescape.wikia.com/wiki/Update:Chat_Changes_%26_Camera_Controls
+		-   Went with a clean 667 cache & an original 667 deob
+		-   Finished update server [matrix made a lot of changes]
+		-   Finished login decoding
+		-   Finished account username verification decoding
+		-   Finished account creation decoding
+		-   Finished world list updating
+		-   Finished friends list updating
+		-   Finished ignore list updating
+		-   Renamed a lot of things in the 667 deob
+		-   Added the 666 account creation improvements to 667
+		-   Finished account creation handling
+
+	[img]http://i.imgur.com/KWisFYT.png[/img]
+}
+
 8/19/17 {
 	+   Added player character styling
 	+	Added basic supplies interface modification

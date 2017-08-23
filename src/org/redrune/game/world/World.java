@@ -4,7 +4,6 @@ import com.google.common.base.Stopwatch;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.Cache;
-import org.redrune.cache.parse.BodyDataParser;
 import org.redrune.cache.parse.ItemDefinitionParser;
 import org.redrune.core.boot.BootHandler;
 import org.redrune.core.system.SystemManager;
@@ -38,6 +37,7 @@ import org.redrune.utility.repository.item.ItemRepository;
 import org.redrune.utility.repository.npc.combat.NPCCombatSwingRepository;
 import org.redrune.utility.repository.npc.spawn.NPCSpawn;
 import org.redrune.utility.repository.object.ObjectSpawnRepository;
+import org.redrune.utility.rs.ItemEquipIds;
 import org.redrune.utility.rs.constant.Directions.Direction;
 
 import java.util.ArrayList;
@@ -131,10 +131,10 @@ public final class World implements SequentialService {
 		if (!isLobby()) {
 			BootHandler.addWork(() -> {
 				Cache.init();
-				BodyDataParser.loadAll();
 				RegionBuilder.init();
 				CombatRegistry.registerAll();
 				ItemDefinitionParser.loadEquipmentConfiguration();
+				ItemEquipIds.registerAll();
 				ShopRepository.load();
 			}, () -> {
 				ItemRepository.initialize(false);

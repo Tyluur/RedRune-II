@@ -1,7 +1,6 @@
 package org.redrune.cache.parse;
 
-import org.redrune.cache.CacheConstants;
-import org.redrune.cache.CacheManager;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.definition.AnimationDefinition;
 
 import java.nio.ByteBuffer;
@@ -34,7 +33,8 @@ public final class AnimationDefinitionParser {
 		} else {
 			byte[] is = null;
 			try {
-				is = CacheManager.getData(CacheConstants.ANIM_IDX_ID, animationId >>> 7, animationId & 0x7f);
+				is = CacheFileStore.STORE.getIndexes()[20].getFile(animationId >>> 7,
+						animationId & 0x7f);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

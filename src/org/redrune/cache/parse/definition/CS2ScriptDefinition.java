@@ -1,6 +1,6 @@
 package org.redrune.cache.parse.definition;
 
-import org.redrune.cache.CacheManager;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.utility.tool.BufferUtils;
 
 import java.io.IOException;
@@ -72,7 +72,7 @@ public final class CS2ScriptDefinition {
 	}
 	
 	public CS2ScriptDefinition load(int id) throws IOException {
-		byte[] data = CacheManager.getData(17, id >>> 8, id & 0xFF);
+		byte[] data = CacheFileStore.STORE.getIndexes()[17].getFile(id >> 8, id & 0x3ff);
 		return decode(ByteBuffer.wrap(data));
 	}
 	

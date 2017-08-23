@@ -6,9 +6,11 @@ import org.redrune.cache.parse.definition.NPCDefinition;
 import org.redrune.game.node.entity.player.Player;
 import org.redrune.game.node.entity.player.data.PlayerAppearance;
 import org.redrune.game.node.entity.render.flag.UpdateFlag;
+import org.redrune.game.node.item.Item;
 import org.redrune.game.world.World;
 import org.redrune.network.world.packet.PacketBuilder;
 import org.redrune.network.world.packet.outgoing.impl.CS2ConfigBuilder;
+import org.redrune.utility.rs.constant.EquipConstants;
 
 /**
  * Represents a player's appearance update flag.
@@ -58,15 +60,13 @@ public class AppearanceUpdate extends UpdateFlag {
 		playerUpdate.writeByte(player.getVariables().getSkullIcon().getId()); //skull icon
 		playerUpdate.writeByte(player.getManager().getPrayers().getIcon().getId());
 		playerUpdate.writeByte(0);
-		if (definition == null || npcId == -1) {
-			for (int i = 0; i < BodyDataParser.getBodyData().length; i++) {
-				if (BodyDataParser.getBodyData()[i] != 1) {
-					int d = appearance.getBodyPart(i);
-					if (d == 0) {
-						playerUpdate.writeByte(0);
-					} else {
-						playerUpdate.writeShort((short) d);
-					}
+		if (definition == null) {
+			for (int index = 0; index < 4; index++) {
+				Item item = player.getEquipment().getItems().get(index);
+				if (item == null) {
+					playerUpdate.writeByte(0);
+				} else {
+					playerUpdate.writeShort(32768 + item.getEquipId());
 				}
 			}
 			bitSet = 0;
@@ -96,7 +96,8 @@ public class AppearanceUpdate extends UpdateFlag {
 					playerUpdate.putShort(data[i]);
 				}
 			}*/
-			if (appearance.getBodyPart(14) > 0) { //Only with aura.
+			int auraId = player.getEquipment().getIdInSlot(EquipConstants.SLOT_AURA);
+			if (auraId != -1) { //Only with aura.
 				playerUpdate.writeByte(0x1);
 				playerUpdate.writeIntSmart(8719);
 				playerUpdate.writeIntSmart(8719);

@@ -1,7 +1,6 @@
 package org.redrune.cache.parse;
 
-import org.redrune.cache.CacheConstants;
-import org.redrune.cache.CacheManager;
+import org.redrune.cache.CacheFileStore;
 import org.redrune.cache.parse.definition.ObjectDefinition;
 import org.redrune.cache.stream.RSByteArrayInputStream;
 import org.redrune.cache.stream.RSInputStream;
@@ -30,7 +29,7 @@ public final class ObjectDefinitionParser {
 		}
 		byte[] is = null;
 		try {
-			is = (CacheManager.getData(CacheConstants.OBJECTDEF_IDX_ID, objectId >>> 8, objectId & 0xff));
+			is = CacheFileStore.STORE.getIndexes()[16].getFile(objectId >>> 8, objectId & 0xff);
 		} catch (Exception e) {
 			System.out.println("Could not grab object " + objectId);
 			e.printStackTrace();

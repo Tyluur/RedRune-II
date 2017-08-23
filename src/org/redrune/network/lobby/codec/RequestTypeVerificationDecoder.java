@@ -4,12 +4,15 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import org.redrune.network.NetworkConstants;
 import org.redrune.network.lobby.ProtocolType;
 import org.redrune.network.world.packet.PacketBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static org.redrune.game.GameConstants.REVISION;
+import static org.redrune.network.NetworkConstants.UPDATE_SERVER_KEYS;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -41,11 +44,9 @@ public class RequestTypeVerificationDecoder extends ByteToMessageDecoder {
 				break;
 			case JS5_REQUEST:
 				int version = in.readInt();
-				if (version == NetworkConstants.REVISION) {
-					builder.writeByte((byte) 0);
-					for (int i = 0; i < 27; i++) {
-						builder.writeInt(NetworkConstants.UPDATE_SERVER_KEYS[i]);
-					}
+				if (version == REVISION) {
+					builder.writeByte(0);
+					Arrays.stream(UPDATE_SERVER_KEYS).forEach(builder::writeInt);
 					pipeline.addBefore("handler", "decoder", type.getDecoder(false));
 				} else {
 					builder.writeByte((byte) 6);

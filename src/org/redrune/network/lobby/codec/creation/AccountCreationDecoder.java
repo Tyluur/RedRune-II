@@ -14,7 +14,7 @@ import org.redrune.utility.backend.CreationResponse;
 import org.redrune.utility.rs.buffer.FixedBuffer;
 import org.redrune.utility.tool.Misc;
 
-import static org.redrune.network.NetworkConstants.REVISION;
+import static org.redrune.game.GameConstants.REVISION;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -43,6 +43,7 @@ public class AccountCreationDecoder extends PassableDecoder {
 		
 		int revision = buffer.readUnsignedShort();
 		if (revision != REVISION) {
+			System.out.println("invalid revision " + revision);
 			ProtocolType.sendCreationResponse(channel, CreationResponse.NONE);
 			return;
 		}

@@ -25,7 +25,7 @@ public class LobbyRepositoryPacketOut extends WritablePacket {
 	@Override
 	public WritablePacket create() {
 		writeByte(world.getId());
-		writeInt(world.getId());
+		writeInt(world.getPlayers().size());
 		return this;
 	}
 }
