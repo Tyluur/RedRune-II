@@ -1,0 +1,2 @@
+//use: AreaName - plane minX maxX minY maxY and repeat other possible coords squares
+LumbridgeTest - 0 3200 3250 3200 3250

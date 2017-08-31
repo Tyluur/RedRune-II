@@ -1,3 +1,45 @@
+8/30/17 {
+	+   Pulled a scratch 667 deob/cache/server
+	+   Removed tons of shit content & code from the 667 server release
+	+   Added real 667 js5 [several changes]
+	+   Added real 667 lobby login [rsa encryption]
+	+   Added real 667 lobby
+	+   Added real 667 world list
+	+   Added real 667 world login [rsa encryption]
+	+   Fixed a few things that would make the client crash on login bc of changes
+	+   Updated server with correct 667 xteas
+	+   Fixed tabs for resizable mode
+	+   Started on a plugin system [registration/list based plugins] [using java]
+		-   Tested this implementation with equipment bonuses
+	+   Added item stats to equipment bonuses
+		-   Fixed equipment bonuses interface not being able to unequip armour
+		-   Added player render emote config
+	+   Refactored server/client significantly
+		-   Removed 'LogicPacket' usage (the fuck was this for)
+		-   Added outgoing packet queuing
+	+   Added client zooming [shift + scroll to zoom]
+	+   Added new route finding [mgi's]
+		-   Implemented into npc route events
+			[also made the player face the npc until the event is over]
+	+   Added 'nothing interesting happens...' if we couldn't find anything to do at the end of an interaction
+
+	[img]http://i.imgur.com/jjWuwJ0.png[/img]
+	[img]http://i.imgur.com/EKed8YI.png[/img]
+	[img]http://i.imgur.com/NOjl0DL.png[/img]
+	[img]http://i.imgur.com/Hpa91Fw.png[/img]
+	[img]http://i.imgur.com/EbKUaIU.gif[/img]
+}
+
+8/24/17 {
+	+   Completed 667 lobby
+		-   Friend private messaging, friend list addition/removal
+		-   Ignore list addition/removal
+		-   Online status tweaking
+			+   Refactored some client bits while doing this
+		-   Added a packet to open urls [when clicking lobby buttons you will be directed to the right page]
+		-   Made shutdown hook deregister all players properly instead of only saving their file
+}
+
 8/22/17 {
 	+   Started 666 -> 667 conversion
 		-   667's QOL updates made this necessary [proper middle mouse movements, camera chat changes, and more]

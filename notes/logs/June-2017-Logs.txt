@@ -72,7 +72,7 @@
 		-   Mainly used for admins+, but in beta testing this will be good for beta testers.
 	+   Added the destroy item interface [when you attempt to drop an item that's untradeable/destroyable/lended]
 	+   Added item definition checking for lended items [as well as changing their last definition server sided to 'discard' [not 'drop' like their regular parts]
-	+   Added interface closing event to inventory item slot swapping
+	+   Added interface closing event to inventory item skill swapping
 	+   Added more information to the ::commands interface, like what you should add after the command
 		-   Mainly for mod+ commands
 	+   Added all prayer drains and saps

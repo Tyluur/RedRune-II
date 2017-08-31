@@ -1,37 +1,17 @@
 [Wrappers/Systems]
 +   Trade system
++   Duel system
 
 [Necessities]
-+   Stat restoration
-	-   Managed for antifire
-	-   Potion mixing
-+   Finish dynamic regions
-+   Barrows
-	-   [3549, 9695, 0] is the location of the chest
-	-   plane 3 is the location where the barrows brothers are
-+   PvP Areas in world 2
-	-   Pvp armour drops
 +   Appearance modification
 	-   Beard/gender/shoes/clothing
-+	Finish dynamic support for worlds
-	-	Lobby should show the last pushed updated, and we should know if any worlds are offline
++   Player Combat rewrite
++   New region system from matrix
 
 [Punishments]
-+   Once somebody has been punished, send the information over the network
-	-   PunishmentPacket [punisher, punished, type, duration]
-	-   When the packet has been received we will send a new one to all live worlds with same info
-	-   When the servers receive that info, only one of them should have that player online
-	-   Once the server with that player online receives the packet, it adds the punishment to the log, marks the player's file [if it's a ba
 
 [Unfinished]
-+   Finish all melee special attacks
-	-   spear,scim,2h
-	-   Whip [vine too]
-	-   Statius warhammer
-	-   Vesta spear
-	-   Barrelchest anchor
-+   Finish all range specials
-	-   Hand cannon
++   Object interaction packet not decoding right
 +   Magic Combat Spells
 	-   Regular Spellbook
 		-   Need to add alchemy spells
