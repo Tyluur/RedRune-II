@@ -1,29 +1,23 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
 
 public class Irontitan extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6059371477618091701L;
 
-	public Irontitan(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Irontitan(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Iron Within";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Inflicts three melee attacks instead of one in the next attack.";
+	public boolean submitSpecial(Object object) {
+		return false;
 	}
 
 	@Override
@@ -37,12 +31,17 @@ public class Irontitan extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.ENTITY;
+	public String getSpecialName() {
+		return "Iron Within";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		return false;
+	public String getSpecialDescription() {
+		return "Inflicts three melee attacks instead of one in the next attack.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.ENTITY;
 	}
 }

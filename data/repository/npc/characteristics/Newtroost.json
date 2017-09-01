@@ -1,0 +1,40 @@
+{
+  "combatDefinitions": {
+    "5597": {
+      "hitpoints": 180,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "5597": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 222,
+        "minAmount": 4,
+        "maxAmount": 12,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "5597": "Since when did newts have beaks?"
+  }
+}

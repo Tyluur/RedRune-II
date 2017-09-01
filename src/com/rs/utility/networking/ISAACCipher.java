@@ -44,82 +44,6 @@ public class ISAACCipher {
 	}
 	
 	/**
-	 * Reads the key but only peeks
-	 */
-	public int peek() {
-		if (count == 0) {
-			isaac();
-			count = 256;
-		}
-		return results[count - 1];
-	}
-	
-	/**
-	 * Gets the next value.
-	 *
-	 * @return The next value.
-	 */
-	public int take() {
-		if (count-- == 0) {
-			isaac();
-			count = SIZE - 1;
-		}
-		return results[count];
-	}
-	
-	/**
-	 * Generates 256 results.
-	 */
-	public void isaac() {
-		int i, j, x, y;
-		b += ++c;
-		for (i = 0, j = SIZE / 2; i < SIZE / 2; ) {
-			x = memory[i];
-			a ^= a << 13;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			x = memory[i];
-			a ^= a >>> 6;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			x = memory[i];
-			a ^= a << 2;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			x = memory[i];
-			a ^= a >>> 16;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-		}
-		for (j = 0; j < SIZE / 2; ) {
-			x = memory[i];
-			a ^= a << 13;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			x = memory[i];
-			a ^= a >>> 6;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			x = memory[i];
-			a ^= a << 2;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-			x = memory[i];
-			a ^= a >>> 16;
-			a += memory[j++];
-			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
-			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
-		}
-	}
-	
-	/**
 	 * * Initializes the ISAAC. * * @param flag Indicating if we should perform a second pass.
 	 */
 	public void init(boolean flag) {
@@ -242,5 +166,81 @@ public class ISAACCipher {
 		}
 		isaac();
 		count = SIZE;
+	}
+	
+	/**
+	 * Generates 256 results.
+	 */
+	public void isaac() {
+		int i, j, x, y;
+		b += ++c;
+		for (i = 0, j = SIZE / 2; i < SIZE / 2; ) {
+			x = memory[i];
+			a ^= a << 13;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+			x = memory[i];
+			a ^= a >>> 6;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+			x = memory[i];
+			a ^= a << 2;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+			x = memory[i];
+			a ^= a >>> 16;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+		}
+		for (j = 0; j < SIZE / 2; ) {
+			x = memory[i];
+			a ^= a << 13;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+			x = memory[i];
+			a ^= a >>> 6;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+			x = memory[i];
+			a ^= a << 2;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+			x = memory[i];
+			a ^= a >>> 16;
+			a += memory[j++];
+			memory[i] = y = memory[(x & MASK) >> 2] + a + b;
+			results[i++] = b = memory[((y >> SIZE_LOG) & MASK) >> 2] + x;
+		}
+	}
+	
+	/**
+	 * Reads the key but only peeks
+	 */
+	public int peek() {
+		if (count == 0) {
+			isaac();
+			count = 256;
+		}
+		return results[count - 1];
+	}
+	
+	/**
+	 * Gets the next value.
+	 *
+	 * @return The next value.
+	 */
+	public int take() {
+		if (count-- == 0) {
+			isaac();
+			count = SIZE - 1;
+		}
+		return results[count];
 	}
 }

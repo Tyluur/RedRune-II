@@ -1,0 +1,98 @@
+{
+  "combatDefinitions": {
+    "3497": {
+      "hitpoints": 2400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 200,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "3498": {
+      "hitpoints": 2400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 200,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "3499": {
+      "hitpoints": 2400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 200,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "3500": {
+      "hitpoints": 2400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 200,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "3501": {
+      "hitpoints": 2400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 200,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "3502": {
+      "hitpoints": 2400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 200,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "3497": "Deadly AND fruity!",
+    "3498": "Deadly AND fruity!",
+    "3499": "Deadly AND fruity!",
+    "3500": "Deadly AND fruity!",
+    "3501": "Deadly AND fruity!",
+    "3502": "Deadly AND fruity!"
+  }
+}

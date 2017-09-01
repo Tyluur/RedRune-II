@@ -1,0 +1,124 @@
+{
+  "combatDefinitions": {
+    "6367": {
+      "hitpoints": 500,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 127,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "6367": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 563,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 555,
+        "minAmount": 6,
+        "maxAmount": 19,
+        "rate": 78.0,
+        "rare": false
+      },
+      {
+        "itemId": 561,
+        "minAmount": 28,
+        "maxAmount": 28,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 565,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 100,
+        "maxAmount": 100,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 245,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 70.0,
+        "rare": false
+      }
+    ],
+    "6368": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 563,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 555,
+        "minAmount": 6,
+        "maxAmount": 19,
+        "rate": 97.0,
+        "rare": false
+      },
+      {
+        "itemId": 561,
+        "minAmount": 28,
+        "maxAmount": 28,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 565,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 100,
+        "maxAmount": 100,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 245,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 61.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

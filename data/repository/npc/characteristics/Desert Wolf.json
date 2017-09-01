@@ -1,0 +1,34 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "839": [
+      {
+        "itemId": 2859,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "6050": [
+      {
+        "itemId": 2859,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "6051": [
+      {
+        "itemId": 2859,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

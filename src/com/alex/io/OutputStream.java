@@ -7,15 +7,21 @@ import java.math.BigInteger;
 public final class OutputStream extends Stream {
 
 	private static final int[] BIT_MASK = new int[32];
-	private int opcodeStart = 0;
 
 	static {
-		for (int i = 0; i < 32; i++)
+		for (int i = 0; i < 32; i++) {
 			BIT_MASK[i] = (1 << i) - 1;
+		}
 	}
+
+	private int opcodeStart = 0;
 	
 	public OutputStream(int capacity) {
 		setBuffer(new byte[capacity]);
+	}
+
+	public void setBuffer(byte[] buffer) {
+		this.buffer = buffer;
 	}
 
 	public OutputStream() {
@@ -27,14 +33,23 @@ public final class OutputStream extends Stream {
 		this.offset = buffer.length;
 		length = buffer.length;
 	}
-
 	
 	public OutputStream(int[] buffer) {
 		setBuffer(new byte[buffer.length]);
-		for(int value : buffer)
+		for (int value : buffer) {
 			writeByte(value);
+		}
 	}
-	
+
+	public void writeByte(int i) {
+		writeByte(i, offset++);
+	}
+
+	public void writeByte(int i, int position) {
+		checkCapacityPosition(position);
+		getBuffer()[position] = (byte) i;
+	}
+
 	public void checkCapacityPosition(int position) {
 		if (position >= getBuffer().length) {
 			byte[] newBuffer = new byte[position + 16];
@@ -43,19 +58,20 @@ public final class OutputStream extends Stream {
 		}
 	}
 
+	@Override
+	public void writeInt(int i) {
+		writeByte(i >> 24);
+		writeByte(i >> 16);
+		writeByte(i >> 8);
+		writeByte(i);
+	}
+
 	public void skip(int length) {
 		setOffset(getOffset() + length);
 	}
 
 	public void setOffset(int offset) {
 		this.offset = offset;
-	}
-
-
-	public void writeBytes(byte[] b, int offset, int length) {
-		checkCapacityPosition(this.getOffset() + length - offset);
-		System.arraycopy(b, offset, getBuffer(), this.getOffset(), length);
-		this.setOffset(this.getOffset() + (length - offset));
 	}
 
 	public void writeBytes(byte[] b) {
@@ -67,15 +83,17 @@ public final class OutputStream extends Stream {
 	}
 
 	public void addBytes128(byte[] data, int offset, int len) {
-		for (int k = offset; k < len; k++)
+		for (int k = offset; k < len; k++) {
 			writeByte((byte) (data[k] + 128));
+		}
 	}
 
 	public void addBytesS(byte[] data, int offset, int len) {
-		for (int k = offset; k < len; k++)
+		for (int k = offset; k < len; k++) {
 			writeByte((byte) (-128 + data[k]));
+		}
 	}
-
+	
 	public void addBytes_Reverse(byte[] data, int offset, int len) {
 		for (int i = len - 1; i >= 0; i--) {
 			writeByte(data[i]);
@@ -88,17 +106,8 @@ public final class OutputStream extends Stream {
 		}
 	}
 
-	public void writeByte(int i) {
-		writeByte(i, offset++);
-	}
-	
 	public void writeNegativeByte(int i) {
 		writeByte(-i, offset++);
-	}
-
-	public void writeByte(int i, int position) {
-		checkCapacityPosition(position);
-		getBuffer()[position] = (byte) i;
 	}
 
 	public void writeByte128(int i) {
@@ -131,18 +140,17 @@ public final class OutputStream extends Stream {
 
 	@SuppressWarnings("unused")
 	public void writeBigSmart(int i) {
-		 if(Constants.CLIENT_BUILD < 670) {
-			 writeShort(i);
-			 return;
-		 }
-		if(i >= Short.MAX_VALUE && i >= 0)
-			writeInt(i-Integer.MAX_VALUE-1);
-		else {
+		if (Constants.CLIENT_BUILD < 670) {
+			writeShort(i);
+			return;
+		}
+		if (i >= Short.MAX_VALUE && i >= 0) {
+			writeInt(i - Integer.MAX_VALUE - 1);
+		} else {
 			writeShort(i >= 0 ? i : 32767);
 		}
 	}
 
-	
 	public void writeSmart(int i) {
 		if (i >= 128) {
 			writeShort(i + 32768);
@@ -162,14 +170,6 @@ public final class OutputStream extends Stream {
 	}
 
 	public void write24BitInt(int i) {
-		writeByte(i >> 16);
-		writeByte(i >> 8);
-		writeByte(i);
-	}
-
-	@Override
-	public void writeInt(int i) {
-		writeByte(i >> 24);
 		writeByte(i >> 16);
 		writeByte(i >> 8);
 		writeByte(i);
@@ -289,8 +289,7 @@ public final class OutputStream extends Stream {
 		for (; numBits > bitOffset; bitOffset = 8) {
 			checkCapacityPosition(bytePos);
 			getBuffer()[bytePos] &= ~BIT_MASK[bitOffset];
-			getBuffer()[bytePos++] |= value >> numBits - bitOffset
-					& BIT_MASK[bitOffset];
+			getBuffer()[bytePos++] |= value >> numBits - bitOffset & BIT_MASK[bitOffset];
 			numBits -= bitOffset;
 		}
 		checkCapacityPosition(bytePos);
@@ -299,15 +298,10 @@ public final class OutputStream extends Stream {
 			getBuffer()[bytePos] |= value & BIT_MASK[bitOffset];
 		} else {
 			getBuffer()[bytePos] &= ~(BIT_MASK[numBits] << bitOffset - numBits);
-			getBuffer()[bytePos] |= (value & BIT_MASK[numBits]) << bitOffset
-					- numBits;
+			getBuffer()[bytePos] |= (value & BIT_MASK[numBits]) << bitOffset - numBits;
 		}
 	}
 
-	public void setBuffer(byte[] buffer) {
-		this.buffer = buffer;
-	}
-	
 	public final void rsaEncode(BigInteger key, BigInteger modulus) {
 		int length = offset;
 		offset = 0;
@@ -318,6 +312,12 @@ public final class OutputStream extends Stream {
 		byte out[] = biginteger3.toByteArray();
 		offset = 0;
 		writeBytes(out, 0, out.length);
+	}
+	
+	public void writeBytes(byte[] b, int offset, int length) {
+		checkCapacityPosition(this.getOffset() + length - offset);
+		System.arraycopy(b, offset, getBuffer(), this.getOffset(), length);
+		this.setOffset(this.getOffset() + (length - offset));
 	}
 
 }

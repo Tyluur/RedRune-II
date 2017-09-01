@@ -6,7 +6,13 @@ package com.rs.game;
  */
 public class GameFlags {
 	
+	/**
+	 * If the server was launched in debug mode
+	 */
 	public static boolean debugMode;
 	
+	/**
+	 * If the server was launched in host mode
+	 */
 	public static boolean hostMode;
 }

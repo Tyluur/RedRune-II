@@ -32,6 +32,30 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return false;
 	}
 	
+	public int getSize() {
+		return data.length;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T get(int slot) {
+		if (slot < 0 || slot >= data.length) {
+			return null;
+		}
+		return (T) data[slot];
+	}
+	
+	public int getNumberOf(Item item) {
+		int count = 0;
+		for (Item aData : data) {
+			if (aData != null) {
+				if (aData.getId() == item.getId()) {
+					count += aData.getAmount();
+				}
+			}
+		}
+		return count;
+	}
+	
 	public void shift() {
 		Item[] oldData = data;
 		data = new Item[oldData.length];
@@ -43,28 +67,6 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T get(int slot) {
-		if (slot < 0 || slot >= data.length) {
-			return null;
-		}
-		return (T) data[slot];
-	}
-	
-	public void set(int slot, T item) {
-		if (slot < 0 || slot >= data.length) {
-			return;
-		}
-		data[slot] = item;
-	}
-	
-	public void set2(int slot, Item item) {
-		if (slot < 0 || slot >= data.length) {
-			return;
-		}
-		data[slot] = item;
-	}
-	
 	public boolean forceAdd(T item) {
 		for (int i = 0; i < data.length; i++) {
 			if (data[i] == null) {
@@ -73,47 +75,6 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 			}
 		}
 		return false;
-	}
-	
-	public boolean add(T item) {
-		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
-			for (int i = 0; i < data.length; i++) {
-				if (data[i] != null) {
-					if (data[i].getId() == item.getId()) {
-						data[i] = new Item(data[i].getId(), data[i].getAmount() + item.getAmount());
-						return true;
-					}
-				}
-			}
-		} else {
-			if (item.getAmount() > 1) {
-				if (freeSlots() >= item.getAmount()) {
-					for (int i = 0; i < item.getAmount(); i++) {
-						int index = freeSlot();
-						data[index] = new Item(item.getId(), 1);
-					}
-					return true;
-				} else {
-					return false;
-				}
-			}
-		}
-		int index = freeSlot();
-		if (index == -1) {
-			return false;
-		}
-		data[index] = item;
-		return true;
-	}
-	
-	public int freeSlots() {
-		int j = 0;
-		for (Item aData : data) {
-			if (aData == null) {
-				j++;
-			}
-		}
-		return j;
 	}
 	
 	public int remove(T item) {
@@ -172,23 +133,10 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return amtOf >= item.getAmount();
 	}
 	
-	public int freeSlot() {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] == null) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
 	public void clear() {
 		for (int i = 0; i < data.length; i++) {
 			data[i] = null;
 		}
-	}
-	
-	public int getSize() {
-		return data.length;
 	}
 	
 	public int getFreeSlots() {
@@ -211,18 +159,6 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return s;
 	}
 	
-	public int getNumberOf(Item item) {
-		int count = 0;
-		for (Item aData : data) {
-			if (aData != null) {
-				if (aData.getId() == item.getId()) {
-					count += aData.getAmount();
-				}
-			}
-		}
-		return count;
-	}
-	
 	public int getNumberOf(int item) {
 		int count = 0;
 		for (Item aData : data) {
@@ -233,10 +169,6 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 			}
 		}
 		return count;
-	}
-	
-	public Item[] getItems() {
-		return data;
 	}
 	
 	public Item[] getItemsCopy() {
@@ -251,15 +183,6 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return c;
 	}
 	
-	public int getFreeSlot() {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] == null) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
 	public int getThisItemSlot(T item) {
 		for (int i = 0; i < data.length; i++) {
 			if (data[i] != null) {
@@ -269,6 +192,15 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 			}
 		}
 		return getFreeSlot();
+	}
+	
+	public int getFreeSlot() {
+		for (int i = 0; i < data.length; i++) {
+			if (data[i] == null) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	public Item lookup(int id) {
@@ -344,6 +276,20 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return removed;
 	}
 	
+	public void set2(int slot, Item item) {
+		if (slot < 0 || slot >= data.length) {
+			return;
+		}
+		data[slot] = item;
+	}
+	
+	public void set(int slot, T item) {
+		if (slot < 0 || slot >= data.length) {
+			return;
+		}
+		data[slot] = item;
+	}
+	
 	public void addAll(ItemsContainer<T> container) {
 		for (int i = 0; i < container.getSize(); i++) {
 			T item = container.get(i);
@@ -351,6 +297,56 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 				this.add(item);
 			}
 		}
+	}
+	
+	public boolean add(T item) {
+		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
+			for (int i = 0; i < data.length; i++) {
+				if (data[i] != null) {
+					if (data[i].getId() == item.getId()) {
+						data[i] = new Item(data[i].getId(), data[i].getAmount() + item.getAmount());
+						return true;
+					}
+				}
+			}
+		} else {
+			if (item.getAmount() > 1) {
+				if (freeSlots() >= item.getAmount()) {
+					for (int i = 0; i < item.getAmount(); i++) {
+						int index = freeSlot();
+						data[index] = new Item(item.getId(), 1);
+					}
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		int index = freeSlot();
+		if (index == -1) {
+			return false;
+		}
+		data[index] = item;
+		return true;
+	}
+	
+	public int freeSlots() {
+		int j = 0;
+		for (Item aData : data) {
+			if (aData == null) {
+				j++;
+			}
+		}
+		return j;
+	}
+	
+	public int freeSlot() {
+		for (int i = 0; i < data.length; i++) {
+			if (data[i] == null) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	public boolean hasSpaceFor(ItemsContainer<T> container) {
@@ -386,6 +382,10 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 	public Item[] toArray() {
 		
 		return this.getItems();
+	}
+	
+	public Item[] getItems() {
+		return data;
 	}
 	
 }

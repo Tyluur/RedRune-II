@@ -2,31 +2,31 @@ package com.rs.networking.io.buffer;
 
 /**
  * Created at: Nov 27, 2016 8:48:52 PM
- * 
+ *
  * @author Walied-Yassen A.k.A Cody
  */
 public class FixedBuffer extends Buffer {
-
+	
 	/**
 	 * Constructs a new {@link FixedBuffer} object instance.
-	 * 
+	 *
 	 * @param data
-	 *            the buffer data.
+	 * 		the buffer data.
 	 */
 	public FixedBuffer(byte[] data) {
 		super(data);
 	}
-
+	
 	/**
 	 * Constructs a new {@link FixedBuffer} object instance.
-	 * 
+	 *
 	 * @param size
-	 *            the buffer size.
+	 * 		the buffer size.
 	 */
 	public FixedBuffer(int size) {
 		super(new byte[size]);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -39,7 +39,7 @@ public class FixedBuffer extends Buffer {
 		}
 		return data[offset];
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,6 +52,5 @@ public class FixedBuffer extends Buffer {
 		}
 		data[offset] = (byte) value;
 	}
-
-
+	
 }

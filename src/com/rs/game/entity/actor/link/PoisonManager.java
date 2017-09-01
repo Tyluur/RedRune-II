@@ -12,18 +12,18 @@ public final class PoisonManager implements Serializable {
 	
 	private static final long serialVersionUID = -6324477860776313690L;
 	
-	private transient Actor actor;
-	
 	private int poisonDamage;
 	
 	private int poisonCount;
 	
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
+	private transient Actor actor;
 	
 	public Actor getActor() {
 		return actor;
+	}
+	
+	public void setActor(Actor actor) {
+		this.actor = actor;
 	}
 	
 	public void makePoisoned(int startDamage) {
@@ -41,6 +41,17 @@ public final class PoisonManager implements Serializable {
 		}
 		poisonDamage = startDamage;
 		refresh();
+	}
+	
+	public void refresh() {
+		if (actor instanceof Player) {
+			Player player = ((Player) actor);
+			player.getPackets().sendConfig(102, isPoisoned() ? 1 : 0);
+		}
+	}
+	
+	public boolean isPoisoned() {
+		return poisonDamage >= 1;
 	}
 	
 	public void processPoison() {
@@ -74,16 +85,5 @@ public final class PoisonManager implements Serializable {
 		poisonDamage = 0;
 		poisonCount = 0;
 		refresh();
-	}
-	
-	public void refresh() {
-		if (actor instanceof Player) {
-			Player player = ((Player) actor);
-			player.getPackets().sendConfig(102, isPoisoned() ? 1 : 0);
-		}
-	}
-	
-	public boolean isPoisoned() {
-		return poisonDamage >= 1;
 	}
 }

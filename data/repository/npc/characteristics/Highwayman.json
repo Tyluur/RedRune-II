@@ -1,0 +1,144 @@
+{
+  "combatDefinitions": {
+    "180": {
+      "hitpoints": 130,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 30,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "2677": {
+      "hitpoints": 130,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 30,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "7443": {
+      "hitpoints": 130,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 30,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "180": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1007,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 31.0,
+        "rare": false
+      },
+      {
+        "itemId": 9140,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 49.0,
+        "rare": false
+      }
+    ],
+    "2677": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1007,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 44.0,
+        "rare": false
+      },
+      {
+        "itemId": 9140,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 45.0,
+        "rare": false
+      }
+    ],
+    "7443": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1007,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 32.0,
+        "rare": false
+      },
+      {
+        "itemId": 9140,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 40.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "180": "He holds up passers by.",
+    "2677": "He holds up passers by.",
+    "7443": "He holds up passers by."
+  }
+}

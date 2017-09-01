@@ -3,7 +3,8 @@ package com.rs.game.entity.actor.npc;
 import com.rs.cache.Cache;
 import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.cores.CoresManager;
-import com.rs.game.content.controler.impl.activity.Wilderness;
+import com.rs.game.content.controller.impl.activity.Wilderness;
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
@@ -14,16 +15,14 @@ import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.npc.mask.Transformation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.item.Item;
 import com.rs.game.world.World;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.NPCConstants;
 import com.rs.utility.game.map.MapAreas;
-import com.rs.utility.game.npc.NPCBonuses;
-import com.rs.utility.game.npc.NPCCombatDefinitionsL;
-import com.rs.utility.game.npc.NPCDrops;
+import com.rs.utility.repo.npc.NPCCharacteristicRepository;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -84,8 +83,6 @@ public class NPC extends Actor implements Serializable {
 	
 	private transient boolean changedCombatLevel;
 	
-	private transient Player owner;
-	
 	public NPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		this(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
 	}
@@ -103,8 +100,8 @@ public class NPC extends Actor implements Serializable {
 		combatLevel = -1;
 		setHitpoints(getMaxHitpoints());
 		setDirection(getRespawnDirection());
-		setRandomWalk((getDefinitions().walkMask & 0x2) != 0 || forceRandomWalk(id));
-		bonuses = NPCBonuses.getBonuses(id);
+		setRandomWalk((getDefinitions().getWalkMask() & 0x2) != 0 || forceRandomWalk(id));
+		bonuses = NPCCharacteristicRepository.getBonuses(id);
 		combat = new NPCCombat(this);
 		capDamage = -1;
 		lureDelay = 12000;
@@ -119,10 +116,10 @@ public class NPC extends Actor implements Serializable {
 	
 	public int getRespawnDirection() {
 		NPCDefinitions definitions = getDefinitions();
-		if (definitions.anInt853 << 32 != 0 && definitions.respawnDirection > 0 && definitions.respawnDirection <= 8) {
-			return (4 + definitions.respawnDirection) << 11;
+		if (definitions.anInt853 == 0 || definitions.getRespawnDirection() <= 0 || definitions.getRespawnDirection() > 8) {
+			return 0;
 		}
-		return 0;
+		return (4 + definitions.getRespawnDirection()) << 11;
 	}
 	
 	public void setRandomWalk(boolean forceRandomWalk) {
@@ -151,7 +148,7 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public NPCCombatDefinitions getCombatDefinitions() {
-		return NPCCombatDefinitionsL.getNPCCombatDefinitions(id);
+		return NPCCharacteristicRepository.getCombatDefinitions(id);
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -197,7 +194,7 @@ public class NPC extends Actor implements Serializable {
 		super.reset();
 		setDirection(getRespawnDirection());
 		combat.reset();
-		bonuses = NPCBonuses.getBonuses(id); // back to real bonuses
+		bonuses = NPCCharacteristicRepository.getBonuses(id); // back to real bonuses
 		forceWalk = null;
 	}
 	
@@ -208,7 +205,7 @@ public class NPC extends Actor implements Serializable {
 	
 	@Override
 	public int getSize() {
-		return getDefinitions().size;
+		return getDefinitions().getSize();
 	}
 	
 	@Override
@@ -364,7 +361,7 @@ public class NPC extends Actor implements Serializable {
 		// getDefinitions().hasAttackOption())) {
 		if (!forceAgressive) {
 			NPCCombatDefinitions defs = getCombatDefinitions();
-			if (defs.getAgressivenessType() == NPCCombatDefinitions.PASSIVE) {
+			if (defs.getAggressivenessType() == NPCConstants.PASSIVE) {
 				return false;
 			}
 		}
@@ -399,7 +396,7 @@ public class NPC extends Actor implements Serializable {
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || !player.withinDistance(this, forceTargetDistance > 0 ? forceTargetDistance : (getCombatDefinitions().getAttackStyle() == NPCCombatDefinitions.MELEE ? 4 : getCombatDefinitions().getAttackStyle() == NPCCombatDefinitions.SPECIAL ? 64 : 8)) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && player.getAttackedBy() != this && (player.getAttackedByDelay() > System.currentTimeMillis() || player.getFindTargetDelay() > System.currentTimeMillis())) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getDefinitions().combatLevel * 2)) {
+					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || !player.withinDistance(this, forceTargetDistance > 0 ? forceTargetDistance : (getCombatDefinitions().getAttackStyle() == NPCConstants.MELEE ? 4 : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8)) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && player.getAttackedBy() != this && (player.getAttackedByDelay() > System.currentTimeMillis() || player.getFindTargetDelay() > System.currentTimeMillis())) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getDefinitions().getCombatLevel() * 2)) {
 						continue;
 					}
 					possibleTarget.add(player);
@@ -435,7 +432,7 @@ public class NPC extends Actor implements Serializable {
 			@Override
 			public void run() {
 				if (loop == 0) {
-					setNextAnimation(new Animation(defs.getDeathEmote()));
+					setNextAnimation(new Animation(defs.getDeathAnim()));
 				} else if (loop >= defs.getDeathDelay()) {
 					drop();
 					reset();
@@ -682,7 +679,16 @@ public class NPC extends Actor implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "NPC{" + "id=" + id + ", spawned=" + spawned + ", name='" + name + '\'' + '}';
+		return "NPC{" + "id=" + id + ", tile=" + getWorldTile() + ", name='" + getName() + '\'' + '}';
+	}
+	
+	public String getName() {
+		return name != null ? name : getDefinitions().getName();
+	}
+	
+	public void setName(String string) {
+		this.name = getDefinitions().getName().equals(string) ? null : string;
+		changedName = true;
 	}
 	
 	public void transformIntoNPC(int id) {
@@ -692,7 +698,7 @@ public class NPC extends Actor implements Serializable {
 	
 	public void setNPC(int id) {
 		this.id = id;
-		bonuses = NPCBonuses.getBonuses(id);
+		bonuses = NPCCharacteristicRepository.getBonuses(id);
 	}
 	
 	public boolean canBeAttackFromOutOfArea() {
@@ -709,16 +715,11 @@ public class NPC extends Actor implements Serializable {
 			setLocation(respawnTile);
 			finish();
 		}
-		CoresManager.slowExecutor.schedule(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					spawn();
-				} catch (Exception e) {
-					e.printStackTrace();
-				} catch (Error e) {
-					e.printStackTrace();
-				}
+		CoresManager.slowExecutor.schedule(() -> {
+			try {
+				spawn();
+			} catch (Exception | Error e) {
+				e.printStackTrace();
 			}
 		}, getId() == 1265 ? 500 : getCombatDefinitions().getRespawnDelay() * 600, TimeUnit.MILLISECONDS);
 	}
@@ -744,60 +745,41 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public void drop() {
-		try {
-			Drop[] drops = NPCDrops.getDrops(id);
-			if (drops == null) {
-				return;
-			}
-			Player killer = getMostDamageReceivedSourcePlayer();
-			if (killer == null) {
-				return;
-			}
-			if (killer.slayerTask.getTaskMonstersLeft() > 0) {
-				for (String m : killer.slayerTask.getTask().slayable) {
-					if (getDefinitions().name.equals(m)) {
-						killer.slayerTask.onMonsterDeath(killer, this);
-						break;
-					}
+		List<Drop> drops = NPCCharacteristicRepository.getDrops(id);
+		if (drops == null) {
+			return;
+		}
+		Player killer = getMostDamageReceivedSourcePlayer();
+		if (killer == null) {
+			return;
+		}
+		if (killer.slayerTask.getTaskMonstersLeft() > 0) {
+			for (String m : killer.slayerTask.getCurrentTask().slayable) {
+				if (getDefinitions().getName().equals(m)) {
+					killer.slayerTask.onMonsterDeath(killer, this);
+					break;
 				}
 			}
-			Drop[] possibleDrops = new Drop[drops.length];
-			int possibleDropsCount = 0;
-			for (Drop drop : drops) {
-				if (drop.getRate() == 100) {
-					sendDrop(killer, drop);
-				} else {
-					if ((Misc.getRandomDouble(99) + 1) <= drop.getRate() * 1.5) {
-						possibleDrops[possibleDropsCount++] = drop;
-					}
+		}
+		Drop[] possibleDrops = new Drop[drops.size()];
+		int possibleDropsCount = 0;
+		for (Drop drop : drops) {
+			if (drop.getRate() == 100) {
+				sendDrop(killer, drop);
+			} else {
+				if ((Misc.getRandomDouble(99) + 1) <= drop.getRate() * 1.5) {
+					possibleDrops[possibleDropsCount++] = drop;
 				}
 			}
-			if (possibleDropsCount > 0) {
-				sendDrop(killer, possibleDrops[Misc.getRandom(possibleDropsCount - 1)]);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} catch (Error e) {
-			e.printStackTrace();
+		}
+		if (possibleDropsCount > 0) {
+			sendDrop(killer, possibleDrops[Misc.getRandom(possibleDropsCount - 1)]);
 		}
 	}
 	
 	public void sendDrop(Player player, Drop drop) {
 		int size = getSize();
 		World.addGroundItem(new Item(drop.getItemId(), drop.getMinAmount() + Misc.getRandom(drop.getExtraAmount())), new WorldTile(getCoordFaceX(size), getCoordFaceY(size), getPlane()), player, false, 180, true);
-		
-		if (getId() == 6254 && getId() == 6259) {
-			player.SaradominKC = +1;
-		}
-		if (getId() == 6246 || getId() == 6236 || getId() == 6232 || getId() == 6240 || getId() == 6241 || getId() == 6242 || getId() == 6235 || getId() == 6234 || getId() == 6243 || getId() == 6236 || getId() == 6244 || getId() == 6237 || getId() == 6246 || getId() == 6238 || getId() == 6239 || getId() == 6230) {
-			player.ArmadylKC = +1;
-		}
-		if (getId() == 6281 || getId() == 6282 || getId() == 6275 || getId() == 6279 || getId() == 9184 || getId() == 6268 || getId() == 6270 || getId() == 6274 || getId() == 6277 || getId() == 6276 || getId() == 6278 || getId() == 6213 || getId() == 6271) {
-			player.BandosKC = +1;
-		}
-		if (getId() == 6215 || getId() == 6211 || getId() == 3406 || getId() == 6216 || getId() == 6214 || getId() == 6215 || getId() == 6212 || getId() == 6219 || getId() == 6221 || getId() == 6218) {
-			player.ZamorakKC = +1;
-		}
 	}
 	
 	public int getMaxHit() {
@@ -911,21 +893,12 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public int getCombatLevel() {
-		return combatLevel >= 0 ? combatLevel : getDefinitions().combatLevel;
+		return combatLevel >= 0 ? combatLevel : getDefinitions().getCombatLevel();
 	}
 	
 	public void setCombatLevel(int level) {
-		combatLevel = getDefinitions().combatLevel == level ? -1 : level;
+		combatLevel = getDefinitions().getCombatLevel() == level ? -1 : level;
 		changedCombatLevel = true;
-	}
-	
-	public String getName() {
-		return name != null ? name : getDefinitions().name;
-	}
-	
-	public void setName(String string) {
-		this.name = getDefinitions().name.equals(string) ? null : string;
-		changedName = true;
 	}
 	
 	public boolean hasChangedName() {

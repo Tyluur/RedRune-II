@@ -49,6 +49,31 @@ public final class Store {
 		}
 	}
 	
+	@SuppressWarnings("unused")
+	public byte[] generateIndex255Archive255() {
+		return Constants.CLIENT_BUILD < 614 ? generateIndex255Archive255Outdated() : generateIndex255Archive255Current(null, null);
+	}
+	
+	/*
+	 * old code
+	 */
+	public byte[] generateIndex255Archive255Outdated() {
+		OutputStream stream = new OutputStream(indexes.length * 8);
+		for (int index = 0; index < indexes.length; index++) {
+			if (indexes[index] == null) {
+				stream.writeInt(0);
+				stream.writeInt(0);
+				continue;
+			}
+			stream.writeInt(indexes[index].getCRC());
+			stream.writeInt(indexes[index].getTable().getRevision());
+		}
+		byte[] archive = new byte[stream.getOffset()];
+		stream.setOffset(0);
+		stream.getBytes(archive, 0, archive.length);
+		return archive;
+	}
+	
 	public final byte[] generateIndex255Archive255Current(BigInteger grab_server_private_exponent, BigInteger grab_server_modulus) {
 		OutputStream stream = new OutputStream();
 		stream.writeByte(getIndexes().length);
@@ -79,7 +104,7 @@ public final class Store {
 		byte[] archive = new byte[stream.getOffset()];
 		stream.setOffset(0);
 		stream.getBytes(archive, 0, archive.length);
-		
+
 		OutputStream hashStream = new OutputStream(65);
 		hashStream.writeByte(0);
 		hashStream.writeBytes(Whirlpool.getHash(archive, 0, archive.length));
@@ -91,31 +116,6 @@ public final class Store {
 		}
 		stream.writeBytes(hash);
 		archive = new byte[stream.getOffset()];
-		stream.setOffset(0);
-		stream.getBytes(archive, 0, archive.length);
-		return archive;
-	}
-	
-	@SuppressWarnings("unused")
-	public byte[] generateIndex255Archive255() {
-		return Constants.CLIENT_BUILD < 614 ? generateIndex255Archive255Outdated() : generateIndex255Archive255Current(null, null);
-	}
-	
-	/*
-	 * old code
-	 */
-	public byte[] generateIndex255Archive255Outdated() {
-		OutputStream stream = new OutputStream(indexes.length * 8);
-		for (int index = 0; index < indexes.length; index++) {
-			if (indexes[index] == null) {
-				stream.writeInt(0);
-				stream.writeInt(0);
-				continue;
-			}
-			stream.writeInt(indexes[index].getCRC());
-			stream.writeInt(indexes[index].getTable().getRevision());
-		}
-		byte[] archive = new byte[stream.getOffset()];
 		stream.setOffset(0);
 		stream.getBytes(archive, 0, archive.length);
 		return archive;
@@ -140,10 +140,6 @@ public final class Store {
 		return id;
 	}
 	
-	public void resetIndex(int id, boolean named, boolean usesWhirpool, int tableCompression) throws IOException {
-		resetIndex(id, indexes, named, usesWhirpool, tableCompression);
-	}
-	
 	public void resetIndex(int id, Index[] indexes, boolean named, boolean usesWhirpool, int tableCompression) throws IOException {
 		OutputStream stream = new OutputStream(4);
 		stream.writeByte(5);
@@ -155,6 +151,10 @@ public final class Store {
 		Archive archive = new Archive(id, tableCompression, -1, archiveData);
 		index255.putArchiveData(id, archive.compress());
 		indexes[id] = new Index(index255, new MainFile(id, data, new RandomAccessFile(path + "main_file_cache.idx" + id, "rw"), readCachedBuffer, newProtocol), null);
+	}
+	
+	public void resetIndex(int id, boolean named, boolean usesWhirpool, int tableCompression) throws IOException {
+		resetIndex(id, indexes, named, usesWhirpool, tableCompression);
 	}
 	
 }

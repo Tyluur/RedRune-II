@@ -1,0 +1,37 @@
+{
+  "combatDefinitions": {
+    "9898": {
+      "hitpoints": 250,
+      "attackAnim": 14374,
+      "defenceAnim": 14378,
+      "deathAnim": 14371,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 86,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "9898": "No match for Thok. Silly demon.",
+    "9899": "No match for Thok. Silly demon.",
+    "9900": "No match for Thok. Silly demon.",
+    "9901": "No match for Thok. Silly demon.",
+    "9902": "No match for Thok. Silly demon.",
+    "9903": "No match for Thok. Silly demon.",
+    "9904": "No match for Thok. Silly demon.",
+    "9905": "No match for Thok. Silly demon.",
+    "9906": "No match for Thok. Silly demon.",
+    "9907": "No match for Thok. Silly demon.",
+    "9908": "No match for Thok. Silly demon.",
+    "9909": "No match for Thok. Silly demon.",
+    "9910": "No match for Thok. Silly demon.",
+    "9911": "No match for Thok. Silly demon.",
+    "12844": "No match for Thok. Silly demon."
+  }
+}

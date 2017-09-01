@@ -1,7 +1,7 @@
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
@@ -28,18 +28,18 @@ public class JadinkoMaleCombat extends CombatScript {
 			delayHit(jM, 2, target, getMagicHit(jM, hit));
 		} else {
 			switch (attack) {
-			case 2:
-			case 3:
-			case 0:
-				jM.setNextAnimation(new Animation(3214));
-				delayHit(jM, 2, target, getMeleeHit(jM, hit));
-				break;
-			case 1:
-				jM.setNextAnimation(new Animation(3215));
-				jM.setNextGraphics(new Graphics(2716));
-				target.setNextGraphics(new Graphics(2726));
-				delayHit(jM, 2, target, getMagicHit(jM, hit));
-				break;
+				case 2:
+				case 3:
+				case 0:
+					jM.setNextAnimation(new Animation(3214));
+					delayHit(jM, 2, target, getMeleeHit(jM, hit));
+					break;
+				case 1:
+					jM.setNextAnimation(new Animation(3215));
+					jM.setNextGraphics(new Graphics(2716));
+					target.setNextGraphics(new Graphics(2726));
+					delayHit(jM, 2, target, getMagicHit(jM, hit));
+					break;
 			}
 		}
 		return defs.getAttackDelay();

@@ -16,17 +16,9 @@ public class Item implements Serializable, Entity {
 	
 	private static final long serialVersionUID = -6485003878697568087L;
 	
-	private short id;
-	
 	protected int amount;
 	
-	public int getId() {
-		return id;
-	}
-	
-	public Item clone() {
-		return new Item(id, amount);
-	}
+	private short id;
 	
 	public Item(int id) {
 		this(id, 1);
@@ -44,32 +36,40 @@ public class Item implements Serializable, Entity {
 		}
 	}
 	
-	public ItemDefinitions getDefinitions() {
-		return ItemDefinitions.getItemDefinitions(id);
+	public Item clone() {
+		return new Item(id, amount);
 	}
 	
-	public int getEquipId() {
-		return ItemEquipIds.getEquipId(id);
+	@Override
+	public Item toItem() {
+		return this;
 	}
 	
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public int getId() {
+		return id;
 	}
 	
 	public void setId(int id) {
 		this.id = (short) id;
 	}
 	
+	public int getEquipId() {
+		return ItemEquipIds.getEquipId(id);
+	}
+	
 	public int getAmount() {
 		return amount;
+	}
+	
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	
 	public String getName() {
 		return getDefinitions().getName();
 	}
 	
-	@Override
-	public Item toItem() {
-		return this;
+	public ItemDefinitions getDefinitions() {
+		return ItemDefinitions.getItemDefinitions(id);
 	}
 }

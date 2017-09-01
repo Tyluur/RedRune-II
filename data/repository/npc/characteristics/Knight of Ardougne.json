@@ -1,0 +1,40 @@
+{
+  "combatDefinitions": {
+    "23": {
+      "hitpoints": 70,
+      "attackAnim": 422,
+      "defenceAnim": 425,
+      "deathAnim": 836,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 10,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "23": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "26": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

@@ -16,11 +16,11 @@ public class JagStringTools {
 	 * Decodes the Jagex string down from a buffer.
 	 *
 	 * @param buffer
-	 *            the buffer to decode from.
+	 * 		the buffer to decode from.
 	 * @param start
-	 *            the decode start offset.
+	 * 		the decode start offset.
 	 * @param length
-	 *            the decode end offset.
+	 * 		the decode end offset.
 	 * @return the decoded {@link String} value.
 	 */
 	public static String decode(byte[] buffer, int start, int length) {
@@ -47,7 +47,7 @@ public class JagStringTools {
 	 * Decodes the given character to a Jagex type character.
 	 *
 	 * @param input
-	 *            the character to decode.
+	 * 		the character to decode.
 	 * @return the decoded character as Jagex special type.
 	 */
 	public static char decode(byte input) {
@@ -69,15 +69,15 @@ public class JagStringTools {
 	 * Encodes the specified Jagex string value into the buffer.
 	 *
 	 * @param text
-	 *            the Jagex string value to encode.
+	 * 		the Jagex string value to encode.
 	 * @param start
-	 *            the encode start offset.
+	 * 		the encode start offset.
 	 * @param end
-	 *            the encode end offset.
+	 * 		the encode end offset.
 	 * @param buffer
-	 *            the buffer to encode to.
+	 * 		the buffer to encode to.
 	 * @param bufferOffset
-	 *            the buffer write offset.
+	 * 		the buffer write offset.
 	 * @return the encoded characters count.
 	 */
 	public static int encode(String text, int start, int end, byte[] buffer, int bufferOffset) {

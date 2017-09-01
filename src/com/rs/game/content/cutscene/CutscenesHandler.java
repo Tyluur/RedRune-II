@@ -8,6 +8,11 @@ public class CutscenesHandler {
 	
 	private static HashMap<Object, Class<Cutscene>> handledCutscenes = new HashMap<Object, Class<Cutscene>>();
 	
+	public static void reload() {
+		handledCutscenes.clear();
+		init();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static void init() {
 		try {
@@ -20,11 +25,6 @@ public class CutscenesHandler {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void reload() {
-		handledCutscenes.clear();
-		init();
 	}
 	
 	public static Cutscene getCutscene(Object key) {

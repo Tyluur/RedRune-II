@@ -1,0 +1,21 @@
+{
+  "combatDefinitions": {
+    "63": {
+      "hitpoints": 350,
+      "attackAnim": 5327,
+      "defenceAnim": 5328,
+      "deathAnim": 5329,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 40,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {}
+}

@@ -1,0 +1,32 @@
+{
+  "combatDefinitions": {
+    "3491": {
+      "hitpoints": 1400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 270,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "3387": "A demented evil wizard who specialises in food spells.",
+    "3400": "A demented evil wizard who specialises in food spells.",
+    "3485": "A demented evil wizard who specialises in food spells.",
+    "3486": "A demented evil wizard who specialises in food spells.",
+    "3487": "A demented evil wizard who specialises in food spells.",
+    "3488": "A demented evil wizard who specialises in food spells.",
+    "3489": "A demented evil wizard who specialises in food spells.",
+    "3490": "A demented evil wizard who specialises in food spells.",
+    "3491": "A demented evil wizard who specialises in food spells.",
+    "3492": "A demented evil wizard who specialises in food spells."
+  }
+}

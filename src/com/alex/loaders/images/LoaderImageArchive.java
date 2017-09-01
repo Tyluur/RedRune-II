@@ -23,9 +23,10 @@ public class LoaderImageArchive {
 
 	private void decodeArchive(Store cache, int idx, int archiveId, int fileId) {
 		byte[] data = cache.getIndexes()[idx].getFile(archiveId, fileId);
-        if(data == null)
-            return;
-        this.data = data;
+		if (data == null) {
+			return;
+		}
+		this.data = data;
 	}
 	
 	public Image getImage() {

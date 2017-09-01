@@ -1,8 +1,15 @@
 package com.rs.cache.loaders;
 
 public class IComponentSettings {
+
 	public int settings;
+
 	public int anInt4602;
+
+	public IComponentSettings(int arg0, int arg1) {
+		settings = arg0;
+		anInt4602 = arg1;
+	}
 
 	public boolean method1879(boolean arg0) {
 		return ((0x2eaa42 & settings) >> -1445214219 ^ 0xffffffff) != -1;
@@ -38,10 +45,5 @@ public class IComponentSettings {
 
 	public int method1888(byte arg0) {
 		return 0x7f & settings >> -809958741;
-	}
-
-	public IComponentSettings(int arg0, int arg1) {
-		settings = arg0;
-		anInt4602 = arg1;
 	}
 }

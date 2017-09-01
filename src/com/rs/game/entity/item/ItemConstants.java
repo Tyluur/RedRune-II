@@ -3,7 +3,7 @@ package com.rs.game.entity.item;
 import com.rs.cache.loaders.ItemDefinitions;
 
 public class ItemConstants {
-
+	
 	public static int getDegradeItemWhenWear(int id) {
 		// pvp armors
 		/*
@@ -20,7 +20,68 @@ public class ItemConstants {
 		 */
 		return -1;
 	}
-
+	
+	// return what id it degrades to, -1 for disapear which is default so we
+	// dont add -1
+	public static int getItemDegrade(int id) {
+		if (id == 11285) // DFS
+		{
+			return 11283;
+		}
+		// nex armors
+		/*
+		 * if (id == 20137 || id == 20141 || id == 20145 || id == 20149 || id ==
+		 * 20153 || id == 20157 || id == 20161 || id == 20165 || id == 20169 ||
+		 * id == 20173) return id + 1;
+		 */
+		return -1;
+	}
+	
+	public static int getDegradeItemWhenCombating(int id) {
+		// nex armors
+		/*
+		 * if (id == 20135 || id == 20139 || id == 20143 || id == 20147 || id ==
+		 * 20151 || id == 20155 || id == 20159 || id == 20163 || id == 20167 ||
+		 * id == 20171) return id + 2;
+		 */
+		return -1;
+	}
+	
+	public static boolean itemDegradesWhileHit(int id) {
+		return id == 2550;
+	}
+	
+	public static boolean itemDegradesWhileWearing(int id) {
+		String name = ItemDefinitions.getItemDefinitions(id).getName().toLowerCase();
+		/*
+		 * if (name.contains("c. dragon") || name.contains("corrupt dragon") ||
+		 * name.contains("vesta's") || name.contains("statius'") ||
+		 * name.contains("morrigan's") || name.contains("zuriel's")) return
+		 * true;
+		 */
+		return false;
+	}
+	
+	public static boolean itemDegradesWhileCombating(int id) {
+		String name = ItemDefinitions.getItemDefinitions(id).getName().toLowerCase();
+		// nex armors
+		/*
+		 * if (name.contains("torva") || name.contains("pernix") ||
+		 * name.contains("virtux") || name.contains("zaryte")) return true;
+		 */
+		return false;
+	}
+	
+	public static boolean isTradeable(Item item) {
+		if (item.getDefinitions().isDestroyItem() || item.getDefinitions().isLended() || ItemConstants.getItemDefaultCharges(item.getId()) != -1) {
+			return false;
+		}
+		switch (item.getId()) {
+			default:
+				return true;
+		}
+	}
+	
 	// return amt of charges
 	public static int getItemDefaultCharges(int id) {
 		/*
@@ -38,67 +99,5 @@ public class ItemConstants {
 		 * id == 20165 || id == 20169 || id == 20173) return 60000;
 		 */
 		return -1;
-	}
-
-	// return what id it degrades to, -1 for disapear which is default so we
-	// dont add -1
-	public static int getItemDegrade(int id) {
-		if (id == 11285) // DFS
-			return 11283;
-		// nex armors
-		/*
-		 * if (id == 20137 || id == 20141 || id == 20145 || id == 20149 || id ==
-		 * 20153 || id == 20157 || id == 20161 || id == 20165 || id == 20169 ||
-		 * id == 20173) return id + 1;
-		 */
-		return -1;
-	}
-
-	public static int getDegradeItemWhenCombating(int id) {
-		// nex armors
-		/*
-		 * if (id == 20135 || id == 20139 || id == 20143 || id == 20147 || id ==
-		 * 20151 || id == 20155 || id == 20159 || id == 20163 || id == 20167 ||
-		 * id == 20171) return id + 2;
-		 */
-		return -1;
-	}
-
-	public static boolean itemDegradesWhileHit(int id) {
-		return id == 2550;
-	}
-
-	public static boolean itemDegradesWhileWearing(int id) {
-		String name = ItemDefinitions.getItemDefinitions(id).getName()
-				.toLowerCase();
-		/*
-		 * if (name.contains("c. dragon") || name.contains("corrupt dragon") ||
-		 * name.contains("vesta's") || name.contains("statius'") ||
-		 * name.contains("morrigan's") || name.contains("zuriel's")) return
-		 * true;
-		 */
-		return false;
-	}
-
-	public static boolean itemDegradesWhileCombating(int id) {
-		String name = ItemDefinitions.getItemDefinitions(id).getName()
-				.toLowerCase();
-		// nex armors
-		/*
-		 * if (name.contains("torva") || name.contains("pernix") ||
-		 * name.contains("virtux") || name.contains("zaryte")) return true;
-		 */
-		return false;
-	}
-
-	public static boolean isTradeable(Item item) {
-		if (item.getDefinitions().isDestroyItem()
-				|| item.getDefinitions().isLended()
-				|| ItemConstants.getItemDefaultCharges(item.getId()) != -1)
-			return false;
-		switch (item.getId()) {
-		default:
-			return true;
-		}
 	}
 }

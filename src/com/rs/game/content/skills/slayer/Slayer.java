@@ -1,7 +1,7 @@
 package com.rs.game.content.skills.slayer;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.utility.Misc;
 
 import java.util.*;
@@ -28,9 +28,19 @@ public class Slayer {
 		}
 		Collections.shuffle(possibleTasks);
 		SlayerTasks task = possibleTasks.get(0);
-		tasks.setTask(task);
-		tasks.setMonstersLeft(Misc.random(tasks.getTask().min, tasks.getTask().max));
-		return tasks.getTaskMonstersLeft() + " " + tasks.getTask().simpleName;
+		tasks.setCurrentTask(task);
+		tasks.setMonstersLeft(Misc.random(tasks.getCurrentTask().min, tasks.getCurrentTask().max));
+		return tasks.getTaskMonstersLeft() + " " + tasks.getCurrentTask().simpleName;
+	}
+	
+	public static boolean checkRequirement(Player player, SlayerMonsters slayer) {
+		if (slayer != null) {
+			if (player.getSkills().getLevel(PlayerSkills.SLAYER) < slayer.getRequirement()) {
+				player.getPackets().sendGameMessage("This monster requires " + slayer.getRequirement() + " to slay.");
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public enum Master {
@@ -92,49 +102,6 @@ public class Slayer {
 		
 		public Object[] getTasks() {
 			return tasks;
-		}
-	}
-	
-	public static class SlayerTask {
-		
-		private Master master;
-		
-		private int index;
-		
-		private int amount;
-		
-		public SlayerTask(Master master, int index, int amount) {
-			this.master = master;
-			this.index = index;
-			this.amount = amount;
-		}
-		
-		public void setMaster(Master master) {
-			this.master = master;
-		}
-		
-		public void setIndex(int index) {
-			this.index = index;
-		}
-		
-		public void setAmount(int amount) {
-			this.amount = amount;
-		}
-		
-		public Master getMaster() {
-			return master;
-		}
-		
-		public int getIndex() {
-			return index;
-		}
-		
-		public int getAmount() {
-			return amount;
-		}
-		
-		public String getName() {
-			return master.getTasks()[index].toString();
 		}
 	}
 	
@@ -222,10 +189,6 @@ public class Slayer {
 		
 		private static Map<Integer, SlayerMonsters> monsters = new HashMap<Integer, SlayerMonsters>();
 		
-		public static SlayerMonsters forId(int id) {
-			return monsters.get(id);
-		}
-		
 		static {
 			for (SlayerMonsters monster : SlayerMonsters.values()) {
 				monsters.put(monster.id, monster);
@@ -241,8 +204,8 @@ public class Slayer {
 			this.req = req;
 		}
 		
-		public int getId() {
-			return id;
+		public static SlayerMonsters forId(int id) {
+			return monsters.get(id);
 		}
 		
 		public int getRequirement() {
@@ -252,16 +215,53 @@ public class Slayer {
 				return -1;
 			}
 		}
+		
+		public int getId() {
+			return id;
+		}
 	}
 	
-	public static boolean checkRequirement(Player player, SlayerMonsters slayer) {
-		if (slayer != null) {
-			if (player.getSkills().getLevel(Skills.SLAYER) < slayer.getRequirement()) {
-				player.getPackets().sendGameMessage("This monster requires " + slayer.getRequirement() + " to slay.");
-				return false;
-			}
+	public static class SlayerTask {
+		
+		private Master master;
+		
+		private int index;
+		
+		private int amount;
+		
+		public SlayerTask(Master master, int index, int amount) {
+			this.master = master;
+			this.index = index;
+			this.amount = amount;
 		}
-		return true;
+		
+		public Master getMaster() {
+			return master;
+		}
+		
+		public void setMaster(Master master) {
+			this.master = master;
+		}
+		
+		public int getIndex() {
+			return index;
+		}
+		
+		public void setIndex(int index) {
+			this.index = index;
+		}
+		
+		public int getAmount() {
+			return amount;
+		}
+		
+		public void setAmount(int amount) {
+			this.amount = amount;
+		}
+		
+		public String getName() {
+			return master.getTasks()[index].toString();
+		}
 	}
 	
 }

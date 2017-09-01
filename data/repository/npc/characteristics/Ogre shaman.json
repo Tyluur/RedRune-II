@@ -1,0 +1,101 @@
+{
+  "combatDefinitions": {
+    "5176": {
+      "hitpoints": 10,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "5181": {
+      "hitpoints": 10,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "5184": {
+      "hitpoints": 10,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "5187": {
+      "hitpoints": 10,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "5190": {
+      "hitpoints": 10,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "5193": {
+      "hitpoints": 10,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 300,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "8798": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "2418": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5176": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5177": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5181": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5184": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5187": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5190": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered.",
+    "5193": "<b>&#8226;</b> Big, ugly, and smelly.<br /><b>&#8226;</b> Ugly and bad-tempered."
+  }
+}

@@ -5,6 +5,7 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.world.World;
+import com.rs.utility.constants.NPCConstants;
 
 public class Default extends CombatScript {
 	
@@ -17,11 +18,11 @@ public class Default extends CombatScript {
 	public int attack(NPC npc, Actor target) {
 		NPCCombatDefinitions defs = npc.getCombatDefinitions();
 		int attackStyle = defs.getAttackStyle();
-		if (attackStyle == NPCCombatDefinitions.MELEE) {
+		if (attackStyle == NPCConstants.MELEE) {
 			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), attackStyle, target)));
 		} else {
 			int damage = getRandomMaxHit(npc, defs.getMaxHit(), attackStyle, target);
-			delayHit(npc, 2, target, attackStyle == NPCCombatDefinitions.RANGE ? getRangeHit(npc, damage) : getMagicHit(npc, damage));
+			delayHit(npc, 2, target, attackStyle == NPCConstants.RANGE ? getRangeHit(npc, damage) : getMagicHit(npc, damage));
 			if (defs.getAttackProjectile() != -1) {
 				World.sendProjectile(npc, target, defs.getAttackProjectile(), 41, 16, 41, 35, 16, 0);
 			}
@@ -29,7 +30,7 @@ public class Default extends CombatScript {
 		if (defs.getAttackGfx() != -1) {
 			npc.setNextGraphics(new Graphics(defs.getAttackGfx()));
 		}
-		npc.setNextAnimation(new Animation(defs.getAttackEmote()));
+		npc.setNextAnimation(new Animation(defs.getAttackAnim()));
 		return defs.getAttackDelay();
 	}
 }

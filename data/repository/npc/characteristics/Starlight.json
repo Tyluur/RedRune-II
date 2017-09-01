@@ -1,0 +1,36 @@
+{
+  "combatDefinitions": {
+    "6248": {
+      "hitpoints": 1600,
+      "attackAnim": 6376,
+      "defenceAnim": 6375,
+      "deathAnim": 6377,
+      "attackDelay": 6,
+      "deathDelay": 2,
+      "respawnDelay": 150,
+      "maxHit": 160,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {
+    "6248": [
+      100,
+      0,
+      0,
+      0,
+      0,
+      300,
+      300,
+      300,
+      200,
+      350
+    ]
+  },
+  "drops": {},
+  "examines": {
+    "6248": "Bane of darkness."
+  }
+}

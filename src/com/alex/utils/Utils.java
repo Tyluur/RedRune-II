@@ -7,13 +7,15 @@ import java.math.BigInteger;
 
 public final class Utils {
 
-	public static byte[] cryptRSA(byte[] data, BigInteger exponent,
-			BigInteger modulus) {
+	private Utils() {
+
+	}
+
+	public static byte[] cryptRSA(byte[] data, BigInteger exponent, BigInteger modulus) {
 		return new BigInteger(data).modPow(exponent, modulus).toByteArray();
 	}
 
-	public static byte[] getArchivePacketData(int indexId, int archiveId,
-			byte[] archive) {
+	public static byte[] getArchivePacketData(int indexId, int archiveId, byte[] archive) {
 		OutputStream stream = new OutputStream(archive.length + 4);
 		stream.writeByte(indexId);
 		stream.writeShort(archiveId);
@@ -42,19 +44,13 @@ public final class Utils {
 		return store.getIndexes()[3].getLastArchiveId();
 	}
 
-	public static final int getInterfaceDefinitionsComponentsSize(Store store,
-			int interfaceId) {
+	public static final int getInterfaceDefinitionsComponentsSize(Store store, int interfaceId) {
 		return store.getIndexes()[3].getLastFileId(interfaceId);
 	}
 
 	public static final int getItemDefinitionsSize(Store store) {
 		int lastArchiveId = store.getIndexes()[19].getLastArchiveId();
-		return lastArchiveId * 256
-				+ store.getIndexes()[19].getValidFilesCount(lastArchiveId);
-	}
-
-	private Utils() {
-
+		return lastArchiveId * 256 + store.getIndexes()[19].getValidFilesCount(lastArchiveId);
 	}
 
 }

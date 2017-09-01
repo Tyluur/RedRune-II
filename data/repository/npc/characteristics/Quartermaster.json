@@ -1,0 +1,100 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "1208": [
+      {
+        "itemId": 1931,
+        "minAmount": 30,
+        "maxAmount": 30,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 1935,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 1735,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 29,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 2309,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3190,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3192,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3194,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3196,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3198,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3200,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3202,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 3204,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

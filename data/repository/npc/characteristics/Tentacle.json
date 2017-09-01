@@ -1,0 +1,26 @@
+{
+  "combatDefinitions": {
+    "3618": {
+      "hitpoints": 750,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 129,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "9701": "I'm glad I can't see the rest of it!",
+    "3580": "I'm glad I can't see the rest of it!",
+    "3618": "I'm glad I can't see the rest of it!",
+    "3621": "I'm glad I can't see the rest of it!"
+  }
+}

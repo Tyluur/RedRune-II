@@ -36,7 +36,7 @@ public class CombatScriptsHandler {
 	public static int specialAttack(final NPC npc, final Actor target) {
 		CombatScript script = cachedCombatScripts.get(npc.getId());
 		if (script == null) {
-			script = cachedCombatScripts.get(npc.getDefinitions().name);
+			script = cachedCombatScripts.get(npc.getDefinitions().getName());
 			if (script == null) {
 				script = DEFAULT_SCRIPT;
 			}

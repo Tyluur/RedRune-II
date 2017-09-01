@@ -1,0 +1,37 @@
+{
+  "combatDefinitions": {
+    "10141": {
+      "hitpoints": 1250,
+      "attackAnim": 14374,
+      "defenceAnim": 14378,
+      "deathAnim": 14371,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 86,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "10128": "A soldier of a demon army.",
+    "10129": "A soldier of a demon army.",
+    "10130": "A soldier of a demon army.",
+    "10131": "A soldier of a demon army.",
+    "10132": "A soldier of a demon army.",
+    "10133": "A soldier of a demon army.",
+    "10134": "A soldier of a demon army.",
+    "10135": "A soldier of a demon army.",
+    "10136": "A soldier of a demon army.",
+    "10137": "A soldier of a demon army.",
+    "10138": "A soldier of a demon army.",
+    "10139": "A soldier of a demon army.",
+    "10140": "A soldier of a demon army.",
+    "10141": "A soldier of a demon army.",
+    "12845": "A soldier of a demon army."
+  }
+}

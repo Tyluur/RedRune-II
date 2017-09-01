@@ -7,7 +7,6 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.HintIcon;
 import com.rs.game.entity.actor.player.link.FriendChatsManager;
 import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
@@ -16,17 +15,18 @@ import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.World;
 import com.rs.game.world.region.DynamicRegion;
 import com.rs.game.world.region.Region;
+import com.rs.game.world.worldlist.WorldEntry;
+import com.rs.game.world.worldlist.WorldList;
 import com.rs.networking.NetworkConstants;
 import com.rs.networking.Session;
 import com.rs.networking.codec.Encoder;
 import com.rs.networking.io.OutputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.cache.huffman.Huffman;
+import com.rs.utility.game.map.HintIcon;
 import com.rs.utility.game.map.MapArchiveKeys;
 import com.rs.utility.game.player.PublicChatMessage;
 import com.rs.utility.game.player.QuickChatMessage;
-import com.rs.game.world.worldlist.WorldEntry;
-import com.rs.game.world.worldlist.WorldList;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 
@@ -47,16 +47,44 @@ public class WorldPacketsEncoder extends Encoder {
 		sendGameMessage(message);
 	}
 	
+	public void sendGameMessage(String text) {
+		sendGameMessage(text, false);
+	}
+	
+	public void sendGameMessage(String text, boolean filter) {
+		sendMessage(filter ? 109 : 0, text, null);
+	}
+	
+	public void sendMessage(int type, String text, Player p) {
+		int maskData = 0;
+		if (p != null) {
+			maskData |= 0x1;
+			if (p.hasDisplayName()) {
+				maskData |= 0x2;
+			}
+		}
+		OutputStream stream = new OutputStream();
+		stream.writePacketVarByte(102);
+		stream.writeSmart(type);
+		stream.writeInt(0); // junk, not used by client
+		stream.writeByte(maskData);
+		if ((maskData & 0x1) != 0) {
+			stream.writeString(p.getDisplayName());
+			if (p.hasDisplayName()) {
+				stream.writeString(Misc.formatPlayerNameForDisplay(p.getUsername()));
+			}
+		}
+		stream.writeString(text);
+		stream.endPacketVarByte();
+		session.write(stream);
+	}
+	
 	public void sendItems(int key, ItemsContainer<Item> items) {
 		sendItems(key, key < 0, items);
 	}
 	
 	public void sendItems(int key, boolean keyLessIntegerSize, ItemsContainer<Item> items) {
 		sendItems(key, keyLessIntegerSize, items.getItems());
-	}
-	
-	public void sendItems(int key, Item[] items) {
-		sendItems(key, key < 0, items);
 	}
 	
 	public void sendItems(int key, boolean negativeKey, Item[] items) {
@@ -80,6 +108,10 @@ public class WorldPacketsEncoder extends Encoder {
 		}
 		stream.endPacketVarShort();
 		session.write(stream);
+	}
+	
+	public void sendItems(int key, Item[] items) {
+		sendItems(key, key < 0, items);
 	}
 	
 	public void sendPlayerUnderNPCPriority(boolean priority) {
@@ -193,6 +225,15 @@ public class WorldPacketsEncoder extends Encoder {
 		
 	}
 	
+	public void sendWorldTile(WorldTile tile) {
+		OutputStream stream = new OutputStream(3);
+		stream.writePacket(46);
+		stream.writeByte128(tile.getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize()) >> 3);
+		stream.writeByte(tile.getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize()) >> 3);
+		stream.write128Byte(tile.getPlane());
+		session.write(stream);
+	}
+	
 	public void sendGroundItem(FloorItem item) {
 		sendWorldTile(item.getTile());
 		int localX = item.getTile().getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize());
@@ -265,27 +306,6 @@ public class WorldPacketsEncoder extends Encoder {
 		// name says*/
 	}
 	
-	public void sendRunScriptpz(int id, Object[] params, String types) {
-		if (params.length != types.length()) {
-			return;
-		}
-		OutputStream packet = new OutputStream();
-		packet.writePacketVarShort(70);
-		packet.writeString(types);
-		int idx = 0;
-		for (int i = types.length() - 1; i >= 0; i--) {
-			if (types.charAt(i) == 's') {
-				packet.writeString((String) params[idx]);
-			} else {
-				packet.writeInt((Integer) params[idx]);
-			}
-			idx++;
-		}
-		packet.writeInt(id);
-		packet.endPacketVarShort();
-		session.write(packet);
-	}
-	
 	public void sendRunScript(int scriptId, Object... params) {
 		try {
 			OutputStream stream = new OutputStream();
@@ -319,20 +339,33 @@ public class WorldPacketsEncoder extends Encoder {
 		}
 	}
 	
+	public void sendRunScriptpz(int id, Object[] params, String types) {
+		if (params.length != types.length()) {
+			return;
+		}
+		OutputStream packet = new OutputStream();
+		packet.writePacketVarShort(70);
+		packet.writeString(types);
+		int idx = 0;
+		for (int i = types.length() - 1; i >= 0; i--) {
+			if (types.charAt(i) == 's') {
+				packet.writeString((String) params[idx]);
+			} else {
+				packet.writeInt((Integer) params[idx]);
+			}
+			idx++;
+		}
+		packet.writeInt(id);
+		packet.endPacketVarShort();
+		session.write(packet);
+	}
+	
 	public void sendGlobalConfig(int id, int value) {
 		if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
 			sendGlobalConfig2(id, value);
 		} else {
 			sendGlobalConfig1(id, value);
 		}
-	}
-	
-	public void sendGlobalConfig1(int id, int value) {
-		OutputStream stream = new OutputStream(4);
-		stream.writePacket(111);
-		stream.writeShortLE128(id);
-		stream.write128Byte(value);
-		session.write(stream);
 	}
 	
 	public void sendGlobalConfig2(int id, int value) {
@@ -343,12 +376,12 @@ public class WorldPacketsEncoder extends Encoder {
 		session.write(stream);
 	}
 	
-	public void sendConfig(int id, int value) {
-		if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
-			sendConfig2(id, value);
-		} else {
-			sendConfig1(id, value);
-		}
+	public void sendGlobalConfig1(int id, int value) {
+		OutputStream stream = new OutputStream(4);
+		stream.writePacket(111);
+		stream.writeShortLE128(id);
+		stream.write128Byte(value);
+		session.write(stream);
 	}
 	
 	public void sendConfigByFile(int fileId, int value) {
@@ -359,19 +392,11 @@ public class WorldPacketsEncoder extends Encoder {
 		}
 	}
 	
-	public void sendConfig1(int id, int value) {
-		OutputStream stream = new OutputStream(4);
-		stream.writePacket(101);
-		stream.writeShort(id);
-		stream.writeByte128(value);
-		session.write(stream);
-	}
-	
-	public void sendConfig2(int id, int value) {
+	public void sendConfigByFile2(int fileId, int value) {
 		OutputStream stream = new OutputStream(7);
-		stream.writePacket(39);
-		stream.writeIntV2(value);
-		stream.writeShort128(id);
+		stream.writePacket(84);
+		stream.writeInt(value);
+		stream.writeShort(fileId);
 		session.write(stream);
 	}
 	
@@ -380,14 +405,6 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writePacket(14);
 		stream.write128Byte(value);
 		stream.writeShort128(fileId);
-		session.write(stream);
-	}
-	
-	public void sendConfigByFile2(int fileId, int value) {
-		OutputStream stream = new OutputStream(7);
-		stream.writePacket(84);
-		stream.writeInt(value);
-		stream.writeShort(fileId);
 		session.write(stream);
 	}
 	
@@ -400,13 +417,12 @@ public class WorldPacketsEncoder extends Encoder {
 		}
 	}
 	
-	@Deprecated
-	public void sendVarBit(int id, int value) {
-		if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
-			sendVarBit2(id, value);
-		} else {
-			sendVarBit1(id, value);
-		}
+	public void sendVar2(int id, int value) {
+		OutputStream stream = new OutputStream(7);
+		stream.writePacket(56);
+		stream.writeShort128(id);
+		stream.writeIntLE(value);
+		session.write(stream);
 	}
 	
 	public void sendVar1(int id, int value) {
@@ -417,11 +433,20 @@ public class WorldPacketsEncoder extends Encoder {
 		session.write(stream);
 	}
 	
-	public void sendVar2(int id, int value) {
+	@Deprecated
+	public void sendVarBit(int id, int value) {
+		if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
+			sendVarBit2(id, value);
+		} else {
+			sendVarBit1(id, value);
+		}
+	}
+	
+	public void sendVarBit2(int id, int value) {
 		OutputStream stream = new OutputStream(7);
-		stream.writePacket(56);
+		stream.writePacket(81);
+		stream.writeIntV1(value);
 		stream.writeShort128(id);
-		stream.writeIntLE(value);
 		session.write(stream);
 	}
 	
@@ -430,14 +455,6 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writePacket(111);
 		stream.writeShort128(id);
 		stream.writeByteC(value);
-		session.write(stream);
-	}
-	
-	public void sendVarBit2(int id, int value) {
-		OutputStream stream = new OutputStream(7);
-		stream.writePacket(81);
-		stream.writeIntV1(value);
-		stream.writeShort128(id);
 		session.write(stream);
 	}
 	
@@ -485,12 +502,19 @@ public class WorldPacketsEncoder extends Encoder {
 		}
 	}
 	
-	public void sendWorldTile(WorldTile tile) {
-		OutputStream stream = new OutputStream(3);
-		stream.writePacket(46);
-		stream.writeByte128(tile.getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize()) >> 3);
-		stream.writeByte(tile.getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize()) >> 3);
-		stream.write128Byte(tile.getPlane());
+	public void sendPlayerOnIComponent(int interfaceId, int componentId) {
+		OutputStream stream = new OutputStream(5);
+		stream.writePacket(114);
+		stream.writeIntLE(interfaceId << 16 | componentId);
+		session.write(stream);
+		
+	}
+	
+	public void sendNPCOnIComponent(int interfaceId, int componentId, int npcId) {
+		OutputStream stream = new OutputStream(7);
+		stream.writePacket(98);
+		stream.writeInt(interfaceId << 16 | componentId);
+		stream.writeShortLE(npcId);
 		session.write(stream);
 	}
 	
@@ -557,22 +581,6 @@ public class WorldPacketsEncoder extends Encoder {
 		
 	}
 	
-	public void sendPlayerOnIComponent(int interfaceId, int componentId) {
-		OutputStream stream = new OutputStream(5);
-		stream.writePacket(114);
-		stream.writeIntLE(interfaceId << 16 | componentId);
-		session.write(stream);
-		
-	}
-	
-	public void sendNPCOnIComponent(int interfaceId, int componentId, int npcId) {
-		OutputStream stream = new OutputStream(7);
-		stream.writePacket(98);
-		stream.writeInt(interfaceId << 16 | componentId);
-		stream.writeShortLE(npcId);
-		session.write(stream);
-	}
-	
 	public void sendFriendsChatChannel() {
 		FriendChatsManager manager = player.getCurrentFriendChat();
 		OutputStream stream = new OutputStream(manager == null ? 3 : manager.getDataBlock().length + 3);
@@ -591,7 +599,7 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writeString(displayName);
 		stream.writeString(displayName.equals(username) ? "" : username);
 		stream.writeShort(putOnline ? world : 0);
-		stream.writeByte(player.getFriendsIgnores().getRank(Misc.formatPlayerNameForProtocol(username)));
+		stream.writeByte(player.getContactManager().getRank(Misc.formatPlayerNameForProtocol(username)));
 		stream.writeByte(0);
 		if (putOnline) {
 			stream.writeString(GameConstants.SERVER_NAME);
@@ -638,11 +646,35 @@ public class WorldPacketsEncoder extends Encoder {
 		sendPrivateGameBarStage();
 	}
 	
+	public void sendConfig(int id, int value) {
+		if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
+			sendConfig2(id, value);
+		} else {
+			sendConfig1(id, value);
+		}
+	}
+	
 	public void sendPrivateGameBarStage() {
 		OutputStream stream2 = new OutputStream(2);
 		stream2.writePacket(134);
-		stream2.writeByte(player.getFriendsIgnores().getPrivateStatus());
+		stream2.writeByte(player.getContactManager().getPrivateStatus());
 		session.write(stream2);
+	}
+	
+	public void sendConfig2(int id, int value) {
+		OutputStream stream = new OutputStream(7);
+		stream.writePacket(39);
+		stream.writeIntV2(value);
+		stream.writeShort128(id);
+		session.write(stream);
+	}
+	
+	public void sendConfig1(int id, int value) {
+		OutputStream stream = new OutputStream(4);
+		stream.writePacket(101);
+		stream.writeShort(id);
+		stream.writeByte128(value);
+		session.write(stream);
 	}
 	
 	public void receivePrivateMessage(String name, String display, int rights, String message) {
@@ -863,7 +895,7 @@ public class WorldPacketsEncoder extends Encoder {
 				stream.writeInt(0);
 			}
 		}
-		byte[] appearence = player.getAppearence().getAppeareanceData();
+		byte[] appearence = player.getAppearance().getAppearanceData();
 		stream.writeByte(appearence.length);
 		stream.writeBytes(appearence);
 		stream.endPacketVarShort();
@@ -886,6 +918,17 @@ public class WorldPacketsEncoder extends Encoder {
 		sendPlayerOption(option, slot, top, -1);
 	}
 	
+	public void sendPlayerOption(String option, int slot, boolean top, int cursor) {
+		OutputStream stream = new OutputStream();
+		stream.writePacketVarByte(1);
+		stream.writeByte128(top ? 1 : 0);
+		stream.writeShortLE(cursor);
+		stream.writeString(option);
+		stream.writeByteC(slot);
+		stream.endPacketVarByte();
+		session.write(stream);
+	}
+	
 	public void sendPublicMessage(Player p, PublicChatMessage message) {
 		OutputStream stream = new OutputStream();
 		stream.writePacketVarByte(91);
@@ -904,17 +947,6 @@ public class WorldPacketsEncoder extends Encoder {
 			int offset = 1 + Huffman.encryptMessage(1, message.getMessage().length(), chatStr, 0, message.getMessage().getBytes());
 			stream.writeBytes(chatStr, 0, offset);
 		}
-		stream.endPacketVarByte();
-		session.write(stream);
-	}
-	
-	public void sendPlayerOption(String option, int slot, boolean top, int cursor) {
-		OutputStream stream = new OutputStream();
-		stream.writePacketVarByte(1);
-		stream.writeByte128(top ? 1 : 0);
-		stream.writeShortLE(cursor);
-		stream.writeString(option);
-		stream.writeByteC(slot);
 		stream.endPacketVarByte();
 		session.write(stream);
 	}
@@ -950,18 +982,6 @@ public class WorldPacketsEncoder extends Encoder {
 		session.write(stream);
 	}
 	
-	public void closeInterface(int windowComponentId) {
-		closeInterface(player.getInterfaceManager().getTabWindow(windowComponentId), windowComponentId);
-		player.getInterfaceManager().removeTab(windowComponentId);
-	}
-	
-	public void closeInterface(int windowId, int windowComponentId) {
-		OutputStream stream = new OutputStream(5);
-		stream.writePacket(73);
-		stream.writeIntLE(windowId << 16 | windowComponentId);
-		session.write(stream);
-	}
-	
 	public void sendInterface(boolean nocliped, int windowId, int windowComponentId, int interfaceId) {
 		if (!(windowId == 752 && (windowComponentId == 9 || windowComponentId == 12))) {
 			if (player.getInterfaceManager().containsInterface(windowComponentId, interfaceId)) {
@@ -977,6 +997,18 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writeShortLE128(interfaceId);
 		stream.writeIntLE(windowId << 16 | windowComponentId);
 		stream.writeByte(nocliped ? 1 : 0);
+		session.write(stream);
+	}
+	
+	public void closeInterface(int windowComponentId) {
+		closeInterface(player.getInterfaceManager().getTabWindow(windowComponentId), windowComponentId);
+		player.getInterfaceManager().removeTab(windowComponentId);
+	}
+	
+	public void closeInterface(int windowId, int windowComponentId) {
+		OutputStream stream = new OutputStream(5);
+		stream.writePacket(73);
+		stream.writeIntLE(windowId << 16 | windowComponentId);
 		session.write(stream);
 	}
 	
@@ -1050,14 +1082,6 @@ public class WorldPacketsEncoder extends Encoder {
 		}
 	}
 	
-	public void sendGameMessage(String text) {
-		sendGameMessage(text, false);
-	}
-	
-	public void sendGameMessage(String text, boolean filter) {
-		sendMessage(filter ? 109 : 0, text, null);
-	}
-	
 	public void sendPanelBoxMessage(String text) {
 		sendMessage(99, text, null);
 	}
@@ -1074,38 +1098,6 @@ public class WorldPacketsEncoder extends Encoder {
 		sendMessage(101, "wishes to duel with you(" + (friendly ? "friendly" : "stake") + ").", p);
 	}
 	
-	public void sendMessage(int type, String text, Player p) {
-		int maskData = 0;
-		if (p != null) {
-			maskData |= 0x1;
-			if (p.hasDisplayName()) {
-				maskData |= 0x2;
-			}
-		}
-		OutputStream stream = new OutputStream();
-		stream.writePacketVarByte(102);
-		stream.writeSmart(type);
-		stream.writeInt(0); // junk, not used by client
-		stream.writeByte(maskData);
-		if ((maskData & 0x1) != 0) {
-			stream.writeString(p.getDisplayName());
-			if (p.hasDisplayName()) {
-				stream.writeString(Misc.formatPlayerNameForDisplay(p.getUsername()));
-			}
-		}
-		stream.writeString(text);
-		stream.endPacketVarByte();
-		session.write(stream);
-	}
-	
-	public void sendSound(int id, int delay, int effectType) {
-		if (effectType == 1) {
-			sendIndex14Sound(id, delay);
-		} else if (effectType == 2) {
-			sendIndex15Sound(id, delay);
-		}
-	}
-	
 	public void sendVoice(int id) {
 		resetSounds();
 		sendSound(id, 0, 2);
@@ -1115,6 +1107,14 @@ public class WorldPacketsEncoder extends Encoder {
 		OutputStream stream = new OutputStream(1);
 		stream.writePacket(142);
 		session.write(stream);
+	}
+	
+	public void sendSound(int id, int delay, int effectType) {
+		if (effectType == 1) {
+			sendIndex14Sound(id, delay);
+		} else if (effectType == 2) {
+			sendIndex15Sound(id, delay);
+		}
 	}
 	
 	public void sendIndex14Sound(int id, int delay) {

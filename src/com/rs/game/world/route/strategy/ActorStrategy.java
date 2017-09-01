@@ -9,14 +9,17 @@ public class ActorStrategy extends RouteStrategy {
 	 * Entity position x.
 	 */
 	private int x;
+
 	/**
 	 * Entity position y.
 	 */
 	private int y;
+
 	/**
 	 * Entity size.
 	 */
 	private int size;
+
 	/**
 	 * Access block flag, see RouteStrategy static final values.
 	 */
@@ -60,8 +63,9 @@ public class ActorStrategy extends RouteStrategy {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof ActorStrategy))
+		if (!(other instanceof ActorStrategy)) {
 			return false;
+		}
 		ActorStrategy strategy = (ActorStrategy) other;
 		return x == strategy.x && y == strategy.y && size == strategy.size && accessBlockFlag == strategy.accessBlockFlag;
 	}

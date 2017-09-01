@@ -16,7 +16,6 @@
 	-   Regular Spellbook
 		-   Need to add alchemy spells
 +   'You can't reach that' [stops interaction through walls]
-+   Verify all connections are still live in the world and if they aren't [disconnected by bug or something, remove them [force remove after a minute if in combat]]
 +   Teleport-other with closeby players [1 tile]
 	-   Interface 326
 	-   Can be done with one attribute

@@ -1,0 +1,26 @@
+{
+  "combatDefinitions": {
+    "9624": {
+      "hitpoints": 20,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 3,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 27,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "9623": "It looks like he's scarred his face deliberately.",
+    "9624": "It looks like he's scarred his face deliberately.",
+    "9625": "It looks like he's scarred his face deliberately.",
+    "9637": "It looks like he's scarred his face deliberately."
+  }
+}

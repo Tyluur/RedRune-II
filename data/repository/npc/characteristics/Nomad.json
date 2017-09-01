@@ -1,0 +1,30 @@
+{
+  "combatDefinitions": {
+    "8528": {
+      "hitpoints": 12500,
+      "attackAnim": 65535,
+      "defenceAnim": 12692,
+      "deathAnim": 12694,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 286,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "8528": "The scourge of souls.",
+    "8529": "The scourge of souls.",
+    "8530": "The scourge of souls.",
+    "8531": "The scourge of souls.",
+    "8532": "The scourge of souls.",
+    "8591": "The scourge of souls.",
+    "8607": "The scourge of souls.",
+    "8608": "The scourge of souls."
+  }
+}

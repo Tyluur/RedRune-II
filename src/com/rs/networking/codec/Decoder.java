@@ -5,12 +5,12 @@ import com.rs.networking.io.InputStream;
 
 public abstract class Decoder {
 	
+	public abstract void decode(InputStream stream);
+	
 	protected Session session;
 	
 	public Decoder(Session session) {
 		this.session = session;
 	}
-	
-	public abstract void decode(InputStream stream);
 	
 }

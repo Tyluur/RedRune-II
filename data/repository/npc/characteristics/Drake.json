@@ -1,0 +1,25 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "6114": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 79.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "6114": "It quacks like a duck."
+  }
+}

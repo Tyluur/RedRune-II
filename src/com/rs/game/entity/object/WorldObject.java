@@ -39,6 +39,16 @@ public class WorldObject extends WorldTile implements Entity {
 		this.life = life;
 	}
 	
+	@Override
+	public WorldObject toObject() {
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", life=" + life + '}';
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -69,15 +79,5 @@ public class WorldObject extends WorldTile implements Entity {
 	
 	public ObjectDefinitions getDefinitions() {
 		return ObjectDefinitions.getObjectDefinitions(id);
-	}
-	
-	@Override
-	public WorldObject toObject() {
-		return this;
-	}
-	
-	@Override
-	public String toString() {
-		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", life=" + life + '}';
 	}
 }

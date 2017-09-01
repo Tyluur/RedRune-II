@@ -1,0 +1,102 @@
+{
+  "combatDefinitions": {
+    "475": {
+      "hitpoints": 220,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 33,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "2245": {
+      "hitpoints": 220,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 33,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "2246": {
+      "hitpoints": 220,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 33,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "475": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 884,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 36.0,
+        "rare": false
+      }
+    ],
+    "2245": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 884,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 48.0,
+        "rare": false
+      }
+    ],
+    "2246": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 884,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 51.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "475": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "2245": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "2246": "Leader of the Khazard Army. A Mahjarrat, too."
+  }
+}

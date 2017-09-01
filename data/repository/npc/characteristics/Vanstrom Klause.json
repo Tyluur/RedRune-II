@@ -1,0 +1,88 @@
+{
+  "combatDefinitions": {
+    "4793": {
+      "hitpoints": 1550,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 190,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "14176": {
+      "hitpoints": 8000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 190,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "14177": {
+      "hitpoints": 8000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 190,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "14178": {
+      "hitpoints": 8000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 190,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "14179": {
+      "hitpoints": 8000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 190,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "1577": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "1579": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "1580": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "1581": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "4791": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "4792": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "4793": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "4794": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "4795": "He's defending himself in vapour form. Perhaps Vertida's holy water could help.",
+    "4862": "He's defending himself in vapour form. Perhaps Vertida's holy water could help."
+  }
+}

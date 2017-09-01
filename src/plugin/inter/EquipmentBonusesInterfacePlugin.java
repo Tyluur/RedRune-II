@@ -1,15 +1,13 @@
 package plugin.inter;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Equipment;
+import com.rs.game.entity.actor.player.data.PlayerEquipment;
 import com.rs.game.entity.item.Item;
-import com.rs.game.plugin.inter.InterfacePlugin;
+import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.networking.codec.decode.WorldPacketsDecoder;
-import com.rs.networking.codec.decode.handlers.ButtonHandler;
+import com.rs.utility.constants.EquipmentConstants;
 import com.rs.utility.game.item.ItemBonuses;
 import com.rs.utility.game.item.ItemExamines;
-
-import static com.rs.networking.codec.decode.handlers.ButtonHandler.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -47,69 +45,69 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 				}
 				// Head Gear
 				if (componentId == 8 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_HAT);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_HAT);
 				} else if (componentId == 8 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_HAT);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_HAT);
 				}
 				// Weapons
 				else if (componentId == 17 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_WEAPON);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_WEAPON);
 				} else if (componentId == 17 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_WEAPON);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_WEAPON);
 				}
 				// Chest Gear
 				else if (componentId == 20 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_CHEST);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_CHEST);
 				} else if (componentId == 20 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_CHEST);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_CHEST);
 				}
 				// Shield Gear
 				else if (componentId == 23 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_SHIELD);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_SHIELD);
 				} else if (componentId == 23 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_SHIELD);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_SHIELD);
 				}
 				// Leg Gear
 				else if (componentId == 26 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_LEGS);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_LEGS);
 				} else if (componentId == 26 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_LEGS);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_LEGS);
 				}
 				// Gloves Gear
 				else if (componentId == 29 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_HANDS);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_HANDS);
 				} else if (componentId == 29 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_HANDS);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_HANDS);
 				}
 				// Feet Gear
 				else if (componentId == 32 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_FEET);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_FEET);
 				} else if (componentId == 32 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_FEET);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_FEET);
 				}
 				// Rings
 				else if (componentId == 35 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_RING);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_RING);
 				} else if (componentId == 35 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_RING);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_RING);
 				}
 				// Arrows
 				else if (componentId == 38 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_ARROWS);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_ARROWS);
 				} else if (componentId == 38 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_ARROWS);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_ARROWS);
 				}
 				// Amulets
 				else if (componentId == 14 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_AMULET);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_AMULET);
 				} else if (componentId == 14 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_AMULET);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_AMULET);
 				}
 				// Capes
 				else if (componentId == 11 && packetId == 61) {
-					ButtonHandler.sendRemove(player, Equipment.SLOT_CAPE);
+					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_CAPE);
 				} else if (componentId == 11 && packetId == 25) {
-					player.getEquipment().sendExamine(Equipment.SLOT_CAPE);
+					player.getEquipment().sendExamine(EquipmentConstants.SLOT_CAPE);
 				}
 				break;
 			case 670:
@@ -122,8 +120,8 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 						return true;
 					}
 					if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
-						if (sendWear(player, slotId, item.getId())) {
-							refreshEquipBonuses(player);
+						if (EquipmentConstants.sendWear(player, slotId, item.getId())) {
+							PlayerEquipment.refreshEquipBonuses(player);
 							player.getPackets().sendGlobalConfig(779, player.getEquipment().getWeaponRenderEmote());
 						}
 					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
@@ -143,8 +141,8 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 						return true;
 					}
 					if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
-						sendRemove(player, slotId);
-						refreshEquipBonuses(player);
+						EquipmentConstants.sendRemove(player, slotId);
+						PlayerEquipment.refreshEquipBonuses(player);
 						player.getPackets().sendGlobalConfig(779, player.getEquipment().getWeaponRenderEmote());
 					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON10_PACKET) {
 						showStats(player, item);
@@ -155,6 +153,28 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 				break;
 		}
 		return true;
+	}
+	
+	/**
+	 * Displays the equipment bonuses interface
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	private void displayEquipmentBonuses(Player player) {
+		// sent twice because of the bank glitch
+		player.stopAll();
+		for (int i = 0; i < 2; i++) {
+			player.getPackets().sendGlobalConfig(779, player.getEquipment().getWeaponRenderEmote());
+			player.getInterfaceManager().sendInventoryInterface(670);
+			player.getPackets().sendInterSetItemsOptionsScript(670, 0, 93, 4, 7, "Equip", "Compare", "Stats", "Examine");
+			player.getPackets().sendUnlockIComponentOptionSlots(670, 0, 0, 27, 0, 1, 2, 3);
+			player.getInterfaceManager().sendInterface(667);
+			player.getPackets().sendIComponentSettings(667, 7, 0, 15, 1538);
+			//			player.getPackets().sendIComponentSettings(667, 7, 0, 15, 1030);
+			//			player.getPackets().sendIComponentSettings(667, 14, 0, 15, 1030);
+			PlayerEquipment.refreshEquipBonuses(player);
+		}
 	}
 	
 	/**
@@ -170,18 +190,18 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 		if (bonuses == null) {
 			bonuses = new int[18];
 		}
-		
+
 		StringBuilder titles = new StringBuilder();
 		StringBuilder names = new StringBuilder();
 		StringBuilder stats = new StringBuilder();
-		
+
 		String namesArray[] = { "Stab", "Slash", "Crush", "Magic", "Range", "Stab", "Slash", "Crush", "Magic", "Range", "Summoning", "Absorb Melee", "Absorb Magic", "Absorb Range", "Strength", "Ranged Str", "Prayer", "Magic Damage" };
 		int count = 0;
 		boolean title1Done = false;
 		boolean title2Done = false;
 		boolean title3Done = false;
 		boolean namesIndentDone = false;
-		
+
 		for (int i = 0; i < bonuses.length; i++) {
 			if (bonuses[i] != 0) {
 				if (i <= 4 && !title1Done) {
@@ -228,28 +248,6 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 		player.getPackets().sendGlobalString(324, stats.toString());
 		player.getPackets().sendGlobalString(323, names.toString());
 		player.getPackets().sendGlobalString(322, titles.toString());
-	}
-	
-	/**
-	 * Displays the equipment bonuses interface
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	private void displayEquipmentBonuses(Player player) {
-		// sent twice because of the bank glitch
-		player.stopAll();
-		for (int i = 0; i < 2; i++) {
-			player.getPackets().sendGlobalConfig(779, player.getEquipment().getWeaponRenderEmote());
-			player.getInterfaceManager().sendInventoryInterface(670);
-			player.getPackets().sendInterSetItemsOptionsScript(670, 0, 93, 4, 7, "Equip", "Compare", "Stats", "Examine");
-			player.getPackets().sendUnlockIComponentOptionSlots(670, 0, 0, 27, 0, 1, 2, 3);
-			player.getInterfaceManager().sendInterface(667);
-			player.getPackets().sendIComponentSettings(667, 7, 0, 15, 1538);
-			//			player.getPackets().sendIComponentSettings(667, 7, 0, 15, 1030);
-			//			player.getPackets().sendIComponentSettings(667, 14, 0, 15, 1030);
-			refreshEquipBonuses(player);
-		}
 	}
 	
 	@Override

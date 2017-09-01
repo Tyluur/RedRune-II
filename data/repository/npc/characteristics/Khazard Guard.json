@@ -1,0 +1,69 @@
+{
+  "combatDefinitions": {
+    "255": {
+      "hitpoints": 220,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 30,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "256": {
+      "hitpoints": 220,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 30,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "7528": {
+      "hitpoints": 220,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 30,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "253": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "254": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "256": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "257": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7504": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7505": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7506": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7507": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7508": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7509": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7510": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7511": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7512": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7513": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7514": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7515": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7519": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7520": "Leader of the Khazard Army. A Mahjarrat, too.",
+    "7528": "Leader of the Khazard Army. A Mahjarrat, too."
+  }
+}

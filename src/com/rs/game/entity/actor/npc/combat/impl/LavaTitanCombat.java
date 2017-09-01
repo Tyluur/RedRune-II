@@ -1,7 +1,7 @@
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
@@ -9,6 +9,7 @@ import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.NPCConstants;
 
 public class LavaTitanCombat extends CombatScript {
 
@@ -26,29 +27,21 @@ public class LavaTitanCombat extends CombatScript {
 		if (usingSpecial) {// priority over regular attack
 			npc.setNextAnimation(new Animation(7883));
 			npc.setNextGraphics(new Graphics(1491));
-			delayHit(
-					npc,
-					1,
-					target,
-					getMeleeHit(
-							npc,
-							getRandomMaxHit(npc, 140,
-									NPCCombatDefinitions.MELEE, target)));
+			delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 140, NPCConstants.MELEE, target)));
 			if (damage <= 4 && target instanceof Player) {
 				Player player = (Player) target;
-				player.getCombatDefinitions().desecreaseSpecialAttack(
-						(player.getCombatDefinitions()
-								.getSpecialAttackPercentage() / 10));
+				player.getCombatDefinitions().desecreaseSpecialAttack((player.getCombatDefinitions().getSpecialAttackPercentage() / 10));
 			}
 		} else {
-			damage = getRandomMaxHit(npc, 140, NPCCombatDefinitions.MELEE,
-					target);
+			damage = getRandomMaxHit(npc, 140, NPCConstants.MELEE, target);
 			npc.setNextAnimation(new Animation(7980));
 			npc.setNextGraphics(new Graphics(1490));
 			delayHit(npc, 1, target, getMeleeHit(npc, damage));
 		}
 		if (Misc.getRandom(10) == 0)// 1/10 chance of happening
+		{
 			delayHit(npc, 1, target, getMeleeHit(npc, Misc.getRandom(50)));
+		}
 		return defs.getAttackDelay();
 	}
 }

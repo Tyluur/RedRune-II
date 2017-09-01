@@ -1,32 +1,30 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.WorldTile;
-import com.rs.game.entity.item.Item;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.item.Item;
 
 public class Albinorat extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 558701463128149919L;
 
-	public Albinorat(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Albinorat(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Cheese Feast";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Fills your inventory with four peices of cheese.YUM.";
+	public boolean submitSpecial(Object object) {
+		Player player = (Player) object;
+		player.setNextGraphics(new Graphics(1316));
+		player.setNextAnimation(new Animation(7660));
+		player.getInventory().addItem(new Item(1985, 4));
+		return true;
 	}
 
 	@Override
@@ -40,16 +38,17 @@ public class Albinorat extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.CLICK;
+	public String getSpecialName() {
+		return "Cheese Feast";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		Player player = (Player) object;
-		player.setNextGraphics(new Graphics(1316));
-		player.setNextAnimation(new Animation(7660));
-		player.getInventory().addItem(new Item(1985, 4));
-		return true;
+	public String getSpecialDescription() {
+		return "Fills your inventory with four peices of cheese.YUM.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.CLICK;
 	}
 }

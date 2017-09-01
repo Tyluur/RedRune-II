@@ -21,8 +21,6 @@ public interface GameConstants {
 	 */
 	String CACHE_PATH = "data/cache/";
 	
-	//	public static final String START_CONTROLER = "NewHomeControler"; //ControlerManager
-	
 	/**
 	 * The location that players spawn at
 	 */
@@ -53,4 +51,8 @@ public interface GameConstants {
 	 */
 	int MIN_FREE_MEM_ALLOWED = 30000000;
 	
+	/**
+	 * The controller players get on creation
+	 */
+	String DEFAULT_CONTROLLER = "";
 }

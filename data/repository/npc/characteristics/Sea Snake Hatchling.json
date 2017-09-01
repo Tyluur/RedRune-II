@@ -1,0 +1,206 @@
+{
+  "combatDefinitions": {
+    "3940": {
+      "hitpoints": 500,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 60,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "3940": [
+      {
+        "itemId": 5301,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5100,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5105,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5104,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5299,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5311,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5294,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5295,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5323,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5300,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5296,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 12176,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 5103,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 618,
+        "minAmount": 2,
+        "maxAmount": 144,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 823,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 87.0,
+        "rare": false
+      },
+      {
+        "itemId": 405,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 61.0,
+        "rare": false
+      },
+      {
+        "itemId": 403,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 98.0,
+        "rare": false
+      },
+      {
+        "itemId": 313,
+        "minAmount": 50,
+        "maxAmount": 50,
+        "rate": 86.0,
+        "rare": false
+      },
+      {
+        "itemId": 4695,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 94.0,
+        "rare": false
+      },
+      {
+        "itemId": 412,
+        "minAmount": 1,
+        "maxAmount": 2,
+        "rate": 58.0,
+        "rare": false
+      },
+      {
+        "itemId": 46,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 92.0,
+        "rare": false
+      },
+      {
+        "itemId": 363,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 91.0,
+        "rare": false
+      },
+      {
+        "itemId": 377,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 90.0,
+        "rare": false
+      },
+      {
+        "itemId": 402,
+        "minAmount": 4,
+        "maxAmount": 5,
+        "rate": 80.0,
+        "rare": false
+      },
+      {
+        "itemId": 571,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 90.0,
+        "rare": false
+      },
+      {
+        "itemId": 555,
+        "minAmount": 15,
+        "maxAmount": 15,
+        "rate": 1.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

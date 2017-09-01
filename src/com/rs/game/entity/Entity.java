@@ -19,31 +19,17 @@ public interface Entity {
 	}
 	
 	/**
-	 * If this entity is a player
-	 */
-	default boolean isPlayer() {
-		return toPlayer() != null;
-	}
-	
-	/**
-	 * If this entity is an item
-	 */
-	default boolean isItem() {
-		return toItem() != null;
-	}
-	
-	/**
-	 * If this entity is an object
-	 */
-	default boolean isObject() {
-		return toObject() != null;
-	}
-	
-	/**
 	 * Casts this entity to the npc delegate, if possible. Only done in the appropriate class.
 	 */
 	default NPC toNPC() {
 		return null;
+	}
+	
+	/**
+	 * If this entity is a player
+	 */
+	default boolean isPlayer() {
+		return toPlayer() != null;
 	}
 	
 	/**
@@ -54,10 +40,24 @@ public interface Entity {
 	}
 	
 	/**
+	 * If this entity is an item
+	 */
+	default boolean isItem() {
+		return toItem() != null;
+	}
+	
+	/**
 	 * Casts this entity to the item delegate, if possible. Only done in the appropriate class.
 	 */
 	default Item toItem() {
 		return null;
+	}
+	
+	/**
+	 * If this entity is an object
+	 */
+	default boolean isObject() {
+		return toObject() != null;
 	}
 	
 	/**

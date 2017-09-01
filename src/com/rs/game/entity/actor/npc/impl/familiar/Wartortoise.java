@@ -1,32 +1,34 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 
 public class Wartortoise extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5092434230714486203L;
 
-	public Wartortoise(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Wartortoise(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Testudo";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Increases defence by nine points.";
+	public boolean submitSpecial(Object object) {
+		Player player = (Player) object;
+		int newLevel = player.getSkills().getLevel(PlayerSkills.DEFENCE) + 9;
+		if (newLevel > player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) + 9) {
+			newLevel = player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) + 9;
+		}
+		player.setNextGraphics(new Graphics(1300));
+		player.setNextAnimation(new Animation(7660));
+		player.getSkills().set(PlayerSkills.DEFENCE, newLevel);
+		return true;
 	}
 
 	@Override
@@ -40,19 +42,17 @@ public class Wartortoise extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.CLICK;
+	public String getSpecialName() {
+		return "Testudo";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		Player player = (Player) object;
-		int newLevel = player.getSkills().getLevel(Skills.DEFENCE) + 9;
-		if (newLevel > player.getSkills().getLevelForXp(Skills.DEFENCE) + 9)
-			newLevel = player.getSkills().getLevelForXp(Skills.DEFENCE) + 9;
-		player.setNextGraphics(new Graphics(1300));
-		player.setNextAnimation(new Animation(7660));
-		player.getSkills().set(Skills.DEFENCE, newLevel);
-		return true;
+	public String getSpecialDescription() {
+		return "Increases defence by nine points.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.CLICK;
 	}
 }

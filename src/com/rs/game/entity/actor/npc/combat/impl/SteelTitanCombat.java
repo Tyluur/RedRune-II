@@ -1,14 +1,15 @@
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.world.World;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
+import com.rs.game.world.World;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.NPCConstants;
 
 public class SteelTitanCombat extends CombatScript {
 
@@ -27,79 +28,36 @@ public class SteelTitanCombat extends CombatScript {
 		Familiar familiar = (Familiar) npc;
 		boolean usingSpecial = familiar.hasSpecialOn();
 		int damage = 0;
-		if (distanceX > size || distanceX < -1 || distanceY > size
-				|| distanceY < -1)
+		if (distanceX > size || distanceX < -1 || distanceY > size || distanceY < -1) {
 			distant = true;
+		}
 		if (usingSpecial) {// priority over regular attack
 			npc.setNextAnimation(new Animation(8190));
 			target.setNextGraphics(new Graphics(1449));
 			if (distant) {// range hit
-				delayHit(
-						npc,
-						2,
-						target,
-						getRangeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.RANGE, target)),
-						getRangeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.RANGE, target)),
-						getRangeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.RANGE, target)),
-						getRangeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.RANGE, target)));
+				delayHit(npc, 2, target, getRangeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.RANGE, target)), getRangeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.RANGE, target)), getRangeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.RANGE, target)), getRangeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.RANGE, target)));
 			} else {// melee hit
-				delayHit(
-						npc,
-						1,
-						target,
-						getMeleeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.MELEE, target)),
-						getMeleeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.MELEE, target)),
-						getMeleeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.MELEE, target)),
-						getMeleeHit(
-								npc,
-								getRandomMaxHit(npc, 244,
-										NPCCombatDefinitions.MELEE, target)));
+				delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.MELEE, target)), getMeleeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.MELEE, target)), getMeleeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.MELEE, target)), getMeleeHit(npc, getRandomMaxHit(npc, 244, NPCConstants.MELEE, target)));
 			}
 		} else {
 			if (distant) {
 				int attackStage = Misc.getRandom(1);// 2
 				switch (attackStage) {
-				case 0:// magic
-					damage = getRandomMaxHit(npc, 255,
-							NPCCombatDefinitions.MAGE, target);
-					npc.setNextAnimation(new Animation(7694));
-					World.sendProjectile(npc, target, 1451, 34, 16, 30, 35, 16,
-							0);
-					delayHit(npc, 2, target, getMagicHit(npc, damage));
-					break;
-				case 1:// range
-					damage = getRandomMaxHit(npc, 244,
-							NPCCombatDefinitions.RANGE, target);
-					npc.setNextAnimation(new Animation(8190));
-					World.sendProjectile(npc, target, 1445, 34, 16, 30, 35, 16,
-							0);
-					delayHit(npc, 2, target, getRangeHit(npc, damage));
-					break;
+					case 0:// magic
+						damage = getRandomMaxHit(npc, 255, NPCConstants.MAGE, target);
+						npc.setNextAnimation(new Animation(7694));
+						World.sendProjectile(npc, target, 1451, 34, 16, 30, 35, 16, 0);
+						delayHit(npc, 2, target, getMagicHit(npc, damage));
+						break;
+					case 1:// range
+						damage = getRandomMaxHit(npc, 244, NPCConstants.RANGE, target);
+						npc.setNextAnimation(new Animation(8190));
+						World.sendProjectile(npc, target, 1445, 34, 16, 30, 35, 16, 0);
+						delayHit(npc, 2, target, getRangeHit(npc, damage));
+						break;
 				}
 			} else {// melee
-				damage = getRandomMaxHit(npc, 244, NPCCombatDefinitions.MELEE,
-						target);
+				damage = getRandomMaxHit(npc, 244, NPCConstants.MELEE, target);
 				npc.setNextAnimation(new Animation(8183));
 				delayHit(npc, 1, target, getMeleeHit(npc, damage));
 			}

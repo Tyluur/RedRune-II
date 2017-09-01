@@ -1,0 +1,463 @@
+{
+  "combatDefinitions": {
+    "1631": {
+      "hitpoints": 270,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 41,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1632": {
+      "hitpoints": 270,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 41,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "1631": [
+      {
+        "itemId": 557,
+        "minAmount": 5,
+        "maxAmount": 42,
+        "rate": 89.0,
+        "rare": false
+      },
+      {
+        "itemId": 562,
+        "minAmount": 2,
+        "maxAmount": 5,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 1452,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 51.0,
+        "rare": false
+      },
+      {
+        "itemId": 438,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 81.0,
+        "rare": false
+      },
+      {
+        "itemId": 436,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 75.0,
+        "rare": false
+      },
+      {
+        "itemId": 2349,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 98.0,
+        "rare": false
+      },
+      {
+        "itemId": 440,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 83.0,
+        "rare": false
+      },
+      {
+        "itemId": 2351,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 75.0,
+        "rare": false
+      },
+      {
+        "itemId": 453,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 83.0,
+        "rare": false
+      },
+      {
+        "itemId": 447,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 4095,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 4.0,
+        "rare": false
+      },
+      {
+        "itemId": 830,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 27.0,
+        "rare": false
+      },
+      {
+        "itemId": 5318,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 98.0,
+        "rare": false
+      },
+      {
+        "itemId": 5319,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 89.0,
+        "rare": false
+      },
+      {
+        "itemId": 5324,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 77.0,
+        "rare": false
+      },
+      {
+        "itemId": 5322,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 67.0,
+        "rare": false
+      },
+      {
+        "itemId": 5320,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 5323,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 41.0,
+        "rare": false
+      },
+      {
+        "itemId": 5321,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 35.0,
+        "rare": false
+      },
+      {
+        "itemId": 618,
+        "minAmount": 279,
+        "maxAmount": 449,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 2347,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 93.0,
+        "rare": false
+      },
+      {
+        "itemId": 1913,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 76.0,
+        "rare": false
+      },
+      {
+        "itemId": 1623,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 59.0,
+        "rare": false
+      },
+      {
+        "itemId": 1621,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 58.0,
+        "rare": false
+      },
+      {
+        "itemId": 1619,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 985,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 59.0,
+        "rare": false
+      },
+      {
+        "itemId": 987,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 61.0,
+        "rare": false
+      },
+      {
+        "itemId": 2366,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 3.0,
+        "rare": false
+      },
+      {
+        "itemId": 1617,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 35.0,
+        "rare": false
+      },
+      {
+        "itemId": 0,
+        "minAmount": 0,
+        "maxAmount": 0,
+        "rate": 0.0,
+        "rare": true
+      }
+    ],
+    "1632": [
+      {
+        "itemId": 557,
+        "minAmount": 5,
+        "maxAmount": 42,
+        "rate": 95.0,
+        "rare": false
+      },
+      {
+        "itemId": 562,
+        "minAmount": 2,
+        "maxAmount": 5,
+        "rate": 68.0,
+        "rare": false
+      },
+      {
+        "itemId": 1452,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 48.0,
+        "rare": false
+      },
+      {
+        "itemId": 438,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 87.0,
+        "rare": false
+      },
+      {
+        "itemId": 436,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 84.0,
+        "rare": false
+      },
+      {
+        "itemId": 2349,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 82.0,
+        "rare": false
+      },
+      {
+        "itemId": 440,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 79.0,
+        "rare": false
+      },
+      {
+        "itemId": 2351,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 81.0,
+        "rare": false
+      },
+      {
+        "itemId": 453,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 96.0,
+        "rare": false
+      },
+      {
+        "itemId": 447,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 73.0,
+        "rare": false
+      },
+      {
+        "itemId": 4095,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 830,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 40.0,
+        "rare": false
+      },
+      {
+        "itemId": 5318,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 89.0,
+        "rare": false
+      },
+      {
+        "itemId": 5319,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 85.0,
+        "rare": false
+      },
+      {
+        "itemId": 5324,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 89.0,
+        "rare": false
+      },
+      {
+        "itemId": 5322,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 70.0,
+        "rare": false
+      },
+      {
+        "itemId": 5320,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 60.0,
+        "rare": false
+      },
+      {
+        "itemId": 5323,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 42.0,
+        "rare": false
+      },
+      {
+        "itemId": 5321,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 52.0,
+        "rare": false
+      },
+      {
+        "itemId": 618,
+        "minAmount": 279,
+        "maxAmount": 449,
+        "rate": 60.0,
+        "rare": false
+      },
+      {
+        "itemId": 2347,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 82.0,
+        "rare": false
+      },
+      {
+        "itemId": 1913,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 77.0,
+        "rare": false
+      },
+      {
+        "itemId": 1623,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 68.0,
+        "rare": false
+      },
+      {
+        "itemId": 1621,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 58.0,
+        "rare": false
+      },
+      {
+        "itemId": 1619,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 985,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 59.0,
+        "rare": false
+      },
+      {
+        "itemId": 987,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 71.0,
+        "rare": false
+      },
+      {
+        "itemId": 2366,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 5.0,
+        "rare": false
+      },
+      {
+        "itemId": 1617,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 39.0,
+        "rare": false
+      },
+      {
+        "itemId": 0,
+        "minAmount": 0,
+        "maxAmount": 0,
+        "rate": 0.0,
+        "rare": true
+      }
+    ]
+  },
+  "examines": {
+    "1631": "The slime of evil.",
+    "1632": "The slime of evil."
+  }
+}

@@ -1,7 +1,7 @@
 package com.rs.game.content.cutscene.actions;
 
-import com.rs.game.entity.actor.player.Player;
 import com.rs.game.content.cutscene.Cutscene;
+import com.rs.game.entity.actor.player.Player;
 
 public class DestroyCachedObjectAction extends CutsceneAction {
 

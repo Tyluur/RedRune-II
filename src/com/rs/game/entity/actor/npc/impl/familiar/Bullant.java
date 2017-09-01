@@ -1,58 +1,56 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 
 public class Bullant extends Familiar {
-
+	
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4667052662212699631L;
-
-	public Bullant(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	
+	public Bullant(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
-
+	
 	@Override
 	public String getSpecialName() {
 		return "Unburden";
 	}
-
+	
 	@Override
 	public String getSpecialDescription() {
 		return "Restores the owner's run energy by half of their Agility level.";
 	}
-
+	
 	@Override
 	public int getBOBSize() {
 		return 0;
 	}
-
+	
 	@Override
 	public int getSpecialAmount() {
 		return 12;
 	}
-
+	
 	@Override
 	public SpecialAttack getSpecialAttack() {
 		return SpecialAttack.CLICK;
 	}
-
+	
 	@Override
 	public boolean submitSpecial(Object object) {
 		Player player = (Player) object;
 		if (player.getRunEnergy() == 100) {
-			player.getPackets().sendGameMessage(
-					"This wouldn't effect you at all.");
+			player.getPackets().sendGameMessage("This wouldn't effect you at all.");
 			return false;
 		}
-		int agilityLevel = getOwner().getSkills().getLevel(Skills.AGILITY);
+		int agilityLevel = getOwner().getSkills().getLevel(PlayerSkills.AGILITY);
 		int runEnergy = player.getRunEnergy() + (Math.round(agilityLevel / 2));
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));

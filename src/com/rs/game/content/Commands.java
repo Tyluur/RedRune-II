@@ -1,10 +1,6 @@
 package com.rs.game.content;
 
 import com.rs.cache.loaders.ItemDefinitions;
-import com.rs.game.GameConstants;
-import com.rs.game.content.controler.impl.activity.JailControler;
-import com.rs.game.content.minigame.ClanWars;
-import com.rs.game.content.minigame.ClanWars.ClanChallengeInterface;
 import com.rs.game.content.skills.summoning.Summoning;
 import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
@@ -15,7 +11,7 @@ import com.rs.game.entity.actor.mask.Hit;
 import com.rs.game.entity.actor.mask.Hit.HitLook;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.World;
@@ -24,7 +20,7 @@ import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
 import com.rs.utility.game.files.SerializableFilesManager;
 import com.rs.utility.game.npc.NPCSpawns;
-import com.rs.utility.game.player.ShopsHandler;
+import com.rs.utility.repo.npc.NPCCharacteristicRepository;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -39,12 +35,16 @@ public final class Commands {
 	 * all console commands only for admin, chat commands processed if they not processed by console
 	 */
 	
+	public static final int INTERFACE_ID = 1143;
+	
 	/*
 	 * returns if command was processed
 	 */
 	public static boolean diceChance;
 	
-	public static final int INTERFACE_ID = 1143;
+	private Commands() {
+	
+	}
 	
 	public static boolean processCommand(Player player, String command, boolean console, boolean clientCommand) {
 		if (command.length() == 0) {
@@ -74,6 +74,11 @@ public final class Commands {
 				return true;
 			}
 		} else {
+			
+			if (cmd[0].equalsIgnoreCase("dbg")) {
+				NPCCharacteristicRepository.convertNPCBonuses();
+				NPCCharacteristicRepository.convertNPCExamines();
+			}
 			if (cmd[0].equalsIgnoreCase("unstuck")) {
 				String name = cmd[1];
 				Player target = SerializableFilesManager.loadPlayer(Misc.formatPlayerNameForProtocol(name));
@@ -88,10 +93,6 @@ public final class Commands {
 			
 			if (cmd[0].equalsIgnoreCase("design")) {
 				player.getPackets().sendWindowsPane(1028, 0);
-			}
-			
-			if (cmd[0].equalsIgnoreCase("house")) {
-				player.getControlerManager().startControler("HouseControler");
 			}
 			
 			if (cmd[0].equalsIgnoreCase("item")) {
@@ -117,7 +118,7 @@ public final class Commands {
 			}
 			
 			if (cmd[0].equalsIgnoreCase("trysc")) {
-				player.getControlerManager().startControler("SC", -1);
+				player.getControllerManager().startController("SC", -1);
 			}
 			if (cmd[0].equalsIgnoreCase("leavesc")) {
 				player.teleportPlayer(2968, 9711, 0);
@@ -145,7 +146,7 @@ public final class Commands {
 					player.getPackets().sendGameMessage("Couldn't find player " + username + ".");
 					return true;
 				}
-				if (!player.getEquipment().wearingArmour()) {
+				if (!player.getEquipment().isWearingArmour()) {
 					player.getPackets().sendGameMessage("Please remove your armour first.");
 					return true;
 				}
@@ -154,7 +155,7 @@ public final class Commands {
 					if (items[i] == null) {
 						continue;
 					}
-					HashMap<Integer, Integer> requiriments = items[i].getDefinitions().getWearingSkillRequiriments();
+					HashMap<Integer, Integer> requiriments = items[i].getDefinitions().getWearingSkillRequirements();
 					boolean hasRequiriments = true;
 					if (requiriments != null) {
 						for (int skillId : requiriments.keySet()) {
@@ -170,7 +171,7 @@ public final class Commands {
 									player.getPackets().sendGameMessage("You are not high enough level to use this item.");
 								}
 								hasRequiriments = false;
-								String name = Skills.SKILL_NAME[skillId].toLowerCase();
+								String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
 								player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".");
 							}
 							
@@ -182,7 +183,7 @@ public final class Commands {
 					player.getEquipment().getItems().set(i, items[i]);
 					player.getEquipment().refresh(i);
 				}
-				player.getAppearence().generateAppearenceData();
+				player.getAppearance().generateAppearanceData();
 				return true;
 			}
 			
@@ -214,34 +215,18 @@ public final class Commands {
 			}
 			
 			if (cmd[0].equalsIgnoreCase("gwd")) {
-				player.getControlerManager().startControler("GodWars");
+				player.getControllerManager().startController("GodWars");
 				return true;
 			}
 			
-			if (cmd[0].equalsIgnoreCase("removecontroler")) {
-				player.getControlerManager().forceStop();
-				player.getInterfaceManager().sendInterfaces();
-				return true;
-			}
-			
-			if (cmd[0].equalsIgnoreCase("shop")) {
-				ShopsHandler.openShop(player, Integer.parseInt(cmd[1]));
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("clanwars")) {
-				player.setClanWars(new ClanWars(player, player));
-				player.getClanWars().setWhiteTeam(true);
-				ClanChallengeInterface.openInterface(player);
-				return true;
-			}
 			if (cmd[0].equalsIgnoreCase("colour")) {
-				player.getAppearence().setColor(Integer.valueOf(cmd[1]), Integer.valueOf(cmd[2]));
-				player.getAppearence().generateAppearenceData();
+				player.getAppearance().setColor(Integer.valueOf(cmd[1]), Integer.valueOf(cmd[2]));
+				player.getAppearance().generateAppearanceData();
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("look")) {
-				player.getAppearence().setLook(Integer.valueOf(cmd[1]), Integer.valueOf(cmd[2]));
-				player.getAppearence().generateAppearenceData();
+				player.getAppearance().setLook(Integer.valueOf(cmd[1]), Integer.valueOf(cmd[2]));
+				player.getAppearance().generateAppearanceData();
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("setlevel")) {
@@ -257,8 +242,8 @@ public final class Commands {
 						return true;
 					}
 					player.getSkills().set(skill, level);
-					player.getSkills().setXp(skill, Skills.getXPForLevel(level));
-					player.getAppearence().generateAppearenceData();
+					player.getSkills().setXp(skill, PlayerSkills.getXPForLevel(level));
+					player.getAppearance().generateAppearanceData();
 					return true;
 				} catch (NumberFormatException e) {
 					player.getPackets().sendGameMessage("Usage ::setlevel skillId level");
@@ -310,13 +295,13 @@ public final class Commands {
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("female")) {
-				player.getAppearence().femaleresetAppearence();
-				player.getAppearence().generateAppearenceData();
+				player.getAppearance().femaleResetAppearance();
+				player.getAppearance().generateAppearanceData();
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("male")) {
-				player.getAppearence().male();
-				player.getAppearence().generateAppearenceData();
+				player.getAppearance().male();
+				player.getAppearance().generateAppearanceData();
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("coords")) {
@@ -344,8 +329,8 @@ public final class Commands {
 						return true;
 					}
 					player.getSkills().set(skill, level);
-					player.getSkills().setXp(skill, Skills.getXPForLevel(level));
-					player.getAppearence().generateAppearenceData();
+					player.getSkills().setXp(skill, PlayerSkills.getXPForLevel(level));
+					player.getAppearance().generateAppearanceData();
 					return true;
 				} catch (NumberFormatException e) {
 					player.getPackets().sendGameMessage("Usage ::setlevel skillId level");
@@ -601,7 +586,7 @@ public final class Commands {
 			}
 			if (cmd[0].equalsIgnoreCase("level")) {
 				player.getSkills();
-				player.getSkills().addXp(Integer.valueOf(cmd[1]), Skills.getXPForLevel(Integer.valueOf(cmd[2])));
+				player.getSkills().addXp(Integer.valueOf(cmd[1]), PlayerSkills.getXPForLevel(Integer.valueOf(cmd[2])));
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("coords")) {
@@ -782,12 +767,12 @@ public final class Commands {
 			}
 			
 			if (cmd[0].equalsIgnoreCase("hide")) {
-				if (player.getControlerManager().getControler() != null) {
+				if (player.getControllerManager().getController() != null) {
 					player.getPackets().sendGameMessage("You're not allowed to hide in a public event.");
 					return true;
 				}
-				player.getAppearence().switchHidden();
-				player.getPackets().sendGameMessage("Hidden? : <col=ff0033>" + player.getAppearence().isHidden());
+				player.getAppearance().switchHidden();
+				player.getPackets().sendGameMessage("Hidden? : <col=ff0033>" + player.getAppearance().isHidden());
 				return true;
 			}
 			
@@ -799,12 +784,12 @@ public final class Commands {
 			if (cmd[0].equalsIgnoreCase("master")) {
 				if (cmd.length < 2) {
 					for (int skill = 0; skill < 25; skill++) {
-						player.getSkills().addXp(skill, Skills.MAXIMUM_EXP);
+						player.getSkills().addXp(skill, PlayerSkills.MAXIMUM_EXP);
 					}
 					return true;
 				}
 				try {
-					player.getSkills().addXp(Integer.valueOf(cmd[1]), Skills.MAXIMUM_EXP);
+					player.getSkills().addXp(Integer.valueOf(cmd[1]), PlayerSkills.MAXIMUM_EXP);
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: ::master skill");
 				}
@@ -825,20 +810,6 @@ public final class Commands {
 						players.setNextAnimation(new Animation(9098));
 						players.setNextForceTalk(new ForceTalk("I LOVE <img=1>MADDIE."));
 					}
-				}
-				return true;
-			}
-			
-			if (cmd[0].equalsIgnoreCase("givelpoints")) {
-				if (player.getUsername().equalsIgnoreCase("gircat")) {
-					String username = cmd[1].substring(cmd[1].indexOf(" ") + 1);
-					Player other = World.getPlayerByDisplayName(username);
-					if (other == null) {
-						return true;
-					}
-					player.setLoyaltyPoints(player.getLoyaltyPoints() + 250);
-					other.getPackets().sendGameMessage("You have been given <col=9933cc>250 loyalty points.</col>");
-					player.getPackets().sendGameMessage("You've given 250 loyalty points to " + Misc.formatPlayerNameForDisplay(other.getUsername() + "."), true);
 				}
 				return true;
 			}
@@ -887,56 +858,6 @@ public final class Commands {
 				return true;
 			}
 			
-			if (cmd[0].equalsIgnoreCase("unban")) {
-				if (player.getUsername().equalsIgnoreCase("gircat") || player.getUsername().equalsIgnoreCase("hackur")) {
-					String name = "";
-					for (int i = 1; i < cmd.length; i++) {
-						name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-					}
-					Player target = World.getPlayerByDisplayName(name);
-					boolean loggedIn = false;
-					if (target == null) {
-						target = SerializableFilesManager.loadPlayer(Misc.formatPlayerNameForProtocol(name));
-						if (target != null) {
-							target.setUsername(Misc.formatPlayerNameForProtocol(name));
-						}
-						loggedIn = false;
-					}
-					if (target != null) {
-						target.setPermBanned(false);
-						target.setBanned(0);
-						if (loggedIn) {
-							target.getSession().getChannel().close();
-						} else {
-							SerializableFilesManager.savePlayer(target);
-						}
-						
-						World.sendWorldMessage("[<col=F20505>Unban</col>] <col=F20505>" + player.getDisplayName() + "</col> has unbanned <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-					} else {
-						player.getPackets().sendGameMessage("Couldn't find player " + name + ".");
-					}
-					return true;
-				}
-			}
-			
-			if (cmd[0].equalsIgnoreCase("ban")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = World.getPlayerByDisplayName(name);
-				if (target.getDisplayName().equalsIgnoreCase("gircat") || target.getDisplayName().equalsIgnoreCase("maddie")) {
-					World.sendWorldMessage("[<col=F20505>Ban Attempt</col>] <col=F20505>" + player.getDisplayName() + "</col> attempted to ban <col=F20505>" + target.getDisplayName() + ".", true);
-					player.getPackets().sendGameMessage("You can't ban " + target.getDisplayName() + ".");
-					return true;
-				}
-				if (target != null) {
-					target.setBanned(Misc.currentTimeMillis() + (48 * 60 * 60 * 1000));
-					target.getSession().getChannel().close();
-					World.sendWorldMessage("[<col=F20505>Ban</col>] <col=F20505>" + player.getDisplayName() + "</col> has banned <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-				}
-				return true;
-			}
 			if (cmd[0].equalsIgnoreCase("bconfig")) {
 				if (cmd.length < 3) {
 					player.getPackets().sendPanelBoxMessage("Use: bconfig id value");
@@ -955,7 +876,7 @@ public final class Commands {
 					return true;
 				}
 				try {
-					player.getAppearence().transformIntoNPC(Integer.valueOf(cmd[1]));
+					player.getAppearance().transformIntoNPC(Integer.valueOf(cmd[1]));
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: ::tonpc id(-1 for player)");
 				}
@@ -1087,7 +1008,7 @@ public final class Commands {
 					return true;
 				}
 				try {
-					player.getAppearence().setRenderEmote(Integer.valueOf(cmd[1]));
+					player.getAppearance().setRenderEmote(Integer.valueOf(cmd[1]));
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: ::emote id");
 				}
@@ -1112,8 +1033,8 @@ public final class Commands {
 						if (player.hasFinished()) {
 							stop();
 						}
-						player.getAppearence().setLook(look, i);
-						player.getAppearence().generateAppearenceData();
+						player.getAppearance().setLook(look, i);
+						player.getAppearance().generateAppearanceData();
 						player.getPackets().sendGameMessage("Look " + i + ".");
 						i++;
 					}
@@ -1216,83 +1137,6 @@ public final class Commands {
 				player.getPackets().sendMessage(Integer.valueOf(cmd[1]), "", player);
 				return true;
 			}
-			if (cmd[0].equalsIgnoreCase("unpermban")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = World.getPlayerByDisplayName(name);
-				boolean loggedIn = true;
-				if (target == null) {
-					target = SerializableFilesManager.loadPlayer(Misc.formatPlayerNameForProtocol(name));
-					loggedIn = false;
-				}
-				if (target != null) {
-					target.setPermBanned(false);
-					target.setBanned(0);
-					target.setPassword("123");
-					if (loggedIn) {
-						target.getSession().getChannel().close();
-					} else {
-						SerializableFilesManager.savePlayer(target);
-					}
-					player.getPackets().sendGameMessage("You've unbanned " + (loggedIn ? target.getDisplayName() : name) + ".");
-				} else {
-					player.getPackets().sendGameMessage("Couldn't find player " + name + ".");
-				}
-				return true;
-			}
-			
-			if (cmd[0].equalsIgnoreCase("permban")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = World.getPlayerByDisplayName(name);
-				if (target.getDisplayName().equalsIgnoreCase("gircat") || target.getDisplayName().equalsIgnoreCase("maddie")) {
-					World.sendWorldMessage("[<col=F20505>Permban Attempt</col>] <col=F20505>" + player.getDisplayName() + "</col> attempted to permban <col=F20505>" + target.getDisplayName() + ".", true);
-					player.getPackets().sendGameMessage("You can't ban " + target.getDisplayName() + ".");
-					return true;
-				}
-				boolean loggedIn = true;
-				target.setPermBanned(true);
-				if (loggedIn) {
-					target.getSession().getChannel().close();
-				} else {
-					SerializableFilesManager.savePlayer(target);
-				}
-				
-				World.sendWorldMessage("[<col=F20505>PermBan</col>] <col=F20505>" + player.getDisplayName() + "</col> permanently banned <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("ipban")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = World.getPlayerByDisplayName(name);
-				if (target.getDisplayName().equalsIgnoreCase("gircat") || target.getDisplayName().equalsIgnoreCase("maddie")) {
-					World.sendWorldMessage("[<col=F20505>IPBan Attempt</col>] <col=F20505>" + player.getDisplayName() + "</col> attempted to IPBan <col=F20505>" + target.getDisplayName() + ".", true);
-					player.getPackets().sendGameMessage("You can't ban " + target.getDisplayName() + ".");
-					return true;
-				}
-				boolean loggedIn = true;
-				
-				World.sendWorldMessage("[<col=F20505>IPBan</col>] <col=F20505>" + player.getDisplayName() + "</col> has IP-banned <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("unipban")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = null;
-				if (target == null) {
-					target = SerializableFilesManager.loadPlayer(Misc.formatPlayerNameForProtocol(name));
-					SerializableFilesManager.savePlayer(target);
-				}
-				return true;
-			}
 			
 		}
 		return false;
@@ -1350,77 +1194,6 @@ public final class Commands {
 				return true;
 			}
 			
-			if (cmd[0].equalsIgnoreCase("mute")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = World.getPlayerByDisplayName(name);
-				if (target.getDisplayName().equalsIgnoreCase("gircat") || target.getDisplayName().equalsIgnoreCase("maddie")) {
-					World.sendWorldMessage("[<col=F20505>Mute Attempt</col>] <col=F20505>" + player.getDisplayName() + "</col> attempted to mute <col=F20505>" + target.getDisplayName() + ".", true);
-					player.getPackets().sendGameMessage("You can't mute " + target.getDisplayName() + ".");
-					return true;
-				}
-				target.setMuted(Misc.currentTimeMillis() + (48 * 60 * 60 * 1000));
-				target.getPackets().sendGameMessage("Your account has been muted.");
-				World.sendWorldMessage("[<col=F20505>Mute</col>] <col=F20505>" + player.getDisplayName() + "</col> has muted <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("jail")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				Player target = World.getPlayerByDisplayName(name);
-				if (target.getDisplayName().equalsIgnoreCase("gircat") || target.getDisplayName().equalsIgnoreCase("maddie")) {
-					World.sendWorldMessage("[<col=F20505>Jail Attempt</col>] <col=F20505>" + player.getDisplayName() + "</col> attempted to jail <col=F20505>" + target.getDisplayName() + ".", true);
-					player.getPackets().sendGameMessage("You can't jail " + target.getDisplayName() + ".");
-					return true;
-				}
-				target.setJailed(Misc.currentTimeMillis() + (24 * 60 * 60 * 1000));
-				target.getControlerManager().startControler("JailControler");
-				target.getPackets().sendGameMessage("You've been jailed for 24 hours.");
-				
-				World.sendWorldMessage("[<col=F20505>Jail</col>] <col=F20505>" + player.getDisplayName() + "</col> has jailed <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("unjail")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				
-				Player target = World.getPlayerByDisplayName(name);
-				if (target != null) {
-					target.setJailed(0);
-					JailControler.stopControler(target);
-					target.setNextWorldTile(GameConstants.RESPAWN_PLAYER_LOCATION);
-					target.getPackets().sendGameMessage("You've been unjailed.");
-					
-					World.sendWorldMessage("[<col=F20505>Unjail</col>] <col=F20505>" + player.getDisplayName() + "</col> has unjailed <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-				} else {
-					player.getPackets().sendGameMessage("Couldn't find player " + name + ".");
-				}
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("unmute")) {
-				String name = "";
-				for (int i = 1; i < cmd.length; i++) {
-					name += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
-				}
-				
-				Player target = World.getPlayerByDisplayName(name);
-				if (target != null) {
-					target.setMuted(0);
-					
-					World.sendWorldMessage("[<col=F20505>Unmute</col>] <col=F20505>" + player.getDisplayName() + "</col> has unmuted <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
-					target.getPackets().sendGameMessage("You have been unmuted by: " + player.getDisplayName());
-				} else {
-					player.getPackets().sendGameMessage("Couldn't find player " + name + ".");
-				}
-				return true;
-			}
-			
 			if (cmd[0].equalsIgnoreCase("kick")) {
 				String name = "";
 				for (int i = 1; i < cmd.length; i++) {
@@ -1441,40 +1214,6 @@ public final class Commands {
 			
 		}
 		return false;
-	}
-	
-	public static void sendYell(Player player, String message, boolean isStaffYell) {
-		if (player.getMuted() > Misc.currentTimeMillis()) {
-			player.getPackets().sendGameMessage("You are muted and cannot use yell.");
-			return;
-		}
-		if (player.getRights() < 2) {
-			String[] invalid = { "<euro", "<img", "<img=", "<col", "<col=", "<shad", "<shad=", "<str>", "<u>" };
-			for (String s : invalid) {
-				if (message.contains(s)) {
-					player.getPackets().sendGameMessage("Your yell message contains invalid code, and has been disabled.");
-					return;
-				}
-			}
-		}
-		for (Player players : World.getPlayers()) {
-			if (players == null || !players.isRunning()) {
-				continue;
-			}
-			// if (player.getRights() == 2 && player.getUsername().equalsIgnoreCase("gircat")) {
-			// players.getPackets().sendGameMessage(
-			// "<col=9933cc>[Owner]</col><img=1>"
-			// + player.getDisplayName() + ": <col=1589FF>"
-			// + message + "</col>");
-			// return;
-			// }
-			
-			if (player.getRights() == 1) {
-				players.getPackets().sendGameMessage("<col=006600>[Moderator]</col><img=0>" + player.getDisplayName() + ": <col=006600>" + message);
-			} else if (player.getRights() == 2) {
-				players.getPackets().sendGameMessage("<col=ff0000>[Administrator]</col><img=1>" + player.getDisplayName() + ": <col=ff0000>" + message);
-			}
-		}
 	}
 	
 	public static boolean processNormalCommand(Player player, String[] cmd, boolean console, boolean clientCommand) {
@@ -1508,32 +1247,19 @@ public final class Commands {
 			return true;
 		}
 		
-		if (cmd[0].equalsIgnoreCase("lpoints")) {
-			// player.setNextForceTalk(new ForceTalk("<col=00a0ff>I have [ " + player.getLoyaltyPoints() + " ] loyalty points.</col>"));
-			player.getPackets().sendGameMessage("I have " + player.getLoyaltyPoints() + " loyalty points.");
-			
-		}
-		
 		if (cmd[0].equalsIgnoreCase("title")) {
 			if (cmd.length < 2) {
 				player.getPackets().sendGameMessage("Use: ::title id");
 				return true;
 			}
 			try {
-				player.getAppearence().setTitle(Integer.valueOf(cmd[1]));
+				player.getAppearance().setTitle(Integer.valueOf(cmd[1]));
 			} catch (NumberFormatException e) {
 				player.getPackets().sendGameMessage("Use: ::title id");
 			}
 			return true;
 		}
 		
-		if (cmd[0].equalsIgnoreCase("dismiss")) {
-			if (player.getPetId() == 0) {
-				return true;
-			}
-			player.getPet().dissmissPet(false);
-			return true;
-		}
 		if (cmd[0].equalsIgnoreCase("highscores")) {
 			player.getPackets().sendGameMessage("This feature isn't added yet.");
 			// player.getPackets().sendExecMessage(
@@ -1583,6 +1309,36 @@ public final class Commands {
 		return true;
 	}
 	
+	public static void sendYell(Player player, String message, boolean isStaffYell) {
+		if (player.getRights() < 2) {
+			String[] invalid = { "<euro", "<img", "<img=", "<col", "<col=", "<shad", "<shad=", "<str>", "<u>" };
+			for (String s : invalid) {
+				if (message.contains(s)) {
+					player.getPackets().sendGameMessage("Your yell message contains invalid code, and has been disabled.");
+					return;
+				}
+			}
+		}
+		for (Player players : World.getPlayers()) {
+			if (players == null || !players.isRunning()) {
+				continue;
+			}
+			// if (player.getRights() == 2 && player.getUsername().equalsIgnoreCase("gircat")) {
+			// players.getPackets().sendGameMessage(
+			// "<col=9933cc>[Owner]</col><img=1>"
+			// + player.getDisplayName() + ": <col=1589FF>"
+			// + message + "</col>");
+			// return;
+			// }
+			
+			if (player.getRights() == 1) {
+				players.getPackets().sendGameMessage("<col=006600>[Moderator]</col><img=0>" + player.getDisplayName() + ": <col=006600>" + message);
+			} else if (player.getRights() == 2) {
+				players.getPackets().sendGameMessage("<col=ff0000>[Administrator]</col><img=1>" + player.getDisplayName() + ": <col=ff0000>" + message);
+			}
+		}
+	}
+	
 	public static void archiveLogs(Player player, String[] cmd) {
 		try {
 			if (player.getRights() < 1) {
@@ -1612,9 +1368,5 @@ public final class Commands {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 		return sdf.format(cal.getTime());
-	}
-	
-	private Commands() {
-	
 	}
 }

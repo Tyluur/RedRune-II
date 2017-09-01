@@ -9,9 +9,13 @@ import java.util.HashMap;
 
 public final class ItemBonuses {
 	
+	private final static String PACKED_PATH = "data/repository/item/bonuses.ib";
+	
 	private static HashMap<Integer, int[]> itemBonuses;
 	
-	private final static String PACKED_PATH = "data/repository/item/bonuses.ib";
+	private ItemBonuses() {
+	
+	}
 	
 	public static void init() {
 		if (new File(PACKED_PATH).exists()) {
@@ -19,10 +23,6 @@ public final class ItemBonuses {
 		} else {
 			throw new RuntimeException("Missing item bonuses.");
 		}
-	}
-	
-	public static int[] getItemBonuses(int itemId) {
-		return itemBonuses.get(itemId);
 	}
 	
 	private static void loadItemBonuses() {
@@ -47,8 +47,8 @@ public final class ItemBonuses {
 		
 	}
 	
-	private ItemBonuses() {
-	
+	public static int[] getItemBonuses(int itemId) {
+		return itemBonuses.get(itemId);
 	}
 	
 }

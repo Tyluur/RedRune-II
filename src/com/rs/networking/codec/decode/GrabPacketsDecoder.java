@@ -1,9 +1,9 @@
 package com.rs.networking.codec.decode;
 
 import com.rs.cache.Cache;
+import com.rs.networking.Session;
 import com.rs.networking.codec.Decoder;
 import com.rs.networking.io.InputStream;
-import com.rs.networking.Session;
 
 public final class GrabPacketsDecoder extends Decoder {
 	

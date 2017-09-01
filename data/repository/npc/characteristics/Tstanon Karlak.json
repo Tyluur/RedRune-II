@@ -1,0 +1,138 @@
+{
+  "combatDefinitions": {
+    "6204": {
+      "hitpoints": 1420,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 210,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "6204": [
+      {
+        "itemId": 20268,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1319,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 53.0,
+        "rare": false
+      },
+      {
+        "itemId": 11736,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 53.0,
+        "rare": false
+      },
+      {
+        "itemId": 808,
+        "minAmount": 98,
+        "maxAmount": 98,
+        "rate": 69.0,
+        "rare": false
+      },
+      {
+        "itemId": 11716,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 5.0,
+        "rare": false
+      },
+      {
+        "itemId": 11710,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 53.0,
+        "rare": false
+      },
+      {
+        "itemId": 11712,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 26.0,
+        "rare": false
+      },
+      {
+        "itemId": 11714,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 48.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 83.0,
+        "rare": false
+      },
+      {
+        "itemId": 245,
+        "minAmount": 7,
+        "maxAmount": 7,
+        "rate": 74.0,
+        "rare": false
+      },
+      {
+        "itemId": 886,
+        "minAmount": 98,
+        "maxAmount": 98,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 385,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 56.0,
+        "rare": false
+      },
+      {
+        "itemId": 7060,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 157,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 145,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 73.0,
+        "rare": false
+      },
+      {
+        "itemId": 189,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 70.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "6204": "Destroyer of 1000 planes!"
+  }
+}

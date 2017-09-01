@@ -9,6 +9,7 @@ public class FloorItemStrategy extends RouteStrategy {
 	 * Entity position x.
 	 */
 	private int x;
+
 	/**
 	 * Entity position y.
 	 */
@@ -46,8 +47,9 @@ public class FloorItemStrategy extends RouteStrategy {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof FloorItemStrategy))
+		if (!(other instanceof FloorItemStrategy)) {
 			return false;
+		}
 		FloorItemStrategy strategy = (FloorItemStrategy) other;
 		return x == strategy.x && y == strategy.y;
 	}

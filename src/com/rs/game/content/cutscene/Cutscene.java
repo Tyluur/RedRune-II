@@ -2,20 +2,16 @@ package com.rs.game.content.cutscene;
 
 import com.rs.cores.CoresManager;
 import com.rs.game.GameFlags;
-import com.rs.game.world.region.RegionBuilder;
+import com.rs.game.content.cutscene.actions.CutsceneAction;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.entity.actor.player.link.InterfaceManager;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.cutscene.actions.CutsceneAction;
+import com.rs.game.entity.actor.player.link.InterfaceManager;
+import com.rs.game.world.region.RegionBuilder;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 
 public abstract class Cutscene {
-	
-	public abstract boolean hiddenMinimap();
-	
-	public abstract CutsceneAction[] getActions(Player player);
 	
 	private int stage;
 	
@@ -29,46 +25,10 @@ public abstract class Cutscene {
 	
 	private int[] currentMapData;
 	
-	public Cutscene() {
-	
-	}
-	
 	private WorldTile endTile;
 	
-	public final void stopCutscene(Player player) {
-		if (player.getX() != endTile.getX() || player.getY() != endTile.getY() || player.getPlane() != endTile.getPlane()) {
-			player.setNextWorldTile(endTile);
-		}
-		if (hiddenMinimap()) {
-			player.getPackets().sendBlackOut(0); // unblack
-		}
-		player.getPackets().sendConfig(1241, 0);
-		player.getPackets().sendResetCamera();
-		player.resetLockDelay();
-		deleteCache();
-		if (currentMapData != null) {
-			CoresManager.slowExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						if (currentMapData != null) {
-							RegionBuilder.destroyMap(currentMapData[0], currentMapData[1], currentMapData[1], currentMapData[2]);
-						}
-					} catch (Throwable e) {
-						e.printStackTrace();
-					}
-				}
-			});
-		}
-	}
+	public Cutscene() {
 	
-	public final void startCutscene(Player player) {
-		if (hiddenMinimap()) {
-			player.getPackets().sendBlackOut(2); // minimap
-		}
-		player.getPackets().sendConfig(1241, 1);
-		player.setInfiniteStopDelay();
-		player.stopAll(true, false);
 	}
 	
 	public void constructArea(final Player player, final int baseChunkX, final int baseChunkY, final int widthChunks, final int heightChunks) {
@@ -107,11 +67,23 @@ public abstract class Cutscene {
 		});
 	}
 	
+	public int getBaseX() {
+		return currentMapData == null ? 0 : currentMapData[0] << 3;
+	}
+	
+	public int getBaseY() {
+		return currentMapData == null ? 0 : currentMapData[1] << 3;
+	}
+	
 	public int getLocalX(Player player, int x) {
 		if (currentMapData == null) {
 			return x;
 		}
 		return getX(player, getBaseX() + x);
+	}
+	
+	public static int getX(Player player, int x) {
+		return new WorldTile(x, 0, 0).getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize());
 	}
 	
 	public int getLocalY(Player player, int y) {
@@ -121,16 +93,54 @@ public abstract class Cutscene {
 		return getY(player, getBaseY() + y);
 	}
 	
-	public int getBaseX() {
-		return currentMapData == null ? 0 : currentMapData[0] << 3;
-	}
-	
-	public int getBaseY() {
-		return currentMapData == null ? 0 : currentMapData[1] << 3;
+	public static int getY(Player player, int y) {
+		return new WorldTile(0, y, 0).getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize());
 	}
 	
 	public final void logout(Player player) {
 		stopCutscene(player);
+	}
+	
+	public final void stopCutscene(Player player) {
+		if (player.getX() != endTile.getX() || player.getY() != endTile.getY() || player.getPlane() != endTile.getPlane()) {
+			player.setNextWorldTile(endTile);
+		}
+		if (hiddenMinimap()) {
+			player.getPackets().sendBlackOut(0); // unblack
+		}
+		player.getPackets().sendConfig(1241, 0);
+		player.getPackets().sendResetCamera();
+		player.resetLockDelay();
+		deleteCache();
+		if (currentMapData != null) {
+			CoresManager.slowExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if (currentMapData != null) {
+							RegionBuilder.destroyMap(currentMapData[0], currentMapData[1], currentMapData[1], currentMapData[2]);
+						}
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+	}
+	
+	public abstract boolean hiddenMinimap();
+	
+	public void deleteCache() {
+		for (Object object : cache) {
+			destroyCache(object);
+		}
+	}
+	
+	public void destroyCache(Object object) {
+		if (object instanceof NPC) {
+			NPC n = (NPC) object;
+			n.finish();
+		}
 	}
 	
 	public final boolean process(Player player) {
@@ -159,17 +169,13 @@ public abstract class Cutscene {
 		}
 	}
 	
-	public void deleteCache() {
-		for (Object object : cache) {
-			destroyCache(object);
+	public final void startCutscene(Player player) {
+		if (hiddenMinimap()) {
+			player.getPackets().sendBlackOut(2); // minimap
 		}
-	}
-	
-	public void destroyCache(Object object) {
-		if (object instanceof NPC) {
-			NPC n = (NPC) object;
-			n.finish();
-		}
+		player.getPackets().sendConfig(1241, 1);
+		player.setInfiniteStopDelay();
+		player.stopAll(true, false);
 	}
 	
 	public final void createCache(Player player) {
@@ -185,11 +191,5 @@ public abstract class Cutscene {
 		cache[0] = this;
 	}
 	
-	public static int getX(Player player, int x) {
-		return new WorldTile(x, 0, 0).getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize());
-	}
-	
-	public static int getY(Player player, int y) {
-		return new WorldTile(0, y, 0).getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize());
-	}
+	public abstract CutsceneAction[] getActions(Player player);
 }

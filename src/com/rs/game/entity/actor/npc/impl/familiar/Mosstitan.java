@@ -1,32 +1,33 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 
 public class Mosstitan extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2779054495849433214L;
 
-	public Mosstitan(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Mosstitan(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Titan's Constitution ";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Defence by 12.5%, and it can also increase a player's Life Points 80 points higher than their max Life Points.";
+	public boolean submitSpecial(Object object) {
+		int newLevel = getOwner().getSkills().getLevel(PlayerSkills.DEFENCE) + (getOwner().getSkills().getLevelForXp(PlayerSkills.DEFENCE) / (int) 12.5);
+		if (newLevel > getOwner().getSkills().getLevelForXp(PlayerSkills.DEFENCE) + (int) 12.5) {
+			newLevel = getOwner().getSkills().getLevelForXp(PlayerSkills.DEFENCE) + (int) 12.5;
+		}
+		getOwner().setNextGraphics(new Graphics(2011));
+		getOwner().setNextAnimation(new Animation(7660));
+		getOwner().getSkills().set(PlayerSkills.DEFENCE, newLevel);
+		return true;
 	}
 
 	@Override
@@ -40,21 +41,17 @@ public class Mosstitan extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.CLICK;
+	public String getSpecialName() {
+		return "Titan's Constitution ";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		int newLevel = getOwner().getSkills().getLevel(Skills.DEFENCE)
-				+ (getOwner().getSkills().getLevelForXp(Skills.DEFENCE) / (int) 12.5);
-		if (newLevel > getOwner().getSkills().getLevelForXp(Skills.DEFENCE)
-				+ (int) 12.5)
-			newLevel = getOwner().getSkills().getLevelForXp(Skills.DEFENCE)
-					+ (int) 12.5;
-		getOwner().setNextGraphics(new Graphics(2011));
-		getOwner().setNextAnimation(new Animation(7660));
-		getOwner().getSkills().set(Skills.DEFENCE, newLevel);
-		return true;
+	public String getSpecialDescription() {
+		return "Defence by 12.5%, and it can also increase a player's Life Points 80 points higher than their max Life Points.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.CLICK;
 	}
 }

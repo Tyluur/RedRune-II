@@ -1,0 +1,33 @@
+{
+  "combatDefinitions": {
+    "3494": {
+      "hitpoints": 2100,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 240,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "3494": [
+      {
+        "itemId": 1891,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "3494": "Will give you a beating as well as indigestion."
+  }
+}

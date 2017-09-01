@@ -5,38 +5,51 @@ import com.rs.game.world.region.Region;
 import com.rs.game.world.region.RegionMap;
 
 /**
- * Walking route finder working on third flag range, designed for walking
- * routes.
- * 
+ * Walking route finder working on third flag range, designed for walking routes.
+ *
  * @author Mangis
  */
 public class WalkRouteFinder {
+
 	private static final int GRAPH_SIZE = 128;
+
 	private static final int QUEUE_SIZE = (GRAPH_SIZE * GRAPH_SIZE) / 4; // we do /4 because each tile can only be accessed from single direction
+
 	private static final int ALTERNATIVE_ROUTE_MAX_DISTANCE = 100;
+
 	private static final int ALTERNATIVE_ROUTE_RANGE = 10;
 
 	private static final int DIR_NORTH = 0x1;
+
 	private static final int DIR_EAST = 0x2;
+
 	private static final int DIR_SOUTH = 0x4;
+
 	private static final int DIR_WEST = 0x8;
 
 	private static final int[][] directions = new int[GRAPH_SIZE][GRAPH_SIZE];
+
 	private static final int[][] distances = new int[GRAPH_SIZE][GRAPH_SIZE];
+
 	private static final int[][] clip = new int[GRAPH_SIZE][GRAPH_SIZE];
+
 	private static final int[] bufferX = new int[QUEUE_SIZE];
+
 	private static final int[] bufferY = new int[QUEUE_SIZE];
-	private static int exitX = -1;
-	private static int exitY = -1;
-	private static boolean isAlternative;
 
 	public static boolean debug = true;
+
 	public static long debug_transmittime = 0;
 
+	private static int exitX = -1;
+
+	private static int exitY = -1;
+
+	private static boolean isAlternative;
+
 	/**
-	 * Find's route using given strategy. Returns amount of steps found. If
-	 * steps > 0, route exists. If steps = 0, route exists, but no need to move.
-	 * If steps < 0, route does not exist.
+	 * Find's route using given strategy. Returns amount of steps found. If steps > 0, route exists. If steps = 0, route
+	 * exists, but no need to move. If steps < 0, route does not exist.
 	 */
 	protected static int findRoute(int srcX, int srcY, int srcZ, int srcSizeXY, RouteStrategy strategy, boolean findAlternative) {
 		isAlternative = false;
@@ -59,19 +72,20 @@ public class WalkRouteFinder {
 		// we will have optimized algorhytm's for them.
 		boolean found = false;
 		switch (srcSizeXY) {
-		case 1:
-			found = performCalculationS1(srcX, srcY, strategy);
-			break;
-		case 2:
-			found = performCalculationS2(srcX, srcY, strategy);
-			break;
-		default:
-			found = performCalculationSX(srcX, srcY, srcSizeXY, strategy);
-			break;
+			case 1:
+				found = performCalculationS1(srcX, srcY, strategy);
+				break;
+			case 2:
+				found = performCalculationS2(srcX, srcY, strategy);
+				break;
+			default:
+				found = performCalculationSX(srcX, srcY, srcSizeXY, strategy);
+				break;
 		}
 
-		if (!found && !findAlternative)
+		if (!found && !findAlternative) {
 			return -1;
+		}
 
 		// when we start searching for path, we position ourselves in the middle of graph
 		// so the base(minimum) position is source_pos - HALF_GRAPH_SIZE.
@@ -96,8 +110,9 @@ public class WalkRouteFinder {
 				for (int checkY = (approxDestY - ALTERNATIVE_ROUTE_RANGE); checkY <= (approxDestY + ALTERNATIVE_ROUTE_RANGE); checkY++) {
 					int graphX = checkX - graphBaseX;
 					int graphY = checkY - graphBaseY;
-					if (graphX < 0 || graphY < 0 || graphX >= GRAPH_SIZE || graphY >= GRAPH_SIZE || distances[graphX][graphY] >= ALTERNATIVE_ROUTE_MAX_DISTANCE)
+					if (graphX < 0 || graphY < 0 || graphX >= GRAPH_SIZE || graphY >= GRAPH_SIZE || distances[graphX][graphY] >= ALTERNATIVE_ROUTE_MAX_DISTANCE) {
 						continue; // we are out of graph's bounds or too much steps.
+					}
 					// calculate the delta's.
 					// when calculating, we are also taking the approximated destination size into account to increase precise. 
 					int deltaX = 0;
@@ -105,13 +120,15 @@ public class WalkRouteFinder {
 					if (approxDestX <= checkX) {
 						deltaX = 1 - approxDestX - (strategy.getApproxDestinationSizeX() - checkX);
 						//deltaX = (approxDestX + (strategy.getApproxDestinationSizeX() - 1)) < checkX ? (approxDestX - (checkX - (strategy.getApproxDestinationSizeX() + 1))) : 0;
-					} else
+					} else {
 						deltaX = approxDestX - checkX;
+					}
 					if (approxDestY <= checkY) {
 						deltaY = 1 - approxDestY - (strategy.getApproxDestinationSizeY() - checkY);
 						//deltaY = (approxDestY + (strategy.getApproxDestinationSizeY() - 1)) < checkY ? (approxDestY - (checkY - (strategy.getApproxDestinationSizeY() + 1))) : 0;
-					} else
+					} else {
 						deltaY = approxDestY - checkY;
+					}
 
 					int cost = (deltaX * deltaX) + (deltaY * deltaY);
 					if (cost < lowestCost || (cost <= lowestCost && distances[graphX][graphY] < lowestDistance)) {
@@ -124,12 +141,14 @@ public class WalkRouteFinder {
 				}
 			}
 
-			if (lowestCost == Integer.MAX_VALUE || lowestDistance == Integer.MAX_VALUE)
-				return -1; // we didin't find any alternative route, sadly. 
+			if (lowestCost == Integer.MAX_VALUE || lowestDistance == Integer.MAX_VALUE) {
+				return -1; // we didin't find any alternative route, sadly.
+			}
 		}
 
-		if (endX == srcX && endY == srcY)
+		if (endX == srcX && endY == srcY) {
 			return 0; // path was found, but we didin't move
+		}
 
 		// what we will do now is trace the path from the end position
 		// for faster performance, we are reusing our queue buffer for another purpose.
@@ -149,20 +168,53 @@ public class WalkRouteFinder {
 				lastwritten = direction;
 			}
 
-			if ((direction & DIR_EAST) != 0)
+			if ((direction & DIR_EAST) != 0) {
 				traceX++;
-			else if ((direction & DIR_WEST) != 0)
+			} else if ((direction & DIR_WEST) != 0) {
 				traceX--;
+			}
 
-			if ((direction & DIR_NORTH) != 0)
+			if ((direction & DIR_NORTH) != 0) {
 				traceY++;
-			else if ((direction & DIR_SOUTH) != 0)
+			} else if ((direction & DIR_SOUTH) != 0) {
 				traceY--;
+			}
 
 			direction = directions[traceX - graphBaseX][traceY - graphBaseY];
 		}
 
 		return steps;
+	}
+
+	/**
+	 * Transmit's clip data to route finder buffers.
+	 */
+	private static void transmitClipData(int x, int y, int z) {
+		int graphBaseX = x - (GRAPH_SIZE / 2);
+		int graphBaseY = y - (GRAPH_SIZE / 2);
+
+		for (int transmitRegionX = graphBaseX >> 6; transmitRegionX <= (graphBaseX + (GRAPH_SIZE - 1)) >> 6; transmitRegionX++) {
+			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
+				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
+				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
+				Region region = World.getRegion(transmitRegionX << 8 | transmitRegionY, true);
+				RegionMap map = region.getRegionMap();
+				if (map == null || region.getLoadMapStage() != 2 || !region.isLoadedObjectSpawns()) {
+					for (int fillX = startX; fillX < endX; fillX++) {
+						for (int fillY = startY; fillY < endY; fillY++) {
+							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;
+						}
+					}
+				} else {
+					int[][] masks = map.getMasks()[z];
+					for (int fillX = startX; fillX < endX; fillX++) {
+						for (int fillY = startY; fillY < endY; fillY++) {
+							clip[fillX - graphBaseX][fillY - graphBaseY] = masks[fillX & 0x3F][fillY & 0x3F];
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -350,10 +402,12 @@ public class WalkRouteFinder {
 			// if we can't exit at current tile, check where we can go from this tile
 			int nextDistance = _distances[currentGraphX][currentGraphY] + 1;
 			if (currentGraphX > 0 && _directions[currentGraphX - 1][currentGraphY] == 0 && (_clip[currentGraphX - 1][currentGraphY] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) == 0 && (_clip[currentGraphX - 1][currentGraphY + (size - 1)] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < (size - 1); y++) {
-						if ((_clip[currentGraphX - 1][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX - 1][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to west, queue it
 					_bufferX[write] = currentX - 1;
@@ -365,10 +419,12 @@ public class WalkRouteFinder {
 				} while (false);
 			}
 			if (currentGraphX < (GRAPH_SIZE - size) && _directions[currentGraphX + 1][currentGraphY] == 0 && (_clip[currentGraphX + size][currentGraphY] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE)) == 0 && (_clip[currentGraphX + size][currentGraphY + (size - 1)] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < (size - 1); y++) {
-						if ((_clip[currentGraphX + size][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX + size][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to east, queue it
 					_bufferX[write] = currentX + 1;
@@ -380,10 +436,12 @@ public class WalkRouteFinder {
 				} while (false);
 			}
 			if (currentGraphY > 0 && _directions[currentGraphX][currentGraphY - 1] == 0 && (_clip[currentGraphX][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) == 0 && (_clip[currentGraphX + (size - 1)][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < (size - 1); y++) {
-						if ((_clip[currentGraphX + y][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX + y][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to south, queue it
 					_bufferX[write] = currentX;
@@ -395,10 +453,12 @@ public class WalkRouteFinder {
 				} while (false);
 			}
 			if (currentGraphY < (GRAPH_SIZE - size) && _directions[currentGraphX][currentGraphY + 1] == 0 && (_clip[currentGraphX][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) == 0 && (_clip[currentGraphX + (size - 1)][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < (size - 1); y++) {
-						if ((_clip[currentGraphX + y][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX + y][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to north, queue it
 					_bufferX[write] = currentX;
@@ -411,10 +471,12 @@ public class WalkRouteFinder {
 			}
 			// diagonal checks, comment them to disable diagonal routes.
 			if (currentGraphX > 0 && currentGraphY > 0 && _directions[currentGraphX - 1][currentGraphY - 1] == 0 && (_clip[currentGraphX - 1][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < size; y++) {
-						if ((_clip[currentGraphX - 1][currentGraphY + (y - 1)] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + (y - 1)][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX - 1][currentGraphY + (y - 1)] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + (y - 1)][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to south west, queue it
 					_bufferX[write] = currentX - 1;
@@ -426,10 +488,12 @@ public class WalkRouteFinder {
 				} while (false);
 			}
 			if (currentGraphX < (GRAPH_SIZE - size) && currentGraphY > 0 && _directions[currentGraphX + 1][currentGraphY - 1] == 0 && (_clip[currentGraphX + size][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < size; y++) {
-						if ((_clip[currentGraphX + size][currentGraphY + (y - 1)] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + y][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX + size][currentGraphY + (y - 1)] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + y][currentGraphY - 1] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to south east, queue it
 					_bufferX[write] = currentX + 1;
@@ -441,10 +505,12 @@ public class WalkRouteFinder {
 				} while (false);
 			}
 			if (currentGraphX > 0 && currentGraphY < (GRAPH_SIZE - size) && _directions[currentGraphX - 1][currentGraphY + 1] == 0 && (_clip[currentGraphX - 1][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < size; y++) {
-						if ((_clip[currentGraphX - 1][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + (y - 1)][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX - 1][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + (y - 1)][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to north west, queue it.
 					_bufferX[write] = currentX - 1;
@@ -456,10 +522,12 @@ public class WalkRouteFinder {
 				} while (false);
 			}
 			if (currentGraphX < (GRAPH_SIZE - size) && currentGraphY < (GRAPH_SIZE - size) && _directions[currentGraphX + 1][currentGraphY + 1] == 0 && (_clip[currentGraphX + size][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) == 0) {
-				exit: do {
+				exit:
+				do {
 					for (int y = 1; y < size; y++) {
-						if ((_clip[currentGraphX + y][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + size][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0)
+						if ((_clip[currentGraphX + y][currentGraphY + size] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_EAST_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHEAST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0 || (_clip[currentGraphX + size][currentGraphY + y] & (Flags.FLOOR_BLOCKSWALK | Flags.FLOORDECO_BLOCKSWALK | Flags.OBJ_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_NORTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_SOUTH_BLOCKSWALK_ALTERNATIVE | Flags.WALLOBJ_WEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_NORTHWEST_BLOCKSWALK_ALTERNATIVE | Flags.CORNEROBJ_SOUTHWEST_BLOCKSWALK_ALTERNATIVE)) != 0) {
 							break exit;
+						}
 					}
 					// we can go to north east, queue it.
 					_bufferX[write] = currentX + 1;
@@ -476,35 +544,6 @@ public class WalkRouteFinder {
 		exitX = currentX;
 		exitY = currentY;
 		return false;
-	}
-
-	/**
-	 * Transmit's clip data to route finder buffers.
-	 */
-	private static void transmitClipData(int x, int y, int z) {
-		int graphBaseX = x - (GRAPH_SIZE / 2);
-		int graphBaseY = y - (GRAPH_SIZE / 2);
-
-		for (int transmitRegionX = graphBaseX >> 6; transmitRegionX <= (graphBaseX + (GRAPH_SIZE - 1)) >> 6; transmitRegionX++) {
-			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
-				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
-				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
-				Region region = World.getRegion(transmitRegionX << 8 | transmitRegionY, true);
-				RegionMap map = region.getRegionMap();
-				if (map == null || region.getLoadMapStage() != 2 || !region.isLoadedObjectSpawns()) {
-					for (int fillX = startX; fillX < endX; fillX++)
-						for (int fillY = startY; fillY < endY; fillY++)
-							clip[fillX - graphBaseX][fillY - graphBaseY] = -1;
-				} else {
-					int[][] masks = map.getMasks()[z];
-					for (int fillX = startX; fillX < endX; fillX++) {
-						for (int fillY = startY; fillY < endY; fillY++) {
-							clip[fillX - graphBaseX][fillY - graphBaseY] = masks[fillX & 0x3F][fillY & 0x3F];
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**

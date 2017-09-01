@@ -218,16 +218,6 @@ public abstract class Buffer {
 	}
 	
 	/**
-	 * Reads a versioned string
-	 */
-	public String readVString() {
-		if (readByte() != 0) {
-			throw new RuntimeException("GJSTR2 - bad magic number");
-		}
-		return readString();
-	}
-	
-	/**
 	 * Reads a string literal from the buffer.
 	 *
 	 * @return the read string value.
@@ -241,6 +231,16 @@ public abstract class Buffer {
 			return "";
 		}
 		return JagStringTools.decode(data, start, length);
+	}
+	
+	/**
+	 * Reads a versioned string
+	 */
+	public String readVString() {
+		if (readByte() != 0) {
+			throw new RuntimeException("GJSTR2 - bad magic number");
+		}
+		return readString();
 	}
 	
 	/**

@@ -1,16 +1,14 @@
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.utility.Misc;
 
 /**
- * 
  * @author Tyler
- * 
  */
 public class NomadCombat extends CombatScript {
 
@@ -30,10 +28,10 @@ public class NomadCombat extends CombatScript {
 			delayHit(npc, 1, target, getMeleeHit(npc, nomadHit));
 		} else {
 			switch (nomadAttack) {
-			case 1:
-				npc.setNextAnimation(new Animation(12697));
-				delayHit(npc, 1, target, getMagicHit(npc, nomadHit));
-				break;
+				case 1:
+					npc.setNextAnimation(new Animation(12697));
+					delayHit(npc, 1, target, getMagicHit(npc, nomadHit));
+					break;
 			}
 		}
 		return defs.getAttackDelay();

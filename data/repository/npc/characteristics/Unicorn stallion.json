@@ -1,0 +1,63 @@
+{
+  "combatDefinitions": {
+    "6822": {
+      "hitpoints": 1000,
+      "attackAnim": 6376,
+      "defenceAnim": 6375,
+      "deathAnim": 6377,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 0,
+      "maxHit": 80,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "6823": {
+      "hitpoints": 1000,
+      "attackAnim": 6376,
+      "defenceAnim": 6375,
+      "deathAnim": 6377,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 0,
+      "maxHit": 80,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {
+    "6822": [
+      125,
+      0,
+      0,
+      0,
+      0,
+      200,
+      200,
+      200,
+      150,
+      250
+    ],
+    "6823": [
+      125,
+      0,
+      0,
+      0,
+      0,
+      200,
+      200,
+      200,
+      150,
+      250
+    ]
+  },
+  "drops": {},
+  "examines": {
+    "6822": "Horse with a horn.",
+    "6823": "Horse with a horn."
+  }
+}

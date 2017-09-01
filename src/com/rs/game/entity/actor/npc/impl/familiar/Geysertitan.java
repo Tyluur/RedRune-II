@@ -1,29 +1,23 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
 
 public class Geysertitan extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -707448797034175432L;
 
-	public Geysertitan(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Geysertitan(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Boil";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Increases the titan's combat by 60 in the next combat tick.";
+	public boolean submitSpecial(Object object) {
+		return false;
 	}
 
 	@Override
@@ -37,12 +31,17 @@ public class Geysertitan extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.ENTITY;
+	public String getSpecialName() {
+		return "Boil";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		return false;
+	public String getSpecialDescription() {
+		return "Increases the titan's combat by 60 in the next combat tick.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.ENTITY;
 	}
 }

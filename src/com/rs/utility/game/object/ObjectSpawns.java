@@ -1,8 +1,8 @@
 package com.rs.utility.game.object;
 
-import com.rs.game.world.World;
-import com.rs.game.entity.object.WorldObject;
 import com.rs.game.entity.WorldTile;
+import com.rs.game.entity.object.WorldObject;
+import com.rs.game.world.World;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -10,6 +10,9 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 
 public final class ObjectSpawns {
+	
+	private ObjectSpawns() {
+	}
 	
 	public static final void init() {
 		if (!new File("data/repository/map/packedSpawns").exists()) {
@@ -54,6 +57,25 @@ public final class ObjectSpawns {
 		}
 	}
 	
+	private static final void addObjectSpawn(int objectId, int type, int rotation, int regionId, WorldTile tile, boolean cliped) {
+		try {
+			DataOutputStream out = new DataOutputStream(new FileOutputStream("data/repository/map/packedSpawns/" + regionId + ".os", true));
+			out.writeShort(objectId);
+			out.writeByte(type);
+			out.writeByte(rotation);
+			out.writeByte(tile.getPlane());
+			out.writeShort(tile.getX());
+			out.writeShort(tile.getY());
+			out.writeBoolean(cliped);
+			out.flush();
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static final void loadObjectSpawns(int regionId) {
 		File file = new File("data/repository/map/packedSpawns/" + regionId + ".os");
 		if (!file.exists()) {
@@ -80,28 +102,6 @@ public final class ObjectSpawns {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private static final void addObjectSpawn(int objectId, int type, int rotation, int regionId, WorldTile tile, boolean cliped) {
-		try {
-			DataOutputStream out = new DataOutputStream(new FileOutputStream("data/repository/map/packedSpawns/" + regionId + ".os", true));
-			out.writeShort(objectId);
-			out.writeByte(type);
-			out.writeByte(rotation);
-			out.writeByte(tile.getPlane());
-			out.writeShort(tile.getX());
-			out.writeShort(tile.getY());
-			out.writeBoolean(cliped);
-			out.flush();
-			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private ObjectSpawns() {
 	}
 	
 }

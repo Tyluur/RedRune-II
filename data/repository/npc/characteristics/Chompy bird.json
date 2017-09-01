@@ -1,0 +1,56 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "1016": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2876,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 1,
+        "maxAmount": 11,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "1550": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2876,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 1,
+        "maxAmount": 11,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "1016": "A large boisterous bird, a delicacy for ogres.",
+    "1550": "A large boisterous bird, a delicacy for ogres."
+  }
+}

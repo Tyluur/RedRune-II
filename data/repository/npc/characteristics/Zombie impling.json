@@ -1,0 +1,112 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "7902": [
+      {
+        "itemId": 533,
+        "minAmount": 1,
+        "maxAmount": 5,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 4834,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 65.0,
+        "rare": false
+      },
+      {
+        "itemId": 4833,
+        "minAmount": 1,
+        "maxAmount": 2,
+        "rate": 70.0,
+        "rare": false
+      },
+      {
+        "itemId": 535,
+        "minAmount": 1,
+        "maxAmount": 2,
+        "rate": 89.0,
+        "rare": false
+      },
+      {
+        "itemId": 536,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 4830,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 6812,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 55.0,
+        "rare": false
+      }
+    ],
+    "7905": [
+      {
+        "itemId": 533,
+        "minAmount": 1,
+        "maxAmount": 5,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 4834,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 4833,
+        "minAmount": 1,
+        "maxAmount": 2,
+        "rate": 61.0,
+        "rare": false
+      },
+      {
+        "itemId": 535,
+        "minAmount": 1,
+        "maxAmount": 2,
+        "rate": 96.0,
+        "rare": false
+      },
+      {
+        "itemId": 536,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 4830,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 60.0,
+        "rare": false
+      },
+      {
+        "itemId": 6812,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 59.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "7902": "<b>&#8226;</b> A rotten one. <b>&#8226;</b> Why zombies? Why now?.",
+    "7905": "<b>&#8226;</b> A rotten one. <b>&#8226;</b> Why zombies? Why now?."
+  }
+}

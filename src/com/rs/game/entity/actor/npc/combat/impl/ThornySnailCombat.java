@@ -1,13 +1,14 @@
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.world.World;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
+import com.rs.game.world.World;
+import com.rs.utility.constants.NPCConstants;
 
 public class ThornySnailCombat extends CombatScript {
 
@@ -25,25 +26,11 @@ public class ThornySnailCombat extends CombatScript {
 			npc.setNextAnimation(new Animation(8148));
 			npc.setNextGraphics(new Graphics(1385));
 			World.sendProjectile(npc, target, 1386, 34, 16, 30, 35, 16, 0);
-			delayHit(
-					npc,
-					1,
-					target,
-					getRangeHit(
-							npc,
-							getRandomMaxHit(npc, 80,
-									NPCCombatDefinitions.RANGE, target)));
+			delayHit(npc, 1, target, getRangeHit(npc, getRandomMaxHit(npc, 80, NPCConstants.RANGE, target)));
 			npc.setNextGraphics(new Graphics(1387));
 		} else {
 			npc.setNextAnimation(new Animation(8143));
-			delayHit(
-					npc,
-					1,
-					target,
-					getRangeHit(
-							npc,
-							getRandomMaxHit(npc, 40,
-									NPCCombatDefinitions.RANGE, target)));
+			delayHit(npc, 1, target, getRangeHit(npc, getRandomMaxHit(npc, 40, NPCConstants.RANGE, target)));
 		}
 		return defs.getAttackDelay();
 	}

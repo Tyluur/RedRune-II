@@ -12,69 +12,71 @@ public class ObjectDefinitions {
 	
 	private static final ConcurrentHashMap<Integer, ObjectDefinitions> objectDefinitions = new ConcurrentHashMap<Integer, ObjectDefinitions>();
 	
-	private short[] originalColors;
-	
-	private int[] toObjectIds;
-	
 	static int anInt3832;
 	
-	int[] anIntArray3833 = null;
-	
-	private int anInt3834;
-	
-	int anInt3835;
-	
 	static int anInt3836;
-	
-	private byte aByte3837;
-	
-	int anInt3838 = -1;
-	
-	boolean aBoolean3839;
-	
-	private int anInt3840;
-	
-	private int anInt3841;
 	
 	static int anInt3842;
 	
 	static int anInt3843;
 	
-	int anInt3844;
-	
-	boolean aBoolean3845;
-	
 	static int anInt3846;
-	
-	private byte aByte3847;
-	
-	private byte aByte3849;
-	
-	int anInt3850;
-	
-	int anInt3851;
 	
 	public boolean secondBool;
 	
 	public boolean aBoolean3853;
 	
-	int anInt3855;
-	
 	public boolean ignoreClipOnAlternativeRoute;
-	
-	int anInt3857;
-	
-	private byte[] aByteArray3858;
-	
-	int[] anIntArray3859;
-	
-	int anInt3860;
 	
 	public String[] options;
 	
 	public int configFileId;
 	
-	private short[] modifiedColors;
+	public boolean projectileCliped;
+	
+	public int sizeY;
+	
+	public int thirdInt;
+	
+	public int anInt3876;
+	
+	public int clipType;
+	
+	public int sizeX;
+	
+	public boolean aBoolean3891;
+	
+	public int secondInt;
+	
+	public String name;
+	
+	public int[][] modelIds;
+	
+	public int id;
+	
+	int[] anIntArray3833 = null;
+	
+	int anInt3835;
+	
+	int anInt3838 = -1;
+	
+	boolean aBoolean3839;
+	
+	int anInt3844;
+	
+	boolean aBoolean3845;
+	
+	int anInt3850;
+	
+	int anInt3851;
+	
+	int anInt3855;
+	
+	int anInt3857;
+	
+	int[] anIntArray3859;
+	
+	int anInt3860;
 	
 	int anInt3865;
 	
@@ -82,45 +84,15 @@ public class ObjectDefinitions {
 	
 	boolean aBoolean3867;
 	
-	public boolean projectileCliped;
-	
-	private int[] anIntArray3869;
-	
 	boolean aBoolean3870;
-	
-	public int sizeY;
 	
 	boolean aBoolean3872;
 	
 	boolean aBoolean3873;
 	
-	public int thirdInt;
-	
-	private int anInt3875;
-	
-	public int anInt3876;
-	
-	private int anInt3877;
-	
-	private int anInt3878;
-	
-	public int clipType;
-	
-	private int anInt3882;
-	
-	private int anInt3883;
-	
 	Object loader;
 	
-	private int anInt3889;
-	
-	public int sizeX;
-	
-	public boolean aBoolean3891;
-	
 	int anInt3892;
-	
-	public int secondInt;
 	
 	boolean aBoolean3894;
 	
@@ -130,13 +102,7 @@ public class ObjectDefinitions {
 	
 	int configId;
 	
-	private byte[] aByteArray3899;
-	
 	int anInt3900;
-	
-	public String name;
-	
-	private int anInt3902;
 	
 	int anInt3904;
 	
@@ -148,21 +114,7 @@ public class ObjectDefinitions {
 	
 	int anInt3913;
 	
-	private byte aByte3914;
-	
-	private int anInt3915;
-	
-	public int[][] modelIds;
-	
-	private int anInt3917;
-	
-	private short[] aShortArray3919;
-	
-	private short[] aShortArray3920;
-	
 	int anInt3921;
-	
-	private HashMap<Integer, Object> parameters;
 	
 	boolean aBoolean3923;
 	
@@ -170,7 +122,114 @@ public class ObjectDefinitions {
 	
 	int cflag;
 	
-	public int id;
+	private short[] originalColors;
+	
+	private int[] toObjectIds;
+	
+	private int anInt3834;
+	
+	private byte aByte3837;
+	
+	private int anInt3840;
+	
+	private int anInt3841;
+	
+	private byte aByte3847;
+	
+	private byte aByte3849;
+	
+	private byte[] aByteArray3858;
+	
+	private short[] modifiedColors;
+	
+	private int[] anIntArray3869;
+	
+	private int anInt3875;
+	
+	private int anInt3877;
+	
+	private int anInt3878;
+	
+	private int anInt3882;
+	
+	private int anInt3883;
+	
+	private int anInt3889;
+	
+	private byte[] aByteArray3899;
+	
+	private int anInt3902;
+	
+	private byte aByte3914;
+	
+	private int anInt3915;
+	
+	private int anInt3917;
+	
+	private short[] aShortArray3919;
+	
+	private short[] aShortArray3920;
+	
+	private HashMap<Integer, Object> parameters;
+	
+	private ObjectDefinitions() {
+		anInt3835 = -1;
+		anInt3860 = -1;
+		configFileId = -1;
+		aBoolean3866 = false;
+		anInt3851 = -1;
+		anInt3865 = 255;
+		aBoolean3845 = false;
+		aBoolean3867 = false;
+		anInt3850 = 0;
+		anInt3844 = -1;
+		anInt3857 = -1;
+		aBoolean3872 = true;
+		anInt3882 = -1;
+		anInt3834 = 0;
+		options = new String[5];
+		anInt3875 = 0;
+		aBoolean3839 = false;
+		anIntArray3869 = null;
+		sizeY = 1;
+		thirdInt = -1;
+		anInt3883 = 0;
+		aBoolean3895 = true;
+		anInt3840 = 0;
+		aBoolean3870 = false;
+		anInt3889 = 0;
+		aBoolean3853 = true;
+		secondBool = false;
+		clipType = 2;
+		projectileCliped = true;
+		ignoreClipOnAlternativeRoute = false;
+		anInt3855 = -1;
+		anInt3878 = 0;
+		anInt3904 = 0;
+		sizeX = 1;
+		anInt3876 = -1;
+		aBoolean3891 = false;
+		anInt3905 = 0;
+		name = "null";
+		anInt3913 = -1;
+		aBoolean3906 = false;
+		aBoolean3873 = false;
+		aByte3914 = (byte) 0;
+		anInt3915 = 0;
+		anInt3900 = 0;
+		secondInt = -1;
+		aBoolean3894 = false;
+		anInt3921 = 0;
+		anInt3902 = 128;
+		configId = -1;
+		anInt3877 = 0;
+		cflag = 0;
+		anInt3892 = 64;
+		aBoolean3923 = false;
+		aBoolean3924 = false;
+		anInt3841 = 128;
+		anInt3917 = 128;
+	}
 	
 	public static void main(String[] args) throws IOException {
 		Cache.init();
@@ -186,54 +245,65 @@ public class ObjectDefinitions {
 		
 	}
 	
-	public String getFirstOption() {
-		if (options == null || options.length < 1) {
-			return "";
-		}
-		return options[0];
-	}
-	
-	public String getSecondOption() {
-		if (options == null || options.length < 2) {
-			return "";
-		}
-		return options[1];
-	}
-	
-	public String getOption(int option) {
-		if (options == null || options.length < option || option == 0) {
-			return "";
-		}
-		return options[option - 1];
-	}
-	
-	public String getThirdOption() {
-		if (options == null || options.length < 3) {
-			return "";
-		}
-		return options[2];
-	}
-	
-	public boolean containsOption(int i, String option) {
-		if (options == null || options.length <= i || options[i] == null) {
-			return false;
-		}
-		return options[i].equals(option);
-	}
-	
-	public boolean containsOption(String o) {
-		if (options == null) {
-			return false;
-		}
-		for (String option : options) {
-			if (option == null) {
-				continue;
+	public static ObjectDefinitions getObjectDefinitions(int id) {
+		ObjectDefinitions def = objectDefinitions.get(id);
+		if (def == null) {
+			def = new ObjectDefinitions();
+			def.id = id;
+			byte[] data = Cache.STORE.getIndexes()[16].getFile(getArchiveId(id), id & 0xff);
+			if (data == null) {
+				//System.out.println("Failed loading Object " + id + ".");
+			} else {
+				def.readValueLoop(new InputStream(data));
 			}
-			if (option.equalsIgnoreCase(o)) {
-				return true;
+			def.method3287();
+			if ((def.name != null && (def.name.equalsIgnoreCase("bank booth") || def.name.equalsIgnoreCase("counter")))) {
+				def.ignoreClipOnAlternativeRoute = false;
+				def.projectileCliped = true;
+				if (def.clipType == 0) {
+					def.clipType = 1;
+				}
+			}
+			if (def.ignoreClipOnAlternativeRoute) {
+				def.projectileCliped = false;
+				def.clipType = 0;
+			}
+			objectDefinitions.put(id, def);
+		}
+		return def;
+	}
+	
+	private static int getArchiveId(int i_0_) {
+		return i_0_ >>> -1135990488;
+	}
+	
+	private void readValueLoop(InputStream stream) {
+		for (; ; ) {
+			int opcode = stream.readUnsignedByte();
+			if (opcode == 0) {
+				// System.out.println("Remaining: "+stream.getRemaining());
+				break;
+			}
+			readValues(stream, opcode);
+		}
+	}
+	
+	final void method3287() {
+		if (secondInt == -1) {
+			secondInt = 0;
+			if (aByteArray3899 != null && aByteArray3899.length == 1 && aByteArray3899[0] == 10) {
+				secondInt = 1;
+			}
+			for (int i_13_ = 0; i_13_ < 5; i_13_++) {
+				if (options[i_13_] != null) {
+					secondInt = 1;
+					break;
+				}
 			}
 		}
-		return false;
+		if (anInt3855 == -1) {
+			anInt3855 = clipType != 0 ? 1 : 0;
+		}
 	}
 	
 	private void readValues(InputStream stream, int opcode) {
@@ -579,124 +649,58 @@ public class ObjectDefinitions {
 		}
 	}
 	
-	private void readValueLoop(InputStream stream) {
-		for (; ; ) {
-			int opcode = stream.readUnsignedByte();
-			if (opcode == 0) {
-				// System.out.println("Remaining: "+stream.getRemaining());
-				break;
-			}
-			readValues(stream, opcode);
-		}
+	public static void clearObjectDefinitions() {
+		objectDefinitions.clear();
 	}
 	
-	private ObjectDefinitions() {
-		anInt3835 = -1;
-		anInt3860 = -1;
-		configFileId = -1;
-		aBoolean3866 = false;
-		anInt3851 = -1;
-		anInt3865 = 255;
-		aBoolean3845 = false;
-		aBoolean3867 = false;
-		anInt3850 = 0;
-		anInt3844 = -1;
-		anInt3857 = -1;
-		aBoolean3872 = true;
-		anInt3882 = -1;
-		anInt3834 = 0;
-		options = new String[5];
-		anInt3875 = 0;
-		aBoolean3839 = false;
-		anIntArray3869 = null;
-		sizeY = 1;
-		thirdInt = -1;
-		anInt3883 = 0;
-		aBoolean3895 = true;
-		anInt3840 = 0;
-		aBoolean3870 = false;
-		anInt3889 = 0;
-		aBoolean3853 = true;
-		secondBool = false;
-		clipType = 2;
-		projectileCliped = true;
-		ignoreClipOnAlternativeRoute = false;
-		anInt3855 = -1;
-		anInt3878 = 0;
-		anInt3904 = 0;
-		sizeX = 1;
-		anInt3876 = -1;
-		aBoolean3891 = false;
-		anInt3905 = 0;
-		name = "null";
-		anInt3913 = -1;
-		aBoolean3906 = false;
-		aBoolean3873 = false;
-		aByte3914 = (byte) 0;
-		anInt3915 = 0;
-		anInt3900 = 0;
-		secondInt = -1;
-		aBoolean3894 = false;
-		anInt3921 = 0;
-		anInt3902 = 128;
-		configId = -1;
-		anInt3877 = 0;
-		cflag = 0;
-		anInt3892 = 64;
-		aBoolean3923 = false;
-		aBoolean3924 = false;
-		anInt3841 = 128;
-		anInt3917 = 128;
+	public String getFirstOption() {
+		if (options == null || options.length < 1) {
+			return "";
+		}
+		return options[0];
 	}
 	
-	final void method3287() {
-		if (secondInt == -1) {
-			secondInt = 0;
-			if (aByteArray3899 != null && aByteArray3899.length == 1 && aByteArray3899[0] == 10) {
-				secondInt = 1;
-			}
-			for (int i_13_ = 0; i_13_ < 5; i_13_++) {
-				if (options[i_13_] != null) {
-					secondInt = 1;
-					break;
-				}
-			}
+	public String getSecondOption() {
+		if (options == null || options.length < 2) {
+			return "";
 		}
-		if (anInt3855 == -1) {
-			anInt3855 = clipType != 0 ? 1 : 0;
-		}
+		return options[1];
 	}
 	
-	private static int getArchiveId(int i_0_) {
-		return i_0_ >>> -1135990488;
+	public String getOption(int option) {
+		if (options == null || options.length < option || option == 0) {
+			return "";
+		}
+		return options[option - 1];
 	}
 	
-	public static ObjectDefinitions getObjectDefinitions(int id) {
-		ObjectDefinitions def = objectDefinitions.get(id);
-		if (def == null) {
-			def = new ObjectDefinitions();
-			def.id = id;
-			byte[] data = Cache.STORE.getIndexes()[16].getFile(getArchiveId(id), id & 0xff);
-			if (data == null) {
-				//System.out.println("Failed loading Object " + id + ".");
-			} else {
-				def.readValueLoop(new InputStream(data));
-			}
-			def.method3287();
-			if ((def.name != null && (def.name.equalsIgnoreCase("bank booth") || def.name.equalsIgnoreCase("counter")))) {
-				def.ignoreClipOnAlternativeRoute = false;
-				def.projectileCliped = true;
-				if (def.clipType == 0) {
-					def.clipType = 1;
-				}
-			}
-			if (def.ignoreClipOnAlternativeRoute) {
-				def.projectileCliped = false;
-				def.clipType = 0;
-			}
-			objectDefinitions.put(id, def);
+	public String getThirdOption() {
+		if (options == null || options.length < 3) {
+			return "";
 		}
-		return def;
+		return options[2];
+	}
+	
+	public boolean containsOption(int i, String option) {
+		if (options == null || options.length <= i || options[i] == null) {
+			return false;
+		}
+		return options[i].equals(option);
+	}
+	
+	public boolean containsOption(String o) {
+		if (options == null) {
+			return false;
+		}
+		for (String option : options) {
+			if (option == null) {
+				continue;
+			}
+			if (option.equalsIgnoreCase(o)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public int getClipType() {
@@ -717,10 +721,6 @@ public class ObjectDefinitions {
 	
 	public int getAccessBlockFlag() {
 		return cflag;
-	}
-	
-	public static void clearObjectDefinitions() {
-		objectDefinitions.clear();
 	}
 	
 }

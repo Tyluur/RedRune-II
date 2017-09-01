@@ -88,6 +88,23 @@ public final class LoginPacketsDecoder extends Decoder {
 			}
 		}
 		
+		if (Misc.invalidAccountName(username)) {
+			session.getLoginPackets().sendClientPacket(3);
+			return;
+		}
+		if (World.getPlayers().size() >= GameConstants.PLAYERS_LIMIT - 10) {
+			session.getLoginPackets().sendClientPacket(7);
+			return;
+		}
+		if (World.containsPlayer(username)) {
+			session.getLoginPackets().sendClientPacket(5);
+			return;
+		}
+		if (AntiFlood.getSessionsIP(session.getIp()) > 3) {
+			session.getLoginPackets().sendClientPacket(9);
+			return;
+		}
+		
 		Player player;
 		
 		if (!SerializableFilesManager.containsPlayer(username)) {
@@ -99,10 +116,6 @@ public final class LoginPacketsDecoder extends Decoder {
 				return;
 			}
 		}
-		if (player.isPermBanned() || (player.getBanned() > System.currentTimeMillis())) {
-			session.getLoginPackets().sendClientPacket(4);
-			return;
-		}
 		player.init(username, session);
 		session.getLoginPackets().sendLobbyDetails(player);
 		session.setDecoder(3, player);
@@ -112,13 +125,11 @@ public final class LoginPacketsDecoder extends Decoder {
 	public void decodeWorldLogin(InputStream buffer) {
 		if (World.exiting_start != 0) {
 			session.getLoginPackets().sendClientPacket(14);
-			System.out.println("we here5");
 			return;
 		}
 		int protocol = buffer.readInt();
 		if (protocol != NetworkConstants.PROTOCOL_NUMBER) {
 			session.getLoginPackets().sendClientPacket(6);
-			System.out.println("we here4");
 			return;
 		}
 		boolean reconnecting = buffer.readUnsignedByte() == 1;
@@ -217,8 +228,7 @@ public final class LoginPacketsDecoder extends Decoder {
 			}
 		}
 		
-		// invalid chars
-		if (username.length() <= 1 || username.length() >= 15 || username.contains("?") || username.contains(":") || username.startsWith(" ") || username.endsWith(" ") || username.contains("  ") || username.endsWith("_") || username.endsWith("  ") || username.endsWith("<") || username.contains("/") || username.contains("\\") || username.contains("*") || username.contains("\"")) {
+		if (Misc.invalidAccountName(username)) {
 			session.getLoginPackets().sendClientPacket(3);
 			return;
 		}
@@ -243,10 +253,6 @@ public final class LoginPacketsDecoder extends Decoder {
 				session.getLoginPackets().sendClientPacket(20);
 				return;
 			}
-		}
-		if (player.isPermBanned() || player.getBanned() > Misc.currentTimeMillis()) {
-			session.getLoginPackets().sendClientPacket(4);
-			return;
 		}
 		session.sync(player);
 		player.init(username, displayMode, width, height);

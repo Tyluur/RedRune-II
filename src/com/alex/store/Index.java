@@ -8,14 +8,19 @@ import com.alex.utils.Constants;
 import com.alex.utils.Utils;
 
 public final class Index {
-
+	
 	private MainFile mainFile;
+	
 	private MainFile index255;
+	
 	private ReferenceTable table;
+	
 	private byte[][][] cachedFiles;
+	
 	private int crc;
+	
 	private byte[] whirlpool;
-
+	
 	protected Index(MainFile index255, MainFile mainFile, int[] keys) {
 		this.mainFile = mainFile;
 		this.index255 = index255;
@@ -29,49 +34,23 @@ public final class Index {
 		table = new ReferenceTable(archive);
 		resetCachedFiles();
 	}
-
+	
+	public int getId() {
+		return mainFile.getId();
+	}
+	
 	public void resetCachedFiles() {
 		cachedFiles = new byte[getLastArchiveId() + 1][][];
 	}
-
-	public int getLastFileId(int archiveId) {
-		if (!archiveExists(archiveId)) {
-			return -1;
-		}
-		return table.getArchives()[archiveId].getFiles().length - 1;
-	}
-
+	
 	public int getLastArchiveId() {
 		return table.getArchives().length - 1;
 	}
-
+	
 	public int getValidArchivesCount() {
 		return table.getValidArchiveIds().length;
 	}
-
-	public int getValidFilesCount(int archiveId) {
-		if (!archiveExists(archiveId)) {
-			return -1;
-		}
-		return table.getArchives()[archiveId].getValidFileIds().length;
-	}
-
-	public boolean archiveExists(int archiveId) {
-		if (archiveId < 0) {
-			return false;
-		}
-		ArchiveReference[] archives = table.getArchives();
-		return archives.length > archiveId && archives[archiveId] != null;
-	}
-
-	public boolean fileExists(int archiveId, int fileId) {
-		if (!archiveExists(archiveId)) {
-			return false;
-		}
-		FileReference[] files = table.getArchives()[archiveId].getFiles();
-		return files.length > fileId && files[fileId] != null;
-	}
-
+	
 	public int getArchiveId(String name) {
 		int nameHash = Utils.getNameHash(name);
 		ArchiveReference[] archives = table.getArchives();
@@ -83,7 +62,7 @@ public final class Index {
 		}
 		return -1;
 	}
-
+	
 	public int getFileId(int archiveId, String name) {
 		if (!archiveExists(archiveId)) {
 			return -1;
@@ -98,18 +77,26 @@ public final class Index {
 		}
 		return -1;
 	}
-
+	
+	public boolean archiveExists(int archiveId) {
+		if (archiveId < 0) {
+			return false;
+		}
+		ArchiveReference[] archives = table.getArchives();
+		return archives.length > archiveId && archives[archiveId] != null;
+	}
+	
 	public byte[] getFile(int archiveId) {
 		if (!archiveExists(archiveId)) {
 			return null;
 		}
 		return getFile(archiveId, table.getArchives()[archiveId].getValidFileIds()[0]);
 	}
-
+	
 	public byte[] getFile(int archiveId, int fileId) {
 		return getFile(archiveId, fileId, null);
 	}
-
+	
 	public byte[] getFile(int archiveId, int fileId, int[] keys) {
 		try {
 			if (!fileExists(archiveId, fileId)) {
@@ -126,17 +113,93 @@ public final class Index {
 			return null;
 		}
 	}
-
+	
+	public boolean fileExists(int archiveId, int fileId) {
+		if (!archiveExists(archiveId)) {
+			return false;
+		}
+		FileReference[] files = table.getArchives()[archiveId].getFiles();
+		return files.length > fileId && files[fileId] != null;
+	}
+	
+	private void cacheArchiveFiles(int archiveId, int[] keys) {
+		Archive archive = getArchive(archiveId, keys);
+		int lastFileId = getLastFileId(archiveId);
+		cachedFiles[archiveId] = new byte[lastFileId + 1][];
+		if (archive == null) {
+			return;
+		}
+		byte[] data = archive.getData();
+		if (data == null) {
+			return;
+		}
+		int filesCount = getValidFilesCount(archiveId);
+		if (filesCount == 1) {
+			cachedFiles[archiveId][lastFileId] = data;
+		} else {
+			int readPosition = data.length;
+			int amtOfLoops = data[--readPosition] & 0xff;
+			readPosition -= amtOfLoops * (filesCount * 4);
+			InputStream stream = new InputStream(data);
+			stream.setOffset(readPosition);
+			int filesSize[] = new int[filesCount];
+			for (int loop = 0; loop < amtOfLoops; loop++) {
+				int offset = 0;
+				for (int i = 0; i < filesCount; i++) {
+					filesSize[i] += offset += stream.readInt();
+				}
+			}
+			byte[][] filesData = new byte[filesCount][];
+			for (int i = 0; i < filesCount; i++) {
+				filesData[i] = new byte[filesSize[i]];
+				filesSize[i] = 0;
+			}
+			stream.setOffset(readPosition);
+			int sourceOffset = 0;
+			for (int loop = 0; loop < amtOfLoops; loop++) {
+				int dataRead = 0;
+				for (int i = 0; i < filesCount; i++) {
+					dataRead += stream.readInt();
+					System.arraycopy(data, sourceOffset, filesData[i], filesSize[i], dataRead);
+					sourceOffset += dataRead;
+					filesSize[i] += dataRead;
+				}
+			}
+			int count = 0;
+			for (int fileId : table.getArchives()[archiveId].getValidFileIds()) {
+				cachedFiles[archiveId][fileId] = filesData[count++];
+			}
+		}
+	}
+	
+	public Archive getArchive(int id, int[] keys) {
+		return mainFile.getArchive(id, keys);
+	}
+	
+	public int getLastFileId(int archiveId) {
+		if (!archiveExists(archiveId)) {
+			return -1;
+		}
+		return table.getArchives()[archiveId].getFiles().length - 1;
+	}
+	
+	public int getValidFilesCount(int archiveId) {
+		if (!archiveExists(archiveId)) {
+			return -1;
+		}
+		return table.getArchives()[archiveId].getValidFileIds().length;
+	}
+	
 	public boolean packIndex(Store originalStore) {
 		return packIndex(originalStore, false);
 	}
-
+	
 	public boolean packIndex(Store originalStore, boolean checkCRC) {
 		return packIndex(getId(), originalStore, checkCRC);
 	}
-
+	
 	public boolean packIndex(int id, Store originalStore, boolean checkCRC) {
-
+		
 		Index originalIndex = originalStore.getIndexes()[id];
 		for (int archiveId : originalIndex.table.getValidArchiveIds()) {
 			if (checkCRC && archiveExists(archiveId) && originalIndex.table.getArchives()[archiveId].getCRC() == table.getArchives()[archiveId].getCRC()) {
@@ -152,15 +215,11 @@ public final class Index {
 		resetCachedFiles();
 		return true;
 	}
-
+	
 	public boolean putArchive(int archiveId, Store originalStore) {
 		return putArchive(getId(), archiveId, originalStore, true, true);
 	}
-
-	public boolean putArchive(int archiveId, Store originalStore, boolean rewriteTable, boolean resetCache) {
-		return putArchive(getId(), archiveId, originalStore, rewriteTable, resetCache);
-	}
-
+	
 	public boolean putArchive(int id, int archiveId, Store originalStore, boolean rewriteTable, boolean resetCache) {
 		Index originalIndex = originalStore.getIndexes()[id];
 		byte[] data = originalIndex.getMainFile().getArchiveData(archiveId);
@@ -188,19 +247,39 @@ public final class Index {
 		}
 		return true;
 	}
-
+	
+	public MainFile getMainFile() {
+		return mainFile;
+	}
+	
+	public boolean rewriteTable() {
+		table.updateRevision();
+		table.sortTable();
+		Object[] hashes = table.encodeHeader(index255);
+		if (hashes == null) {
+			return false;
+		}
+		crc = (int) hashes[0];
+		whirlpool = (byte[]) hashes[1];
+		return true;
+	}
+	
+	public boolean putArchive(int archiveId, Store originalStore, boolean rewriteTable, boolean resetCache) {
+		return putArchive(getId(), archiveId, originalStore, rewriteTable, resetCache);
+	}
+	
 	public boolean putFile(int archiveId, int fileId, byte[] data) {
 		return putFile(archiveId, fileId, Constants.GZIP_COMPRESSION, data, null, true, true, -1, -1);
 	}
-
+	
 	public boolean putFile(int archiveId, int fileId, byte[] data, boolean rewriteTable) {
 		return putFile(archiveId, fileId, Constants.GZIP_COMPRESSION, data, null, rewriteTable, true, -1, -1);
 	}
-
+	
 	public boolean removeFile(int archiveId, int fileId) {
 		return removeFile(archiveId, fileId, Constants.GZIP_COMPRESSION, null);
 	}
-
+	
 	public boolean removeFile(int archiveId, int fileId, int compression, int[] keys) {
 		if (!fileExists(archiveId, fileId)) {
 			return false;
@@ -247,7 +326,7 @@ public final class Index {
 		resetCachedFiles();
 		return true;
 	}
-
+	
 	public boolean putFile(int archiveId, int fileId, int compression, byte[] data, int[] keys, boolean rewriteTable, boolean resetCache, int archiveName, int fileName) {
 		if (!archiveExists(archiveId)) {
 			table.addEmptyArchiveReference(archiveId);
@@ -313,11 +392,11 @@ public final class Index {
 		}
 		return true;
 	}
-
+	
 	public boolean encryptArchive(int archiveId, int[] keys) {
 		return encryptArchive(archiveId, null, keys, true, true);
 	}
-
+	
 	public boolean encryptArchive(int archiveId, int[] oldKeys, int[] keys, boolean rewriteTable, boolean resetCache) {
 		if (!archiveExists(archiveId)) {
 			return false;
@@ -346,103 +425,29 @@ public final class Index {
 			resetCachedFiles();
 		}
 		return true;
-
+		
 	}
-
-	public boolean rewriteTable() {
-		table.updateRevision();
-		table.sortTable();
-		Object[] hashes = table.encodeHeader(index255);
-		if (hashes == null) {
-			return false;
-		}
-		crc = (int) hashes[0];
-		whirlpool = (byte[]) hashes[1];
-		return true;
-	}
-
-	public void setKeys(int[] keys) {
-		table.setKeys(keys);
-	}
-
+	
 	public int[] getKeys() {
 		return table.getKeys();
 	}
-
-	private void cacheArchiveFiles(int archiveId, int[] keys) {
-		Archive archive = getArchive(archiveId, keys);
-		int lastFileId = getLastFileId(archiveId);
-		cachedFiles[archiveId] = new byte[lastFileId + 1][];
-		if (archive == null) {
-			return;
-		}
-		byte[] data = archive.getData();
-		if (data == null) {
-			return;
-		}
-		int filesCount = getValidFilesCount(archiveId);
-		if (filesCount == 1) {
-			cachedFiles[archiveId][lastFileId] = data;
-		} else {
-			int readPosition = data.length;
-			int amtOfLoops = data[--readPosition] & 0xff;
-			readPosition -= amtOfLoops * (filesCount * 4);
-			InputStream stream = new InputStream(data);
-			stream.setOffset(readPosition);
-			int filesSize[] = new int[filesCount];
-			for (int loop = 0; loop < amtOfLoops; loop++) {
-				int offset = 0;
-				for (int i = 0; i < filesCount; i++) {
-					filesSize[i] += offset += stream.readInt();
-				}
-			}
-			byte[][] filesData = new byte[filesCount][];
-			for (int i = 0; i < filesCount; i++) {
-				filesData[i] = new byte[filesSize[i]];
-				filesSize[i] = 0;
-			}
-			stream.setOffset(readPosition);
-			int sourceOffset = 0;
-			for (int loop = 0; loop < amtOfLoops; loop++) {
-				int dataRead = 0;
-				for (int i = 0; i < filesCount; i++) {
-					dataRead += stream.readInt();
-					System.arraycopy(data, sourceOffset, filesData[i], filesSize[i], dataRead);
-					sourceOffset += dataRead;
-					filesSize[i] += dataRead;
-				}
-			}
-			int count = 0;
-			for (int fileId : table.getArchives()[archiveId].getValidFileIds()) {
-				cachedFiles[archiveId][fileId] = filesData[count++];
-			}
-		}
+	
+	public void setKeys(int[] keys) {
+		table.setKeys(keys);
 	}
-
-	public int getId() {
-		return mainFile.getId();
-	}
-
+	
 	public ReferenceTable getTable() {
 		return table;
 	}
-
-	public MainFile getMainFile() {
-		return mainFile;
-	}
-
+	
 	public Archive getArchive(int id) {
 		return mainFile.getArchive(id, null);
 	}
-
-	public Archive getArchive(int id, int[] keys) {
-		return mainFile.getArchive(id, keys);
-	}
-
+	
 	public int getCRC() {
 		return crc;
 	}
-
+	
 	public byte[] getWhirlpool() {
 		return whirlpool;
 	}

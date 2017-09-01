@@ -1,0 +1,37 @@
+{
+  "combatDefinitions": {
+    "742": {
+      "hitpoints": 800,
+      "attackAnim": 12252,
+      "defenceAnim": 12251,
+      "deathAnim": 12250,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 100,
+      "attackStyle": 4,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {
+    "742": [
+      121,
+      10,
+      10,
+      170,
+      0,
+      200,
+      215,
+      254,
+      201,
+      320
+    ]
+  },
+  "drops": {},
+  "examines": {
+    "742": "Roar! A dragon!",
+    "6087": "Roar! A dragon!"
+  }
+}

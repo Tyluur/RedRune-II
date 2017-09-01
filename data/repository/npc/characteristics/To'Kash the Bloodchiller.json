@@ -1,0 +1,39 @@
+{
+  "combatDefinitions": {
+    "10024": {
+      "hitpoints": 250,
+      "attackAnim": 14374,
+      "defenceAnim": 14378,
+      "deathAnim": 14371,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 25,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "10024": "A magical and powerful demon.",
+    "10025": "A magical and powerful demon.",
+    "10026": "A magical and powerful demon.",
+    "10027": "A magical and powerful demon.",
+    "10028": "A magical and powerful demon.",
+    "10029": "A magical and powerful demon.",
+    "10030": "A magical and powerful demon.",
+    "10031": "A magical and powerful demon.",
+    "10032": "A magical and powerful demon.",
+    "10033": "A magical and powerful demon.",
+    "10034": "A magical and powerful demon.",
+    "10035": "A magical and powerful demon.",
+    "10036": "A magical and powerful demon.",
+    "10037": "A magical and powerful demon.",
+    "10038": "A magical and powerful demon.",
+    "10039": "A magical and powerful demon.",
+    "12843": "A magical and powerful demon."
+  }
+}

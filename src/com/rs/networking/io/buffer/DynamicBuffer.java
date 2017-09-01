@@ -2,7 +2,7 @@ package com.rs.networking.io.buffer;
 
 /**
  * Created at: Nov 27, 2016 8:47:42 PM
- * 
+ *
  * @author Walied-Yassen A.k.A Cody
  */
 public class DynamicBuffer extends Buffer {
@@ -14,9 +14,9 @@ public class DynamicBuffer extends Buffer {
 
 	/**
 	 * Constructs a new {@link DynamicBuffer} object instance.
-	 * 
+	 *
 	 * @param data
-	 *            the initial buffer data.
+	 * 		the initial buffer data.
 	 */
 	public DynamicBuffer(byte[] data) {
 		super(data);
@@ -24,9 +24,9 @@ public class DynamicBuffer extends Buffer {
 
 	/**
 	 * Constructs a new {@link DynamicBuffer} object instance.
-	 * 
+	 *
 	 * @param size
-	 *            the initial buffer size.
+	 * 		the initial buffer size.
 	 */
 	public DynamicBuffer(int size) {
 		super(new byte[size]);
@@ -39,8 +39,9 @@ public class DynamicBuffer extends Buffer {
 	 */
 	@Override
 	public int readByte(int offset) {
-		if (offset >= data.length)
+		if (offset >= data.length) {
 			return 0;
+		}
 		return data[offset];
 	}
 
@@ -58,27 +59,27 @@ public class DynamicBuffer extends Buffer {
 	}
 
 	/**
-	 * Checks if we would need an extend at the specified offset.
-	 * 
-	 * @param offset
-	 *            the offset to check at.
-	 */
-	public void checkExtend(int offset) {
-		if (offset >= data.length) {
-			extend(offset + 1 - data.length);
-		}
-	}
-
-	/**
 	 * Extends the buffer by a specified length.
-	 * 
+	 *
 	 * @param length
-	 *            the length to extend by.
+	 * 		the length to extend by.
 	 */
 	protected void extend(int length) {
 		byte[] newData = new byte[data.length + length];
 		System.arraycopy(data, 0, newData, 0, data.length);
 		data = newData;
+	}
+
+	/**
+	 * Checks if we would need an extend at the specified offset.
+	 *
+	 * @param offset
+	 * 		the offset to check at.
+	 */
+	public void checkExtend(int offset) {
+		if (offset >= data.length) {
+			extend(offset + 1 - data.length);
+		}
 	}
 
 }

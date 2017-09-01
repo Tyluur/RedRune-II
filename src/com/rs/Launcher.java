@@ -9,7 +9,7 @@ import com.rs.cache.loaders.ObjectDefinitions;
 import com.rs.cores.CoresManager;
 import com.rs.game.GameConstants;
 import com.rs.game.GameFlags;
-import com.rs.game.content.controler.ControlerHandler;
+import com.rs.game.content.controller.ControllerHandler;
 import com.rs.game.content.cutscene.CutscenesHandler;
 import com.rs.game.content.dialogue.DialogueHandler;
 import com.rs.game.content.node.npc.FishingSpotsHandler;
@@ -30,18 +30,19 @@ import com.rs.utility.game.item.ItemBonuses;
 import com.rs.utility.game.item.ItemExamines;
 import com.rs.utility.game.map.MapArchiveKeys;
 import com.rs.utility.game.map.MapAreas;
-import com.rs.utility.game.npc.*;
+import com.rs.utility.game.npc.NPCSpawns;
 import com.rs.utility.game.object.ObjectSpawns;
-import com.rs.utility.game.player.PkRank;
-import com.rs.utility.game.player.ShopsHandler;
 import com.rs.utility.system.OutLogger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.util.concurrent.TimeUnit;
 
 public final class Launcher {
+	
+	private Launcher() {
+	
+	}
 	
 	public static void main(String[] args) throws Exception {
 		long currentTime = Misc.currentTimeMillis();
@@ -49,63 +50,51 @@ public final class Launcher {
 		GameFlags.debugMode = true;
 		System.setOut(new OutLogger(System.out));
 		
-		Date date = new Date(currentTime);
-		String displayDate = date.getMonth() + "/" + date.getDate() + "/" + String.valueOf(date.getYear());
-		System.out.println("[" + displayDate + " - Launcher] - Initiating RS2Cache Files");
+		System.out.println("Initiating RS2Cache Files");
 		Cache.init();
 		ItemEquipIds.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Item Equipment IDs");
+		System.out.println("Initiating Item Equipment IDs");
 		Huffman.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Huffman");
+		System.out.println("Initiating Huffman");
 		MapArchiveKeys.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Map xTeas");
+		System.out.println("Initiating Map xTeas");
 		MapAreas.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Map areas");
+		System.out.println("Initiating Map areas");
 		ObjectSpawns.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Object Spawns");
+		System.out.println("Initiating Object Spawns");
 		NPCSpawns.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating NPC Spawns");
-		NPCCombatDefinitionsL.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating NPC Combat Definitions");
-		NPCBonuses.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating NPC Bonuses");
-		NPCDrops.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating NPC Drops");
+		System.out.println("Initiating NPC Spawns");
 		ItemExamines.init();
 		ItemBonuses.init();
-		NPCExamines.loadExamines();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Item Handlers");
-		ShopsHandler.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating ShopsHandler");
+		System.out.println("Initiating Item Handlers");
 		FishingSpotsHandler.init();
 		CombatScriptsHandler.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Dialogue Handlers");
+		System.out.println("Initiating Dialogue Handlers");
 		DialogueHandler.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Controllers");
-		ControlerHandler.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Cutscenes");
+		System.out.println("Initiating Controllers");
+		ControllerHandler.registerAll();
+		System.out.println("Initiating Cutscenes");
 		CutscenesHandler.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Friend Chats");
+		System.out.println("Initiating Friend Chats");
 		FriendChatsManager.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Cores");
+		System.out.println("Initiating Cores");
 		CoresManager.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating World");
+		System.out.println("Initiating World");
 		World.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Region Builder");
+		System.out.println("Initiating Region Builder");
 		RegionBuilder.init();
-		System.out.println("[" + displayDate + " - Launcher] - Initiating Server Channel Handler");
+		System.out.println("Initiating Server Channel Handler");
 		WorldList.init();
 		PluginRepository.registerAll();
 		try {
 			ServerChannelHandler.init();
-			NPCSpawning.spawnNPCS();
 		} catch (Throwable e) {
 			e.printStackTrace();
-			System.err.println("[" + displayDate + " - Launcher] - ERROR: COULD NOT LOAD SERVER CHANNEL HANDLER!");
+			System.err.println("ERROR: COULD NOT LOAD SERVER CHANNEL HANDLER!");
 			System.exit(1);
 			return;
 		}
-		System.out.println("[" + displayDate + " - Launcher] - Server successfully bootstrapped to port: " + NetworkConstants.PORT_ID + " in " + ((Misc.currentTimeMillis() - currentTime) / 1000) + " seconds.");
+		System.out.println("Server successfully bootstrapped to port: " + NetworkConstants.PORT_ID + " in " + ((Misc.currentTimeMillis() - currentTime) / 1000) + " seconds.");
 		addAccountsSavingTask();
 		if (GameFlags.hostMode) {
 			addUpdatePlayersOnlineTask();
@@ -114,9 +103,18 @@ public final class Launcher {
 		// Donations.init();
 	}
 	
-	private static void setWebsitePlayersOnline(int amount) throws IOException {
-		URL url = new URL("http://127.0.0.1/matrix/updateplayeramount.php?players=" + amount + "&auth=JFHDJF3847234");
-		url.openStream().close();
+	private static void addAccountsSavingTask() {
+		CoresManager.slowExecutor.scheduleWithFixedDelay(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					saveFiles();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}, 1, 1, TimeUnit.SECONDS);
 	}
 	
 	private static void addUpdatePlayersOnlineTask() {
@@ -145,20 +143,6 @@ public final class Launcher {
 		}, 0, 10, TimeUnit.MINUTES);
 	}
 	
-	private static void addAccountsSavingTask() {
-		CoresManager.slowExecutor.scheduleWithFixedDelay(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					saveFiles();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-				
-			}
-		}, 1, 1, TimeUnit.SECONDS);
-	}
-	
 	public static void saveFiles() {
 		for (Player player : World.getPlayers()) {
 			if (player == null || !player.hasStarted() || player.hasFinished()) {
@@ -166,7 +150,11 @@ public final class Launcher {
 			}
 			SerializableFilesManager.savePlayer(player);
 		}
-		PkRank.save();
+	}
+	
+	private static void setWebsitePlayersOnline(int amount) throws IOException {
+		URL url = new URL("http://127.0.0.1/matrix/updateplayeramount.php?players=" + amount + "&auth=JFHDJF3847234");
+		url.openStream().close();
 	}
 	
 	public static void cleanMemory(boolean force) {
@@ -227,10 +215,6 @@ public final class Launcher {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	private Launcher() {
-	
 	}
 	
 }

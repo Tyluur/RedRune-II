@@ -1,25 +1,25 @@
 package com.rs.game.entity.actor.mask;
 
 public final class Graphics {
-
+	
 	private int id, height, speed, rotation;
-
+	
 	public Graphics(int id) {
 		this(id, 0, 0, 0);
-
+		
 	}
-
-	public Graphics(int id, int speed, int height) {
-		this(id, speed, height, 0);
-	}
-
+	
 	public Graphics(int id, int speed, int height, int rotation) {
 		this.id = id;
 		this.speed = speed;
 		this.height = height;
 		this.rotation = rotation;
 	}
-
+	
+	public Graphics(int id, int speed, int height) {
+		this(id, speed, height, 0);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -30,33 +30,39 @@ public final class Graphics {
 		result = prime * result + speed;
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Graphics other = (Graphics) obj;
-		if (height != other.height)
+		if (height != other.height) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
-		if (rotation != other.rotation)
+		}
+		if (rotation != other.rotation) {
 			return false;
+		}
 		return speed == other.speed;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
-
+	
 	public int getSettingsHash() {
 		return (speed & 0xffff) | (height << 16);
 	}
-
+	
 	public int getSettings2Hash() {
 		int hash = 0;
 		hash |= rotation & 0x7;
@@ -64,11 +70,11 @@ public final class Graphics {
 		// hash |= 1 << 7; boolean
 		return hash;
 	}
-
+	
 	public int getSpeed() {
 		return speed;
 	}
-
+	
 	public int getHeight() {
 		return height;
 	}

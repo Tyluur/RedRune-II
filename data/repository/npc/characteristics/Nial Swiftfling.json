@@ -1,0 +1,26 @@
+{
+  "combatDefinitions": {
+    "5188": {
+      "hitpoints": 1400,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 170,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "9320": "<b>&#8226;</b> It's Nial, turned into a yeti.<br /><b>&#8226;</b> A warrior of Jatizso.",
+    "5188": "<b>&#8226;</b> It's Nial, turned into a yeti.<br /><b>&#8226;</b> A warrior of Jatizso.",
+    "7390": "<b>&#8226;</b> It's Nial, turned into a yeti.<br /><b>&#8226;</b> A warrior of Jatizso.",
+    "7391": "<b>&#8226;</b> It's Nial, turned into a yeti.<br /><b>&#8226;</b> A warrior of Jatizso."
+  }
+}

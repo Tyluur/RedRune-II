@@ -13,10 +13,15 @@ public final class IndexedColorImageFile {
 	private BufferedImage[] images;
 
 	private int pallete[];
+
 	private int pixelsIndexes[][];
+
 	private byte alpha[][];
+
 	private boolean[] usesAlpha;
+
 	private int biggestWidth;
+
 	private int biggestHeight;
 
 	public IndexedColorImageFile(BufferedImage... images) {
@@ -28,7 +33,7 @@ public final class IndexedColorImageFile {
 	}
 
 	/*
-         * 
+	     *
          */
 	public IndexedColorImageFile(Store cache, int idx, int archiveId, int fileId) {
 		decodeArchive(cache, idx, archiveId, fileId);
@@ -36,8 +41,9 @@ public final class IndexedColorImageFile {
 
 	public void decodeArchive(Store cache, int idx, int archiveId, int fileId) {
 		byte[] data = cache.getIndexes()[idx].getFile(archiveId, fileId);
-		if (data == null)
+		if (data == null) {
 			return;
+		}
 		InputStream stream = new InputStream(data);
 		stream.setOffset(data.length - 2);
 		int count = stream.readUnsignedShort();
@@ -53,21 +59,25 @@ public final class IndexedColorImageFile {
 		setBiggestWidth(stream.readShort()); // biggestWidth
 		setBiggestHeight(stream.readShort()); // biggestHeight
 		int palleteLength = (stream.readUnsignedByte() & 0xff) + 1;
-		for (int index = 0; index < images.length; index++)
+		for (int index = 0; index < images.length; index++) {
 			imagesMinX[index] = stream.readUnsignedShort();
-		for (int index = 0; index < images.length; index++)
+		}
+		for (int index = 0; index < images.length; index++) {
 			imagesMinY[index] = stream.readUnsignedShort();
-		for (int index = 0; index < images.length; index++)
+		}
+		for (int index = 0; index < images.length; index++) {
 			imagesWidth[index] = stream.readUnsignedShort();
-		for (int index = 0; index < images.length; index++)
+		}
+		for (int index = 0; index < images.length; index++) {
 			imagesHeight[index] = stream.readUnsignedShort();
-		stream.setOffset(data.length - 7 - images.length * 8
-				- (palleteLength - 1) * 3);
+		}
+		stream.setOffset(data.length - 7 - images.length * 8 - (palleteLength - 1) * 3);
 		pallete = new int[palleteLength];
 		for (int index = 1; index < palleteLength; index++) {
 			pallete[index] = stream.read24BitInt();
-			if (pallete[index] == 0)
+			if (pallete[index] == 0) {
 				pallete[index] = 1;
+			}
 		}
 		stream.setOffset(0);
 		for (int i_20_ = 0; i_20_ < images.length; i_20_++) {
@@ -83,9 +93,7 @@ public final class IndexedColorImageFile {
 				} else {
 					for (int i_24_ = 0; i_24_ < imagesWidth[i_20_]; i_24_++) {
 						for (int i_25_ = 0; i_25_ < imagesHeight[i_20_]; i_25_++) {
-							pixelsIndexes[i_20_][i_24_ + i_25_
-									* imagesWidth[i_20_]] = (byte) stream
-									.readByte();
+							pixelsIndexes[i_20_][i_24_ + i_25_ * imagesWidth[i_20_]] = (byte) stream.readByte();
 						}
 					}
 				}
@@ -97,41 +105,35 @@ public final class IndexedColorImageFile {
 						pixelsIndexes[i_20_][index] = (byte) stream.readByte();
 					}
 					for (int i_27_ = 0; i_27_ < pixelsIndexesLength; i_27_++) {
-						byte i_28_ = (alpha[i_20_][i_27_] = (byte) stream
-								.readByte());
+						byte i_28_ = (alpha[i_20_][i_27_] = (byte) stream.readByte());
 						bool = bool | i_28_ != -1;
 					}
 				} else {
 					for (int i_29_ = 0; i_29_ < imagesWidth[i_20_]; i_29_++) {
 						for (int i_30_ = 0; i_30_ < imagesHeight[i_20_]; i_30_++) {
-							pixelsIndexes[i_20_][i_29_ + i_30_
-									* imagesWidth[i_20_]] = stream.readByte();
+							pixelsIndexes[i_20_][i_29_ + i_30_ * imagesWidth[i_20_]] = stream.readByte();
 						}
 					}
 					for (int i_31_ = 0; i_31_ < imagesWidth[i_20_]; i_31_++) {
 						for (int i_32_ = 0; i_32_ < imagesHeight[i_20_]; i_32_++) {
-							byte i_33_ = (alpha[i_20_][i_31_ + i_32_
-									* imagesWidth[i_20_]] = (byte) stream
-									.readByte());
+							byte i_33_ = (alpha[i_20_][i_31_ + i_32_ * imagesWidth[i_20_]] = (byte) stream.readByte());
 							bool = bool | i_33_ != -1;
 						}
 					}
 				}
-				if (!bool)
+				if (!bool) {
 					alpha[i_20_] = null;
+				}
 			}
-			images[i_20_] = getBufferedImage(imagesWidth[i_20_],
-					imagesHeight[i_20_], pixelsIndexes[i_20_], alpha[i_20_],
-					usesAlpha[i_20_]);
+			images[i_20_] = getBufferedImage(imagesWidth[i_20_], imagesHeight[i_20_], pixelsIndexes[i_20_], alpha[i_20_], usesAlpha[i_20_]);
 		}
 	}
 
-	public BufferedImage getBufferedImage(int width, int height,
-			int[] pixelsIndexes, byte[] extraPixels, boolean useExtraPixels) {
-		if (width <= 0 || height <= 0)
+	public BufferedImage getBufferedImage(int width, int height, int[] pixelsIndexes, byte[] extraPixels, boolean useExtraPixels) {
+		if (width <= 0 || height <= 0) {
 			return null;
-		BufferedImage image = new BufferedImage(width, height,
-				BufferedImage.TYPE_4BYTE_ABGR);
+		}
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 		int[] rgbArray = new int[width * height];
 		int i = 0;
 		int i_43_ = 0;
@@ -157,47 +159,60 @@ public final class IndexedColorImageFile {
 
 	public byte[] encodeFile() {
 		if (pallete == null) // if not generated yet
+		{
 			generatePallete();
+		}
 		OutputStream stream = new OutputStream();
 		// sets pallete indexes and int size bytes
 		for (int imageId = 0; imageId < images.length; imageId++) {
 			int pixelsMask = 0;
-			if (usesAlpha[imageId])
+			if (usesAlpha[imageId]) {
 				pixelsMask |= 0x2;
+			}
 			// pixelsMask |= 0x1; //sets read all rgbarray indexes 1by1
 			stream.writeByte(pixelsMask);
-			for (int index = 0; index < pixelsIndexes[imageId].length; index++)
+			for (int index = 0; index < pixelsIndexes[imageId].length; index++) {
 				stream.writeByte(pixelsIndexes[imageId][index]);
-			if (usesAlpha[imageId])
-				for (int index = 0; index < alpha[imageId].length; index++)
+			}
+			if (usesAlpha[imageId]) {
+				for (int index = 0; index < alpha[imageId].length; index++) {
 					stream.writeByte(alpha[imageId][index]);
+				}
+			}
 		}
 
 		// sets up to 256colors pallete, index0 is black
-		for (int index = 0; index < pallete.length; index++)
+		for (int index = 0; index < pallete.length; index++) {
 			stream.write24BitInt(pallete[index]);
+		}
 
 		// extra inform
 		if (biggestWidth == 0 && biggestHeight == 0) {
 			for (BufferedImage image : images) {
-				if (image.getWidth() > biggestWidth)
+				if (image.getWidth() > biggestWidth) {
 					biggestWidth = image.getWidth();
-				if (image.getHeight() > biggestHeight)
+				}
+				if (image.getHeight() > biggestHeight) {
 					biggestHeight = image.getHeight();
+				}
 			}
 		}
 		stream.writeShort(biggestWidth); // probably used for textures
 		stream.writeShort(biggestHeight);// probably used for textures
 		stream.writeByte(pallete.length - 1); // sets pallete size, -1 cuz of
-												// black index
-		for (int imageId = 0; imageId < images.length; imageId++)
+		// black index
+		for (int imageId = 0; imageId < images.length; imageId++) {
 			stream.writeShort(images[imageId].getMinX());
-		for (int imageId = 0; imageId < images.length; imageId++)
+		}
+		for (int imageId = 0; imageId < images.length; imageId++) {
 			stream.writeShort(images[imageId].getMinY());
-		for (int imageId = 0; imageId < images.length; imageId++)
+		}
+		for (int imageId = 0; imageId < images.length; imageId++) {
 			stream.writeShort(images[imageId].getWidth());
-		for (int imageId = 0; imageId < images.length; imageId++)
+		}
+		for (int imageId = 0; imageId < images.length; imageId++) {
 			stream.writeShort(images[imageId].getHeight());
+		}
 		stream.writeShort(images.length); // amt of images
 		// generates fixed byte data array
 		byte[] container = new byte[stream.getOffset()];
@@ -206,13 +221,47 @@ public final class IndexedColorImageFile {
 		return container;
 	}
 
+	public void generatePallete() {
+		pixelsIndexes = new int[images.length][];
+		alpha = new byte[images.length][];
+		usesAlpha = new boolean[images.length];
+		for (int index = 0; index < images.length; index++) {
+			BufferedImage image = images[index];
+			int[] rgbArray = new int[image.getWidth() * image.getHeight()];
+			image.getRGB(0, 0, image.getWidth(), image.getHeight(), rgbArray, 0, image.getWidth());
+			pixelsIndexes[index] = new int[image.getWidth() * image.getHeight()];
+			alpha[index] = new byte[image.getWidth() * image.getHeight()];
+			for (int pixel = 0; pixel < pixelsIndexes[index].length; pixel++) {
+				int rgb = rgbArray[pixel];
+				int medintrgb = convertToMediumInt(rgb);
+				int i = getPalleteIndex(medintrgb);
+				pixelsIndexes[index][pixel] = i;
+				if (rgb >> 24 != 0) {
+					alpha[index][pixel] = (byte) (rgb >> 24);
+					usesAlpha[index] = true;
+				}
+			}
+		}
+	}
+
+	public int convertToMediumInt(int rgb) {
+
+		OutputStream out = new OutputStream(4);
+		out.writeInt(rgb);
+		InputStream stream = new InputStream(out.getBuffer());
+		stream.setOffset(1);
+		rgb = stream.read24BitInt();
+		return rgb;
+	}
+
 	public int getPalleteIndex(int rgb) {
 		if (pallete == null) {
 			pallete = new int[] { 0 };
 		}
 		for (int index = 0; index < pallete.length; index++) {
-			if (pallete[index] == rgb)
+			if (pallete[index] == rgb) {
 				return index;
+			}
 		}
 		if (pallete.length == 256) {
 			System.out.println("Pallete to big, please reduce images quality.");
@@ -244,40 +293,6 @@ public final class IndexedColorImageFile {
 		pixelsIndexes = null;
 		alpha = null;
 		usesAlpha = null;
-	}
-
-	public void generatePallete() {
-		pixelsIndexes = new int[images.length][];
-		alpha = new byte[images.length][];
-		usesAlpha = new boolean[images.length];
-		for (int index = 0; index < images.length; index++) {
-			BufferedImage image = images[index];
-			int[] rgbArray = new int[image.getWidth() * image.getHeight()];
-			image.getRGB(0, 0, image.getWidth(), image.getHeight(), rgbArray,
-					0, image.getWidth());
-			pixelsIndexes[index] = new int[image.getWidth() * image.getHeight()];
-			alpha[index] = new byte[image.getWidth() * image.getHeight()];
-			for (int pixel = 0; pixel < pixelsIndexes[index].length; pixel++) {
-				int rgb = rgbArray[pixel];
-				int medintrgb = convertToMediumInt(rgb);
-				int i = getPalleteIndex(medintrgb);
-				pixelsIndexes[index][pixel] = i;
-				if (rgb >> 24 != 0) {
-					alpha[index][pixel] = (byte) (rgb >> 24);
-					usesAlpha[index] = true;
-				}
-			}
-		}
-	}
-
-	public int convertToMediumInt(int rgb) {
-
-		OutputStream out = new OutputStream(4);
-		out.writeInt(rgb);
-		InputStream stream = new InputStream(out.getBuffer());
-		stream.setOffset(1);
-		rgb = stream.read24BitInt();
-		return rgb;
 	}
 
 	public BufferedImage[] getImages() {

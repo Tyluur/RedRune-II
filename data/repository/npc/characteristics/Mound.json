@@ -1,0 +1,21 @@
+{
+  "combatDefinitions": {
+    "9462": {
+      "hitpoints": 3000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 12793,
+      "attackDelay": 0,
+      "deathDelay": 0,
+      "respawnDelay": 60,
+      "maxHit": 0,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {}
+}

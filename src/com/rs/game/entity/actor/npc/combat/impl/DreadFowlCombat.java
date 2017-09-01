@@ -1,14 +1,15 @@
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.world.World;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
+import com.rs.game.world.World;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.NPCConstants;
 
 public class DreadFowlCombat extends CombatScript {
 
@@ -25,39 +26,18 @@ public class DreadFowlCombat extends CombatScript {
 		if (usingSpecial) {// priority over regular attack
 			npc.setNextAnimation(new Animation(7810));
 			npc.setNextGraphics(new Graphics(1318));
-			delayHit(
-					npc,
-					1,
-					target,
-					getMagicHit(
-							npc,
-							getRandomMaxHit(npc, 40, NPCCombatDefinitions.MAGE,
-									target)));
+			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 40, NPCConstants.MAGE, target)));
 			World.sendProjectile(npc, target, 1376, 34, 16, 30, 35, 16, 0);
 		} else {
 			if (Misc.getRandom(10) == 0) {// 1/10 chance of random special
-											// (weaker)
+				// (weaker)
 				npc.setNextAnimation(new Animation(7810));
 				npc.setNextGraphics(new Graphics(1318));
-				delayHit(
-						npc,
-						1,
-						target,
-						getMagicHit(
-								npc,
-								getRandomMaxHit(npc, 30,
-										NPCCombatDefinitions.MAGE, target)));
+				delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 30, NPCConstants.MAGE, target)));
 				World.sendProjectile(npc, target, 1376, 34, 16, 30, 35, 16, 0);
 			} else {
 				npc.setNextAnimation(new Animation(7810));
-				delayHit(
-						npc,
-						1,
-						target,
-						getMeleeHit(
-								npc,
-								getRandomMaxHit(npc, 30,
-										NPCCombatDefinitions.MELEE, target)));
+				delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 30, NPCConstants.MELEE, target)));
 			}
 		}
 		return defs.getAttackDelay();

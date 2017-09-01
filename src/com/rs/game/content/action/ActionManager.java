@@ -39,6 +39,14 @@ public final class ActionManager {
 		actionDelay += delay;
 	}
 	
+	public void forceStop() {
+		if (action == null) {
+			return;
+		}
+		action.stop(player);
+		action = null;
+	}
+	
 	public boolean setAction(Action action) {
 		forceStop();
 		if (!action.start(player)) {
@@ -48,24 +56,16 @@ public final class ActionManager {
 		return true;
 	}
 	
-	public void forceStop() {
-		if (action == null) {
-			return;
-		}
-		action.stop(player);
-		action = null;
-	}
-	
 	public int getActionDelay() {
 		return actionDelay;
 	}
 	
-	public void addActionDelay(int skillDelay) {
-		this.actionDelay += skillDelay;
-	}
-	
 	public void setActionDelay(int skillDelay) {
 		this.actionDelay = skillDelay;
+	}
+	
+	public void addActionDelay(int skillDelay) {
+		this.actionDelay += skillDelay;
 	}
 	
 	public boolean hasSkillWorking() {

@@ -1,29 +1,23 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
 
 public class Vampirebat extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 586089784797828590L;
 
-	public Vampirebat(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Vampirebat(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Vampyre Touch";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Deals damage to your opponents, with a maximum hit of 120. It also has a chance of healing your lifepoints by 20. ";
+	public boolean submitSpecial(Object object) {
+		return false;
 	}
 
 	@Override
@@ -37,12 +31,17 @@ public class Vampirebat extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.ENTITY;
+	public String getSpecialName() {
+		return "Vampyre Touch";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		return false;
+	public String getSpecialDescription() {
+		return "Deals damage to your opponents, with a maximum hit of 120. It also has a chance of healing your lifepoints by 20. ";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.ENTITY;
 	}
 }

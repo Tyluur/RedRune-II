@@ -21,7 +21,7 @@ public final class Constants {
 	public static final int INDEXED_IMAGES_INDEX = 8;
 
 	public static final int OBJECTS_DEFINITIONS_INDEX = 18;
- 
+
 	public static final int NPC_DEFINITIONS_INDEX = 18;
 
 	public static final int ITEM_DEFINITIONS_INDEX = 19;

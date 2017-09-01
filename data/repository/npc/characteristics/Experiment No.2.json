@@ -1,0 +1,23 @@
+{
+  "combatDefinitions": {
+    "5993": {
+      "hitpoints": 1010,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 130,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "5993": "<b>Sheep-dog/Spider-man:</b> One of Fenkenstrain's failed experiments."
+  }
+}

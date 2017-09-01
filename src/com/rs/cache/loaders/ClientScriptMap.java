@@ -1,24 +1,41 @@
 package com.rs.cache.loaders;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.rs.cache.Cache;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 public final class ClientScriptMap {
+
+	private static final ConcurrentHashMap<Integer, ClientScriptMap> interfaceScripts = new ConcurrentHashMap<Integer, ClientScriptMap>();
 
 	@SuppressWarnings("unused")
 	private char aChar6337;
+
 	@SuppressWarnings("unused")
 	private char aChar6345;
+
 	private String defaultStringValue;
+
 	private int defaultIntValue;
+
 	private HashMap<Long, Object> values;
 
-	private static final ConcurrentHashMap<Integer, ClientScriptMap> interfaceScripts = new ConcurrentHashMap<Integer, ClientScriptMap>();
+	private ClientScriptMap() {
+		defaultStringValue = "null";
+	}
+
+	/*
+	 * int musicIndex = (int)
+	 * InterfaceScript.getInterfaceScript(1345).getKeyForValue
+	 * ("Astea Frostweb"); int id =
+	 * InterfaceScript.getInterfaceScript(1351).getIntValue(musicIndex);
+	 * System.out.println(id);
+	 */
+	//
 
 	public static void main(String[] args) throws IOException {
 		// Cache.STORE = new Store("C:/.jagex_cache_32/runescape/");
@@ -35,110 +52,101 @@ public final class ClientScriptMap {
 			 * String text = hint.getStringValue(key);
 			 * if(text.equals("automatically.")) System.out.println(id);
 			 */
-			String hint = hint1.getValues().containsKey((long) key) ? hint1
-					.getStringValue(key) : hint2.getStringValue(key);
+			String hint = hint1.getValues().containsKey((long) key) ? hint1.getStringValue(key) : hint2.getStringValue(key);
 
 			System.out.println(id + ", " + v + "; " + hint + ", ");
 		}
 	}
 
-	/*
-	 * int musicIndex = (int)
-	 * InterfaceScript.getInterfaceScript(1345).getKeyForValue
-	 * ("Astea Frostweb"); int id =
-	 * InterfaceScript.getInterfaceScript(1351).getIntValue(musicIndex);
-	 * System.out.println(id);
-	 */
-	//
-
 	public static final ClientScriptMap getMap(int scriptId) {
 		ClientScriptMap script = interfaceScripts.get(scriptId);
-		if (script != null)
+		if (script != null) {
 			return script;
-		byte[] data = Cache.STORE.getIndexes()[17].getFile(
-				scriptId >>> 0xba9ed5a8, scriptId & 0xff);
+		}
+		byte[] data = Cache.STORE.getIndexes()[17].getFile(scriptId >>> 0xba9ed5a8, scriptId & 0xff);
 		script = new ClientScriptMap();
-		if (data != null)
+		if (data != null) {
 			script.readValueLoop(new InputStream(data));
+		}
 		interfaceScripts.put(scriptId, script);
 		return script;
 
+	}
+
+	public long getKeyForValue(Object value) {
+		for (Long key : values.keySet()) {
+			if (values.get(key).equals(value)) {
+				return key;
+			}
+		}
+		return -1;
+	}
+
+	public int getIntValue(long key) {
+		if (values == null) {
+			return defaultIntValue;
+		}
+		Object value = values.get(key);
+		if (value == null || !(value instanceof Integer)) {
+			return defaultIntValue;
+		}
+		return (Integer) value;
 	}
 
 	public HashMap<Long, Object> getValues() {
 		return values;
 	}
 
-	public Object getValue(long key) {
-		if (values == null)
-			return null;
-		return values.get(key);
-	}
-
-	public long getKeyForValue(Object value) {
-		for (Long key : values.keySet()) {
-			if (values.get(key).equals(value))
-				return key;
-		}
-		return -1;
-	}
-
-	public int getSize() {
-		return values.size();
-	}
-
-	public int getIntValue(long key) {
-		if (values == null)
-			return defaultIntValue;
-		Object value = values.get(key);
-		if (value == null || !(value instanceof Integer))
-			return defaultIntValue;
-		return (Integer) value;
-	}
-
 	public String getStringValue(long key) {
-		if (values == null)
+		if (values == null) {
 			return defaultStringValue;
+		}
 		Object value = values.get(key);
-		if (value == null || !(value instanceof String))
+		if (value == null || !(value instanceof String)) {
 			return defaultStringValue;
+		}
 		return (String) value;
 	}
 
 	private void readValueLoop(InputStream stream) {
-		for (;;) {
+		for (; ; ) {
 			int opcode = stream.readUnsignedByte();
-			if (opcode == 0)
+			if (opcode == 0) {
 				break;
+			}
 			readValues(stream, opcode);
 		}
 	}
 
 	private void readValues(InputStream stream, int opcode) {
-		if (opcode == 1)
+		if (opcode == 1) {
 			aChar6337 = Misc.method2782((byte) stream.readByte());
-		else if (opcode == 2)
+		} else if (opcode == 2) {
 			aChar6345 = Misc.method2782((byte) stream.readByte());
-		else if (opcode == 3)
+		} else if (opcode == 3) {
 			defaultStringValue = stream.readString();
-		else if (opcode == 4)
+		} else if (opcode == 4) {
 			defaultIntValue = stream.readInt();
-		else if (opcode == 5 || opcode == 6 || opcode == 7 || opcode == 8) {
+		} else if (opcode == 5 || opcode == 6 || opcode == 7 || opcode == 8) {
 			int count = stream.readUnsignedShort();
-			int loop = opcode == 7 || opcode == 8 ? stream.readUnsignedShort()
-					: count;
+			int loop = opcode == 7 || opcode == 8 ? stream.readUnsignedShort() : count;
 			values = new HashMap<Long, Object>(Misc.getHashMapSize(count));
 			for (int i = 0; i < loop; i++) {
-				int key = opcode == 7 || opcode == 8 ? stream
-						.readUnsignedShort() : stream.readInt();
-				Object value = opcode == 5 || opcode == 7 ? stream.readString()
-						: stream.readInt();
+				int key = opcode == 7 || opcode == 8 ? stream.readUnsignedShort() : stream.readInt();
+				Object value = opcode == 5 || opcode == 7 ? stream.readString() : stream.readInt();
 				values.put((long) key, value);
 			}
 		}
 	}
 
-	private ClientScriptMap() {
-		defaultStringValue = "null";
+	public Object getValue(long key) {
+		if (values == null) {
+			return null;
+		}
+		return values.get(key);
+	}
+
+	public int getSize() {
+		return values.size();
 	}
 }

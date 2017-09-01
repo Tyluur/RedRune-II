@@ -1,0 +1,50 @@
+{
+  "combatDefinitions": {
+    "3675": {
+      "hitpoints": 100,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 50,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "3676": {
+      "hitpoints": 100,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 50,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "9256": "If you see them circling: run.",
+    "9257": "If you see them circling: run.",
+    "9258": "If you see them circling: run.",
+    "9259": "If you see them circling: run.",
+    "9260": "If you see them circling: run.",
+    "9261": "If you see them circling: run.",
+    "3675": "If you see them circling: run.",
+    "3676": "If you see them circling: run.",
+    "6946": "If you see them circling: run.",
+    "7320": "If you see them circling: run.",
+    "7322": "If you see them circling: run.",
+    "7324": "If you see them circling: run.",
+    "7326": "If you see them circling: run.",
+    "7328": "If you see them circling: run."
+  }
+}

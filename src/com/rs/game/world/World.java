@@ -1,32 +1,19 @@
 package com.rs.game.world;
 
 import com.rs.Launcher;
-import com.rs.game.GameConstants;
 import com.rs.cores.CoresManager;
+import com.rs.game.GameConstants;
+import com.rs.game.content.controller.impl.activity.Wilderness;
+import com.rs.game.content.skills.hunter.Hunter.HunterNPC;
+import com.rs.game.content.skills.slayer.SlayerHelp;
 import com.rs.game.entity.WorldTile;
-import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.region.Region;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.ActorList;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.item.FloorItem;
-import com.rs.game.entity.item.Item;
-import com.rs.game.content.minigame.GodWarsBosses;
-import com.rs.game.content.minigame.ZarosGodwars;
 import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.content.skills.slayer.SlayerHelp;
 import com.rs.game.entity.actor.npc.impl.corp.CorporealBeast;
 import com.rs.game.entity.actor.npc.impl.dragons.KingBlackDragon;
-import com.rs.game.entity.actor.npc.impl.godwars.GodWarMinion;
-import com.rs.game.entity.actor.npc.impl.godwars.armadyl.KreeArra;
-import com.rs.game.entity.actor.npc.impl.godwars.bandos.GeneralGraardor;
-import com.rs.game.entity.actor.npc.impl.godwars.saradomin.CommanderZilyana;
-import com.rs.game.entity.actor.npc.impl.godwars.saradomin.GodwarsSaradominFaction;
-import com.rs.game.entity.actor.npc.impl.godwars.zammorak.GodwarsZammorakFaction;
-import com.rs.game.entity.actor.npc.impl.godwars.zammorak.KrilTstsaroth;
-import com.rs.game.entity.actor.npc.impl.godwars.zaros.Nex;
-import com.rs.game.entity.actor.npc.impl.godwars.zaros.NexMinion;
 import com.rs.game.entity.actor.npc.impl.jad.TzTokJad;
 import com.rs.game.entity.actor.npc.impl.kalph.KalphiteQueen;
 import com.rs.game.entity.actor.npc.impl.normal.Jadinko;
@@ -34,18 +21,16 @@ import com.rs.game.entity.actor.npc.impl.normal.Polypore;
 import com.rs.game.entity.actor.npc.impl.normal.Slayer;
 import com.rs.game.entity.actor.npc.impl.others.*;
 import com.rs.game.entity.actor.npc.impl.slayer.Strykewyrm;
-import com.rs.game.entity.actor.player.link.OwnedObjectManager;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
-import com.rs.game.content.skills.hunter.Hunter.HunterNPC;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.game.entity.actor.player.link.OwnedObjectManager;
+import com.rs.game.entity.item.FloorItem;
+import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemConstants;
-import com.rs.game.content.controler.impl.activity.Wilderness;
-import com.rs.game.content.controler.impl.minigame.ClanReqControler;
-import com.rs.game.content.controler.impl.minigame.DuelControler;
+import com.rs.game.entity.object.WorldObject;
+import com.rs.game.world.region.Region;
 import com.rs.utility.Misc;
 import com.rs.utility.Misc.EntityDirection;
-import com.rs.utility.game.player.PkRank;
-import com.rs.utility.game.player.ShopsHandler;
 import com.rs.utility.networking.AntiFlood;
 
 import java.util.*;
@@ -53,99 +38,33 @@ import java.util.concurrent.TimeUnit;
 
 public final class World {
 	
-	public static int exiting_delay;
-	
-	public static long exiting_start;
-	
-	public static boolean restarting;
-	
 	private static final ActorList<Player> players = new ActorList<>(GameConstants.PLAYERS_LIMIT);
 	
 	private static final ActorList<NPC> npcs = new ActorList<>(GameConstants.NPCS_LIMIT);
 	
 	private static final Map<Integer, Region> regions = Collections.synchronizedMap(new HashMap<Integer, Region>());
 	
+	public static int exiting_delay;
+	
+	public static long exiting_start;
+	
+	public static boolean restarting;
+	
+	private static boolean checkAgility;
+	
+	private World() {
+	
+	}
+	
 	public static void init() {
-		//spawnRandomNpc();
 		restarting = false;
 		addRestoreRunEnergyTask();
 		addRestoreHitPointsTask();
 		addRestoreSkillsTask();
 		addRestoreSpecialAttackTask();
-		addRestoreShopItemsTask();
 		addSummoningEffectTask();
 		addOwnedObjectsTask();
 	}
-	
-	private static void addOwnedObjectsTask() {
-		CoresManager.slowExecutor.scheduleWithFixedDelay(() -> {
-			try {
-				OwnedObjectManager.processAll();
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-		}, 0, 1, TimeUnit.SECONDS);
-	}
-	
-	@SuppressWarnings("unused")
-	
-	public static void sendWorldMessage(String message, boolean forStaff) {
-		for (Player p : World.getPlayers()) {
-			if (p == null || !p.isRunning() || (forStaff && p.getRights() == 0)) {
-				continue;
-			}
-			p.getPackets().sendGameMessage(message);
-		}
-	}
-	
-	private static void addRestoreShopItemsTask() {
-		CoresManager.slowExecutor.scheduleWithFixedDelay(() -> {
-			try {
-				ShopsHandler.restoreShops();
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-		}, 0, 30, TimeUnit.SECONDS);
-	}
-	
-	// removeGround
-	private static void addSummoningEffectTask() {
-		CoresManager.slowExecutor.scheduleWithFixedDelay(() -> {
-			try {
-				for (Player player : getPlayers()) {
-					if (player.getFamiliar() == null || player.isDead() || !player.hasFinished()) {
-						continue;
-					}
-					if (player.getFamiliar().getOriginalId() == 6814) {
-						player.heal(20);
-						player.setNextGraphics(new Graphics(1507));
-					}
-				}
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-		}, 0, 15, TimeUnit.SECONDS);
-	}
-	
-	private static void addRestoreSpecialAttackTask() {
-		CoresManager.fastExecutor.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				try {
-					for (Player player : getPlayers()) {
-						if (player == null || player.isDead() || !player.isRunning()) {
-							continue;
-						}
-						player.getCombatDefinitions().restoreSpecialAttack();
-					}
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		}, 0, 30000);
-	}
-	
-	private static boolean checkAgility;
 	
 	private static void addRestoreRunEnergyTask() {
 		CoresManager.fastExecutor.schedule(new TimerTask() {
@@ -153,7 +72,7 @@ public final class World {
 			public void run() {
 				try {
 					for (Player player : getPlayers()) {
-						if (player == null || player.isDead() || !player.isRunning() || (checkAgility && player.getSkills().getLevel(Skills.AGILITY) < 70)) {
+						if (player == null || player.isDead() || !player.isRunning() || (checkAgility && player.getSkills().getLevel(PlayerSkills.AGILITY) < 70)) {
 							continue;
 						}
 						player.restoreRunEnergy();
@@ -205,14 +124,14 @@ public final class World {
 						}
 						boolean berserker = player.getPrayer().usingPrayer(1, 5);
 						for (int skill = 0; skill < 25; skill++) {
-							if (skill == Skills.SUMMONING) {
+							if (skill == PlayerSkills.SUMMONING) {
 								continue;
 							}
 							for (int time = 0; time < ammountTimes; time++) {
 								int currentLevel = player.getSkills().getLevel(skill);
 								int normalLevel = player.getSkills().getLevelForXp(skill);
 								if (currentLevel > normalLevel) {
-									if (skill == Skills.ATTACK || skill == Skills.STRENGTH || skill == Skills.DEFENCE || skill == Skills.RANGE || skill == Skills.MAGIC) {
+									if (skill == PlayerSkills.ATTACK || skill == PlayerSkills.STRENGTH || skill == PlayerSkills.DEFENCE || skill == PlayerSkills.RANGE || skill == PlayerSkills.MAGIC) {
 										if (berserker && Misc.getRandom(100) <= 15) {
 											continue;
 										}
@@ -234,24 +153,70 @@ public final class World {
 		
 	}
 	
+	private static void addRestoreSpecialAttackTask() {
+		CoresManager.fastExecutor.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					for (Player player : getPlayers()) {
+						if (player == null || player.isDead() || !player.isRunning()) {
+							continue;
+						}
+						player.getCombatDefinitions().restoreSpecialAttack();
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}, 0, 30000);
+	}
+	
+	// removeGround
+	private static void addSummoningEffectTask() {
+		CoresManager.slowExecutor.scheduleWithFixedDelay(() -> {
+			try {
+				for (Player player : getPlayers()) {
+					if (player.getFamiliar() == null || player.isDead() || !player.hasFinished()) {
+						continue;
+					}
+					if (player.getFamiliar().getOriginalId() == 6814) {
+						player.heal(20);
+						player.setNextGraphics(new Graphics(1507));
+					}
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}, 0, 15, TimeUnit.SECONDS);
+	}
+	
+	private static void addOwnedObjectsTask() {
+		CoresManager.slowExecutor.scheduleWithFixedDelay(() -> {
+			try {
+				OwnedObjectManager.processAll();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}, 0, 1, TimeUnit.SECONDS);
+	}
+	
+	public static ActorList<Player> getPlayers() {
+		return players;
+	}
+	
+	@SuppressWarnings("unused")
+	
+	public static void sendWorldMessage(String message, boolean forStaff) {
+		for (Player p : World.getPlayers()) {
+			if (p == null || !p.isRunning() || (forStaff && p.getRights() == 0)) {
+				continue;
+			}
+			p.getPackets().sendGameMessage(message);
+		}
+	}
+	
 	public static Map<Integer, Region> getRegions() {
 		return regions;
-	}
-	
-	public static Region getRegion(int id) {
-		return getRegion(id, false);
-	}
-	
-	public static Region getRegion(int id, boolean load) {
-		Region region = regions.get(id);
-		if (region == null) {
-			region = new Region(id);
-			regions.put(id, region);
-		}
-		if (load) {
-			region.checkLoadMap();
-		}
-		return region;
 	}
 	
 	public static void addPlayer(Player player) {
@@ -272,6 +237,10 @@ public final class World {
 		npcs.remove(npc);
 	}
 	
+	public static void spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+		spawnNPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
+	}
+	
 	public static NPC spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, boolean spawned) {
 		NPC n;
 		HunterNPC hunterNPCs = HunterNPC.forId(id);
@@ -290,46 +259,16 @@ public final class World {
 			n = new Jadinko(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 1158 || id == 1160) {
 			n = new KalphiteQueen(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6215) {
-			n = new GodwarsZammorakFaction(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 2745) {
 			n = new TzTokJad(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6255 || id == 6257) {
-			n = new GodwarsSaradominFaction(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 8528) {
 			n = new Nomad(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6261 || id == 6263 || id == 6265) {
-			n = GodWarsBosses.graardorMinions[(id - 6261) / 2] = new GodWarMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6260) {
-			n = new GeneralGraardor(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6222) {
-			n = new KreeArra(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6223 || id == 6225 || id == 6227) {
-			n = GodWarsBosses.armadylMinions[(id - 6223) / 2] = new GodWarMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6203) {
-			n = new KrilTstsaroth(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6204 || id == 6206 || id == 6208) {
-			n = GodWarsBosses.zamorakMinions[(id - 6204) / 2] = new GodWarMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 50 || id == 2642) {
 			n = new KingBlackDragon(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id >= 9462 && id <= 9467) {
 			n = new Strykewyrm(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
-		} else if (id == 6248 || id == 6250 || id == 6252) {
-			n = GodWarsBosses.commanderMinions[(id - 6248) / 2] = new GodWarMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 6247) {
-			n = new CommanderZilyana(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 8133) {
 			n = new CorporealBeast(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 13447) {
-			n = ZarosGodwars.nex = new Nex(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 13451) {
-			n = ZarosGodwars.fumus = new NexMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 13452) {
-			n = ZarosGodwars.umbra = new NexMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 13453) {
-			n = ZarosGodwars.cruor = new NexMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		} else if (id == 13454) {
-			n = ZarosGodwars.glacies = new NexMinion(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 14256) {
 			n = new Lucien(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else if (id == 8349 || id == 8450 || id == 8451) {
@@ -340,10 +279,6 @@ public final class World {
 			n = new NPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		}
 		return n;
-	}
-	
-	public static void spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
-		spawnNPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
 	}
 	
 	public static void updateEntityRegion(Actor actor) {
@@ -365,13 +300,13 @@ public final class World {
 				Region region = getRegion(regionId);
 				region.addPlayerIndex(actor.getIndex());
 				Player player = (Player) actor;
-				player.getControlerManager().moved();
+				player.getControllerManager().moved();
 				int musicId = region.getMusicId();
 				if (musicId != -1) {
 					player.getMusicsManager().checkMusic(region.getMusicId());
 				}
-				if (player.isRunning() && player.getControlerManager().getControler() == null) {
-					checkControlersAtMove(player);
+				if (player.isRunning() && player.getControllerManager().getController() == null) {
+					checkControllersAtMove(player);
 				}
 			} else {
 				if (actor.getLastRegionId() > 0) {
@@ -384,21 +319,35 @@ public final class World {
 		} else {
 			if (actor instanceof Player) {
 				Player player = (Player) actor;
-				player.getControlerManager().moved();
-				if (player.isRunning() && player.getControlerManager().getControler() == null) {
-					checkControlersAtMove(player);
+				player.getControllerManager().moved();
+				if (player.isRunning() && player.getControllerManager().getController() == null) {
+					checkControllersAtMove(player);
 				}
 			}
 			actor.checkMultiArea();
 		}
 	}
 	
-	private static void checkControlersAtMove(Player player) {
-		if (DuelControler.isAtDuelArena(player)) {
-			player.getControlerManager().startControler("DuelControler");
-		} else if (ClanReqControler.isAtClanArea(player)) {
-			player.getControlerManager().startControler("DuelControler");
+	public static Region getRegion(int id) {
+		return getRegion(id, false);
+	}
+	
+	private static void checkControllersAtMove(Player player) {
+		if (Wilderness.isAtWild(player)) {
+			player.getControllerManager().startController("Wilderness");
 		}
+	}
+	
+	public static Region getRegion(int id, boolean load) {
+		Region region = regions.get(id);
+		if (region == null) {
+			region = new Region(id);
+			regions.put(id, region);
+		}
+		if (load) {
+			region.checkLoadMap();
+		}
+		return region;
 	}
 	
 	/*
@@ -449,18 +398,6 @@ public final class World {
 		int baseLocalX = x - ((regionId >> 8) * 64);
 		int baseLocalY = y - ((regionId & 0xff) * 64);
 		return region.getRotation(tile.getPlane(), baseLocalX, baseLocalY);
-	}
-	
-	private static int getClipedOnlyMask(int plane, int x, int y) {
-		WorldTile tile = new WorldTile(x, y, plane);
-		int regionId = tile.getRegionId();
-		Region region = getRegion(regionId);
-		if (region == null) {
-			return -1;
-		}
-		int baseLocalX = x - ((regionId >> 8) * 64);
-		int baseLocalY = y - ((regionId & 0xff) * 64);
-		return region.getMaskClipedOnly(tile.getPlane(), baseLocalX, baseLocalY);
 	}
 	
 	public static final NPC spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, EntityDirection faceDirection) {
@@ -599,6 +536,18 @@ public final class World {
 			}
 		}
 		return true;
+	}
+	
+	private static int getClipedOnlyMask(int plane, int x, int y) {
+		WorldTile tile = new WorldTile(x, y, plane);
+		int regionId = tile.getRegionId();
+		Region region = getRegion(regionId);
+		if (region == null) {
+			return -1;
+		}
+		int baseLocalX = x - ((regionId >> 8) * 64);
+		int baseLocalY = y - ((regionId & 0xff) * 64);
+		return region.getMaskClipedOnly(tile.getPlane(), baseLocalX, baseLocalY);
 	}
 	
 	public static final boolean checkWalkStep(int plane, int x, int y, int dir, int size) {
@@ -780,16 +729,8 @@ public final class World {
 		return null;
 	}
 	
-	public static ActorList<Player> getPlayers() {
-		return players;
-	}
-	
 	public static ActorList<NPC> getNPCs() {
 		return npcs;
-	}
-	
-	private World() {
-	
 	}
 	
 	public static void safeShutdown(int delay) {
@@ -812,7 +753,6 @@ public final class World {
 					}
 					player.realFinish();
 				}
-				PkRank.save();
 				Launcher.restart();
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -864,6 +804,24 @@ public final class World {
 				e.printStackTrace();
 			}
 		}, time, TimeUnit.MILLISECONDS);
+	}
+	
+	public static void spawnObject(WorldObject object, boolean clip) {
+		int regionId = object.getRegionId();
+		getRegion(regionId).addObject(object);
+		if (clip) {
+			int baseLocalX = object.getX() - ((regionId >> 8) * 64);
+			int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
+			getRegion(regionId).addMapObject(object, baseLocalX, baseLocalY);
+		}
+		synchronized (players) {
+			for (Player p2 : players) {
+				if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
+					continue;
+				}
+				p2.getPackets().sendSpawnedObject(object);
+			}
+		}
 	}
 	
 	public static boolean isSpawnedObject(WorldObject object) {
@@ -932,24 +890,6 @@ public final class World {
 		return getRegion(regionId).getObject(tile.getPlane(), baseLocalX, baseLocalY, type);
 	}
 	
-	public static void spawnObject(WorldObject object, boolean clip) {
-		int regionId = object.getRegionId();
-		getRegion(regionId).addObject(object);
-		if (clip) {
-			int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-			int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-			getRegion(regionId).addMapObject(object, baseLocalX, baseLocalY);
-		}
-		synchronized (players) {
-			for (Player p2 : players) {
-				if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-					continue;
-				}
-				p2.getPackets().sendSpawnedObject(object);
-			}
-		}
-	}
-	
 	public static void addGroundItem(final Item item, final WorldTile tile) {
 		final FloorItem floorItem = new FloorItem(item, tile, null, false, false);
 		final Region region = getRegion(tile.getRegionId());
@@ -1009,18 +949,6 @@ public final class World {
 		removeGroundItem(floorItem, 180);
 	}
 	
-	public static void updateGroundItem(Item item, final WorldTile tile, final Player owner) {
-		final FloorItem floorItem = World.getRegion(tile.getRegionId()).getGroundItem(item.getId(), tile, owner);
-		if (floorItem == null) {
-			addGroundItem(item, tile, owner, false, 360, true);
-			return;
-		}
-		floorItem.setAmount(floorItem.getAmount() + item.getAmount());
-		owner.getPackets().sendRemoveGroundItem(floorItem);
-		owner.getPackets().sendGroundItem(floorItem);
-		
-	}
-	
 	private static void removeGroundItem(final FloorItem floorItem, long publicTime) {
 		CoresManager.slowExecutor.schedule(() -> {
 			try {
@@ -1040,6 +968,18 @@ public final class World {
 				e.printStackTrace();
 			}
 		}, publicTime, TimeUnit.SECONDS);
+	}
+	
+	public static void updateGroundItem(Item item, final WorldTile tile, final Player owner) {
+		final FloorItem floorItem = World.getRegion(tile.getRegionId()).getGroundItem(item.getId(), tile, owner);
+		if (floorItem == null) {
+			addGroundItem(item, tile, owner, false, 360, true);
+			return;
+		}
+		floorItem.setAmount(floorItem.getAmount() + item.getAmount());
+		owner.getPackets().sendRemoveGroundItem(floorItem);
+		owner.getPackets().sendGroundItem(floorItem);
+		
 	}
 	
 	public static boolean removeGroundItem(Player player, FloorItem floorItem) {

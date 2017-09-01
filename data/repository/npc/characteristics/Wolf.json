@@ -1,0 +1,32 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "4414": [
+      {
+        "itemId": 995,
+        "minAmount": 1000,
+        "maxAmount": 3000,
+        "rate": 75.0,
+        "rare": false
+      },
+      {
+        "itemId": 2859,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "95": "Not man's best friend.",
+    "142": "Not man's best friend.",
+    "11262": "Not man's best friend.",
+    "11263": "Not man's best friend.",
+    "4413": "Not man's best friend.",
+    "4414": "Not man's best friend.",
+    "6047": "Not man's best friend.",
+    "7291": "Not man's best friend."
+  }
+}

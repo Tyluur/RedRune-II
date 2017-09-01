@@ -1,10 +1,9 @@
 package com.alex.util.bzip2;
 
-
-
 public class BZip2Decompressor {
 
 	private static int anIntArray257[];
+
 	private static BZip2BlockEntry entryInstance = new BZip2BlockEntry();
 	
 	public static final void decompress(byte decompressedData[], byte packedData[], int containerSize, int blockSize) {
@@ -22,202 +21,6 @@ public class BZip2Decompressor {
 			entryInstance.aByteArray2224 = null;
 			entryInstance.aByteArray2212 = null;
 		}
-	}
-
-	private static final void method1785(BZip2BlockEntry entry) {
-		entry.anInt2215 = 0;
-		for (int i = 0; i < 256; i++) {
-			if (entry.aBooleanArray2213[i]) {
-				entry.aByteArray2211[entry.anInt2215] = (byte) i;
-				entry.anInt2215++;
-			}
-		}
-
-	}
-
-	private static final void method1786(int ai[], int ai1[], int ai2[],
-			byte abyte0[], int i, int j, int k) {
-		int l = 0;
-		for (int i1 = i; i1 <= j; i1++) {
-			for (int l2 = 0; l2 < k; l2++) {
-				if (abyte0[l2] == i1) {
-					ai2[l] = l2;
-					l++;
-				}
-			}
-
-		}
-
-		for (int j1 = 0; j1 < 23; j1++) {
-			ai1[j1] = 0;
-		}
-
-		for (int k1 = 0; k1 < k; k1++) {
-			ai1[abyte0[k1] + 1]++;
-		}
-
-		for (int l1 = 1; l1 < 23; l1++) {
-			ai1[l1] += ai1[l1 - 1];
-		}
-
-		for (int i2 = 0; i2 < 23; i2++) {
-			ai[i2] = 0;
-		}
-
-		int i3 = 0;
-		for (int j2 = i; j2 <= j; j2++) {
-			i3 += ai1[j2 + 1] - ai1[j2];
-			ai[j2] = i3 - 1;
-			i3 <<= 1;
-		}
-
-		for (int k2 = i + 1; k2 <= j; k2++) {
-			ai1[k2] = (ai[k2 - 1] + 1 << 1) - ai1[k2];
-		}
-
-	}
-
-	private static final void method1787(BZip2BlockEntry entry) {
-		byte byte4 = entry.aByte2201;
-		int i = entry.anInt2222;
-		int j = entry.anInt2227;
-		int k = entry.anInt2221;
-		int ai[] = anIntArray257;
-		int l = entry.anInt2208;
-		byte abyte0[] = entry.aByteArray2212;
-		int i1 = entry.anInt2203;
-		int j1 = entry.anInt2206;
-		int k1 = j1;
-		int l1 = entry.anInt2225 + 1;
-		label0: do {
-			if (i > 0) {
-				do {
-					if (j1 == 0) {
-						break label0;
-					}
-					if (i == 1) {
-						break;
-					}
-					abyte0[i1] = byte4;
-					i--;
-					i1++;
-					j1--;
-				} while (true);
-				if (j1 == 0) {
-					i = 1;
-					break;
-				}
-				abyte0[i1] = byte4;
-				i1++;
-				j1--;
-			}
-			boolean flag = true;
-			while (flag) {
-				flag = false;
-				if (j == l1) {
-					i = 0;
-					break label0;
-				}
-				byte4 = (byte) k;
-				l = ai[l];
-				byte byte0 = (byte) (l & 0xff);
-				l >>= 8;
-				j++;
-				if (byte0 != k) {
-					k = byte0;
-					if (j1 == 0) {
-						i = 1;
-					} else {
-						abyte0[i1] = byte4;
-						i1++;
-						j1--;
-						flag = true;
-						continue;
-					}
-					break label0;
-				}
-				if (j != l1) {
-					continue;
-				}
-				if (j1 == 0) {
-					i = 1;
-					break label0;
-				}
-				abyte0[i1] = byte4;
-				i1++;
-				j1--;
-				flag = true;
-			}
-			i = 2;
-			l = ai[l];
-			byte byte1 = (byte) (l & 0xff);
-			l >>= 8;
-			if (++j != l1) {
-				if (byte1 != k) {
-					k = byte1;
-				} else {
-					i = 3;
-					l = ai[l];
-					byte byte2 = (byte) (l & 0xff);
-					l >>= 8;
-					if (++j != l1) {
-						if (byte2 != k) {
-							k = byte2;
-						} else {
-							l = ai[l];
-							byte byte3 = (byte) (l & 0xff);
-							l >>= 8;
-							j++;
-							i = (byte3 & 0xff) + 4;
-							l = ai[l];
-							k = (byte) (l & 0xff);
-							l >>= 8;
-							j++;
-						}
-					}
-				}
-			}
-		} while (true);
-		entry.anInt2216 += k1 - j1;
-		entry.aByte2201 = byte4;
-		entry.anInt2222 = i;
-		entry.anInt2227 = j;
-		entry.anInt2221 = k;
-		anIntArray257 = ai;
-		entry.anInt2208 = l;
-		entry.aByteArray2212 = abyte0;
-		entry.anInt2203 = i1;
-		entry.anInt2206 = j1;
-	}
-
-	private static final byte method1788(BZip2BlockEntry entry) {
-		return (byte) method1790(1, entry);
-	}
-
-	private static final byte method1789(BZip2BlockEntry entry) {
-		return (byte) method1790(8, entry);
-	}
-
-	private static final int method1790(int i, BZip2BlockEntry entry) {
-		int j;
-		do {
-			if (entry.anInt2232 >= i) {
-				int k = entry.anInt2207 >> entry.anInt2232 - i & (1 << i) - 1;
-				entry.anInt2232 -= i;
-				j = k;
-				break;
-			}
-			entry.anInt2207 = entry.anInt2207 << 8
-					| entry.aByteArray2224[entry.anInt2209] & 0xff;
-			entry.anInt2232 += 8;
-			entry.anInt2209++;
-			entry.anInt2217++;
-		} while (true);
-		return j;
-	}
-
-	public static void clearBlockEntryInstance() {
-		entryInstance = null;
 	}
 
 	private static final void method1793(BZip2BlockEntry entry) {
@@ -347,10 +150,7 @@ public class BZip2Decompressor {
 					}
 				}
 
-				method1786(entry.anIntArrayArray2230[l3],
-						entry.anIntArrayArray2218[l3],
-						entry.anIntArrayArray2210[l3],
-						entry.aByteArrayArray2229[l3], byte8, i, i4);
+				method1786(entry.anIntArrayArray2230[l3], entry.anIntArrayArray2218[l3], entry.anIntArrayArray2210[l3], entry.aByteArrayArray2229[l3], byte8, i, i4);
 				entry.anIntArray2200[l3] = byte8;
 			}
 
@@ -390,7 +190,7 @@ public class BZip2Decompressor {
 				byte9 = method1788(entry);
 			}
 
-			for (int k5 = ai2[k7 - ai1[l6]]; k5 != l4;) {
+			for (int k5 = ai2[k7 - ai1[l6]]; k5 != l4; ) {
 				if (k5 == 0 || k5 == 1) {
 					int i6 = -1;
 					int j6 = 1;
@@ -414,8 +214,7 @@ public class BZip2Decompressor {
 						int i7 = j8;
 						int l7;
 						byte byte10;
-						for (l7 = method1790(i7, entry); l7 > ai[i7]; l7 = l7 << 1
-								| byte10) {
+						for (l7 = method1790(i7, entry); l7 > ai[i7]; l7 = l7 << 1 | byte10) {
 							i7++;
 							byte10 = method1788(entry);
 						}
@@ -470,8 +269,7 @@ public class BZip2Decompressor {
 							int l9 = 4095;
 							for (int j9 = 15; j9 >= 0; j9--) {
 								for (int k9 = 15; k9 >= 0; k9--) {
-									entry.aByteArray2204[l9] = entry.aByteArray2204[entry.anIntArray2226[j9]
-											+ k9];
+									entry.aByteArray2204[l9] = entry.aByteArray2204[entry.anIntArray2226[j9] + k9];
 									l9--;
 								}
 
@@ -496,8 +294,7 @@ public class BZip2Decompressor {
 					int j7 = j8;
 					int i8;
 					byte byte11;
-					for (i8 = method1790(j7, entry); i8 > ai[j7]; i8 = i8 << 1
-							| byte11) {
+					for (i8 = method1790(j7, entry); i8 > ai[j7]; i8 = i8 << 1 | byte11) {
 						j7++;
 						byte11 = method1788(entry);
 					}
@@ -533,6 +330,201 @@ public class BZip2Decompressor {
 			method1787(entry);
 			flag18 = entry.anInt2227 == entry.anInt2225 + 1 && entry.anInt2222 == 0;
 		}
+	}
+
+	private static final byte method1789(BZip2BlockEntry entry) {
+		return (byte) method1790(8, entry);
+	}
+
+	private static final byte method1788(BZip2BlockEntry entry) {
+		return (byte) method1790(1, entry);
+	}
+
+	private static final void method1785(BZip2BlockEntry entry) {
+		entry.anInt2215 = 0;
+		for (int i = 0; i < 256; i++) {
+			if (entry.aBooleanArray2213[i]) {
+				entry.aByteArray2211[entry.anInt2215] = (byte) i;
+				entry.anInt2215++;
+			}
+		}
+
+	}
+
+	private static final int method1790(int i, BZip2BlockEntry entry) {
+		int j;
+		do {
+			if (entry.anInt2232 >= i) {
+				int k = entry.anInt2207 >> entry.anInt2232 - i & (1 << i) - 1;
+				entry.anInt2232 -= i;
+				j = k;
+				break;
+			}
+			entry.anInt2207 = entry.anInt2207 << 8 | entry.aByteArray2224[entry.anInt2209] & 0xff;
+			entry.anInt2232 += 8;
+			entry.anInt2209++;
+			entry.anInt2217++;
+		} while (true);
+		return j;
+	}
+
+	private static final void method1786(int ai[], int ai1[], int ai2[], byte abyte0[], int i, int j, int k) {
+		int l = 0;
+		for (int i1 = i; i1 <= j; i1++) {
+			for (int l2 = 0; l2 < k; l2++) {
+				if (abyte0[l2] == i1) {
+					ai2[l] = l2;
+					l++;
+				}
+			}
+
+		}
+
+		for (int j1 = 0; j1 < 23; j1++) {
+			ai1[j1] = 0;
+		}
+
+		for (int k1 = 0; k1 < k; k1++) {
+			ai1[abyte0[k1] + 1]++;
+		}
+
+		for (int l1 = 1; l1 < 23; l1++) {
+			ai1[l1] += ai1[l1 - 1];
+		}
+
+		for (int i2 = 0; i2 < 23; i2++) {
+			ai[i2] = 0;
+		}
+
+		int i3 = 0;
+		for (int j2 = i; j2 <= j; j2++) {
+			i3 += ai1[j2 + 1] - ai1[j2];
+			ai[j2] = i3 - 1;
+			i3 <<= 1;
+		}
+
+		for (int k2 = i + 1; k2 <= j; k2++) {
+			ai1[k2] = (ai[k2 - 1] + 1 << 1) - ai1[k2];
+		}
+
+	}
+
+	private static final void method1787(BZip2BlockEntry entry) {
+		byte byte4 = entry.aByte2201;
+		int i = entry.anInt2222;
+		int j = entry.anInt2227;
+		int k = entry.anInt2221;
+		int ai[] = anIntArray257;
+		int l = entry.anInt2208;
+		byte abyte0[] = entry.aByteArray2212;
+		int i1 = entry.anInt2203;
+		int j1 = entry.anInt2206;
+		int k1 = j1;
+		int l1 = entry.anInt2225 + 1;
+		label0:
+		do {
+			if (i > 0) {
+				do {
+					if (j1 == 0) {
+						break label0;
+					}
+					if (i == 1) {
+						break;
+					}
+					abyte0[i1] = byte4;
+					i--;
+					i1++;
+					j1--;
+				} while (true);
+				if (j1 == 0) {
+					i = 1;
+					break;
+				}
+				abyte0[i1] = byte4;
+				i1++;
+				j1--;
+			}
+			boolean flag = true;
+			while (flag) {
+				flag = false;
+				if (j == l1) {
+					i = 0;
+					break label0;
+				}
+				byte4 = (byte) k;
+				l = ai[l];
+				byte byte0 = (byte) (l & 0xff);
+				l >>= 8;
+				j++;
+				if (byte0 != k) {
+					k = byte0;
+					if (j1 == 0) {
+						i = 1;
+					} else {
+						abyte0[i1] = byte4;
+						i1++;
+						j1--;
+						flag = true;
+						continue;
+					}
+					break label0;
+				}
+				if (j != l1) {
+					continue;
+				}
+				if (j1 == 0) {
+					i = 1;
+					break label0;
+				}
+				abyte0[i1] = byte4;
+				i1++;
+				j1--;
+				flag = true;
+			}
+			i = 2;
+			l = ai[l];
+			byte byte1 = (byte) (l & 0xff);
+			l >>= 8;
+			if (++j != l1) {
+				if (byte1 != k) {
+					k = byte1;
+				} else {
+					i = 3;
+					l = ai[l];
+					byte byte2 = (byte) (l & 0xff);
+					l >>= 8;
+					if (++j != l1) {
+						if (byte2 != k) {
+							k = byte2;
+						} else {
+							l = ai[l];
+							byte byte3 = (byte) (l & 0xff);
+							l >>= 8;
+							j++;
+							i = (byte3 & 0xff) + 4;
+							l = ai[l];
+							k = (byte) (l & 0xff);
+							l >>= 8;
+							j++;
+						}
+					}
+				}
+			}
+		} while (true);
+		entry.anInt2216 += k1 - j1;
+		entry.aByte2201 = byte4;
+		entry.anInt2222 = i;
+		entry.anInt2227 = j;
+		entry.anInt2221 = k;
+		anIntArray257 = ai;
+		entry.anInt2208 = l;
+		entry.aByteArray2212 = abyte0;
+		entry.anInt2203 = i1;
+		entry.anInt2206 = j1;
+	}
+
+	public static void clearBlockEntryInstance() {
+		entryInstance = null;
 	}
 
 }

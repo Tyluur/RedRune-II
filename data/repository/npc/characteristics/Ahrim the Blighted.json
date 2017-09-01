@@ -1,0 +1,36 @@
+{
+  "combatDefinitions": {
+    "2025": {
+      "hitpoints": 1050,
+      "attackAnim": 14223,
+      "defenceAnim": 2079,
+      "deathAnim": 7197,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 0,
+      "maxHit": 200,
+      "attackStyle": 2,
+      "attackGfx": 2741,
+      "attackProjectile": 2735,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {
+    "2025": [
+      0,
+      0,
+      0,
+      172,
+      0,
+      202,
+      184,
+      216,
+      172,
+      99
+    ]
+  },
+  "drops": {},
+  "examines": {
+    "2025": "A vengeful spirit corrupted by dark magic."
+  }
+}

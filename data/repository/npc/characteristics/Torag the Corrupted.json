@@ -1,0 +1,50 @@
+{
+  "combatDefinitions": {
+    "14267": {
+      "hitpoints": 1000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 230,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    },
+    "2029": {
+      "hitpoints": 1000,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 230,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {
+    "2029": [
+      184,
+      0,
+      0,
+      0,
+      0,
+      361,
+      359,
+      343,
+      88,
+      385
+    ]
+  },
+  "drops": {},
+  "examines": {
+    "2029": "A vengeful spirit corrupted by dark magic."
+  }
+}

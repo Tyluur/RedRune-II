@@ -1,3 +1,24 @@
+8/31/17 {
+	+   Completed interface plugin system and converted all interface handling to their own plugin
+	+   Added npc plugins and converted all npc handling to their own plugin
+		-   Removed most of these because they were useless though
+	+   Removed lots of shit content/code
+		-   Barrows/Godwars/Jail/Castle Wars/Duel Arena/Clan Wars
+	+   Removed lots of dialogues
+	+   Refactored several things in the packaging & introduced new classes for better naming & explanations, rather than packing everything into one class
+	+   Added third & fourth npc option packets
+	+   Rewrote object/npc/player/item interaction in controllers using one method [Entity is the parent class for all these mentioned types]
+	+   Converted all npc drops/bonuses/examines/combat definitions over to .json
+		-   Caching data for faster usage
+	+   Cleared out edgeville rooms and added custom quest tab
+	+   Removed a lot of packed code in several classes.
+		-   Usage of lombok to shorten code down as well
+
+	https://paste.ee/p/9oueo
+	[img]http://i.imgur.com/r33qdG4.png[/img]
+	[img]http://i.imgur.com/iKZZsWF.png[/img]
+}
+
 8/30/17 {
 	+   Pulled a scratch 667 deob/cache/server
 	+   Removed tons of shit content & code from the 667 server release

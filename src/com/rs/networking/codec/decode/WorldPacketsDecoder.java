@@ -3,8 +3,6 @@ package com.rs.networking.codec.decode;
 import com.rs.game.content.Commands;
 import com.rs.game.content.Magic;
 import com.rs.game.content.SkillCapeCustomizer;
-import com.rs.game.content.Trade;
-import com.rs.game.content.Trade.TradeState;
 import com.rs.game.content.action.impl.PlayerCombatAction;
 import com.rs.game.content.action.impl.PlayerFollowAction;
 import com.rs.game.entity.WorldTile;
@@ -12,9 +10,9 @@ import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Inventory;
+import com.rs.game.entity.actor.player.data.PlayerInventory;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.actor.player.data.RouteEvent;
-import com.rs.game.entity.actor.player.data.Skills;
 import com.rs.game.entity.actor.player.link.FriendChatsManager;
 import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
@@ -34,20 +32,15 @@ import com.rs.utility.game.item.ItemExamines;
 import com.rs.utility.game.player.PublicChatMessage;
 import com.rs.utility.game.player.QuickChatMessage;
 
+import static com.rs.utility.game.ClickOption.*;
+
 public final class WorldPacketsDecoder extends Decoder {
-	
-	private static final byte[] PACKET_SIZES = new byte[256];
-	
-	private final static int ACCEPT_TRADE_CHAT_PACKET = 46;
-	
-	private final static int PLAYER_TRADE_OPTION_PACKET = 77;
-	
-	private final static int WALKING_PACKET = 12;
-	
-	private final static int MINI_WALKING_PACKET = 83;
 	
 	//public final static int AFK_PACKET = 85;
 	// private final static int AFK_PACKET = 93; ?
+	
+	private static final byte[] PACKET_SIZES = new byte[256];
+	
 	public final static int ACTION_BUTTON1_PACKET = 61;
 	
 	public final static int ACTION_BUTTON2_PACKET = 64;
@@ -69,6 +62,14 @@ public final class WorldPacketsDecoder extends Decoder {
 	public final static int ACTION_BUTTON10_PACKET = 20;
 	
 	public final static int RECEIVE_PACKET_COUNT_PACKET = 15;
+	
+	private final static int ACCEPT_TRADE_CHAT_PACKET = 46;
+	
+	private final static int PLAYER_TRADE_OPTION_PACKET = 77;
+	
+	private final static int WALKING_PACKET = 12;
+	
+	private final static int MINI_WALKING_PACKET = 83;
 	
 	private final static int MAGIC_ON_ITEM_PACKET = -1;
 	
@@ -130,6 +131,10 @@ public final class WorldPacketsDecoder extends Decoder {
 	
 	private final static int NPC_CLICK2_PACKET = 31;
 	
+	private final static int NPC_CLICK3_PACKET = 67;
+	
+	private final static int NPC_CLICK4_PACKET = 28;
+	
 	private final static int ATTACK_NPC = 66;
 	
 	private final static int REPORT_ABUSE_PACKET = 11;
@@ -160,116 +165,16 @@ public final class WorldPacketsDecoder extends Decoder {
 	
 	private final static int COLOR_ID_PACKET = 22;
 	
-	// private final static int AFK_CLIENT_PACKET = 93;
 	private final static int CLAN_NAME_PACKET = 7;
 	
 	private final static int CLAN_FORUM_THREAD_PACKET = 74;
 	
 	private static final int WORLD_LIST_REQUEST_PACKET = 34;
 	
+	private static final int WINDOW_SWITCH_PACKET = 93;
+	
 	static {
 		loadPacketSizes();
-	}
-	
-	public static void loadPacketSizes() {
-		for (int id = 0; id < 256; id++) {
-			PACKET_SIZES[id] = -4;
-		}
-		PACKET_SIZES[64] = 8;
-		PACKET_SIZES[18] = 8;
-		PACKET_SIZES[25] = 8;
-		PACKET_SIZES[41] = -1;
-		PACKET_SIZES[14] = 3;
-		PACKET_SIZES[46] = 3;
-		PACKET_SIZES[87] = 6;
-		PACKET_SIZES[47] = 7;
-		PACKET_SIZES[57] = 3;
-		PACKET_SIZES[67] = 3;
-		PACKET_SIZES[91] = 8;
-		PACKET_SIZES[24] = 7;
-		PACKET_SIZES[73] = 16;
-		PACKET_SIZES[40] = 11;
-		PACKET_SIZES[36] = -1;
-		PACKET_SIZES[74] = -1;
-		PACKET_SIZES[31] = 3;
-		PACKET_SIZES[54] = 6;
-		PACKET_SIZES[12] = 5;
-		PACKET_SIZES[23] = 1;
-		PACKET_SIZES[9] = 3;
-		PACKET_SIZES[17] = -1;
-		PACKET_SIZES[44] = -1;
-		PACKET_SIZES[88] = -1;
-		PACKET_SIZES[42] = 17;
-		PACKET_SIZES[49] = 3;
-		PACKET_SIZES[21] = 15;
-		PACKET_SIZES[59] = -1;
-		PACKET_SIZES[37] = -1;
-		PACKET_SIZES[6] = 8;
-		PACKET_SIZES[55] = 7;
-		PACKET_SIZES[69] = 9;
-		PACKET_SIZES[26] = 16;
-		PACKET_SIZES[39] = 12;
-		PACKET_SIZES[71] = 4;
-		PACKET_SIZES[22] = 2;
-		PACKET_SIZES[32] = -1;
-		PACKET_SIZES[79] = -1;
-		PACKET_SIZES[89] = 4;
-		PACKET_SIZES[90] = -1;
-		PACKET_SIZES[15] = 4;
-		PACKET_SIZES[72] = -2;
-		PACKET_SIZES[20] = 8;
-		PACKET_SIZES[92] = 3;
-		PACKET_SIZES[82] = 3;
-		PACKET_SIZES[28] = 3;
-		PACKET_SIZES[81] = 8;
-		PACKET_SIZES[7] = -1;
-		PACKET_SIZES[4] = 8;
-		PACKET_SIZES[60] = -1;
-		PACKET_SIZES[13] = 2;
-		PACKET_SIZES[52] = 8;
-		PACKET_SIZES[65] = 11;
-		PACKET_SIZES[85] = 2;
-		PACKET_SIZES[86] = 7;
-		PACKET_SIZES[78] = -1;
-		PACKET_SIZES[83] = 18;
-		PACKET_SIZES[27] = 7;
-		PACKET_SIZES[2] = 7;
-		PACKET_SIZES[93] = 1;
-		PACKET_SIZES[70] = -1;
-		PACKET_SIZES[1] = -1;
-		PACKET_SIZES[8] = -1;
-		PACKET_SIZES[11] = 7;
-		PACKET_SIZES[0] = 9;
-		PACKET_SIZES[51] = -1;
-		PACKET_SIZES[5] = 4;
-		PACKET_SIZES[45] = 7;
-		PACKET_SIZES[75] = 4;
-		PACKET_SIZES[53] = 3;
-		PACKET_SIZES[33] = 0;
-		PACKET_SIZES[50] = 3;
-		PACKET_SIZES[76] = 7;
-		PACKET_SIZES[80] = -1;
-		PACKET_SIZES[77] = 3;
-		PACKET_SIZES[68] = -1;
-		PACKET_SIZES[43] = 3;
-		PACKET_SIZES[30] = -1;
-		PACKET_SIZES[19] = 3;
-		PACKET_SIZES[16] = 0;
-		PACKET_SIZES[34] = 4;
-		PACKET_SIZES[48] = 0;
-		PACKET_SIZES[56] = 0;
-		PACKET_SIZES[58] = 2;
-		PACKET_SIZES[10] = 8;
-		PACKET_SIZES[35] = 7;
-		PACKET_SIZES[84] = 6;
-		PACKET_SIZES[66] = 3;
-		PACKET_SIZES[61] = 8;
-		PACKET_SIZES[29] = -1;
-		PACKET_SIZES[62] = 3;
-		PACKET_SIZES[3] = 4;
-		PACKET_SIZES[63] = 4;
-		PACKET_SIZES[73] = 16;
-		PACKET_SIZES[38] = -1;
 	}
 	
 	private Player player;
@@ -290,12 +195,14 @@ public final class WorldPacketsDecoder extends Decoder {
 				break;
 			}
 			int length = PACKET_SIZES[packetId];
+			if (packetId == 11) {
+				length = -4;
+				System.out.println(packetId + ", " + stream.getRemaining() + ", " + length);
+			}
 			if (length == -1) {
 				length = stream.readUnsignedByte();
 			} else if (length == -2) {
 				length = stream.readUnsignedShort();
-			} else if (length == -3) {
-				length = stream.readInt();
 			} else if (length == -4) {
 				length = stream.getRemaining();
 				System.out.println("Invalid size for PacketId " + packetId + ". Size guessed to be " + length);
@@ -303,19 +210,14 @@ public final class WorldPacketsDecoder extends Decoder {
 			if (length > stream.getRemaining()) {
 				length = stream.getRemaining();
 				System.out.println("PacketId " + packetId + " has fake size. - expected size " + length);
-				// break;
 			}
-			
-			// System.out.println("PacketId " +packetId+
-			// " has . - expected size " +length);
-			
 			int startOffset = stream.getOffset();
 			processPackets(packetId, stream, length);
 			stream.setOffset(startOffset + length);
 		}
 	}
 	
-	public void processPackets(final int packetId, InputStream stream, int length) {
+	private void processPackets(final int packetId, InputStream stream, int length) {
 		player.setPacketsDecoderPing(Misc.currentTimeMillis());
 		switch (packetId) {
 			case PING_PACKET:
@@ -339,39 +241,6 @@ public final class WorldPacketsDecoder extends Decoder {
 				boolean unknown2 = stream.readByte() == 1;
 				int playerIndex = stream.readUnsignedShort();
 				Player other = World.getPlayers().get(playerIndex);
-				if (player.getTrade() != null || other.getTrade() != null) {
-					player.getPackets().sendGameMessage("You're already in a trade!");
-					return;
-				}
-				if (player.getX() == other.getX() && player.getY() == other.getY()) {
-					player.sendMessage("You can't trade in this position.");
-					other.sendMessage("You can't trade in this position.");
-					return;
-				}
-				if (other.getTemporaryAttributtes().get("didRequestTrade") == Boolean.TRUE && (Integer) other.getTemporaryAttributtes().get("tradeWithIndex") == player.getIndex()) {
-					Trade session = new Trade(player, other, player);
-					player.setTrade(session);
-					other.setTrade(session);
-					session.start();
-					if (player.getX() == other.getX() && player.getY() == other.getY()) {
-						player.sendMessage("You can't trade in this position.");
-						player.getTrade().endSession();
-						
-						return;
-					}
-				} else {
-					if (player.getX() == other.getX() && player.getY() == other.getY()) {
-						player.sendMessage("You can't trade in this position.");
-						return;
-					}
-					player.getPackets().sendGameMessage("Sending trade request...");
-					other.getPackets().sendTradeRequestMessage(player);
-					player.getTemporaryAttributtes().put("didRequestTrade", Boolean.TRUE);
-					player.getTemporaryAttributtes().put("tradeWithIndex", other.getIndex());
-					player.stopAll(false);
-					
-				}
-				
 				break;
 			}
 			case ACCEPT_TRADE_CHAT_PACKET: {
@@ -379,36 +248,6 @@ public final class WorldPacketsDecoder extends Decoder {
 				boolean unknown2 = stream.readByte() == 1;
 				int playerIndex = stream.readUnsignedShort();
 				Player other = World.getPlayers().get(playerIndex);
-				if (player.getTrade() != null || other.getTrade() != null) {
-					player.getPackets().sendGameMessage("You're already in a trade!");
-				}
-				if (player.getX() == other.getX() && player.getY() == other.getY()) {
-					player.sendMessage("You can't trade in this position.");
-					other.sendMessage("You can't trade in this position.");
-					return;
-				}
-				if (other.getTemporaryAttributtes().get("didRequestTrade") == Boolean.TRUE && (Integer) other.getTemporaryAttributtes().get("tradeWithIndex") == player.getIndex()) {
-					Trade session = new Trade(player, other, player);
-					player.setTrade(session);
-					other.setTrade(session);
-					session.start();
-					if (player.getX() == other.getX() && player.getY() == other.getY()) {
-						player.sendMessage("You can't trade in this position.");
-						other.sendMessage("You can't trade in this position.");
-						player.getTrade().endSession();
-						other.getTrade().endSession();
-					}
-				} else {
-					if (player.getX() == other.getX() && player.getY() == other.getY()) {
-						player.sendMessage("You can't trade in this position.");
-						other.sendMessage("You can't trade in this position.");
-						return;
-					}
-					player.getPackets().sendGameMessage("Sending trade request...");
-					other.getPackets().sendTradeRequestMessage(player);
-					player.getTemporaryAttributtes().put("didRequestTrade", Boolean.TRUE);
-					player.getTemporaryAttributtes().put("tradeWithIndex", other.getIndex());
-				}
 				break;
 			}
 			case MAGIC_ON_GROUND_PACKET: {
@@ -547,7 +386,7 @@ public final class WorldPacketsDecoder extends Decoder {
 			case ACTION_BUTTON3_PACKET:
 			case ACTION_BUTTON9_PACKET:
 			case ACTION_BUTTON10_PACKET:
-				ButtonHandler.handleButtons(player, stream, packetId);
+				ButtonHandler.decodeInterfaceStream(player, stream, packetId);
 				break;
 			case ENTER_STRING_PACKET: {
 				if (!player.isRunning() || player.isDead()) {
@@ -555,7 +394,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				String value = stream.readString();
 				if (player.getInterfaceManager().containsInterface(1108)) {
-					player.getFriendsIgnores().setChatPrefix(value);
+					player.getContactManager().setChatPrefix(value);
 				}
 				break;
 			}
@@ -608,7 +447,7 @@ public final class WorldPacketsDecoder extends Decoder {
 					}
 				} else if (player.getTemporaryAttributtes().get("skillId") != null) {
 					int skillId = (Integer) player.getTemporaryAttributtes().remove("skillId");
-					if (skillId == Skills.HITPOINTS && value == 1) {
+					if (skillId == PlayerSkills.HITPOINTS && value == 1) {
 						value = 10;
 					} else if (value < 1) {
 						value = 1;
@@ -616,16 +455,9 @@ public final class WorldPacketsDecoder extends Decoder {
 						value = 99;
 					}
 					player.getSkills().set(skillId, value);
-					player.getSkills().setXp(skillId, Skills.getXPForLevel(value));
-					player.getAppearence().generateAppearenceData();
+					player.getSkills().setXp(skillId, PlayerSkills.getXPForLevel(value));
+					player.getAppearance().generateAppearanceData();
 					player.getDialogueManager().finishDialogue();
-				} else if (player.getTemporaryAttributtes().get("offerX") != null && player.getInterfaceManager().containsInterface(335) && player.getTrade().getState() == TradeState.STATE_ONE) {
-					player.getTrade().addItem(player, (Integer) player.getTemporaryAttributtes().get("offerX"), value);
-					player.getTemporaryAttributtes().remove("offerX");
-				} else if (player.getTemporaryAttributtes().get("removeX") != null && player.getInterfaceManager().containsInterface(335) && player.getTrade().getState() == TradeState.STATE_ONE) {
-					player.getTrade().removeItem(player, (Integer) player.getTemporaryAttributtes().get("removeX"), value);
-					player.getTemporaryAttributtes().remove("removeX");
-					
 				}
 				break;
 			}
@@ -655,7 +487,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (toComponentId != -1 && Misc.getInterfaceDefinitionsComponentsSize(toInterfaceId) <= toComponentId) {
 					return;
 				}
-				if (fromInterfaceId == Inventory.INVENTORY_INTERFACE && fromComponentId == 0 && toInterfaceId == Inventory.INVENTORY_INTERFACE && toComponentId == 0) {
+				if (fromInterfaceId == PlayerInventory.INVENTORY_INTERFACE && fromComponentId == 0 && toInterfaceId == PlayerInventory.INVENTORY_INTERFACE && toComponentId == 0) {
 					toSlot -= 28;
 					if (toSlot < 0 || toSlot >= player.getInventory().getItemsContainerSize() || fromSlot >= player.getInventory().getItemsContainerSize()) {
 						return;
@@ -675,23 +507,23 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (!player.clientHasLoadedMapRegion()) {
 					player.setClientHasLoadedMapRegion();
 				}
-				player.refreshSpawnedObjects();
-				player.refreshSpawnedItems();
+				player.getPacketSender().refreshSpawnedObjects();
+				player.getPacketSender().refreshSpawnedItems();
 				break;
 			case OBJECT_CLICK1_PACKET:
-				ObjectHandler.decodeObjectStream(player, stream, 1);
+				ObjectHandler.decodeObjectStream(player, stream, FIRST);
 				break;
 			case OBJECT_CLICK2_PACKET:
-				ObjectHandler.decodeObjectStream(player, stream, 2);
+				ObjectHandler.decodeObjectStream(player, stream, SECOND);
 				break;
 			case OBJECT_CLICK3_PACKET:
-				ObjectHandler.decodeObjectStream(player, stream, 3);
+				ObjectHandler.decodeObjectStream(player, stream, THIRD);
+				break;
+			case OBJECT_EXAMINE_PACKET:
+				ObjectHandler.decodeObjectStream(player, stream, EXAMINE);
 				break;
 			case ITEM_ON_OBJECT_PACKET:
 				ObjectHandler.handleItemOnObject(player, stream);
-				break;
-			case OBJECT_EXAMINE_PACKET:
-				ObjectHandler.decodeObjectStream(player, stream, 10);
 				break;
 			case WALKING_PACKET:
 			case MINI_WALKING_PACKET: {
@@ -801,13 +633,13 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (p2 == null || p2.isDead() || p2.hasFinished() || !player.getMapRegionsIds().contains(p2.getRegionId())) {
 					return;
 				}
-				if (player.getLockDelay() > Misc.currentTimeMillis() || !player.getControlerManager().canPlayerOption1(p2)) {
+				if (player.getLockDelay() > Misc.currentTimeMillis() || !player.getControllerManager().canEntityClick(p2, FIRST)) {
 					return;
 				}
 				if (!player.isCanPvp()) {
 					return;
 				}
-				if (!player.getControlerManager().canAttack(p2)) {
+				if (!player.getControllerManager().canAttack(p2)) {
 					return;
 				}
 				
@@ -849,7 +681,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (npc == null || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || !npc.getDefinitions().hasAttackOption()) {
 					return;
 				}
-				if (!player.getControlerManager().canAttack(npc)) {
+				if (!player.getControllerManager().canAttack(npc)) {
 					return;
 				}
 				if (npc instanceof Familiar) {
@@ -910,6 +742,18 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				player.stopAll(false);
 				switch (interfaceId) {
+					case PlayerInventory.INVENTORY_INTERFACE:
+						Item item = player.getInventory().getItem(junk1);
+						if (item == null) {
+							return;
+						}
+						if (!player.getInventory().containsItem(item.getId(), item.getAmount())) {
+							return;
+						}
+						if (!player.getControllerManager().processItemOnPlayer(p2, item)) {
+							return;
+						}
+						break;
 					case 662:
 					case 747:
 						if (player.getFamiliar() == null) {
@@ -955,7 +799,7 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 23:
 								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
 									player.setNextFaceWorldTile(new WorldTile(p2.getCoordFaceX(p2.getSize()), p2.getCoordFaceY(p2.getSize()), p2.getPlane()));
-									if (!player.getControlerManager().canAttack(p2)) {
+									if (!player.getControllerManager().canAttack(p2)) {
 										return;
 									}
 									if (!player.isCanPvp() || !p2.isCanPvp()) {
@@ -1017,7 +861,7 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 81: // entangle
 								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
 									player.setNextFaceWorldTile(new WorldTile(p2.getCoordFaceX(p2.getSize()), p2.getCoordFaceY(p2.getSize()), p2.getPlane()));
-									if (!player.getControlerManager().canAttack(p2)) {
+									if (!player.getControllerManager().canAttack(p2)) {
 										return;
 									}
 									if (!player.isCanPvp() || !p2.isCanPvp()) {
@@ -1092,7 +936,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				player.stopAll(false);
 				switch (interfaceId) {
-					case Inventory.INVENTORY_INTERFACE:
+					case PlayerInventory.INVENTORY_INTERFACE:
 						Item item = player.getInventory().getItem(slot);// construct
 						// only if
 						// needed
@@ -1102,7 +946,7 @@ public final class WorldPacketsDecoder extends Decoder {
 						if (!player.getInventory().containsItem(item.getId(), item.getAmount())) {
 							return;
 						}
-						if (!player.getControlerManager().processItemOnNPC(npc, item)) {
+						if (!player.getControllerManager().processItemOnNPC(npc, item)) {
 							return;
 						}
 						// InventoryOptionsHandler.handleItemOnNPC(npc, item);
@@ -1152,7 +996,7 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 23:
 								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
 									player.setNextFaceWorldTile(new WorldTile(npc.getCoordFaceX(npc.getSize()), npc.getCoordFaceY(npc.getSize()), npc.getPlane()));
-									if (!player.getControlerManager().canAttack(npc)) {
+									if (!player.getControllerManager().canAttack(npc)) {
 										return;
 									}
 									if (npc instanceof Familiar) {
@@ -1213,7 +1057,7 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 81: // entangle
 								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
 									player.setNextFaceWorldTile(new WorldTile(npc.getCoordFaceX(npc.getSize()), npc.getCoordFaceY(npc.getSize()), npc.getPlane()));
-									if (!player.getControlerManager().canAttack(npc)) {
+									if (!player.getControllerManager().canAttack(npc)) {
 										return;
 									}
 									if (npc instanceof Familiar) {
@@ -1248,13 +1092,19 @@ public final class WorldPacketsDecoder extends Decoder {
 				break;
 			}
 			case NPC_CLICK1_PACKET:
-				NPCHandler.handleOption1(player, stream);
+				NPCHandler.decodeNPCStream(player, stream, FIRST);
 				break;
 			case NPC_CLICK2_PACKET:
-				NPCHandler.handleOption2(player, stream);
+				NPCHandler.decodeNPCStream(player, stream, SECOND);
+				break;
+			case NPC_CLICK3_PACKET:
+				NPCHandler.decodeNPCStream(player, stream, THIRD);
+				break;
+			case NPC_CLICK4_PACKET:
+				NPCHandler.decodeNPCStream(player, stream, FOURTH);
 				break;
 			case NPC_EXAMINE_PACKET:
-				NPCHandler.handleExamine(player, stream);
+				NPCHandler.decodeNPCStream(player, stream, EXAMINE);
 				break;
 			case CLAN_NAME_PACKET:
 				break;
@@ -1292,30 +1142,22 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (!player.hasStarted() || !player.getInterfaceManager().containsInterface(1108)) {
 					return;
 				}
-				player.getFriendsIgnores().changeRank(stream.readString(), stream.readUnsignedByteC());
+				player.getContactManager().changeRank(stream.readString(), stream.readUnsignedByteC());
 				break;
 			case ADD_FRIEND_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
-				player.getFriendsIgnores().addFriend(stream.readString());
+				player.getContactManager().addFriend(stream.readString());
 				break;
 			case REMOVE_FRIEND_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
-				player.getFriendsIgnores().removeFriend(stream.readString());
+				player.getContactManager().removeFriend(stream.readString());
 				break;
 			case SEND_FRIEND_MESSAGE_PACKET: {
 				if (!player.hasStarted()) {
-					return;
-				}
-				if (player.getMuted() > Misc.currentTimeMillis()) {
-					player.getPackets().sendGameMessage("You're account has been muted.");
-					player.getPackets().sendGameMessage("Read our Terms and Conditions for more information.");
-					if (!player.isCanPvp()) {
-						player.getInterfaceManager().sendInterface(801);
-					}
 					return;
 				}
 				String username = stream.readString();
@@ -1323,7 +1165,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (p2 == null) {
 					return;
 				}
-				player.getFriendsIgnores().sendMessage(p2, Misc.fixChatMessage(Huffman.readEncryptedMessage(150, stream)));
+				player.getContactManager().sendMessage(p2, Misc.fixChatMessage(Huffman.readEncryptedMessage(150, stream)));
 				break;
 			}
 			case SEND_FRIEND_QUICK_CHAT_PACKET: {
@@ -1342,7 +1184,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (p2 == null) {
 					return;
 				}
-				player.getFriendsIgnores().sendQuickChatMessage(p2, new QuickChatMessage(fileId, data));
+				player.getContactManager().sendQuickChatMessage(p2, new QuickChatMessage(fileId, data));
 				break;
 			}
 			case PUBLIC_QUICK_CHAT_PACKET: {
@@ -1396,14 +1238,6 @@ public final class WorldPacketsDecoder extends Decoder {
 					}
 					return;
 				}
-				if (player.getMuted() > Misc.currentTimeMillis()) {
-					player.getPackets().sendGameMessage("You're account has been muted.");
-					player.getPackets().sendGameMessage("Read our Terms and Conditions for more information.");
-					if (!player.isCanPvp()) {
-						player.getInterfaceManager().sendInterface(801);
-					}
-					return;
-				}
 				int effects = (colorEffect << 8) | (moveEffect & 0xff);
 				if (chatType == 1) {
 					player.sendFriendsChannelMessage(Misc.fixChatMessage(message));
@@ -1435,10 +1269,114 @@ public final class WorldPacketsDecoder extends Decoder {
 				int updateType = stream.readInt();
 				player.getPackets().sendWorldList(updateType == 0);
 				break;
+			case WINDOW_SWITCH_PACKET:
+				boolean dominant = stream.readByte() == 1;
+				break;
 			default:
 				System.out.println("Missing packet " + packetId + ", expected size: " + length + ", actual size: " + PACKET_SIZES[packetId]);
 				break;
 		}
+	}
+	
+	public static void loadPacketSizes() {
+		for (int id = 0; id < 256; id++) {
+			PACKET_SIZES[id] = -4;
+		}
+		PACKET_SIZES[64] = 8;
+		PACKET_SIZES[18] = 8;
+		PACKET_SIZES[25] = 8;
+		PACKET_SIZES[41] = -1;
+		PACKET_SIZES[14] = 3;
+		PACKET_SIZES[46] = 3;
+		PACKET_SIZES[87] = 6;
+		PACKET_SIZES[47] = 7;
+		PACKET_SIZES[57] = 3;
+		PACKET_SIZES[67] = 3;
+		PACKET_SIZES[91] = 8;
+		PACKET_SIZES[24] = 7;
+		PACKET_SIZES[73] = 16;
+		PACKET_SIZES[40] = 11;
+		PACKET_SIZES[36] = -1;
+		PACKET_SIZES[74] = -1;
+		PACKET_SIZES[31] = 3;
+		PACKET_SIZES[54] = 6;
+		PACKET_SIZES[12] = 5;
+		PACKET_SIZES[23] = 1;
+		PACKET_SIZES[9] = 3;
+		PACKET_SIZES[17] = -1;
+		PACKET_SIZES[44] = -1;
+		PACKET_SIZES[88] = -1;
+		PACKET_SIZES[42] = 17;
+		PACKET_SIZES[49] = 3;
+		PACKET_SIZES[21] = 15;
+		PACKET_SIZES[59] = -1;
+		PACKET_SIZES[37] = -1;
+		PACKET_SIZES[6] = 8;
+		PACKET_SIZES[55] = 7;
+		PACKET_SIZES[69] = 9;
+		PACKET_SIZES[26] = 16;
+		PACKET_SIZES[39] = 12;
+		PACKET_SIZES[71] = 4;
+		PACKET_SIZES[22] = 2;
+		PACKET_SIZES[32] = -1;
+		PACKET_SIZES[79] = -1;
+		PACKET_SIZES[89] = 4;
+		PACKET_SIZES[90] = -1;
+		PACKET_SIZES[15] = 4;
+		PACKET_SIZES[72] = -2;
+		PACKET_SIZES[20] = 8;
+		PACKET_SIZES[92] = 3;
+		PACKET_SIZES[82] = 3;
+		PACKET_SIZES[28] = 3;
+		PACKET_SIZES[81] = 8;
+		PACKET_SIZES[7] = -1;
+		PACKET_SIZES[4] = 8;
+		PACKET_SIZES[60] = -1;
+		PACKET_SIZES[13] = 2;
+		PACKET_SIZES[52] = 8;
+		PACKET_SIZES[65] = 11;
+		PACKET_SIZES[85] = 2;
+		PACKET_SIZES[86] = 7;
+		PACKET_SIZES[78] = -1;
+		PACKET_SIZES[83] = 18;
+		PACKET_SIZES[27] = 7;
+		PACKET_SIZES[2] = 7;
+		PACKET_SIZES[93] = 1;
+		PACKET_SIZES[70] = -1;
+		PACKET_SIZES[1] = -1;
+		PACKET_SIZES[8] = -1;
+		PACKET_SIZES[11] = 7;
+		PACKET_SIZES[0] = 9;
+		PACKET_SIZES[51] = -1;
+		PACKET_SIZES[5] = 4;
+		PACKET_SIZES[45] = 7;
+		PACKET_SIZES[75] = 4;
+		PACKET_SIZES[53] = 3;
+		PACKET_SIZES[33] = 0;
+		PACKET_SIZES[50] = 3;
+		PACKET_SIZES[76] = 7;
+		PACKET_SIZES[80] = -1;
+		PACKET_SIZES[77] = 3;
+		PACKET_SIZES[68] = -1;
+		PACKET_SIZES[43] = 3;
+		PACKET_SIZES[30] = -1;
+		PACKET_SIZES[19] = 3;
+		PACKET_SIZES[16] = 0;
+		PACKET_SIZES[34] = 4;
+		PACKET_SIZES[48] = 0;
+		PACKET_SIZES[56] = 0;
+		PACKET_SIZES[58] = 2;
+		PACKET_SIZES[10] = 8;
+		PACKET_SIZES[35] = 7;
+		PACKET_SIZES[84] = 6;
+		PACKET_SIZES[66] = 3;
+		PACKET_SIZES[61] = 8;
+		PACKET_SIZES[29] = -1;
+		PACKET_SIZES[62] = 3;
+		PACKET_SIZES[3] = 4;
+		PACKET_SIZES[63] = 4;
+		PACKET_SIZES[73] = 16;
+		PACKET_SIZES[38] = -1;
 	}
 	
 	public Player getPlayer() {

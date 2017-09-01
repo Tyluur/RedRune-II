@@ -1,0 +1,53 @@
+{
+  "combatDefinitions": {
+    "269": {
+      "hitpoints": 1160,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 140,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "269": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "5564": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "5565": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "269": "<b>&#8226;</b> Big, mean, dead doggy.<br /><b>&#8226;</b> General Khazard's 'pet'. Only a Mahjarrat has the power to deal with him in this state.",
+    "5564": "<b>&#8226;</b> Big, mean, dead doggy.<br /><b>&#8226;</b> General Khazard's 'pet'. Only a Mahjarrat has the power to deal with him in this state.",
+    "5565": "<b>&#8226;</b> Big, mean, dead doggy.<br /><b>&#8226;</b> General Khazard's 'pet'. Only a Mahjarrat has the power to deal with him in this state."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "combatDefinitions": {
+    "3066": {
+      "hitpoints": 600,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 70,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "3066": "<b>&#8226;</b> A rotten one. <b>&#8226;</b> Why zombies? Why now?."
+  }
+}

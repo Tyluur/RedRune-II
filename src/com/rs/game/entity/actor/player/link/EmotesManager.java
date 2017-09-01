@@ -1,12 +1,12 @@
 package com.rs.game.entity.actor.player.link;
 
 import com.rs.cache.loaders.NPCDefinitions;
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
+import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
-import com.rs.game.entity.WorldTile;
-import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.codec.decode.WorldPacketsDecoder;
@@ -31,19 +31,6 @@ public final class EmotesManager implements Serializable {
 			unlockedEmotes.add(emoteId);
 		}
 		unlockedEmotes.add(39); // skillcape
-	}
-	
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-	
-	public void unlockEmote(int id) {
-		if (unlockedEmotes.contains(id)) {
-			return;
-		}
-		if (unlockedEmotes.add(id)) {
-			refreshListConfigs();
-		}
 	}
 	
 	public static int getId(int slotId, int packetId) {
@@ -159,6 +146,97 @@ public final class EmotesManager implements Serializable {
 				return 52;
 			default:
 				return -1;
+		}
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	public void unlockEmote(int id) {
+		if (unlockedEmotes.contains(id)) {
+			return;
+		}
+		if (unlockedEmotes.add(id)) {
+			refreshListConfigs();
+		}
+	}
+	
+	public void refreshListConfigs() {
+		if (unlockedEmotes.contains(24) && unlockedEmotes.contains(25)) {
+			player.getPackets().sendConfig(465, 7); // goblin quest emotes
+		}
+		int value1 = 0;
+		if (unlockedEmotes.contains(32)) {
+			value1 += 1;
+		}
+		if (unlockedEmotes.contains(30)) {
+			value1 += 2;
+		}
+		if (unlockedEmotes.contains(33)) {
+			value1 += 4;
+		}
+		if (unlockedEmotes.contains(31)) {
+			value1 += 8;
+		}
+		if (value1 > 0) {
+			player.getPackets().sendConfig(802, value1); // stronghold of
+		}
+		// security emotes
+		if (unlockedEmotes.contains(36)) {
+			player.getPackets().sendConfig(1085, 249852); // hallowen hand emote
+		}
+		int value2 = 0;
+		if (unlockedEmotes.contains(29)) {
+			value2 += 1;
+		}
+		if (unlockedEmotes.contains(26)) {
+			value2 += 2;
+		}
+		if (unlockedEmotes.contains(27)) {
+			value2 += 4;
+		}
+		if (unlockedEmotes.contains(28)) {
+			value2 += 8;
+		}
+		if (unlockedEmotes.contains(37)) {
+			value2 += 16;
+		}
+		if (unlockedEmotes.contains(35)) {
+			value2 += 32;
+		}
+		if (unlockedEmotes.contains(34)) {
+			value2 += 64;
+		}
+		if (unlockedEmotes.contains(38)) {
+			value2 += 128;
+		}
+		if (unlockedEmotes.contains(39)) {
+			value2 += 256;
+		}
+		if (unlockedEmotes.contains(40)) {
+			value2 += 512;
+		}
+		if (unlockedEmotes.contains(41)) {
+			value2 += 1024;
+		}
+		if (unlockedEmotes.contains(42)) {
+			value2 += 2048;
+		}
+		if (unlockedEmotes.contains(43)) {
+			value2 += 4096;
+		}
+		if (unlockedEmotes.contains(44)) {
+			value2 += 8192;
+		}
+		if (unlockedEmotes.contains(46)) {
+			value2 += 16384;
+		}
+		if (unlockedEmotes.contains(45)) {
+			value2 += 32768;
+		}
+		if (value2 > 0) {
+			player.getPackets().sendConfig(313, value2); // events emotes
 		}
 	}
 	
@@ -418,11 +496,11 @@ public final class EmotesManager implements Serializable {
 							@Override
 							public void run() {
 								if (step == 1) {
-									player.getAppearence().transformIntoNPC((rand == 0 ? 11227 : (rand == 1 ? 11228 : 11229)));
+									player.getAppearance().transformIntoNPC((rand == 0 ? 11227 : (rand == 1 ? 11228 : 11229)));
 									player.setNextAnimation(new Animation(((rand > 0 ? 13192 : (rand == 1 ? 13193 : 13194)))));
 								}
 								if (step == 3) {
-									player.getAppearence().transformIntoNPC(-1);
+									player.getAppearance().transformIntoNPC(-1);
 									stop();
 								}
 								step++;
@@ -434,7 +512,7 @@ public final class EmotesManager implements Serializable {
 					/*
 					 * WorldTasksManager.schedule(new WorldTask() { int step;
 					 * private NPC dung1, dung2, dung3, dung4;
-					 * 
+					 *
 					 * @Override public void run() { if (step == 1) {
 					 * player.getAppearence().transformIntoNPC(11229);
 					 * player.setNextAnimation(new Animation(14608)); dung1 =
@@ -469,7 +547,7 @@ public final class EmotesManager implements Serializable {
 					 */
 						break;
 					case 20763: // Veteran cape
-						if (player.getControlerManager().getControler() != null) {
+						if (player.getControllerManager().getController() != null) {
 							player.getPackets().sendGameMessage("You cannot do this here!");
 							return;
 						}
@@ -477,7 +555,7 @@ public final class EmotesManager implements Serializable {
 						player.setNextGraphics(new Graphics(1446));
 						break;
 					case 20765: // Classic cape
-						if (player.getControlerManager().getControler() != null) {
+						if (player.getControllerManager().getController() != null) {
 							player.getPackets().sendGameMessage("You cannot do this here!");
 							return;
 						}
@@ -486,11 +564,11 @@ public final class EmotesManager implements Serializable {
 						player.setNextGraphics(new Graphics(random == 0 ? 1471 : 1466));
 						break;
 					case 20767: // Max cape
-						if (player.getControlerManager().getControler() != null) {
+						if (player.getControllerManager().getController() != null) {
 							player.getPackets().sendGameMessage("This emote is currently unavailable.");
 							return;
 						}
-						int size = NPCDefinitions.getNPCDefinitions(1224).size;
+						int size = NPCDefinitions.getNPCDefinitions(1224).getSize();
 						WorldTile spawnTile = new WorldTile(new WorldTile(player.getX() + 1, player.getY(), player.getPlane()));
 						if (!World.canMoveNPC(spawnTile.getPlane(), spawnTile.getX(), spawnTile.getY(), size)) {
 							spawnTile = null;
@@ -560,7 +638,7 @@ public final class EmotesManager implements Serializable {
 						if (!World.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 3)) {
 							player.getPackets().sendGameMessage("Need more space to perform this skillcape emote.");
 							return;
-						} else if (player.getControlerManager().getControler() != null) {
+						} else if (player.getControllerManager().getController() != null) {
 							player.getPackets().sendGameMessage("Dont annoy other players!");
 							return;
 						}
@@ -574,7 +652,7 @@ public final class EmotesManager implements Serializable {
 									player.setNextAnimation(new Animation(356));
 									player.setNextGraphics(new Graphics(307));
 								} else if (step == 2) {
-									player.getAppearence().transformIntoNPC(capeId == 20769 ? 1830 : 3372);
+									player.getAppearance().transformIntoNPC(capeId == 20769 ? 1830 : 3372);
 									player.setNextAnimation(new Animation(1174));
 									player.setNextGraphics(new Graphics(1443));
 								} else if (step == 4) {
@@ -582,7 +660,7 @@ public final class EmotesManager implements Serializable {
 								} else if (step == 5) {
 									player.getPackets().sendStopCameraShake();
 								} else if (step == 8) {
-									player.getAppearence().transformIntoNPC(-1);
+									player.getAppearance().transformIntoNPC(-1);
 									player.setNextAnimation(new Animation(1175));
 									stop();
 								}
@@ -618,24 +696,24 @@ public final class EmotesManager implements Serializable {
 				
 				WorldTasksManager.schedule(new WorldTask() {
 					
-					@Override
+					private int step;					@Override
 					public void run() {
 						if (step == 0) {
 							player.setNextAnimation(new Animation(10994));
 							player.setNextGraphics(new Graphics(86));
 						} else if (step == 1) {
 							player.setNextAnimation(new Animation(10996));
-							player.getAppearence().transformIntoNPC(8499);
+							player.getAppearance().transformIntoNPC(8499);
 						} else if (step == 6) {
 							player.setNextAnimation(new Animation(10995));
 							player.setNextGraphics(new Graphics(86));
-							player.getAppearence().transformIntoNPC(-1);
+							player.getAppearance().transformIntoNPC(-1);
 							stop();
 						}
 						step++;
 					}
 					
-					private int step;
+
 					
 				}, 0, 1);
 			} else if (id == 47) { // Around the world in Eggty days.
@@ -657,26 +735,26 @@ public final class EmotesManager implements Serializable {
 				WorldTasksManager.schedule(new WorldTask() {
 					int random = (int) (Math.random() * (2 + 1));
 					
-					@Override
+					private int step;					@Override
 					public void run() {
 						if (step == 0) {
 							player.setNextAnimation(new Animation(15104));
 							player.setNextGraphics(new Graphics(1287));
 						} else if (step == 1) {
 							player.setNextAnimation(new Animation(15106));
-							player.getAppearence().transformIntoNPC(random == 0 ? 13255 : (random == 1 ? 13256 : 13257));
+							player.getAppearance().transformIntoNPC(random == 0 ? 13255 : (random == 1 ? 13256 : 13257));
 						} else if (step == 2) {
 							player.setNextAnimation(new Animation(15108));
 						} else if (step == 3) {
 							player.setNextAnimation(new Animation(15105));
 							player.setNextGraphics(new Graphics(1287));
-							player.getAppearence().transformIntoNPC(-1);
+							player.getAppearance().transformIntoNPC(-1);
 							stop();
 						}
 						step++;
 					}
 					
-					private int step;
+
 					
 				}, 0, 1);
 			} else if (id == 53) { // Invoke Spring
@@ -691,90 +769,12 @@ public final class EmotesManager implements Serializable {
 		nextEmoteEnd = player.getLastAnimationEnd() - 600;
 	}
 	
-	public void setNextEmoteEnd(long delay) {
-		nextEmoteEnd = Misc.currentTimeMillis() + delay;
-	}
-	
-	public void refreshListConfigs() {
-		if (unlockedEmotes.contains(24) && unlockedEmotes.contains(25)) {
-			player.getPackets().sendConfig(465, 7); // goblin quest emotes
-		}
-		int value1 = 0;
-		if (unlockedEmotes.contains(32)) {
-			value1 += 1;
-		}
-		if (unlockedEmotes.contains(30)) {
-			value1 += 2;
-		}
-		if (unlockedEmotes.contains(33)) {
-			value1 += 4;
-		}
-		if (unlockedEmotes.contains(31)) {
-			value1 += 8;
-		}
-		if (value1 > 0) {
-			player.getPackets().sendConfig(802, value1); // stronghold of
-		}
-		// security emotes
-		if (unlockedEmotes.contains(36)) {
-			player.getPackets().sendConfig(1085, 249852); // hallowen hand emote
-		}
-		int value2 = 0;
-		if (unlockedEmotes.contains(29)) {
-			value2 += 1;
-		}
-		if (unlockedEmotes.contains(26)) {
-			value2 += 2;
-		}
-		if (unlockedEmotes.contains(27)) {
-			value2 += 4;
-		}
-		if (unlockedEmotes.contains(28)) {
-			value2 += 8;
-		}
-		if (unlockedEmotes.contains(37)) {
-			value2 += 16;
-		}
-		if (unlockedEmotes.contains(35)) {
-			value2 += 32;
-		}
-		if (unlockedEmotes.contains(34)) {
-			value2 += 64;
-		}
-		if (unlockedEmotes.contains(38)) {
-			value2 += 128;
-		}
-		if (unlockedEmotes.contains(39)) {
-			value2 += 256;
-		}
-		if (unlockedEmotes.contains(40)) {
-			value2 += 512;
-		}
-		if (unlockedEmotes.contains(41)) {
-			value2 += 1024;
-		}
-		if (unlockedEmotes.contains(42)) {
-			value2 += 2048;
-		}
-		if (unlockedEmotes.contains(43)) {
-			value2 += 4096;
-		}
-		if (unlockedEmotes.contains(44)) {
-			value2 += 8192;
-		}
-		if (unlockedEmotes.contains(46)) {
-			value2 += 16384;
-		}
-		if (unlockedEmotes.contains(45)) {
-			value2 += 32768;
-		}
-		if (value2 > 0) {
-			player.getPackets().sendConfig(313, value2); // events emotes
-		}
-	}
-	
 	public long getNextEmoteEnd() {
 		return nextEmoteEnd;
+	}
+	
+	public void setNextEmoteEnd(long delay) {
+		nextEmoteEnd = Misc.currentTimeMillis() + delay;
 	}
 	
 	public void unlockEmotesBook() {

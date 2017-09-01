@@ -9,6 +9,8 @@ public class ActorList<T extends Actor> extends AbstractCollection<T> {
 	
 	private static final int MIN_VALUE = 1;
 	
+	private final Object lock = new Object();
+	
 	public Object[] entities;
 	
 	public Set<Integer> indicies = new HashSet<Integer>();
@@ -17,11 +19,19 @@ public class ActorList<T extends Actor> extends AbstractCollection<T> {
 	
 	public int capacity;
 	
-	private final Object lock = new Object();
-	
 	public ActorList(int capacity) {
 		entities = new Object[capacity];
 		this.capacity = capacity;
+	}
+	
+	public Iterator<T> iterator() {
+		synchronized (lock) {
+			return new ActorListIterator<T>(entities, indicies, this);
+		}
+	}
+	
+	public int size() {
+		return indicies.size();
 	}
 	
 	public boolean add(T entity) {
@@ -36,6 +46,13 @@ public class ActorList<T extends Actor> extends AbstractCollection<T> {
 			entities[entity.getIndex()] = null;
 			indicies.remove(entity.getIndex());
 			decreaseIndex();
+		}
+	}
+	
+	public void decreaseIndex() {
+		curIndex--;
+		if (curIndex <= capacity) {
+			curIndex = MIN_VALUE;
 		}
 	}
 	
@@ -72,22 +89,9 @@ public class ActorList<T extends Actor> extends AbstractCollection<T> {
 		}
 	}
 	
-	public Iterator<T> iterator() {
-		synchronized (lock) {
-			return new ActorListIterator<T>(entities, indicies, this);
-		}
-	}
-	
 	public void increaseIndex() {
 		curIndex++;
 		if (curIndex >= capacity) {
-			curIndex = MIN_VALUE;
-		}
-	}
-	
-	public void decreaseIndex() {
-		curIndex--;
-		if (curIndex <= capacity) {
 			curIndex = MIN_VALUE;
 		}
 	}
@@ -103,9 +107,5 @@ public class ActorList<T extends Actor> extends AbstractCollection<T> {
 			}
 		}
 		return -1;
-	}
-	
-	public int size() {
-		return indicies.size();
 	}
 }

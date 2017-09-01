@@ -1,0 +1,25 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "2494": [
+      {
+        "itemId": 6319,
+        "minAmount": 1,
+        "maxAmount": 5,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "2495": [
+      {
+        "itemId": 6319,
+        "minAmount": 1,
+        "maxAmount": 5,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

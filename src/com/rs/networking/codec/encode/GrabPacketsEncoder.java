@@ -2,9 +2,9 @@ package com.rs.networking.codec.encode;
 
 import com.rs.cache.Cache;
 import com.rs.networking.NetworkConstants;
+import com.rs.networking.Session;
 import com.rs.networking.codec.Encoder;
 import com.rs.networking.io.OutputStream;
-import com.rs.networking.Session;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelFuture;
@@ -40,7 +40,7 @@ public final class GrabPacketsEncoder extends Encoder {
 	
 	public final void sendCacheArchive(int indexId, int archiveId, boolean priority) {
 		if (indexId == 255 && archiveId == 255) {
-				session.write(getUkeysFile());
+			session.write(getUkeysFile());
 		} else {
 			session.write(getArchivePacketData(indexId, archiveId, priority));
 		}

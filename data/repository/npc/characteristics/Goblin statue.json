@@ -1,0 +1,215 @@
+{
+  "combatDefinitions": {
+    "5908": {
+      "hitpoints": 300,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 70,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "5908": [
+      {
+        "itemId": 1420,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 85.0,
+        "rare": false
+      },
+      {
+        "itemId": 1428,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 90.0,
+        "rare": false
+      },
+      {
+        "itemId": 1430,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 83.0,
+        "rare": false
+      },
+      {
+        "itemId": 1373,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 55.0,
+        "rare": false
+      },
+      {
+        "itemId": 1385,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 86.0,
+        "rare": false
+      },
+      {
+        "itemId": 1399,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 62.0,
+        "rare": false
+      },
+      {
+        "itemId": 1407,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 72.0,
+        "rare": false
+      },
+      {
+        "itemId": 14679,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 66.0,
+        "rare": false
+      },
+      {
+        "itemId": 557,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 4696,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 84.0,
+        "rare": false
+      },
+      {
+        "itemId": 1440,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 1462,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 1607,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 97.0,
+        "rare": false
+      },
+      {
+        "itemId": 1605,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 91.0,
+        "rare": false
+      },
+      {
+        "itemId": 1603,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 99.0,
+        "rare": false
+      },
+      {
+        "itemId": 1601,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 79.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 50,
+        "maxAmount": 50,
+        "rate": 89.0,
+        "rare": false
+      },
+      {
+        "itemId": 440,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 83.0,
+        "rare": false
+      },
+      {
+        "itemId": 453,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 87.0,
+        "rare": false
+      },
+      {
+        "itemId": 442,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 86.0,
+        "rare": false
+      },
+      {
+        "itemId": 447,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 86.0,
+        "rare": false
+      },
+      {
+        "itemId": 449,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 62.0,
+        "rare": false
+      },
+      {
+        "itemId": 2349,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 85.0,
+        "rare": false
+      },
+      {
+        "itemId": 892,
+        "minAmount": 42,
+        "maxAmount": 42,
+        "rate": 1.0,
+        "rare": false
+      },
+      {
+        "itemId": 987,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 985,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 60.0,
+        "rare": false
+      },
+      {
+        "itemId": 618,
+        "minAmount": 0,
+        "maxAmount": 3,
+        "rate": 7.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "5908": "<b>&#8226;</b> An ugly, green creature. <b>&#8226;</b>An ugly goblin, bleurgh! <i>(Underground Pass)</i>"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "combatDefinitions": {
+    "412": {
+      "hitpoints": 80,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 10,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "10907": {
+      "hitpoints": 80,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 10,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "8208": [
+      {
+        "itemId": 530,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "412": [
+      {
+        "itemId": 530,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 995,
+        "minAmount": 500,
+        "maxAmount": 1500,
+        "rate": 75.0,
+        "rare": false
+      }
+    ],
+    "10906": [
+      {
+        "itemId": 530,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "10907": [
+      {
+        "itemId": 530,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "10908": [
+      {
+        "itemId": 530,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "10909": [
+      {
+        "itemId": 530,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "8208": "An annoying flappy thing.",
+    "412": "An annoying flappy thing.",
+    "10906": "An annoying flappy thing.",
+    "10907": "An annoying flappy thing.",
+    "10908": "An annoying flappy thing.",
+    "10909": "An annoying flappy thing."
+  }
+}

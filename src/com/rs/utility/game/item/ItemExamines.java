@@ -24,20 +24,6 @@ public class ItemExamines {
 		}
 	}
 	
-	public static final String getExamine(Item item) {
-		if (item.getAmount() >= 100000) {
-			return item.getAmount() + " x " + item.getDefinitions().getName() + ".";
-		} else if (item.getDefinitions().isNoted()) {
-			return "Swamp this note at any bank for the equivalent item";
-		} else {
-			String examine = itemExamines.get(item.getId());
-			if (examine != null) {
-				return examine;
-			}
-		}
-		return "It's a " + item.getDefinitions().getName() + ".";
-	}
-	
 	private static void loadPackedItemExamines() {
 		try {
 			RandomAccessFile in = new RandomAccessFile(PACKED_PATH, "r");
@@ -98,5 +84,19 @@ public class ItemExamines {
 		byte[] bytes = string.getBytes();
 		out.writeByte(bytes.length);
 		out.write(bytes);
+	}
+	
+	public static final String getExamine(Item item) {
+		if (item.getAmount() >= 100000) {
+			return item.getAmount() + " x " + item.getDefinitions().getName() + ".";
+		} else if (item.getDefinitions().isNoted()) {
+			return "Swamp this note at any bank for the equivalent item";
+		} else {
+			String examine = itemExamines.get(item.getId());
+			if (examine != null) {
+				return examine;
+			}
+		}
+		return "It's a " + item.getDefinitions().getName() + ".";
 	}
 }

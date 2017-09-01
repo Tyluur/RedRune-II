@@ -1,0 +1,23 @@
+{
+  "combatDefinitions": {
+    "140": {
+      "hitpoints": 240,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "140": "A servant to <a href=\"/wiki/Iban\" title=\"Iban\" class=\"mw-redirect\">Iban</a>."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "combatDefinitions": {
+    "6831": {
+      "hitpoints": 470,
+      "attackAnim": 7795,
+      "defenceAnim": 7796,
+      "deathAnim": 7797,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 0,
+      "maxHit": 42,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "6832": {
+      "hitpoints": 470,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 7797,
+      "attackDelay": 4,
+      "deathDelay": 4,
+      "respawnDelay": 0,
+      "maxHit": 42,
+      "attackStyle": 3,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {}
+}

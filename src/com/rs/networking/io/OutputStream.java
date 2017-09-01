@@ -4,16 +4,20 @@ public final class OutputStream extends Stream {
 	
 	private static final int[] BIT_MASK = new int[32];
 	
-	private int opcodeStart = 0;
-	
 	static {
 		for (int i = 0; i < 32; i++) {
 			BIT_MASK[i] = (1 << i) - 1;
 		}
 	}
 	
+	private int opcodeStart = 0;
+	
 	public OutputStream(int capacity) {
 		setBuffer(new byte[capacity]);
+	}
+	
+	public void setBuffer(byte[] buffer) {
+		this.buffer = buffer;
 	}
 	
 	public OutputStream() {
@@ -26,6 +30,10 @@ public final class OutputStream extends Stream {
 		length = buffer.length;
 	}
 	
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+	
 	public OutputStream(int[] buffer) {
 		setBuffer(new byte[buffer.length]);
 		for (int value : buffer) {
@@ -33,12 +41,13 @@ public final class OutputStream extends Stream {
 		}
 	}
 	
-	public void setId(int j) {
-		this.opcodeStart = j;
+	public void writeByte(int i) {
+		writeByte(i, offset++);
 	}
 	
-	public int getId() {
-		return this.opcodeStart;
+	public void writeByte(int i, int position) {
+		checkCapacityPosition(position);
+		getBuffer()[position] = (byte) i;
 	}
 	
 	public void checkCapacityPosition(int position) {
@@ -49,12 +58,16 @@ public final class OutputStream extends Stream {
 		}
 	}
 	
-	public void skip(int length) {
-		setOffset(getOffset() + length);
+	public int getId() {
+		return this.opcodeStart;
 	}
 	
-	public void setOffset(int offset) {
-		this.offset = offset;
+	public void setId(int j) {
+		this.opcodeStart = j;
+	}
+	
+	public void skip(int length) {
+		setOffset(getOffset() + length);
 	}
 	
 	public void writeBytes(byte[] b, int offset, int length) {
@@ -95,17 +108,8 @@ public final class OutputStream extends Stream {
 		}
 	}
 	
-	public void writeByte(int i) {
-		writeByte(i, offset++);
-	}
-	
 	public void writeNegativeByte(int i) {
 		writeByte(-i, offset++);
-	}
-	
-	public void writeByte(int i, int position) {
-		checkCapacityPosition(position);
-		getBuffer()[position] = (byte) i;
 	}
 	
 	public void writeByte128(int i) {
@@ -237,17 +241,17 @@ public final class OutputStream extends Stream {
 		writeByte(0);
 		opcodeStart = getOffset() - 1;
 	}
+
+	/*
+	 * public void writePacketShort(int id) { writeByte(id); writeShort(0);
+	 * opcodeStart = getOffset() - 2; }
+	 */
 	
 	public void writePacketVarShort(int id) {
 		writePacket(id);
 		writeShort(0);
 		opcodeStart = getOffset() - 2;
 	}
-
-	/*
-	 * public void writePacketShort(int id) { writeByte(id); writeShort(0);
-	 * opcodeStart = getOffset() - 2; }
-	 */
 	
 	public void endPacketVarByte() {
 		writeByte(getOffset() - (opcodeStart + 2) + 1, opcodeStart);
@@ -289,10 +293,6 @@ public final class OutputStream extends Stream {
 			getBuffer()[bytePos] &= ~(BIT_MASK[numBits] << bitOffset - numBits);
 			getBuffer()[bytePos] |= (value & BIT_MASK[numBits]) << bitOffset - numBits;
 		}
-	}
-	
-	public void setBuffer(byte[] buffer) {
-		this.buffer = buffer;
 	}
 	
 }

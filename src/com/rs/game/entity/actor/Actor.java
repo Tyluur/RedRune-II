@@ -12,7 +12,7 @@ import com.rs.game.entity.actor.mask.Hit.HitLook;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.World;
 import com.rs.game.world.region.DynamicRegion;
@@ -137,12 +137,12 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	public final void initEntity() {
-		mapRegionsIds = new CopyOnWriteArrayList<Integer>();
-		walkSteps = new ConcurrentLinkedQueue<int[]>();
-		receivedHits = new ConcurrentLinkedQueue<Hit>();
-		receivedDamage = new ConcurrentHashMap<Actor, Integer>();
-		temporaryAttributes = new ConcurrentHashMap<Object, Object>();
-		nextHits = new ArrayList<Hit>();
+		mapRegionsIds = new CopyOnWriteArrayList<>();
+		walkSteps = new ConcurrentLinkedQueue<>();
+		receivedHits = new ConcurrentLinkedQueue<>();
+		receivedDamage = new ConcurrentHashMap<>();
+		temporaryAttributes = new ConcurrentHashMap<>();
+		nextHits = new ArrayList<>();
 		nextWalkDirection = nextRunDirection - 1;
 		lastFaceEntity = -1;
 		nextFaceEntity = -2;
@@ -283,7 +283,7 @@ public abstract class Actor extends WorldTile implements Entity {
 				return false;
 			}
 			if (this instanceof Player) {
-				if (!((Player) this).getControlerManager().checkWalkStep(lastX, lastY, nextX, nextY)) {
+				if (!((Player) this).getControllerManager().checkWalkStep(lastX, lastY, nextX, nextY)) {
 					return false;
 				}
 			}
@@ -632,7 +632,7 @@ public abstract class Actor extends WorldTile implements Entity {
 			nextWorldTile = null;
 			teleported = true;
 			if (this instanceof Player) {
-				((Player) this).setTemporaryMoveType(Player.TELE_MOVE_TYPE);
+				((Player) this).setTemporaryMovementType(Player.TELE_MOVE_TYPE);
 			}
 			World.updateEntityRegion(this);
 			if (needMapUpdate()) {
@@ -655,7 +655,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		nextWalkDirection = getNextWalkStep();
 		if (nextWalkDirection != -1) {
 			if (this instanceof Player) {
-				if (!((Player) this).getControlerManager().canMove(nextWalkDirection)) {
+				if (!((Player) this).getControllerManager().canMove(nextWalkDirection)) {
 					nextWalkDirection = -1;
 					resetWalkSteps();
 					return;
@@ -670,7 +670,7 @@ public abstract class Actor extends WorldTile implements Entity {
 					if (nextRunDirection != -1) {
 						if (this instanceof Player) {
 							Player player = (Player) this;
-							if (!player.getControlerManager().canMove(nextRunDirection)) {
+							if (!player.getControllerManager().canMove(nextRunDirection)) {
 								nextRunDirection = -1;
 								resetWalkSteps();
 								return;
@@ -679,7 +679,7 @@ public abstract class Actor extends WorldTile implements Entity {
 						}
 						moveLocation(Misc.DIRECTION_DELTA_X[nextRunDirection], Misc.DIRECTION_DELTA_Y[nextRunDirection], 0);
 					} else if (this instanceof Player) {
-						((Player) this).setTemporaryMoveType(Player.WALK_MOVE_TYPE);
+						((Player) this).setTemporaryMovementType(Player.WALK_MOVE_TYPE);
 					}
 				}
 			}
@@ -787,8 +787,8 @@ public abstract class Actor extends WorldTile implements Entity {
 			if (player.getPrayer().hasPrayersOn()) {
 				if ((hitpoints < player.getMaxHitpoints() * 0.1) && player.getPrayer().usingPrayer(0, 23)) {
 					setNextGraphics(new Graphics(436));
-					hitpoints += player.getSkills().getLevelForXp(Skills.PRAYER) * 2.5;
-					player.getSkills().set(Skills.PRAYER, 0);
+					hitpoints += player.getSkills().getLevelForXp(PlayerSkills.PRAYER) * 2.5;
+					player.getSkills().set(PlayerSkills.PRAYER, 0);
 					player.getPrayer().setPrayerpoints(0);
 				} else if (player.getEquipment().getAmuletId() != 11090 && player.getEquipment().getRingId() == 11090 && player.getHitpoints() <= player.getMaxHitpoints() * 0.1) {
 					Magic.sendNormalTeleportSpell(player, 1, 0, GameConstants.RESPAWN_PLAYER_LOCATION);
@@ -1179,4 +1179,50 @@ public abstract class Actor extends WorldTile implements Entity {
 	public boolean isFrozen() {
 		return freezeDelay >= Misc.currentTimeMillis();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <K> K getAttribute(String key, K defaultValue) {
+		K value = (K) getAttributes().get(key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
+	}
+	
+	public ConcurrentHashMap<Object, Object> getAttributes() {
+		return temporaryAttributes;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <K> K getAttribute(String key) {
+		return (K) getAttributes().get(key);
+	}
+	
+	/**
+	 * Puts the key into the attributes map
+	 *
+	 * @param key
+	 * 		The key
+	 * @param value
+	 * 		The value
+	 */
+	public <K> K putAttribute(String key, K value) {
+		getAttributes().put(key, value);
+		return value;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <K> K removeAttribute(String key) {
+		return (K) getAttributes().remove(key);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <K> K removeAttribute(String key, K defaultValue) {
+		K value = (K) getAttributes().remove(key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
+	}
+	
 }

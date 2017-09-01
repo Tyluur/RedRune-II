@@ -1,7 +1,7 @@
 package com.rs.game.entity.actor.npc.impl.slayer;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.WorldTile;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.task.WorldTask;
@@ -10,20 +10,26 @@ import com.rs.utility.Misc;
 
 @SuppressWarnings("serial")
 public class Strykewyrm extends NPC {
-
+	
 	private int stompId;
-
-	public Strykewyrm(int id, WorldTile tile, int mapAreaNameHash,
-			boolean canBeAttackFromOutOfArea) {
+	
+	public Strykewyrm(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, true);
 		stompId = id;
 	}
-
+	
+	@Override
+	public void reset() {
+		setNPC(stompId);
+		super.reset();
+	}
+	
 	@Override
 	public void processNPC() {
 		super.processNPC();
-		if (isDead())
+		if (isDead()) {
 			return;
+		}
 		if (getId() != stompId && !isCantInteract() && !isUnderCombat()) {
 			setNextAnimation(new Animation(12796));
 			setCantInteract(true);
@@ -36,47 +42,36 @@ public class Strykewyrm extends NPC {
 			});
 		}
 	}
-
-	@Override
-	public void reset() {
-		setNPC(stompId);
-		super.reset();
-	}
-
+	
 	public static void handleStomping(final Player player, final NPC npc) {
-		if (npc.isCantInteract())
+		if (npc.isCantInteract()) {
 			return;
+		}
 		if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
-			if (player.getAttackedBy() != npc
-					&& player.getAttackedByDelay() > Misc.currentTimeMillis()) {
-				player.getPackets().sendGameMessage(
-						"You are already in combat.");
+			if (player.getAttackedBy() != npc && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
+				player.getPackets().sendGameMessage("You are already in combat.");
 				return;
 			}
-			if (npc.getAttackedBy() != player
-					&& npc.getAttackedByDelay() > Misc.currentTimeMillis()) {
+			if (npc.getAttackedBy() != player && npc.getAttackedByDelay() > Misc.currentTimeMillis()) {
 				if (npc.getAttackedBy() instanceof NPC) {
 					npc.setAttackedBy(player); // changes enemy to player,
 					// player has priority over
 					// npc on single areas
 				} else {
-					player.getPackets().sendGameMessage(
-							"That npc is already in combat.");
+					player.getPackets().sendGameMessage("That npc is already in combat.");
 					return;
 				}
 			}
 		}
 		switch (npc.getId()) {
-		case 9462:
-			if (player.getSkills().getLevel(18) < 93) {
-				player.getPackets()
-						.sendGameMessage(
-								"You need at least a slayer level of 93 to fight this.");
+			case 9462:
+				if (player.getSkills().getLevel(18) < 93) {
+					player.getPackets().sendGameMessage("You need at least a slayer level of 93 to fight this.");
+					return;
+				}
+				break;
+			default:
 				return;
-			}
-			break;
-		default:
-			return;
 		}
 		player.setNextAnimation(new Animation(4278));
 		WorldTasksManager.schedule(new WorldTask() {
@@ -88,8 +83,8 @@ public class Strykewyrm extends NPC {
 				npc.setAttackedBy(player);
 				stop();
 			}
-
+			
 		}, 1, 2);
 	}
-
+	
 }

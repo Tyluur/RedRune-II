@@ -1,0 +1,90 @@
+{
+  "combatDefinitions": {
+    "1192": {
+      "hitpoints": 50,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1193": {
+      "hitpoints": 50,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1194": {
+      "hitpoints": 50,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1404": {
+      "hitpoints": 50,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "5829": {
+      "hitpoints": 50,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 20,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "1192": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "1193": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "1194": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "1404": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "1530": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "4447": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "4448": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "5829": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "7125": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "7126": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "7127": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit.",
+    "7208": "Aww, how cute. A cute bunny rabbit. A hungry-looking rabbit."
+  }
+}

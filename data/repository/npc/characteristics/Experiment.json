@@ -1,0 +1,38 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "1676": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "1677": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ],
+    "1678": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "1676": "<b>Sheep-dog/Spider-man:</b> One of Fenkenstrain's failed experiments.",
+    "1677": "<b>Sheep-dog/Spider-man:</b> One of Fenkenstrain's failed experiments.",
+    "1678": "<b>Sheep-dog/Spider-man:</b> One of Fenkenstrain's failed experiments."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "combatDefinitions": {
+    "6828": {
+      "hitpoints": 150,
+      "attackAnim": 8292,
+      "defenceAnim": 8294,
+      "deathAnim": 8295,
+      "attackDelay": 5,
+      "deathDelay": 4,
+      "respawnDelay": 0,
+      "maxHit": 40,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "6827": "Very mysterious looking...",
+    "6828": "Very mysterious looking..."
+  }
+}

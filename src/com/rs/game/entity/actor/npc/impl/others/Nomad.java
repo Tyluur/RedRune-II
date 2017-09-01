@@ -1,47 +1,48 @@
 package com.rs.game.entity.actor.npc.impl.others;
 
-import java.util.concurrent.TimeUnit;
-
 import com.rs.cores.CoresManager;
-import com.rs.game.entity.actor.mask.Animation;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.world.World;
 import com.rs.game.entity.WorldTile;
+import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
+import com.rs.game.world.World;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 
+import java.util.concurrent.TimeUnit;
+
 @SuppressWarnings("serial")
 public final class Nomad extends NPC {
-
+	
 	// private boolean[] demonPrayer;
 	private int fixedCombatType;
+	
 	private int[] cachedDamage;
+	
 	// private int shieldTimer;
 	private int fixedAmount;
-
+	
 	// private int prayerTimer;
-
-	public Nomad(int id, WorldTile tile, int mapAreaNameHash,
-			boolean canBeAttackFromOutOfArea, boolean spawned) {
+	
+	public Nomad(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, boolean spawned) {
 		super(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		// demonPrayer = new boolean[3];
 		cachedDamage = new int[3];
 		// shieldTimer = 0;
 		// switchPrayers(0);
 	}
-
+	
 	// public void switchPrayers(int type) {
 	// transformIntoNPC(8133);
 	// demonPrayer[type] = false;
 	// resetPrayerTimer();
 	// }
-
+	
 	// private void resetPrayerTimer() {
 	// prayerTimer = 16;
 	// }
-
+	
 	// @Override
 	// public void processNPC() {
 	// super.processNPC();
@@ -74,7 +75,7 @@ public final class Nomad extends NPC {
 	// }
 	// }
 	// }
-
+	
 	// @Override
 	// public void handleIngoingHit(final Hit hit) {
 	// int type = 0;
@@ -120,7 +121,7 @@ public final class Nomad extends NPC {
 	// cachedDamage[Utils.getRandom(2)] += 20;// random
 	// }
 	// }
-
+	
 	@Override
 	public void sendDeath(Actor source) {
 		final NPCCombatDefinitions defs = getCombatDefinitions();
@@ -130,11 +131,11 @@ public final class Nomad extends NPC {
 		// shieldTimer = 0;
 		WorldTasksManager.schedule(new WorldTask() {
 			int loop;
-
+			
 			@Override
 			public void run() {
 				if (loop == 0) {
-					setNextAnimation(new Animation(defs.getDeathEmote()));
+					setNextAnimation(new Animation(defs.getDeathAnim()));
 				} else if (loop >= defs.getDeathDelay()) {
 					drop();
 					reset();
@@ -147,7 +148,7 @@ public final class Nomad extends NPC {
 			}
 		}, 0, 1);
 	}
-
+	
 	// private void sendRandomProjectile() {
 	// WorldTile tile = new WorldTile(getX() + Utils.random(7), getY()
 	// + Utils.random(7), getPlane());
@@ -170,7 +171,7 @@ public final class Nomad extends NPC {
 	// }
 	// }
 	// }
-
+	
 	@Override
 	public void setRespawnTask() {
 		if (!hasFinished()) {
@@ -192,28 +193,27 @@ public final class Nomad extends NPC {
 				fixedCombatType = 0;
 				fixedAmount = 0;
 			}
-		}, getCombatDefinitions().getRespawnDelay() * 400,
-				TimeUnit.MILLISECONDS);
+		}, getCombatDefinitions().getRespawnDelay() * 400, TimeUnit.MILLISECONDS);
 	}
-
+	
 	public static boolean atTD(WorldTile tile) {
 		return (tile.getX() >= 2560 && tile.getX() <= 2630) && (tile.getY() >= 5710 && tile.getY() <= 5753);
 	}
-
+	
 	public int getFixedCombatType() {
 		return fixedCombatType;
 	}
-
+	
 	public void setFixedCombatType(int fixedCombatType) {
 		this.fixedCombatType = fixedCombatType;
 	}
-
+	
 	public int getFixedAmount() {
 		return fixedAmount;
 	}
-
+	
 	public void setFixedAmount(int fixedAmount) {
 		this.fixedAmount = fixedAmount;
 	}
-
+	
 }

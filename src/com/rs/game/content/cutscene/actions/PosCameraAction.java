@@ -1,18 +1,25 @@
 package com.rs.game.content.cutscene.actions;
 
-import com.rs.game.entity.actor.player.Player;
 import com.rs.game.content.cutscene.Cutscene;
+import com.rs.game.entity.actor.player.Player;
 
 public class PosCameraAction extends CutsceneAction {
 
 	private int moveLocalX;
+
 	private int moveLocalY;
+
 	private int moveZ;
+
 	private int speed;
+
 	private int speed2;
 
-	public PosCameraAction(int moveLocalX, int moveLocalY, int moveZ,
-			int speed, int speed2, int actionDelay) {
+	public PosCameraAction(int moveLocalX, int moveLocalY, int moveZ, int actionDelay) {
+		this(moveLocalX, moveLocalY, moveZ, -1, -1, actionDelay);
+	}
+
+	public PosCameraAction(int moveLocalX, int moveLocalY, int moveZ, int speed, int speed2, int actionDelay) {
 		super(-1, actionDelay);
 		this.moveLocalX = moveLocalX;
 		this.moveLocalY = moveLocalY;
@@ -21,16 +28,10 @@ public class PosCameraAction extends CutsceneAction {
 		this.speed2 = speed2;
 	}
 
-	public PosCameraAction(int moveLocalX, int moveLocalY, int moveZ,
-			int actionDelay) {
-		this(moveLocalX, moveLocalY, moveZ, -1, -1, actionDelay);
-	}
-
 	@Override
 	public void process(Player player, Object[] cache) {
 		Cutscene scene = (Cutscene) cache[0];
-		player.getPackets().sendCameraPos(scene.getLocalX(player, moveLocalX),
-				scene.getLocalY(player, moveLocalY), moveZ, speed, speed2);
+		player.getPackets().sendCameraPos(scene.getLocalX(player, moveLocalX), scene.getLocalY(player, moveLocalY), moveZ, speed, speed2);
 	}
 
 }

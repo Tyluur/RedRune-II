@@ -1,8 +1,8 @@
 package com.rs.game.entity.actor.npc.impl.others;
 
-import com.rs.game.entity.actor.mask.Animation;
-import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.WorldTile;
+import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.world.task.WorldTask;
@@ -10,12 +10,11 @@ import com.rs.game.world.task.WorldTasksManager;
 
 @SuppressWarnings("serial")
 public class PestMonsters extends NPC {
-
-	public PestMonsters(int id, WorldTile tile, int mapAreaNameHash,
-			boolean canBeAttackFromOutOfArea, boolean spawned) {
+	
+	public PestMonsters(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, boolean spawned) {
 		super(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 	}
-
+	
 	@Override
 	public void sendDeath(Actor source) {
 		final NPCCombatDefinitions defs = getCombatDefinitions();
@@ -26,13 +25,14 @@ public class PestMonsters extends NPC {
 		// deathEffects(npc);
 		WorldTasksManager.schedule(new WorldTask() {
 			int loop;
-
+			
 			@Override
 			public void run() {
 				if (loop == 0) {
-					if (!(npc.getId() == 6142) || (npc.getId() == 6144)
-							|| (npc.getId() == 6145) || (npc.getId() == 6143)) // Portals
-						setNextAnimation(new Animation(defs.getDeathEmote()));
+					if (!(npc.getId() == 6142) || (npc.getId() == 6144) || (npc.getId() == 6145) || (npc.getId() == 6143)) // Portals
+					{
+						setNextAnimation(new Animation(defs.getDeathAnim()));
+					}
 				} else if (loop >= defs.getDeathDelay()) {
 					drop();
 					reset();
@@ -71,5 +71,5 @@ public class PestMonsters extends NPC {
 	 * ().sendGameMessage("The east portal has been destroyed."); }
 	 * PestControl.setPortals(3, true); } }
 	 */
-
+	
 }

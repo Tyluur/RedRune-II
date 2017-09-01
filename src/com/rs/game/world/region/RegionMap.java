@@ -8,8 +8,8 @@ package com.rs.game.world.region;
  * 4x64x64 map
  */
 
-import com.rs.game.world.World;
 import com.rs.game.entity.WorldTile;
+import com.rs.game.world.World;
 
 /* old
  * 2097152 cliped tile
@@ -19,8 +19,11 @@ import com.rs.game.entity.WorldTile;
 public class RegionMap {
 
 	private int regionX;
+
 	private int regionY;
+
 	private int masks[][][];
+
 	private boolean clipedOnly;
 
 	public RegionMap(int regionId, boolean clipedOnly) {
@@ -46,8 +49,7 @@ public class RegionMap {
 		addMask(plane, x, y, 2097152);
 	}
 
-	public void addWall(int plane, int x, int y, int type, int rotation,
-			boolean solid, boolean unknown) {
+	public void addWall(int plane, int x, int y, int type, int rotation, boolean solid, boolean unknown) {
 		if (type == 0) {
 			if (rotation == 0) {
 				addMask(plane, x, y, 128);
@@ -228,8 +230,7 @@ public class RegionMap {
 		}
 	}
 
-	public void removeWall(int plane, int x, int y, int type, int rotation,
-			boolean solid, boolean unknown) {
+	public void removeWall(int plane, int x, int y, int type, int rotation, boolean solid, boolean unknown) {
 		if (type == 0) {
 			if (rotation == 0) {
 				removeMask(plane, x, y, 128);
@@ -410,29 +411,35 @@ public class RegionMap {
 		}
 	}
 
-	public void removeObject(int plane, int x, int y, int sizeX, int sizeY,
-			boolean solid, boolean b) {
+	public void removeObject(int plane, int x, int y, int sizeX, int sizeY, boolean solid, boolean b) {
 		int mask = 256;
-		if (solid)
+		if (solid) {
 			mask |= 131072;
-		if (b)
+		}
+		if (b) {
 			mask |= 1073741824;
-		for (int tileX = x; tileX < x + sizeX; tileX++)
-			for (int tileY = y; tileY < y + sizeY; tileY++)
+		}
+		for (int tileX = x; tileX < x + sizeX; tileX++) {
+			for (int tileY = y; tileY < y + sizeY; tileY++) {
 				removeMask(plane, tileX, tileY, mask);
+			}
+		}
 
 	}
 
-	public void addObject(int plane, int x, int y, int sizeX, int sizeY,
-			boolean solid, boolean b) {
+	public void addObject(int plane, int x, int y, int sizeX, int sizeY, boolean solid, boolean b) {
 		int mask = 256;
-		if (solid)
+		if (solid) {
 			mask |= 131072;
-		if (b)
+		}
+		if (b) {
 			mask |= 1073741824;
-		for (int tileX = x; tileX < x + sizeX; tileX++)
-			for (int tileY = y; tileY < y + sizeY; tileY++)
+		}
+		for (int tileX = x; tileX < x + sizeX; tileX++) {
+			for (int tileY = y; tileY < y + sizeY; tileY++) {
 				addMask(plane, tileX, tileY, mask);
+			}
+		}
 
 	}
 
@@ -442,16 +449,11 @@ public class RegionMap {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			if (clipedOnly)
-				World.getRegion(tile.getRegionId())
-						.forceGetRegionMapClipedOnly()
-						.setMask(plane, tile.getX() - newRegionX,
-								tile.getY() - newRegionY, mask);
-			else
-				World.getRegion(tile.getRegionId())
-						.forceGetRegionMap()
-						.setMask(plane, tile.getX() - newRegionX,
-								tile.getY() - newRegionY, mask);
+			if (clipedOnly) {
+				World.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			} else {
+				World.getRegion(tile.getRegionId()).forceGetRegionMap().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			}
 			return;
 		}
 		masks[plane][x][y] = mask;
@@ -463,16 +465,11 @@ public class RegionMap {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			if (clipedOnly)
-				World.getRegion(tile.getRegionId())
-						.forceGetRegionMapClipedOnly()
-						.removeMask(plane, tile.getX() - newRegionX,
-								tile.getY() - newRegionY, mask);
-			else
-				World.getRegion(tile.getRegionId())
-						.forceGetRegionMap()
-						.removeMask(plane, tile.getX() - newRegionX,
-								tile.getY() - newRegionY, mask);
+			if (clipedOnly) {
+				World.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			} else {
+				World.getRegion(tile.getRegionId()).forceGetRegionMap().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			}
 			return;
 		}
 		masks[plane][x][y] = masks[plane][x][y] & (~mask);
@@ -484,16 +481,11 @@ public class RegionMap {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			if (clipedOnly)
-				World.getRegion(tile.getRegionId())
-						.forceGetRegionMapClipedOnly()
-						.addMask(plane, tile.getX() - newRegionX,
-								tile.getY() - newRegionY, mask);
-			else
-				World.getRegion(tile.getRegionId())
-						.forceGetRegionMap()
-						.addMask(plane, tile.getX() - newRegionX,
-								tile.getY() - newRegionY, mask);
+			if (clipedOnly) {
+				World.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			} else {
+				World.getRegion(tile.getRegionId()).forceGetRegionMap().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			}
 			return;
 		}
 		masks[plane][x][y] = masks[plane][x][y] | mask;

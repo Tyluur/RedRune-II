@@ -1,8 +1,11 @@
 package com.rs.game.plugin;
 
+import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.inter.InterfacePlugin;
+import com.rs.game.plugin.type.InterfacePlugin;
+import com.rs.game.plugin.type.NPCPlugin;
 import com.rs.utility.Misc;
+import com.rs.utility.game.ClickOption;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +24,12 @@ public class PluginRepository {
 	private static final Map<Integer, List<InterfacePlugin>> INTERFACE_PLUGINS = new HashMap<>();
 	
 	/**
-	 * Regusters a plugin
+	 * The map of npc plugins
+	 */
+	private static final Map<Integer, Map<ClickOption, NPCPlugin>> NPC_PLUGINS = new HashMap<>();
+	
+	/**
+	 * Registers a plugin
 	 *
 	 * @param plugin
 	 * 		The plugin
@@ -42,11 +50,31 @@ public class PluginRepository {
 	}
 	
 	/**
+	 * Registers a plugin that is dependent on {@link ClickOption}s
+	 *
+	 * @param plugin
+	 * 		The plugin
+	 * @param key
+	 * 		The key of the plugin
+	 * @param options
+	 * 		The options to register for the plugin
+	 */
+	public static void registerOptionablePlugin(Plugin plugin, int key, ClickOption... options) {
+		if (plugin instanceof NPCPlugin) {
+			Map<ClickOption, NPCPlugin> pluginMap = new HashMap<>();
+			for (ClickOption option : options) {
+				pluginMap.put(option, (NPCPlugin) plugin);
+			}
+			NPC_PLUGINS.put(key, pluginMap);
+		}
+	}
+	
+	/**
 	 * Registers all the plugins
 	 */
 	public static void registerAll() {
 		Misc.getClasses("plugin").stream().filter(Plugin.class::isInstance).forEach(clazz -> ((Plugin) clazz).register());
-		System.out.println("Registered " + INTERFACE_PLUGINS.size() + " interface plugins,");
+		System.out.println("Registered " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins,");
 	}
 	
 	/**
@@ -77,6 +105,29 @@ public class PluginRepository {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Handles the npc interaction with the right plugin
+	 *
+	 * @param player
+	 * 		The player
+	 * @param npc
+	 * 		The npc
+	 * @param option
+	 * 		The option clicked
+	 */
+	public static boolean handleNPC(Player player, NPC npc, ClickOption option) {
+		Map<ClickOption, NPCPlugin> pluginMap = NPC_PLUGINS.get(npc.getId());
+		if (pluginMap == null) {
+			return false;
+		}
+		NPCPlugin plugin = pluginMap.get(option);
+		if (plugin == null) {
+			return false;
+		}
+		plugin.handle(player, npc, option);
+		return true;
 	}
 	
 }

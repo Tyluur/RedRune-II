@@ -4,7 +4,6 @@ import com.rs.cores.WorldThread;
 import com.rs.game.GameFlags;
 import com.rs.game.content.Magic;
 import com.rs.game.content.SkillCapeCustomizer;
-import com.rs.game.content.controler.impl.activity.Barrows;
 import com.rs.game.content.node.item.*;
 import com.rs.game.content.node.item.Burying.Bone;
 import com.rs.game.content.skills.crafting.GemCutting;
@@ -24,10 +23,9 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
-import com.rs.game.entity.actor.npc.impl.others.Pets;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Equipment;
-import com.rs.game.entity.actor.player.data.Inventory;
+import com.rs.game.entity.actor.player.data.PlayerEquipment;
+import com.rs.game.entity.actor.player.data.PlayerInventory;
 import com.rs.game.entity.actor.player.data.RouteEvent;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemOnItemHandler;
@@ -37,61 +35,12 @@ import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.EquipmentConstants;
 import com.rs.utility.game.item.ItemExamines;
 
 import java.util.List;
 
-//import com.rs.game.entity.actor.player.content.GodSwords;
-//import com.rs.game.entity.actor.player.dialogues.OzanD;
-
 public class InventoryOptionsHandler {
-	
-	public static void handleItemOption2(final Player player, final int slotId, final int itemId, Item item) {
-		if (Firemaking.isFiremaking(player, itemId)) {
-			return;
-		}
-		if (itemId >= 5509 && itemId <= 5514) {
-			int pouch = -1;
-			if (itemId == 5509) {
-				pouch = 0;
-			}
-			if (itemId == 5510) {
-				pouch = 1;
-			}
-			if (itemId == 5512) {
-				pouch = 2;
-			}
-			if (itemId == 5514) {
-				pouch = 3;
-			}
-			Runecrafting.emptyPouch(player, pouch);
-			player.stopAll(false);
-		} else {
-			if (player.isEquipDisabled()) {
-				return;
-			}
-			long passedTime = Misc.currentTimeMillis() - WorldThread.LAST_CYCLE_CTM;
-			WorldTasksManager.schedule(new WorldTask() {
-				
-				@Override
-				public void run() {
-					List<Integer> slots = player.getSwitchItemCache();
-					int[] slot = new int[slots.size()];
-					for (int i = 0; i < slot.length; i++) {
-						slot[i] = slots.get(i);
-					}
-					player.getSwitchItemCache().clear();
-					ButtonHandler.sendWear(player, slot);
-					player.stopAll(false);
-				}
-				
-			}, passedTime >= 600 ? 0 : passedTime > 400 ? 1 : 0);
-			if (player.getSwitchItemCache().contains(slotId)) {
-				return;
-			}
-			player.getSwitchItemCache().add(slotId);
-		}
-	}
 	
 	public static void handleItemOption1(Player player, final int slotId, final int itemId, Item item) {
 		long time = Misc.currentTimeMillis();
@@ -159,7 +108,7 @@ public class InventoryOptionsHandler {
 			return;
 		}
 		
-		if (!player.getControlerManager().handleItemOption1(player, slotId, itemId, item)) {
+		if (!player.getControllerManager().handleItemOption1(player, slotId, itemId, item)) {
 			return;
 		}
 		if (Pots.pot(player, item, slotId)) {
@@ -180,16 +129,6 @@ public class InventoryOptionsHandler {
 				pouch = 3;
 			}
 			Runecrafting.fillPouch(player, pouch);
-			return;
-		}
-		if (itemId == 952) {// spade
-			player.resetWalkSteps();
-			if (Barrows.digToBrother(player)) {
-				player.getControlerManager().startControler("Barrows");
-				return;
-			}
-			player.setNextAnimation(new Animation(830));
-			player.getPackets().sendGameMessage("You find nothing.");
 			return;
 		}
 		if (HerbCleaning.clean(player, item, slotId)) {
@@ -219,9 +158,53 @@ public class InventoryOptionsHandler {
 		}
 	}
 	
-	/*
-	 * returns the other
-	 */
+	public static void handleItemOption2(final Player player, final int slotId, final int itemId, Item item) {
+		if (Firemaking.isFiremaking(player, itemId)) {
+			return;
+		}
+		if (itemId >= 5509 && itemId <= 5514) {
+			int pouch = -1;
+			if (itemId == 5509) {
+				pouch = 0;
+			}
+			if (itemId == 5510) {
+				pouch = 1;
+			}
+			if (itemId == 5512) {
+				pouch = 2;
+			}
+			if (itemId == 5514) {
+				pouch = 3;
+			}
+			Runecrafting.emptyPouch(player, pouch);
+			player.stopAll(false);
+		} else {
+			if (player.isEquipDisabled()) {
+				return;
+			}
+			long passedTime = Misc.currentTimeMillis() - WorldThread.LAST_CYCLE_CTM;
+			WorldTasksManager.schedule(new WorldTask() {
+				
+				@Override
+				public void run() {
+					List<Integer> slots = player.getSwitchItemCache();
+					int[] slot = new int[slots.size()];
+					for (int i = 0; i < slot.length; i++) {
+						slot[i] = slots.get(i);
+					}
+					player.getSwitchItemCache().clear();
+					PlayerEquipment.equipMultipleSlots(player, slot);
+					player.stopAll(false);
+				}
+				
+			}, passedTime >= 600 ? 0 : passedTime > 400 ? 1 : 0);
+			if (player.getSwitchItemCache().contains(slotId)) {
+				return;
+			}
+			player.getSwitchItemCache().add(slotId);
+		}
+	}
+	
 	public static Item contains(int id1, Item item1, Item item2) {
 		if (item1.getId() == id1) {
 			return item2;
@@ -232,19 +215,6 @@ public class InventoryOptionsHandler {
 		return null;
 	}
 	
-	public static boolean contains(int id1, int id2, Item... items) {
-		boolean containsId1 = false;
-		boolean containsId2 = false;
-		for (Item item : items) {
-			if (item.getId() == id1) {
-				containsId1 = true;
-			} else if (item.getId() == id2) {
-				containsId2 = true;
-			}
-		}
-		return containsId1 && containsId2;
-	}
-	
 	public static void handleItemOnItem(final Player player, InputStream stream) {
 		int interfaceId = stream.readIntV1() >> 16;
 		int itemUsedId = stream.readUnsignedShort128();
@@ -252,7 +222,7 @@ public class InventoryOptionsHandler {
 		int interfaceId2 = stream.readIntV2() >> 16;
 		int itemUsedWithId = stream.readUnsignedShort128();
 		int toSlot = stream.readUnsignedShortLE();
-		if ((interfaceId2 == 747 || interfaceId2 == 662) && interfaceId == Inventory.INVENTORY_INTERFACE) {
+		if ((interfaceId2 == 747 || interfaceId2 == 662) && interfaceId == PlayerInventory.INVENTORY_INTERFACE) {
 			if (player.getFamiliar() != null) {
 				player.getFamiliar().setSpecial(true);
 				if (player.getFamiliar().getSpecialAttack() == SpecialAttack.ITEM) {
@@ -264,7 +234,7 @@ public class InventoryOptionsHandler {
 			return;
 		}
 		
-		if (interfaceId == Inventory.INVENTORY_INTERFACE && interfaceId == interfaceId2 && !player.getInterfaceManager().containsInventoryInter()) {
+		if (interfaceId == PlayerInventory.INVENTORY_INTERFACE && interfaceId == interfaceId2 && !player.getInterfaceManager().containsInventoryInter()) {
 			if (toSlot >= 28 || fromSlot >= 28) {
 				return;
 			}
@@ -274,7 +244,7 @@ public class InventoryOptionsHandler {
 				return;
 			}
 			player.stopAll();
-			if (!player.getControlerManager().canUseItemOnItem(itemUsed, usedWith)) {
+			if (!player.getControllerManager().canUseItemOnItem(itemUsed, usedWith)) {
 				return;
 			}
 			Fletch fletch = Fletching.isFletching(usedWith, itemUsed);
@@ -402,6 +372,19 @@ public class InventoryOptionsHandler {
 		}
 	}
 	
+	public static boolean contains(int id1, int id2, Item... items) {
+		boolean containsId1 = false;
+		boolean containsId2 = false;
+		for (Item item : items) {
+			if (item.getId() == id1) {
+				containsId1 = true;
+			} else if (item.getId() == id2) {
+				containsId2 = true;
+			}
+		}
+		return containsId1 && containsId2;
+	}
+	
 	public static void handleItemOption3(Player player, int slotId, int itemId, Item item) {
 		long time = Misc.currentTimeMillis();
 		if (player.getLockDelay() >= time || player.getEmotesManager().getNextEmoteEnd() >= time) {
@@ -428,7 +411,7 @@ public class InventoryOptionsHandler {
 		
 		if (itemId == 20767 || itemId == 20769 || itemId == 20771) {
 			SkillCapeCustomizer.startCustomizing(player, itemId);
-		} else if (Equipment.getItemSlot(itemId) == Equipment.SLOT_AURA) {
+		} else if (EquipmentConstants.getItemSlot(itemId) == EquipmentConstants.SLOT_AURA) {
 			player.getAuraManager().sendTimeRemaining(itemId);
 		}
 		System.out.println("Option 3?????????");
@@ -489,51 +472,13 @@ public class InventoryOptionsHandler {
 		if (player.getCharges().degradeCompletly(item)) {
 			return;
 		}
-		/**
-		 * Pets
-		 */
-		if (IsPet(itemId)) {
-			for (int i = 0; i < itempets.length; i++) {
-				if (itemId == itempets[i]) {
-					if (player.getPet() != null) {
-						player.sendMessage("You already have a pet spawned, please dissmis it to spawn another.");
-						return;
-					}
-					player.setPetId(itempets[i]);
-					new Pets(npcpets[i], player, new WorldTile(player.getX() + 1, player.getY() + 1, player.getPlane()), 0, false);
-					player.getInventory().deleteItem(slotId, item);
-				}
-			}
-		} else {
-			player.getInventory().deleteItem(slotId, item);
-			World.addGroundItem(item, new WorldTile(player), player, false, 180, true);
-			player.getPackets().sendSound(2739, 0, 1);
-		}
+		player.getInventory().deleteItem(slotId, item);
+		World.addGroundItem(item, new WorldTile(player), player, false, 180, true);
+		player.getPackets().sendSound(2739, 0, 1);
 	}
 	
 	public static void handleItemOption8(Player player, int slotId, int itemId, Item item) {
 		player.getPackets().sendGameMessage(ItemExamines.getExamine(item));
-	}
-	
-	public static int[] itempets = { 22973, 12196, 21512, 22992, 22993, 22994, 22995, 12469, 12470, 12471, 12472, 12473, 12474, 12475, 12476, 12481, 12482, 12484, 12485, 12487, 12488, 12489, 12490, 12492, 12493, 12496, 12497, 12498, 12499, 12500, 12501, 12502, 12503, 12505, 12506, 12507, 12508, 12509, 12510, 12511, 12512, 12513, 12514, 12515, 12516, 12517, 12518, 12519, 12520, 12521, 12523, 14627, 14626, 7581, 7582, 7583, 7584, 7585 };
-	
-	public static int[] npcpets = { 2267, 6969, 3604, 14832, 14768, 14769, 14770, 6900, 6901, 6902, 6903, 6904, 6905, 6906, 6907, 6908, 6909, 6911, 6912, 6914, 6915, 6916, 6919, 6920, 6923, 6942, 6943, 6945, 6946, 6947, 6948, 6949, 6950, 6951, 6952, 6953, 6954, 6955, 6956, 6957, 6958, 6959, 6960, 6961, 6962, 6963, 6964, 6965, 6966, 6967, 6968, 8550, 8551, 3503, 3504, 3505, 3506, 3507 };
-	
-	//	public void setTutorialStage(int tutorialstage) {
-	//		LumbiTutorial.tutorialstage = tutorialstage;
-	//	}
-	//	public int getTutorialStage() {
-	//		return LumbiTutorial.tutorialstage;
-	//	}
-	public static boolean IsPet(int j) {
-		for (int i : itempets) {
-			if (i != j) {
-				continue;
-			}
-			return true;
-			
-		}
-		return false;
 	}
 	
 	public static void handleItemOnPlayer(final Player player, final Player usedOn, final int itemId) {

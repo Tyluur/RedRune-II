@@ -4,15 +4,15 @@
  */
 package com.rs.game.entity.actor.npc.combat.impl;
 
-import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.Actor;
-import com.rs.game.world.World;
+import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.CombatScript;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
+import com.rs.game.world.World;
+import com.rs.utility.constants.NPCConstants;
 
 /**
- * 
  * @author Owner
  */
 public class LivingRockStrikerCombat extends CombatScript {
@@ -28,26 +28,12 @@ public class LivingRockStrikerCombat extends CombatScript {
 		if (npc.withinDistance(target, 10)) { // range magical attack
 			npc.setNextAnimation(new Animation(1296));
 			for (Actor t : npc.getPossibleTargets()) {
-				delayHit(
-						npc,
-						1,
-						t,
-						getRangeHit(
-								npc,
-								getRandomMaxHit(npc, 140,
-										NPCCombatDefinitions.RANGE, t)));
+				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 140, NPCConstants.RANGE, t)));
 				World.sendProjectile(npc, t, 1197, 41, 16, 41, 35, 16, 0);
 			}
 		} else { // melee attack
-			npc.setNextAnimation(new Animation(defs.getAttackEmote()));
-			delayHit(
-					npc,
-					0,
-					target,
-					getMeleeHit(
-							npc,
-							getRandomMaxHit(npc, defs.getMaxHit(),
-									NPCCombatDefinitions.MELEE, target)));
+			npc.setNextAnimation(new Animation(defs.getAttackAnim()));
+			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
 		}
 		return defs.getAttackDelay();
 	}

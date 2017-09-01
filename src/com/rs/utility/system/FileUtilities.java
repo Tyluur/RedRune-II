@@ -18,8 +18,9 @@ public class FileUtilities {
 
 	public static ByteBuffer fileBuffer(String name) throws IOException {
 		File file = new File(name);
-		if (!file.exists())
+		if (!file.exists()) {
 			return null;
+		}
 		FileInputStream in = new FileInputStream(name);
 
 		byte[] data = new byte[BUFFER];
@@ -32,25 +33,25 @@ public class FileUtilities {
 			buffer.flip();
 			return buffer;
 		} finally {
-			if (in != null)
+			if (in != null) {
 				in.close();
+			}
 			in = null;
 		}
 	}
 
-	public static void writeBufferToFile(String name, ByteBuffer buffer)
-			throws IOException {
+	public static void writeBufferToFile(String name, ByteBuffer buffer) throws IOException {
 		File file = new File(name);
-		if (!file.exists())
+		if (!file.exists()) {
 			file.createNewFile();
+		}
 		FileOutputStream out = new FileOutputStream(name);
 		out.write(buffer.array(), 0, buffer.remaining());
 		out.flush();
 		out.close();
 	}
 
-	public static LinkedList<String> readFile(String directory)
-			throws IOException {
+	public static LinkedList<String> readFile(String directory) throws IOException {
 		LinkedList<String> fileLines = new LinkedList<String>();
 		BufferedReader reader = null;
 		try {

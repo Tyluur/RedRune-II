@@ -1,0 +1,116 @@
+{
+  "combatDefinitions": {
+    "6250": {
+      "hitpoints": 1460,
+      "attackAnim": 7019,
+      "defenceAnim": 7017,
+      "deathAnim": 7016,
+      "attackDelay": 6,
+      "deathDelay": 2,
+      "respawnDelay": 150,
+      "maxHit": 160,
+      "attackStyle": 2,
+      "attackGfx": 1184,
+      "attackProjectile": 1227,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {
+    "6250": [
+      0,
+      0,
+      0,
+      100,
+      0,
+      300,
+      300,
+      300,
+      20,
+      300
+    ]
+  },
+  "drops": {
+    "6250": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 618,
+        "minAmount": 1,
+        "maxAmount": 500,
+        "rate": 96.0,
+        "rare": false
+      },
+      {
+        "itemId": 808,
+        "minAmount": 97,
+        "maxAmount": 500,
+        "rate": 74.0,
+        "rare": false
+      },
+      {
+        "itemId": 886,
+        "minAmount": 95,
+        "maxAmount": 500,
+        "rate": 60.0,
+        "rare": false
+      },
+      {
+        "itemId": 231,
+        "minAmount": 4,
+        "maxAmount": 4,
+        "rate": 61.0,
+        "rare": false
+      },
+      {
+        "itemId": 207,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 71.0,
+        "rare": false
+      },
+      {
+        "itemId": 7218,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 70.0,
+        "rare": false
+      },
+      {
+        "itemId": 11710,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 48.0,
+        "rare": false
+      },
+      {
+        "itemId": 11712,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 39.0,
+        "rare": false
+      },
+      {
+        "itemId": 11714,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 39.0,
+        "rare": false
+      },
+      {
+        "itemId": 11730,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 4.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "6250": "Defender of the faithful."
+  }
+}

@@ -2,8 +2,8 @@ package com.rs.game.entity.actor.player.link;
 
 import com.rs.cache.loaders.ClientScriptMap;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.world.region.Region;
 import com.rs.game.world.World;
+import com.rs.game.world.region.Region;
 import com.rs.utility.Misc;
 
 import java.io.Serializable;
@@ -17,6 +17,10 @@ public final class MusicsManager implements Serializable {
 	
 	private static final int[] PLAY_LIST_CONFIG_IDS = new int[] { 1621, 1622, 1623, 1624, 1625, 1626 };
 	
+	private ArrayList<Integer> unlockedMusics;
+	
+	private ArrayList<Integer> playList;
+	
 	private transient Player player;
 	
 	private transient int playingMusic;
@@ -24,10 +28,6 @@ public final class MusicsManager implements Serializable {
 	private transient long playingMusicDelay;
 	
 	private transient boolean settedMusic;
-	
-	private ArrayList<Integer> unlockedMusics;
-	
-	private ArrayList<Integer> playList;
 	
 	private transient boolean playListOn;
 	
@@ -79,15 +79,29 @@ public final class MusicsManager implements Serializable {
 		shuffleOn = !shuffleOn;
 	}
 	
-	public void switchPlayListOn() {
-		if (playListOn) {
-			playListOn = false;
-			shuffleOn = false;
-			refreshPlayListConfigs();
-		} else {
-			playListOn = true;
-			nextPlayListMusic = 0;
-			replayMusic();
+	public void refreshPlayListConfigs() {
+		int[] configValues = new int[PLAY_LIST_CONFIG_IDS.length];
+		for (int i = 0; i < configValues.length; i++) {
+			configValues[i] = -1;
+		}
+		for (int i = 0; i < playList.size(); i += 2) {
+			Integer musicId1 = playList.get(i);
+			Integer musicId2 = (i + 1) >= playList.size() ? null : playList.get(i + 1);
+			if (musicId1 == null && musicId2 == null) {
+				break;
+			}
+			int musicIndex = (int) ClientScriptMap.getMap(1351).getKeyForValue(musicId1);
+			int configValue;
+			if (musicId2 != null) {
+				int musicIndex2 = (int) ClientScriptMap.getMap(1351).getKeyForValue(musicId2);
+				configValue = musicIndex | musicIndex2 << 15;
+			} else {
+				configValue = musicIndex | -1 << 15;
+			}
+			configValues[i / 2] = configValue;
+		}
+		for (int i = 0; i < PLAY_LIST_CONFIG_IDS.length; i++) {
+			player.getPackets().sendConfig(PLAY_LIST_CONFIG_IDS[i], configValues[i]);
 		}
 	}
 	
@@ -118,91 +132,16 @@ public final class MusicsManager implements Serializable {
 		}
 	}
 	
-	public void removeFromPlayList(int musicIndex) {
-		Integer musicId = ClientScriptMap.getMap(1351).getIntValue(musicIndex);
-		if (musicId != -1 && unlockedMusics.contains(musicId) && playList.contains(musicId)) {
-			playList.remove(musicId);
-			if (playListOn) {
-				switchPlayListOn();
-			} else {
-				refreshPlayListConfigs();
-			}
+	public void switchPlayListOn() {
+		if (playListOn) {
+			playListOn = false;
+			shuffleOn = false;
+			refreshPlayListConfigs();
+		} else {
+			playListOn = true;
+			nextPlayListMusic = 0;
+			replayMusic();
 		}
-	}
-	
-	public void refreshPlayListConfigs() {
-		int[] configValues = new int[PLAY_LIST_CONFIG_IDS.length];
-		for (int i = 0; i < configValues.length; i++) {
-			configValues[i] = -1;
-		}
-		for (int i = 0; i < playList.size(); i += 2) {
-			Integer musicId1 = playList.get(i);
-			Integer musicId2 = (i + 1) >= playList.size() ? null : playList.get(i + 1);
-			if (musicId1 == null && musicId2 == null) {
-				break;
-			}
-			int musicIndex = (int) ClientScriptMap.getMap(1351).getKeyForValue(musicId1);
-			int configValue;
-			if (musicId2 != null) {
-				int musicIndex2 = (int) ClientScriptMap.getMap(1351).getKeyForValue(musicId2);
-				configValue = musicIndex | musicIndex2 << 15;
-			} else {
-				configValue = musicIndex | -1 << 15;
-			}
-			configValues[i / 2] = configValue;
-		}
-		for (int i = 0; i < PLAY_LIST_CONFIG_IDS.length; i++) {
-			player.getPackets().sendConfig(PLAY_LIST_CONFIG_IDS[i], configValues[i]);
-		}
-	}
-	
-	public void refreshListConfigs() {
-		int[] configValues = new int[CONFIG_IDS.length];
-		for (int musicId : unlockedMusics) {
-			int musicIndex = (int) ClientScriptMap.getMap(1351).getKeyForValue(musicId);
-			if (musicIndex == -1) {
-				continue;
-			}
-			int index = getConfigIndex(musicIndex);
-			if (index >= CONFIG_IDS.length) {
-				continue;
-			}
-			configValues[index] |= 1 << (musicIndex - (index * 32));
-		}
-		for (int i = 0; i < CONFIG_IDS.length; i++) {
-			if (configValues[i] != 0) {
-				player.getPackets().sendConfig(CONFIG_IDS[i], configValues[i]);
-			}
-		}
-	}
-	
-	public void addMusic(int musicId) {
-		unlockedMusics.add(musicId);
-		refreshListConfigs();
-		if (unlockedMusics.size() >= 70) {
-			player.getEmotesManager().unlockEmote(41);
-		}
-	}
-	
-	public int getConfigIndex(int musicId) {
-		return (musicId + 1) / 32;
-	}
-	
-	public void unlockMusicPlayer() {
-		player.getPackets().sendUnlockIComponentOptionSlots(187, 1, 0, ClientScriptMap.getMap(1351).getSize() * 2, 0, 2, 3);
-	}
-	
-	public void init() {
-		// unlock music inter all options
-		if (playingMusic >= 0) {
-			playMusic(playingMusic);
-		}
-		refreshListConfigs();
-		refreshPlayListConfigs();
-	}
-	
-	public boolean musicEnded() {
-		return playingMusic != -2 && playingMusicDelay + (180000) < Misc.currentTimeMillis();
 	}
 	
 	public void replayMusic() {
@@ -220,38 +159,6 @@ public final class MusicsManager implements Serializable {
 			playingMusic = unlockedMusics.get(Misc.getRandom(unlockedMusics.size() - 1));
 		}
 		playMusic(playingMusic);
-	}
-	
-	public void checkMusic(int requestMusicId) {
-		if (playListOn || settedMusic && playingMusicDelay + (180000) >= Misc.currentTimeMillis()) {
-			return;
-		}
-		settedMusic = false;
-		if (playingMusic != requestMusicId) {
-			playMusic(requestMusicId);
-		}
-	}
-	
-	public void forcePlayMusic(int musicId) {
-		settedMusic = true;
-		playMusic(musicId);
-	}
-	
-	public void reset() {
-		settedMusic = false;
-		player.getMusicsManager().checkMusic(World.getRegion(player.getRegionId()).getMusicId());
-	}
-	
-	public void playAnotherMusic(int musicIndex) {
-		int musicId = ClientScriptMap.getMap(1351).getIntValue(musicIndex);
-		if (musicId != -1 && unlockedMusics.contains(musicId)) {
-			settedMusic = true;
-			if (playListOn) {
-				switchPlayListOn();
-			}
-			playMusic(musicId);
-		}
-		
 	}
 	
 	public void playMusic(int musicId) {
@@ -281,6 +188,99 @@ public final class MusicsManager implements Serializable {
 				}
 			}
 		}
+	}
+	
+	public void addMusic(int musicId) {
+		unlockedMusics.add(musicId);
+		refreshListConfigs();
+		if (unlockedMusics.size() >= 70) {
+			player.getEmotesManager().unlockEmote(41);
+		}
+	}
+	
+	public void refreshListConfigs() {
+		int[] configValues = new int[CONFIG_IDS.length];
+		for (int musicId : unlockedMusics) {
+			int musicIndex = (int) ClientScriptMap.getMap(1351).getKeyForValue(musicId);
+			if (musicIndex == -1) {
+				continue;
+			}
+			int index = getConfigIndex(musicIndex);
+			if (index >= CONFIG_IDS.length) {
+				continue;
+			}
+			configValues[index] |= 1 << (musicIndex - (index * 32));
+		}
+		for (int i = 0; i < CONFIG_IDS.length; i++) {
+			if (configValues[i] != 0) {
+				player.getPackets().sendConfig(CONFIG_IDS[i], configValues[i]);
+			}
+		}
+	}
+	
+	public int getConfigIndex(int musicId) {
+		return (musicId + 1) / 32;
+	}
+	
+	public void removeFromPlayList(int musicIndex) {
+		Integer musicId = ClientScriptMap.getMap(1351).getIntValue(musicIndex);
+		if (musicId != -1 && unlockedMusics.contains(musicId) && playList.contains(musicId)) {
+			playList.remove(musicId);
+			if (playListOn) {
+				switchPlayListOn();
+			} else {
+				refreshPlayListConfigs();
+			}
+		}
+	}
+	
+	public void unlockMusicPlayer() {
+		player.getPackets().sendUnlockIComponentOptionSlots(187, 1, 0, ClientScriptMap.getMap(1351).getSize() * 2, 0, 2, 3);
+	}
+	
+	public void init() {
+		// unlock music inter all options
+		if (playingMusic >= 0) {
+			playMusic(playingMusic);
+		}
+		refreshListConfigs();
+		refreshPlayListConfigs();
+	}
+	
+	public boolean musicEnded() {
+		return playingMusic != -2 && playingMusicDelay + (180000) < Misc.currentTimeMillis();
+	}
+	
+	public void forcePlayMusic(int musicId) {
+		settedMusic = true;
+		playMusic(musicId);
+	}
+	
+	public void reset() {
+		settedMusic = false;
+		player.getMusicsManager().checkMusic(World.getRegion(player.getRegionId()).getMusicId());
+	}
+	
+	public void checkMusic(int requestMusicId) {
+		if (playListOn || settedMusic && playingMusicDelay + (180000) >= Misc.currentTimeMillis()) {
+			return;
+		}
+		settedMusic = false;
+		if (playingMusic != requestMusicId) {
+			playMusic(requestMusicId);
+		}
+	}
+	
+	public void playAnotherMusic(int musicIndex) {
+		int musicId = ClientScriptMap.getMap(1351).getIntValue(musicIndex);
+		if (musicId != -1 && unlockedMusics.contains(musicId)) {
+			settedMusic = true;
+			if (playListOn) {
+				switchPlayListOn();
+			}
+			playMusic(musicId);
+		}
+		
 	}
 	
 }

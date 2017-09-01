@@ -1,0 +1,490 @@
+{
+  "combatDefinitions": {
+    "41": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1017": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1401": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "1402": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "14217": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "14218": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "14219": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "2313": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "2314": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    },
+    "2315": {
+      "hitpoints": 30,
+      "attackAnim": 5387,
+      "defenceAnim": 5388,
+      "deathAnim": 5389,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 15,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "41": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 75.0,
+        "rare": false
+      }
+    ],
+    "288": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 78.0,
+        "rare": false
+      }
+    ],
+    "951": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 97.0,
+        "rare": false
+      }
+    ],
+    "1017": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 91.0,
+        "rare": false
+      }
+    ],
+    "1401": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 88.0,
+        "rare": false
+      }
+    ],
+    "1402": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 79.0,
+        "rare": false
+      }
+    ],
+    "2313": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 75.0,
+        "rare": false
+      }
+    ],
+    "2314": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 96.0,
+        "rare": false
+      }
+    ],
+    "2315": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 99.0,
+        "rare": false
+      }
+    ],
+    "11256": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 85.0,
+        "rare": false
+      }
+    ],
+    "11257": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2138,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 5,
+        "maxAmount": 15,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 1944,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 78.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "41": "Yep. Definitely a chicken.",
+    "288": "Yep. Definitely a chicken.",
+    "951": "Yep. Definitely a chicken.",
+    "1017": "Yep. Definitely a chicken.",
+    "1401": "Yep. Definitely a chicken.",
+    "1402": "Yep. Definitely a chicken.",
+    "2313": "Yep. Definitely a chicken.",
+    "2314": "Yep. Definitely a chicken.",
+    "2315": "Yep. Definitely a chicken.",
+    "11256": "Yep. Definitely a chicken.",
+    "11257": "Yep. Definitely a chicken."
+  }
+}

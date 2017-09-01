@@ -3,10 +3,10 @@ package com.rs.game.entity.actor.player.link;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Equipment;
-import com.rs.game.world.World;
 import com.rs.game.entity.item.Item;
+import com.rs.game.world.World;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.EquipmentConstants;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -16,12 +16,12 @@ public class AuraManager implements Serializable {
 	
 	private static final long serialVersionUID = -8860530757819448608L;
 	
-	@Setter
-	private transient Player player;
-	
 	private long activation;
 	
 	private HashMap<Integer, Long> cooldowns;
+	
+	@Setter
+	private transient Player player;
 	
 	public AuraManager() {
 		cooldowns = new HashMap<>();
@@ -32,13 +32,11 @@ public class AuraManager implements Serializable {
 			return;
 		}
 		desactive();
-		player.getAppearence().generateAppearenceData();
+		player.getAppearance().generateAppearanceData();
 	}
 	
-	public void removeAura() {
-		if (isActivated()) {
-			desactive();
-		}
+	public boolean isActivated() {
+		return activation != 0;
 	}
 	
 	public void desactive() {
@@ -46,12 +44,10 @@ public class AuraManager implements Serializable {
 		player.getPackets().sendGameMessage("Your aura has depleted.");
 	}
 	
-	public long getCoolDown(int aura) {
-		Long coolDown = cooldowns.get(aura);
-		if (coolDown == null) {
-			return 0;
+	public void removeAura() {
+		if (isActivated()) {
+			desactive();
 		}
-		return coolDown;
 	}
 	
 	public void activate() {
@@ -77,7 +73,99 @@ public class AuraManager implements Serializable {
 		cooldowns.put(aura, activation + getCooldown(aura) * 1000);
 		player.setNextAnimation(new Animation(2231));
 		player.setNextGraphics(new Graphics(getActiveGraphic(getTier(aura))));
-		player.getAppearence().generateAppearenceData();
+		player.getAppearance().generateAppearanceData();
+	}
+	
+	public long getCoolDown(int aura) {
+		Long coolDown = cooldowns.get(aura);
+		if (coolDown == null) {
+			return 0;
+		}
+		return coolDown;
+	}
+	
+	/*
+	 * return seconds
+	 */
+	public static int getActivationTime(int aura) {
+		switch (aura) {
+			case 20958:
+				return 600; // 10minutes
+			case 22268:
+				return 1200; // 20minutes
+			case 22302:
+				return 1800; // 30minutes
+			case 22294:
+				return 7200; // 2hours
+			case 20959:
+				return 10800; // 3hours
+			default:
+				return 3600; // default 1hour
+		}
+	}
+	
+	public static int getCooldown(int aura) {
+		switch (aura) {
+			case 20962:
+			case 22270:
+			case 20967:
+			case 22272:
+			case 22280:
+			case 22282:
+			case 22284:
+			case 22286:
+			case 20966:
+			case 22274:
+			case 20965:
+			case 22276:
+			case 22288:
+			case 22290:
+			case 22292:
+			case 22296:
+			case 22298:
+			case 22300:
+				return 10800; // 3hours
+			case 22294:
+				return 14400; // 4hours
+			case 20959:
+			case 22302:
+				return 86400; // 24hours
+			default:
+				return 3600; // default 1hour
+		}
+	}
+	
+	public int getActiveGraphic(int tier) {
+		if (tier == 2) {
+			return 1764;
+		}
+		if (tier == 3) {
+			return 1763;
+		}
+		return 370; // default gold
+	}
+	
+	public static int getTier(int aura) {
+		switch (aura) {
+			case 22302:
+				return 3;
+			case 20959:
+			case 22270:
+			case 22272:
+			case 22282:
+			case 22286:
+			case 22274:
+			case 22276:
+			case 22290:
+			case 22292:
+			case 22294:
+			case 22296:
+			case 22298:
+			case 22300:
+				return 2;
+			default:
+				return 1; // default 1
+		}
 	}
 	
 	public void sendAuraRemainingTime() {
@@ -112,12 +200,8 @@ public class AuraManager implements Serializable {
 		player.getPackets().sendGameMessage("Currently recharging. <col=ff0000>" + getFormatedTime((cooldown - Misc.currentTimeMillis()) / 1000) + " remaining.");
 	}
 	
-	public boolean isActivated() {
-		return activation != 0;
-	}
-	
 	public int getAuraModelId() {
-		Item weapon = player.getEquipment().getItem(Equipment.SLOT_WEAPON);
+		Item weapon = player.getEquipment().getItem(EquipmentConstants.SLOT_WEAPON);
 		if (weapon == null) {
 			return 8719;
 		}
@@ -135,16 +219,6 @@ public class AuraManager implements Serializable {
 			return 8722;
 		}
 		return 8719;
-	}
-	
-	public int getActiveGraphic(int tier) {
-		if (tier == 2) {
-			return 1764;
-		}
-		if (tier == 3) {
-			return 1763;
-		}
-		return 370; // default gold
 	}
 	
 	public boolean hasPoisonPurge() {
@@ -292,13 +366,6 @@ public class AuraManager implements Serializable {
 		}
 	}
 	
-	public void useVampyrism(int damage) {
-		int heal = (int) (damage * 0.05);
-		if (heal > 0) {
-			player.heal(heal);
-		}
-	}
-	
 	public void useInspiration() {
 		Integer atts = (Integer) player.getTemporaryAttributtes().get("InspirationAura");
 		if (atts == null) {
@@ -312,85 +379,18 @@ public class AuraManager implements Serializable {
 		player.getTemporaryAttributtes().put("InspirationAura", atts);
 	}
 	
+	public void useVampyrism(int damage) {
+		int heal = (int) (damage * 0.05);
+		if (heal > 0) {
+			player.heal(heal);
+		}
+	}
+	
 	public boolean usingWisdom() {
 		if (!isActivated()) {
 			return false;
 		}
 		int aura = player.getEquipment().getAuraId();
 		return aura == 22302;
-	}
-	
-	/*
-	 * return seconds
-	 */
-	public static int getActivationTime(int aura) {
-		switch (aura) {
-			case 20958:
-				return 600; // 10minutes
-			case 22268:
-				return 1200; // 20minutes
-			case 22302:
-				return 1800; // 30minutes
-			case 22294:
-				return 7200; // 2hours
-			case 20959:
-				return 10800; // 3hours
-			default:
-				return 3600; // default 1hour
-		}
-	}
-	
-	public static int getCooldown(int aura) {
-		switch (aura) {
-			case 20962:
-			case 22270:
-			case 20967:
-			case 22272:
-			case 22280:
-			case 22282:
-			case 22284:
-			case 22286:
-			case 20966:
-			case 22274:
-			case 20965:
-			case 22276:
-			case 22288:
-			case 22290:
-			case 22292:
-			case 22296:
-			case 22298:
-			case 22300:
-				return 10800; // 3hours
-			case 22294:
-				return 14400; // 4hours
-			case 20959:
-			case 22302:
-				return 86400; // 24hours
-			default:
-				return 3600; // default 1hour
-		}
-	}
-	
-	public static int getTier(int aura) {
-		switch (aura) {
-			case 22302:
-				return 3;
-			case 20959:
-			case 22270:
-			case 22272:
-			case 22282:
-			case 22286:
-			case 22274:
-			case 22276:
-			case 22290:
-			case 22292:
-			case 22294:
-			case 22296:
-			case 22298:
-			case 22300:
-				return 2;
-			default:
-				return 1; // default 1
-		}
 	}
 }

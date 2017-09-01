@@ -1,0 +1,23 @@
+{
+  "combatDefinitions": {
+    "3064": {
+      "hitpoints": 1480,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 150,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "3064": "This demon is under <a href=\"/wiki/Eruni\" title=\"Eruni\">Eruni</a>'s influence."
+  }
+}

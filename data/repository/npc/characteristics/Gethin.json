@@ -1,0 +1,44 @@
+{
+  "combatDefinitions": {},
+  "combatBonuses": {},
+  "drops": {
+    "2357": [
+      {
+        "itemId": 2309,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 379,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 1993,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 1985,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      },
+      {
+        "itemId": 1891,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 50.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

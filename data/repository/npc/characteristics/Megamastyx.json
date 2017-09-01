@@ -1,0 +1,23 @@
+{
+  "combatDefinitions": {
+    "11094": {
+      "hitpoints": 610,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 22,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "11094": "A big, slow creature with tough leathery hide. (Tier 9)"
+  }
+}

@@ -13,8 +13,6 @@ public final class NPCDefinitions implements Cloneable {
 
 	private static final ConcurrentHashMap<Integer, NPCDefinitions> npcDefinitions = new ConcurrentHashMap<Integer, NPCDefinitions>();
 
-	private boolean loaded;
-
 	public int id;
 
 	public HashMap<Integer, Object> parameters;
@@ -127,29 +125,11 @@ public final class NPCDefinitions implements Cloneable {
 
 	public int unknownInt18;
 
-	public static final NPCDefinitions getNPCDefinitions(int id, Store store) {
-		NPCDefinitions def = npcDefinitions.get(id);
-		if (def == null) {
-			def = new NPCDefinitions(id);
-			def.method694();
-			byte[] data = store.getIndexes()[18].getFile(id >>> 134238215, id & 0x7f);
-			if (data == null) {
-				// System.out.println("Failed loading NPC " + id + ".");
-			} else {
-				def.readValueLoop(new InputStream(data));
-			}
-			npcDefinitions.put(id, def);
-		}
-		return def;
-	}
+	public boolean unknownBoolean7;
 
-	public static NPCDefinitions getNPCDefinition(Store cache, int npcId) {
-		return getNPCDefinition(cache, npcId, true);
-	}
+	public int[] unknownArray5;
 
-	public static NPCDefinitions getNPCDefinition(Store cache, int npcId, boolean load) {
-		return new NPCDefinitions(cache, npcId, load);
-	}
+	private boolean loaded;
 
 	public NPCDefinitions(Store cache, int id, boolean load) {
 		this.id = id;
@@ -158,19 +138,6 @@ public final class NPCDefinitions implements Cloneable {
 		if (load) {
 			loadNPCDefinition(cache);
 		}
-	}
-
-	public Object clone() {
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private void setDefaultOptions() {
-		options = new String[] { "Talk-to", null, null, null, null };
 	}
 
 	private void setDefaultVariableValues() {
@@ -216,6 +183,10 @@ public final class NPCDefinitions implements Cloneable {
 		unknownInt18 = -1;
 	}
 
+	private void setDefaultOptions() {
+		options = new String[] { "Talk-to", null, null, null, null };
+	}
+
 	private void loadNPCDefinition(Store cache) {
 		byte[] data = cache.getIndexes()[Constants.NPC_DEFINITIONS_INDEX].getFile(getArchiveId(), getFileId());
 		if (data == null) {
@@ -230,6 +201,14 @@ public final class NPCDefinitions implements Cloneable {
 		loaded = true;
 	}
 
+	public int getArchiveId() {
+		return id >>> 134238215;
+	}
+
+	public int getFileId() {
+		return 0x7f & id;
+	}
+
 	private void readOpcodeValues(InputStream stream) {
 		while (true) {
 			int opcode = stream.readUnsignedByte();
@@ -240,16 +219,77 @@ public final class NPCDefinitions implements Cloneable {
 		}
 	}
 
-	public int getArchiveId() {
-		return id >>> 134238215;
+	public NPCDefinitions(int id) {
+		this.id = id;
+		unknownInt9 = -1;
+		unknownInt4 = -1;
+		unknownInt15 = -1;
+		unknownInt7 = -1;
+		unknownInt3 = 32;
+		combatLevel = -1;
+		unknownInt6 = -1;
+		name = "null";
+		unknownInt1 = 0;
+		walkMask = (byte) 0;
+		unknownInt20 = 255;
+		unknownInt11 = -1;
+		unknownBoolean3 = true;
+		unknownShort1 = (short) 0;
+		unknownInt8 = -1;
+		unknownByte1 = (byte) -96;
+		unknownInt12 = 0;
+		unknownInt17 = -1;
+		renderEmote = -1;
+		respawnDirection = (byte) 7;
+		unknownBoolean4 = true;
+		unknownInt21 = -1;
+		unknownInt14 = -1;
+		unknownInt13 = -1;
+		npcHeight = 128;
+		headIcons = -1;
+		unknownBoolean6 = false;
+		unknownInt5 = -1;
+		unknownByte2 = (byte) -16;
+		unknownBoolean1 = false;
+		isVisibleOnMap = true;
+		unknownInt16 = -1;
+		unknownInt10 = -1;
+		unknownBoolean2 = true;
+		unknownInt19 = -1;
+		npcWidth = 128;
+		unknownShort2 = (short) 0;
+		options = new String[5];
+		unknownInt2 = 0;
+		unknownInt18 = -1;
 	}
 
-	public int getFileId() {
-		return 0x7f & id;
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public void write(Store store) {
-		store.getIndexes()[Constants.NPC_DEFINITIONS_INDEX].putFile(getArchiveId(), getFileId(), encode());
+	public String toString() {
+		return id + " - " + name;
+	}
+
+	public static final NPCDefinitions getNPCDefinitions(int id, Store store) {
+		NPCDefinitions def = npcDefinitions.get(id);
+		if (def == null) {
+			def = new NPCDefinitions(id);
+			def.method694();
+			byte[] data = store.getIndexes()[18].getFile(id >>> 134238215, id & 0x7f);
+			if (data == null) {
+				// System.out.println("Failed loading NPC " + id + ".");
+			} else {
+				def.readValueLoop(new InputStream(data));
+			}
+			npcDefinitions.put(id, def);
+		}
+		return def;
 	}
 
 	public void method694() {
@@ -267,10 +307,6 @@ public final class NPCDefinitions implements Cloneable {
 			readValues(stream, opcode);
 		}
 	}
-
-	public boolean unknownBoolean7;
-
-	public int[] unknownArray5;
 
 	private void readValues(InputStream stream, int opcode) {
 		if (opcode == 1) {
@@ -502,134 +538,20 @@ public final class NPCDefinitions implements Cloneable {
 		}
 	}
 
+	public static NPCDefinitions getNPCDefinition(Store cache, int npcId) {
+		return getNPCDefinition(cache, npcId, true);
+	}
+
+	public static NPCDefinitions getNPCDefinition(Store cache, int npcId, boolean load) {
+		return new NPCDefinitions(cache, npcId, load);
+	}
+
 	public static final void clearNPCDefinitions() {
 		npcDefinitions.clear();
 	}
 
-	public NPCDefinitions(int id) {
-		this.id = id;
-		unknownInt9 = -1;
-		unknownInt4 = -1;
-		unknownInt15 = -1;
-		unknownInt7 = -1;
-		unknownInt3 = 32;
-		combatLevel = -1;
-		unknownInt6 = -1;
-		name = "null";
-		unknownInt1 = 0;
-		walkMask = (byte) 0;
-		unknownInt20 = 255;
-		unknownInt11 = -1;
-		unknownBoolean3 = true;
-		unknownShort1 = (short) 0;
-		unknownInt8 = -1;
-		unknownByte1 = (byte) -96;
-		unknownInt12 = 0;
-		unknownInt17 = -1;
-		renderEmote = -1;
-		respawnDirection = (byte) 7;
-		unknownBoolean4 = true;
-		unknownInt21 = -1;
-		unknownInt14 = -1;
-		unknownInt13 = -1;
-		npcHeight = 128;
-		headIcons = -1;
-		unknownBoolean6 = false;
-		unknownInt5 = -1;
-		unknownByte2 = (byte) -16;
-		unknownBoolean1 = false;
-		isVisibleOnMap = true;
-		unknownInt16 = -1;
-		unknownInt10 = -1;
-		unknownBoolean2 = true;
-		unknownInt19 = -1;
-		npcWidth = 128;
-		unknownShort2 = (short) 0;
-		options = new String[5];
-		unknownInt2 = 0;
-		unknownInt18 = -1;
-	}
-
-	public String toString() {
-		return id + " - " + name;
-	}
-
-	public boolean hasMarkOption() {
-		for (String option : options) {
-			if (option != null && option.equalsIgnoreCase("mark")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hasOption(String op) {
-		for (String option : options) {
-			if (option != null && option.equalsIgnoreCase(op)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public byte getRespawnDirection() {
-		return respawnDirection;
-	}
-
-	public void setRespawnDirection(byte respawnDirection) {
-		this.respawnDirection = respawnDirection;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public int getRenderEmote() {
-		return renderEmote;
-	}
-
-	public void setRenderEmote(int renderEmote) {
-		this.renderEmote = renderEmote;
-	}
-
-	public boolean isVisibleOnMap() {
-		return isVisibleOnMap;
-	}
-
-	public void setVisibleOnMap(boolean isVisibleOnMap) {
-		this.isVisibleOnMap = isVisibleOnMap;
-	}
-
-	public String[] getOptions() {
-		return options;
-	}
-
-	public void setOptions(String[] options) {
-		this.options = options;
-	}
-
-	public int getNpcId() {
-		return npcId;
-	}
-
-	public void setNpcId(int npcId) {
-		this.npcId = npcId;
-	}
-
-	public boolean hasAttackOption() {
-		if (id == 14899) {
-			return true;
-		}
-		for (String option : options) {
-			if (option != null && option.equalsIgnoreCase("attack")) {
-				return true;
-			}
-		}
-		return false;
+	public void write(Store store) {
+		store.getIndexes()[Constants.NPC_DEFINITIONS_INDEX].putFile(getArchiveId(), getFileId(), encode());
 	}
 
 	public byte[] encode() {
@@ -771,6 +693,84 @@ public final class NPCDefinitions implements Cloneable {
 		stream.setOffset(0);
 		stream.getBytes(data, 0, data.length);
 		return data;
+	}
+
+	public boolean hasMarkOption() {
+		for (String option : options) {
+			if (option != null && option.equalsIgnoreCase("mark")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasOption(String op) {
+		for (String option : options) {
+			if (option != null && option.equalsIgnoreCase(op)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public byte getRespawnDirection() {
+		return respawnDirection;
+	}
+
+	public void setRespawnDirection(byte respawnDirection) {
+		this.respawnDirection = respawnDirection;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public int getRenderEmote() {
+		return renderEmote;
+	}
+
+	public void setRenderEmote(int renderEmote) {
+		this.renderEmote = renderEmote;
+	}
+
+	public boolean isVisibleOnMap() {
+		return isVisibleOnMap;
+	}
+
+	public void setVisibleOnMap(boolean isVisibleOnMap) {
+		this.isVisibleOnMap = isVisibleOnMap;
+	}
+
+	public String[] getOptions() {
+		return options;
+	}
+
+	public void setOptions(String[] options) {
+		this.options = options;
+	}
+
+	public int getNpcId() {
+		return npcId;
+	}
+
+	public void setNpcId(int npcId) {
+		this.npcId = npcId;
+	}
+
+	public boolean hasAttackOption() {
+		if (id == 14899) {
+			return true;
+		}
+		for (String option : options) {
+			if (option != null && option.equalsIgnoreCase("attack")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public int getCombatLevel() {

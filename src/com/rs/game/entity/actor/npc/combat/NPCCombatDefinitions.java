@@ -1,32 +1,95 @@
 package com.rs.game.entity.actor.npc.combat;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class NPCCombatDefinitions {
-
-	public static final int MELEE = 0;
-	public static final int RANGE = 1;
-	public static final int MAGE = 2;
-	public static final int SPECIAL = 3;
-	public static final int SPECIAL2 = 4; // follows no distance
-	public static final int PASSIVE = 0;
-	public static final int AGRESSIVE = 1;
-
+	
+	/**
+	 * The hitpoints of the npc
+	 */
+	@Getter
+	@Setter
 	private int hitpoints;
+	
+	/**
+	 * The attack animation of the npc
+	 */
+	@Getter
+	@Setter
 	private int attackAnim;
+	
+	/**
+	 * The defend animation of the npc
+	 */
+	@Getter
+	@Setter
 	private int defenceAnim;
+	
+	/**
+	 * The dying animation of the npc
+	 */
+	@Getter
+	@Setter
 	private int deathAnim;
+	
+	/**
+	 * The delay between combat attacks of the npc
+	 */
+	@Getter
+	@Setter
 	private int attackDelay;
+	
+	/**
+	 * The delay until death of the npc
+	 */
+	@Getter
+	@Setter
 	private int deathDelay;
+	
+	/**
+	 * The respawn delay of the npc
+	 */
+	@Getter
+	@Setter
 	private int respawnDelay;
+	
+	/**
+	 * The max hit of the npc
+	 */
+	@Getter
+	@Setter
 	private int maxHit;
+	
+	/**
+	 * The attack style of the npc
+	 */
+	@Getter
+	@Setter
 	private int attackStyle;
+	
+	/**
+	 * The graphics sent on a combat swing of the npc
+	 */
+	@Getter
+	@Setter
 	private int attackGfx;
+	
+	/**
+	 * The projectile id sent on a combat swing of the npc
+	 */
+	@Getter
+	@Setter
 	private int attackProjectile;
-	private int agressivenessType;
-
-	public NPCCombatDefinitions(int hitpoints, int attackAnim, int defenceAnim,
-			int deathAnim, int attackDelay, int deathDelay, int respawnDelay,
-			int maxHit, int attackStyle, int attackGfx, int attackProjectile,
-			int agressivenessType) {
+	
+	/**
+	 * The type of aggressiveness the npc has
+	 */
+	@Getter
+	@Setter
+	private int aggressivenessType;
+	
+	public NPCCombatDefinitions(int hitpoints, int attackAnim, int defenceAnim, int deathAnim, int attackDelay, int deathDelay, int respawnDelay, int maxHit, int attackStyle, int attackGfx, int attackProjectile, int aggressivenessType) {
 		this.hitpoints = hitpoints;
 		this.attackAnim = attackAnim;
 		this.defenceAnim = defenceAnim;
@@ -38,102 +101,7 @@ public class NPCCombatDefinitions {
 		this.attackStyle = attackStyle;
 		this.attackGfx = attackGfx;
 		this.attackProjectile = attackProjectile;
-		this.agressivenessType = agressivenessType;
+		this.aggressivenessType = aggressivenessType;
 	}
-
-	public int getRespawnDelay() {
-		return respawnDelay;
-	}
-
-	public int getDeathEmote() {
-		return deathAnim;
-	}
-
-	public int getDefenceEmote() {
-		return defenceAnim;
-	}
-
-	public int getAttackEmote() {
-		return attackAnim;
-	}
-
-	public int getAttackGfx() {
-		return attackGfx;
-	}
-
-	public int getAgressivenessType() {
-		return agressivenessType;
-	}
-
-	public int getAttackProjectile() {
-		return attackProjectile;
-	}
-
-	public int getAttackStyle() {
-		return attackStyle;
-	}
-
-	public int getAttackDelay() {
-		return attackDelay;
-	}
-
-	public int getMaxHit() {
-		return maxHit;
-	}
-
-	public void setMaxHit(int j) {
-		this.maxHit = j;
-	}
-
-	public int getHitpoints() {
-		return hitpoints;
-	}
-
-	public int getDeathDelay() {
-		return deathDelay;
-	}
-
-	public void setRespawnDelay(int j) {
-		this.respawnDelay = j;
-	}
-
-	public void setDeathEmote(int j) {
-		this.deathAnim = j;
-	}
-
-	public void setDefenceEmote(int j) {
-		this.defenceAnim = j;
-	}
-
-	public void setAttackEmote(int j) {
-		this.attackAnim = j;
-	}
-
-	public void setAttackGfx(int j) {
-		this.attackGfx = j;
-	}
-
-	public void setAgressivenessType(int j) {
-		this.agressivenessType = j;
-	}
-
-	public void setAttackProjectile(int j) {
-		this.attackProjectile = j;
-	}
-
-	public void setAttackStyle(int j) {
-		this.attackStyle = j;
-	}
-
-	public void setAttackDelay(int j) {
-		this.attackDelay = j;
-	}
-
-	public void setHitpoints(int j) {
-		this.hitpoints = j;
-	}
-
-	public void setDeathDelay(int j) {
-		this.deathDelay = j;
-	}
+	
 }

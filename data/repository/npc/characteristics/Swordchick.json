@@ -1,0 +1,47 @@
+{
+  "combatDefinitions": {
+    "5595": {
+      "hitpoints": 350,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 5,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 50,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 0
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "5595": [
+      {
+        "itemId": 526,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 314,
+        "minAmount": 12,
+        "maxAmount": 100,
+        "rate": 100.0,
+        "rare": false
+      },
+      {
+        "itemId": 2139,
+        "minAmount": 4,
+        "maxAmount": 16,
+        "rate": 43.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "5595": "Definitely not a chicken or swordfish."
+  }
+}

@@ -1,15 +1,15 @@
 package com.rs.utility;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.rs.cache.Cache;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Skills;
+import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.world.World;
+import com.rs.utility.repo.npc.NPCCharacteristic;
 import org.jboss.netty.channel.Channel;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.SocketAddress;
 import java.net.URL;
 import java.nio.channels.FileChannel;
@@ -769,55 +769,55 @@ public final class Misc {
 	
 	public static byte[] completeQuickMessage(Player player, int fileId, byte[] data) {
 		if (fileId == 1) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.AGILITY) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.AGILITY) };
 		} else if (fileId == 8) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.ATTACK) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.ATTACK) };
 		} else if (fileId == 13) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.CONSTRUCTION) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.CONSTRUCTION) };
 		} else if (fileId == 16) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.COOKING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.COOKING) };
 		} else if (fileId == 23) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.CRAFTING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.CRAFTING) };
 		} else if (fileId == 30) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.DEFENCE) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) };
 		} else if (fileId == 34) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.FARMING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FARMING) };
 		} else if (fileId == 41) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.FIREMAKING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FIREMAKING) };
 		} else if (fileId == 47) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.FISHING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FISHING) };
 		} else if (fileId == 55) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.FLETCHING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FLETCHING) };
 		} else if (fileId == 62) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.HERBLORE) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.HERBLORE) };
 		} else if (fileId == 70) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.HITPOINTS) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.HITPOINTS) };
 		} else if (fileId == 74) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.HUNTER) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.HUNTER) };
 		} else if (fileId == 135) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.MAGIC) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.MAGIC) };
 		} else if (fileId == 127) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.MINING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.MINING) };
 		} else if (fileId == 120) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.PRAYER) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.PRAYER) };
 		} else if (fileId == 116) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.RANGE) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.RANGE) };
 		} else if (fileId == 111) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.RUNECRAFTING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.RUNECRAFTING) };
 		} else if (fileId == 103) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.SLAYER) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.SLAYER) };
 		} else if (fileId == 96) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.SMITHING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.SMITHING) };
 		} else if (fileId == 92) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.STRENGTH) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.STRENGTH) };
 		} else if (fileId == 85) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.SUMMONING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.SUMMONING) };
 		} else if (fileId == 79) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.THIEVING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.THIEVING) };
 		} else if (fileId == 142) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.WOODCUTTING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.WOODCUTTING) };
 		} else if (fileId == 990) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(Skills.DUNGEONEERING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.DUNGEONEERING) };
 		} else if (fileId == 965) {
 			int value = player.getHitpoints();
 			data = new byte[] { (byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) value };
@@ -846,15 +846,6 @@ public final class Misc {
 		return newText.toString();
 	}
 	
-	public static boolean containsInvalidCharacter(char c) {
-		for (char vc : VALID_CHARS) {
-			if (vc == c) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public static String getFormattedNumber(int amount) {
 		return new DecimalFormat("#,###,###").format(amount);
 	}
@@ -876,6 +867,88 @@ public final class Misc {
 	public static String getFormatedDate() {
 		Calendar c = Calendar.getInstance();
 		return "[" + ((c.get(Calendar.MONTH)) + 1) + "/" + c.get(Calendar.DATE) + "/" + c.get(Calendar.YEAR) + "]";
+	}
+	
+	public static boolean invalidAccountName(String name) {
+		return name.length() < 2 || name.length() > 12 || name.startsWith("_") || name.endsWith("_") || name.contains("__") || containsInvalidCharacter(name);
+	}
+	
+	public static boolean containsInvalidCharacter(String name) {
+		for (char c : name.toCharArray()) {
+			if (containsInvalidCharacter(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean containsInvalidCharacter(char c) {
+		for (char vc : VALID_CHARS) {
+			if (vc == c) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Getting the text in the file as a formatted {@code String} {@code Object}
+	 *
+	 * @param location
+	 * 		The location of the file
+	 */
+	public static String getText(String location) {
+		StringBuilder text = new StringBuilder();
+		for (String fileText : getFileText(location)) {
+			text.append(fileText).append("\n");
+		}
+		return text.toString();
+	}
+	
+	/**
+	 * Gets the text in a file in a list
+	 *
+	 * @param file
+	 * 		The file
+	 */
+	public static List<String> getFileText(String file) {
+		List<String> text = new ArrayList<>();
+		File realFile = new File(file);
+		if (!realFile.exists()) {
+			return text;
+		}
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals("") || line.equals(" ")) {
+					continue;
+				}
+				text.add(line);
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return text;
+	}
+	
+	/**
+	 * Saves the data to a json file
+	 *
+	 * @param location
+	 * 		The location of the file
+	 * @param data
+	 * 		The data to save
+	 */
+	public static void saveToJsonFile(String location, Object data) {
+		try (Writer writer = new FileWriter(location)) {
+			GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping();
+			Gson gson = builder.create();
+			gson.toJson(data, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public enum EntityDirection {

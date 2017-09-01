@@ -1,0 +1,24 @@
+{
+  "combatDefinitions": {
+    "5420": {
+      "hitpoints": 650,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 6,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 190,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "5419": "A mad man.",
+    "5420": "A mad man."
+  }
+}

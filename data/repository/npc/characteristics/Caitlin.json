@@ -1,0 +1,25 @@
+{
+  "combatDefinitions": {
+    "9626": {
+      "hitpoints": 20,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 3,
+      "attackStyle": 2,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {},
+  "examines": {
+    "9626": "A cruel-looking wizard.",
+    "9627": "A cruel-looking wizard.",
+    "9638": "A cruel-looking wizard."
+  }
+}

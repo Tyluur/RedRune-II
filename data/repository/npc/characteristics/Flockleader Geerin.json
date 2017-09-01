@@ -1,0 +1,131 @@
+{
+  "combatDefinitions": {
+    "6225": {
+      "hitpoints": 1320,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 250,
+      "attackStyle": 1,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "6225": [
+      {
+        "itemId": 11722,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 8.0,
+        "rare": false
+      },
+      {
+        "itemId": 11720,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 8.0,
+        "rare": false
+      },
+      {
+        "itemId": 11718,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 4.0,
+        "rare": false
+      },
+      {
+        "itemId": 7056,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 76.0,
+        "rare": false
+      },
+      {
+        "itemId": 391,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 59.0,
+        "rare": false
+      },
+      {
+        "itemId": 7058,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 69.0,
+        "rare": false
+      },
+      {
+        "itemId": 4697,
+        "minAmount": 3,
+        "maxAmount": 13,
+        "rate": 87.0,
+        "rare": false
+      },
+      {
+        "itemId": 808,
+        "minAmount": 3,
+        "maxAmount": 95,
+        "rate": 81.0,
+        "rare": false
+      },
+      {
+        "itemId": 886,
+        "minAmount": 3,
+        "maxAmount": 95,
+        "rate": 91.0,
+        "rare": false
+      },
+      {
+        "itemId": 618,
+        "minAmount": 1,
+        "maxAmount": 500,
+        "rate": 75.0,
+        "rare": false
+      },
+      {
+        "itemId": 11710,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 45.0,
+        "rare": false
+      },
+      {
+        "itemId": 11712,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 40.0,
+        "rare": false
+      },
+      {
+        "itemId": 11714,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 25.0,
+        "rare": false
+      },
+      {
+        "itemId": 6693,
+        "minAmount": 2,
+        "maxAmount": 2,
+        "rate": 83.0,
+        "rare": false
+      },
+      {
+        "itemId": 213,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 87.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {
+    "6225": "Graceful, bird-like creature."
+  }
+}

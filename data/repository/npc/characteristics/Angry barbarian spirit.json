@@ -1,0 +1,206 @@
+{
+  "combatDefinitions": {
+    "749": {
+      "hitpoints": 1900,
+      "attackAnim": 65535,
+      "defenceAnim": 65535,
+      "deathAnim": 65535,
+      "attackDelay": 4,
+      "deathDelay": 1,
+      "respawnDelay": 60,
+      "maxHit": 188,
+      "attackStyle": 0,
+      "attackGfx": 65535,
+      "attackProjectile": 65535,
+      "aggressivenessType": 1
+    }
+  },
+  "combatBonuses": {},
+  "drops": {
+    "749": [
+      {
+        "itemId": 1333,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 65.0,
+        "rare": false
+      },
+      {
+        "itemId": 11371,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 56.0,
+        "rare": false
+      },
+      {
+        "itemId": 1295,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 65.0,
+        "rare": false
+      },
+      {
+        "itemId": 1371,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 56.0,
+        "rare": false
+      },
+      {
+        "itemId": 865,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 68.0,
+        "rare": false
+      },
+      {
+        "itemId": 1424,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 67.0,
+        "rare": false
+      },
+      {
+        "itemId": 857,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 56.0,
+        "rare": false
+      },
+      {
+        "itemId": 808,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 65.0,
+        "rare": false
+      },
+      {
+        "itemId": 1391,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 65.0,
+        "rare": false
+      },
+      {
+        "itemId": 1430,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 62.0,
+        "rare": false
+      },
+      {
+        "itemId": 1428,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 71.0,
+        "rare": false
+      },
+      {
+        "itemId": 816,
+        "minAmount": 20,
+        "maxAmount": 20,
+        "rate": 63.0,
+        "rare": false
+      },
+      {
+        "itemId": 1191,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 60.0,
+        "rare": false
+      },
+      {
+        "itemId": 1081,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 64.0,
+        "rare": false
+      },
+      {
+        "itemId": 1193,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 67.0,
+        "rare": false
+      },
+      {
+        "itemId": 1157,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 63.0,
+        "rare": false
+      },
+      {
+        "itemId": 1181,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 61.0,
+        "rare": false
+      },
+      {
+        "itemId": 890,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 66.0,
+        "rare": false
+      },
+      {
+        "itemId": 886,
+        "minAmount": 20,
+        "maxAmount": 20,
+        "rate": 69.0,
+        "rare": false
+      },
+      {
+        "itemId": 9145,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 74.0,
+        "rare": false
+      },
+      {
+        "itemId": 9144,
+        "minAmount": 10,
+        "maxAmount": 10,
+        "rate": 59.0,
+        "rare": false
+      },
+      {
+        "itemId": 560,
+        "minAmount": 5,
+        "maxAmount": 5,
+        "rate": 63.0,
+        "rare": false
+      },
+      {
+        "itemId": 565,
+        "minAmount": 3,
+        "maxAmount": 10,
+        "rate": 57.0,
+        "rare": false
+      },
+      {
+        "itemId": 1515,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 68.0,
+        "rare": false
+      },
+      {
+        "itemId": 2354,
+        "minAmount": 3,
+        "maxAmount": 3,
+        "rate": 66.0,
+        "rare": false
+      },
+      {
+        "itemId": 11443,
+        "minAmount": 1,
+        "maxAmount": 1,
+        "rate": 47.0,
+        "rare": false
+      }
+    ]
+  },
+  "examines": {}
+}

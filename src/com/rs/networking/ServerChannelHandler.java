@@ -18,14 +18,6 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 	
 	private static ServerBootstrap bootstrap;
 	
-	public static void init() {
-		new ServerChannelHandler();
-	}
-	
-	public static int getConnectedChannelsSize() {
-		return channels == null ? 0 : channels.size();
-	}
-	
 	/*
 	 * throws exeption so if cant handle channel server closes
 	 */
@@ -38,35 +30,6 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 		bootstrap.setOption("child.TcpAckFrequency", true);
 		bootstrap.setOption("child.keepAlive", true);
 		bootstrap.bind(new InetSocketAddress(NetworkConstants.PORT_ID));
-	}
-	
-	@Override
-	public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) {
-		channels.add(e.getChannel());
-	}
-	
-	@Override
-	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) {
-		channels.remove(e.getChannel());
-	}
-	
-	@Override
-	public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
-		ctx.setAttachment(new Session(e.getChannel()));
-	}
-	
-	@Override
-	public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
-		Object sessionObject = ctx.getAttachment();
-		if (sessionObject != null && sessionObject instanceof Session) {
-			Session session = (Session) sessionObject;
-			if (session.getDecoder() == null) {
-				return;
-			}
-			if (session.getDecoder() instanceof WorldPacketsDecoder) {
-				session.getWorldPackets().getPlayer().finish();
-			}
-		}
 	}
 	
 	@Override
@@ -99,6 +62,43 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent ee) throws Exception {
 	
+	}
+	
+	@Override
+	public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) {
+		channels.add(e.getChannel());
+	}
+	
+	@Override
+	public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
+		ctx.setAttachment(new Session(e.getChannel()));
+	}
+	
+	@Override
+	public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
+		Object sessionObject = ctx.getAttachment();
+		if (sessionObject != null && sessionObject instanceof Session) {
+			Session session = (Session) sessionObject;
+			if (session.getDecoder() == null) {
+				return;
+			}
+			if (session.getDecoder() instanceof WorldPacketsDecoder) {
+				session.getWorldPackets().getPlayer().finish();
+			}
+		}
+	}
+	
+	@Override
+	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) {
+		channels.remove(e.getChannel());
+	}
+	
+	public static void init() {
+		new ServerChannelHandler();
+	}
+	
+	public static int getConnectedChannelsSize() {
+		return channels == null ? 0 : channels.size();
 	}
 	
 	public static void shutdown() {

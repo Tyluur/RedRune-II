@@ -1,29 +1,23 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
 
 public class Honeybadger extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -7544357522011400153L;
 
-	public Honeybadger(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Honeybadger(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Insane ferocity";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Decreases the owner's Magic, Range, and Defence, but also increasing Strength and Attack, there is also a chance of hitting twice.";
+	public boolean submitSpecial(Object object) {
+		return false;
 	}
 
 	@Override
@@ -37,12 +31,17 @@ public class Honeybadger extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.ENTITY;
+	public String getSpecialName() {
+		return "Insane ferocity";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		return false;
+	public String getSpecialDescription() {
+		return "Decreases the owner's Magic, Range, and Defence, but also increasing Strength and Attack, there is also a chance of hitting twice.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.ENTITY;
 	}
 }

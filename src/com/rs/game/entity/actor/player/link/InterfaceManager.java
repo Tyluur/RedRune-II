@@ -1,8 +1,7 @@
 package com.rs.game.entity.actor.player.link;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.Inventory;
-import com.rs.game.entity.actor.player.data.Notes;
+import com.rs.game.entity.actor.player.data.PlayerInventory;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,9 +23,9 @@ public class InterfaceManager {
 	
 	public static final int RESIZABLE_INV_TAB_ID = 87;
 	
-	private Player player;
-	
 	private final ConcurrentHashMap<Integer, int[]> openedinterfaces = new ConcurrentHashMap<>();
+	
+	private Player player;
 	
 	private boolean resizableScreen;
 	
@@ -34,10 +33,6 @@ public class InterfaceManager {
 	
 	public InterfaceManager(Player player) {
 		this.player = player;
-	}
-	
-	public void sendTab(int tabId, int interfaceId) {
-		player.getPackets().sendInterface(true, resizableScreen ? RESIZABLE_WINDOW_ID : FIXED_WINDOW_ID, tabId, interfaceId);
 	}
 	
 	public void sendChatBoxInterface(int interfaceId) {
@@ -50,6 +45,10 @@ public class InterfaceManager {
 	
 	public void sendOverlay(int interfaceId, boolean fullScreen) {
 		sendTab(resizableScreen ? fullScreen ? 1 : 11 : 0, interfaceId);
+	}
+	
+	public void sendTab(int tabId, int interfaceId) {
+		player.getPackets().sendInterface(true, resizableScreen ? RESIZABLE_WINDOW_ID : FIXED_WINDOW_ID, tabId, interfaceId);
 	}
 	
 	public void closeOverlay(boolean fullScreen) {
@@ -83,7 +82,7 @@ public class InterfaceManager {
 		if (player.getFamiliar() != null && player.isRunning()) {
 			player.getFamiliar().unlock();
 		}
-		player.getControlerManager().sendInterfaces();
+		player.getControllerManager().sendInterfaces();
 	}
 	
 	public void replaceRealChatBoxInterface(int interfaceId) {
@@ -130,7 +129,7 @@ public class InterfaceManager {
 		sendTab(206, 320);
 		
 		// quests Interface
-		sendTab(207, 190);
+		sendQuestTab();
 		//	Notes.sendUnlockNotes(player);
 		// Inventory Interface
 		sendInventory();
@@ -206,9 +205,8 @@ public class InterfaceManager {
 		sendTab(92, 320);
 		
 		// Quests Interface
-		sendTab(93, 190);
-		//	Notes.refresh(player, true);
-		//Notes.sendUnlockNotes(player);
+		sendQuestTab();
+		
 		// Inventory Interface
 		sendInventory();
 		
@@ -241,7 +239,7 @@ public class InterfaceManager {
 		
 		// Notes Interface
 		sendTab(105, 34);
-		Notes.refresh(player, true);
+		NoteManager.refresh(player, true);
 		// Logout Interface
 		sendTab(108, 182);
 	}
@@ -263,7 +261,7 @@ public class InterfaceManager {
 	}
 	
 	public void sendQuestTab() {
-		sendTab(resizableScreen ? 93 : 207, 190);
+		sendTab(resizableScreen ? 93 : 207, 1149);
 	}
 	
 	public void sendFriendsChat() {
@@ -319,7 +317,7 @@ public class InterfaceManager {
 	}
 	
 	public void sendInventory() {
-		sendTab(resizableScreen ? 94 : 208, Inventory.INVENTORY_INTERFACE);
+		sendTab(resizableScreen ? 94 : 208, PlayerInventory.INVENTORY_INTERFACE);
 	}
 	
 	public void closeInventory() {
@@ -383,16 +381,16 @@ public class InterfaceManager {
 		return false;
 	}
 	
-	public boolean containsTab(int tabId) {
-		return openedinterfaces.containsKey(tabId);
-	}
-	
 	public void removeAll() {
 		openedinterfaces.clear();
 	}
 	
 	public boolean containsScreenInter() {
 		return containsTab(resizableScreen ? RESIZABLE_SCREEN_TAB_ID : FIXED_SCREEN_TAB_ID);
+	}
+	
+	public boolean containsTab(int tabId) {
+		return openedinterfaces.containsKey(tabId);
 	}
 	
 	public void closeInterface(int one, int two) {
@@ -421,10 +419,6 @@ public class InterfaceManager {
 	
 	public void closeTaskSystem() {
 		player.getPackets().closeInterface(resizableScreen ? 112 : 205);
-	}
-	
-	public void closeScreenInterface() {
-		player.getPackets().closeInterface(resizableScreen ? RESIZABLE_SCREEN_TAB_ID : FIXED_SCREEN_TAB_ID);
 	}
 	
 	public boolean containsInventoryInter() {
@@ -476,16 +470,20 @@ public class InterfaceManager {
 		});
 	}
 	
+	public void closeScreenInterface() {
+		player.getPackets().closeInterface(resizableScreen ? RESIZABLE_SCREEN_TAB_ID : FIXED_SCREEN_TAB_ID);
+	}
+	
 	public boolean hasRezizableScreen() {
 		return resizableScreen;
 	}
 	
-	public void setWindowsPane(int windowsPane) {
-		this.windowsPane = windowsPane;
-	}
-	
 	public int getWindowsPane() {
 		return windowsPane;
+	}
+	
+	public void setWindowsPane(int windowsPane) {
+		this.windowsPane = windowsPane;
 	}
 	
 	public int openGameTab(int tabId) {

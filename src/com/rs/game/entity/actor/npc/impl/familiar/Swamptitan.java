@@ -1,29 +1,23 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
+import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.content.skills.summoning.Summoning.Pouches;
 
 public class Swamptitan extends Familiar {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -6073150798974730997L;
 
-	public Swamptitan(Player owner, Pouches pouch, WorldTile tile,
-			int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+	public Swamptitan(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
 	}
 
 	@Override
-	public String getSpecialName() {
-		return "Swamp Plague";
-	}
-
-	@Override
-	public String getSpecialDescription() {
-		return "Inflicts a magical attack on near by opponents and attempts to poison them as well.";
+	public boolean submitSpecial(Object object) {
+		return false;
 	}
 
 	@Override
@@ -37,13 +31,18 @@ public class Swamptitan extends Familiar {
 	}
 
 	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.ENTITY;
+	public String getSpecialName() {
+		return "Swamp Plague";
 	}
 
 	@Override
-	public boolean submitSpecial(Object object) {
-		return false;
+	public String getSpecialDescription() {
+		return "Inflicts a magical attack on near by opponents and attempts to poison them as well.";
+	}
+
+	@Override
+	public SpecialAttack getSpecialAttack() {
+		return SpecialAttack.ENTITY;
 	}
 
 }

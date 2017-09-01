@@ -140,7 +140,7 @@ public final class LocalPlayerUpdate {
 				}
 				stream.writeBits(6, p.getXInRegion());
 				stream.writeBits(6, p.getYInRegion());
-				boolean needAppearenceUpdate = needAppearenceUpdate(p.getIndex(), p.getAppearence().getMD5AppeareanceDataHash());
+				boolean needAppearenceUpdate = needAppearenceUpdate(p.getIndex(), p.getAppearance().getMd5Hash());
 				appendUpdateBlock(p, updateBlockData, needAppearenceUpdate, true);
 				stream.writeBits(1, 1);
 				localPlayers[p.getIndex()] = p;
@@ -192,7 +192,7 @@ public final class LocalPlayerUpdate {
 				}
 				localPlayers[playerIndex] = null;
 			} else {
-				boolean needAppearenceUpdate = needAppearenceUpdate(p.getIndex(), p.getAppearence().getMD5AppeareanceDataHash());
+				boolean needAppearenceUpdate = needAppearenceUpdate(p.getIndex(), p.getAppearance().getMd5Hash());
 				boolean needUpdate = p.needMasksUpdate() || needAppearenceUpdate;
 				if (needUpdate) {
 					appendUpdateBlock(p, updateBlockData, needAppearenceUpdate, false);
@@ -264,7 +264,7 @@ public final class LocalPlayerUpdate {
 					for (int i2 = i + 1; i2 < localPlayersIndexesCount; i2++) {
 						int p2Index = localPlayersIndexes[i2];
 						Player p2 = localPlayers[p2Index];
-						if (needsRemove(p2) || p2.hasTeleported() || p2.getNextWalkDirection() != -1 || (p2.needMasksUpdate() || needAppearenceUpdate(p2.getIndex(), p2.getAppearence().getMD5AppeareanceDataHash()))) {
+						if (needsRemove(p2) || p2.hasTeleported() || p2.getNextWalkDirection() != -1 || (p2.needMasksUpdate() || needAppearenceUpdate(p2.getIndex(), p2.getAppearance().getMd5Hash()))) {
 							break;
 						}
 						skip++;
@@ -292,7 +292,7 @@ public final class LocalPlayerUpdate {
 		if (p.getNextGraphics3() != null) {
 			maskData |= 0x40000;
 		}
-		if (p.getTemporaryMoveType() != 0) {
+		if (p.getTemporaryMovementType() != 0) {
 			maskData |= 0x200;
 		}
 		if (p.getNextGraphics4() != null) {
@@ -344,7 +344,7 @@ public final class LocalPlayerUpdate {
 		if (p.getNextGraphics3() != null) {
 			applyGraphicsMask3(p, data);
 		}
-		if (p.getTemporaryMoveType() != 0) {
+		if (p.getTemporaryMovementType() != 0) {
 			applyTemporaryMoveTypeMask(p, data);
 		}
 		if (p.getNextGraphics4() != null) {
@@ -429,7 +429,7 @@ public final class LocalPlayerUpdate {
 	}
 	
 	private void applyTemporaryMoveTypeMask(Player p, OutputStream data) {
-		data.writeByteC(p.getTemporaryMoveType());
+		data.writeByteC(p.getTemporaryMovementType());
 	}
 	
 	private void applyGraphicsMask1(Player p, OutputStream data) {
@@ -464,9 +464,9 @@ public final class LocalPlayerUpdate {
 	}
 	
 	private void applyAppearanceMask(Player p, OutputStream data) {
-		byte[] renderData = p.getAppearence().getAppeareanceData();
+		byte[] renderData = p.getAppearance().getAppearanceData();
 		totalRenderDataSentLength += renderData.length;
-		cachedAppearencesHashes[p.getIndex()] = p.getAppearence().getMD5AppeareanceDataHash();
+		cachedAppearencesHashes[p.getIndex()] = p.getAppearance().getMd5Hash();
 		data.write128Byte(renderData.length);
 		data.writeBytes(renderData);
 		
