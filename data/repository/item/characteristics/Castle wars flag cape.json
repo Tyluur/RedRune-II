@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "18739": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "18739": "For the honour of capturing most flags in a Castle Wars match."
+  }
+}

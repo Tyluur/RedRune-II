@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "21744": [
+      52,
+      -4,
+      70,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      70,
+      0,
+      7,
+      10
+    ]
+  },
+  "examineMap": {
+    "21744": "It's an Akrisae's war mace",
+    "21745": "It's an Akrisae's war mace"
+  }
+}

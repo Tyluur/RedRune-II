@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15771": [
+      -2,
+      105,
+      99,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      132,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15771": "A vicious-looking axe. (Tier 10)",
+    "15772": "It's an Promethium battleaxe"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19388": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19388": "Legs that match the Bandos vestment.",
+    "19389": "It's an Bandos robe legs"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13899": [
+      106,
+      121,
+      -2,
+      0,
+      0,
+      1,
+      4,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      118,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13899": "This item degrades in combat, and will turn to dust.",
+    "13900": "It's an Vesta's longsword"
+  }
+}

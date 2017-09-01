@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "1718": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0
+    ]
+  },
+  "examineMap": {
+    "1718": "A symbol of Saradomin",
+    "1719": "It's an Holy symbol",
+    "4682": "A symbol of Saradomin"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16325": [
+      0,
+      0,
+      0,
+      0,
+      70,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16325": "A sturdy longbow. (tier 5)",
+    "16326": "It's an Spinebeam longbow"
+  }
+}

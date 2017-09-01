@@ -6,7 +6,7 @@ import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemsContainer;
 import com.rs.utility.constants.EquipmentConstants;
-import com.rs.utility.game.item.ItemExamines;
+import com.rs.utility.repo.item.ItemCharacteristicRepository;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -262,7 +262,7 @@ public final class PlayerEquipment implements Serializable {
 		if (item == null) {
 			return;
 		}
-		player.getPackets().sendGameMessage(ItemExamines.getExamine(item));
+		player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 	}
 	
 	public boolean hasTwoHandedWeapon() {

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17229": [
+      -7,
+      -7,
+      -7,
+      20,
+      -7,
+      31,
+      21,
+      44,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17229": "The upper half of a magical robe. (Tier 7)",
+    "17230": "It's an Soulbell robe top"
+  }
+}

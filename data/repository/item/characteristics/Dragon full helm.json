@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "11335": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      45,
+      48,
+      41,
+      -1,
+      46,
+      12,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13449": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      45,
+      48,
+      41,
+      -1,
+      46,
+      12,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11335": "Protects your head and looks impressive too.",
+    "11336": "It's an Dragon full helm",
+    "13449": "Protects your head and looks impressive too."
+  }
+}

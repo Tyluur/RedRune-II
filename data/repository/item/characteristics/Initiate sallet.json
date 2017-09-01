@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "5574": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      13,
+      14,
+      11,
+      -1,
+      13,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "5574": "An initiate Temple Knight's helm.",
+    "5611": "It's an Initiate sallet"
+  }
+}

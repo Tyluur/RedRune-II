@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16855": [
+      -5,
+      -5,
+      -5,
+      11,
+      -5,
+      20,
+      12,
+      26,
+      11,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16855": "The lower half of a magical robe. (Tier 6)",
+    "16856": "It's an Duskweed robe bottom"
+  }
+}

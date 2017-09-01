@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19447": [
+      0,
+      0,
+      0,
+      -10,
+      17,
+      31,
+      25,
+      33,
+      28,
+      31,
+      30,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19447": "Blessed dragonhide chaps.",
+    "19448": "It's an Ancient chaps"
+  }
+}

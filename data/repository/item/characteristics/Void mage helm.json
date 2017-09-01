@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "11663": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "11674": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11663": "A mage helm from the order of the Void Knights.",
+    "11674": "A mage helm from the order of the Void Knights."
+  }
+}

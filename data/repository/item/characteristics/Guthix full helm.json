@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2673": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13833": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2673": "A rune full helmet in the colours of Guthix.",
+    "2674": "It's an Guthix full helm",
+    "13833": "A rune full helmet in the colours of Guthix."
+  }
+}

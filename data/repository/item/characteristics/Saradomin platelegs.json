@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2663": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13826": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2663": "Rune platelegs in the colours of Saradomin!",
+    "2664": "It's an Saradomin platelegs",
+    "13826": "Rune platelegs in the colours of Saradomin!"
+  }
+}

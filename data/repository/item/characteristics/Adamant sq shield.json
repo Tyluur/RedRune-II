@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1183": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      24,
+      26,
+      22,
+      0,
+      24,
+      25,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1183": "A medium square shield.",
+    "1184": "It's an Adamant sq shield"
+  }
+}

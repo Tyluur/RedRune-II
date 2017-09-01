@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19425": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19427": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19425": "A rune kiteshield in the colours of Armadyl",
+    "19426": "It's an Armadyl kiteshield",
+    "19427": "A rune kiteshield in the colours of Armadyl"
+  }
+}

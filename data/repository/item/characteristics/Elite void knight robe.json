@@ -1,0 +1,69 @@
+{
+  "bonusMap": {
+    "19786": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "19788": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "19790": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19786": "Armour worn by Void Knight [Guardians/Justiciars/Executioners].",
+    "19788": "Armour worn by Void Knight [Guardians/Justiciars/Executioners].",
+    "19790": "Armour worn by Void Knight [Guardians/Justiciars/Executioners]."
+  }
+}

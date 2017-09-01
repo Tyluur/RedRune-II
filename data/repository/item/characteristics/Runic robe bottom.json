@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16861": [
+      -5,
+      -5,
+      -5,
+      17,
+      -5,
+      32,
+      22,
+      41,
+      17,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16861": "The lower half of a magical robe. (Tier 9)",
+    "16862": "It's an Runic robe bottom"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16321": [
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16321": "A sturdy longbow. (Tier 3)",
+    "16322": "It's an Blood spindle longbow"
+  }
+}

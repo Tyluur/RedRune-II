@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4720": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      122,
+      120,
+      107,
+      -6,
+      132,
+      60,
+      5,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4720": "Dharok the Wretched's platebody.",
+    "4721": "It's an Dharok's platebody"
+  }
+}

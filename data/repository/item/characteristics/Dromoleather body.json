@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17181": [
+      -10,
+      -10,
+      -10,
+      -15,
+      11,
+      28,
+      24,
+      32,
+      18,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17181": "Made from scaly hides. (Tier 5)",
+    "17182": "It's an Dromoleather body"
+  }
+}

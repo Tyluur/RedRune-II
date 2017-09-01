@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1167": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      2,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1167": "Better than no armour!",
+    "1168": "It's an Leather cowl"
+  }
+}

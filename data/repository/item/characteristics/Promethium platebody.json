@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17257": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      223,
+      207,
+      122,
+      -6,
+      226,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17257": "Provides excellent protection. Tier (10)",
+    "17258": "It's an Promethium platebody"
+  }
+}

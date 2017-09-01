@@ -20,9 +20,11 @@ import com.rs.game.world.World;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.Misc.Direction;
 import com.rs.utility.constants.NPCConstants;
-import com.rs.utility.game.map.MapAreas;
-import com.rs.utility.repo.npc.NPCCharacteristicRepository;
+import com.rs.utility.repo.npc.characteristic.NPCCharacteristicRepository;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,6 +33,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class NPC extends Actor implements Serializable {
+	
+	public static int NO_WALK = 0x0, NORMAL_WALK = 0x2, WATER_WALK = 0x4, FLY_WALK = 0x8;
 	
 	private static final long serialVersionUID = -4794678936277614443L;
 	
@@ -41,8 +45,6 @@ public class NPC extends Actor implements Serializable {
 	private int mapAreaNameHash;
 	
 	private boolean canBeAttackFromOutOfArea;
-	
-	private boolean randomwalk;
 	
 	private int[] bonuses; // 0 stab, 1 slash, 2 crush,3 mage, 4 range, 5 stab
 	
@@ -74,6 +76,10 @@ public class NPC extends Actor implements Serializable {
 	
 	private int combatLevel;
 	
+	@Getter
+	@Setter
+	private int walkType;
+	
 	private transient NPCCombat combat;
 	
 	// npc masks
@@ -99,8 +105,8 @@ public class NPC extends Actor implements Serializable {
 		this.spawned = spawned;
 		combatLevel = -1;
 		setHitpoints(getMaxHitpoints());
-		setDirection(getRespawnDirection());
-		setRandomWalk((getDefinitions().getWalkMask() & 0x2) != 0 || forceRandomWalk(id));
+		setDirection(Direction.NORTH.getValue());
+		setWalkType(getDefinitions().getWalkMask());
 		bonuses = NPCCharacteristicRepository.getBonuses(id);
 		combat = new NPCCombat(this);
 		capDamage = -1;
@@ -114,37 +120,12 @@ public class NPC extends Actor implements Serializable {
 		checkMultiArea();
 	}
 	
-	public int getRespawnDirection() {
-		NPCDefinitions definitions = getDefinitions();
-		if (definitions.anInt853 == 0 || definitions.getRespawnDirection() <= 0 || definitions.getRespawnDirection() > 8) {
-			return 0;
-		}
-		return (4 + definitions.getRespawnDirection()) << 11;
-	}
-	
 	public void setRandomWalk(boolean forceRandomWalk) {
-		this.randomwalk = forceRandomWalk;
+		setWalkType(forceRandomWalk ? NORMAL_WALK : NO_WALK);
 	}
 	
 	public NPCDefinitions getDefinitions() {
 		return NPCDefinitions.getNPCDefinitions(id);
-	}
-	
-	/*
-	 * forces npc to random walk even if cache says no, used because of fake
-	 * cache information
-	 */
-	private static boolean forceRandomWalk(int npcId) {
-		switch (npcId) {
-			case 11226:
-				return true;
-			default:
-				return false;
-			/*
-			 * default: return NPCDefinitions.getNPCDefinitions(npcId).name
-			 * .equals("Icy Bones");
-			 */
-		}
 	}
 	
 	public NPCCombatDefinitions getCombatDefinitions() {
@@ -238,114 +219,32 @@ public class NPC extends Actor implements Serializable {
 				if (!cantInteract) {
 					if (!checkAgressivity()) {
 						if (getFreezeDelay() < Misc.currentTimeMillis()) {
-							if (((hasRandomWalk()) && World.getRotation(getPlane(), getX(), getY()) == 0) // temporary
-									    // fix
-									    && Math.random() * 1000.0 < 100.0) {
+							if (((getWalkType() & NORMAL_WALK) != 0) && Math.random() * 1000.0 < 100.0) {
 								int moveX = (int) Math.round(Math.random() * 10.0 - 5.0);
 								int moveY = (int) Math.round(Math.random() * 10.0 - 5.0);
 								resetWalkSteps();
-								if (getMapAreaNameHash() != -1) {
-									if (!MapAreas.isAtArea(getMapAreaNameHash(), this)) {
-										forceWalkRespawnTile();
-										return;
-									}
-									addWalkSteps(getX() + moveX, getY() + moveY, 5);
-								} else {
-									addWalkSteps(respawnTile.getX() + moveX, respawnTile.getY() + moveY, 5);
+								if (!withinDistanceFromSpawn()) {
+									forceWalkRespawnTile();
+									return;
 								}
+								addWalkSteps(respawnTile.getX() + moveX, respawnTile.getY() + moveY, 5);
 							}
 						}
 					}
 				}
 			}
 		}
-
-		/*
-		 * if (id == 3777) { this.setName("Echo Announcer"); if (Misc.random(25)
-		 * == 1) { if (Misc.random(5) == 0) this.setNextForceTalk(new ForceTalk(
-		 * "Want an extra 5M? Vote for Echo! Receive Rewards!")); else if
-		 * (Misc.random(5) == 1) this.setNextForceTalk(new ForceTalk(
-		 * "Use the Grand Exchange to your power!")); else if (Misc.random(5) ==
-		 * 2) this.setNextForceTalk(new ForceTalk(
-		 * "I warn thee of Echo! A powerful creature is coming..")); else if
-		 * (Misc.random(5) == 3) this.setNextForceTalk(new ForceTalk(
-		 * "Want to earn some extra money? View our Advertisement Options!"));
-		 * else if (Misc.random(5) == 4) this.setNextForceTalk(new ForceTalk(
-		 * "Can't find something? Suggest it on the Forums!")); else if
-		 * (Misc.random(5) == 5) this.setNextForceTalk(new ForceTalk(
-		 * "Want a free 100 echo coins? Write a guide on the forums!")); } }
-		 */
-	/*	if (id == 3373) {
-			this.setName("Max");
-			if (Misc.random(25) == 1) {
-				
-				if (Misc.random(5) == 1)
-					this.setNextForceTalk(new ForceTalk(
-							"Talk to me for important information."));
-				
-			}
-		}*/
 		if (isForceWalking()) {
 			if (getFreezeDelay() < Misc.currentTimeMillis()) {
-				setRandomWalk(false);
-				if (id == 519) {
-					setRandomWalk(false);
-				}
-				if (id == 550) {
-					setRandomWalk(false);
-				}
-				if (id == 546) {
-					setRandomWalk(false);
-				}
-				if (id == 549) {
-					setRandomWalk(false);
-				}
-				if (id == 683) {
-					setRandomWalk(false);
-				}
-				if (id == 2676) {
-					setRandomWalk(false);
-				}
-				if (id == 948) {
-					setRandomWalk(false);
-				}
-				if (id == 2676) {
-					setRandomWalk(false);
-				}
-				if (id == 948) {
-					setRandomWalk(false);
-				}
-				if (id == 445) {
-					setRandomWalk(false);
-				}
-				if (id == 3299) {
-					setRandomWalk(false);
-				}
-				if (id == 2732) {
-					setRandomWalk(false);
-				}
-				if (id == 4906) {
-					setRandomWalk(false);
-				}
-				if (id == 3706) {
-					setRandomWalk(false);
-				}
 				if (getX() != forceWalk.getX() || getY() != forceWalk.getY()) {
 					if (!hasWalkSteps()) {
 						addWalkSteps(forceWalk.getX(), forceWalk.getY(), getSize(), true);
 					}
-					if (!hasWalkSteps()) { // failing finding route
-						setNextWorldTile(new WorldTile(forceWalk)); // force
-						// tele
-						// to
-						// the
-						// forcewalk
-						// place
-						forceWalk = null; // so ofc reached forcewalk place
+					if (!hasWalkSteps()) {
+						setNextWorldTile(new WorldTile(forceWalk));
+						forceWalk = null;
 					}
-				} else
-				// walked till forcewalk place
-				{
+				} else {
 					forceWalk = null;
 				}
 			}
@@ -377,10 +276,6 @@ public class NPC extends Actor implements Serializable {
 		return false;
 	}
 	
-	public boolean hasRandomWalk() {
-		return randomwalk;
-	}
-	
 	public int getMapAreaNameHash() {
 		return mapAreaNameHash;
 	}
@@ -396,7 +291,7 @@ public class NPC extends Actor implements Serializable {
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || !player.withinDistance(this, forceTargetDistance > 0 ? forceTargetDistance : (getCombatDefinitions().getAttackStyle() == NPCConstants.MELEE ? 4 : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8)) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && player.getAttackedBy() != this && (player.getAttackedByDelay() > System.currentTimeMillis() || player.getFindTargetDelay() > System.currentTimeMillis())) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getDefinitions().getCombatLevel() * 2)) {
+					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isInRange(getX(), getY(), getSize(), player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
 						continue;
 					}
 					possibleTarget.add(player);
@@ -691,6 +586,14 @@ public class NPC extends Actor implements Serializable {
 		changedName = true;
 	}
 	
+	public int getRespawnDirection() {
+		NPCDefinitions definitions = getDefinitions();
+		if (definitions.anInt853 == 0 || definitions.getRespawnDirection() <= 0 || definitions.getRespawnDirection() > 8) {
+			return 0;
+		}
+		return (4 + definitions.getRespawnDirection()) << 11;
+	}
+	
 	public void transformIntoNPC(int id) {
 		setNPC(id);
 		nextTransformation = new Transformation(id);
@@ -912,5 +815,13 @@ public class NPC extends Actor implements Serializable {
 	public WorldTile getMiddleWorldTile() {
 		int size = getSize();
 		return new WorldTile(getCoordFaceX(size), getCoordFaceY(size), getPlane());
+	}
+	
+	public boolean withinDistanceFromSpawn() {
+		return withinDistance(respawnTile, 16);
+	}
+	
+	public boolean withinDistanceFromSpawn(int distance) {
+		return withinDistance(this, distance);
 	}
 }

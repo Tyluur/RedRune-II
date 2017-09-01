@@ -51,6 +51,10 @@ public class WorldPacketsEncoder extends Encoder {
 		sendGameMessage(text, false);
 	}
 	
+	public void sendConsoleMessage(String text) {
+		sendMessage(99, text, null);
+	}
+	
 	public void sendGameMessage(String text, boolean filter) {
 		sendMessage(filter ? 109 : 0, text, null);
 	}
@@ -934,7 +938,7 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writePacketVarByte(91);
 		stream.writeShort(p.getIndex());
 		stream.writeShort(message.getEffects());
-		stream.writeByte(p.getRights());
+		stream.writeByte(p.getDominantRight().getClientRight());
 		if (message instanceof QuickChatMessage) {
 			QuickChatMessage qcMessage = (QuickChatMessage) message;
 			stream.writeShort(qcMessage.getFileId());

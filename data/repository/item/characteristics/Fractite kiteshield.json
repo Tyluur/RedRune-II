@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17349": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      28,
+      49,
+      40,
+      -1,
+      42,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17349": "A large metal shield. (Tier 5)",
+    "17350": "It's an Fractite kiteshield"
+  }
+}

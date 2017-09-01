@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1121": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      46,
+      44,
+      38,
+      -6,
+      44,
+      20,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1121": "Provides excellent protection!",
+    "1122": "It's an Mithril platebody"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19461": [
+      0,
+      0,
+      0,
+      -15,
+      30,
+      55,
+      47,
+      60,
+      50,
+      55,
+      55,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19461": "Armadyl blessed dragonhide body armour.",
+    "19462": "It's an Armadyl body"
+  }
+}

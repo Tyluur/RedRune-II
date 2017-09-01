@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19146": [
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "19148": [
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19146": "A bow imbued with the power of Guthix.",
+    "19147": "It's an Guthix bow",
+    "19148": "A bow imbued with the power of Guthix."
+  }
+}

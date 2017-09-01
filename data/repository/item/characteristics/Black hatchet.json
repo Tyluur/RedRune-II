@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1361": [
+      -2,
+      10,
+      8,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1361": "A sinister looking hatchet.",
+    "1362": "It's an Black hatchet"
+  }
+}

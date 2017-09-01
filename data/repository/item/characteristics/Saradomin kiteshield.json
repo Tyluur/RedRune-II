@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2667": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13829": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2667": "Rune kiteshield in the colours of Saradomin.",
+    "2668": "It's an Saradomin kiteshield",
+    "13829": "Rune kiteshield in the colours of Saradomin."
+  }
+}

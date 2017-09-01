@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "11722": [
+      -6,
+      -6,
+      -6,
+      -10,
+      20,
+      32,
+      26,
+      34,
+      40,
+      33,
+      25,
+      0,
+      7,
+      3,
+      0,
+      0,
+      1,
+      0
+    ],
+    "13457": [
+      -6,
+      -6,
+      -6,
+      -10,
+      20,
+      32,
+      26,
+      34,
+      40,
+      33,
+      25,
+      0,
+      7,
+      3,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "examineMap": {
+    "11722": "A chainskirt of great craftsmanship.",
+    "11723": "It's an Armadyl chainskirt",
+    "13457": "A chainskirt of great craftsmanship."
+  }
+}

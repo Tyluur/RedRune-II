@@ -1,0 +1,69 @@
+{
+  "bonusMap": {
+    "546": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0
+    ],
+    "548": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0
+    ],
+    "10634": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0
+    ]
+  },
+  "examineMap": {
+    "546": "I feel closer to the gods when I am wearing this. (Top) If a shade had knees, this would keep them nice and warm. (Bottom)",
+    "548": "I feel closer to the gods when I am wearing this. (Top) If a shade had knees, this would keep them nice and warm. (Bottom)",
+    "10634": "I feel closer to the gods when I am wearing this. (Top) If a shade had knees, this would keep them nice and warm. (Bottom)"
+  }
+}

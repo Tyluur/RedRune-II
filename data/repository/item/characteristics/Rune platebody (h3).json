@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "19221": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19223": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19221": "A platebody with a heraldic design.",
+    "19222": "It's an Rune platebody (h3)",
+    "19223": "A platebody with a heraldic design.",
+    "19489": "A platebody with a heraldic design."
+  }
+}

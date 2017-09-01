@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16885": [
+      0,
+      0,
+      0,
+      0,
+      57,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16885": "A small bow, only effective at short distance. (Tier 10)",
+    "16886": "It's an Grave creeper shortbow"
+  }
+}

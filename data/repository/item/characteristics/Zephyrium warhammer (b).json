@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16121": [
+      -4,
+      -4,
+      78,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      62,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16121": "I don't think it's intended for joinery.(Tier 6)"
+  }
+}

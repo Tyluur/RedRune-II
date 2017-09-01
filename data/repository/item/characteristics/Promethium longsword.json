@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16401": [
+      80,
+      111,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      125,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16401": "A razor-sharp longsword. (Tier 10)",
+    "16402": "It's an Promethium longsword"
+  }
+}

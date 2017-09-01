@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "3100": [
+      18,
+      23,
+      -4,
+      0,
+      0,
+      6,
+      12,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      24,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3100": "A set of fighting claws.",
+    "3120": "It's an Adamant claws"
+  }
+}

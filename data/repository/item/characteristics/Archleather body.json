@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17179": [
+      -10,
+      -10,
+      -10,
+      -15,
+      8,
+      28,
+      24,
+      32,
+      11,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17179": "Made from scaly hides. (Tier 4)",
+    "17180": "It's an Archleather body"
+  }
+}

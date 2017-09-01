@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7449": [
+      -4,
+      -4,
+      53,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7449": "Often used to soften tough meat up.",
+    "7450": "It's an Meat tenderiser"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "9753": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "10641": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9753": "The cape worn by masters of the art of Defence.",
+    "10641": "The cape worn by masters of the art of Defence."
+  }
+}

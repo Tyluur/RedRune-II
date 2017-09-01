@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16949": [
+      59,
+      48,
+      -2,
+      0,
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      79,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16949": "A razor-sharp rapier. (Tier 8)",
+    "16950": "It's an Katagon rapier"
+  }
+}

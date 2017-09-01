@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16729": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      100,
+      137,
+      216,
+      -3,
+      110,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16729": "A series of connected metal rings. (Tier 9)",
+    "16730": "It's an Gorgonite chainbody"
+  }
+}

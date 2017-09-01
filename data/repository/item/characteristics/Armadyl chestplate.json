@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "11720": [
+      -7,
+      -7,
+      -7,
+      -15,
+      33,
+      56,
+      48,
+      61,
+      70,
+      57,
+      52,
+      0,
+      10,
+      5,
+      0,
+      0,
+      1,
+      0
+    ],
+    "13456": [
+      -7,
+      -7,
+      -7,
+      -15,
+      33,
+      56,
+      48,
+      61,
+      70,
+      57,
+      52,
+      0,
+      10,
+      5,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "examineMap": {
+    "11720": "A chestplate of great craftsmanship",
+    "11721": "It's an Armadyl chestplate",
+    "13456": "A chestplate of great craftsmanship"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "20054": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20054": "This ring is dedicated to Saradomin."
+  }
+}

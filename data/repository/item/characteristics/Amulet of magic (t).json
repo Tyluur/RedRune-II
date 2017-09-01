@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10366": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10738": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10366": "An enchanted sapphire amulet of magic.",
+    "10367": "It's an Amulet of magic (t)",
+    "10738": "An enchanted sapphire amulet of magic."
+  }
+}

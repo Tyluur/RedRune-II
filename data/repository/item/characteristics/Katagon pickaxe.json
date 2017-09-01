@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16309": [
+      50,
+      -2,
+      48,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      57,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16309": "A pickaxe for mining. (Tier 8)",
+    "16310": "It's an Katagon pickaxe"
+  }
+}

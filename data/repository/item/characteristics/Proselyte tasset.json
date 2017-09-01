@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9678": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      33,
+      31,
+      29,
+      -4,
+      31,
+      10,
+      1,
+      0,
+      3,
+      0,
+      0,
+      5,
+      0
+    ]
+  },
+  "examineMap": {
+    "9678": "A Proselyte Temple Knight's leg armour.",
+    "9679": "It's an Proselyte tasset"
+  }
+}

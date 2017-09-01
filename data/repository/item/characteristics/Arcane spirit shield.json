@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13738": [
+      0,
+      0,
+      0,
+      20,
+      0,
+      53,
+      55,
+      73,
+      2,
+      52,
+      65,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "13738": "An ethereal shield with an arcane sigil attached to it.",
+    "13739": "It's an Arcane spirit shield"
+  }
+}

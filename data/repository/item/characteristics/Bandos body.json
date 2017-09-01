@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19453": [
+      0,
+      0,
+      0,
+      -15,
+      30,
+      55,
+      47,
+      60,
+      50,
+      55,
+      55,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19453": "Blessed dragonhide body armour.",
+    "19454": "It's an Bandos body"
+  }
+}

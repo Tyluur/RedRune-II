@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "10555": [
+      0,
+      0,
+      0,
+      -10,
+      16,
+      26,
+      21,
+      28,
+      19,
+      27,
+      15,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10555": "A skirt made from the skin of a Penance Ranger."
+  }
+}

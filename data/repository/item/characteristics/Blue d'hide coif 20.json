@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "12947": [
+      0,
+      0,
+      0,
+      -1,
+      5,
+      4,
+      6,
+      8,
+      4,
+      6,
+      5,
+      0,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12947": "<b>Fully charged:</b> A coif made of blue dragonhide. <b>Fully degraded:</b> A worn out coif made of blue dragonhide."
+  }
+}

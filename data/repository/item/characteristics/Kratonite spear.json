@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17087": [
+      69,
+      31,
+      52,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      43,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17087": "A stick made for poking - violent poking. (Tier 4)",
+    "17088": "It's an Kratonite spear"
+  }
+}

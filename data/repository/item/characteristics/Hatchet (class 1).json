@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14132": [
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14132": "The sacred clay has become sharp enough to cut wood.",
+    "14133": "It's an Hatchet (class 1)"
+  }
+}

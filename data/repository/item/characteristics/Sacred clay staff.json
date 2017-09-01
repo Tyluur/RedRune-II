@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14117": [
+      10,
+      -1,
+      40,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      50,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14117": "The sacred clay weapon has transformed into a magical staff."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "20826": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      21,
+      23,
+      18,
+      -1,
+      13,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ],
+    "16359": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      21,
+      23,
+      18,
+      -1,
+      13,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16359": "Boots made for walking. Also, more importantly, made for armour. (Tier 11)",
+    "16360": "It's an Primal boots",
+    "20826": "Boots made for walking. Also, more importantly, made for armour. (Tier 11)"
+  }
+}

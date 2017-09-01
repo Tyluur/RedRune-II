@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17017": [
+      0,
+      -1,
+      41,
+      20,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      30
+    ]
+  },
+  "examineMap": {
+    "17017": "It's an Celestial catalytic staff",
+    "17018": "It's an Celestial catalytic staff"
+  }
+}

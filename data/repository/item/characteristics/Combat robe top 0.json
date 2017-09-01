@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12976": [
+      0,
+      0,
+      0,
+      7,
+      0,
+      1,
+      1,
+      1,
+      7,
+      0,
+      8,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12976": "A magical robe top, especially made for combat spells.",
+    "12977": "It's an Combat robe top 0"
+  }
+}

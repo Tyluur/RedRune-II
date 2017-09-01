@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "16399": [
+      71,
+      101,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      114,
+      0,
+      0,
+      0
+    ],
+    "16963": [
+      71,
+      101,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      114,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16399": "A razor-sharp longsword. (Tier 9)",
+    "16400": "It's an Gorgonite longsword",
+    "16963": "A razor-sharp longsword. (Tier 9)",
+    "16964": "It's an Gorgonite longsword"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1131": [
+      0,
+      0,
+      0,
+      -4,
+      8,
+      12,
+      15,
+      18,
+      6,
+      15,
+      12,
+      0,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1131": "Harder than normal leather.",
+    "1132": "It's an Hardleather body"
+  }
+}

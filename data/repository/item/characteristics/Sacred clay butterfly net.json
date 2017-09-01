@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14110": [
+      4,
+      -2,
+      2,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14110": "Your sacred clay tool has transformed into a butterfly net."
+  }
+}

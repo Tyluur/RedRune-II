@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17321": [
+      -7,
+      -7,
+      -7,
+      -10,
+      2,
+      8,
+      6,
+      8,
+      2,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17321": "Made from scaly hides (Tier 2)",
+    "17322": "It's an Subleather chaps"
+  }
+}

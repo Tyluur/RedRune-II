@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17241": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      37,
+      35,
+      20,
+      -6,
+      37,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17241": "Provides excellent protection. (Tier 2)",
+    "17242": "It's an Bathus platebody"
+  }
+}

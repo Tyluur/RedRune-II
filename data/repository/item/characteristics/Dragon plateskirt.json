@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "4585": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      68,
+      66,
+      63,
+      -4,
+      65,
+      20,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4585": "This looks pretty heavy.",
+    "4586": "It's an Dragon plateskirt",
+    "13490": "This looks pretty heavy."
+  }
+}

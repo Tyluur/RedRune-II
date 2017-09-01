@@ -96,7 +96,7 @@ public final class LocalNPCUpdate {
 					continue;
 				}
 				stream.writeBits(15, n.getIndex());
-				stream.writeBits(3, (n.getDirection() >> 11) - 4);
+				stream.writeBits(3, n.getDirection());
 				boolean needUpdate = n.needMasksUpdate() || n.getLastFaceEntity() != -1;
 				stream.writeBits(1, needUpdate ? 1 : 0);
 				int y = n.getY() - player.getY();

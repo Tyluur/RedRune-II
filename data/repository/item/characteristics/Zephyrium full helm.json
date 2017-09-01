@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16701": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      36,
+      41,
+      22,
+      -1,
+      38,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16701": "A full face helmet. (Tier 6)",
+    "16702": "It's an Zephyrium full helm"
+  }
+}

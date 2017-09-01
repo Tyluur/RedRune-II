@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13876": [
+      0,
+      0,
+      0,
+      -5,
+      13,
+      8,
+      11,
+      14,
+      8,
+      12,
+      15,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13876": "This item degrades in combat, and will turn to dust.",
+    "13877": "It's an Morrigan's coif"
+  }
+}

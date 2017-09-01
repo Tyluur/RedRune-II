@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "9807": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "10660": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9807": "The cape worn by master woodcutters (Obtaining level 99 skill)",
+    "10660": "The cape worn by master woodcutters (Obtaining level 99 skill)"
+  }
+}

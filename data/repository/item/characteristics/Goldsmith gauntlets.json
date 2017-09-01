@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "776": [
+      2,
+      2,
+      2,
+      0,
+      0,
+      8,
+      9,
+      7,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "776": "These gauntlets empower the bearer whilst making gold."
+  }
+}

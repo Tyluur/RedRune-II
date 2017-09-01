@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "17253": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      171,
+      159,
+      94,
+      -6,
+      174,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "20875": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      171,
+      159,
+      94,
+      -6,
+      174,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17253": "Provides excellent protection. (Tier 8)",
+    "17254": "It's an Katagon platebody",
+    "20875": "Provides excellent protection. (Tier 8)"
+  }
+}

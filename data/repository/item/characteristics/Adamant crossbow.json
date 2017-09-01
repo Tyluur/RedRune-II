@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9183": [
+      0,
+      0,
+      0,
+      0,
+      78,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9183": "An adamantite crossbow.",
+    "9184": "It's an Adamant crossbow"
+  }
+}

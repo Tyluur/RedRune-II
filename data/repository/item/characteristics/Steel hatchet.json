@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1353": [
+      -2,
+      8,
+      6,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1353": "A woodcutter's hatchet.",
+    "1354": "It's an Steel hatchet"
+  }
+}

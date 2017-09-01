@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16657": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      55,
+      61,
+      98,
+      -4,
+      61,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16657": "Designer leg protection. (Tier 6)",
+    "16658": "It's an Zephyrium plateskirt"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "1093": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1093": "Designer leg protection.",
+    "1094": "It's an Rune plateskirt",
+    "13489": "Designer leg protection."
+  }
+}

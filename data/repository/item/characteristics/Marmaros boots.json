@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16343": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      5,
+      6,
+      4,
+      -1,
+      4,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16343": "Boots made for walking. Also, more importantly, made for armour. (Tier 3)",
+    "16344": "It's an Marmaros boots"
+  }
+}

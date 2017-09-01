@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13424": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6151": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6151": "Fremennik gloves stitched together from rock crab shell shards.",
+    "6152": "It's an Rock-shell gloves",
+    "13424": "Fremennik gloves stitched together from rock crab shell shards."
+  }
+}

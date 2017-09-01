@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "15827": [
+      50,
+      21,
+      -4,
+      8,
+      -2,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15827": "A dagger made out of enchanted ice, covered in sharp frost shards."
+  }
+}

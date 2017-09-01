@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4170": [
+      7,
+      -1,
+      25,
+      12,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      35,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4170": "An old and magical staff.",
+    "4171": "It's an Slayer's staff"
+  }
+}

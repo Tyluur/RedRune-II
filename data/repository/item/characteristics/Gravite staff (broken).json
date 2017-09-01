@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "18372": [
+      -1,
+      -1,
+      15,
+      15,
+      0,
+      2,
+      3,
+      1,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      5
+    ]
+  },
+  "examineMap": {
+    "18372": "This staff makes destructive spells more powerful."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "10732": [
+      -100,
+      -100,
+      -50,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -10,
+      0,
+      0,
+      0
+    ],
+    "4566": [
+      -100,
+      -100,
+      -50,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4566": "Perhaps not the most powerful weapon in RuneScape.",
+    "10732": "Perhaps not the most powerful weapon in RuneScape."
+  }
+}

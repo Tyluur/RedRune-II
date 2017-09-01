@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16337": [
+      0,
+      0,
+      0,
+      0,
+      158,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16337": "A sturdy longbow.",
+    "16338": "It's an Sagittarian longbow"
+  }
+}

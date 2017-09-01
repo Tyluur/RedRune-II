@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16663": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      87,
+      98,
+      158,
+      -4,
+      99,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16663": "Designer leg protection. (Tier 9)",
+    "16664": "It's an Gorgonite plateskirt"
+  }
+}

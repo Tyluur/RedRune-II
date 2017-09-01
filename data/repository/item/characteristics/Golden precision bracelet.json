@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17263": [
+      12,
+      17,
+      17,
+      5,
+      5,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17263": "A magically enhanced gold bracelet.",
+    "17264": "It's an Golden precision bracelet"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16783": [
+      26,
+      12,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      18,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16783": "Short but pointy. (Tier 4)",
+    "16784": "It's an Kratonite dagger (p)"
+  }
+}

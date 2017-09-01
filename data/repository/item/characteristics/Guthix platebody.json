@@ -1,0 +1,70 @@
+{
+  "bonusMap": {
+    "10780": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ],
+    "2669": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13830": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2669": "Rune platebody in the colours of Guthix.",
+    "2670": "It's an Guthix platebody",
+    "10780": "Rune platebody in the colours of Guthix.",
+    "13830": "Rune platebody in the colours of Guthix."
+  }
+}

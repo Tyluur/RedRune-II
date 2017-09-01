@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19317": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+    ],
+    "19319": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+    ]
+  },
+  "examineMap": {
+    "19317": "A fabulously ancient woven robe top as worn by the druids of old.",
+    "19318": "It's an Third-age druidic robe top",
+    "19319": "A fabulously ancient woven robe top as worn by the druids of old."
+  }
+}

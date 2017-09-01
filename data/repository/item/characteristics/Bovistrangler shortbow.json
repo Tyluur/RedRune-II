@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16877": [
+      0,
+      0,
+      0,
+      0,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16877": "A small bow, only effective at short distance. (Tier 6)",
+    "16878": "It's an Bovistrangler shortbow"
+  }
+}

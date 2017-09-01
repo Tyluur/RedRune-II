@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16679": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      91,
+      78,
+      48,
+      -4,
+      89,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16679": "These look pretty heavy. (Tier 6)",
+    "16680": "It's an Zephyrium platelegs"
+  }
+}

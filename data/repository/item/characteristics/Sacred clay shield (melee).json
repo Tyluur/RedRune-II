@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "21527": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      64,
+      65,
+      61,
+      -10,
+      25,
+      60,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "21527": "A clay shield that is highly resistant to melee attacks."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10378": [
+      0,
+      0,
+      0,
+      -15,
+      30,
+      55,
+      47,
+      60,
+      50,
+      55,
+      55,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10378": "Guthix blessed dragonhide body armour.",
+    "10379": "It's an Guthix body"
+  }
+}

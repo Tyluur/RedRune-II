@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1169": [
+      0,
+      0,
+      0,
+      -1,
+      2,
+      4,
+      6,
+      8,
+      4,
+      4,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1169": "Light weight head protection.",
+    "1170": "It's an Coif"
+  }
+}

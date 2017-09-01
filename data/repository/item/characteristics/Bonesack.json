@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "7918": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7918": "The Bonesack is a little old item that protects like leather."
+  }
+}

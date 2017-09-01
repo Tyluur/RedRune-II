@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13861": [
+      0,
+      0,
+      0,
+      25,
+      -7,
+      38,
+      35,
+      44,
+      24,
+      0,
+      30,
+      8,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13861": "This item degrades in combat, and will turn to dust.",
+    "13862": "It's an Zuriel's robe bottom"
+  }
+}

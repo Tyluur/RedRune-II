@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17183": [
+      -10,
+      -10,
+      -10,
+      -15,
+      17,
+      43,
+      37,
+      50,
+      45,
+      27,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17183": "Made from scaly hides (Tier 6)",
+    "17184": "It's an Spinoleather body"
+  }
+}

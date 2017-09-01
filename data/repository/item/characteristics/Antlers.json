@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12204": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12204": "Doors could be a problem, wearing these...",
+    "12205": "It's an Antlers"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "577": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "577": "I can do magic better in this.",
+    "578": "It's an Wizard robe"
+  }
+}

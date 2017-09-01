@@ -6,7 +6,6 @@ import com.rs.cache.Cache;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.world.World;
-import com.rs.utility.repo.npc.NPCCharacteristic;
 import org.jboss.netty.channel.Channel;
 
 import java.io.*;
@@ -15,6 +14,7 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 public final class Misc {
@@ -52,6 +52,43 @@ public final class Misc {
 			ip[i++] = Integer.parseInt(st.nextToken());
 		}
 		return ((ip[0] << 24) | (ip[1] << 16) | (ip[2] << 8) | (ip[3]));
+	}
+	
+	/**
+	 * Gets the class type from a character string
+	 *
+	 * @param characters
+	 * 		The characters
+	 */
+	public static Class<?> getClassType(String characters) {
+		if (isDigit(characters)) {
+			return Integer.class;
+		} else if (isBoolean(characters)) {
+			return Boolean.class;
+		} else {
+			return String.class;
+		}
+	}
+	
+	/**
+	 * Checks if the characters are numbers
+	 */
+	@SuppressWarnings("unused")
+	public static boolean isDigit(String characters) {
+		Integer digit;
+		try {
+			digit = Integer.parseInt(characters);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Checks if the characters are a boolean
+	 */
+	public static boolean isBoolean(String characters) {
+		return "true".equals(characters) || "false".equals(characters);
 	}
 	
 	/**
@@ -147,6 +184,9 @@ public final class Misc {
 			}
 			List<Object> list = new ArrayList<>();
 			for (Class clazz : classes) {
+				if (clazz.isAnnotation()) {
+					continue;
+				}
 				list.add(clazz.newInstance());
 			}
 			return list;
@@ -305,10 +345,6 @@ public final class Misc {
 	
 	public static final int getInterfaceDefinitionsSize() {
 		return Cache.STORE.getIndexes()[3].getLastArchiveId() + 1;
-	}
-	
-	public static final int getInterfaceDefinitionsComponentsSize(int interfaceId) {
-		return Cache.STORE.getIndexes()[3].getLastFileId(interfaceId) + 1;
 	}
 	
 	public static Player player(String name) {
@@ -948,6 +984,100 @@ public final class Misc {
 			gson.toJson(data, writer);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static boolean isInRange(int x1, int y1, int size1, int x2, int y2, int size2, int maxDistance) {
+		int distanceX = x1 - x2;
+		int distanceY = y1 - y2;
+		return !(distanceX > size2 + maxDistance || distanceX < -size1 - maxDistance || distanceY > size2 + maxDistance || distanceY < -size1 - maxDistance);
+	}
+	
+	/**
+	 * Gets the entry of an array at a slot, if there is nothing, it will return null. If the slot is too small/big it
+	 * will return null
+	 */
+	public static <K> K getArrayEntry(K[] array, int slot) {
+		if (slot >= array.length || slot < 0) {
+			return null;
+		}
+		return array[slot];
+	}
+	
+	public static String getPackageName(Class clazz) {
+		String packageName = clazz.getPackage().toString();
+		return packageName.substring(packageName.lastIndexOf(".") + 1, packageName.length()).trim();
+	}
+	
+	/**
+	 * Gets the simplified type from a class name
+	 *
+	 * @param className
+	 * 		The class name
+	 */
+	public static String getSimplifiedType(String className) {
+		switch (className) {
+			case "String":
+				return "Text";
+			case "Integer":
+				return "#";
+			default:
+				return className;
+		}
+	}
+	
+	/**
+	 * Gets a string format of the amount of memory we're using.
+	 */
+	public static String getMemoryUsageInformation() {
+		DecimalFormat decimalFormat = new DecimalFormat("0.0#%");
+		NumberFormat memoryFormat = NumberFormat.getInstance();
+		Runtime runtime = Runtime.getRuntime();
+		long totalMemory = runtime.totalMemory();
+		long freeMemory = runtime.freeMemory();
+		long usedMemory = (totalMemory - freeMemory);
+		return "Total Used JVM Allocated Memory: " + memoryFormat.format(usedMemory / (1024L * 1024L)) + "/" + memoryFormat.format(totalMemory / (1024L * 1024L)) + " MB, " + decimalFormat.format((double) usedMemory / (double) totalMemory) + " - Free JVM Allocated Memory: " + memoryFormat.format(freeMemory / (1024L * 1024L)) + " MB, " + decimalFormat.format((double) freeMemory / (double) totalMemory);
+	}
+	
+	public static void clearInterface(Player player, int interfaceId) {
+		int componentLength = getInterfaceDefinitionsComponentsSize(interfaceId);
+		for (int i = 0; i < componentLength; i++) {
+			player.getPackets().sendIComponentText(interfaceId, i, "");
+		}
+	}
+	
+	public static final int getInterfaceDefinitionsComponentsSize(int interfaceId) {
+		return Cache.STORE.getIndexes()[3].getLastFileId(interfaceId) + 1;
+	}
+	
+	public enum Direction {
+		
+		NORTH(0),
+		NORTHEAST(1),
+		EAST(2),
+		SOUTHEAST(3),
+		SOUTH(4),
+		SOUTHWEST(5),
+		WEST(6),
+		NORTHWEST(7);
+		
+		private int value;
+		
+		Direction(int value) {
+			this.value = value;
+		}
+		
+		public static Direction getDirection(String text) {
+			for (Direction d : Direction.values()) {
+				if (d.name().equalsIgnoreCase(text)) {
+					return d;
+				}
+			}
+			return null;
+		}
+		
+		public int getValue() {
+			return value;
 		}
 	}
 	

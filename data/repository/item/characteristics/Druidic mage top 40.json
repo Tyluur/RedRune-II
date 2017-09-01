@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "12897": [
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      7,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12897": "A magical robe top worn by followers of Guthix."
+  }
+}

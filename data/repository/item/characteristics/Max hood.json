@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "20751": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      0,
+      0,
+      0,
+      4,
+      0,
+      10,
+      0
+    ],
+    "20768": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      0,
+      0,
+      0,
+      4,
+      0,
+      10,
+      0
+    ]
+  },
+  "examineMap": {
+    "20751": "A cape worn by those who've achieved 99 in all skills.",
+    "20768": "A cape worn by those who've achieved 99 in all skills."
+  }
+}

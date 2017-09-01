@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16347": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      9,
+      10,
+      6,
+      -1,
+      6,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16347": "Boots made for walking. Also, more importantly, made for armour. (Tier 5)",
+    "16348": "It's an Fractite boots"
+  }
+}

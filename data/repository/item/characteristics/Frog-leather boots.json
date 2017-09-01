@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10958": [
+      0,
+      0,
+      0,
+      -8,
+      2,
+      1,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10958": "Boots made out of Frog hide.",
+    "10959": "It's an Frog-leather boots"
+  }
+}

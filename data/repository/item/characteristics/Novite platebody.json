@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17239": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      20,
+      19,
+      11,
+      -6,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17239": "Provides excellent protection. (Tier 1)",
+    "17240": "It's an Novite platebody"
+  }
+}

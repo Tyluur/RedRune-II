@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "9759": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "10643": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9759": "The cape worn by the most pious of heroes.",
+    "10643": "The cape worn by the most pious of heroes."
+  }
+}

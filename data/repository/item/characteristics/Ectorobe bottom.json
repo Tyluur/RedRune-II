@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16859": [
+      -5,
+      -5,
+      -5,
+      15,
+      -5,
+      28,
+      18,
+      36,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16859": "The lower half of a magical robe. (Tier 8)",
+    "16860": "It's an Ectorobe bottom"
+  }
+}

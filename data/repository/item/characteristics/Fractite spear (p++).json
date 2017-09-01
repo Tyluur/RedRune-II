@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17101": [
+      80,
+      41,
+      63,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      67,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17101": "A stick made for poking - violent poking. (Tier 5)",
+    "17102": "It's an Fractite spear (p++)"
+  }
+}

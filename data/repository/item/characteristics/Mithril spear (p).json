@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1257": [
+      17,
+      17,
+      17,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      18,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1257": "A mithril tipped spear.",
+    "1258": "It's an Mithril spear (p)"
+  }
+}

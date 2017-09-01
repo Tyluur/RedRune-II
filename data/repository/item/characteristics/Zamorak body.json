@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10370": [
+      0,
+      0,
+      0,
+      -15,
+      30,
+      55,
+      47,
+      60,
+      50,
+      55,
+      55,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10370": "Zamorak blessed dragonhide body armour.",
+    "10371": "It's an Zamorak body"
+  }
+}

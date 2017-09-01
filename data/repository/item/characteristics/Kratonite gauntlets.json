@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16279": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      4,
+      7,
+      5,
+      -1,
+      4,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16279": "A pair of heavy gauntlets. (Tier 4)",
+    "16280": "It's an Kratonite gauntlets"
+  }
+}

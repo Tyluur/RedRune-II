@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15767": [
+      -2,
+      86,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      103,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15767": "A vicious-looking axe. (Tier 8)",
+    "15768": "It's an Katagon battleaxe"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "15886": [
+      68,
+      28,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      97,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15886": "Short but pointy. When poisoned: The blade is dripping with poison."
+  }
+}

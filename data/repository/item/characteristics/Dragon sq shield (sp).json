@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "19345": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      50,
+      52,
+      48,
+      0,
+      50,
+      50,
+      5,
+      0,
+      11,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19345": "Dragon square shield with a spiky decoration."
+  }
+}

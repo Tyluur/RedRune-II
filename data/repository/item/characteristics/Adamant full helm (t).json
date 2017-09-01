@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2605": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      19,
+      21,
+      16,
+      -1,
+      19,
+      6,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2605": "Adamant full helm with trim",
+    "2606": "It's an Adamant full helm (t)"
+  }
+}

@@ -26,7 +26,7 @@ public class ChristmasCrackerD extends Dialogue {
 	public void run(int interfaceId, int componentId) {
 		switch (componentId) {
 			case OPTION_1:
-				player.sendMessage("You pull a Christmas cracker...");
+				player.getPackets().sendGameMessage("You pull a Christmas cracker...");
 				player.getInventory().deleteItem(962, 1);
 				usedOn.faceEntity(player);
 				player.setNextAnimation(new Animation(15153));
@@ -41,7 +41,7 @@ public class ChristmasCrackerD extends Dialogue {
 					usedOn.setNextForceTalk(new ForceTalk("Hey! I got the cracker!"));
 					usedOn.getInventory().addItem(getPartyhats());
 					usedOn.getInventory().addItem(getExtraItems());
-					player.sendMessage("The person with whom you pull the cracker gets the prize.");
+					player.getPackets().sendGameMessage("The person with whom you pull the cracker gets the prize.");
 				}
 				end();
 				break;

@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10671": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      17,
+      19,
+      18,
+      -1,
+      18,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "7344": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      17,
+      19,
+      18,
+      -1,
+      18,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7344": "A black shield with a heraldic design.",
+    "7345": "It's an Black shield (h3)",
+    "10671": "A black shield with a heraldic design."
+  }
+}

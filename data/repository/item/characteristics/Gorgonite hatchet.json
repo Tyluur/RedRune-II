@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16377": [
+      -2,
+      64,
+      58,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      76,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16377": "A hatchet for woodcutting. (Tier 9)",
+    "16378": "It's an Gorgonite hatchet"
+  }
+}

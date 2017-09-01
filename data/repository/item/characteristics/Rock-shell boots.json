@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13421": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6145": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6145": "Some Fremennik boots, made from the shards of a rock crab's shell.",
+    "6146": "It's an Rock-shell boots",
+    "13421": "Some Fremennik boots, made from the shards of a rock crab's shell."
+  }
+}

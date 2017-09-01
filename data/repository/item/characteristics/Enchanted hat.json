@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7400": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7400": "A three pointed hat of magic.",
+    "7403": "It's an Enchanted hat"
+  }
+}

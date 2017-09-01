@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "20708": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20708": "A cloak to show your clan allegiance.",
+    "20713": "A cloak to show your clan allegiance."
+  }
+}

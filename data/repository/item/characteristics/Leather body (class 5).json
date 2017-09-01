@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14399": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      50,
+      50,
+      50,
+      50,
+      100,
+      100,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14399": "The sacred clay has transformed into a flexible mesh.",
+    "14400": "It's an Leather body (class 5)"
+  }
+}

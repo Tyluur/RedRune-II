@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10458": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "10784": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "10458": "Blessed vestments of Saradomin.",
+    "10459": "It's an Saradomin robe top",
+    "10784": "Blessed vestments of Saradomin."
+  }
+}

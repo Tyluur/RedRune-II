@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12207": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      2,
+      3,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12207": "It's a little smelly in there.",
+    "12208": "It's an Lizard skull"
+  }
+}

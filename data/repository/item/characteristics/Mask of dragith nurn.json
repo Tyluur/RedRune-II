@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15590": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15590": "It's an Mask of dragith nurn",
+    "15625": "It's an Mask of dragith nurn"
+  }
+}

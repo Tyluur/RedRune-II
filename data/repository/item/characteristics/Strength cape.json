@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "9750": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "10640": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9750": "The cape only worn by the strongest people.",
+    "10640": "The cape only worn by the strongest people."
+  }
+}

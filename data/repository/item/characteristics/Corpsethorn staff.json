@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16991": [
+      0,
+      -1,
+      7,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16991": "A basic staff for basic uses. All and all, pretty basic. (Tier 8)",
+    "16992": "It's an Corpsethorn staff"
+  }
+}

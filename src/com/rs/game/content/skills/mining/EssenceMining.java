@@ -210,7 +210,7 @@ public class EssenceMining extends Action {
 	@Override
 	public boolean process(Player player) {
 		player.setNextAnimation(new Animation(emoteId));
-		return checkRock(player);
+		return checkRock();
 	}
 	
 	@Override
@@ -237,8 +237,8 @@ public class EssenceMining extends Action {
 		setActionDelay(player, 3);
 	}
 	
-	private boolean checkRock(Player player) {
-		return World.getRegion(rock.getRegionId()).containsObject(rock.getId(), rock);
+	private boolean checkRock() {
+		return World.containsObjectWithId(rock.getId(), rock);
 	}
 	
 	public enum EssenceDefinitions {

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4119": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      1,
+      2,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4119": "These will protect my feet.",
+    "4120": "It's an Bronze boots"
+  }
+}

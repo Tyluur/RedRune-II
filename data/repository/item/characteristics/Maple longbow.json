@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "851": [
+      0,
+      0,
+      0,
+      0,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13523": [
+      0,
+      0,
+      0,
+      0,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "851": "A nice sturdy bow made out of maple.",
+    "852": "It's an Maple longbow",
+    "13523": "A nice sturdy bow made out of maple."
+  }
+}

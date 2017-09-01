@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9640": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9640": "Could be used as a disguise in the ghetto of Meiyerditch.",
+    "9641": "It's an Citizen top"
+  }
+}

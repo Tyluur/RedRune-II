@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17277": [
+      50,
+      21,
+      -4,
+      8,
+      -2,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17277": "A dagger made out of enchanted ice, covered in sharp frost shards.",
+    "17278": "It's an Hailstorm dagger"
+  }
+}

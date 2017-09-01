@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16691": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      5,
+      6,
+      3,
+      -1,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16691": "A full face helmet. (Tier 1)",
+    "16692": "It's an Novite full helm"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16395": [
+      57,
+      82,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16395": "A razor-sharp longsword. (Tier 7)",
+    "16396": "It's an Argonite longsword"
+  }
+}

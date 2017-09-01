@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10146": [
+      0,
+      19,
+      0,
+      0,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      31,
+      22,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10146": "Slightly slimy, but kind of cute.",
+    "10160": "It's an Orange salamander"
+  }
+}

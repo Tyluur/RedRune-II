@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "20438": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      50,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20438": "A shield made in the Elemental Workshop.",
+    "20439": "It's an Chaos shield"
+  }
+}

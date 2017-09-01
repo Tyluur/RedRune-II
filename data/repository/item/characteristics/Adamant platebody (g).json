@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2607": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      65,
+      63,
+      55,
+      -6,
+      63,
+      30,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2607": "Adamant platebody with gold trim.",
+    "2608": "It's an Adamant platebody (g)"
+  }
+}

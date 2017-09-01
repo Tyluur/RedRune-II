@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16869": [
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16869": "A small bow, only effective at a short distance. (Tier 2)",
+    "16870": "It's an Seeping elm shortbow"
+  }
+}

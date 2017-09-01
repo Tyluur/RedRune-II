@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "3333": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      7,
+      8,
+      6,
+      -1,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "3343": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      7,
+      8,
+      6,
+      -1,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3333": "A moody blue snail shell helmet, mort myre snail shell helm",
+    "3334": "It's an Bruise blue snelm",
+    "3343": "A moody blue snail shell helmet, mort myre snail shell helm",
+    "3344": "It's an Bruise blue snelm"
+  }
+}

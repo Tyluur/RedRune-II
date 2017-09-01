@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16653": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      34,
+      38,
+      64,
+      -4,
+      38,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16653": "Designer leg protection. (Tier 4)",
+    "16654": "It's an Kratonite plateskirt"
+  }
+}

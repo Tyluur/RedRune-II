@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10352": [
+      0,
+      0,
+      0,
+      -10,
+      -4,
+      63,
+      65,
+      61,
+      -3,
+      63,
+      60,
+      5,
+      0,
+      11,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13555": [
+      0,
+      0,
+      0,
+      -10,
+      -4,
+      63,
+      65,
+      61,
+      -3,
+      63,
+      60,
+      5,
+      0,
+      11,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10352": "Ancient armour beaten from magical silver.",
+    "10353": "It's an Third-age kiteshield",
+    "13555": "Ancient armour beaten from magical silver."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17185": [
+      -10,
+      -10,
+      -10,
+      -15,
+      20,
+      51,
+      44,
+      60,
+      38,
+      54,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17185": "Made from scaly hides (Tier 7)",
+    "17186": "It's an Gallileather body"
+  }
+}

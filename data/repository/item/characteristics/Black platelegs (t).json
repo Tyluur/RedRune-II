@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2585": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      21,
+      20,
+      19,
+      -4,
+      20,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2585": "Black platelegs with trim.",
+    "2586": "It's an Black platelegs (t)"
+  }
+}

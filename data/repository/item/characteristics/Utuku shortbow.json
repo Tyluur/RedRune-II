@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16873": [
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16873": "A small bow, only effective at short distance. (Tier 4)",
+    "16874": "It's an Utuku shortbow"
+  }
+}

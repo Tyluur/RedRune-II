@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "19382": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19382": "A vestment of a forgotten god.",
+    "19383": "It's an Ancient robe top",
+    "19509": "A vestment of a forgotten god."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13004": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      10,
+      11,
+      11,
+      -1,
+      10,
+      10,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13004": "It's an Worn-out rune gauntlets",
+    "13005": "It's an Worn-out rune gauntlets"
+  }
+}

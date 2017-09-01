@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "861": [
+      0,
+      0,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13528": [
+      0,
+      0,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "861": "Short and magical, but still effective.",
+    "862": "It's an Magic shortbow",
+    "13528": "Short and magical, but still effective."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16999": [
+      0,
+      -1,
+      12,
+      13,
+      0,
+      0,
+      0,
+      0,
+      13,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      10
+    ]
+  },
+  "examineMap": {
+    "16999": "A magical staff of water. (Tier 6)",
+    "17000": "It's an Empowered water staff"
+  }
+}

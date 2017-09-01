@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1363": [
+      -2,
+      8,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      13,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1363": "A vicious looking axe.",
+    "1364": "It's an Iron battleaxe"
+  }
+}

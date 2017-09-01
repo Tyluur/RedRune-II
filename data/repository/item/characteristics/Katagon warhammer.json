@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17033": [
+      -4,
+      -4,
+      96,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      96,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17033": "I don't think it's intended for joinery. (Tier 8)",
+    "17034": "It's an Katagon warhammer"
+  }
+}

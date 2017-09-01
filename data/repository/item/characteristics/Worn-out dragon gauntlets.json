@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13007": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      14,
+      15,
+      15,
+      -1,
+      14,
+      14,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13007": "It's an Worn-out dragon gauntlets",
+    "13008": "It's an Worn-out dragon gauntlets"
+  }
+}

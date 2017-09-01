@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10039": [
+      0,
+      0,
+      0,
+      0,
+      -1,
+      4,
+      5,
+      3,
+      0,
+      4,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10039": "This should make me harder to spot in polar areas.",
+    "10040": "It's an Kyatt hat"
+  }
+}

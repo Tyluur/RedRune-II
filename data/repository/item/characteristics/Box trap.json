@@ -1,0 +1,7 @@
+{
+  "bonusMap": {},
+  "examineMap": {
+    "10008": "If a creature goes inside, then the box should slam shut.",
+    "10009": "It's an Box trap"
+  }
+}

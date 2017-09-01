@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16731": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      113,
+      155,
+      245,
+      -3,
+      124,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16731": "A series of connected metal rings. (Tier 10)",
+    "16732": "It's an Promethium chainbody"
+  }
+}

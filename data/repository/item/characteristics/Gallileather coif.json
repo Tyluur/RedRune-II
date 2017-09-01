@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17053": [
+      -3,
+      -3,
+      -3,
+      -3,
+      8,
+      13,
+      11,
+      18,
+      14,
+      14,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17053": "Crafted out of thick lizard hides. (Tier 7)",
+    "17054": "It's an Gallileather coif"
+  }
+}

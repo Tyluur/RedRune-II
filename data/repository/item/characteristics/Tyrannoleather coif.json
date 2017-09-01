@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17059": [
+      -3,
+      -3,
+      -3,
+      -3,
+      11,
+      19,
+      17,
+      27,
+      31,
+      21,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17059": "Crafted out of thick lizard hides. (Tier 10)",
+    "17060": "It's an Tyrannoleather coif"
+  }
+}

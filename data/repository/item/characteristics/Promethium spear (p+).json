@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17139": [
+      122,
+      66,
+      109,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      139,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17139": "A stick made for poking - violent poking. (Tier 10)",
+    "17140": "It's an Promethium spear (p+)"
+  }
+}

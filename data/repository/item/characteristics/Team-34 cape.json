@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4381": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4381": "Ooohhh look at the pretty colours...",
+    "4382": "It's an Team-34 cape"
+  }
+}

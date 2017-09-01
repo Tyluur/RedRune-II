@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "12880": [
+      0,
+      0,
+      0,
+      20,
+      0,
+      14,
+      11,
+      16,
+      20,
+      0,
+      23,
+      5,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12880": "A robe bottom infused with arcane power, especially created for combat spells."
+  }
+}

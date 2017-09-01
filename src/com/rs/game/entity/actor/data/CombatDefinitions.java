@@ -5,7 +5,7 @@ import com.rs.game.content.action.impl.PlayerCombatAction;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
-import com.rs.utility.game.item.ItemBonuses;
+import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 import java.io.Serializable;
 
@@ -351,7 +351,7 @@ public final class CombatDefinitions implements Serializable {
 			if (item == null) {
 				continue;
 			}
-			int[] bonuses = ItemBonuses.getItemBonuses(item.getId());
+			int[] bonuses = ItemCharacteristicRepository.getBonuses(item.getId());
 			if (bonuses == null) {
 				continue;
 			}

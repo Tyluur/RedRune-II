@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16383": [
+      10,
+      15,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16383": "A razor-sharp longsword. (Tier 1)",
+    "16384": "It's an Novite longsword"
+  }
+}

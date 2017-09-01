@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2997": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      5,
+      3,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2997": "You should see the shark...",
+    "3048": "It's an Pirate's hook"
+  }
+}

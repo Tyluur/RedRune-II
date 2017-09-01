@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2599": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      65,
+      63,
+      55,
+      -6,
+      63,
+      30,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2599": "Adamant platebody with trim.",
+    "2600": "It's an Adamant platebody (t)"
+  }
+}

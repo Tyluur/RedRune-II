@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "2495": [
+      0,
+      0,
+      0,
+      -10,
+      14,
+      28,
+      22,
+      30,
+      20,
+      28,
+      25,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2495": "Made from 100% real dragonhide.",
+    "2496": "It's an Red d'hide chaps",
+    "13493": "Made from 100% real dragonhide."
+  }
+}

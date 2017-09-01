@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16649": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      17,
+      19,
+      32,
+      -4,
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16649": "Designer leg protection. (Tier 2)",
+    "16650": "It's an Bathus plateskirt"
+  }
+}

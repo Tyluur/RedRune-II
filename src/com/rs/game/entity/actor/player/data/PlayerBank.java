@@ -5,7 +5,7 @@ import com.rs.game.GameConstants;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.utility.game.item.ItemExamines;
+import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 import java.io.Serializable;
 
@@ -107,8 +107,12 @@ public class PlayerBank implements Serializable {
 	}
 	
 	public void unlockButtons() {
+		int interfaceId = 762;
+		// removing the equipment stats button
+		player.getPackets().sendHideIComponent(interfaceId, 117, true);
+		player.getPackets().sendHideIComponent(interfaceId, 118, true);
 		// unlock bank inter all options
-		player.getPackets().sendIComponentSettings(762, 93, 0, 516, 2622718);
+		player.getPackets().sendIComponentSettings(interfaceId, 93, 0, 516, 2622718);
 		// unlock bank inv all options
 		player.getPackets().sendIComponentSettings(763, 0, 0, 27, 2425982);
 	}
@@ -403,7 +407,7 @@ public class PlayerBank implements Serializable {
 			return;
 		}
 		Item item = bankTabs[slot[0]][slot[1]];
-		player.getPackets().sendGameMessage(ItemExamines.getExamine(item));
+		player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 	}
 	
 	public int[] getRealSlot(int slot) {

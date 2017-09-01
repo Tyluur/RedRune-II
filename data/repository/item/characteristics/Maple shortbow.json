@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "853": [
+      0,
+      0,
+      0,
+      0,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13524": [
+      0,
+      0,
+      0,
+      0,
+      29,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "853": "A shortbow made out of maple, still effective.",
+    "854": "It's an Maple shortbow",
+    "13524": "A shortbow made out of maple, still effective."
+  }
+}

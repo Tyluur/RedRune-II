@@ -241,21 +241,20 @@ public final class Woodcutting extends Action {
 		} else if (Misc.getRandom(definitions.getRandomLifeProbability()) == 0) {
 			long time = definitions.respawnDelay * 600;
 			World.spawnTemporaryObject(new WorldObject(definitions.getStumpId(), tree.getType(), tree.getRotation(), tree.getX(), tree.getY(), tree.getPlane()), time);
+			
 			if (tree.getPlane() < 3 && definitions != TreeDefinitions.IVY) {
-				WorldObject object = World.getObject(new WorldTile(tree.getX() - 1, tree.getY() - 1, tree.getPlane() + 1));
-				
+				WorldObject object = World.getStandartObject(new WorldTile(tree.getX() - 1, tree.getY() - 1, tree.getPlane() + 1));
 				if (object == null) {
-					object = World.getObject(new WorldTile(tree.getX(), tree.getY() - 1, tree.getPlane() + 1));
+					object = World.getStandartObject(new WorldTile(tree.getX(), tree.getY() - 1, tree.getPlane() + 1));
 					if (object == null) {
-						object = World.getObject(new WorldTile(tree.getX() - 1, tree.getY(), tree.getPlane() + 1));
+						object = World.getStandartObject(new WorldTile(tree.getX() - 1, tree.getY(), tree.getPlane() + 1));
 						if (object == null) {
-							object = World.getObject(new WorldTile(tree.getX(), tree.getY(), tree.getPlane() + 1));
+							object = World.getStandartObject(new WorldTile(tree.getX(), tree.getY(), tree.getPlane() + 1));
 						}
 					}
 				}
-				
 				if (object != null) {
-					World.removeTemporaryObject(object, time, false);
+					World.removeTemporaryObject(object, time);
 				}
 			}
 			player.setNextAnimation(new Animation(-1));
@@ -304,7 +303,7 @@ public final class Woodcutting extends Action {
 	}
 	
 	private boolean checkTree(Player player) {
-		return World.getRegion(tree.getRegionId()).containsObject(tree.getId(), tree);
+		return World.containsObjectWithId(tree.getId(), tree);
 	}
 	
 	public enum TreeDefinitions {

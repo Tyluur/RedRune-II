@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4730": [
+      0,
+      0,
+      0,
+      -14,
+      -7,
+      75,
+      72,
+      73,
+      -4,
+      82,
+      30,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4730": "Guthan the Infested's chainskirt.",
+    "4731": "It's an Guthan's chainskirt"
+  }
+}

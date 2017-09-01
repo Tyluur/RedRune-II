@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "20546": [
+      5,
+      21,
+      -2,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20546": "A masterfully crafted mithril blade."
+  }
+}

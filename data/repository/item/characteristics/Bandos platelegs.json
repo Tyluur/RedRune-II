@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19431": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19433": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19431": "Rune platelegs in the colours of Bandos.",
+    "19432": "It's an Bandos platelegs",
+    "19433": "Rune platelegs in the colours of Bandos."
+  }
+}

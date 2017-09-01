@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16831": [
+      68,
+      28,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      97,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16831": "Short but pointy. When poisoned: The blade is dripping with poison.",
+    "16832": "It's an Promethium dagger (p)"
+  }
+}

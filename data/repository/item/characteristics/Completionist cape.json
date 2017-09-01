@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "20769": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      0,
+      0,
+      0,
+      8,
+      0,
+      13,
+      0
+    ],
+    "20771": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      0,
+      0,
+      0,
+      8,
+      0,
+      13,
+      0
+    ]
+  },
+  "examineMap": {
+    "20748": "It's an Completionist cape",
+    "20749": "It's an Completionist cape",
+    "20769": "It's an Completionist cape",
+    "20771": "It's an Completionist cape"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "13901": [
+      106,
+      121,
+      -2,
+      0,
+      0,
+      1,
+      4,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      118,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13901": "This item degrades in combat, and will turn to dust."
+  }
+}

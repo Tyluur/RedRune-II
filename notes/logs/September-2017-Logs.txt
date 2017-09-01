@@ -1,0 +1,31 @@
+9/1/17 {
+	+   Updated region system significantly
+	+   Updated movement event to fire controller changes [when you teleport/move into wilderness you will actually be in the wilderness]
+	+   Improved dialogue code
+	+   Added command plugins
+		-   @CommandManifest to describe parameters and description of a command
+		-   Command Plugin package denotes the required right to use the command
+			+   Drag and drop to change rights of a command
+	+   Removed single player rights
+		-   Added a Set of rights the player can have, the dominant one being the most powerful [you can change the dominant one on your forum account]
+		-   You receive the privileges of all the rights you have on your forum account [forum integration isn't finished yet, this is to prepare for it]\
+	+   Added json npc spawns from hdpvp dump
+		-   Storing npc spawn direction in json file as well
+		-   Updated local npc updating to store the right direction
+	+   Updated npc definition parser for fresh 667 cache
+	+   Converted all item examines/bonuses to json
+		-   Armadyl godsword.json has all ags characteristics, for all items with that name
+		-   Using a mapping so we can have several ids in the same file
+	+   Added object plugins
+	+   Fixed object packet decoding
+		-   Matrix 667 team changed the packet streams in the client for this, had to find exactly what changed after a while of debugging
+		-   Added pathed route events to them
+	+   Removed "Map Areas", stupid implementation that was never really used and unnecessary
+	+   Added npc walking flag modifications, for npcs who should move and shouldn't move. Also supports npcs walking over water.
+	+   Added server-sided object removal on startup
+		-   So I don't need to modify the cache every time I don't want an object to spawn
+	+   Added floor item path finding
+
+	[img]https://i.imgur.com/QH3UwxE.png[/img]
+	[img]https://i.imgur.com/HdNuu6c.gif[/img]
+}

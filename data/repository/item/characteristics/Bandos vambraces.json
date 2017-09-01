@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19451": [
+      0,
+      0,
+      0,
+      -10,
+      11,
+      6,
+      5,
+      7,
+      8,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19451": "Bandos blessed dragonhide vambraces.",
+    "19452": "It's an Bandos vambraces"
+  }
+}

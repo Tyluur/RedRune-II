@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2595": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      12,
+      13,
+      10,
+      -1,
+      12,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2595": "Black full helm with gold trim.",
+    "2596": "It's an Black full helm (g)"
+  }
+}

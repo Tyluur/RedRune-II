@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10284": [
+      0,
+      0,
+      0,
+      0,
+      71,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13543": [
+      0,
+      0,
+      0,
+      0,
+      71,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10284": "A powerful bow made from magic wood.",
+    "10285": "It's an Magic composite bow",
+    "13543": "A powerful bow made from magic wood."
+  }
+}

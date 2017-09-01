@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "3479": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13827": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3479": "Rune plateskirt in the colours of Saradomin.",
+    "3675": "It's an Saradomin plateskirt",
+    "13827": "Rune plateskirt in the colours of Saradomin."
+  }
+}

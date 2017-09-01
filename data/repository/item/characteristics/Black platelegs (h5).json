@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19253": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      21,
+      20,
+      19,
+      -4,
+      20,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19253": "Platelegs with a heraldic design.",
+    "19254": "It's an Black platelegs (h5)"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14126": [
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14126": "The sacred clay has become hard enough to chip stone.",
+    "14127": "It's an Pickaxe (class 3)"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1725": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1725": "An enchanted ruby amulet.",
+    "1726": "It's an Amulet of strength"
+  }
+}

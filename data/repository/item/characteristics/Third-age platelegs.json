@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10346": [
+      0,
+      0,
+      0,
+      -25,
+      -2,
+      78,
+      76,
+      83,
+      -5,
+      75,
+      25,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13552": [
+      0,
+      0,
+      0,
+      -25,
+      -2,
+      78,
+      76,
+      83,
+      -5,
+      75,
+      25,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10346": "Ancient armour beaten from magical silver.",
+    "10347": "It's an Third-age platelegs",
+    "13552": "Ancient armour beaten from magical silver."
+  }
+}

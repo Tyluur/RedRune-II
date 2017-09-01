@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10041": [
+      0,
+      0,
+      0,
+      0,
+      -7,
+      11,
+      10,
+      10,
+      0,
+      10,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10041": "This should make me harder to spot in woodland and jungle areas.",
+    "10042": "It's an Larupia legs"
+  }
+}

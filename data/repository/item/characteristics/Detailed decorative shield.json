@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4507": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      18,
+      22,
+      20,
+      -4,
+      22,
+      5,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4507": "A shield with finely detailed decoration."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17007": [
+      0,
+      -1,
+      12,
+      13,
+      0,
+      0,
+      0,
+      0,
+      13,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      10
+    ]
+  },
+  "examineMap": {
+    "17007": "A magical staff of fire. (Tier 2)",
+    "17008": "It's an Empowered fire staff"
+  }
+}

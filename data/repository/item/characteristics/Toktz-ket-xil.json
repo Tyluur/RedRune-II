@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6524": [
+      0,
+      0,
+      0,
+      -12,
+      -8,
+      40,
+      42,
+      38,
+      0,
+      65,
+      60,
+      5,
+      0,
+      11,
+      5,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6524": "A spiked shield of Obsidian.",
+    "6536": "It's an Toktz-ket-xil"
+  }
+}

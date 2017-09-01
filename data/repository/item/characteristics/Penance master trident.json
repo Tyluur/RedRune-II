@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "15485": [
+      63,
+      -1,
+      28,
+      17,
+      0,
+      2,
+      3,
+      1,
+      17,
+      0,
+      0,
+      0,
+      0,
+      0,
+      65,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15485": "A mage weapon made from the carcasses of Penance creatures (upgraded)"
+  }
+}

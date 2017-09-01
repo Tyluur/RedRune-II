@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "581": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "581": "I can do magic better in this.",
+    "582": "It's an Black robe"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4551": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      9,
+      10,
+      7,
+      -1,
+      9,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4551": "You don't want to wear it inside-out.",
+    "4552": "It's an Spiny helmet"
+  }
+}

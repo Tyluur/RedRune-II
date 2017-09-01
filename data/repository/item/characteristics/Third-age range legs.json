@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10332": [
+      0,
+      0,
+      0,
+      -10,
+      17,
+      31,
+      25,
+      33,
+      30,
+      31,
+      25,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13545": [
+      0,
+      0,
+      0,
+      -10,
+      17,
+      31,
+      25,
+      33,
+      30,
+      31,
+      25,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10332": "Fabulously ancient range protection crafted from white dragonhide.",
+    "10333": "It's an Third-age range legs",
+    "13545": "Fabulously ancient range protection crafted from white dragonhide."
+  }
+}

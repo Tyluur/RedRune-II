@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9793": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9793": "The cape worn by the most skilled miners."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6910": [
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6910": "An apprentice level wand.",
+    "6911": "It's an Apprentice wand"
+  }
+}

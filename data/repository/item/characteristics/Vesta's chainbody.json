@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13887": [
+      5,
+      7,
+      7,
+      -15,
+      0,
+      120,
+      131,
+      145,
+      -3,
+      140,
+      60,
+      6,
+      0,
+      12,
+      6,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13887": "This item degrades in combat, and will turn to dust.",
+    "13888": "It's an Vesta's chainbody"
+  }
+}

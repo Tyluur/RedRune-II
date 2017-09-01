@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4513": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4513": "A Castle Wars hood in Saradomin blue."
+  }
+}

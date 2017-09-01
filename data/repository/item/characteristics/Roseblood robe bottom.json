@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16851": [
+      -5,
+      -5,
+      -5,
+      5,
+      -5,
+      12,
+      8,
+      16,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16851": "The lower half of a magical robe. (Tier 4)",
+    "16852": "It's an Roseblood robe bottom"
+  }
+}

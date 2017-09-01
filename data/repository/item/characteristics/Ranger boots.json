@@ -1,0 +1,70 @@
+{
+  "bonusMap": {
+    "10696": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      2,
+      3,
+      4,
+      2,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "2577": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      2,
+      3,
+      4,
+      2,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13556": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      2,
+      3,
+      4,
+      2,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2577": "Lightweight boots ideal for rangers.",
+    "2578": "It's an Ranger boots",
+    "10696": "Lightweight boots ideal for rangers.",
+    "13556": "Lightweight boots ideal for rangers."
+  }
+}

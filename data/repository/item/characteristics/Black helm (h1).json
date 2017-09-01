@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10306": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      12,
+      13,
+      10,
+      -1,
+      12,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10699": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      12,
+      13,
+      10,
+      -1,
+      12,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10306": "A black helmet with a heraldic design.",
+    "10307": "It's an Black helm (h1)",
+    "10699": "A black helmet with a heraldic design."
+  }
+}

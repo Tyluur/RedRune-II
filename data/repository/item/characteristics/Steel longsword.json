@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1295": [
+      9,
+      14,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      16,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1295": "A razor sharp longsword.",
+    "1296": "It's an Steel longsword"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16182": [
+      -4,
+      -4,
+      154,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      145,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16182": "A maul used to claim life from those who don't deserve it. (Tier 9)"
+  }
+}

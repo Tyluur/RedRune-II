@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13427": [
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6733": [
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6733": "A fabled ring that improves the wearer's skill with a bow...",
+    "6734": "It's an Archers' ring",
+    "13427": "A fabled ring that improves the wearer's skill with a bow..."
+  }
+}

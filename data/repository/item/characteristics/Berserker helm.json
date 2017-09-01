@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "3751": [
+      0,
+      0,
+      0,
+      -5,
+      -5,
+      31,
+      29,
+      33,
+      0,
+      30,
+      7,
+      1,
+      0,
+      3,
+      3,
+      0,
+      0,
+      0
+    ],
+    "13408": [
+      0,
+      0,
+      0,
+      -5,
+      -5,
+      31,
+      29,
+      33,
+      0,
+      30,
+      7,
+      1,
+      0,
+      3,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3751": "This helmet is worn by berserkers.",
+    "3752": "It's an Berserker helm",
+    "13408": "This helmet is worn by berserkers."
+  }
+}

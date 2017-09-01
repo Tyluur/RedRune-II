@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7394": [
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7394": "A silly pointed hat with colourful trim.",
+    "7395": "It's an Wizard hat (g)"
+  }
+}

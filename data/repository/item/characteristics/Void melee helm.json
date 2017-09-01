@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "11665": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "11676": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11665": "A melee helm from the order of the Void Knights.",
+    "11676": "A melee helm from the order of the Void Knights."
+  }
+}

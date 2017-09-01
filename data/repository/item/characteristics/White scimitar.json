@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6611": [
+      4,
+      19,
+      -2,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      14,
+      0,
+      1,
+      0
+    ]
+  },
+  "examineMap": {
+    "6611": "A vicious, curved sword.",
+    "6612": "It's an White scimitar"
+  }
+}

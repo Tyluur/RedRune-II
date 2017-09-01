@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16977": [
+      0,
+      -1,
+      7,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16977": "A basic staff for basic uses. All and all, pretty basic. (Tier 1)",
+    "16978": "It's an Tangle gum staff"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10468": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "10468": "Legs of the Zamorak Vestments.",
+    "10469": "It's an Zamorak robe legs"
+  }
+}

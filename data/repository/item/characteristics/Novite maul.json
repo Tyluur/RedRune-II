@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16405": [
+      -4,
+      -4,
+      27,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16405": "A maul used to claim life from those who don't deserve it. (Tier 1)",
+    "16406": "It's an Novite maul"
+  }
+}

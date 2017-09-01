@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6326": [
+      0,
+      0,
+      0,
+      -5,
+      4,
+      2,
+      4,
+      4,
+      2,
+      2,
+      6,
+      0,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6326": "Lightweight head protection.",
+    "6327": "It's an Snakeskin bandana"
+  }
+}

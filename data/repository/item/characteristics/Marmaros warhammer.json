@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17023": [
+      -4,
+      -4,
+      43,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      18,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17023": "I don't think it's intended for joinery. (Tier 3)",
+    "17024": "It's an Marmaros warhammer"
+  }
+}

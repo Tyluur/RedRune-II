@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17027": [
+      -4,
+      -4,
+      72,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17027": "I don't think it's intended for joinery (Tier 5).",
+    "17028": "It's an Fractite warhammer"
+  }
+}

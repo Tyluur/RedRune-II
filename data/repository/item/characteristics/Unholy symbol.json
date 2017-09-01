@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "1724": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0
+    ]
+  },
+  "examineMap": {
+    "1724": "An unholy symbol of Zamorak.",
+    "3852": "It's an Unholy symbol",
+    "4683": "An unholy symbol of Zamorak."
+  }
+}

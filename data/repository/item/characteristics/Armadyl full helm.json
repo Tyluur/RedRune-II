@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19422": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19424": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19422": "A full helmet in the colours of Armadyl.",
+    "19423": "It's an Armadyl full helm",
+    "19424": "A full helmet in the colours of Armadyl."
+  }
+}

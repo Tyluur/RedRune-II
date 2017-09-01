@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19712": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      30,
+      30,
+      10,
+      30,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19711": "A deft void knight shield.",
+    "19712": "A deft void knight shield."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4081": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      3,
+      3,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "4081": "Increases the wearer's strength and accuracy by 15% when fighting the undead."
+  }
+}

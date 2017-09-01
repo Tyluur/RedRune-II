@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10079": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      3,
+      2,
+      4,
+      2,
+      0,
+      3,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10079": "Made from 100% real dragonhide. Now with added spikiness.",
+    "10080": "It's an Green spiky vambraces"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16983": [
+      0,
+      -1,
+      7,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16983": "A basic staff for basic uses. All and all, pretty basic. (Tier 4)",
+    "16984": "It's an Utuku staff"
+  }
+}

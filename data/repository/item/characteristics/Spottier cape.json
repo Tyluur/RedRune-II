@@ -1,0 +1,70 @@
+{
+  "bonusMap": {
+    "10071": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10074": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10664": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10071": "A really surprisingly aerodynamic cape.",
+    "10072": "It's an Spottier cape",
+    "10074": "A really surprisingly aerodynamic cape.",
+    "10664": "A really surprisingly aerodynamic cape."
+  }
+}

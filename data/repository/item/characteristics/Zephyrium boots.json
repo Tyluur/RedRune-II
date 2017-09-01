@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16349": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      11,
+      12,
+      8,
+      -1,
+      7,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16349": "Boots made for walking. (Tier 6)",
+    "16350": "It's an Zephyrium boots"
+  }
+}

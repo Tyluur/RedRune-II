@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10298": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      19,
+      21,
+      16,
+      -1,
+      19,
+      6,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10710": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      19,
+      21,
+      16,
+      -1,
+      19,
+      6,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10298": "An adamant helmet with a heraldic design.",
+    "10299": "It's an Adamant helm (h2)",
+    "10710": "An adamant helmet with a heraldic design."
+  }
+}

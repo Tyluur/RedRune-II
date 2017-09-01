@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16915": [
+      -2,
+      -2,
+      -2,
+      1,
+      -2,
+      3,
+      2,
+      5,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16915": "Magically charged shoes. (Tier 3)",
+    "16916": "It's an Blightleaf shoes"
+  }
+}

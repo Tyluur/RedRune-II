@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4158": [
+      47,
+      42,
+      36,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      50,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4158": "A spear with a leaf-shaped point.",
+    "4159": "A spear with a leaf-shaped point."
+  }
+}

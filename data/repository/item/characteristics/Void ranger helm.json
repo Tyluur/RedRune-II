@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "11664": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "11675": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11664": "A ranger helm from the order of the Void Knights",
+    "11675": "A ranger helm from the order of the Void Knights"
+  }
+}

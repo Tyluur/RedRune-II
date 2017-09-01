@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1251": [
+      5,
+      5,
+      5,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1251": "A bronze tipped spear.",
+    "1252": "It's an Bronze spear (p)"
+  }
+}

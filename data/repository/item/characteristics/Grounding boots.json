@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17283": [
+      -2,
+      -2,
+      -2,
+      -3,
+      8,
+      8,
+      8,
+      7,
+      30,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17283": "A pair of boots with very high magical resistance.",
+    "17284": "It's an Grounding boots"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16707": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      58,
+      66,
+      35,
+      -1,
+      61,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16707": "A full face helmet. (Tier 9)",
+    "16708": "It's an Gorgonite full helm"
+  }
+}

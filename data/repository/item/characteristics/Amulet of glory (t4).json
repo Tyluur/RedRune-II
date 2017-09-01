@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10354": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      0,
+      0,
+      0,
+      6,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "10354": "A very powerful dragonstone amulet.",
+    "10355": "It's an Amulet of glory (t4)"
+  }
+}

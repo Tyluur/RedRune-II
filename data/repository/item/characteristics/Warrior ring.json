@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13428": [
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6735": [
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6735": "A legendary ring once worn by Fremennik warriors.",
+    "6736": "It's an Warrior ring",
+    "13428": "A legendary ring once worn by Fremennik warriors."
+  }
+}

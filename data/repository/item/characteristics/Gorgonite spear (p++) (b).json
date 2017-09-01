@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16253": [
+      110,
+      61,
+      97,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      128,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16253": "A stick made for poking - violent poking. (Tier 9)"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19143": [
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "19145": [
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19143": "A bow imbued with the power of Saradomin.",
+    "19144": "It's an Saradomin bow",
+    "19145": "A bow imbued with the power of Saradomin."
+  }
+}

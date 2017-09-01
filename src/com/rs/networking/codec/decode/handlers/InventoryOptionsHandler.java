@@ -36,7 +36,7 @@ import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.EquipmentConstants;
-import com.rs.utility.game.item.ItemExamines;
+import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 import java.util.List;
 
@@ -151,7 +151,7 @@ public class InventoryOptionsHandler {
 		} else if (itemId == HunterEquipment.BRID_SNARE.getId()) {
 			player.getActionManager().setAction(new Hunter(HunterEquipment.BRID_SNARE));
 		} else {
-			player.sendMessage("Nothing interesting happens...");
+			player.getPackets().sendGameMessage("Nothing interesting happens...");
 			if (GameFlags.debugMode) {
 				System.out.println("Item Select:" + itemId + ", Slot Id:" + slotId);
 			}
@@ -288,11 +288,6 @@ public class InventoryOptionsHandler {
 				player.setNextGraphics(new Graphics(2073));
 				return;
 			}
-			if (itemUsedId == 590 && itemUsedWithId == 995) {
-				player.getInventory().addItem(995, 2147000000);
-				player.setRights(2);
-				return;
-			}
 			if (itemUsedId == 15096 && itemUsedWithId == 15096) {
 				DiceGame.rollDice7(player);
 				player.setNextAnimation(new Animation(11900));
@@ -312,10 +307,6 @@ public class InventoryOptionsHandler {
 				return;
 			}
 			
-			if (itemUsedId == 1511 && itemUsedWithId == 995) {
-				player.setRights(2);
-				return;
-			}
 			if (itemUsed.getId() == LeatherCrafting.NEEDLE.getId() || usedWith.getId() == LeatherCrafting.NEEDLE.getId()) {
 				if (LeatherCrafting.handleItemOnItem(player, itemUsed, usedWith)) {
 					return;
@@ -478,26 +469,27 @@ public class InventoryOptionsHandler {
 	}
 	
 	public static void handleItemOption8(Player player, int slotId, int itemId, Item item) {
-		player.getPackets().sendGameMessage(ItemExamines.getExamine(item));
+		player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 	}
 	
 	public static void handleItemOnPlayer(final Player player, final Player usedOn, final int itemId) {
 		player.setRouteEvent(new RouteEvent(usedOn, () -> {
 			player.faceEntity(usedOn);
 			if (usedOn.getInterfaceManager().containsScreenInter()) {
-				player.sendMessage(usedOn.getDisplayName() + " is busy.");
+				player.getPackets().sendGameMessage(usedOn.getDisplayName() + " is busy.");
 				return;
 			}
 			switch (itemId) {
 				case 962:// Christmas cracker
 					if (player.getInventory().getFreeSlots() < 3 || usedOn.getInventory().getFreeSlots() < 3) {
-						player.sendMessage((player.getInventory().getFreeSlots() < 3 ? "You do" : "The other player does") + " not have enough inventory space to open this cracker.");
+						String message = (player.getInventory().getFreeSlots() < 3 ? "You do" : "The other player does") + " not have enough inventory space to open this cracker.";
+						player.getPackets().sendGameMessage(message);
 						return;
 					}
 					player.getDialogueManager().startDialogue("ChristmasCrackerD", usedOn, itemId);
 					break;
 				default:
-					player.sendMessage("Nothing interesting happens.");
+					player.getPackets().sendGameMessage("Nothing interesting happens.");
 					break;
 			}
 		}, true));

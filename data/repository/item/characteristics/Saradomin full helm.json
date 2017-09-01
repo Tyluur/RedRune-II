@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2665": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13828": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2665": "Rune full helmet in the colours of Saradomin.",
+    "2666": "It's an Saradomin full helm",
+    "13828": "Rune full helmet in the colours of Saradomin."
+  }
+}

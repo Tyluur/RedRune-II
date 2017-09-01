@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19227": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19229": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19227": "A plateskirt with a heraldic design.",
+    "19228": "It's an Rune plateskirt (h3)",
+    "19229": "A plateskirt with a heraldic design."
+  }
+}

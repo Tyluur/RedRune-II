@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "7539": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      5,
+      4,
+      3,
+      -1,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7539": "If it's good enough for crabs, it's good enough for me!"
+  }
+}

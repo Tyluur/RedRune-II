@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19314": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0
+    ],
+    "19316": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0
+    ]
+  },
+  "examineMap": {
+    "19314": "A fabulously ancient wreath of oak as worn by the druids of old.",
+    "19315": "It's an Third-age druidic wreath",
+    "19316": "A fabulously ancient wreath of oak as worn by the druids of old."
+  }
+}

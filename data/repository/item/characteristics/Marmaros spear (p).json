@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17081": [
+      51,
+      22,
+      41,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      31,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17081": "A stick made for poking - violent poking. (Tier 3)",
+    "17082": "It's an Marmaros spear (p)"
+  }
+}

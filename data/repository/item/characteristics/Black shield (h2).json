@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10668": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      17,
+      19,
+      18,
+      -1,
+      18,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "7338": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      17,
+      19,
+      18,
+      -1,
+      18,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7338": "A black kiteshield with a heraldic design.",
+    "7339": "It's an Black shield (h2)",
+    "10668": "A black kiteshield with a heraldic design."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19323": [
+      10,
+      -1,
+      40,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      2,
+      0,
+      0,
+      0,
+      50,
+      0,
+      6,
+      0
+    ]
+  },
+  "examineMap": {
+    "19323": "This fire staff displays the carved head of a majestic dragon.",
+    "19324": "It's an Dragon staff"
+  }
+}

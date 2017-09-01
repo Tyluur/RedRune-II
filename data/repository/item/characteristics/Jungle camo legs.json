@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10059": [
+      0,
+      0,
+      0,
+      0,
+      -7,
+      11,
+      10,
+      10,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10059": "These should make me harder to spot in jungle areas.",
+    "10060": "It's an Jungle camo legs"
+  }
+}

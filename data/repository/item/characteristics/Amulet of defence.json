@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1729": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1729": "An enchanted emerald amulet of protection.",
+    "1730": "It's an Amulet of defence"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19830": [
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19830": "A basic sling to fire projectile at your enemies with.",
+    "19831": "It's an Sling"
+  }
+}

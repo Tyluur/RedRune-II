@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "1061": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6893": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1061": "Comfortable leather boots.",
+    "1062": "It's an Leather boots",
+    "6893": "Comfortable leather boots.",
+    "20902": "Comfortable leather boots."
+  }
+}

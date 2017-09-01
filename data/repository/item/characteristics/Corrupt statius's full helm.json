@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13920": [
+      3,
+      3,
+      4,
+      -6,
+      -2,
+      65,
+      70,
+      63,
+      -1,
+      71,
+      15,
+      3,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13920": "This item degrades while worn, and will turn to dust.",
+    "13921": "It's an Corrupt statius's full helm"
+  }
+}

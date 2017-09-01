@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14415": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      15,
+      15,
+      15,
+      0,
+      30,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14415": "The sacred clay has transformed into a flexible, protective mesh.",
+    "14416": "It's an Coif (class 3)"
+  }
+}

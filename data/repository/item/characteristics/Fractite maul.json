@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16413": [
+      -4,
+      -4,
+      99,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      82,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16413": "A maul used to claim life from those who don't deserve it. (Tier 5)",
+    "16414": "It's an Fractite maul"
+  }
+}

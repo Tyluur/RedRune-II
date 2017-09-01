@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16297": [
+      10,
+      -2,
+      8,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16297": "A pickaxe for mining. (Tier 2)",
+    "16298": "It's an Bathus pickaxe"
+  }
+}

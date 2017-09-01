@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19386": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19386": "Legs that match the Armadyl vestment.",
+    "19387": "It's an Armadyl robe legs"
+  }
+}

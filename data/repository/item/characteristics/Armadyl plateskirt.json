@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19419": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19421": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19419": "A rune plateskirt in the colours of Armadyl.",
+    "19420": "It's an Armadyl plateskirt",
+    "19421": "A rune plateskirt in the colours of Armadyl."
+  }
+}

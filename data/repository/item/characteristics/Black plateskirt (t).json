@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "3472": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      21,
+      20,
+      19,
+      -4,
+      20,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3472": "Black plateskirt with trim.",
+    "3668": "It's an Black plateskirt (t)"
+  }
+}

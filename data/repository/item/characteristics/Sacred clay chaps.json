@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14119": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      22,
+      16,
+      24,
+      8,
+      22,
+      15,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14119": "The sacred clay bottom has been transformed into a set of chaps."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14385": [
+      0,
+      0,
+      0,
+      225,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14385": "The sacred clay has transformed into a lightweight, magical stick.",
+    "14386": "It's an Staff (class 5)"
+  }
+}

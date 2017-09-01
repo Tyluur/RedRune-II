@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "628": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "628": "They're soft, silky and green.",
+    "629": "It's an Green boots"
+  }
+}

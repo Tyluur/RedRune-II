@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17105": [
+      88,
+      45,
+      68,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      78,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17105": "A stick made for poking - violent poking. (Tier 6)",
+    "17106": "It's an Zephyrium spear (p)"
+  }
+}

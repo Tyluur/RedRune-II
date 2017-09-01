@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13896": [
+      3,
+      3,
+      4,
+      -6,
+      -2,
+      65,
+      70,
+      63,
+      -1,
+      71,
+      15,
+      3,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13896": "This item degrades in combat, and will turn to dust.",
+    "13897": "It's an Statius's full helm"
+  }
+}

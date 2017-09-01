@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10049": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      15,
+      19,
+      0,
+      12,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10624": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      15,
+      19,
+      0,
+      12,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10049": "This should make me harder to spot in desert areas.",
+    "10050": "It's an Graahk top",
+    "10624": "This should make me harder to spot in desert areas."
+  }
+}

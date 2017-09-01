@@ -51,7 +51,7 @@ public class Cooking extends Action {
 	
 	@Override
 	public boolean process(Player player) {
-		if (object.getId() == 2732 && !World.getRegion(object.getRegionId()).containsObject(object.getId(), object)) {
+		if (!World.containsObjectWithId(object.getId(), object)) {
 			return false;
 		}
 		if (!player.getInventory().containsItem(item.getId(), 1)) {

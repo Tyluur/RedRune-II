@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9104": [
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9104": "A mysterious ring that can fill the wearer with magical power."
+  }
+}

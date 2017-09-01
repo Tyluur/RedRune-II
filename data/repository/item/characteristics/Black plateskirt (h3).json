@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19213": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      21,
+      20,
+      19,
+      -4,
+      20,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19213": "A plateskirt with a heraldic design.",
+    "19214": "It's an Black plateskirt (h3)"
+  }
+}

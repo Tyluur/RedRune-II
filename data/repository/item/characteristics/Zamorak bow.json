@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19149": [
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    "19151": [
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19149": "A bow imbued with the power of Zamorak.",
+    "19150": "It's an Zamorak bow",
+    "19151": "A bow imbued with the power of Zamorak."
+  }
+}

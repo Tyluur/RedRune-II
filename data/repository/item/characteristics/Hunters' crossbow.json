@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10156": [
+      0,
+      0,
+      0,
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10156": "A weapon made of bone and wood.",
+    "10157": "It's an Hunters' crossbow"
+  }
+}

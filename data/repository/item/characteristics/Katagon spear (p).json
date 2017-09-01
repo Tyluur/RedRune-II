@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17121": [
+      107,
+      55,
+      85,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      112,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17121": "A stick made for poking - violent poking. (Tier 8)",
+    "17122": "It's an Katagon spear (p)"
+  }
+}

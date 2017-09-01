@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "640": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "640": "The ultimate in gnome design, now in [colour].",
+    "641": "It's an Blue robe top"
+  }
+}

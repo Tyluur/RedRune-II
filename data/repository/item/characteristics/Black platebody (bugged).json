@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "19781": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      41,
+      40,
+      30,
+      -6,
+      40,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19781": "This armour has been modified to track your movements."
+  }
+}

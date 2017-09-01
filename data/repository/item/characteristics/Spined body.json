@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13415": [
+      0,
+      0,
+      0,
+      -15,
+      15,
+      40,
+      32,
+      45,
+      20,
+      40,
+      30,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6133": [
+      0,
+      0,
+      0,
+      -15,
+      15,
+      40,
+      32,
+      45,
+      20,
+      40,
+      30,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6133": "A constant reminder that I'm above a Dagannoth in the food chain.",
+    "6134": "It's an Spined body",
+    "13415": "A constant reminder that I'm above a Dagannoth in the food chain."
+  }
+}

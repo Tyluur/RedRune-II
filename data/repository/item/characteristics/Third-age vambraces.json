@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10336": [
+      0,
+      0,
+      0,
+      -11,
+      11,
+      6,
+      5,
+      7,
+      9,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13547": [
+      0,
+      0,
+      0,
+      -11,
+      11,
+      6,
+      5,
+      7,
+      9,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10336": "Fabulously ancient range protection crafted from white dragonhide.",
+    "10337": "It's an Third-age vambraces",
+    "13547": "Fabulously ancient range protection crafted from white dragonhide."
+  }
+}

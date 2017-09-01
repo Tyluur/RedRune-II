@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13976": [
+      40,
+      25,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      40,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13976": "This item degrades while worn, and will turn to dust.",
+    "13977": "It's an Corrupt dragon dagger"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "7641": [
+      0,
+      -1,
+      7,
+      4,
+      0,
+      2,
+      3,
+      1,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7641": "A fully charged rod. (if less than 10) A partialy charged rod."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17219": [
+      -7,
+      -7,
+      -7,
+      4,
+      -7,
+      8,
+      5,
+      11,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17219": "The upper half of a magical robe (Tier 2)",
+    "17220": "It's an Wildercress robe top"
+  }
+}

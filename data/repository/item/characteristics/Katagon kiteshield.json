@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17355": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      49,
+      85,
+      70,
+      -1,
+      73,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17355": "A large metal shield. (Tier 8)",
+    "17356": "It's an Katagon kiteshield"
+  }
+}

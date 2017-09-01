@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10887": [
+      -2,
+      10,
+      92,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      100,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10887": "This is likely to put my back out... (when fixed) OR It's broken. I should see if a pirate smith can fix it. (when broken)",
+    "10888": "This is likely to put my back out... (when fixed) OR It's broken. I should see if a pirate smith can fix it. (when broken)"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "3054": [
+      10,
+      -1,
+      40,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      50,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3054": "It's a slightly magical stick.",
+    "3056": "It's an Mystic lava staff"
+  }
+}

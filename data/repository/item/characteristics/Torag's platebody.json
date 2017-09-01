@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4749": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      122,
+      120,
+      107,
+      -6,
+      132,
+      60,
+      5,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4749": "Torag the Corrupted's plate body armour.",
+    "4750": "It's an Torag's platebody"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "664": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "664": "A silly, (colour), pointed hat.",
+    "665": "It's an Turquoise hat"
+  }
+}

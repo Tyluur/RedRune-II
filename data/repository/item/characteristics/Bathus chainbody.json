@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16715": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      19,
+      26,
+      42,
+      -3,
+      21,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16715": "A series of connected metal rings. (Tier 2)",
+    "16716": "It's an Bathus chainbody"
+  }
+}

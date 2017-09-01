@@ -50,8 +50,7 @@ public class Firemaking extends Action {
 			player.getPackets().sendGameMessage("You do not have the required level to light this.");
 			return false;
 		}
-		if (!World.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 1) // cliped
-				    || World.getRegion(player.getRegionId()).getSpawnedObject(player) != null) { // contains object
+		if (!World.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 1) || World.getRegion(player.getRegionId()).getSpawnedObject(player) != null) {
 			player.getPackets().sendGameMessage("You can't light a fire here.");
 			return false;
 		}

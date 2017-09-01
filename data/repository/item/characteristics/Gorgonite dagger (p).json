@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16823": [
+      59,
+      25,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      83,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16823": "Short but pointy. (Tier 9)",
+    "16824": "It's an Gorgonite dagger (p)"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4714": [
+      0,
+      0,
+      0,
+      22,
+      -7,
+      33,
+      30,
+      36,
+      22,
+      0,
+      30,
+      7,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4714": "Ahrim the Blighted's armoured robe skirt.",
+    "4715": "It's an Ahrim's robe skirt"
+  }
+}

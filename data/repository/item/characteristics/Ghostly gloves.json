@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "6110": [
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6110": "They seem to fade in and out of existence..."
+  }
+}

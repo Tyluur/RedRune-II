@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1403": [
+      10,
+      -1,
+      40,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      50,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1403": "It's a slightly magical stick.",
+    "1404": "It's an Mystic water staff"
+  }
+}

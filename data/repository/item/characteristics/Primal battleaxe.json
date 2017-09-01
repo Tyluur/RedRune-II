@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15773": [
+      -2,
+      112,
+      106,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      140,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15773": "A vicious-looking axe. (Tier 11)",
+    "15774": "It's an Primal battleaxe"
+  }
+}

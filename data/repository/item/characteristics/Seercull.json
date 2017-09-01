@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13529": [
+      0,
+      0,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6724": [
+      0,
+      0,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6724": "An ancient Fremennik bow that was once used to battle the Moon Clan.",
+    "6725": "It's an Seercull",
+    "13529": "An ancient Fremennik bow that was once used to battle the Moon Clan."
+  }
+}

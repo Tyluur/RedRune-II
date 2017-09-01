@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "3478": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13822": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3478": "Rune plateskirt in the colours of Zamorak.",
+    "3674": "It's an Zamorak plateskirt",
+    "13822": "Rune plateskirt in the colours of Zamorak."
+  }
+}

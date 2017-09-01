@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "5640": [
+      0,
+      0,
+      0,
+      0,
+      11,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "5640": "A deadly throwing dart with an adamantite tip."
+  }
+}

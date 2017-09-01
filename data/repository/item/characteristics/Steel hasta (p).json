@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "11393": [
+      12,
+      12,
+      12,
+      0,
+      0,
+      -3,
+      -3,
+      -3,
+      0,
+      -3,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11393": "A steel-tipped, one-handed hasta.",
+    "11394": "It's an Steel hasta (p)"
+  }
+}

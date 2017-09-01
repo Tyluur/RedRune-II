@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15757": [
+      -2,
+      36,
+      33,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      22,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15757": "A vicious-looking axe. (Tier 3)",
+    "15758": "It's an Marmaros battleaxe"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17045": [
+      -3,
+      -3,
+      -3,
+      -3,
+      2,
+      5,
+      4,
+      7,
+      2,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17045": "Crafted out of thick lizard hides. (Tier 3)",
+    "17046": "It's an Paraleather coif"
+  }
+}

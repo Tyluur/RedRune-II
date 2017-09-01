@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17307": [
+      -2,
+      -2,
+      -2,
+      -3,
+      3,
+      5,
+      4,
+      6,
+      7,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17307": "Boots crafted out of thick lizard hides. (Tier 6)",
+    "17308": "It's an Spinoleather boots"
+  }
+}

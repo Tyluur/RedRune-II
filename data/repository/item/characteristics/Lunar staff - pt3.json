@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9093": [
+      -1,
+      -1,
+      10,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9093": "A staff enchanted by air, fire and water."
+  }
+}

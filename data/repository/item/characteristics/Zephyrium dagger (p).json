@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16799": [
+      40,
+      17,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      40,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16799": "Short but pointy. (Tier 6)",
+    "16800": "It's an Zephyrium dagger (p)"
+  }
+}

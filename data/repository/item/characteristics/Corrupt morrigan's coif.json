@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13950": [
+      0,
+      0,
+      0,
+      -5,
+      13,
+      8,
+      11,
+      14,
+      8,
+      12,
+      15,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13950": "This item degrades while worn, and will turn to dust.",
+    "13951": "It's an Corrupt morrigan's coif"
+  }
+}

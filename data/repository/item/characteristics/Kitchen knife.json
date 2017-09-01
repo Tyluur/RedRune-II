@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7447": [
+      25,
+      12,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      24,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7447": "A sharp, dependable knife, for filleting meat",
+    "7448": "It's an Kitchen knife"
+  }
+}

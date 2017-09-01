@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16179": [
+      -4,
+      -4,
+      108,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      97,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16179": "To claim life from those who do not deserve it (Tier 6)."
+  }
+}

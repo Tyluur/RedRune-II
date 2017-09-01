@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9174": [
+      0,
+      0,
+      0,
+      0,
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9174": "A bronze crossbow.",
+    "9175": "It's an Bronze crossbow"
+  }
+}

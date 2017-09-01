@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10382": [
+      0,
+      0,
+      0,
+      -1,
+      7,
+      4,
+      7,
+      10,
+      4,
+      8,
+      8,
+      0,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10382": "Guthix blessed dragonhide coif.",
+    "10383": "It's an Guthix coif"
+  }
+}

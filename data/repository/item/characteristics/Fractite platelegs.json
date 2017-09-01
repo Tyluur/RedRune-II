@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16677": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      74,
+      63,
+      35,
+      -4,
+      72,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16677": "These look pretty heavy. (Tier 5)",
+    "16678": "It's an Fractite platelegs"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10826": [
+      0,
+      0,
+      0,
+      -10,
+      -10,
+      17,
+      17,
+      31,
+      -4,
+      33,
+      20,
+      2,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10826": "A wooden shield with a rope rim.",
+    "10827": "It's an Fremennik round shield"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7441": [
+      -4,
+      -4,
+      25,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7441": "Looks like it's non-stick too!",
+    "7442": "It's an Frying pan"
+  }
+}

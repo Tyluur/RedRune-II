@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13419": [
+      0,
+      0,
+      0,
+      6,
+      -7,
+      22,
+      20,
+      24,
+      10,
+      0,
+      10,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6141": [
+      0,
+      0,
+      0,
+      6,
+      -7,
+      22,
+      20,
+      24,
+      10,
+      0,
+      10,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6141": "A superior set of strengthened slacks for any self respecting seer.",
+    "6142": "It's an Skeletal bottoms",
+    "13419": "A superior set of strengthened slacks for any self respecting seer."
+  }
+}

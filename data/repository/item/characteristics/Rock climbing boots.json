@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "3105": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3105": "Boots made for general climbing; rocks a specialty.",
+    "3106": "It's an Rock climbing boots"
+  }
+}

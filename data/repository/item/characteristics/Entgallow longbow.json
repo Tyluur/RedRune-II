@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16333": [
+      0,
+      0,
+      0,
+      0,
+      123,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16333": "A sturdy longbow. (Tier 9)",
+    "16334": "It's an Entgallow longbow"
+  }
+}

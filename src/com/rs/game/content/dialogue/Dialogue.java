@@ -4,6 +4,10 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.game.entity.actor.player.Player;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class Dialogue {
 	
 	public static final int OPTION_1 = 11, OPTION_2 = 13, OPTION_3 = 14, OPTION_4 = 15, OPTION_5 = 16;
@@ -263,4 +267,59 @@ public abstract class Dialogue {
 		}
 		return true;
 	}
+	
+	private static String[] getMessages(String title, String[] message) {
+		List<String> textList = new ArrayList<>();
+		textList.add(title);
+		Collections.addAll(textList, message);
+		return textList.toArray(new String[textList.size()]);
+	}
+	
+	private void sendEntityDialogue(boolean npc, int entityId, int animationId, String... message) {
+		StringBuilder bldr = new StringBuilder();
+		int interfaceId = npc ? 240 : 63;
+		for (String element : message) {
+			interfaceId++;
+		}
+		for (String element : message) {
+			bldr.append(" ").append(element);
+		}
+		int[] componentOptions = getIComponentsIds((short) interfaceId);
+		String title = npc ? NPCDefinitions.getNPCDefinitions(entityId).getName() : player.getDisplayName();
+		String[] messages = getMessages(title, message);
+		if (componentOptions == null || (messages.length) != componentOptions.length) {
+			return;
+		}
+		player.getInterfaceManager().sendChatBoxInterface(interfaceId);
+		for (int i = 0; i < componentOptions.length; i++) {
+			player.getPackets().sendIComponentText(interfaceId, componentOptions[i], messages[i]);
+		}
+		player.getPackets().sendEntityOnIComponent(!npc, entityId, interfaceId, 2);
+		player.getPackets().sendIComponentAnimation(animationId, interfaceId, 2);
+	}
+	
+	public void player(int animationId, String... message) {
+		sendEntityDialogue(false, player.getIndex(), animationId, message);
+	}
+	
+	public void npc(int npcId, int animationId, String... message) {
+		sendEntityDialogue(true, npcId, animationId, message);
+	}
+	
+	public void item(int itemId, int itemAmount, String... messages) {
+		int length = messages.length;
+		short interfaceId = (length == 1 ? SEND_1_TEXT_CHAT : length == 2 ? SEND_2_TEXT_CHAT : length == 3 ? SEND_3_TEXT_CHAT : SEND_4_TEXT_CHAT);
+		List<String> text = new ArrayList<>();
+		text.add("");
+		Collections.addAll(text, messages);
+		String[] message = text.toArray(new String[text.size()]);
+		sendEntityDialogue(interfaceId, message, IS_ITEM, itemId, itemAmount);
+	}
+	
+	public void chatbox(String... text) {
+		int length = text.length;
+		short interfaceId = (length == 4 ? SEND_4_TEXT_INFO : length == 3 ? SEND_3_TEXT_INFO : length == 2 ? SEND_2_TEXT_INFO : SEND_1_TEXT_INFO);
+		sendDialogue(interfaceId, text);
+	}
+	
 }

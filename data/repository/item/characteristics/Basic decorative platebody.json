@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "10610": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      32,
+      31,
+      24,
+      -6,
+      31,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "4069": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      32,
+      31,
+      24,
+      -6,
+      31,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4069": "A platebody with simple and basic decoration.",
+    "10610": "A platebody with simple and basic decoration."
+  }
+}

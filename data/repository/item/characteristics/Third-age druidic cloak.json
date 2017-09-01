@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19311": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+    ],
+    "19313": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+    ]
+  },
+  "examineMap": {
+    "19311": "A fabulously ancient vine cloak as worn by the druids of old.",
+    "19312": "It's an Third-age druidic cloak",
+    "19313": "A fabulously ancient vine cloak as worn by the druids of old."
+  }
+}

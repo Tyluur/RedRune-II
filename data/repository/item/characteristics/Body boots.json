@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "20452": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20452": "Boots made in the Elemental Workshop.",
+    "20453": "It's an Body boots"
+  }
+}

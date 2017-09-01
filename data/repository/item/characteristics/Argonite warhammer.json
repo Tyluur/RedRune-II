@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17031": [
+      -4,
+      -4,
+      87,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      79,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17031": "I don't think it's intended for joinery. (Tier 7)",
+    "17032": "It's an Argonite warhammer"
+  }
+}

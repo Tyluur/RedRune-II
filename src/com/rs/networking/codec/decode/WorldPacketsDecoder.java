@@ -1,6 +1,5 @@
 package com.rs.networking.codec.decode;
 
-import com.rs.game.content.Commands;
 import com.rs.game.content.Magic;
 import com.rs.game.content.SkillCapeCustomizer;
 import com.rs.game.content.action.impl.PlayerCombatAction;
@@ -16,6 +15,7 @@ import com.rs.game.entity.actor.player.data.RouteEvent;
 import com.rs.game.entity.actor.player.link.FriendChatsManager;
 import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
+import com.rs.game.plugin.PluginRepository;
 import com.rs.game.world.World;
 import com.rs.game.world.route.RouteFinder;
 import com.rs.game.world.route.strategy.FixedTileStrategy;
@@ -28,9 +28,9 @@ import com.rs.networking.codec.decode.handlers.ObjectHandler;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.cache.huffman.Huffman;
-import com.rs.utility.game.item.ItemExamines;
 import com.rs.utility.game.player.PublicChatMessage;
 import com.rs.utility.game.player.QuickChatMessage;
+import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 import static com.rs.utility.game.ClickOption.*;
 
@@ -195,10 +195,6 @@ public final class WorldPacketsDecoder extends Decoder {
 				break;
 			}
 			int length = PACKET_SIZES[packetId];
-			if (packetId == 11) {
-				length = -4;
-				System.out.println(packetId + ", " + stream.getRemaining() + ", " + length);
-			}
 			if (length == -1) {
 				length = stream.readUnsignedByte();
 			} else if (length == -2) {
@@ -575,15 +571,12 @@ public final class WorldPacketsDecoder extends Decoder {
 			}
 			break;
 			case ITEM_TAKE_PACKET: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
-					return;
-				}
 				long currentTime = Misc.currentTimeMillis();
-				if (player.getLockDelay() > currentTime || player.isFrozen()) {
+				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead() || player.getLockDelay() > currentTime || player.isFrozen()) {
 					return;
 				}
 				final int id = stream.readUnsignedShort128();
-				@SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;
+				boolean forceRun = stream.readByte() == 1;
 				int y = stream.readUnsignedShort();
 				int x = stream.readUnsignedShortLE();
 				final WorldTile tile = new WorldTile(x, y, player.getPlane());
@@ -595,8 +588,11 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (item == null) {
 					return;
 				}
+				if (forceRun) {
+					player.setRun(true);
+				}
 				player.stopAll(false);
-				player.setRouteEvent(new RouteEvent(tile, () -> {
+				player.setRouteEvent(new RouteEvent(item, () -> {
 					final FloorItem item1 = World.getRegion(regionId).getGroundItem(id, tile, player);
 					if (item1 == null) {
 						return;
@@ -1119,7 +1115,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				final WorldTile tile = new WorldTile(x, y, player.getPlane());
 				final int regionId = tile.getRegionId();
 				final FloorItem item = World.getRegion(regionId).getGroundItem(id, tile, player);
-				player.getPackets().sendGameMessage(ItemExamines.getExamine(item));
+				player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 				break;
 			}
 			case JOIN_FRIEND_CHAT_PACKET:
@@ -1232,10 +1228,8 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (message == null || message.replaceAll(" ", "").equals("")) {
 					return;
 				}
-				if (message.startsWith("::") || message.startsWith(";")) {
-					if (Commands.processCommand(player, message.replace("::", "").replace(";", ""), false, false)) {
-						return;
-					}
+				if (message.startsWith("::")) {
+					PluginRepository.handleCommand(player, message.replaceFirst("::", "").split(" "), false, false);
 					return;
 				}
 				int effects = (colorEffect << 8) | (moveEffect & 0xff);
@@ -1253,7 +1247,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				boolean clientCommand = stream.readUnsignedByte() == 1;
 				@SuppressWarnings("unused") boolean unknown = stream.readUnsignedByte() == 1;
 				String command = stream.readString();
-				Commands.processCommand(player, command, true, clientCommand);
+				PluginRepository.handleCommand(player, command.replaceFirst("::", "").split(" "), true, clientCommand);
 				break;
 			}
 			case COLOR_ID_PACKET:

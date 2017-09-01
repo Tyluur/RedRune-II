@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14100": [
+      -2,
+      26,
+      24,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      29,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14100": "Your volatile tool wants to cut some wood."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14096": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14096": "The sacred clay hat has transformed into a spined helm."
+  }
+}

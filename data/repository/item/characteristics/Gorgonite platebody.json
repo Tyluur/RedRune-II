@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17255": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      197,
+      183,
+      108,
+      -6,
+      200,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17255": "Provides excellent protection. (Tier 9)",
+    "17256": "It's an Gorgonite platebody"
+  }
+}

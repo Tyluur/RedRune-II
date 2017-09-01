@@ -6,8 +6,7 @@ import com.rs.game.entity.item.Item;
 import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.networking.codec.decode.WorldPacketsDecoder;
 import com.rs.utility.constants.EquipmentConstants;
-import com.rs.utility.game.item.ItemBonuses;
-import com.rs.utility.game.item.ItemExamines;
+import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -17,7 +16,6 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		System.out.println("interfaceId = [" + interfaceId + "], componentId = [" + componentId + "], itemId = [" + itemId + "], slotId = [" + slotId + "], packetId = [" + packetId + "]");
 		switch (interfaceId) {
 			case 387:
 				if (componentId == 39) {
@@ -147,7 +145,7 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON10_PACKET) {
 						showStats(player, item);
 					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON8_PACKET) {
-						player.getPackets().sendGameMessage(ItemExamines.getExamine(item));
+						player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 					}
 				}
 				break;
@@ -186,7 +184,7 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 	 * 		The item
 	 */
 	private static void showStats(Player player, Item item) {
-		int[] bonuses = ItemBonuses.getItemBonuses(item.getId());
+		int[] bonuses = ItemCharacteristicRepository.getBonuses(item.getId());
 		if (bonuses == null) {
 			bonuses = new int[18];
 		}

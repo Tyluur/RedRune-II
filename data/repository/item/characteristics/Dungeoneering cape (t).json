@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "18509": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "18509": "The cape worn by veterans of Daemonheim."
+  }
+}

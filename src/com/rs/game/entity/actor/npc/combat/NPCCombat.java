@@ -7,7 +7,6 @@ import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.NPCConstants;
-import com.rs.utility.game.map.MapAreas;
 
 public final class NPCCombat {
 	
@@ -57,14 +56,7 @@ public final class NPCCombat {
 		int size = npc.getSize();
 		int maxDistance = 32;
 		if (!npc.isCantFollowUnderCombat() && !(npc instanceof Familiar)) {
-			
-			if (npc.getMapAreaNameHash() != -1) {
-				// if out his area
-				if (!MapAreas.isAtArea(npc.getMapAreaNameHash(), npc) || (!npc.canBeAttackFromOutOfArea() && !MapAreas.isAtArea(npc.getMapAreaNameHash(), target))) {
-					npc.forceWalkRespawnTile();
-					return false;
-				}
-			} else if (distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
+			if (distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
 				// if more than 64 distance from respawn place
 				npc.forceWalkRespawnTile();
 				return false;

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13902": [
+      -4,
+      -4,
+      123,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      114,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13902": "This item degrades in combat, and will turn to dust.",
+    "13903": "It's an Statius's warhammer"
+  }
+}

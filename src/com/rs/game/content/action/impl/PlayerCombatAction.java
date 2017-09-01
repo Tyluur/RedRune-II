@@ -24,7 +24,6 @@ import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.EquipmentConstants;
-import com.rs.utility.game.map.MapAreas;
 
 @SuppressWarnings("unused")
 public class PlayerCombatAction extends Action {
@@ -171,7 +170,7 @@ public class PlayerCombatAction extends Action {
 					return false;
 				}
 			} else {
-				if (!n.canBeAttackFromOutOfArea() && !MapAreas.isAtArea(n.getMapAreaNameHash(), player)) {
+				if (!n.canBeAttackFromOutOfArea()) {
 					return false;
 				}
 				if (n.getId() == 14578) {

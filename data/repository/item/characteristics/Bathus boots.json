@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16341": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      4,
+      4,
+      3,
+      -1,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16341": "Boots made for walking.Also,more importantly,made for armour.(Tier 2)",
+    "16342": "It's an Bathus boots"
+  }
+}

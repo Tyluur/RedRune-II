@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16287": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      9,
+      15,
+      12,
+      -1,
+      8,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16287": "A pair of heavy gauntlets. (Tier 8)",
+    "16288": "It's an Katagon gauntlets"
+  }
+}

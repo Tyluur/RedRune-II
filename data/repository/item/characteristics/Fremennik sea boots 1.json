@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14571": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      2,
+      3,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14571": "Not-so-sturdy boots for northern winters."
+  }
+}

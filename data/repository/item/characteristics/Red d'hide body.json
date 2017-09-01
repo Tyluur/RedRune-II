@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "2501": [
+      0,
+      0,
+      0,
+      -15,
+      25,
+      50,
+      42,
+      55,
+      40,
+      50,
+      50,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2501": "Made from 100% real dragonhide.",
+    "2502": "It's an Red d'hide body",
+    "13485": "Made from 100% real dragonhide."
+  }
+}

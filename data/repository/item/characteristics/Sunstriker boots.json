@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17265": [
+      1,
+      1,
+      1,
+      0,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17265": "Boots that boost combat performance.",
+    "17266": "It's an Sunstriker boots"
+  }
+}

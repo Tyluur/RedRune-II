@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6408": [
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6408": "An offensive blackjack.",
+    "6409": "It's an Oak blackjack (o)"
+  }
+}

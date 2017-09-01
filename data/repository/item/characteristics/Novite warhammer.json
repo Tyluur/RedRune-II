@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17019": [
+      -4,
+      -4,
+      17,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17019": "I don't think it's intended for joinery. (Tier 1)",
+    "17020": "It's an Novite warhammer"
+  }
+}

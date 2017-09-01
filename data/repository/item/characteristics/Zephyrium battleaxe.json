@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15763": [
+      -2,
+      69,
+      64,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      68,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15763": "A vicious-looking axe. (Tier 6)",
+    "15764": "It's an Zephyrium battleaxe"
+  }
+}

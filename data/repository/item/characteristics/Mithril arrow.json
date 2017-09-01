@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "888": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      22,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "888": "Arrows with mithril heads.",
+    "7552": "Arrows with mithril heads.",
+    "7553": "It's an Mithril arrow"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4740": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      55,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4740": "Must need a special type of crossbow to use this."
+  }
+}

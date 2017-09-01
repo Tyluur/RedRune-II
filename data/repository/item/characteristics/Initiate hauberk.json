@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10619": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      46,
+      44,
+      38,
+      -6,
+      44,
+      20,
+      1,
+      0,
+      3,
+      0,
+      0,
+      6,
+      0
+    ],
+    "5575": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      46,
+      44,
+      38,
+      -6,
+      44,
+      20,
+      1,
+      0,
+      3,
+      0,
+      0,
+      6,
+      0
+    ]
+  },
+  "examineMap": {
+    "5575": "An initiate Temple Knight's Armour.",
+    "5612": "It's an Initiate hauberk",
+    "10619": "An initiate Temple Knight's Armour."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16721": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      50,
+      69,
+      111,
+      -3,
+      56,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16721": "A series of connected metal rings. (Tier 5)",
+    "16722": "It's an Fractite chainbody"
+  }
+}

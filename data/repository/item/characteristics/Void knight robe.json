@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "8840": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      30,
+      30,
+      30,
+      30,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "8840": "Leg armour of the order of the Void Knights."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16953": [
+      76,
+      61,
+      -2,
+      0,
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      107,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16953": "A razor-sharp rapier. (Tier 10)",
+    "16954": "It's an Promethium rapier"
+  }
+}

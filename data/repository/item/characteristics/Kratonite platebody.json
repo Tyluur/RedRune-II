@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17245": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      78,
+      73,
+      42,
+      -6,
+      79,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17245": "Provides excellent protection. (Tier 4)",
+    "17246": "It's an Kratonite platebody"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10148": [
+      0,
+      59,
+      0,
+      0,
+      69,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      71,
+      49,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10148": "Slightly slimy and somewhat menacing.",
+    "10162": "It's an Black salamander"
+  }
+}

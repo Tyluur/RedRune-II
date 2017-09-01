@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16985": [
+      0,
+      -1,
+      7,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16985": "A basic staff for basic uses. All in all, pretty basic. (Tier 5)",
+    "16986": "It's an Spinebeam staff"
+  }
+}

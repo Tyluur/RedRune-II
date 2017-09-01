@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "21752": [
+      0,
+      0,
+      0,
+      20,
+      -10,
+      55,
+      34,
+      66,
+      25,
+      0,
+      60,
+      10,
+      5,
+      0,
+      0,
+      0,
+      8,
+      0
+    ]
+  },
+  "examineMap": {
+    "21752": "It's an Akrisae's robe top",
+    "21753": "It's an Akrisae's robe top"
+  }
+}

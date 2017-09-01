@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "837": [
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "837": "This fires crossbow bolts.",
+    "838": "It's an Crossbow"
+  }
+}

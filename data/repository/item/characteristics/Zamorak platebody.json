@@ -1,0 +1,70 @@
+{
+  "bonusMap": {
+    "10776": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ],
+    "2653": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13820": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      82,
+      80,
+      72,
+      -6,
+      80,
+      40,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2653": "Rune platebody in the colours of Zamorak.",
+    "2654": "It's an Zamorak platebody",
+    "10776": "Rune platebody in the colours of Zamorak.",
+    "13820": "Rune platebody in the colours of Zamorak."
+  }
+}

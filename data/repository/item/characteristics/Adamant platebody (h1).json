@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "19173": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      65,
+      63,
+      55,
+      -6,
+      63,
+      30,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19173": "A platebody with a heraldic design.",
+    "19174": "It's an Adamant platebody (h1)",
+    "19482": "A platebody with a heraldic design."
+  }
+}

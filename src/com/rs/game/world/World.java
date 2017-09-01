@@ -30,7 +30,7 @@ import com.rs.game.entity.item.ItemConstants;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.region.Region;
 import com.rs.utility.Misc;
-import com.rs.utility.Misc.EntityDirection;
+import com.rs.utility.Misc.Direction;
 import com.rs.utility.networking.AntiFlood;
 
 import java.util.*;
@@ -208,7 +208,7 @@ public final class World {
 	
 	public static void sendWorldMessage(String message, boolean forStaff) {
 		for (Player p : World.getPlayers()) {
-			if (p == null || !p.isRunning() || (forStaff && p.getRights() == 0)) {
+			if (p == null || !p.isRunning() || (forStaff && !p.isStaff())) {
 				continue;
 			}
 			p.getPackets().sendGameMessage(message);
@@ -291,8 +291,7 @@ public final class World {
 			return;
 		}
 		int regionId = actor.getRegionId();
-		if (actor.getLastRegionId() != regionId) { // map region actor at
-			// changed
+		if (actor.getLastRegionId() != regionId) {
 			if (actor instanceof Player) {
 				if (actor.getLastRegionId() > 0) {
 					getRegion(actor.getLastRegionId()).removePlayerIndex(actor.getIndex());
@@ -300,13 +299,9 @@ public final class World {
 				Region region = getRegion(regionId);
 				region.addPlayerIndex(actor.getIndex());
 				Player player = (Player) actor;
-				player.getControllerManager().moved();
 				int musicId = region.getMusicId();
 				if (musicId != -1) {
-					player.getMusicsManager().checkMusic(region.getMusicId());
-				}
-				if (player.isRunning() && player.getControllerManager().getController() == null) {
-					checkControllersAtMove(player);
+					player.getMusicsManager().checkMusic(musicId);
 				}
 			} else {
 				if (actor.getLastRegionId() > 0) {
@@ -314,18 +309,16 @@ public final class World {
 				}
 				getRegion(regionId).addNPCIndex(actor.getIndex());
 			}
-			actor.checkMultiArea();
 			actor.setLastRegionId(regionId);
-		} else {
-			if (actor instanceof Player) {
-				Player player = (Player) actor;
-				player.getControllerManager().moved();
-				if (player.isRunning() && player.getControllerManager().getController() == null) {
-					checkControllersAtMove(player);
-				}
-			}
-			actor.checkMultiArea();
 		}
+		if (actor instanceof Player) {
+			Player player = (Player) actor;
+			player.getControllerManager().moved();
+			if (player.isRunning() && player.getControllerManager().getController() == null) {
+				checkControllersAtMove(player);
+			}
+		}
+		actor.checkMultiArea();
 	}
 	
 	public static Region getRegion(int id) {
@@ -400,10 +393,10 @@ public final class World {
 		return region.getRotation(tile.getPlane(), baseLocalX, baseLocalY);
 	}
 	
-	public static final NPC spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, EntityDirection faceDirection) {
-		NPC returnValue = spawnNPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
-		returnValue.setDirection(faceDirection.getValue());
-		return returnValue;
+	public static NPC spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, Direction direction) {
+		NPC npc = spawnNPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
+		npc.setDirection(direction.getValue());
+		return npc;
 	}
 	
 	public static boolean checkProjectileStep(int plane, int x, int y, int dir, int size) {
@@ -768,139 +761,149 @@ public final class World {
 	}
 	
 	public static void spawnTemporaryObject(final WorldObject object, long time, final boolean clip) {
-		final int regionId = object.getRegionId();
-		WorldObject realMapObject = getRegion(regionId).getRealObject(object);
-		// remakes object, has to be done because on static region coords arent
-		// same of real
-		final WorldObject realObject = realMapObject == null ? null : new WorldObject(realMapObject.getId(), realMapObject.getType(), realMapObject.getRotation(), object.getX(), object.getY(), object.getPlane());
-		spawnObject(object, clip);
-		final int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-		final int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-		if (realObject != null && clip) {
-			getRegion(regionId).removeMapObject(realObject, baseLocalX, baseLocalY);
-		}
+		spawnObject(object);
 		CoresManager.slowExecutor.schedule(() -> {
 			try {
-				getRegion(regionId).removeObject(object);
-				if (clip) {
-					getRegion(regionId).removeMapObject(object, baseLocalX, baseLocalY);
-					if (realObject != null) {
-						int baseLocalX1 = object.getX() - ((regionId >> 8) * 64);
-						int baseLocalY1 = object.getY() - ((regionId & 0xff) * 64);
-						getRegion(regionId).addMapObject(realObject, baseLocalX1, baseLocalY1);
-					}
+				if (!World.isSpawnedObject(object)) {
+					return;
 				}
-				for (Player p2 : players) {
-					if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-						continue;
-					}
-					if (realObject != null) {
-						p2.getPackets().sendSpawnedObject(realObject);
-					} else {
-						p2.getPackets().sendDestroyObject(object);
-					}
-				}
+				removeObject(object);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}, time, TimeUnit.MILLISECONDS);
 	}
 	
-	public static void spawnObject(WorldObject object, boolean clip) {
-		int regionId = object.getRegionId();
-		getRegion(regionId).addObject(object);
-		if (clip) {
-			int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-			int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-			getRegion(regionId).addMapObject(object, baseLocalX, baseLocalY);
-		}
-		synchronized (players) {
-			for (Player p2 : players) {
-				if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-					continue;
-				}
-				p2.getPackets().sendSpawnedObject(object);
-			}
-		}
+	public static final void spawnObject(WorldObject object) {
+		getRegion(object.getRegionId()).spawnObject(object, object.getPlane(), object.getXInRegion(), object.getYInRegion(), false);
+	}
+	
+	public static final void unclipTile(WorldTile tile) {
+		getRegion(tile.getRegionId()).unclip(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion());
+	}
+	
+	public static final void removeObject(WorldObject object) {
+		getRegion(object.getRegionId()).removeObject(object, object.getPlane(), object.getXInRegion(), object.getYInRegion());
 	}
 	
 	public static boolean isSpawnedObject(WorldObject object) {
-		final int regionId = object.getRegionId();
-		WorldObject spawnedObject = getRegion(regionId).getSpawnedObject(object);
-		return spawnedObject != null && object.getId() == spawnedObject.getId();
+		return getRegion(object.getRegionId()).getSpawnedObjects().contains(object);
 	}
 	
-	public static boolean removeTemporaryObject(final WorldObject object, long time, final boolean clip) {
-		final int regionId = object.getRegionId();
-		// remakes object, has to be done because on static region coords arent
-		// same of real
-		final WorldObject realObject = new WorldObject(object.getId(), object.getType(), object.getRotation(), object.getX(), object.getY(), object.getPlane());
-		removeObject(object, clip);
+	public static boolean removeTemporaryObject(final WorldObject object, long time) {
+		removeObject(object);
 		CoresManager.slowExecutor.schedule(() -> {
 			try {
-				getRegion(regionId).removeRemovedObject(object);
-				if (clip) {
-					int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-					int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-					getRegion(regionId).addMapObject(realObject, baseLocalX, baseLocalY);
-				}
-				for (Player p2 : players) {
-					if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-						continue;
-					}
-					p2.getPackets().sendSpawnedObject(realObject);
-				}
+				spawnObject(object);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}, time, TimeUnit.MILLISECONDS);
-		
 		return true;
 	}
 	
-	public static void removeObject(WorldObject object, boolean clip) {
-		int regionId = object.getRegionId();
-		getRegion(regionId).addRemovedObject(object);
-		if (clip) {
-			int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-			int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-			getRegion(regionId).removeMapObject(object, baseLocalX, baseLocalY);
+	public static WorldObject getStandartObject(WorldTile tile) {
+		return getRegion(tile.getRegionId()).getStandartObject(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion());
+	}
+	
+	public static boolean containsObjectWithId(int id, WorldTile tile) {
+		return getRegion(tile.getRegionId()).containsObjectWithId(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion(), id);
+	}
+	
+	public static WorldObject getObjectWithType(WorldTile tile, int type) {
+		return getRegion(tile.getRegionId()).getObjectWithType(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion(), type);
+	}
+	
+	public static WorldObject getObjectWithId(WorldTile tile, int id) {
+		return getRegion(tile.getRegionId()).getObjectWithId(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion(), id);
+	}
+	
+	/*
+	* type 0 - gold if not tradeable
+	* type 1 - gold if destroyable
+	* type 2 - no gold
+	*/
+	public static final FloorItem addGroundItem(final Item item, final WorldTile tile, final Player owner, boolean invisible, long hiddenTime, int type, final int publicTime) {
+		if (type != 2) {
+			// TODO convert items dropped to bm value
+			/*if ((type == 0 && !ItemConstants.isTradeable(item)) || type == 1 && ItemConstants.isDestroy(item)) {
+				int price = item.getDefinitions().getValue();
+				if (price <= 0)
+					return null;
+				item.setId(995);
+				item.setAmount(price);
+			}*/
 		}
-		synchronized (players) {
-			for (Player p2 : players) {
-				if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-					continue;
-				}
-				p2.getPackets().sendDestroyObject(object);
+		final FloorItem floorItem = new FloorItem(item, tile, owner, owner != null, invisible);
+		final Region region = getRegion(tile.getRegionId());
+		region.forceGetFloorItems().add(floorItem);
+		if (invisible) {
+			if (owner != null)
+				owner.getPackets().sendGroundItem(floorItem);
+			// becomes visible after x time
+			if (hiddenTime != -1) {
+				CoresManager.slowExecutor.schedule(() -> {
+					try {
+						turnPublic(floorItem, publicTime);
+					}
+					catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}, hiddenTime, TimeUnit.SECONDS);
 			}
+		} else {
+			// visible
+			int regionId = tile.getRegionId();
+			for (Player player : players) {
+				if (player == null || !player.hasStarted() || player.hasFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId))
+					continue;
+				player.getPackets().sendGroundItem(floorItem);
+			}
+			// disapears after this time
+			if (publicTime != -1)
+				removeGroundItem(floorItem, publicTime);
 		}
+		return floorItem;
 	}
 	
-	public static WorldObject getObject(WorldTile tile) {
-		int regionId = tile.getRegionId();
-		int baseLocalX = tile.getX() - ((regionId >> 8) * 64);
-		int baseLocalY = tile.getY() - ((regionId & 0xff) * 64);
-		return getRegion(regionId).getObject(tile.getPlane(), baseLocalX, baseLocalY);
-	}
-	
-	public static WorldObject getObject(WorldTile tile, int type) {
-		int regionId = tile.getRegionId();
-		int baseLocalX = tile.getX() - ((regionId >> 8) * 64);
-		int baseLocalY = tile.getY() - ((regionId & 0xff) * 64);
-		return getRegion(regionId).getObject(tile.getPlane(), baseLocalX, baseLocalY, type);
+	public static void turnPublic(FloorItem floorItem, int publicTime) {
+		if (!floorItem.isInvisible())
+			return;
+		int regionId = floorItem.getTile().getRegionId();
+		final Region region = getRegion(regionId);
+		if (!region.forceGetFloorItems().contains(floorItem))
+			return;
+		Player realOwner = floorItem.hasOwner() ? World.getPlayer(floorItem.getOwner().getUsername()) : null;
+		if (!ItemConstants.isTradeable(floorItem)) {
+			region.forceGetFloorItems().remove(floorItem);
+			if (realOwner != null) {
+				if (realOwner.getMapRegionsIds().contains(regionId) && realOwner.getPlane() == floorItem.getTile().getPlane())
+					realOwner.getPackets().sendRemoveGroundItem(floorItem);
+			}
+			return;
+		}
+		floorItem.setInvisible(false);
+		for (Player player : players) {
+			if (player == null || player == realOwner || !player.hasStarted() || player.hasFinished() || player.getPlane() != floorItem.getTile().getPlane() || !player.getMapRegionsIds().contains(regionId))
+				continue;
+			player.getPackets().sendGroundItem(floorItem);
+		}
+		// disapears after this time
+		if (publicTime != -1)
+			removeGroundItem(floorItem, publicTime);
 	}
 	
 	public static void addGroundItem(final Item item, final WorldTile tile) {
-		final FloorItem floorItem = new FloorItem(item, tile, null, false, false);
-		final Region region = getRegion(tile.getRegionId());
-		region.forceGetFloorItems().add(floorItem);
-		int regionId = tile.getRegionId();
-		for (Player player : players) {
-			if (player == null || !player.hasStarted() || player.hasFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
-				continue;
-			}
-			addGroundItem(item, tile, player, false, 3600, true);
-		}
+		// adds item, not invisible, no owner, no time to disapear
+		addGroundItem(item, tile, null, false, -1, 2, -1);
+	}
+	
+	public static void addGroundItem(final Item item, final WorldTile tile, final Player owner, boolean invisible, long hiddenTime) {
+		addGroundItem(item, tile, owner, invisible, hiddenTime, 2, 150);
+	}
+	
+	public static FloorItem addGroundItem(final Item item, final WorldTile tile, final Player owner, boolean invisible, long hiddenTime, int type) {
+		return addGroundItem(item, tile, owner, invisible, hiddenTime, type, 150);
 	}
 	
 	public static void addGroundItem(final Item item, final WorldTile tile, final Player owner/* null for default */, final boolean underGrave, long hiddenTime/* default 3minutes */, boolean invisible) {
@@ -1113,47 +1116,12 @@ public final class World {
 		return Wilderness.isAtWild(tile);
 	}
 	
-	public static void destroySpawnedObject(WorldObject object, boolean clip) {
-		int regionId = object.getRegionId();
-		int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-		int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-		WorldObject realMapObject = getRegion(regionId).getRealObject(object);
-		
-		World.getRegion(regionId).removeObject(object);
-		if (clip) {
-			World.getRegion(regionId).removeMapObject(object, baseLocalX, baseLocalY);
-		}
-		for (Player p2 : World.getPlayers()) {
-			if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-				continue;
-			}
-			if (realMapObject != null) {
-				p2.getPackets().sendSpawnedObject(realMapObject);
-			} else {
-				p2.getPackets().sendDestroyObject(object);
-			}
-		}
-	}
-	
 	public static void spawnTempGroundObject(final WorldObject object, final int replaceId, long time) {
-		final int regionId = object.getRegionId();
-		WorldObject realMapObject = getRegion(regionId).getRealObject(object);
-		final WorldObject realObject = realMapObject == null ? null : new WorldObject(realMapObject.getId(), realMapObject.getType(), realMapObject.getRotation(), object.getX(), object.getY(), object.getPlane());
-		spawnObject(object, false);
+		spawnObject(object);
 		CoresManager.slowExecutor.schedule(() -> {
 			try {
-				getRegion(regionId).removeObject(object);
-				addGroundItem(new Item(replaceId), object, null, false, 180, false);
-				for (Player p2 : players) {
-					if (p2 == null || !p2.hasStarted() || p2.hasFinished() || p2.getPlane() != object.getPlane() || !p2.getMapRegionsIds().contains(regionId)) {
-						continue;
-					}
-					if (realObject != null) {
-						p2.getPackets().sendSpawnedObject(realObject);
-					} else {
-						p2.getPackets().sendDestroyObject(object);
-					}
-				}
+				removeObject(object);
+				addGroundItem(new Item(replaceId), object, null, false, 180);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}

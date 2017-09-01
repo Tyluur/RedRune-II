@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14287": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14287": "The sacred clay has transformed into a vicious, curved sword.",
+    "14288": "It's an Scimitar (class 1)"
+  }
+}

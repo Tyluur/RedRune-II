@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1395": [
+      10,
+      -1,
+      28,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      35,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1395": "It's a slightly magical stick.",
+    "1396": "It's an Water battlestaff"
+  }
+}

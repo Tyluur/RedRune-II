@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17049": [
+      -3,
+      -3,
+      -3,
+      -3,
+      5,
+      8,
+      6,
+      10,
+      7,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17049": "Crafted out of thick lizard hides. (Tier 5)",
+    "17050": "It's an Dromoleather coif"
+  }
+}

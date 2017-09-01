@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10034": [
+      0,
+      0,
+      0,
+      0,
+      70,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9977": "Even more volatile than its vegetarian counterpart.",
+    "10034": "Even more volatile than its vegetarian counterpart."
+  }
+}

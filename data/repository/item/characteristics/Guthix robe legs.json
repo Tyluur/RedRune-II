@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10466": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "10466": "Leggings from the Guthix Vestments.",
+    "10467": "It's an Guthix robe legs"
+  }
+}

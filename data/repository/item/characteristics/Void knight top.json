@@ -1,0 +1,48 @@
+{
+  "bonusMap": {
+    "8839": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10611": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "8839": "Torso armour from the order of the Void Knights.",
+    "10611": "Torso armour from the order of the Void Knights."
+  }
+}

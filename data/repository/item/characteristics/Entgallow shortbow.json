@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16883": [
+      0,
+      0,
+      0,
+      0,
+      50,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16883": "A small bow, only effective at short distances. (Tier 9)",
+    "16884": "It's an Entgallow shortbow"
+  }
+}

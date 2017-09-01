@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19434": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19436": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19434": "A rune plateskirt in the colours of Bandos.",
+    "19435": "It's an Bandos plateskirt",
+    "19436": "A rune plateskirt in the colours of Bandos."
+  }
+}

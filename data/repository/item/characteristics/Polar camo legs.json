@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10067": [
+      0,
+      0,
+      0,
+      0,
+      -7,
+      11,
+      10,
+      10,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10067": "These should make me harder to spot in polar areas",
+    "10068": "It's an Polar camo legs"
+  }
+}

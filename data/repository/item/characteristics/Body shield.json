@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "18691": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "18691": "A shield made in the Elemental Workshop.",
+    "18692": "It's an Body shield"
+  }
+}

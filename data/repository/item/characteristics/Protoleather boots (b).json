@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16002": [
+      -2,
+      -2,
+      -2,
+      -3,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16002": "Boots crafted out of thick lizard hides. (Tier 1)"
+  }
+}

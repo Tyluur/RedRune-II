@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "5555": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      7,
+      7,
+      7,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "5555": "Black banded leather armour, a rogue's dream!"
+  }
+}

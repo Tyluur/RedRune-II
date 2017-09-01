@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17011": [
+      0,
+      -1,
+      12,
+      13,
+      0,
+      0,
+      0,
+      0,
+      13,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      10
+    ]
+  },
+  "examineMap": {
+    "17011": "A magical staff of air. (Tier 9)",
+    "17012": "It's an Empowered air staff"
+  }
+}

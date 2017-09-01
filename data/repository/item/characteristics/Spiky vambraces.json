@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10077": [
+      0,
+      0,
+      0,
+      0,
+      4,
+      2,
+      2,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10077": "Attack at your own risk.",
+    "10078": "It's an Spiky vambraces"
+  }
+}

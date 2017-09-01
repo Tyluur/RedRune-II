@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14361": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      45,
+      45,
+      45,
+      -10,
+      23,
+      45,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14361": "The sacred clay has transformed into a hard, metallic substance.",
+    "14362": "It's an Platelegs (class 3)"
+  }
+}

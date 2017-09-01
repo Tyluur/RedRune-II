@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17069": [
+      19,
+      9,
+      15,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      16,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17069": "A stick made for poking - violent poking. (Tier 1)",
+    "17070": "It's an Novite spear (p++)"
+  }
+}

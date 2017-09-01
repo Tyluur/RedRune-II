@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "1347": [
+      -4,
+      -4,
+      53,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0
+    ],
+    "13473": [
+      -4,
+      -4,
+      53,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1347": "I don't think it's intended for joinery.",
+    "1348": "It's an Rune warhammer",
+    "13473": "I don't think it's intended for joinery."
+  }
+}

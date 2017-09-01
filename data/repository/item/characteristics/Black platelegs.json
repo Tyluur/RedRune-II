@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1077": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      21,
+      20,
+      19,
+      -4,
+      20,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1077": "These look pretty heavy",
+    "1078": "It's an Black platelegs"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4510": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      33,
+      31,
+      29,
+      -4,
+      31,
+      10,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4510": "Some platelegs with incredibly intricate decoration."
+  }
+}

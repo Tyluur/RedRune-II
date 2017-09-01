@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1107": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      22,
+      32,
+      39,
+      -3,
+      24,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1107": "A series of connected metal rings.",
+    "1108": "It's an Black chainbody"
+  }
+}

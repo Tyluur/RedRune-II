@@ -6,12 +6,12 @@
 +   Appearance modification
 	-   Beard/gender/shoes/clothing
 +   Player Combat rewrite
-+   New region system from matrix
++   SQL integration
+	-   Account creation as well
 
 [Punishments]
 
 [Unfinished]
-+   Object interaction packet not decoding right
 +   Magic Combat Spells
 	-   Regular Spellbook
 		-   Need to add alchemy spells

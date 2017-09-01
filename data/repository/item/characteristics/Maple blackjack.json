@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6416": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6416": "A solid bit of maple.",
+    "6417": "It's an Maple blackjack"
+  }
+}

@@ -40,10 +40,7 @@ import com.rs.utility.game.player.QuickChatMessage;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -64,9 +61,11 @@ public class Player extends Actor {
 	@Getter
 	private String lastIP;
 	
+	/**
+	 * The set of the rights the player has
+	 */
 	@Getter
-	@Setter
-	private int rights;
+	private Set<PlayerRight> rights;
 	
 	@Getter
 	@Setter
@@ -315,6 +314,7 @@ public class Player extends Actor {
 		mouseButtons = true;
 		pouches = new int[4];
 		slayerTask = new SlayerTask();
+		this.rights = new LinkedHashSet<>(Collections.singletonList(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER));
 		SkillCapeCustomizer.resetSkillCapes(this);
 		ownedObjectsManagerKeys = new LinkedList<>();
 	}
@@ -1101,10 +1101,6 @@ public class Player extends Actor {
 		}
 	}
 	
-	public void sendMessage(String message) {
-		getPackets().sendGameMessage(message);
-	}
-	
 	public void init(String string, Session session) {
 		username = string;
 		this.session = session;
@@ -1199,7 +1195,7 @@ public class Player extends Actor {
 			getPackets().sendSystemUpdate(World.exiting_delay - delayPassed);
 		}
 		if (GameFlags.debugMode) {
-			setRights(2);
+			this.rights.add(PlayerRight.OWNER);
 		}
 		getPackets().sendGameMessage("Welcome to " + GameConstants.SERVER_NAME + ".");
 		lastIP = getSession().getIp();
@@ -1306,7 +1302,7 @@ public class Player extends Actor {
 	}
 	
 	public int getMessageIcon() {
-		return getRights() == 2 || getRights() == 1 ? getRights() : getRights();
+		return getDominantRight().getMessageIcon();
 	}
 	
 	public String getDisplayName() {
@@ -1335,9 +1331,6 @@ public class Player extends Actor {
 	}
 	
 	public void sendItemsOnDeath(Player killer) {
-		if (rights == 2) {
-			return;
-		}
 		charges.die();
 		auraManager.removeAura();
 		CopyOnWriteArrayList<Item> containedItems = new CopyOnWriteArrayList<>();
@@ -1380,9 +1373,6 @@ public class Player extends Actor {
 			getInventory().addItem(item);
 		}
 		for (Item item : containedItems) {
-			if (getRights() == 7) {
-				return;
-			}
 			World.addGroundItem(item, getLastWorldTile(), killer, true, 180, true);
 		}
 	}
@@ -1489,10 +1479,6 @@ public class Player extends Actor {
 	
 	public void addFireImmune(long time) {
 		fireImmune = time + Misc.currentTimeMillis();
-	}
-	
-	public void setCloseInterfacesEvent(Runnable closeInterfacesEvent) {
-		this.closeInterfacesEvent = closeInterfacesEvent;
 	}
 	
 	public void kickPlayerFromFriendsChannel(String name) {
@@ -1649,6 +1635,70 @@ public class Player extends Actor {
 				}, 4, 2);
 				combatDefinitions.desecreaseSpecialAttack(specAmt);
 				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * If there are donator rights in the {@link #rights} set
+	 */
+	public boolean isDonator() {
+		return rights.contains(PlayerRight.PREMIUM_DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
+	}
+	
+	/**
+	 * Gets the most dominant right. The {@link #rights} are sorted based on the position of the right in the enum
+	 * (ordinal), so the first right will be the most dominant  .
+	 *
+	 * @return A {@code Right} instance
+	 */
+	public PlayerRight getDominantRight() {
+		if (rights.size() != 0) {
+			return rights.iterator().next();
+		} else {
+			System.err.println("Unexpected situation - rights set was empty!");
+			return PlayerRight.PLAYER;
+		}
+	}
+	
+	/**
+	 * If the {@link #rights} set has any of these parameters, this is true
+	 *
+	 * @param rights
+	 * 		The rights
+	 */
+	public boolean rightsContains(PlayerRight... rights) {
+		for (PlayerRight right : rights) {
+			if (right == PlayerRight.PLAYER) {
+				return true;
+			}
+			if (this.rights.contains(right)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Stores a new list of rights
+	 *
+	 * @param rights
+	 * 		The rights to store
+	 */
+	public void storeRights(Set<PlayerRight> rights) {
+		this.rights.clear();
+		this.rights.addAll(rights);
+	}
+	
+	/**
+	 * If this right is a staff right
+	 */
+	public boolean isStaff() {
+		for (PlayerRight right : rights) {
+			String name = right.getFormattedName();
+			if (name.contains("owner") || name.contains("admin") || name.contains("mod") || name.contains("trial") || name.contains("assistant")) {
+				return true;
+			}
 		}
 		return false;
 	}

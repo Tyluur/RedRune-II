@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "19892": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -8,
+      0
+    ]
+  },
+  "examineMap": {
+    "19892": "The folly of your adventure becomes clear as you wear it."
+  }
+}

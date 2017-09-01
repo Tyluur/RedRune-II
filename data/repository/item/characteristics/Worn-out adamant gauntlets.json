@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13001": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      8,
+      9,
+      9,
+      -1,
+      8,
+      8,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13001": "I have to keep my hands safe! Uncharged: A bit worse for wear.",
+    "13002": "It's an Worn-out adamant gauntlets"
+  }
+}

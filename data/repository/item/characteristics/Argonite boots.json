@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16351": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      13,
+      14,
+      10,
+      -1,
+      8,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16351": "Boots made for walking. Also, more importantly, made for armour. (Tier 7)",
+    "16352": "It's an Argonite boots"
+  }
+}

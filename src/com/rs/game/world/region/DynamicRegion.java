@@ -1,174 +1,269 @@
 package com.rs.game.world.region;
 
-import com.rs.cores.CoresManager;
+import com.rs.cache.Cache;
+import com.rs.cache.loaders.ObjectDefinitions;
+import com.rs.game.GameFlags;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.networking.io.InputStream;
+import com.rs.utility.game.map.MapArchiveKeys;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DynamicRegion extends Region {
 	
-	// int dynamicregion squares amt
-	// Region[] array with the region squares
-	// int[][] squaresBounds;
-	
+	/**
+	 * Contains render coordinates.
+	 */
 	private int[][][][] regionCoords;
+	
+	private boolean[][][] needsReload;
+	
+	private boolean recheckReload;
 	
 	public DynamicRegion(int regionId) {
 		super(regionId);
-		checkLoadMap();
 		// plane,x,y,(real x, real y,or real plane coord, or rotation)
 		regionCoords = new int[4][8][8][4];
-	}
-	
-	/*
-	 * gets the real tile objects from real region
-	 */
-	@Override
-	public WorldObject[] getObjects(int plane, int localX, int localY) {
-		int currentChunkX = localX / 8;
-		int currentChunkY = localY / 8;
-		int rotation = regionCoords[plane][currentChunkX][currentChunkY][3];
-		int realChunkX = regionCoords[plane][currentChunkX][currentChunkY][0];
-		int realChunkY = regionCoords[plane][currentChunkX][currentChunkY][1];
-		if (realChunkX == 0 || realChunkY == 0) {
-			return null;
-		}
-		int realRegionId = (((realChunkX / 8) << 8) + (realChunkY / 8));
-		Region region = World.getRegion(realRegionId, true);
-		if (region instanceof DynamicRegion) {
-			return null; // no information so that data not loaded
-		}
-		int realRegionOffsetX = (realChunkX - ((realChunkX / 8) * 8));
-		int realRegionOffsetY = (realChunkY - ((realChunkY / 8) * 8));
-		int posInChunkX = (localX - (currentChunkX * 8));
-		int posInChunkY = (localY - (currentChunkY * 8));
-		if (rotation != 0) {
-			for (int rotate = 0; rotate < (4 - rotation); rotate++) {
-				int fakeChunckX = posInChunkX;
-				int fakeChunckY = posInChunkY;
-				posInChunkX = fakeChunckY;
-				posInChunkY = 7 - fakeChunckX;
+		needsReload = new boolean[4][8][8];
+		for (int z = 0; z < 4; z++) {
+			for (int x = 0; x < 8; x++) {
+				for (int y = 0; y < 8; y++) {
+					needsReload[z][x][y] = true;
+				}
 			}
 		}
-		int realLocalX = (realRegionOffsetX * 8) + posInChunkX;
-		int realLocalY = (realRegionOffsetY * 8) + posInChunkY;
-		return region.getObjects(plane, realLocalX, realLocalY);
+		recheckReload = false;
 	}
 	
-	// override by static region to empty
+	@Override
 	public void checkLoadMap() {
-		if (getLoadMapStage() == 0) {
-			setLoadMapStage(1);
-			// lets use slow executor, if we take 1-3sec to load objects who
-			// cares? what maters are the players on the loaded regions lul
-			CoresManager.slowExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						setLoadMapStage(2);
-						if (!isLoadedObjectSpawns()) {
-							loadObjectSpawns();
-							setLoadedObjectSpawns(true);
+		if (recheckReload) {
+			setLoadMapStage(0);
+			recheckReload = false;
+		}
+		super.checkLoadMap();
+	}
+	
+	@Override
+	public void loadRegionMap() {
+		
+		for (int dynZ = 0; dynZ < 4; dynZ++) {
+			for (int dynX = 0; dynX < 8; dynX++) {
+				for (int dynY = 0; dynY < 8; dynY++) {
+					if (!needsReload[dynZ][dynX][dynY]) {
+						continue;
+					}
+					unloadChunk(dynX, dynY, dynZ);
+				}
+			}
+		}
+		
+		for (int dynZ = 0; dynZ < 4; dynZ++) {
+			for (int dynX = 0; dynX < 8; dynX++) {
+				for (int dynY = 0; dynY < 8; dynY++) {
+					if (!needsReload[dynZ][dynX][dynY]) {
+						continue;
+					}
+					needsReload[dynZ][dynX][dynY] = false;
+					
+					int renderChunkX = regionCoords[dynZ][dynX][dynY][0];
+					int renderChunkY = regionCoords[dynZ][dynX][dynY][1];
+					int renderChunkZ = regionCoords[dynZ][dynX][dynY][2];
+					int rotation = regionCoords[dynZ][dynX][dynY][3];
+					int renderLocalChunkX = renderChunkX - ((renderChunkX >> 3) << 3);
+					int renderLocalChunkY = renderChunkY - ((renderChunkY >> 3) << 3);
+					
+					if (renderChunkX == 0 && renderChunkY == 0 && renderChunkZ == 0 && rotation == 0) {
+						continue;
+					}
+					
+					int mapID = (renderChunkX >> 3) << 8 | (renderChunkY >> 3);
+					int landArchiveId = Cache.STORE.getIndexes()[5].getArchiveId("l" + (mapID >> 8) + "_" + (mapID & 0xFF));
+					int mapArchiveId = Cache.STORE.getIndexes()[5].getArchiveId("m" + (mapID >> 8) + "_" + (mapID & 0xFF));
+					byte[] mapContainerData = mapArchiveId == -1 ? null : Cache.STORE.getIndexes()[5].getFile(mapArchiveId, 0);
+					byte[] landContainerData = landArchiveId == -1 ? null : Cache.STORE.getIndexes()[5].getFile(landArchiveId, 0, MapArchiveKeys.getKey(mapID));
+					byte[][][] mapSettings = mapContainerData == null ? null : new byte[4][64][64];
+					if (mapContainerData != null) {
+						InputStream mapStream = new InputStream(mapContainerData);
+						for (int plane = 0; plane < 4; plane++) {
+							for (int x = 0; x < 64; x++) {
+								for (int y = 0; y < 64; y++) {
+									while (true) {
+										int value = mapStream.readUnsignedByte();
+										if (value == 0) {
+											break;
+										} else if (value == 1) {
+											mapStream.readByte();
+											break;
+										} else if (value <= 49) {
+											mapStream.readByte();
+											
+										} else if (value <= 81) {
+											mapSettings[plane][x][y] = (byte) (value - 49);
+										}
+									}
+								}
+							}
 						}
-						if (!isLoadedNPCSpawns()) {
-							loadNPCSpawns();
-							setLoadedNPCSpawns(true);
+						
+						for (int z = 0; z < 4; z++) {
+							for (int x = 0; x < 64; x++) {
+								for (int y = 0; y < 64; y++) {
+									if ((mapSettings[z][x][y] & 0x1) == 1) {
+										int realZ = z;
+										if ((mapSettings[1][x][y] & 0x2) == 2) {
+											realZ--;
+										}
+										if (realZ == renderChunkZ && (x >> 3) == renderLocalChunkX && (y >> 3) == renderLocalChunkY) {
+											int[] coords = translate(x & 0x7, y & 0x7, rotation);
+											forceGetRegionMap().addUnwalkable(dynZ, (dynX << 3) | coords[0], (dynY << 3) | coords[1]);
+										}
+									}
+								}
+							}
 						}
-					} catch (Throwable e) {
-						e.printStackTrace();
+					} else {
+						for (int z = 0; z < 4; z++) {
+							for (int x = 0; x < 64; x++) {
+								for (int y = 0; y < 64; y++) {
+									if (z == renderChunkZ && (x >> 3) == renderLocalChunkX && (y >> 3) == renderLocalChunkY) {
+										int[] coords = translate(x & 0x7, y & 0x7, rotation);
+										forceGetRegionMap().addUnwalkable(dynZ, (dynX << 3) | coords[0], (dynY << 3) | coords[1]);
+									}
+								}
+							}
+						}
+					}
+					
+					if (landContainerData != null) {
+						InputStream landStream = new InputStream(landContainerData);
+						int objectId = -1;
+						int incr;
+						while ((incr = landStream.readSmart2()) != 0) {
+							objectId += incr;
+							int location = 0;
+							int incr2;
+							while ((incr2 = landStream.readUnsignedSmart()) != 0) {
+								location += incr2 - 1;
+								int x = (location >> 6 & 0x3f);
+								int y = (location & 0x3f);
+								int z = location >> 12;
+								int objectData = landStream.readUnsignedByte();
+								int type = objectData >> 2;
+								int rot = objectData & 0x3;
+								int realZ = z;
+								if (mapSettings != null && (mapSettings[1][x][y] & 2) == 2) {
+									realZ--;
+								}
+								if (realZ == renderChunkZ && (x >> 3) == renderLocalChunkX && (y >> 3) == renderLocalChunkY) {
+									ObjectDefinitions definition = ObjectDefinitions.getObjectDefinitions(objectId);
+									int[] coords = translate(x & 0x7, y & 0x7, rotation, definition.sizeX, definition.sizeY, rot);
+									spawnObject(new WorldObject(objectId, type, (rotation + rot) & 0x3, (dynX << 3) + coords[0] + ((getRegionId() >> 8) << 6), (dynY << 3) + coords[1] + ((getRegionId() & 0xFF) << 6), dynZ), dynZ, (dynX << 3) + coords[0], (dynY << 3) + coords[1], true);
+								}
+							}
+						}
+					}
+					
+					if (GameFlags.debugMode && landContainerData == null && landArchiveId != -1 && MapArchiveKeys.getKey(mapID) != null) {
+						System.out.println("Missing xteas for region " + mapID + ".");
 					}
 				}
-			});
-		}
-	}
-	
-	@Override
-	public void addMapObject(WorldObject object, int x, int y) {
-	
-	}
-	
-	@Override
-	public int getMask(int plane, int localX, int localY) {
-		int currentChunkX = localX / 8;
-		int currentChunkY = localY / 8;
-		int rotation = regionCoords[plane][currentChunkX][currentChunkY][3];
-		int realChunkX = regionCoords[plane][currentChunkX][currentChunkY][0];
-		int realChunkY = regionCoords[plane][currentChunkX][currentChunkY][1];
-		if (realChunkX == 0 || realChunkY == 0) {
-			return -1;
-		}
-		int realRegionId = (((realChunkX / 8) << 8) + (realChunkY / 8));
-		Region region = World.getRegion(realRegionId, true);
-		if (region instanceof DynamicRegion) {
-			return -1; // no information so that data not loaded
-		}
-		int realRegionOffsetX = (realChunkX - ((realChunkX / 8) * 8));
-		int realRegionOffsetY = (realChunkY - ((realChunkY / 8) * 8));
-		int posInChunkX = (localX - (currentChunkX * 8));
-		int posInChunkY = (localY - (currentChunkY * 8));
-		if (rotation != 0) {
-			for (int rotate = 0; rotate < (4 - rotation); rotate++) {
-				int fakeChunckX = posInChunkX;
-				int fakeChunckY = posInChunkY;
-				posInChunkX = fakeChunckY;
-				posInChunkY = 7 - fakeChunckX;
 			}
 		}
-		int realLocalX = (realRegionOffsetX * 8) + posInChunkX;
-		int realLocalY = (realRegionOffsetY * 8) + posInChunkY;
-		return region.getMask(regionCoords[plane][currentChunkX][currentChunkY][2], realLocalX, realLocalY);
 	}
 	
-	@Override
-	public void setMask(int plane, int localX, int localY, int mask) {
-	
-	}
-	
-	@Override
-	public int getRotation(int plane, int localX, int localY) {
-		return regionCoords[plane][localX / 8][localY / 8][3];
-	}
-
-	/*
-	 * gets clip data from the original region part
-	 */
-	
-	// overrided by static region to get mask from needed region
-	public int getMaskClipedOnly(int plane, int localX, int localY) {
-		int currentChunkX = localX / 8;
-		int currentChunkY = localY / 8;
-		int rotation = regionCoords[plane][currentChunkX][currentChunkY][3];
-		int realChunkX = regionCoords[plane][currentChunkX][currentChunkY][0];
-		int realChunkY = regionCoords[plane][currentChunkX][currentChunkY][1];
-		if (realChunkX == 0 || realChunkY == 0) {
-			return -1;
-		}
-		int realRegionId = (((realChunkX / 8) << 8) + (realChunkY / 8));
-		Region region = World.getRegion(realRegionId, true);
-		if (region instanceof DynamicRegion) {
-			return -1; // no information so that data not loaded
-		}
-		int realRegionOffsetX = (realChunkX - ((realChunkX / 8) * 8));
-		int realRegionOffsetY = (realChunkY - ((realChunkY / 8) * 8));
-		int posInChunkX = (localX - (currentChunkX * 8));
-		int posInChunkY = (localY - (currentChunkY * 8));
-		if (rotation != 0) {
-			for (int rotate = 0; rotate < (4 - rotation); rotate++) {
-				int fakeChunckX = posInChunkX;
-				int fakeChunckY = posInChunkY;
-				posInChunkX = fakeChunckY;
-				posInChunkY = 7 - fakeChunckX;
+	private void unloadChunk(int chunkX, int chunkY, int chunkZ) {
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				int fullX = (chunkX << 3) | x;
+				int fullY = (chunkY << 3) | y;
+				if (objects != null) {
+					for (int slot = 0; slot < 4; slot++) {
+						objects[chunkZ][fullX][fullY][slot] = null;
+					}
+				}
+				if (map != null) {
+					map.setMask(chunkZ, fullX, fullY, 0);
+				}
+				if (clipedOnlyMap != null) {
+					clipedOnlyMap.setMask(chunkZ, fullX, fullY, 0);
+				}
+				
+				List<WorldObject> ro = new ArrayList<WorldObject>(removedObjects);
+				// List<WorldObject> ao = new
+				// ArrayList<WorldObject>(spawnedObjects);
+				for (WorldObject removed : ro) {
+					if (removed.getPlane() == chunkZ && removed.getChunkX() == chunkX && removed.getChunkY() == chunkY) {
+						removedObjects.remove(removed);
+					}
+				}
+				/*
+				 * for (WorldObject added : ro) if (added.getPlane() == chunkZ
+				 * && added.getChunkX() == chunkX && added.getChunkY() ==
+				 * chunkY) spawnedObjects.remove(ao);
+				 */
 			}
 		}
-		int realLocalX = (realRegionOffsetX * 8) + posInChunkX;
-		int realLocalY = (realRegionOffsetY * 8) + posInChunkY;
-		return region.getMaskClipedOnly(regionCoords[plane][currentChunkX][currentChunkY][2], realLocalX, realLocalY);
+	}
+	
+	public static int[] translate(int x, int y, int rotation) {
+		int[] coords = new int[2];
+		if (rotation == 0) {
+			coords[0] = x;
+			coords[1] = y;
+		} else if (rotation == 1) {
+			coords[0] = y;
+			coords[1] = 7 - x;
+		} else if (rotation == 2) {
+			coords[0] = 7 - x;
+			coords[1] = 7 - y;
+		} else {
+			coords[0] = 7 - y;
+			coords[1] = x;
+		}
+		return coords;
+	}
+	
+	public static int[] translate(int x, int y, int mapRotation, int sizeX, int sizeY, int objectRotation) {
+		int[] coords = new int[2];
+		if ((objectRotation & 0x1) == 1) {
+			int prevSizeX = sizeX;
+			sizeX = sizeY;
+			sizeY = prevSizeX;
+		}
+		if (mapRotation == 0) {
+			coords[0] = x;
+			coords[1] = y;
+		} else if (mapRotation == 1) {
+			coords[0] = y;
+			coords[1] = 7 - x - (sizeX - 1);
+		} else if (mapRotation == 2) {
+			coords[0] = 7 - x - (sizeX - 1);
+			coords[1] = 7 - y - (sizeY - 1);
+		} else if (mapRotation == 3) {
+			coords[0] = 7 - y - (sizeY - 1);
+			coords[1] = x;
+		}
+		return coords;
+	}
+	
+	@Override
+	public int getRotation(int plane, int x, int y) {
+		return regionCoords[plane][x][y][3];
+	}
+	
+	public void setRotation(int plane, int x, int y, int rotation) {
+		regionCoords[plane][x][y][3] = rotation;
+		setReloadObjects(plane, x, y);
+	}
+	
+	public void setReloadObjects(int plane, int x, int y) {
+		needsReload[plane][x][y] = true;
+		recheckReload = true;
 	}
 	
 	public int[][][][] getRegionCoords() {
 		return regionCoords;
-	}
-	
-	public void setRegionCoords(int[][][][] regionCoords) {
-		this.regionCoords = regionCoords;
 	}
 }

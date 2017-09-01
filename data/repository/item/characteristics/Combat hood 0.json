@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12969": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      1,
+      1,
+      1,
+      3,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12969": "A magical hood, especially created for combat spells.",
+    "12970": "It's an Combat hood 0"
+  }
+}

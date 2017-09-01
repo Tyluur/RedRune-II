@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16305": [
+      40,
+      -2,
+      37,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      32,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16305": "A pickaxe for mining. (Tier 6)",
+    "16306": "It's an Zephyrium pickaxe"
+  }
+}

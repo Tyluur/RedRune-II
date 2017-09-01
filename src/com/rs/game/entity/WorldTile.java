@@ -213,4 +213,15 @@ public class WorldTile implements Serializable {
 	public WorldTile getWorldTile() {
 		return new WorldTile(x, y, plane);
 	}
+	
+	/**
+	 * Checks if this world tile's coordinates match the other world tile.
+	 *
+	 * @param other
+	 * 		The world tile to compare with.
+	 * @return {@code True} if so.
+	 */
+	public boolean matches(WorldTile other) {
+		return x == other.x && y == other.y && plane == other.plane;
+	}
 }

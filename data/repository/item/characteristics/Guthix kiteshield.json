@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2675": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13834": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2675": "Rune kiteshield in the colours of Guthix.",
+    "2676": "It's an Guthix kiteshield",
+    "13834": "Rune kiteshield in the colours of Guthix."
+  }
+}

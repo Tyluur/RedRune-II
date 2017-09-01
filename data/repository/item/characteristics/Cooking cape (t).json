@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9802": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9802": "The cape worn by the world's best chefs."
+  }
+}

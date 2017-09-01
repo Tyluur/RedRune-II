@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13418": [
+      0,
+      0,
+      0,
+      8,
+      -10,
+      35,
+      25,
+      42,
+      15,
+      0,
+      30,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6139": [
+      0,
+      0,
+      0,
+      8,
+      -10,
+      35,
+      25,
+      42,
+      15,
+      0,
+      30,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6139": "The bones in this armour seems to vibrate with a magic quality...",
+    "6140": "It's an Skeletal top",
+    "13418": "The bones in this armour seems to vibrate with a magic quality..."
+  }
+}

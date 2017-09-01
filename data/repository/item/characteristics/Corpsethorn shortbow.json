@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16881": [
+      0,
+      0,
+      0,
+      0,
+      43,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16881": "A small bow, only effective at short distance. (Tier 8)",
+    "16882": "It's an Corpsethorn shortbow"
+  }
+}

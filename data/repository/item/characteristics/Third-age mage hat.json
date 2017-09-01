@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10342": [
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      12,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13550": [
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      12,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10342": "Ancient mage protection enchanted in the Third-Age.",
+    "10343": "It's an Third-age mage hat",
+    "13550": "Ancient mage protection enchanted in the Third-Age."
+  }
+}

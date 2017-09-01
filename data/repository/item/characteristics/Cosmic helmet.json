@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "20440": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20440": "A helmet made in the Elemental Workshop.",
+    "20441": "It's an Cosmic helmet"
+  }
+}

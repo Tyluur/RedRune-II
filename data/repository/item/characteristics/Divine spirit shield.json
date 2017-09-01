@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13740": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      63,
+      65,
+      75,
+      2,
+      57,
+      65,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "13740": "An ethereal shield with a divine sigil attached to it.",
+    "13741": "It's an Divine spirit shield"
+  }
+}

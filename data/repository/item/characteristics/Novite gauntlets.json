@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16273": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      1,
+      2,
+      2,
+      -1,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16273": "A pair of heavy gauntlets. (Tier 1)",
+    "16274": "It's an Novite gauntlets"
+  }
+}

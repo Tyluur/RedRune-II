@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "21760": [
+      0,
+      0,
+      0,
+      16,
+      -7,
+      35,
+      29,
+      38,
+      18,
+      0,
+      30,
+      7,
+      3,
+      0,
+      0,
+      0,
+      5,
+      0
+    ]
+  },
+  "examineMap": {
+    "21760": "It's an Akrisae's robe skirt",
+    "21761": "It's an Akrisae's robe skirt"
+  }
+}

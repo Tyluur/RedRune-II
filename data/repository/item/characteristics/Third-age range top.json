@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10330": [
+      0,
+      0,
+      0,
+      -15,
+      30,
+      55,
+      47,
+      60,
+      60,
+      55,
+      52,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13544": [
+      0,
+      0,
+      0,
+      -15,
+      30,
+      55,
+      47,
+      60,
+      60,
+      55,
+      52,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10330": "Ancient range protection crafted from white dragonhide.",
+    "10331": "It's an Third-age range top",
+    "13544": "Ancient range protection crafted from white dragonhide."
+  }
+}

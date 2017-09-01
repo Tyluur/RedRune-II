@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2611": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      27,
+      31,
+      29,
+      -1,
+      29,
+      30,
+      3,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2611": "Adamant kiteshield with gold trim.",
+    "2612": "It's an Adamant kiteshield (g)"
+  }
+}

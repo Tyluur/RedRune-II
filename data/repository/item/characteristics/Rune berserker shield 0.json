@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12934": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      45,
+      49,
+      47,
+      -1,
+      47,
+      41,
+      3,
+      0,
+      7,
+      4,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12934": "Charged: A Large, spiked metal shield. Uncharged: Not so spiky anymore.",
+    "12935": "It's an Rune berserker shield 0"
+  }
+}

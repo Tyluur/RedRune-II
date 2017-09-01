@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10388": [
+      0,
+      0,
+      0,
+      -10,
+      17,
+      31,
+      25,
+      33,
+      28,
+      31,
+      30,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10388": "Saradomin blessed dragonhide chaps.",
+    "10389": "It's an Saradomin chaps"
+  }
+}

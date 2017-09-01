@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "15822": [
+      2,
+      2,
+      2,
+      0,
+      6,
+      6,
+      6,
+      7,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15822": "Boots that greatly boost combat performance."
+  }
+}

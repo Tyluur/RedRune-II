@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17187": [
+      -10,
+      -10,
+      -10,
+      -15,
+      23,
+      60,
+      52,
+      70,
+      51,
+      63,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17187": "Made from scaly hides (Tier 8)",
+    "17188": "It's an Stegoleather body"
+  }
+}

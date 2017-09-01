@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2629": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13809": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2629": "A large, metal shield with a nice trim.",
+    "2630": "It's an Rune kiteshield (t)",
+    "13809": "A large, metal shield with a nice trim."
+  }
+}

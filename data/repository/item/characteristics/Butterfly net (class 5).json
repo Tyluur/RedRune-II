@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14160": [
+      0,
+      0,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14160": "The sacred clay has become light enough to swing at floating shards.",
+    "14161": "It's an Butterfly net (class 5)"
+  }
+}

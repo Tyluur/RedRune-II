@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "1099": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      22,
+      16,
+      24,
+      8,
+      22,
+      15,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1099": "100% real dragonhide.",
+    "1100": "It's an Green d'hide chaps",
+    "13491": "100% real dragonhide."
+  }
+}

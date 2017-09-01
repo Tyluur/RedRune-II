@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19437": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19439": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19437": "A rune full helmet in the colours of Bandos.",
+    "19438": "It's an Bandos full helm",
+    "19439": "A rune full helmet in the colours of Bandos."
+  }
+}

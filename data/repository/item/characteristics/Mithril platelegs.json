@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1071": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      24,
+      22,
+      20,
+      -4,
+      22,
+      5,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1071": "These look pretty heavy.",
+    "1072": "It's an Mithril platelegs"
+  }
+}

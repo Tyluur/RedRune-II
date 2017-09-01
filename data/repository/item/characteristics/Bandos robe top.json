@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "19384": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19384": "A vestment of Bandos.",
+    "19385": "It's an Bandos robe top",
+    "19510": "A vestment of Bandos."
+  }
+}

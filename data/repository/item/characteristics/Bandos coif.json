@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19457": [
+      0,
+      0,
+      0,
+      -1,
+      7,
+      4,
+      7,
+      10,
+      4,
+      8,
+      8,
+      0,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19457": "Blessed dragonhide coif.",
+    "19458": "It's an Bandos coif"
+  }
+}

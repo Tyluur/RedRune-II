@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17037": [
+      -4,
+      -4,
+      117,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      123,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17037": "I don't think it's intended for joinery. (Tier 10)",
+    "17038": "It's an Promethium warhammer"
+  }
+}

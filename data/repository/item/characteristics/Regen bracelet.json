@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "11133": [
+      8,
+      8,
+      8,
+      3,
+      7,
+      6,
+      6,
+      6,
+      3,
+      6,
+      5,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11133": "Helps to restore your life points.",
+    "11134": "It's an Regen bracelet"
+  }
+}

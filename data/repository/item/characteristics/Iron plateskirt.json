@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1081": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      11,
+      10,
+      10,
+      -4,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1081": "Designer leg protection.",
+    "1082": "It's an Iron plateskirt"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1115": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      21,
+      20,
+      12,
+      -6,
+      20,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1115": "Provides excellent protection.",
+    "1116": "It's an Iron platebody"
+  }
+}

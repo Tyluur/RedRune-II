@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4726": [
+      75,
+      75,
+      75,
+      0,
+      0,
+      7,
+      7,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      75,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4726": "Guthan The Infested's Warspear.",
+    "4727": "It's an Guthan's warspear"
+  }
+}

@@ -23,6 +23,7 @@ public class Wilderness extends Controller {
 	@Override
 	public void start() {
 		checkBoosts(player);
+		moved();
 	}
 	
 	public static void checkBoosts(Player player) {
@@ -59,6 +60,28 @@ public class Wilderness extends Controller {
 		}
 		if (changed) {
 			player.getPackets().sendGameMessage("Your extreme potion bonus has been reduced.");
+		}
+	}
+	
+	public static boolean isAtWild(WorldTile tile) {
+		return (tile.getX() >= 2940 && tile.getX() <= 3395 && tile.getY() >= 3525 && tile.getY() <= 4000) || (tile.getX() >= 3264 && tile.getX() <= 3279 && tile.getY() >= 3279 && tile.getY() <= 3672) || (tile.getX() >= 2756 && tile.getX() <= 2875 && tile.getY() >= 5512 && tile.getY() <= 5627) || (tile.getX() >= 3158 && tile.getX() <= 3181 && tile.getY() >= 3679 && tile.getY() <= 3697) || (tile.getX() >= 3280 && tile.getX() <= 3183 && tile.getY() >= 3883 && tile.getY() <= 3888);
+	}
+	
+	public boolean isAtWildSafe() {
+		return (player.getX() >= 2940 && player.getX() <= 3395 && player.getY() <= 3524 && player.getY() >= 3523);
+	}
+	
+	public void showSkull() {
+		player.getInterfaceManager().sendTab(player.getInterfaceManager().hasRezizableScreen() ? 10 : 19, 381);
+	}
+	
+	public void removeIcon() {
+		if (showingSkull) {
+			showingSkull = false;
+			player.setCanPvp(false);
+			player.getPackets().closeInterface(player.getInterfaceManager().hasRezizableScreen() ? 10 : 19);
+			player.getAppearance().generateAppearanceData();
+			player.getEquipment().refresh(null);
 		}
 	}
 	
@@ -214,28 +237,6 @@ public class Wilderness extends Controller {
 	
 	public static boolean isDitch(int id) {
 		return id >= 1440 && id <= 1444 || id >= 65076 && id <= 65087;
-	}
-	
-	public boolean isAtWildSafe() {
-		return (player.getX() >= 2940 && player.getX() <= 3395 && player.getY() <= 3524 && player.getY() >= 3523);
-	}
-	
-	public void removeIcon() {
-		if (showingSkull) {
-			showingSkull = false;
-			player.setCanPvp(false);
-			player.getPackets().closeInterface(player.getInterfaceManager().hasRezizableScreen() ? 10 : 19);
-			player.getAppearance().generateAppearanceData();
-			player.getEquipment().refresh(null);
-		}
-	}
-	
-	public static boolean isAtWild(WorldTile tile) {
-		return (tile.getX() >= 2940 && tile.getX() <= 3395 && tile.getY() >= 3525 && tile.getY() <= 4000) || (tile.getX() >= 3264 && tile.getX() <= 3279 && tile.getY() >= 3279 && tile.getY() <= 3672) || (tile.getX() >= 2756 && tile.getX() <= 2875 && tile.getY() >= 5512 && tile.getY() <= 5627) || (tile.getX() >= 3158 && tile.getX() <= 3181 && tile.getY() >= 3679 && tile.getY() <= 3697) || (tile.getX() >= 3280 && tile.getX() <= 3183 && tile.getY() >= 3883 && tile.getY() <= 3888);
-	}
-	
-	public void showSkull() {
-		player.getInterfaceManager().sendTab(player.getInterfaceManager().hasRezizableScreen() ? 10 : 19, 381);
 	}
 	
 	public int getWildLevel() {

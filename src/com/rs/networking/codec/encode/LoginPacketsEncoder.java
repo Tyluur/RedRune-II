@@ -34,7 +34,7 @@ public final class LoginPacketsEncoder extends Encoder {
 	public final void sendLoginDetails(Player player) {
 		OutputStream stream = new OutputStream();
 		stream.writePacketVarByte(2);
-		stream.writeByte(player.getRights());
+		stream.writeByte(player.getDominantRight().getClientRight());
 		stream.writeByte(0);
 		stream.writeByte(0);
 		stream.writeByte(0);
@@ -54,7 +54,7 @@ public final class LoginPacketsEncoder extends Encoder {
 		OutputStream responseBlock = new OutputStream();
 		
 		responseBlock.writePacketVarByte(2);
-		responseBlock.writeByte(0);// rights
+		responseBlock.writeByte(player.getDominantRight().getClientRight());// rights
 		responseBlock.writeByte(0);// blackmarks
 		responseBlock.writeByte(0);// muted? (bool)
 		responseBlock.writeByte(0);// dunno (bool)

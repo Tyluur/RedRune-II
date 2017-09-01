@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16661": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      76,
+      85,
+      137,
+      -4,
+      86,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16661": "Designer leg protection. (Tier 8)",
+    "16662": "It's an Katagon plateskirt"
+  }
+}

@@ -64,17 +64,7 @@ public class OwnedObjectManager {
 	}
 	
 	public void destroyObject(WorldObject object) {
-		int regionId = object.getRegionId();
-		int baseLocalX = object.getX() - ((regionId >> 8) * 64);
-		int baseLocalY = object.getY() - ((regionId & 0xff) * 64);
-		World.getRegion(regionId).removeObject(object);
-		World.getRegion(regionId).removeMapObject(object, baseLocalX, baseLocalY);
-		for (Player p2 : World.getPlayers()) {
-			if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
-				continue;
-			}
-			p2.getPackets().sendDestroyObject(object);
-		}
+		World.removeObject(object);
 	}
 	
 	private void remove() {
@@ -85,7 +75,7 @@ public class OwnedObjectManager {
 	}
 	
 	private void spawnObject() {
-		World.spawnObject(objects[count], true);
+		World.spawnObject(objects[count]);
 		resetLifeTime();
 	}
 	

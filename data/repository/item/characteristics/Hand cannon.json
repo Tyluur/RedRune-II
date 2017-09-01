@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15241": [
+      0,
+      0,
+      0,
+      0,
+      90,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15241": "A miniature dwarven cannon.",
+    "15242": "It's an Hand cannon"
+  }
+}

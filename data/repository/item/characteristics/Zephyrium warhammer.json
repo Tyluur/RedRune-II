@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17029": [
+      -4,
+      -4,
+      78,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      62,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17029": "I don't think it's intended for joinery.(Tier 6)",
+    "17030": "It's an Zephyrium warhammer"
+  }
+}

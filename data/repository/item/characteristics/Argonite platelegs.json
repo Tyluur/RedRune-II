@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16681": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      107,
+      93,
+      51,
+      -4,
+      106,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16681": "These look pretty heavy. (Tier 7).",
+    "16682": "It's an Argonite platelegs"
+  }
+}

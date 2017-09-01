@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "849": [
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "849": "A shortbow made out of willow, still effective.",
+    "850": "It's an Willow shortbow"
+  }
+}

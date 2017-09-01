@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "12629": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      1,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12629": "Gloves from the Stronghold of Player Safety."
+  }
+}

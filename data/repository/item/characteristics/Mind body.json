@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "18697": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "18697": "A body made in the Elemental Workshop.",
+    "18698": "It's an Mind body"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16733": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      125,
+      172,
+      272,
+      -3,
+      138,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16733": "A series of connected metal rings. (Tier 11)",
+    "16734": "It's an Primal chainbody"
+  }
+}

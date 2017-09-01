@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1343": [
+      -4,
+      -4,
+      25,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1343": "I don't think it's intended for joinery.",
+    "1344": "It's an Mithril warhammer"
+  }
+}

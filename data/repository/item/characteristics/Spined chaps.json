@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13416": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      22,
+      16,
+      24,
+      8,
+      22,
+      10,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6135": [
+      0,
+      0,
+      0,
+      -10,
+      8,
+      22,
+      16,
+      24,
+      8,
+      22,
+      10,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6135": "Stylish leg armour for rangers with a lingering smell of raw fish...",
+    "6136": "It's an Spined chaps",
+    "13416": "Stylish leg armour for rangers with a lingering smell of raw fish..."
+  }
+}

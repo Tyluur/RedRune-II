@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "5704": [
+      5,
+      5,
+      5,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "5704": "A bronze tipped spear.",
+    "5705": "'s an Skewered kebab;\u0015@It has a light on its forehead. What a pretty light... So shiny!;\u0016CA sharp fang amulet, which"
+  }
+}

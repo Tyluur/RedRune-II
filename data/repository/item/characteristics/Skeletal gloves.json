@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13425": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6153": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6153": "Fremennik gloves stitched together from wallasalki bones fragments.",
+    "6154": "It's an Skeletal gloves",
+    "13425": "Fremennik gloves stitched together from wallasalki bones fragments."
+  }
+}

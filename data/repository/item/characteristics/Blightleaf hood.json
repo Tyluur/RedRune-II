@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16739": [
+      -3,
+      -3,
+      -3,
+      2,
+      -3,
+      4,
+      3,
+      5,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16739": "A hood worn by mages. (Tier 3)",
+    "16740": "It's an Blightleaf hood"
+  }
+}

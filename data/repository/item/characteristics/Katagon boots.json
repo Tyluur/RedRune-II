@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16353": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      15,
+      16,
+      12,
+      -1,
+      9,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16353": "Boots made for walking. Also, more importantly, made for armour. (Tier 8)",
+    "16354": "It's an Katagon boots"
+  }
+}

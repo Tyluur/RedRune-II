@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17225": [
+      -7,
+      -7,
+      -7,
+      11,
+      -7,
+      21,
+      14,
+      30,
+      11,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17225": "The upper half of a magical robe (Tier 5)",
+    "17226": "It's an Bryll robe top"
+  }
+}

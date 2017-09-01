@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16845": [
+      -5,
+      -5,
+      -5,
+      1,
+      -5,
+      3,
+      2,
+      4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16845": "The lower half of a magical robe. (Tier 1)",
+    "16846": "It's an Salve robe bottom"
+  }
+}

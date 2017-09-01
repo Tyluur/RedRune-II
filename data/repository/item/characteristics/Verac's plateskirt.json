@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4759": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      85,
+      82,
+      83,
+      0,
+      84,
+      30,
+      3,
+      0,
+      7,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "4759": "Verac the Defiled's plate skirt.",
+    "4760": "It's an Verac's plateskirt"
+  }
+}

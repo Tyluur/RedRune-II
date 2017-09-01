@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16335": [
+      0,
+      0,
+      0,
+      0,
+      138,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16335": "A sturdy longbow. (Tier 10)",
+    "16336": "It's an Grave creeper longbow"
+  }
+}

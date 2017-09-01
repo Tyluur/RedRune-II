@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19410": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19412": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19410": "A rune kiteshield in the colours of a forgotten god.",
+    "19411": "It's an Ancient kiteshield",
+    "19412": "A rune kiteshield in the colours of a forgotten god."
+  }
+}

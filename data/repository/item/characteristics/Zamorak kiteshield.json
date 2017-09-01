@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2659": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13824": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2659": "A Rune kiteshield in the colours of Zamorak.",
+    "2660": "It's an Zamorak kiteshield",
+    "13824": "A Rune kiteshield in the colours of Zamorak."
+  }
+}

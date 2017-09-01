@@ -2,27 +2,52 @@ package com.rs.game.entity.item;
 
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * This class represents an item that exists on the floor
+ *
+ * @author Matrix Team
+ * @author Tyluur <itstyluur@gmail.com>
+ */
 @SuppressWarnings("serial")
 public class FloorItem extends Item {
 	
+	/**
+	 * The tile of the item
+	 */
+	@Getter
 	private WorldTile tile;
 	
+	/**
+	 * The owner of the item
+	 */
+	@Getter
 	private Player owner;
 	
+	/**
+	 * If the item is invisible
+	 */
+	@Getter
+	@Setter
 	private boolean invisible;
 	
+	/**
+	 * If the item is a grave
+	 */
+	@Getter
 	private boolean grave;
 	
 	public FloorItem(int id) {
 		super(id);
 	}
 	
-	public FloorItem(Item item, WorldTile tile, Player owner, boolean underGrave, boolean invisible) {
+	public FloorItem(Item item, WorldTile tile, Player owner, boolean grave, boolean invisible) {
 		super(item.getId(), item.getAmount());
 		this.tile = tile;
 		this.owner = owner;
-		grave = underGrave;
+		this.grave = grave;
 		this.invisible = invisible;
 	}
 	
@@ -30,24 +55,11 @@ public class FloorItem extends Item {
 		this.amount = amount;
 	}
 	
-	public WorldTile getTile() {
-		return tile;
-	}
-	
-	public boolean isGrave() {
-		return grave;
-	}
-	
-	public boolean isInvisible() {
-		return invisible;
-	}
-	
-	public void setInvisible(boolean invisible) {
-		this.invisible = invisible;
-	}
-	
-	public Player getOwner() {
-		return owner;
+	/**
+	 * If we have an owner
+	 */
+	public boolean hasOwner() {
+		return owner != null;
 	}
 	
 }

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16675": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      58,
+      49,
+      27,
+      -4,
+      56,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16675": "These look pretty heavy. (Tier 4)",
+    "16676": "It's an Kratonite platelegs"
+  }
+}

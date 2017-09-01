@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17043": [
+      -3,
+      -3,
+      -3,
+      -3,
+      2,
+      3,
+      3,
+      5,
+      1,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17043": "Crafted out of thick lizard hides. (Tier 2)",
+    "17044": "It's an Subleather coif"
+  }
+}

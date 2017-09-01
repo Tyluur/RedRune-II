@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13426": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6731": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6731": "A mysterious ring that can fill the wearer with magical power...",
+    "6732": "It's an Seers' ring",
+    "13426": "A mysterious ring that can fill the wearer with magical power..."
+  }
+}

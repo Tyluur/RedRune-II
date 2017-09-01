@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19390": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19390": "Legs that match the Zaros vestment.",
+    "19391": "It's an Ancient robe legs"
+  }
+}

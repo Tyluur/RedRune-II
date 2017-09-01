@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9046": [
+      7,
+      -1,
+      25,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      32,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9046": " This sceptre is fully charged.",
+    "9047": "It's an Pharaoh's sceptre (2)"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1015": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1015": "Clothing favoured by women and dark wizards.",
+    "1016": "It's an Black skirt"
+  }
+}

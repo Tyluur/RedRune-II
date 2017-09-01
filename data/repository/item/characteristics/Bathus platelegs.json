@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16671": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      30,
+      25,
+      13,
+      -4,
+      28,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16671": "These look pretty heavy. (Tier 2)",
+    "16672": "It's an Bathus platelegs"
+  }
+}

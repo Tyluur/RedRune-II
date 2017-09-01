@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "1052": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10635": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1052": "The cape worn by members of the Legends Guild.",
+    "8284": "The cape worn by members of the Legends Guild.",
+    "10635": "The cape worn by members of the Legends Guild."
+  }
+}

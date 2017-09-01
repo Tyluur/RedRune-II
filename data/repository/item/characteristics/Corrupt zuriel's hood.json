@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13938": [
+      0,
+      0,
+      0,
+      8,
+      -2,
+      20,
+      16,
+      22,
+      8,
+      0,
+      15,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13938": "This item degrades while worn, and will turn to dust.",
+    "13939": "It's an Corrupt zuriel's hood"
+  }
+}

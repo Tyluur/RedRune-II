@@ -3,17 +3,52 @@ package com.rs.game.entity.object;
 import com.rs.cache.loaders.ObjectDefinitions;
 import com.rs.game.entity.Entity;
 import com.rs.game.entity.WorldTile;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * This class represents an object that exists in the rs2 game world
+ *
+ * @author Matrix Team
+ * @author Tyluur <itstyluur@gmail.com>
+ */
 @SuppressWarnings("serial")
 public class WorldObject extends WorldTile implements Entity {
 	
+	/**
+	 * The id of the object
+	 */
+	@Getter
+	@Setter
 	private int id;
 	
+	/**
+	 * The type of the object
+	 */
+	@Getter
+	@Setter
 	private int type;
 	
+	/**
+	 * The rotation of the object
+	 */
+	@Getter
+	@Setter
 	private int rotation;
 	
+	/**
+	 * The life of the object, only used for trees/ore
+	 */
+	@Getter
+	@Setter
 	private int life;
+	
+	/**
+	 * If the object is spawned
+	 */
+	@Getter
+	@Setter
+	private boolean spawned;
 	
 	public WorldObject(int id, int type, int rotation, WorldTile tile) {
 		super(tile.getX(), tile.getY(), tile.getPlane());
@@ -45,32 +80,17 @@ public class WorldObject extends WorldTile implements Entity {
 	}
 	
 	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof WorldObject)) {
+			return false;
+		}
+		WorldObject o = (WorldObject) object;
+		return o.getId() == id && o.getWorldTile().matches(this) && o.getType() == type && o.rotation == rotation;
+	}
+	
+	@Override
 	public String toString() {
 		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", life=" + life + '}';
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getType() {
-		return type;
-	}
-	
-	public int getRotation() {
-		return rotation;
-	}
-	
-	public void setRotation(int rotation) {
-		this.rotation = rotation;
-	}
-	
-	public int getLife() {
-		return life;
-	}
-	
-	public void setLife(int life) {
-		this.life = life;
 	}
 	
 	public void decrementObjectLife() {

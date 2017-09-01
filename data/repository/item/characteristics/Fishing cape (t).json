@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9799": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9799": "The cape worn by the best fishermen."
+  }
+}

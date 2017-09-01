@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17201": [
+      -2,
+      -2,
+      -2,
+      -4,
+      3,
+      3,
+      2,
+      3,
+      2,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17201": "Wrist protection made from scaly hides. (Tier 4)",
+    "17202": "It's an Archleather vambraces"
+  }
+}

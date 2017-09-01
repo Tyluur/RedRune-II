@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "20171": [
+      0,
+      0,
+      0,
+      0,
+      120,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      115,
+      0,
+      0
+    ],
+    "20173": [
+      0,
+      0,
+      0,
+      0,
+      120,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      115,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20171": "A powerful bow imbued with the fury of Zaros.",
+    "20172": "It's an Zaryte bow",
+    "20173": "A powerful bow imbued with the fury of Zaros."
+  }
+}

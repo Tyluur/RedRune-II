@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16879": [
+      0,
+      0,
+      0,
+      0,
+      36,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16879": "A small bow, only effective at short distance. (Tier 7)",
+    "16880": "It's an Thigat shortbow"
+  }
+}

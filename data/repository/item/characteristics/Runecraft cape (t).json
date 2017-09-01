@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9766": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9766": "The cape worn by master runecrafters."
+  }
+}

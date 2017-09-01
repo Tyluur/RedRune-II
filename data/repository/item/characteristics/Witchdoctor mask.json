@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "20046": [
+      0,
+      0,
+      0,
+      0,
+      -1,
+      4,
+      5,
+      3,
+      0,
+      4,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20046": "Camouflage for the herblore habitat.",
+    "20050": "Camouflage for the herblore habitat."
+  }
+}

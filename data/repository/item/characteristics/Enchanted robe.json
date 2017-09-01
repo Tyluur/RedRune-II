@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7398": [
+      0,
+      0,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      15,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7398": "Enchanted Wizards robes.",
+    "7401": "It's an Enchanted robe"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "3331": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      7,
+      8,
+      6,
+      -1,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "3341": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      7,
+      8,
+      6,
+      -1,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3331": "An easy-to-make, muddy-yellow, Mort Myre snail shell helmet.",
+    "3332": "It's an Ochre snelm",
+    "3341": "An easy-to-make, muddy-yellow, Mort Myre snail shell helmet.",
+    "3342": "It's an Ochre snelm"
+  }
+}

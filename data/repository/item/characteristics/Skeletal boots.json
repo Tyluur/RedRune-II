@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13422": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6147": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6147": "Some finely crafted Fremennik boots, made from the bones of a Wallasalki.",
+    "6148": "It's an Skeletal boots",
+    "13422": "Some finely crafted Fremennik boots, made from the bones of a Wallasalki."
+  }
+}

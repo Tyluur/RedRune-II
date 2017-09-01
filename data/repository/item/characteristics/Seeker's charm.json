@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17289": [
+      -3,
+      -3,
+      -3,
+      10,
+      15,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -4,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17289": "A pulsating eye attached to a necklace.",
+    "17290": "It's an Seeker's charm"
+  }
+}

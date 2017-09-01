@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "11671": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11671": "A seal storing the power of the Void Knights."
+  }
+}

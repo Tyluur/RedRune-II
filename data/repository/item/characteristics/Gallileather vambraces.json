@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17207": [
+      -2,
+      -2,
+      -2,
+      -4,
+      6,
+      5,
+      3,
+      6,
+      9,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17207": "Wrist protection made from scaly hides. (Tier 7)",
+    "17208": "It's an Gallileather vambraces"
+  }
+}

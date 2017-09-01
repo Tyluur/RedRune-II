@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17361": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      70,
+      123,
+      102,
+      -1,
+      105,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17361": "A large metal shield. (Tier 11)",
+    "17362": "It's an Primal kiteshield"
+  }
+}

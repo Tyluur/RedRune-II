@@ -246,7 +246,7 @@ public final class EmotesManager implements Serializable {
 			return;
 		}
 		player.stopAll(false);
-		if (!unlockedEmotes.contains(id) && player.getRights() < 2) {
+		if (!unlockedEmotes.contains(id)) {
 			if (id == 41) {
 				player.getDialogueManager().startDialogue("SimpleMessage", "This emote can be acessed by unlocking 70 pieces of music.");
 			} else {

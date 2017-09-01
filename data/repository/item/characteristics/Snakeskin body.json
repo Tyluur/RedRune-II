@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6322": [
+      0,
+      0,
+      0,
+      -5,
+      12,
+      25,
+      28,
+      32,
+      15,
+      35,
+      30,
+      0,
+      4,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6322": "Made from 100% real snakeskin.",
+    "6323": "It's an Snakeskin body"
+  }
+}

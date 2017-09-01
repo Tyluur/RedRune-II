@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1069": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      17,
+      16,
+      15,
+      -4,
+      16,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1069": "These look pretty heavy.",
+    "1070": "It's an Steel platelegs"
+  }
+}

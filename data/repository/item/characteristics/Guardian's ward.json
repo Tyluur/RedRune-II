@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17287": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      55,
+      72,
+      84,
+      44,
+      60,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17287": "A superior magical shield.",
+    "17288": "It's an Guardian's ward"
+  }
+}

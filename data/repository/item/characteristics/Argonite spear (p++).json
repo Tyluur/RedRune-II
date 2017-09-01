@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17117": [
+      102,
+      53,
+      79,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      96,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17117": "A stick made for poking - violent poking. (Tier 7)",
+    "17118": "It's an Argonite spear (p++)"
+  }
+}

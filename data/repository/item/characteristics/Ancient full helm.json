@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19407": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19409": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      7,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19407": "A rune full helmet in the colours of a forgotten god.",
+    "19408": "It's an Ancient full helm",
+    "19409": "A rune full helmet in the colours of a forgotten god."
+  }
+}

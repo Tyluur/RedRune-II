@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14371": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      30,
+      30,
+      30,
+      -10,
+      15,
+      30,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14371": "The sacred clay has transformed into a hard, metallic substance.",
+    "14372": "It's an Helm (class 3)"
+  }
+}

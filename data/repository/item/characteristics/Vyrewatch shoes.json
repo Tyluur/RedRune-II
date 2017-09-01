@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9638": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9638": "Dress like a powerful Vyrewatch!",
+    "9639": "It's an Vyrewatch shoes"
+  }
+}

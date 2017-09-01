@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13873": [
+      0,
+      0,
+      0,
+      -10,
+      23,
+      35,
+      29,
+      37,
+      46,
+      35,
+      30,
+      0,
+      8,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13873": "This item degrades in combat, and will turn to dust.",
+    "13874": "It's an Morrigan's leather chaps"
+  }
+}

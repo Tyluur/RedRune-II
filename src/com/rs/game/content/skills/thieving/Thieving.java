@@ -46,7 +46,7 @@ public class Thieving {
 					public void run() {
 						// prevents multiempty stall spawn if many ppl using
 						// same spot and also checks if stall there still
-						if (!World.getRegion(object.getRegionId()).containsObject(object.getId(), object)) {
+						if (!World.containsObjectWithId(object.getId(), object)) {
 							stop();
 							return;
 						}

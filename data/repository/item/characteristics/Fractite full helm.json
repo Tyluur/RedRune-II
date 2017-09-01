@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16699": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      29,
+      33,
+      18,
+      -1,
+      31,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16699": "A full face helmet. (Tier 5)",
+    "16700": "It's an Fractite full helm"
+  }
+}

@@ -2,6 +2,7 @@ package com.rs.cache.loaders;
 
 import com.rs.cache.Cache;
 import com.rs.networking.io.InputStream;
+import com.rs.utility.game.npc.NPCWalkingFlag;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -338,6 +339,9 @@ public final class NPCDefinitions {
 			stream.readUnsignedByte();
 		} else if ((opcode ^ 0xffffffff) == -120) {
 			walkMask = (byte) (stream.readByte());
+			if (NPCWalkingFlag.containsKey(id)) {
+				walkMask = (byte) NPCWalkingFlag.getWalkingFlag(id);
+			}
 		} else if (opcode == 121) {
 			anIntArrayArray840 = (new int[modelIds.length][]);
 			int i = (stream.readUnsignedByte());

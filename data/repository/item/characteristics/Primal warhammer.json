@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17039": [
+      -4,
+      -4,
+      126,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      132,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17039": "I don't think it's intended for joinery. (Tier 11)",
+    "17040": "It's an Primal warhammer"
+  }
+}

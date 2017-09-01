@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17075": [
+      31,
+      14,
+      24,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17075": "A stick made for poking - violent poking. (Tier 2)",
+    "17076": "It's an Bathus spear (p+)"
+  }
+}

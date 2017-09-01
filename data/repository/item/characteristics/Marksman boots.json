@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17267": [
+      2,
+      2,
+      2,
+      0,
+      6,
+      6,
+      6,
+      7,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17267": "Boots that greatly boost combat performance.",
+    "17268": "It's an Marksman boots"
+  }
+}

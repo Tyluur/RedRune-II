@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4747": [
+      -4,
+      -4,
+      85,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      72,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4747": "Torag the Corrupted's twin hammers.",
+    "4748": "It's an Torag's hammers"
+  }
+}

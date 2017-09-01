@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "7668": [
+      -4,
+      -4,
+      35,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      35,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7668": "A specially crafted hammer with strange markings on it.",
+    "7669": "It's an Gadderhammer"
+  }
+}

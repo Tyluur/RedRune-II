@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1091": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      33,
+      31,
+      29,
+      -4,
+      31,
+      10,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1091": "Designer leg protection.",
+    "1092": "It's an Adamant plateskirt"
+  }
+}

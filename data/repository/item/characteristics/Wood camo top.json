@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10053": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      15,
+      19,
+      0,
+      12,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "10625": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      15,
+      19,
+      0,
+      12,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10053": "This should make me harder to spot in wooded areas.",
+    "10054": "It's an Wood camo top",
+    "10625": "This should make me harder to spot in wooded areas."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13423": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6149": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6149": "Fremennik gloves stitched together from spined dagannoth hide.",
+    "6150": "It's an Spined gloves",
+    "13423": "Fremennik gloves stitched together from spined dagannoth hide."
+  }
+}

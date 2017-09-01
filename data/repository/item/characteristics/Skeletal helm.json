@@ -1,0 +1,70 @@
+{
+  "bonusMap": {
+    "10604": [
+      0,
+      0,
+      0,
+      2,
+      -2,
+      10,
+      9,
+      11,
+      3,
+      0,
+      6,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13417": [
+      0,
+      0,
+      0,
+      2,
+      -2,
+      10,
+      9,
+      11,
+      3,
+      0,
+      6,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6137": [
+      0,
+      0,
+      0,
+      2,
+      -2,
+      10,
+      9,
+      11,
+      3,
+      0,
+      6,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6137": "Make your foes cower by wearing a skull as a helmet!",
+    "6138": "It's an Skeletal helm",
+    "10604": "Make your foes cower by wearing a skull as a helmet!",
+    "13417": "Make your foes cower by wearing a skull as a helmet!"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17191": [
+      -10,
+      -10,
+      -10,
+      -15,
+      30,
+      78,
+      68,
+      91,
+      83,
+      82,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17191": "Made from scaly hides. (Tier 10)",
+    "17192": "It's an Tyrannoleather body"
+  }
+}

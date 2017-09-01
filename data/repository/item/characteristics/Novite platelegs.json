@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16669": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      16,
+      13,
+      7,
+      -4,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16669": "These look pretty heavy. (Tier 1)",
+    "16670": "It's an Novite platelegs"
+  }
+}

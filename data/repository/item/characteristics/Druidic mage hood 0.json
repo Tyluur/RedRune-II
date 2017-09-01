@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12892": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12892": "A worn-out hood, formerly worn by the followers of Guthix.",
+    "12893": "It's an Druidic mage hood 0"
+  }
+}

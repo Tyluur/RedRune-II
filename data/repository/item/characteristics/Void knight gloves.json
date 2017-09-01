@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "8842": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      6,
+      6,
+      4,
+      6,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "8842": "Gloves as used by the order of the Void Knights."
+  }
+}

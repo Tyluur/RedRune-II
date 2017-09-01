@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1173": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      5,
+      6,
+      4,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1173": "A medium square shield.",
+    "1174": "It's an Bronze sq shield"
+  }
+}

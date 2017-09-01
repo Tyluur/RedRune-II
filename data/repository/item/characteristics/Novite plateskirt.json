@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16647": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      9,
+      10,
+      17,
+      -4,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16647": "Designer leg protection. (Tier 1)",
+    "16648": "It's an Novite plateskirt"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10368": [
+      0,
+      0,
+      0,
+      -10,
+      11,
+      6,
+      5,
+      7,
+      8,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10368": "Zamorak blessed dragonhide vambraces.",
+    "10369": "It's an Zamorak vambraces"
+  }
+}

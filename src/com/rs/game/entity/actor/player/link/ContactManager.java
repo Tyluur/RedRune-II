@@ -133,12 +133,12 @@ public class ContactManager implements Serializable {
 			player.getPackets().sendPrivateGameBarStage();
 		}
 		player.getPackets().sendPrivateMessage(p2.getDisplayName(), message);
-		p2.getPackets().receivePrivateMessage(Misc.formatPlayerNameForDisplay(player.getUsername()), player.getDisplayName(), player.getRights(), message);
+		p2.getPackets().receivePrivateMessage(Misc.formatPlayerNameForDisplay(player.getUsername()), player.getDisplayName(), player.getDominantRight().getClientRight(), message);
 	}
 	
 	public void sendQuickChatMessage(Player p2, QuickChatMessage quickChatMessage) {
 		player.getPackets().sendPrivateQuickMessageMessage(p2.getDisplayName(), quickChatMessage);
-		p2.getPackets().receivePrivateChatQuickMessage(Misc.formatPlayerNameForDisplay(player.getUsername()), player.getDisplayName(), player.getRights(), quickChatMessage);
+		p2.getPackets().receivePrivateChatQuickMessage(Misc.formatPlayerNameForDisplay(player.getUsername()), player.getDisplayName(), player.getDominantRight().getClientRight(), quickChatMessage);
 		
 	}
 	

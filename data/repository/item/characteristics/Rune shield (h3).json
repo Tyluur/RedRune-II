@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10673": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "7348": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "7348": "A rune kiteshield with a heraldic design.",
+    "7349": "It's an Rune shield (h3)",
+    "10673": "A rune kiteshield with a heraldic design."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6889": [
+      0,
+      0,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      15,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6889": "The magical book of the Mage.",
+    "6890": "It's an Mages' book"
+  }
+}

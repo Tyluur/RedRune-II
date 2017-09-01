@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "16971": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      56,
+      98,
+      81,
+      -1,
+      84,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "17357": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      56,
+      98,
+      81,
+      -1,
+      84,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16971": "A large metal shield. (Tier 9)",
+    "16972": "It's an Gorgonite kiteshield",
+    "17357": "A large metal shield. (Tier 9)",
+    "17358": "It's an Gorgonite kiteshield"
+  }
+}

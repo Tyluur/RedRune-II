@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13420": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6143": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6143": "Some finely crafted Fremennik boots, made from spined dagannoth hide.",
+    "6144": "It's an Spined boots",
+    "13420": "Some finely crafted Fremennik boots, made from spined dagannoth hide."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "20765": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "examineMap": {
+    "20746": "A cape worn by those who've seen the world in a different light.",
+    "20765": "A cape worn by those who've seen the world in a different light."
+  }
+}

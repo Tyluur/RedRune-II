@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "3488": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      45,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13839": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      45,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "3488": "Rune kiteshield with gold plate.",
+    "3489": "It's an Gilded kiteshield",
+    "13839": "Rune kiteshield with gold plate."
+  }
+}

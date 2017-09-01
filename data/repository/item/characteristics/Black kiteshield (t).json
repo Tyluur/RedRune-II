@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "2589": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      17,
+      19,
+      18,
+      -1,
+      18,
+      10,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2589": "Black kiteshield with trim.",
+    "2590": "It's an Black kiteshield (t)"
+  }
+}

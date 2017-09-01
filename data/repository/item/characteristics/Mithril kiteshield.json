@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1197": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      18,
+      22,
+      20,
+      -1,
+      20,
+      20,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1197": "A large metal shield.",
+    "1198": "It's an Mithril kiteshield"
+  }
+}

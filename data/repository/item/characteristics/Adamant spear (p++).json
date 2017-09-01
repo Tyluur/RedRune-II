@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "5726": [
+      24,
+      24,
+      24,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      28,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "5726": "An adamant tipped spear.",
+    "5727": "It's an Adamant spear (p++)"
+  }
+}

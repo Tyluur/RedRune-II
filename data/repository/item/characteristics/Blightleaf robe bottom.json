@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16849": [
+      -5,
+      -5,
+      -5,
+      4,
+      -5,
+      9,
+      6,
+      12,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16849": "The lower half of a magical robe. (Tier 3)",
+    "16850": "It's an Blightleaf robe bottom"
+  }
+}

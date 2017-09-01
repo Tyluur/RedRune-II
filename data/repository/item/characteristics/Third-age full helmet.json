@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10350": [
+      0,
+      0,
+      0,
+      -5,
+      -2,
+      47,
+      49,
+      43,
+      -3,
+      48,
+      12,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13554": [
+      0,
+      0,
+      0,
+      -5,
+      -2,
+      47,
+      49,
+      43,
+      -3,
+      48,
+      12,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10350": "Ancient armour beaten from magical silver.",
+    "10351": "It's an Third-age full helmet",
+    "13554": "Ancient armour beaten from magical silver."
+  }
+}

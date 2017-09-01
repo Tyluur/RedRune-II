@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16867": [
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16867": "A small bow, only effective at short distance. (Tier 1)",
+    "16868": "It's an Tangle gum shortbow"
+  }
+}

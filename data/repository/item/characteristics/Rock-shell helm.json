@@ -1,0 +1,70 @@
+{
+  "bonusMap": {
+    "10613": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      6,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13411": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      6,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6128": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      30,
+      32,
+      27,
+      -1,
+      30,
+      6,
+      1,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6128": "Protective headwear made from crabs. Better than it sounds.",
+    "6175": "It's an Rock-shell helm",
+    "10613": "Protective headwear made from crabs. Better than it sounds.",
+    "13411": "Protective headwear made from crabs. Better than it sounds."
+  }
+}

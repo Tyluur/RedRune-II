@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16693": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      9,
+      11,
+      6,
+      -1,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16693": "A full face helmet. (Tier 2)",
+    "16694": "It's an Bathus full helm"
+  }
+}

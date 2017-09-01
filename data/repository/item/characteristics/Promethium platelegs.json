@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16687": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      164,
+      142,
+      78,
+      -4,
+      163,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16687": "These look pretty heavy. (Tier 10)",
+    "16688": "It's an Promethium platelegs"
+  }
+}

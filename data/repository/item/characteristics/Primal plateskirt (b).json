@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16206": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      109,
+      123,
+      199,
+      -4,
+      125,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16206": "When Bound: Designer leg protection. When not bound: Designer leg protection. (Tier 11)"
+  }
+}

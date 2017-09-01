@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "9629": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      9,
+      10,
+      7,
+      -1,
+      9,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "9629": "As used by King Tyras personal guard.",
+    "9630": "It's an Tyras helm"
+  }
+}

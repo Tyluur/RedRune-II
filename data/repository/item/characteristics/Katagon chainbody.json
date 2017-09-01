@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16727": [
+      0,
+      0,
+      0,
+      -15,
+      0,
+      87,
+      119,
+      188,
+      -3,
+      96,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16727": "A series of metal connected rings. (Tier 8)",
+    "16728": "It's an Katagon chainbody"
+  }
+}

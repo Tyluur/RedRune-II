@@ -52,7 +52,6 @@ public final class DialogueHandler {
 			CACHED_DIALOGUES.put("Turael", (Class<Dialogue>) Class.forName(Turael.class.getCanonicalName()));
 			CACHED_DIALOGUES.put("Hairdresser", (Class<Dialogue>) Class.forName(Hairdresser.class.getCanonicalName()));
 			CACHED_DIALOGUES.put("CompCape", (Class<Dialogue>) Class.forName(CompCape.class.getCanonicalName()));
-			CACHED_DIALOGUES.put("PartyRoomLever", (Class<Dialogue>) Class.forName(PartyRoomLever.class.getCanonicalName()));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

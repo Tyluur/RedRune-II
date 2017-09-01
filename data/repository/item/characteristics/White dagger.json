@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "6591": [
+      10,
+      5,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      1,
+      0
+    ]
+  },
+  "examineMap": {
+    "6591": "A vicious white dagger.",
+    "6592": "It's an White dagger"
+  }
+}

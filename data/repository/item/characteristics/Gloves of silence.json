@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10075": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10075": "Made from dark kebbit fur, these are perfect for tasks of a stealthier nature.",
+    "10076": "It's an Gloves of silence"
+  }
+}

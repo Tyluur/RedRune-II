@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "19331": [
+      10,
+      -1,
+      40,
+      10,
+      0,
+      2,
+      3,
+      1,
+      10,
+      0,
+      2,
+      0,
+      0,
+      0,
+      50,
+      0,
+      6,
+      0
+    ]
+  },
+  "examineMap": {
+    "19331": "This staff displays the carved head of an inquisitive cat.",
+    "19332": "It's an Cat staff"
+  }
+}

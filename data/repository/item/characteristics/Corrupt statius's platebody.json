@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13908": [
+      5,
+      5,
+      7,
+      -10,
+      -30,
+      154,
+      145,
+      121,
+      -6,
+      157,
+      60,
+      6,
+      0,
+      12,
+      5,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13908": "This item degrades while worn, and will turn to dust.",
+    "13909": "It's an Corrupt statius's platebody"
+  }
+}

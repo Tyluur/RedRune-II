@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "12995": [
+      0,
+      0,
+      0,
+      -1,
+      -1,
+      5,
+      6,
+      6,
+      -1,
+      5,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "12995": "I have to keep my hands safe!",
+    "12996": "It's an Worn-out black gauntlets"
+  }
+}

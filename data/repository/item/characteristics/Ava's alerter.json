@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "20068": [
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      1,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "20068": "A superior bagged chicken with a magnet in its claw, ready to serve and detect."
+  }
+}

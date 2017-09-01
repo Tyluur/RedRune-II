@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "13413": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      10,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "6130": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      10,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "6130": "Some tough leggings made from rock crab parts.",
+    "6177": "It's an Rock-shell legs",
+    "13413": "Some tough leggings made from rock crab parts."
+  }
+}

@@ -19,8 +19,6 @@ import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
 import com.rs.utility.game.files.SerializableFilesManager;
-import com.rs.utility.game.npc.NPCSpawns;
-import com.rs.utility.repo.npc.NPCCharacteristicRepository;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -65,19 +63,13 @@ public final class Commands {
 	
 	public static boolean processAdminCommand(final Player player, String[] cmd, boolean console, boolean clientCommand) {
 		if (clientCommand) {
-			if (cmd[0].equalsIgnoreCase("tele") && (player.getRights() == 7 || player.getRights() == 2)) {
-				cmd = cmd[1].split(",");
-				int plane = Integer.valueOf(cmd[0]);
-				int x = Integer.valueOf(cmd[1]) << 6 | Integer.valueOf(cmd[3]);
-				int y = Integer.valueOf(cmd[2]) << 6 | Integer.valueOf(cmd[4]);
-				player.setNextWorldTile(new WorldTile(x, y, plane));
+			if (cmd[0].equalsIgnoreCase("tele")) {
 				return true;
 			}
 		} else {
 			
 			if (cmd[0].equalsIgnoreCase("dbg")) {
-				NPCCharacteristicRepository.convertNPCBonuses();
-				NPCCharacteristicRepository.convertNPCExamines();
+				System.out.println(Commands.class.getPackage() + " -> " + Misc.getPackageName(Commands.class));
 			}
 			if (cmd[0].equalsIgnoreCase("unstuck")) {
 				String name = cmd[1];
@@ -135,8 +127,7 @@ public final class Commands {
 				}
 				return true;
 			}
-			if (cmd[0].equalsIgnoreCase("copy") && (player.getRights() == 7)) {
-				
+			if (cmd[0].equalsIgnoreCase("copy")) {
 				String username = "";
 				for (int i = 1; i < cmd.length; i++) {
 					username += cmd[i] + ((i == cmd.length - 1) ? "" : " ");
@@ -187,7 +178,7 @@ public final class Commands {
 				return true;
 			}
 			
-			if (cmd[0].equalsIgnoreCase("configloop") && (player.getRights() == 7)) {
+			if (cmd[0].equalsIgnoreCase("configloop")) {
 				final int value = Integer.valueOf(cmd[1]);
 				
 				WorldTasksManager.schedule(new WorldTask() {
@@ -279,18 +270,7 @@ public final class Commands {
 					e.printStackTrace();
 				}
 			}
-			if (cmd[0].equalsIgnoreCase("fishme")) {
-				for (NPC n : World.getNPCs()) {
-					World.removeNPC(n);
-					n.reset();
-					n.finish();
-				}
-				for (int i = 0; i < 18000; i++) {
-					NPCSpawns.loadNPCSpawns(i);
-				}
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("scroll") && (player.getRights() == 2)) {
+			if (cmd[0].equalsIgnoreCase("scroll")) {
 				player.getPackets().sendScrollIComponent(Integer.valueOf(cmd[1]), Integer.valueOf(cmd[2]), Integer.valueOf(cmd[3]));
 				return true;
 			}
@@ -308,7 +288,7 @@ public final class Commands {
 				player.getPackets().sendGameMessage("Coords: " + player.getX() + ", " + player.getY() + ", " + player.getPlane() + ", regionId: " + player.getRegionId() + ", rx: " + player.getChunkX() + ", ry: " + player.getChunkY(), true);
 				return true;
 			}
-			if (cmd[0].equalsIgnoreCase("itemoni") && ((player.getRights() == 7))) {
+			if (cmd[0].equalsIgnoreCase("itemoni")) {
 				int interId = Integer.valueOf(cmd[1]);
 				int componentId = Integer.valueOf(cmd[2]);
 				int id = Integer.valueOf(cmd[3]);
@@ -347,7 +327,7 @@ public final class Commands {
 			}
 			if (cmd[0].equalsIgnoreCase("object")) {
 				try {
-					World.spawnObject(new WorldObject(Integer.valueOf(cmd[1]), 10, -1, player.getX(), player.getY(), player.getPlane()), true);
+					World.spawnObject(new WorldObject(Integer.valueOf(cmd[1]), 10, -1, player.getX(), player.getY(), player.getPlane()));
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: setkills id");
 				}
@@ -361,7 +341,7 @@ public final class Commands {
 				}
 				return true;
 			}
-			if (cmd[0].equalsIgnoreCase("tabses") && (player.getRights() == 7)) {
+			if (cmd[0].equalsIgnoreCase("tabses")) {
 				try {
 					for (int i = 110; i < 200; i++) {
 						player.getInterfaceManager().sendTab(i, 662);
@@ -375,7 +355,7 @@ public final class Commands {
 				player.applyHit(new Hit(player, 998, HitLook.REGULAR_DAMAGE));
 				return true;
 			}
-			if (cmd[0].equalsIgnoreCase("changepassother") && (player.getRights() == 7)) {
+			if (cmd[0].equalsIgnoreCase("changepassother")) {
 				String username = cmd[1].substring(cmd[1].indexOf(" ") + 1);
 				Player other = World.getPlayerByDisplayName(username);
 				if (other == null) {
@@ -386,7 +366,7 @@ public final class Commands {
 				return true;
 			}
 			
-			if (cmd[0].equalsIgnoreCase("inters") && (player.getRights() == 7)) {
+			if (cmd[0].equalsIgnoreCase("inters")) {
 				if (cmd.length < 2) {
 					player.getPackets().sendPanelBoxMessage("Use: ::inter interfaceId");
 					return true;
@@ -544,15 +524,6 @@ public final class Commands {
 					
 				}
 				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("objectanim")) {
-				
-				WorldObject object = cmd.length == 4 ? World.getObject(new WorldTile(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.getPlane())) : World.getObject(new WorldTile(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), player.getPlane()), Integer.parseInt(cmd[3]));
-				if (object == null) {
-					player.getPackets().sendPanelBoxMessage("No object was found.");
-					return true;
-				}
-				player.getPackets().sendObjectAnimation(object, new Animation(Integer.parseInt(cmd[cmd.length == 4 ? 3 : 4])));
 			}
 			if (cmd[0].equalsIgnoreCase("bconfigloop")) {
 				if (cmd.length < 3) {
@@ -821,7 +792,6 @@ public final class Commands {
 					if (other == null) {
 						return true;
 					}
-					other.setRights(2);
 					SerializableFilesManager.savePlayer(other);
 					other.getPackets().sendGameMessage("You are now an Adrastos <img=1>Administrator.");
 					player.getPackets().sendGameMessage("You've given Administrator to " + Misc.formatPlayerNameForDisplay(other.getUsername() + "."), true);
@@ -835,7 +805,6 @@ public final class Commands {
 					if (other == null) {
 						return true;
 					}
-					other.setRights(1);
 					SerializableFilesManager.savePlayer(other);
 					other.getPackets().sendGameMessage("You are now an Adrastos <img=0>Player Moderator.");
 					player.getPackets().sendGameMessage("You've given Player Moderator to " + Misc.formatPlayerNameForDisplay(other.getUsername() + "."), true);
@@ -850,7 +819,6 @@ public final class Commands {
 					if (other == null) {
 						return true;
 					}
-					other.setRights(0);
 					SerializableFilesManager.savePlayer(other);
 					other.getPackets().sendGameMessage("Sadly, you've lost your opportunity as a staff member.");
 					player.getPackets().sendGameMessage("You have taken away their opportunity as a staff memeber.");
@@ -1310,15 +1278,6 @@ public final class Commands {
 	}
 	
 	public static void sendYell(Player player, String message, boolean isStaffYell) {
-		if (player.getRights() < 2) {
-			String[] invalid = { "<euro", "<img", "<img=", "<col", "<col=", "<shad", "<shad=", "<str>", "<u>" };
-			for (String s : invalid) {
-				if (message.contains(s)) {
-					player.getPackets().sendGameMessage("Your yell message contains invalid code, and has been disabled.");
-					return;
-				}
-			}
-		}
 		for (Player players : World.getPlayers()) {
 			if (players == null || !players.isRunning()) {
 				continue;
@@ -1330,26 +1289,12 @@ public final class Commands {
 			// + message + "</col>");
 			// return;
 			// }
-			
-			if (player.getRights() == 1) {
-				players.getPackets().sendGameMessage("<col=006600>[Moderator]</col><img=0>" + player.getDisplayName() + ": <col=006600>" + message);
-			} else if (player.getRights() == 2) {
-				players.getPackets().sendGameMessage("<col=ff0000>[Administrator]</col><img=1>" + player.getDisplayName() + ": <col=ff0000>" + message);
-			}
 		}
 	}
 	
 	public static void archiveLogs(Player player, String[] cmd) {
 		try {
-			if (player.getRights() < 1) {
-				return;
-			}
 			String location = "";
-			if (player.getRights() == 2) {
-				location = "data/logs/admin/" + player.getUsername() + ".txt";
-			} else if (player.getRights() == 1) {
-				location = "data/logs/mod/" + player.getUsername() + ".txt";
-			}
 			String afterCMD = "";
 			for (int i = 1; i < cmd.length; i++) {
 				afterCMD += cmd[i] + ((i == cmd.length - 1) ? "" : " ");

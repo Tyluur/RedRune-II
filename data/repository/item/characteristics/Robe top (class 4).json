@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14323": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      80,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14323": "The sacred clay has transformed into a light, cloth-like substance.",
+    "14324": "It's an Robe top (class 4)"
+  }
+}

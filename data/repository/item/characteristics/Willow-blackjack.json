@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4600": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4600": "A handy little club made out of willow.",
+    "4612": "It's an Willow-blackjack"
+  }
+}

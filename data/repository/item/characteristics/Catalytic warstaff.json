@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16969": [
+      0,
+      -1,
+      10,
+      10,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      15
+    ]
+  },
+  "examineMap": {
+    "16969": "It's an Catalytic warstaff",
+    "16970": "It's an Catalytic warstaff"
+  }
+}

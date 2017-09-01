@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "13931": [
+      133,
+      113,
+      120,
+      0,
+      0,
+      18,
+      21,
+      21,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      122,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13931": "This item degrades while worn, and will turn to dust."
+  }
+}

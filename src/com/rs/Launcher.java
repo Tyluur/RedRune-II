@@ -26,11 +26,9 @@ import com.rs.networking.ServerChannelHandler;
 import com.rs.utility.Misc;
 import com.rs.utility.cache.huffman.Huffman;
 import com.rs.utility.game.files.SerializableFilesManager;
-import com.rs.utility.game.item.ItemBonuses;
-import com.rs.utility.game.item.ItemExamines;
 import com.rs.utility.game.map.MapArchiveKeys;
-import com.rs.utility.game.map.MapAreas;
-import com.rs.utility.game.npc.NPCSpawns;
+import com.rs.utility.game.npc.NPCWalkingFlag;
+import com.rs.utility.game.object.ObjectRemoval;
 import com.rs.utility.game.object.ObjectSpawns;
 import com.rs.utility.system.OutLogger;
 
@@ -58,14 +56,9 @@ public final class Launcher {
 		System.out.println("Initiating Huffman");
 		MapArchiveKeys.init();
 		System.out.println("Initiating Map xTeas");
-		MapAreas.init();
-		System.out.println("Initiating Map areas");
 		ObjectSpawns.init();
 		System.out.println("Initiating Object Spawns");
-		NPCSpawns.init();
-		System.out.println("Initiating NPC Spawns");
-		ItemExamines.init();
-		ItemBonuses.init();
+		NPCWalkingFlag.registerFlags();
 		System.out.println("Initiating Item Handlers");
 		FishingSpotsHandler.init();
 		CombatScriptsHandler.init();
@@ -75,6 +68,7 @@ public final class Launcher {
 		ControllerHandler.registerAll();
 		System.out.println("Initiating Cutscenes");
 		CutscenesHandler.init();
+		ObjectRemoval.initialize();
 		System.out.println("Initiating Friend Chats");
 		FriendChatsManager.init();
 		System.out.println("Initiating Cores");

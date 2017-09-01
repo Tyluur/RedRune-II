@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "19380": [
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "19380": "A vestment of Armadyl.",
+    "19381": "It's an Armadyl robe top",
+    "19508": "A vestment of Armadyl."
+  }
+}

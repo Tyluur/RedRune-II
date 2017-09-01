@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17271": [
+      2,
+      2,
+      2,
+      5,
+      0,
+      7,
+      6,
+      13,
+      5,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17271": "A superior pair of light boots made for agile spellcasters.",
+    "17272": "It's an Sorcerer's boots"
+  }
+}

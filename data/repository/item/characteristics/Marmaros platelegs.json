@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16673": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      43,
+      36,
+      20,
+      -4,
+      41,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16673": "These look pretty heavy. (Tier 3)",
+    "16674": "It's an Marmaros platelegs"
+  }
+}

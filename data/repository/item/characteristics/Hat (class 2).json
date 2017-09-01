@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14339": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14339": "The sacred clay has transformed into a light, cloth-like material.",
+    "14340": "It's an Hat (class 2)"
+  }
+}

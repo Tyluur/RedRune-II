@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "2952": [
+      11,
+      5,
+      -4,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      10,
+      0,
+      5,
+      0
+    ]
+  },
+  "examineMap": {
+    "2952": "A silver dagger that can prevent werewolves changing form."
+  }
+}

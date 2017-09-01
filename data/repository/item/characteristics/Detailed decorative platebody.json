@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4504": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      46,
+      44,
+      38,
+      -6,
+      44,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4504": "A platebody with finely detailed decoration."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16925": [
+      -2,
+      -2,
+      -2,
+      6,
+      -2,
+      8,
+      7,
+      15,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16925": "Magically charged shoes. (Tier 8)",
+    "16926": "It's an Ectoshoes"
+  }
+}

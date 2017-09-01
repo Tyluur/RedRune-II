@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "13911": [
+      5,
+      7,
+      7,
+      -15,
+      0,
+      120,
+      131,
+      145,
+      -3,
+      140,
+      60,
+      6,
+      0,
+      12,
+      6,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "13911": "This item degrades while worn, and will turn to dust.",
+    "13912": "It's an Corrupt vesta's chainbody"
+  }
+}

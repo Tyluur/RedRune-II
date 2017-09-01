@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17151": [
+      -1,
+      -1,
+      -1,
+      1,
+      -1,
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17151": "A pair of finely crafted gloves. (Tier 1)",
+    "17152": "It's an Salve gloves"
+  }
+}

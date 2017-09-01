@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "975": [
+      0,
+      6,
+      -2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "975": "A jungle specific slashing device.",
+    "976": "It's an Machete"
+  }
+}

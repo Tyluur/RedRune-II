@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10364": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ],
+    "10736": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10364": "An enchanted ruby amulet with a nice trim.",
+    "10365": "It's an Strength amulet (t)",
+    "10736": "An enchanted ruby amulet with a nice trim."
+  }
+}

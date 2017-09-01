@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "11412": [
+      24,
+      24,
+      24,
+      0,
+      0,
+      -6,
+      -7,
+      -5,
+      0,
+      -6,
+      0,
+      0,
+      0,
+      0,
+      28,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "11412": "An adamant-tipped, one-handed hasta.",
+    "11413": "It's an Adamant hasta (p++)"
+  }
+}

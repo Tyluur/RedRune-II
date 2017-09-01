@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14311": [
+      0,
+      0,
+      202,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      45,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14311": "The sacred clay has transformed into a heavy warhammer.",
+    "14312": "It's an Warhammer (class 3)"
+  }
+}

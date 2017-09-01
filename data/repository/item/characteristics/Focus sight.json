@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15490": [
+      0,
+      0,
+      0,
+      0,
+      3,
+      -5,
+      -5,
+      -5,
+      5,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15490": "It looks like it'll help my aim.",
+    "15491": "It's an Focus sight"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "16272": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      21,
+      23,
+      18,
+      -1,
+      13,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16272": "Boots made for walking. Also, more importantly, made for armour. (Tier 11)"
+  }
+}

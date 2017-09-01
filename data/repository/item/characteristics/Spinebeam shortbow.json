@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "16875": [
+      0,
+      0,
+      0,
+      0,
+      19,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "16975": [
+      0,
+      0,
+      0,
+      0,
+      19,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16875": "A small bow, only effective at a short distance. (Tier 5)",
+    "16876": "It's an Spinebeam shortbow",
+    "16975": "A small bow, only effective at a short distance. (Tier 5)",
+    "16976": "It's an Spinebeam shortbow"
+  }
+}

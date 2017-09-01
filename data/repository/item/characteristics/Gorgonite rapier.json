@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "16951": [
+      67,
+      54,
+      -2,
+      0,
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      96,
+      0,
+      0,
+      0
+    ],
+    "16959": [
+      67,
+      54,
+      -2,
+      0,
+      0,
+      0,
+      2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      96,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16951": "A razor-sharp rapier. (Tier 9)",
+    "16952": "It's an Gorgonite rapier",
+    "16959": "A razor-sharp rapier. (Tier 9)",
+    "16960": "It's an Gorgonite rapier"
+  }
+}

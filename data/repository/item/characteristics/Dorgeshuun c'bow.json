@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "8880": [
+      0,
+      0,
+      0,
+      0,
+      42,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "8880": "This fires crossbow bolts.",
+    "8881": "It's an Dorgeshuun c'bow"
+  }
+}

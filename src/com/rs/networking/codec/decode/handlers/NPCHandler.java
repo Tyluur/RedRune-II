@@ -13,7 +13,7 @@ import com.rs.game.plugin.PluginRepository;
 import com.rs.game.world.World;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.game.ClickOption;
-import com.rs.utility.repo.npc.NPCCharacteristicRepository;
+import com.rs.utility.repo.npc.characteristic.NPCCharacteristicRepository;
 
 import static com.rs.utility.game.ClickOption.*;
 
@@ -91,7 +91,7 @@ public class NPCHandler {
 			if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
 				player.getBank().openBank();
 			} else {
-				player.sendMessage("Nothing interesting happens...");
+				player.getPackets().sendGameMessage("Nothing interesting happens...");
 				if (GameFlags.debugMode) {
 					System.out.println("First clicked npc [" + npc + "]");
 				}
@@ -150,7 +150,7 @@ public class NPCHandler {
 			if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker") || npc.getId() == 13455) {
 				player.getBank().openBank();
 			} else {
-				player.sendMessage("Nothing interesting happens...");
+				player.getPackets().sendGameMessage("Nothing interesting happens...");
 				if (GameFlags.debugMode) {
 					System.out.println("Second clicked npc [" + npc + "]");
 				}
@@ -178,7 +178,7 @@ public class NPCHandler {
 			if (PluginRepository.handleNPC(player, npc, THIRD)) {
 				return;
 			}
-			player.sendMessage("Nothing interesting happens...");
+			player.getPackets().sendGameMessage("Nothing interesting happens...");
 			if (GameFlags.debugMode) {
 				System.out.println("Third clicked npc [" + npc + "]");
 			}
@@ -205,7 +205,7 @@ public class NPCHandler {
 			if (PluginRepository.handleNPC(player, npc, FOURTH)) {
 				return;
 			}
-			player.sendMessage("Nothing interesting happens...");
+			player.getPackets().sendGameMessage("Nothing interesting happens...");
 			if (GameFlags.debugMode) {
 				System.out.println("Fourth clicked npc [" + npc + "]");
 			}

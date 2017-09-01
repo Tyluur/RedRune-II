@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16655": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      44,
+      49,
+      82,
+      -4,
+      49,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16655": "Designer leg protection. (Tier 5)",
+    "16656": "It's an Fractite plateskirt"
+  }
+}

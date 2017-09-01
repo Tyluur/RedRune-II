@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4156": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      15,
+      5,
+      5,
+      10,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4156": "I can just about see things in this shield's reflection.",
+    "4157": "It's an Mirror shield"
+  }
+}

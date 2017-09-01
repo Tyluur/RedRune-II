@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14299": [
+      68,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14299": "The sacred clay transformed into a sharp dagger.",
+    "14300": "It's an Dagger (class 2)"
+  }
+}

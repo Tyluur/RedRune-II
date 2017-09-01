@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "1187": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      50,
+      52,
+      48,
+      0,
+      50,
+      50,
+      5,
+      0,
+      11,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13506": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      50,
+      52,
+      48,
+      0,
+      50,
+      50,
+      5,
+      0,
+      11,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1187": "An ancient and powerful looking Dragon Square shield.",
+    "1188": "It's an Dragon sq shield",
+    "13506": "An ancient and powerful looking Dragon Square shield."
+  }
+}

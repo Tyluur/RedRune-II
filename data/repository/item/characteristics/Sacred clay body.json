@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "14118": [
+      0,
+      0,
+      0,
+      -15,
+      15,
+      40,
+      32,
+      45,
+      20,
+      40,
+      40,
+      0,
+      6,
+      3,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14118": "The sacred clay top has transformed into a leather body."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2491": [
+      0,
+      0,
+      0,
+      -10,
+      11,
+      6,
+      5,
+      7,
+      8,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13500": [
+      0,
+      0,
+      0,
+      -10,
+      11,
+      6,
+      5,
+      7,
+      8,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2491": "Vambraces made from 100% real dragonhide.",
+    "2492": "It's an Black d'hide vambraces",
+    "13500": "Vambraces made from 100% real dragonhide."
+  }
+}

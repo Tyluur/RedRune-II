@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10334": [
+      0,
+      0,
+      0,
+      -2,
+      9,
+      4,
+      7,
+      10,
+      5,
+      8,
+      12,
+      0,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13546": [
+      0,
+      0,
+      0,
+      -2,
+      9,
+      4,
+      7,
+      10,
+      5,
+      8,
+      12,
+      0,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10334": "Ancient range protection crafted from white dragonhide.",
+    "10335": "It's an Third-age range coif",
+    "13546": "Ancient range protection crafted from white dragonhide."
+  }
+}

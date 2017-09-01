@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "10282": [
+      0,
+      0,
+      0,
+      0,
+      49,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13542": [
+      0,
+      0,
+      0,
+      0,
+      49,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10282": "A powerful bow made from yew wood.",
+    "10283": "It's an Yew composite bow",
+    "13542": "A powerful bow made from yew wood."
+  }
+}

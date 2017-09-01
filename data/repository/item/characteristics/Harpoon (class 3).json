@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14146": [
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14146": "The sacred clay has become long enough to reach the depths of pools.",
+    "14147": "It's an Harpoon (class 3)"
+  }
+}

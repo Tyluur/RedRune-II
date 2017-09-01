@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15769": [
+      -2,
+      96,
+      90,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      121,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15769": "A vicious-looking axe. (Tier 9)",
+    "15770": "It's an Gorgonite battleaxe"
+  }
+}

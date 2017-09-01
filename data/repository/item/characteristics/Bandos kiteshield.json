@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "19440": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ],
+    "19442": [
+      0,
+      0,
+      0,
+      -8,
+      -2,
+      44,
+      48,
+      46,
+      -1,
+      46,
+      40,
+      3,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "19440": "A rune kiteshield in the colours of Bandos.",
+    "19441": "It's an Bandos kiteshield",
+    "19442": "A rune kiteshield in the colours of Bandos."
+  }
+}

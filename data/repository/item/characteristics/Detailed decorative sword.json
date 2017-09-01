@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "4503": [
+      15,
+      20,
+      -2,
+      0,
+      0,
+      0,
+      3,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      22,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4503": "A sword with highly detailed decoration."
+  }
+}

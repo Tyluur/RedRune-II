@@ -1,0 +1,49 @@
+{
+  "bonusMap": {
+    "2671": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ],
+    "13831": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      51,
+      49,
+      47,
+      -4,
+      49,
+      15,
+      2,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "2671": "Rune platelegs in the colours of Guthix.",
+    "2672": "It's an Guthix platelegs",
+    "13831": "Rune platelegs in the colours of Guthix."
+  }
+}

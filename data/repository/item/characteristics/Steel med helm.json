@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1141": [
+      0,
+      0,
+      0,
+      -3,
+      -1,
+      7,
+      8,
+      6,
+      -1,
+      7,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1141": "A medium sized helmet.",
+    "1142": "It's an Steel med helm"
+  }
+}

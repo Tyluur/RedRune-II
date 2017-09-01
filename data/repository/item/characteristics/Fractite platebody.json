@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17247": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      100,
+      93,
+      54,
+      -6,
+      101,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17247": "Provides excellent protection. (Tier 5)",
+    "17248": "It's an Fractite platebody"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "1059": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1059": "These will keep my hands warm!",
+    "1060": "It's an Leather gloves"
+  }
+}

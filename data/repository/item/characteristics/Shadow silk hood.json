@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17279": [
+      -2,
+      -2,
+      -2,
+      6,
+      6,
+      10,
+      7,
+      14,
+      6,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17279": "A hood that cloaks the wearer from humanoids.",
+    "17280": "It's an Shadow silk hood"
+  }
+}

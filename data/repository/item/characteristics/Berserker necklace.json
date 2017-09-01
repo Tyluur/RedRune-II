@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "11128": [
+      -10,
+      -10,
+      -10,
+      0,
+      0,
+      -20,
+      -20,
+      -20,
+      -20,
+      -20,
+      -20,
+      0,
+      0,
+      0,
+      7,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "11128": "Makes obsidian weapons even stronger!",
+    "11129": "It's an Berserker necklace"
+  }
+}

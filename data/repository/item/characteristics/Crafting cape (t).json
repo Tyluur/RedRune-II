@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "9781": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ]
+  },
+  "examineMap": {
+    "9781": "The cape worn by master craftworkers."
+  }
+}

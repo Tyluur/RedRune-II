@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16665": [
+      0,
+      0,
+      0,
+      -18,
+      -3,
+      98,
+      111,
+      179,
+      -4,
+      113,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16665": "Designer leg protection. (Tier 10)",
+    "16666": "It's an Promethium plateskirt"
+  }
+}

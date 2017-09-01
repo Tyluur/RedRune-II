@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "21405": [
+      2,
+      -2,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "21405": "It can only be used in the clan battlefield."
+  }
+}

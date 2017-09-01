@@ -1,0 +1,51 @@
+{
+  "bonusMap": {
+    "16933": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      9,
+      8,
+      2,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "1540": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      9,
+      8,
+      2,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "1540": "This provides partial protection from dragon-breath attacks.",
+    "1541": "It's an Anti-dragon shield",
+    "8282": "This provides partial protection from dragon-breath attacks.",
+    "16933": "This provides partial protection from dragon-breath attacks.",
+    "16934": "It's an Anti-dragon shield"
+  }
+}

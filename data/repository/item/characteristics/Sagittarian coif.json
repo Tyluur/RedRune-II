@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "17061": [
+      -3,
+      -3,
+      -3,
+      -3,
+      12,
+      21,
+      19,
+      30,
+      38,
+      23,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "17061": "Crafted out of thick lizard hides. (Tier 11)",
+    "17062": "It's an Sagittarian coif"
+  }
+}

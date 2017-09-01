@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16695": [
+      0,
+      0,
+      0,
+      -6,
+      -2,
+      17,
+      19,
+      10,
+      -1,
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16695": "A full face helmet. (Tier 3)",
+    "16696": "It's an Marmaros full helm"
+  }
+}

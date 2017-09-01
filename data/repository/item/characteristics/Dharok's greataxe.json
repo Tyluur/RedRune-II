@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4718": [
+      -4,
+      103,
+      95,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      0,
+      0,
+      105,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "4718": "Dharok the Wretched's Greataxe.",
+    "4719": "It's an Dharok's greataxe"
+  }
+}

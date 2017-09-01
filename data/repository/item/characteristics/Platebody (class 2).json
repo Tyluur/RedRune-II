@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14349": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      40,
+      40,
+      40,
+      -10,
+      20,
+      40,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14349": "The sacred clay transformed into a hard, metallic substance.",
+    "14350": "It's an Platebody (class 2)"
+  }
+}

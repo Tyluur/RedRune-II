@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "15243": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      150,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15243": "The bag contains shot and powder for the hand cannon."
+  }
+}

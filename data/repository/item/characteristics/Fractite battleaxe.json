@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "15761": [
+      2,
+      63,
+      59,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      55,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "15761": "A vicious looking axe. (Tier 5)",
+    "15762": "It's an Fractite battleaxe"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "16685": [
+      0,
+      0,
+      0,
+      -21,
+      -7,
+      145,
+      125,
+      69,
+      -4,
+      143,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16685": "These look pretty heavy. (Tier 9)",
+    "16686": "It's an Gorgonite platelegs"
+  }
+}

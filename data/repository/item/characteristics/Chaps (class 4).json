@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14407": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      30,
+      30,
+      30,
+      0,
+      60,
+      60,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "examineMap": {
+    "14407": "The sacred clay transformed into a flexible mesh.",
+    "14408": "It's an Chaps (class 4)"
+  }
+}

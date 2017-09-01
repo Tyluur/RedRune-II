@@ -1,0 +1,29 @@
+{
+  "bonusMap": {
+    "1704": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      0,
+      0,
+      0,
+      6,
+      0,
+      3,
+      0
+    ]
+  },
+  "examineMap": {
+    "1704": "It's an Amulet of glory",
+    "1705": "It's an Amulet of glory",
+    "8283": "It's an Amulet of glory"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "bonusMap": {
+    "16421": [
+      -4,
+      -4,
+      154,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      145,
+      0,
+      0,
+      0
+    ],
+    "16965": [
+      -4,
+      -4,
+      154,
+      -4,
+      0,
+      0,
+      0,
+      0,
+      -1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      145,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "16421": "A maul used to claim life from those who don't deserve it. (Tier 9)",
+    "16422": "It's an Gorgonite maul",
+    "16965": "A maul used to claim life from those who don't deserve it. (Tier 9)",
+    "16966": "It's an Gorgonite maul"
+  }
+}

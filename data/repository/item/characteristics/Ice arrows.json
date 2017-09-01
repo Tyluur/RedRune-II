@@ -1,0 +1,27 @@
+{
+  "bonusMap": {
+    "78": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      16,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "78": "Can only be fired from yew, magic, or dark bows."
+  }
+}

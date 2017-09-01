@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "4755": [
+      68,
+      -2,
+      82,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      72,
+      0,
+      6,
+      0
+    ]
+  },
+  "examineMap": {
+    "4755": "Verac the Defiled's Flail.",
+    "4756": "It's an Verac's flail"
+  }
+}

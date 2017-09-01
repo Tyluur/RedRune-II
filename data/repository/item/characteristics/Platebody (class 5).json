@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "14355": [
+      0,
+      0,
+      0,
+      -30,
+      -10,
+      100,
+      100,
+      100,
+      -10,
+      50,
+      100,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "14355": "The sacred clay top has transformed into a spiked, platemail body.",
+    "14356": "It's an Platebody (class 5)"
+  }
+}

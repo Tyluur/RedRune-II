@@ -1,0 +1,28 @@
+{
+  "bonusMap": {
+    "10035": [
+      0,
+      0,
+      0,
+      0,
+      -7,
+      11,
+      10,
+      10,
+      0,
+      10,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "examineMap": {
+    "10035": "These should make me harder to spot in polar areas.",
+    "10036": "It's an Kyatt legs"
+  }
+}
