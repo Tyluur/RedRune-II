@@ -11,16 +11,23 @@
 54639 10 3 ~ 3083 3500 0 true // new fountain
 47762 10 2 ~ 3090 3499 0 true // presents
 47760 10 4 ~ 3090 3497 0 true // presents
+30141 0 1 ~ 3092 3506 0 true // energy barrier
+30141 0 1 ~ 3093 3506 0 true // energy barrier
+30141 0 3 ~ 3092 3514 0 true // energy barrier
+30141 0 3 ~ 3093 3514 0 true // energy barrier
 // edge men room
 3045 10 2 ~ 3096 3513 0 true // bank chests
 3045 10 2 ~ 3097 3513 0 true // bank chest
 3045 10 2 ~ 3098 3513 0 true // bank chest
 54020 5 0 ~ 3091 3512 0 true // clan cup plaque
 54019 5 0 ~ 3091 3511 0 true // clan cup plaque
-16118 10 2 ~ 3095 3513 0 true // box of health
 40074 10 0 ~ 3091 3507 0 true // candle
 40074 10 0 ~ 3091 3513 0 true // candle
 // wildy
 59434 10 0 ~ 3384 3614 0 true // crates blocking dung from wildy
 59434 10 0 ~ 3384 3615 0 true // crates blocking dung from wildy
-
+14503 10 1 ~ 3091 3509 0 true // Wilderness Sign
+14503 10 1 ~ 3091 3511 0 true // Wilderness Sign
+3045 10 2 ~ 3099 3513 0 true // Bank booth
+3045 10 2 ~ 3100 3513 0 true // Bank booth
+53739 10 1 ~ 3096 3507 0 true // Altar

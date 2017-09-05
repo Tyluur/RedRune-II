@@ -9,6 +9,7 @@ import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 
@@ -119,7 +120,7 @@ public final class Glacor extends NPC {
 				setFinished(false);
 				World.addNPC(npc);
 				npc.setLastRegionId(0);
-				World.updateEntityRegion(npc);
+				RegionManager.updateActorRegion(npc);
 				loadMapRegions();
 				checkMultiArea();
 				shieldTimer = 0;

@@ -14,6 +14,7 @@ import com.rs.game.world.World;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.game.ClickOption;
 import com.rs.utility.repo.npc.characteristic.NPCCharacteristicRepository;
+import com.rs.utility.repo.npc.spawn.NPCSpawnRepository;
 
 import static com.rs.utility.game.ClickOption.*;
 
@@ -53,6 +54,11 @@ public class NPCHandler {
 				handleOption4(player, npc);
 				break;
 			case EXAMINE:
+				if (player.getAttribute("removing_npcs", false)) {
+					NPCSpawnRepository.removeSpawn(npc);
+					npc.finish();
+					return;
+				}
 				player.getPackets().sendNPCMessage(0, npc, NPCCharacteristicRepository.getExamine(npc.getId()));
 				if (GameFlags.debugMode) {
 					System.out.println("Examined npc [" + npc + "]");

@@ -4,11 +4,11 @@ import com.rs.game.content.skills.hunter.Hunter.HunterNPC;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.actor.player.link.OwnedObjectManager;
 import com.rs.game.entity.actor.player.link.OwnedObjectManager.ConvertEvent;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class HuntNPC extends NPC {
 	@Override
 	public void processNPC() {
 		super.processNPC();
-		List<WorldObject> objects = World.getRegion(getRegionId()).getSpawnedObjects();
+		List<WorldObject> objects = RegionManager.getRegion(getRegionId()).getSpawnedObjects();
 		if (objects != null) {
 			final HunterNPC info = HunterNPC.forId(getId());
 			int objectId = info.getEquipment().getObjectId();
@@ -34,7 +34,7 @@ public class HuntNPC extends NPC {
 							if (player == null) {
 								return false;
 							}
-							return player.getSkills().getLevel(PlayerSkills.HUNTER) >= info.getLevel();
+							return player.getSkills().getLevel(SkillConstants.HUNTER) >= info.getLevel();
 						}
 					})) {
 						setRespawnTask(); // auto finishes

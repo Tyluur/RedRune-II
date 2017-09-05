@@ -9,11 +9,11 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.ForceMovement;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.game.ClickOption;
 
 public class Wilderness extends Controller {
@@ -28,34 +28,34 @@ public class Wilderness extends Controller {
 	
 	public static void checkBoosts(Player player) {
 		boolean changed = false;
-		int level = player.getSkills().getLevelForXp(PlayerSkills.ATTACK);
+		int level = player.getSkills().getLevelForXp(SkillConstants.ATTACK);
 		int maxLevel = (int) (level + 5 + (level * 0.15));
-		if (maxLevel < player.getSkills().getLevel(PlayerSkills.ATTACK)) {
-			player.getSkills().set(PlayerSkills.ATTACK, maxLevel);
+		if (maxLevel < player.getSkills().getLevel(SkillConstants.ATTACK)) {
+			player.getSkills().set(SkillConstants.ATTACK, maxLevel);
 			changed = true;
 		}
-		level = player.getSkills().getLevelForXp(PlayerSkills.STRENGTH);
+		level = player.getSkills().getLevelForXp(SkillConstants.STRENGTH);
 		maxLevel = (int) (level + 5 + (level * 0.15));
-		if (maxLevel < player.getSkills().getLevel(PlayerSkills.STRENGTH)) {
-			player.getSkills().set(PlayerSkills.STRENGTH, maxLevel);
+		if (maxLevel < player.getSkills().getLevel(SkillConstants.STRENGTH)) {
+			player.getSkills().set(SkillConstants.STRENGTH, maxLevel);
 			changed = true;
 		}
-		level = player.getSkills().getLevelForXp(PlayerSkills.DEFENCE);
+		level = player.getSkills().getLevelForXp(SkillConstants.DEFENCE);
 		maxLevel = (int) (level + 5 + (level * 0.15));
-		if (maxLevel < player.getSkills().getLevel(PlayerSkills.DEFENCE)) {
-			player.getSkills().set(PlayerSkills.DEFENCE, maxLevel);
+		if (maxLevel < player.getSkills().getLevel(SkillConstants.DEFENCE)) {
+			player.getSkills().set(SkillConstants.DEFENCE, maxLevel);
 			changed = true;
 		}
-		level = player.getSkills().getLevelForXp(PlayerSkills.RANGE);
+		level = player.getSkills().getLevelForXp(SkillConstants.RANGE);
 		maxLevel = (int) (level + 5 + (level * 0.1));
-		if (maxLevel < player.getSkills().getLevel(PlayerSkills.RANGE)) {
-			player.getSkills().set(PlayerSkills.RANGE, maxLevel);
+		if (maxLevel < player.getSkills().getLevel(SkillConstants.RANGE)) {
+			player.getSkills().set(SkillConstants.RANGE, maxLevel);
 			changed = true;
 		}
-		level = player.getSkills().getLevelForXp(PlayerSkills.MAGIC);
+		level = player.getSkills().getLevelForXp(SkillConstants.MAGIC);
 		maxLevel = level + 5;
-		if (maxLevel < player.getSkills().getLevel(PlayerSkills.MAGIC)) {
-			player.getSkills().set(PlayerSkills.MAGIC, maxLevel);
+		if (maxLevel < player.getSkills().getLevel(SkillConstants.MAGIC)) {
+			player.getSkills().set(SkillConstants.MAGIC, maxLevel);
 			changed = true;
 		}
 		if (changed) {

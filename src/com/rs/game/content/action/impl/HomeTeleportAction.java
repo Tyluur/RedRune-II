@@ -7,7 +7,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 public class HomeTeleportAction extends Action {
@@ -51,7 +51,7 @@ public class HomeTeleportAction extends Action {
 			// attemps to randomize tile by 4x4 area
 			for (int trycount = 0; trycount < 10; trycount++) {
 				teleTile = new WorldTile(tile, 2);
-				if (World.canMoveNPC(tile.getPlane(), teleTile.getX(), teleTile.getY(), player.getSize())) {
+				if (RegionManager.canMoveNPC(tile.getPlane(), teleTile.getX(), teleTile.getY(), player.getSize())) {
 					break;
 				}
 				teleTile = tile;

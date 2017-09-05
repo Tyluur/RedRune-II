@@ -3,8 +3,8 @@ package com.rs.game.content.dialogue.impl;
 import com.rs.game.content.dialogue.Dialogue;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.world.World;
+import com.rs.utility.constants.SkillConstants;
 
 public final class LevelUp extends Dialogue {
 
@@ -36,7 +36,7 @@ public final class LevelUp extends Dialogue {
 			player.setNextGraphics(new Graphics(1765));
 		}
 		player.getInterfaceManager().sendChatBoxInterface(740);
-		String name = PlayerSkills.SKILL_NAME[skill];
+		String name = SkillConstants.SKILL_NAME[skill];
 		player.getPackets().sendIComponentText(740, 0, "Congratulations, you have just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level!");
 		player.getPackets().sendIComponentText(740, 1, "You have now reached level " + level + ".");
 		player.getPackets().sendGameMessage("You've just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level! You have reached level " + level + ".");
@@ -47,7 +47,7 @@ public final class LevelUp extends Dialogue {
 			player.getPackets().sendMusicEffect(musicEffect);
 		}
 		if (level == 99 || level == 120) {
-			World.sendWorldMessage("<col=F20505>News: " + player.getDisplayName() + " has achieved " + level + " " + PlayerSkills.SKILL_NAME[skill] + ".", false);
+			World.sendWorldMessage("<col=F20505>News: " + player.getDisplayName() + " has achieved " + level + " " + SkillConstants.SKILL_NAME[skill] + ".", false);
 		}
 		if (player.getSkills().getXp(skill) == 200000000) {
 			for (Player p : World.getPlayers()) {
@@ -57,76 +57,76 @@ public final class LevelUp extends Dialogue {
 	}
 	
 	public static int getIconValue(int skill) {
-		if (skill == PlayerSkills.ATTACK) {
+		if (skill == SkillConstants.ATTACK) {
 			return 1;
 		}
-		if (skill == PlayerSkills.STRENGTH) {
+		if (skill == SkillConstants.STRENGTH) {
 			return 2;
 		}
-		if (skill == PlayerSkills.RANGE) {
+		if (skill == SkillConstants.RANGE) {
 			return 3;
 		}
-		if (skill == PlayerSkills.MAGIC) {
+		if (skill == SkillConstants.MAGIC) {
 			return 4;
 		}
-		if (skill == PlayerSkills.DEFENCE) {
+		if (skill == SkillConstants.DEFENCE) {
 			return 5;
 		}
-		if (skill == PlayerSkills.HITPOINTS) {
+		if (skill == SkillConstants.HITPOINTS) {
 			return 6;
 		}
-		if (skill == PlayerSkills.PRAYER) {
+		if (skill == SkillConstants.PRAYER) {
 			return 7;
 		}
-		if (skill == PlayerSkills.AGILITY) {
+		if (skill == SkillConstants.AGILITY) {
 			return 8;
 		}
-		if (skill == PlayerSkills.HERBLORE) {
+		if (skill == SkillConstants.HERBLORE) {
 			return 9;
 		}
-		if (skill == PlayerSkills.THIEVING) {
+		if (skill == SkillConstants.THIEVING) {
 			return 10;
 		}
-		if (skill == PlayerSkills.CRAFTING) {
+		if (skill == SkillConstants.CRAFTING) {
 			return 11;
 		}
-		if (skill == PlayerSkills.RUNECRAFTING) {
+		if (skill == SkillConstants.RUNECRAFTING) {
 			return 12;
 		}
-		if (skill == PlayerSkills.MINING) {
+		if (skill == SkillConstants.MINING) {
 			return 13;
 		}
-		if (skill == PlayerSkills.SMITHING) {
+		if (skill == SkillConstants.SMITHING) {
 			return 14;
 		}
-		if (skill == PlayerSkills.FISHING) {
+		if (skill == SkillConstants.FISHING) {
 			return 15;
 		}
-		if (skill == PlayerSkills.COOKING) {
+		if (skill == SkillConstants.COOKING) {
 			return 16;
 		}
-		if (skill == PlayerSkills.FIREMAKING) {
+		if (skill == SkillConstants.FIREMAKING) {
 			return 17;
 		}
-		if (skill == PlayerSkills.WOODCUTTING) {
+		if (skill == SkillConstants.WOODCUTTING) {
 			return 18;
 		}
-		if (skill == PlayerSkills.FLETCHING) {
+		if (skill == SkillConstants.FLETCHING) {
 			return 19;
 		}
-		if (skill == PlayerSkills.SLAYER) {
+		if (skill == SkillConstants.SLAYER) {
 			return 20;
 		}
-		if (skill == PlayerSkills.FARMING) {
+		if (skill == SkillConstants.FARMING) {
 			return 21;
 		}
-		if (skill == PlayerSkills.CONSTRUCTION) {
+		if (skill == SkillConstants.CONSTRUCTION) {
 			return 22;
 		}
-		if (skill == PlayerSkills.SLAYER) {
+		if (skill == SkillConstants.SLAYER) {
 			return 23;
 		}
-		if (skill == PlayerSkills.SUMMONING) {
+		if (skill == SkillConstants.SUMMONING) {
 			return 24;
 		}
 		return 25;
@@ -134,53 +134,53 @@ public final class LevelUp extends Dialogue {
 	
 	public static void switchFlash(Player player, int skill, boolean on) {
 		int id;
-		if (skill == PlayerSkills.ATTACK) {
+		if (skill == SkillConstants.ATTACK) {
 			id = 4732;
-		} else if (skill == PlayerSkills.STRENGTH) {
+		} else if (skill == SkillConstants.STRENGTH) {
 			id = 4733;
-		} else if (skill == PlayerSkills.DEFENCE) {
+		} else if (skill == SkillConstants.DEFENCE) {
 			id = 4734;
-		} else if (skill == PlayerSkills.RANGE) {
+		} else if (skill == SkillConstants.RANGE) {
 			id = 4735;
-		} else if (skill == PlayerSkills.PRAYER) {
+		} else if (skill == SkillConstants.PRAYER) {
 			id = 4736;
-		} else if (skill == PlayerSkills.MAGIC) {
+		} else if (skill == SkillConstants.MAGIC) {
 			id = 4737;
-		} else if (skill == PlayerSkills.HITPOINTS) {
+		} else if (skill == SkillConstants.HITPOINTS) {
 			id = 4738;
-		} else if (skill == PlayerSkills.AGILITY) {
+		} else if (skill == SkillConstants.AGILITY) {
 			id = 4739;
-		} else if (skill == PlayerSkills.HERBLORE) {
+		} else if (skill == SkillConstants.HERBLORE) {
 			id = 4740;
-		} else if (skill == PlayerSkills.THIEVING) {
+		} else if (skill == SkillConstants.THIEVING) {
 			id = 4741;
-		} else if (skill == PlayerSkills.CRAFTING) {
+		} else if (skill == SkillConstants.CRAFTING) {
 			id = 4742;
-		} else if (skill == PlayerSkills.FLETCHING) {
+		} else if (skill == SkillConstants.FLETCHING) {
 			id = 4743;
-		} else if (skill == PlayerSkills.MINING) {
+		} else if (skill == SkillConstants.MINING) {
 			id = 4744;
-		} else if (skill == PlayerSkills.SMITHING) {
+		} else if (skill == SkillConstants.SMITHING) {
 			id = 4745;
-		} else if (skill == PlayerSkills.FISHING) {
+		} else if (skill == SkillConstants.FISHING) {
 			id = 4746;
-		} else if (skill == PlayerSkills.COOKING) {
+		} else if (skill == SkillConstants.COOKING) {
 			id = 4747;
-		} else if (skill == PlayerSkills.FIREMAKING) {
+		} else if (skill == SkillConstants.FIREMAKING) {
 			id = 4748;
-		} else if (skill == PlayerSkills.WOODCUTTING) {
+		} else if (skill == SkillConstants.WOODCUTTING) {
 			id = 4749;
-		} else if (skill == PlayerSkills.RUNECRAFTING) {
+		} else if (skill == SkillConstants.RUNECRAFTING) {
 			id = 4750;
-		} else if (skill == PlayerSkills.SLAYER) {
+		} else if (skill == SkillConstants.SLAYER) {
 			id = 4751;
-		} else if (skill == PlayerSkills.FARMING) {
+		} else if (skill == SkillConstants.FARMING) {
 			id = 4752;
-		} else if (skill == PlayerSkills.CONSTRUCTION) {
+		} else if (skill == SkillConstants.CONSTRUCTION) {
 			id = 4753;
-		} else if (skill == PlayerSkills.HUNTER) {
+		} else if (skill == SkillConstants.HUNTER) {
 			id = 4754;
-		} else if (skill == PlayerSkills.SUMMONING) {
+		} else if (skill == SkillConstants.SUMMONING) {
 			id = 4755;
 		} else {
 			id = 7756;

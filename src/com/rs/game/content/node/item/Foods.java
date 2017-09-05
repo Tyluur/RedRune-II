@@ -3,11 +3,11 @@ package com.rs.game.content.node.item;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -427,9 +427,9 @@ public class Foods {
 			public void effect(Object object) {
 				Player player = (Player) object;
 				player.setRunEnergy((int) (player.getRunEnergy() + (player.getRunEnergy() * 0.1)));
-				int level = player.getSkills().getLevel(PlayerSkills.AGILITY);
-				int realLevel = player.getSkills().getLevelForXp(PlayerSkills.AGILITY);
-				player.getSkills().set(PlayerSkills.AGILITY, level >= realLevel ? realLevel + 5 : level + 5);
+				int level = player.getSkills().getLevel(SkillConstants.AGILITY);
+				int realLevel = player.getSkills().getLevelForXp(SkillConstants.AGILITY);
+				player.getSkills().set(SkillConstants.AGILITY, level >= realLevel ? realLevel + 5 : level + 5);
 			}
 			
 		},
@@ -437,9 +437,9 @@ public class Foods {
 		GARDEN_PIE {
 			public void effect(Object object) {
 				Player player = (Player) object;
-				int level = player.getSkills().getLevel(PlayerSkills.FARMING);
-				int realLevel = player.getSkills().getLevelForXp(PlayerSkills.FARMING);
-				player.getSkills().set(PlayerSkills.FARMING, level >= realLevel ? realLevel + 3 : level + 3);
+				int level = player.getSkills().getLevel(SkillConstants.FARMING);
+				int realLevel = player.getSkills().getLevelForXp(SkillConstants.FARMING);
+				player.getSkills().set(SkillConstants.FARMING, level >= realLevel ? realLevel + 3 : level + 3);
 			}
 			
 		},
@@ -447,30 +447,30 @@ public class Foods {
 		FISH_PIE {
 			public void effect(Object object) {
 				Player player = (Player) object;
-				int level = player.getSkills().getLevel(PlayerSkills.FISHING);
-				int realLevel = player.getSkills().getLevelForXp(PlayerSkills.FISHING);
-				player.getSkills().set(PlayerSkills.FISHING, level >= realLevel ? realLevel + 3 : level + 3);
+				int level = player.getSkills().getLevel(SkillConstants.FISHING);
+				int realLevel = player.getSkills().getLevelForXp(SkillConstants.FISHING);
+				player.getSkills().set(SkillConstants.FISHING, level >= realLevel ? realLevel + 3 : level + 3);
 			}
 		},
 		
 		ADMIRAL_PIE {
 			public void effect(Object object) {
 				Player player = (Player) object;
-				int level = player.getSkills().getLevel(PlayerSkills.FISHING);
-				int realLevel = player.getSkills().getLevelForXp(PlayerSkills.FISHING);
-				player.getSkills().set(PlayerSkills.FISHING, level >= realLevel ? realLevel + 5 : level + 5);
+				int level = player.getSkills().getLevel(SkillConstants.FISHING);
+				int realLevel = player.getSkills().getLevelForXp(SkillConstants.FISHING);
+				player.getSkills().set(SkillConstants.FISHING, level >= realLevel ? realLevel + 5 : level + 5);
 			}
 		},
 		
 		WILD_PIE {
 			public void effect(Object object) {
 				Player player = (Player) object;
-				int level = player.getSkills().getLevel(PlayerSkills.SLAYER);
-				int realLevel = player.getSkills().getLevelForXp(PlayerSkills.SLAYER);
-				player.getSkills().set(PlayerSkills.SLAYER, level >= realLevel ? realLevel + 4 : level + 4);
-				int level2 = player.getSkills().getLevel(PlayerSkills.RANGE);
-				int realLevel2 = player.getSkills().getLevelForXp(PlayerSkills.RANGE);
-				player.getSkills().set(PlayerSkills.RANGE, level2 >= realLevel2 ? realLevel2 + 4 : level2 + 4);
+				int level = player.getSkills().getLevel(SkillConstants.SLAYER);
+				int realLevel = player.getSkills().getLevelForXp(SkillConstants.SLAYER);
+				player.getSkills().set(SkillConstants.SLAYER, level >= realLevel ? realLevel + 4 : level + 4);
+				int level2 = player.getSkills().getLevel(SkillConstants.RANGE);
+				int realLevel2 = player.getSkills().getLevelForXp(SkillConstants.RANGE);
+				player.getSkills().set(SkillConstants.RANGE, level2 >= realLevel2 ? realLevel2 + 4 : level2 + 4);
 			}
 		},
 		
@@ -478,12 +478,12 @@ public class Foods {
 			public void effect(Object object) {
 				Player player = (Player) object;
 				if (Misc.random(100) > 5) {
-					int level = player.getSkills().getLevel(PlayerSkills.COOKING);
-					int realLevel = player.getSkills().getLevelForXp(PlayerSkills.COOKING);
-					player.getSkills().set(PlayerSkills.COOKING, level >= realLevel ? realLevel + 6 : level + 6);
+					int level = player.getSkills().getLevel(SkillConstants.COOKING);
+					int realLevel = player.getSkills().getLevelForXp(SkillConstants.COOKING);
+					player.getSkills().set(SkillConstants.COOKING, level >= realLevel ? realLevel + 6 : level + 6);
 				} else {
-					int level = player.getSkills().getLevel(PlayerSkills.COOKING);
-					player.getSkills().set(PlayerSkills.COOKING, level <= 6 ? 0 : level - 6);
+					int level = player.getSkills().getLevel(SkillConstants.COOKING);
+					player.getSkills().set(SkillConstants.COOKING, level <= 6 ? 0 : level - 6);
 				}
 			}
 			
@@ -506,7 +506,7 @@ public class Foods {
 		POISION_KARMAMWANNJI_EFFECT {
 			public void effect(Object object) {
 				Player player = (Player) object;
-				player.applyHit(new Hit(player, 50, HitLook.POISON_DAMAGE));
+				player.applyHit(new Hit(player, 50, HitSplat.POISON_DAMAGE));
 			}
 		};
 		

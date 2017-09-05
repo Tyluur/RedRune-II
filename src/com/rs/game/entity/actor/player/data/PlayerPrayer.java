@@ -4,6 +4,7 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.io.Serializable;
 
@@ -257,9 +258,9 @@ public class PlayerPrayer implements Serializable {
 	}
 	
 	public void increaseTurmoilBonus(Player p2) {
-		leechBonuses[8] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(PlayerSkills.ATTACK))) / p2.getSkills().getLevelForXp(PlayerSkills.ATTACK));
-		leechBonuses[9] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(PlayerSkills.DEFENCE))) / p2.getSkills().getLevelForXp(PlayerSkills.DEFENCE));
-		leechBonuses[10] = (int) ((100 * Math.floor(0.1 * p2.getSkills().getLevelForXp(PlayerSkills.STRENGTH))) / p2.getSkills().getLevelForXp(PlayerSkills.STRENGTH));
+		leechBonuses[8] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.ATTACK))) / p2.getSkills().getLevelForXp(SkillConstants.ATTACK));
+		leechBonuses[9] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.DEFENCE))) / p2.getSkills().getLevelForXp(SkillConstants.DEFENCE));
+		leechBonuses[10] = (int) ((100 * Math.floor(0.1 * p2.getSkills().getLevelForXp(SkillConstants.STRENGTH))) / p2.getSkills().getLevelForXp(SkillConstants.STRENGTH));
 		adjustStat(0, leechBonuses[8]);
 		adjustStat(1, leechBonuses[10]);
 		adjustStat(2, leechBonuses[9]);
@@ -384,12 +385,12 @@ public class PlayerPrayer implements Serializable {
 			return false;
 		}
 		if (getPrayerBook() == 0 && prayerId == 25 || prayerId == 27) {
-			if (player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) < 60) {
+			if (player.getSkills().getLevelForXp(SkillConstants.DEFENCE) < 60) {
 				player.getPackets().sendGameMessage("You need a defence level of at least " + 60 + " to use this prayer.");
 				return false;
 			}
 		} else if (getPrayerBook() == 1) {
-			if (player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) < 30) {
+			if (player.getSkills().getLevelForXp(SkillConstants.DEFENCE) < 30) {
 				player.getPackets().sendGameMessage("You need a defence level of at least " + 30 + " to use this prayer.");
 				return false;
 			}
@@ -761,7 +762,7 @@ public class PlayerPrayer implements Serializable {
 		refreshHitPoints();
 	}*/ //not needed
 	public void restorePrayer(int amount) {
-		int maxPrayer = player.getSkills().getLevelForXp(PlayerSkills.PRAYER) * 10;
+		int maxPrayer = player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10;
 		if ((prayerpoints + amount) <= maxPrayer) {
 			prayerpoints += amount;
 		} else {
@@ -772,7 +773,7 @@ public class PlayerPrayer implements Serializable {
 	
 	public void reset() {
 		closeAllPrayers();
-		prayerpoints = player.getSkills().getLevelForXp(PlayerSkills.PRAYER) * 10;
+		prayerpoints = player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10;
 		refreshPrayerPoints();
 	}
 	

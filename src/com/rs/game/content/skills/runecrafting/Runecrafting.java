@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public final class Runecrafting {
 	
@@ -59,7 +59,7 @@ public final class Runecrafting {
 	}
 	
 	public static void craftEssence(Player player, int rune, int level, double experience, boolean pureEssOnly, int... multipliers) {
-		int actualLevel = player.getSkills().getLevel(PlayerSkills.RUNECRAFTING);
+		int actualLevel = player.getSkills().getLevel(SkillConstants.RUNECRAFTING);
 		if (actualLevel < level) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a runecrafting level of " + level + " to craft this rune.");
 			return;
@@ -126,7 +126,7 @@ public final class Runecrafting {
 		if (i < 0) {
 			return;
 		}
-		if (LEVEL_REQ[i] > p.getSkills().getLevel(PlayerSkills.RUNECRAFTING)) {
+		if (LEVEL_REQ[i] > p.getSkills().getLevel(SkillConstants.RUNECRAFTING)) {
 			p.getPackets().sendGameMessage("You need a runecrafting level of " + LEVEL_REQ[i] + " to fill this pouch.", false);
 			return;
 		}

@@ -3,7 +3,7 @@ package plugin.command.owner;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.game.object.ObjectRemoval;
 import plugin.command.CommandManifest;
 
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 @CommandManifest(description = "Stops an object from spawning on our tile")
 public class StopObjectSpawnCommandPlugin extends CommandPlugin {
 	
-	private static final List<WorldObject> STOPPED_OBJECTS = new ArrayList<>();
+	public static final List<WorldObject> STOPPED_OBJECTS = new ArrayList<>();
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		List<WorldObject> stream = World.getRegion(player.getRegionId()).getObjects().stream().filter(object -> !object.isSpawned() && !STOPPED_OBJECTS.contains(object) && object.getWorldTile().matches(player.getWorldTile())).collect(Collectors.toList());
+		List<WorldObject> stream = RegionManager.getRegion(player.getRegionId()).getObjects().stream().filter(object -> !object.isSpawned() && !STOPPED_OBJECTS.contains(object) && object.getWorldTile().matches(player.getWorldTile())).collect(Collectors.toList());
 		System.out.println(stream);
 		Optional<WorldObject> optional = stream.stream().findFirst();
 		if (!optional.isPresent()) {
@@ -44,7 +44,7 @@ public class StopObjectSpawnCommandPlugin extends CommandPlugin {
 			e.printStackTrace();
 		}
 		STOPPED_OBJECTS.add(object);
-		World.removeObject(object);
+		RegionManager.removeObject(object);
 		player.getPackets().sendGameMessage("Found and stopped this object from spawning!<br>" + object + "");
 	}
 	

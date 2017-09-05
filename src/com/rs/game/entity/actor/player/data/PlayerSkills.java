@@ -1,16 +1,11 @@
 package com.rs.game.entity.actor.player.data;
 
 import com.rs.game.entity.actor.player.Player;
+import com.rs.utility.constants.SkillConstants;
 
 import java.io.Serializable;
 
-public final class PlayerSkills implements Serializable {
-	
-	public static final double MAXIMUM_EXP = 200000000;
-	
-	public static final int ATTACK = 0, DEFENCE = 1, STRENGTH = 2, HITPOINTS = 3, RANGE = 4, PRAYER = 5, MAGIC = 6, COOKING = 7, WOODCUTTING = 8, FLETCHING = 9, FISHING = 10, FIREMAKING = 11, CRAFTING = 12, SMITHING = 13, MINING = 14, HERBLORE = 15, AGILITY = 16, THIEVING = 17, SLAYER = 18, FARMING = 19, RUNECRAFTING = 20, CONSTRUCTION = 22, HUNTER = 21, SUMMONING = 23, DUNGEONEERING = 24;
-	
-	public static final String[] SKILL_NAME = { "Attack", "Defence", "Strength", "Hitpoints", "Range", "Prayer", "Magic", "Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking", "Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving", "Slayer", "Farming", "Runecrafting", "Construction", "Hunter", "Summoning", "Dungeoneering" };
+public final class PlayerSkills implements Serializable,SkillConstants {
 	
 	private static final long serialVersionUID = -7086829989489745985L;
 	
@@ -33,19 +28,6 @@ public final class PlayerSkills implements Serializable {
 		xp[3] = 1184;
 		level[HERBLORE] = 3;
 		xp[HERBLORE] = 250;
-	}
-	
-	public static int getXPForLevel(int level) {
-		int points = 0;
-		int output = 0;
-		for (int lvl = 1; lvl <= level; lvl++) {
-			points += Math.floor((double) lvl + 300.0 * Math.pow(2.0, (double) lvl / 7.0));
-			if (lvl >= level) {
-				return output;
-			}
-			output = (int) Math.floor(points / 4);
-		}
-		return 0;
 	}
 	
 	public void passLevels(Player p) {
@@ -127,15 +109,15 @@ public final class PlayerSkills implements Serializable {
 	}
 	
 	public int getSummoningCombatLevel() {
-		return getLevelForXp(PlayerSkills.SUMMONING) / 8;
+		return getLevelForXp(SUMMONING) / 8;
 	}
 	
 	public void drainSummoning(int amt) {
-		int level = getLevel(PlayerSkills.SUMMONING);
+		int level = getLevel(SUMMONING);
 		if (level == 0) {
 			return;
 		}
-		set(PlayerSkills.SUMMONING, amt > level ? 0 : level - amt);
+		set(SUMMONING, amt > level ? 0 : level - amt);
 	}
 	
 	public int getLevel(int skill) {
@@ -163,11 +145,21 @@ public final class PlayerSkills implements Serializable {
 		refreshXpCounter();
 	}
 	
+	public void addXpNoModifier(int skill, double exp) {
+		if (player.isExperienceLocked()) {
+			return;
+		}
+		trackExperienceChange(skill, exp);
+	}
+	
 	public void addXp(int skill, double exp) {
 		if (player.isExperienceLocked()) {
 			return;
 		}
-		exp *= 1;
+		trackExperienceChange(skill, exp);
+	}
+	
+	private void trackExperienceChange(int skill, double exp) {
 		player.getControllerManager().trackXP(skill, (int) exp);
 		int oldLevel = getLevelForXp(skill);
 		xp[skill] += exp;
@@ -187,7 +179,7 @@ public final class PlayerSkills implements Serializable {
 			if (skill == PRAYER) {
 				player.getPrayer().restorePrayer(levelDiff * 10);
 			}
-			if (skill == SUMMONING || (skill >= ATTACK && skill <= MAGIC)) {
+			if (skill == SUMMONING || skill <= MAGIC) {
 				player.getAppearance().generateAppearanceData();
 			}
 		}

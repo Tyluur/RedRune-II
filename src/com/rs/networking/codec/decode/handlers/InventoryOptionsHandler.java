@@ -1,6 +1,6 @@
 package com.rs.networking.codec.decode.handlers;
 
-import com.rs.cores.WorldThread;
+import com.rs.cores.thread.WorldThread;
 import com.rs.game.GameFlags;
 import com.rs.game.content.Magic;
 import com.rs.game.content.SkillCapeCustomizer;
@@ -30,7 +30,7 @@ import com.rs.game.entity.actor.player.data.RouteEvent;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemOnItemHandler;
 import com.rs.game.entity.item.ItemOnItemHandler.ItemOnItem;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.io.InputStream;
@@ -464,7 +464,7 @@ public class InventoryOptionsHandler {
 			return;
 		}
 		player.getInventory().deleteItem(slotId, item);
-		World.addGroundItem(item, new WorldTile(player), player, false, 180, true);
+		RegionManager.addGroundItem(item, new WorldTile(player), player, false, 180, true);
 		player.getPackets().sendSound(2739, 0, 1);
 	}
 	

@@ -1,17 +1,20 @@
 package com.rs.game.entity.actor.player.data;
 
+import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.skills.runecrafting.Runecrafting;
 import com.rs.game.entity.actor.data.CombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemsContainer;
-import com.rs.utility.constants.EquipmentConstants;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashMap;
+
+import static com.rs.utility.constants.EquipmentConstants.*;
 
 public final class PlayerEquipment implements Serializable {
 	
@@ -82,12 +85,12 @@ public final class PlayerEquipment implements Serializable {
 			player.getPackets().sendGameMessage("You can't wear that.");
 			return false;
 		}
-		int targetSlot = EquipmentConstants.getItemSlot(itemId);
+		int targetSlot = getItemSlot(itemId);
 		if (targetSlot == -1) {
 			player.getPackets().sendGameMessage("You can't wear that.");
 			return false;
 		}
-		boolean isTwoHandedWeapon = targetSlot == 3 && EquipmentConstants.isTwoHandedWeapon(item);
+		boolean isTwoHandedWeapon = targetSlot == 3 && isTwoHandedWeapon(item);
 		if (isTwoHandedWeapon && !player.getInventory().hasFreeSlots() && player.getEquipment().hasShield()) {
 			player.getPackets().sendGameMessage("Not enough free space in your inventory.");
 			return false;
@@ -108,7 +111,7 @@ public final class PlayerEquipment implements Serializable {
 						player.getPackets().sendGameMessage("You are not high enough level to use this item.");
 					}
 					hasRequirements = false;
-					String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
+					String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
 					player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".");
 				}
 				
@@ -130,7 +133,7 @@ public final class PlayerEquipment implements Serializable {
 				player.getEquipment().getItems().set(5, null);
 			}
 		} else if (targetSlot == 5) {
-			if (player.getEquipment().getItem(3) != null && EquipmentConstants.isTwoHandedWeapon(player.getEquipment().getItem(3))) {
+			if (player.getEquipment().getItem(3) != null && isTwoHandedWeapon(player.getEquipment().getItem(3))) {
 				if (!player.getInventory().getItems().add(player.getEquipment().getItem(3))) {
 					player.getInventory().getItems().set(slotId, item);
 					return false;
@@ -190,7 +193,7 @@ public final class PlayerEquipment implements Serializable {
 				continue;
 			}
 			int id = item.getId();
-			if (index == EquipmentConstants.SLOT_HAT) {
+			if (index == SLOT_HAT) {
 				if (id == 20135 || id == 20137 || id == 20147 || id == 20149 || id == 20159 || id == 20161) {
 					hpIncrease += 66;
 				} else if (id == Runecrafting.AIR_TIARA) {
@@ -208,11 +211,11 @@ public final class PlayerEquipment implements Serializable {
 				} else if (id == Runecrafting.OMNI_TIARA) {
 					player.getPackets().sendConfig(491, -1);
 				}
-			} else if (index == EquipmentConstants.SLOT_CHEST) {
+			} else if (index == SLOT_CHEST) {
 				if (id == 20139 || id == 20141 || id == 20151 || id == 20153 || id == 20163 || id == 20165) {
 					hpIncrease += 200;
 				}
-			} else if (index == EquipmentConstants.SLOT_LEGS) {
+			} else if (index == SLOT_LEGS) {
 				if (id == 20143 || id == 20145 || id == 20155 || id == 20157 || id == 20167 || id == 20169) {
 					hpIncrease += 134;
 				}
@@ -266,8 +269,8 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public boolean hasTwoHandedWeapon() {
-		Item item = items.get(EquipmentConstants.SLOT_WEAPON);
-		return item != null && EquipmentConstants.isTwoHandedWeapon(item);
+		Item item = items.get(SLOT_WEAPON);
+		return item != null && isTwoHandedWeapon(item);
 	}
 	
 	public int getWeaponRenderEmote() {
@@ -279,65 +282,37 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public int getAmuletId() {
-		Item item = items.get(EquipmentConstants.SLOT_AMULET);
-		if (item == null) {
-			return -1;
-		}
-		return item.getId();
-	}
-	
-	public int getWeaponId() {
-		Item item = items.get(EquipmentConstants.SLOT_WEAPON);
-		if (item == null) {
-			return -1;
-		}
-		return item.getId();
+		return getIdInSlot(SLOT_AMULET);
 	}
 	
 	public int getChestId() {
-		Item item = items.get(EquipmentConstants.SLOT_CHEST);
-		if (item == null) {
-			return -1;
-		}
-		return item.getId();
+		return getIdInSlot(SLOT_CHEST);
 	}
 	
 	public int getHatId() {
-		Item item = items.get(EquipmentConstants.SLOT_HAT);
-		if (item == null) {
-			return -1;
-		}
-		return item.getId();
+		return getIdInSlot(SLOT_HAT);
 	}
 	
 	public int getShieldId() {
-		Item item = items.get(EquipmentConstants.SLOT_SHIELD);
-		if (item == null) {
-			return -1;
-		}
-		return item.getId();
+		return getIdInSlot(SLOT_SHIELD);
 	}
 	
 	public int getLegsId() {
-		Item item = items.get(EquipmentConstants.SLOT_LEGS);
-		if (item == null) {
-			return -1;
-		}
-		return item.getId();
+		return getIdInSlot(SLOT_LEGS);
 	}
 	
 	public void removeAmmo(int ammoId, int amount) {
 		if (amount == -1) {
-			items.remove(EquipmentConstants.SLOT_WEAPON, new Item(ammoId, 1));
-			refresh(EquipmentConstants.SLOT_WEAPON);
+			items.remove(SLOT_WEAPON, new Item(ammoId, 1));
+			refresh(SLOT_WEAPON);
 		} else {
-			items.remove(EquipmentConstants.SLOT_ARROWS, new Item(ammoId, amount));
-			refresh(EquipmentConstants.SLOT_ARROWS);
+			items.remove(SLOT_ARROWS, new Item(ammoId, amount));
+			refresh(SLOT_ARROWS);
 		}
 	}
 	
 	public int getAuraId() {
-		Item item = items.get(EquipmentConstants.SLOT_AURA);
+		Item item = items.get(SLOT_AURA);
 		if (item == null) {
 			return -1;
 		}
@@ -345,7 +320,7 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public int getCapeId() {
-		Item item = items.get(EquipmentConstants.SLOT_CAPE);
+		Item item = items.get(SLOT_CAPE);
 		if (item == null) {
 			return -1;
 		}
@@ -353,7 +328,7 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public int getRingId() {
-		Item item = items.get(EquipmentConstants.SLOT_RING);
+		Item item = items.get(SLOT_RING);
 		if (item == null) {
 			return -1;
 		}
@@ -361,7 +336,7 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public int getAmmoId() {
-		Item item = items.get(EquipmentConstants.SLOT_ARROWS);
+		Item item = items.get(SLOT_ARROWS);
 		if (item == null) {
 			return -1;
 		}
@@ -388,7 +363,7 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public int getBootsId() {
-		Item item = items.get(EquipmentConstants.SLOT_FEET);
+		Item item = items.get(SLOT_FEET);
 		if (item == null) {
 			return -1;
 		}
@@ -396,7 +371,7 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public int getGlovesId() {
-		Item item = items.get(EquipmentConstants.SLOT_HANDS);
+		Item item = items.get(SLOT_HANDS);
 		if (item == null) {
 			return -1;
 		}
@@ -412,7 +387,60 @@ public final class PlayerEquipment implements Serializable {
 	}
 	
 	public boolean isWearingArmour() {
-		return getItem(EquipmentConstants.SLOT_HAT) != null || getItem(EquipmentConstants.SLOT_CAPE) != null || getItem(EquipmentConstants.SLOT_AMULET) != null || getItem(EquipmentConstants.SLOT_WEAPON) != null || getItem(EquipmentConstants.SLOT_CHEST) != null || getItem(EquipmentConstants.SLOT_SHIELD) != null || getItem(EquipmentConstants.SLOT_LEGS) != null || getItem(EquipmentConstants.SLOT_HANDS) != null || getItem(EquipmentConstants.SLOT_FEET) != null || getItem(EquipmentConstants.SLOT_RING) != null;
+		return getItem(SLOT_HAT) != null || getItem(SLOT_CAPE) != null || getItem(SLOT_AMULET) != null || getItem(SLOT_WEAPON) != null || getItem(SLOT_CHEST) != null || getItem(SLOT_SHIELD) != null || getItem(SLOT_LEGS) != null || getItem(SLOT_HANDS) != null || getItem(SLOT_FEET) != null || getItem(SLOT_RING) != null;
+	}
+	
+	/**
+	 * Gets the id of the weapon
+	 */
+	public int getWeaponId() {
+		return getIdInSlot(SLOT_WEAPON);
+	}
+	
+	/**
+	 * Gets the id of the item in the slot
+	 *
+	 * @param slot
+	 * 		The slot
+	 */
+	public int getIdInSlot(int slot) {
+		Item item = getItem(slot);
+		if (item == null) {
+			return -1;
+		} else {
+			return item.getId();
+		}
+	}
+	
+	/**
+	 * Gets the skill weapon requirement of a weapon
+	 *
+	 * @param skill
+	 * 		The skill
+	 */
+	public int getWeaponRequirement(int skill) {
+		int weaponId = getWeaponId();
+		if (weaponId == -1) {
+			return 1;
+		}
+		ItemDefinitions definition = ItemDefinitions.getItemDefinitions(weaponId);
+		HashMap<Integer, Integer> requirements = definition.getWearingRequirements();
+		if (requirements == null) {
+			return 1;
+		}
+		for (int skillId : requirements.keySet()) {
+			if (skillId > 24 || skillId < 0) {
+				continue;
+			}
+			int level = requirements.get(skillId);
+			if (level < 0 || level > 120) {
+				continue;
+			}
+			if (skill == skillId) {
+				return level;
+			}
+		}
+		return 1;
 	}
 	
 }

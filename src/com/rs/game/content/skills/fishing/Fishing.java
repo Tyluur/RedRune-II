@@ -6,9 +6,9 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class Fishing extends Action {
 		fishId = getRandomFish(player);
 		if (spot.getFish()[fishId] == Fish.TUNA || spot.getFish()[fishId] == Fish.SHARK || spot.getFish()[fishId] == Fish.SWORDFISH) {
 			if (Misc.getRandom(50) <= 5) {
-				if (player.getSkills().getLevel(PlayerSkills.AGILITY) >= spot.getFish()[fishId].getLevel()) {
+				if (player.getSkills().getLevel(SkillConstants.AGILITY) >= spot.getFish()[fishId].getLevel()) {
 					multipleCatch = true;
 				}
 			}
@@ -101,12 +101,12 @@ public class Fishing extends Action {
 		Item fish = new Item(spot.getFish()[fishId].getId(), multipleCatch ? 2 : 1);
 		player.getPackets().sendGameMessage(getMessage(fish));
 		player.getInventory().deleteItem(spot.getBait(), 1);
-		player.getSkills().addXp(PlayerSkills.FISHING, spot.getFish()[fishId].getXp());
+		player.getSkills().addXp(SkillConstants.FISHING, spot.getFish()[fishId].getXp());
 		player.getInventory().addItem(fish);
 		if (player.getFamiliar() != null) {
 			if (Misc.getRandom(50) == 0 && getSpecialFamiliarBonus(player.getFamiliar().getId()) > 0) {
 				player.getInventory().addItem(new Item(BONUS_FISH[Misc.getRandom(BONUS_FISH.length)]));
-				player.getSkills().addXp(PlayerSkills.FISHING, 5.5);
+				player.getSkills().addXp(SkillConstants.FISHING, 5.5);
 			}
 		}
 		fishId = getRandomFish(player);
@@ -137,7 +137,7 @@ public class Fishing extends Action {
 	}
 	
 	private boolean checkAll(Player player) {
-		if (player.getSkills().getLevel(PlayerSkills.FISHING) < spot.getFish()[fishId].getLevel()) {
+		if (player.getSkills().getLevel(SkillConstants.FISHING) < spot.getFish()[fishId].getLevel()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a fishing level of " + spot.getFish()[fishId].getLevel() + " to fish here.");
 			return false;
 		}
@@ -166,7 +166,7 @@ public class Fishing extends Action {
 	 */
 	private int getRandomFish(Player player) {
 		int random = Misc.random(spot.getFish().length);
-		int difference = player.getSkills().getLevel(PlayerSkills.FISHING) - spot.getFish()[random].getLevel();
+		int difference = player.getSkills().getLevel(SkillConstants.FISHING) - spot.getFish()[random].getLevel();
 		if (difference < -1) {
 			return random = 0;
 		}
@@ -184,7 +184,7 @@ public class Fishing extends Action {
 	 * @return Delay
 	 */
 	private int getFishingDelay(Player player) {
-		int playerLevel = player.getSkills().getLevel(PlayerSkills.FISHING);
+		int playerLevel = player.getSkills().getLevel(SkillConstants.FISHING);
 		int fishLevel = spot.getFish()[fishId].getLevel();
 		int modifier = spot.getFish()[fishId].getLevel();
 		int randomAmt = Misc.random(4);

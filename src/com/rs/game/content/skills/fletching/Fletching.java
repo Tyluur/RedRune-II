@@ -4,8 +4,8 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class Fletching extends Action {
 		if (!player.getInventory().containsItem(fletch.getId(), 1) || !player.getInventory().containsItem(fletch.getSelected(), 1)) {
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.FLETCHING) < fletch.getLevel()[option]) {
+		if (player.getSkills().getLevel(SkillConstants.FLETCHING) < fletch.getLevel()[option]) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a level of " + fletch.getLevel() + " to fletch this.");
 			return false;
 		}
@@ -70,7 +70,7 @@ public class Fletching extends Action {
 		}
 		player.getInventory().addItem(fletch.getProduct()[option], amount);
 		player.getPackets().sendGameMessage("You successfully create a " + new Item(fletch.getProduct()[option]).getDefinitions().getName().replace("(u)", "") + ".", true);
-		player.getSkills().addXp(PlayerSkills.FLETCHING, fletch.getXp()[option] * amount);
+		player.getSkills().addXp(SkillConstants.FLETCHING, fletch.getXp()[option] * amount);
 		player.getPackets().sendGameMessage("You attempt to create a " + new Item(fletch.getProduct()[option]).getDefinitions().getName().replace("(u)", ""), true);
 		return 1;
 	}

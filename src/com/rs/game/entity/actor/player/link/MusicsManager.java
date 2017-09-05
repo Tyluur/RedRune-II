@@ -2,8 +2,8 @@ package com.rs.game.entity.actor.player.link;
 
 import com.rs.cache.loaders.ClientScriptMap;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.world.World;
 import com.rs.game.world.region.Region;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 import java.io.Serializable;
@@ -68,7 +68,7 @@ public final class MusicsManager implements Serializable {
 	
 	public void setPlayer(Player player) {
 		this.player = player;
-		playingMusic = World.getRegion(player.getRegionId()).getMusicId();
+		playingMusic = RegionManager.getRegion(player.getRegionId()).getMusicId();
 	}
 	
 	public void switchShuffleOn() {
@@ -258,7 +258,7 @@ public final class MusicsManager implements Serializable {
 	
 	public void reset() {
 		settedMusic = false;
-		player.getMusicsManager().checkMusic(World.getRegion(player.getRegionId()).getMusicId());
+		player.getMusicsManager().checkMusic(RegionManager.getRegion(player.getRegionId()).getMusicId());
 	}
 	
 	public void checkMusic(int requestMusicId) {

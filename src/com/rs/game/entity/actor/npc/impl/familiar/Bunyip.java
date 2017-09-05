@@ -7,8 +7,8 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.SkillConstants;
 
 public class Bunyip extends Familiar {
 
@@ -51,7 +51,7 @@ public class Bunyip extends Familiar {
 		Item item = getOwner().getInventory().getItem((Integer) object);
 		for (Fish fish : Fish.values()) {
 			if (fish.getId() == item.getId()) {
-				if (getOwner().getSkills().getLevel(PlayerSkills.COOKING) < fish.getLevel()) {
+				if (getOwner().getSkills().getLevel(SkillConstants.COOKING) < fish.getLevel()) {
 					getOwner().getPackets().sendGameMessage("Your cooking level is not high enough for the bunyip to eat this fish.");
 					return false;
 				} else {

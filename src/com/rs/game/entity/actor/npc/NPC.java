@@ -9,7 +9,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.combat.NPCCombat;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
@@ -17,6 +17,7 @@ import com.rs.game.entity.actor.npc.mask.Transformation;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
@@ -114,7 +115,7 @@ public class NPC extends Actor implements Serializable {
 		// npc is inited on creating instance
 		initEntity();
 		World.addNPC(this);
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		// npc is started on creating instance
 		loadMapRegions();
 		checkMultiArea();
@@ -147,7 +148,7 @@ public class NPC extends Actor implements Serializable {
 			return;
 		}
 		setFinished(true);
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		World.removeNPC(this);
 	}
 	
@@ -287,7 +288,7 @@ public class NPC extends Actor implements Serializable {
 	public ArrayList<Actor> getPossibleTargets() {
 		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
 		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = World.getRegion(regionId).getPlayerIndexes();
+			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
@@ -351,7 +352,7 @@ public class NPC extends Actor implements Serializable {
 		if (capDamage != -1 && hit.getDamage() > capDamage) {
 			hit.setDamage(capDamage);
 		}
-		if (hit.getLook() != HitLook.MELEE_DAMAGE && hit.getLook() != HitLook.RANGE_DAMAGE && hit.getLook() != HitLook.MAGIC_DAMAGE) {
+		if (hit.getLook() != HitSplat.MELEE_DAMAGE && hit.getLook() != HitSplat.RANGE_DAMAGE && hit.getLook() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
 		Actor source = hit.getSource();
@@ -364,7 +365,7 @@ public class NPC extends Actor implements Serializable {
 				if (p2.getPrayer().usingPrayer(1, 18)) {
 					final NPC target = this;
 					if (hit.getDamage() > 0) {
-						World.sendProjectile(p2, this, 2263, 11, 11, 20, 5, 0, 0);
+						RegionManager.sendProjectile(p2, this, 2263, 11, 11, 20, 5, 0, 0);
 					}
 					p2.heal(hit.getDamage() / 5);
 					p2.getPrayer().drainPrayer(hit.getDamage() / 5);
@@ -373,7 +374,7 @@ public class NPC extends Actor implements Serializable {
 						public void run() {
 							setNextGraphics(new Graphics(2264));
 							if (hit.getDamage() > 0) {
-								World.sendProjectile(target, p2, 2263, 11, 11, 20, 5, 0, 0);
+								RegionManager.sendProjectile(target, p2, 2263, 11, 11, 20, 5, 0, 0);
 							}
 						}
 					}, 1);
@@ -382,7 +383,7 @@ public class NPC extends Actor implements Serializable {
 					return;
 				}
 				if (!p2.getPrayer().isBoostedLeech()) {
-					if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+					if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
 						if (p2.getPrayer().usingPrayer(1, 19)) {
 							p2.getPrayer().setBoostedLeech(true);
 							return;
@@ -398,7 +399,7 @@ public class NPC extends Actor implements Serializable {
 								p2.setNextAnimation(new Animation(12569));
 								p2.setNextGraphics(new Graphics(2214));
 								p2.getPrayer().setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2215, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2215, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -418,7 +419,7 @@ public class NPC extends Actor implements Serializable {
 									}
 									p2.setNextAnimation(new Animation(12575));
 									p2.getPrayer().setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2231, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2231, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -438,7 +439,7 @@ public class NPC extends Actor implements Serializable {
 									}
 									p2.setNextAnimation(new Animation(12575));
 									p2.getPrayer().setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2248, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2248, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -451,7 +452,7 @@ public class NPC extends Actor implements Serializable {
 							
 						}
 					}
-					if (hit.getLook() == HitLook.RANGE_DAMAGE) {
+					if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
 						if (p2.getPrayer().usingPrayer(1, 2)) { // sap range
 							if (Misc.getRandom(4) == 0) {
 								if (p2.getPrayer().reachedMax(1)) {
@@ -463,7 +464,7 @@ public class NPC extends Actor implements Serializable {
 								p2.setNextAnimation(new Animation(12569));
 								p2.setNextGraphics(new Graphics(2217));
 								p2.getPrayer().setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2218, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2218, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -482,7 +483,7 @@ public class NPC extends Actor implements Serializable {
 								}
 								p2.setNextAnimation(new Animation(12575));
 								p2.getPrayer().setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2236, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2236, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -493,7 +494,7 @@ public class NPC extends Actor implements Serializable {
 							}
 						}
 					}
-					if (hit.getLook() == HitLook.MAGIC_DAMAGE) {
+					if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
 						if (p2.getPrayer().usingPrayer(1, 3)) { // sap mage
 							if (Misc.getRandom(4) == 0) {
 								if (p2.getPrayer().reachedMax(2)) {
@@ -505,7 +506,7 @@ public class NPC extends Actor implements Serializable {
 								p2.setNextAnimation(new Animation(12569));
 								p2.setNextGraphics(new Graphics(2220));
 								p2.getPrayer().setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2221, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2221, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -524,7 +525,7 @@ public class NPC extends Actor implements Serializable {
 								}
 								p2.setNextAnimation(new Animation(12575));
 								p2.getPrayer().setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2240, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2240, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -548,7 +549,7 @@ public class NPC extends Actor implements Serializable {
 							}
 							p2.setNextAnimation(new Animation(12575));
 							p2.getPrayer().setBoostedLeech(true);
-							World.sendProjectile(p2, this, 2244, 35, 35, 20, 5, 0, 0);
+							RegionManager.sendProjectile(p2, this, 2244, 35, 35, 20, 5, 0, 0);
 							WorldTasksManager.schedule(new WorldTask() {
 								@Override
 								public void run() {
@@ -638,7 +639,7 @@ public class NPC extends Actor implements Serializable {
 		setFinished(false);
 		World.addNPC(this);
 		setLastRegionId(0);
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		loadMapRegions();
 		checkMultiArea();
 	}
@@ -682,7 +683,7 @@ public class NPC extends Actor implements Serializable {
 	
 	public void sendDrop(Player player, Drop drop) {
 		int size = getSize();
-		World.addGroundItem(new Item(drop.getItemId(), drop.getMinAmount() + Misc.getRandom(drop.getExtraAmount())), new WorldTile(getCoordFaceX(size), getCoordFaceY(size), getPlane()), player, false, 180, true);
+		RegionManager.addGroundItem(new Item(drop.getItemId(), drop.getMinAmount() + Misc.getRandom(drop.getExtraAmount())), new WorldTile(getCoordFaceX(size), getCoordFaceY(size), getPlane()), player, false, 180, true);
 	}
 	
 	public int getMaxHit() {
@@ -690,7 +691,7 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public int[] getBonuses() {
-		return bonuses;
+		return bonuses == null ? new int[10] : bonuses;
 	}
 	
 	public WorldTile getRespawnTile() {
@@ -823,5 +824,23 @@ public class NPC extends Actor implements Serializable {
 	
 	public boolean withinDistanceFromSpawn(int distance) {
 		return withinDistance(this, distance);
+	}
+	
+	/**
+	 * Gets the bonus at an index. <p>To find out the sorting of the bonuses list, see {@link
+	 * com.rs.utility.constants.BonusConstants} order. NPC bonuses only reach the 10th index [range defence]. The
+	 * bonuses are always defined because on construct we set the bonuses regardless of whether they exist in file.</p>
+	 *
+	 * @param index
+	 * 		The index
+	 */
+	public int getBonus(int index) {
+		int[] bonuses = getBonuses();
+		// verifying that we're in bounds
+		if (index < 0 || index >= bonuses.length) {
+			return 0;
+		} else {
+			return bonuses[index];
+		}
 	}
 }

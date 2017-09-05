@@ -1,8 +1,9 @@
 package com.rs.utility.game.object;
 
+import com.rs.cache.loaders.ObjectDefinitions;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 import java.io.*;
@@ -86,12 +87,25 @@ public final class ObjectSpawns {
 				int x = buffer.getShort() & 0xffff;
 				int y = buffer.getShort() & 0xffff;
 				boolean cliped = buffer.get() == 1;
-				World.spawnObject(new WorldObject(objectId, type, rotation, x, y, plane));
+				RegionManager.spawnObject(new WorldObject(objectId, type, rotation, x, y, plane));
 			}
 			channel.close();
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void dumpObjectSpawn(int objectId, int type, int rotation, WorldTile tile) throws IOException {
+		File file = new File(UNPACKED_LOCATION);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+		// 47120 10 0 - 2591 3919 0 true
+		writer.write(objectId + " " + type + " " + rotation + " ~ " + tile.getX() + " " + tile.getY() + " " + tile.getPlane() + " true // " + ObjectDefinitions.getObjectDefinitions(objectId).getName());
+		writer.newLine();
+		writer.flush();
+		writer.close();
+		if (!Misc.deleteDirectory(new File(PACKED_DIRECTORY))) {
+			System.out.println("Could not delete directory...");
 		}
 	}
 	

@@ -3,6 +3,7 @@ package com.rs.utility.repo.item;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rs.cache.loaders.ItemDefinitions;
+import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
 
 import java.io.File;
@@ -114,6 +115,12 @@ public class ItemCharacteristicRepository {
 			return null;
 		}
 		return characteristic.getBonuses(itemId);
+	}
+	/**
+	 * Gets the examine of an item by its id
+	 */
+	public static String getExamine(Item item) {
+		return item == null ? "It's an item" : getExamine(item.getId());
 	}
 	
 	/**

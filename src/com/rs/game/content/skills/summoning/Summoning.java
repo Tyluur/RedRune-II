@@ -5,8 +5,8 @@ import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,12 +56,12 @@ public class Summoning {
 						player.getPackets().sendGameMessage("You are not high enough level to use this pouch.");
 					}
 					hasRequiriments = false;
-					String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
+					String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
 					player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + " to summon this.");
 				}
 			}
 		}
-		if (!hasRequiriments || player.getSkills().getLevel(PlayerSkills.SUMMONING) < pouch.getSpawnCost()) {
+		if (!hasRequiriments || player.getSkills().getLevel(SkillConstants.SUMMONING) < pouch.getSpawnCost()) {
 			return;
 		}
 		final Familiar npc = createFamiliar(player, pouch);
@@ -76,7 +76,7 @@ public class Summoning {
 	
 	public static Familiar createFamiliar(Player player, Pouches pouch) {
 		try {
-			return (Familiar) Class.forName("com.rs.game.entity.actor.npc.impl.familiar." + (NPCDefinitions.getNPCDefinitions(pouch.getNpcId())).getName().replace(" ", "").replace("-", "")).getConstructor(Player.class, Pouches.class, WorldTile.class, int.class, boolean.class).newInstance(player, pouch, player, -1, true);
+			return (Familiar) Class.forName("com.rs.game.entity.actor.npc.scripts.familiar." + (NPCDefinitions.getNPCDefinitions(pouch.getNpcId())).getName().replace(" ", "").replace("-", "")).getConstructor(Player.class, Pouches.class, WorldTile.class, int.class, boolean.class).newInstance(player, pouch, player, -1, true);
 		} catch (Throwable e) {
 			
 			return null;
@@ -104,7 +104,7 @@ public class Summoning {
 						player.getPackets().sendGameMessage("You are not high enough level to use this item.");
 					}
 					hasRequiriments = false;
-					String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
+					String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
 					player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + " to create this.");
 				}
 			}

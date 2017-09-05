@@ -3,9 +3,8 @@ package com.rs.game.entity.actor.npc.impl.familiar;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.game.entity.item.ItemConstants;
 import com.rs.game.entity.item.ItemsContainer;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.game.item.ItemSetsKeyGenerator;
 
 import java.io.Serializable;
@@ -59,7 +58,7 @@ public class BeastOfBurden implements Serializable {
 		for (int i = 0; i < beastItems.getSize(); i++) {
 			Item item = beastItems.get(i);
 			if (item != null) {
-				World.addGroundItem(item, WorldTile, player, false, -1, false);
+				RegionManager.addGroundItem(item, WorldTile, player, false, -1, false);
 			}
 		}
 		beastItems.reset();
@@ -138,7 +137,7 @@ public class BeastOfBurden implements Serializable {
 		if (item == null) {
 			return;
 		}
-		if (!ItemConstants.isTradeable(item) || item.getId() == 4049 || (familiar.canStoreEssOnly() && item.getId() != 1436 && item.getId() != 7936) || item.getDefinitions().getValue(item.getId()) > 50000) {
+		if (!com.rs.utility.constants.ItemConstants.isTradeable(item) || item.getId() == 4049 || (familiar.canStoreEssOnly() && item.getId() != 1436 && item.getId() != 7936) || item.getDefinitions().getValue(item.getId()) > 50000) {
 			player.getPackets().sendGameMessage("You cannot store this item.");
 			return;
 		}

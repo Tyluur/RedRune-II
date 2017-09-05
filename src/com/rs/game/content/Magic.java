@@ -7,11 +7,11 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.concurrent.TimeUnit;
 
@@ -303,7 +303,7 @@ public class Magic {
 		switch (spellId) {
 			case 37:
 				Long lastTimeCast = player.getAttribute("last_veng_time", -1L);
-				if (player.getSkills().getLevel(PlayerSkills.MAGIC) < 94) {
+				if (player.getSkills().getLevel(SkillConstants.MAGIC) < 94) {
 					player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 					return;
 				} else if (lastTimeCast != null && lastTimeCast + 30_000 > System.currentTimeMillis()) {
@@ -473,7 +473,7 @@ public class Magic {
 				setCombatSpell(player, spellId);
 				break;
 			case 27: // crossbow bolt enchant
-				if (player.getSkills().getLevel(PlayerSkills.MAGIC) < 4) {
+				if (player.getSkills().getLevel(SkillConstants.MAGIC) < 4) {
 					player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 					return;
 				}
@@ -536,7 +536,7 @@ public class Magic {
 	}
 	
 	public static final boolean checkSpellRequirements(Player player, int level, boolean delete, int... runes) {
-		if (player.getSkills().getLevelForXp(PlayerSkills.MAGIC) < level) {
+		if (player.getSkills().getLevelForXp(SkillConstants.MAGIC) < level) {
 			player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 			return false;
 		}
@@ -544,7 +544,7 @@ public class Magic {
 	}
 	
 	public static final boolean checkSpellRequirements2(Player player, int level, boolean delete, int... runes) {
-		if (player.getSkills().getLevelForXp(PlayerSkills.MAGIC) < level) {
+		if (player.getSkills().getLevelForXp(SkillConstants.MAGIC) < level) {
 			player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 			return false;
 		}
@@ -568,7 +568,7 @@ public class Magic {
 		if (player.getLockDelay() > currentTime) {
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.MAGIC) < level) {
+		if (player.getSkills().getLevel(SkillConstants.MAGIC) < level) {
 			player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 			return false;
 		}
@@ -608,7 +608,7 @@ public class Magic {
 					// attemps to randomize tile by 4x4 area
 					for (int trycount = 0; trycount < 10; trycount++) {
 						teleTile = new WorldTile(tile, 2);
-						if (World.canMoveNPC(tile.getPlane(), teleTile.getX(), teleTile.getY(), player.getSize())) {
+						if (RegionManager.canMoveNPC(tile.getPlane(), teleTile.getX(), teleTile.getY(), player.getSize())) {
 							break;
 						}
 						teleTile = tile;
@@ -620,7 +620,7 @@ public class Magic {
 					teleControllersCheck(player, teleTile);
 				}
 				if (xp != 0) {
-					player.getSkills().addXp(PlayerSkills.MAGIC, xp);
+					player.getSkills().addXp(SkillConstants.MAGIC, xp);
 				}
 				if (downEmoteId != -1) {
 					player.setNextAnimation(new Animation(downEmoteId == -2 ? -1 : downEmoteId));
@@ -697,7 +697,7 @@ public class Magic {
 					// attemps to randomize tile by 4x4 area
 					for (int trycount = 0; trycount < 10; trycount++) {
 						teleTile = new WorldTile(tile, 2);
-						if (World.canMoveNPC(tile.getPlane(), teleTile.getX(), teleTile.getY(), player.getSize())) {
+						if (RegionManager.canMoveNPC(tile.getPlane(), teleTile.getX(), teleTile.getY(), player.getSize())) {
 							break;
 						}
 						teleTile = tile;

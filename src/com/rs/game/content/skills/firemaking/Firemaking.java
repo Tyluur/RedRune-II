@@ -5,15 +5,15 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.codec.decode.handlers.InventoryOptionsHandler;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 public class Firemaking extends Action {
 	
@@ -30,7 +30,7 @@ public class Firemaking extends Action {
 		}
 		player.getPackets().sendGameMessage("You attempt to light the logs.", true);
 		player.getInventory().deleteItem(fire.getLogId(), 1);
-		World.addGroundItem(new Item(fire.getLogId(), 1), new WorldTile(player), player, false, 180, true);
+		RegionManager.addGroundItem(new Item(fire.getLogId(), 1), new WorldTile(player), player, false, 180, true);
 		Long time = (Long) player.getTemporaryAttributtes().remove("Fire");
 		boolean quickFire = time != null && time > Misc.currentTimeMillis();
 		setActionDelay(player, quickFire ? 1 : Misc.getRandom(5) + 4);
@@ -46,11 +46,11 @@ public class Firemaking extends Action {
 			player.getPackets().sendGameMessage("You do not have the required items to light this.");
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.FIREMAKING) < fire.getLevel()) {
+		if (player.getSkills().getLevel(SkillConstants.FIREMAKING) < fire.getLevel()) {
 			player.getPackets().sendGameMessage("You do not have the required level to light this.");
 			return false;
 		}
-		if (!World.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 1) || World.getRegion(player.getRegionId()).getSpawnedObject(player) != null) {
+		if (!RegionManager.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 1) || RegionManager.getRegion(player.getRegionId()).getSpawnedObject(player) != null) {
 			player.getPackets().sendGameMessage("You can't light a fire here.");
 			return false;
 		}
@@ -76,16 +76,16 @@ public class Firemaking extends Action {
 		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {
-				final FloorItem item = World.getRegion(tile.getRegionId()).getGroundItem(fire.getLogId(), tile, player);
+				final FloorItem item = RegionManager.getRegion(tile.getRegionId()).getGroundItem(fire.getLogId(), tile, player);
 				if (item == null) {
 					return;
 				}
-				if (!World.removeGroundItem(player, item, false)) {
+				if (!RegionManager.removeGroundItem(player, item, false)) {
 					return;
 				}
-				World.spawnTempGroundObject(new WorldObject(fire.getFireId(), 10, 0, tile.getX(), tile.getY(), tile.getPlane()), 592, fire.getLife());
+				RegionManager.spawnTempGroundObject(new WorldObject(fire.getFireId(), 10, 0, tile.getX(), tile.getY(), tile.getPlane()), 592, fire.getLife());
 				player.getPackets().sendSound(2594, 0, 1);
-				player.getSkills().addXp(PlayerSkills.FIREMAKING, fire.getExperience());
+				player.getSkills().addXp(SkillConstants.FIREMAKING, fire.getExperience());
 				player.setNextFaceWorldTile(tile);
 			}
 		}, 1);

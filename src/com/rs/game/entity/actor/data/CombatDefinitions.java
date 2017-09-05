@@ -1,10 +1,10 @@
 package com.rs.game.entity.actor.data;
 
 import com.rs.cache.loaders.ItemDefinitions;
-import com.rs.game.content.action.impl.PlayerCombatAction;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 import java.io.Serializable;
@@ -168,12 +168,12 @@ public final class CombatDefinitions implements Serializable {
 			if (weaponName.contains("whip")) {
 				switch (attackStyle) {
 					case 0:
-						return PlayerSkills.ATTACK;
+						return SkillConstants.ATTACK;
 					case 1:
 						return SHARED;
 					case 2:
 					default:
-						return PlayerSkills.DEFENCE;
+						return SkillConstants.DEFENCE;
 				}
 			}
 			if (weaponName.contains("halberd")) {
@@ -181,34 +181,34 @@ public final class CombatDefinitions implements Serializable {
 					case 0:
 						return SHARED;
 					case 1:
-						return PlayerSkills.STRENGTH;
+						return SkillConstants.STRENGTH;
 					case 2:
 					default:
-						return PlayerSkills.DEFENCE;
+						return SkillConstants.DEFENCE;
 				}
 			}
 			if (weaponName.contains("staff")) {
 				switch (attackStyle) {
 					case 0:
-						return PlayerSkills.ATTACK;
+						return SkillConstants.ATTACK;
 					case 1:
-						return PlayerSkills.STRENGTH;
+						return SkillConstants.STRENGTH;
 					case 2:
 					default:
-						return PlayerSkills.DEFENCE;
+						return SkillConstants.DEFENCE;
 				}
 			}
 			if (weaponName.contains("godsword") || weaponName.contains("sword") || weaponName.contains("2h")) {
 				switch (attackStyle) {
 					case 0:
-						return PlayerSkills.ATTACK;
+						return SkillConstants.ATTACK;
 					case 1:
-						return PlayerSkills.STRENGTH;
+						return SkillConstants.STRENGTH;
 					case 2:
-						return PlayerSkills.STRENGTH;
+						return SkillConstants.STRENGTH;
 					case 3:
 					default:
-						return PlayerSkills.DEFENCE;
+						return SkillConstants.DEFENCE;
 				}
 			}
 		}
@@ -216,24 +216,24 @@ public final class CombatDefinitions implements Serializable {
 			case -1:
 				switch (attackStyle) {
 					case 0:
-						return PlayerSkills.ATTACK;
+						return SkillConstants.ATTACK;
 					case 1:
-						return PlayerSkills.STRENGTH;
+						return SkillConstants.STRENGTH;
 					case 2:
 					default:
-						return PlayerSkills.DEFENCE;
+						return SkillConstants.DEFENCE;
 				}
 			default:
 				switch (attackStyle) {
 					case 0:
-						return PlayerSkills.ATTACK;
+						return SkillConstants.ATTACK;
 					case 1:
-						return PlayerSkills.STRENGTH;
+						return SkillConstants.STRENGTH;
 					case 2:
 						return SHARED;
 					case 3:
 					default:
-						return PlayerSkills.DEFENCE;
+						return SkillConstants.DEFENCE;
 				}
 		}
 	}
@@ -343,6 +343,20 @@ public final class CombatDefinitions implements Serializable {
 	
 	public int[] getBonuses() {
 		return bonuses;
+	}
+	
+	/**
+	 * Gets the bonus at an index
+	 *
+	 * @param index
+	 * 		The index
+	 */
+	public int getBonus(int index) {
+		if (index < 0 || index >= bonuses.length) {
+			System.out.println("Invalid bonus index expected: " + index);
+			return 0;
+		}
+		return bonuses[index];
 	}
 	
 	public void refreshBonuses() {
@@ -572,7 +586,7 @@ public final class CombatDefinitions implements Serializable {
 		int maxSize = 3;
 		int weaponId = player.getEquipment().getWeaponId();
 		String name = weaponId == -1 ? "" : ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
-		if (weaponId == -1 || PlayerCombatAction.isRanging(player) != 0 || name.contains("whip") || name.contains("halberd")) {
+		if (weaponId == -1 || CombatAlgorithm.isRanging(player) != 0 || name.contains("whip") || name.contains("halberd")) {
 			maxSize = 2;
 		}
 		if (style > maxSize) {

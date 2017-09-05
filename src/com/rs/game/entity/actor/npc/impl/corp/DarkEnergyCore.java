@@ -3,10 +3,10 @@ package com.rs.game.entity.actor.npc.impl.corp;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class DarkEnergyCore extends NPC {
 				}
 				target = possibleTarget.get(Misc.getRandom(possibleTarget.size() - 1));
 				setNextWorldTile(new WorldTile(target));
-				World.sendProjectile(this, this, target, 1828, 0, 0, 40, 40, 20, 0);
+				RegionManager.sendProjectile(this, this, target, 1828, 0, 0, 40, 40, 20, 0);
 			}
 			changeTarget--;
 			return;
@@ -58,7 +58,7 @@ public class DarkEnergyCore extends NPC {
 			return;
 		}
 		int damage = Misc.getRandom(50) + 50;
-		target.applyHit(new Hit(this, damage, HitLook.REGULAR_DAMAGE));
+		target.applyHit(new Hit(this, damage, HitSplat.REGULAR_DAMAGE));
 		beast.heal(damage);
 		delay = getPoisonManager().isPoisoned() ? 10 : (int) 0.5D;
 		if (target instanceof Player) {

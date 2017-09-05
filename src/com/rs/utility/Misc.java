@@ -3,9 +3,10 @@ package com.rs.utility;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rs.cache.Cache;
+import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.world.World;
+import com.rs.utility.constants.SkillConstants;
 import org.jboss.netty.channel.Channel;
 
 import java.io.*;
@@ -36,7 +37,7 @@ public final class Misc {
 	private static Random random;
 	
 	private Misc() {
-	
+		
 	}
 	
 	/**
@@ -805,55 +806,55 @@ public final class Misc {
 	
 	public static byte[] completeQuickMessage(Player player, int fileId, byte[] data) {
 		if (fileId == 1) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.AGILITY) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.AGILITY) };
 		} else if (fileId == 8) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.ATTACK) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.ATTACK) };
 		} else if (fileId == 13) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.CONSTRUCTION) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.CONSTRUCTION) };
 		} else if (fileId == 16) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.COOKING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.COOKING) };
 		} else if (fileId == 23) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.CRAFTING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.CRAFTING) };
 		} else if (fileId == 30) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.DEFENCE) };
 		} else if (fileId == 34) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FARMING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.FARMING) };
 		} else if (fileId == 41) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FIREMAKING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.FIREMAKING) };
 		} else if (fileId == 47) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FISHING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.FISHING) };
 		} else if (fileId == 55) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.FLETCHING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.FLETCHING) };
 		} else if (fileId == 62) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.HERBLORE) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.HERBLORE) };
 		} else if (fileId == 70) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.HITPOINTS) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.HITPOINTS) };
 		} else if (fileId == 74) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.HUNTER) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.HUNTER) };
 		} else if (fileId == 135) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.MAGIC) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.MAGIC) };
 		} else if (fileId == 127) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.MINING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.MINING) };
 		} else if (fileId == 120) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.PRAYER) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.PRAYER) };
 		} else if (fileId == 116) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.RANGE) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.RANGE) };
 		} else if (fileId == 111) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.RUNECRAFTING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.RUNECRAFTING) };
 		} else if (fileId == 103) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.SLAYER) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.SLAYER) };
 		} else if (fileId == 96) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.SMITHING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.SMITHING) };
 		} else if (fileId == 92) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.STRENGTH) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.STRENGTH) };
 		} else if (fileId == 85) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.SUMMONING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.SUMMONING) };
 		} else if (fileId == 79) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.THIEVING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.THIEVING) };
 		} else if (fileId == 142) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.WOODCUTTING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.WOODCUTTING) };
 		} else if (fileId == 990) {
-			data = new byte[] { (byte) player.getSkills().getLevelForXp(PlayerSkills.DUNGEONEERING) };
+			data = new byte[] { (byte) player.getSkills().getLevelForXp(SkillConstants.DUNGEONEERING) };
 		} else if (fileId == 965) {
 			int value = player.getHitpoints();
 			data = new byte[] { (byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) value };
@@ -1046,8 +1047,52 @@ public final class Misc {
 		}
 	}
 	
-	public static final int getInterfaceDefinitionsComponentsSize(int interfaceId) {
+	public static int getInterfaceDefinitionsComponentsSize(int interfaceId) {
 		return Cache.STORE.getIndexes()[3].getLastFileId(interfaceId) + 1;
+	}
+	
+	public static String format(Number number) {
+		return NumberFormat.getIntegerInstance().format(number);
+	}
+	
+	/**
+	 * Force deletion of directory
+	 */
+	public static boolean deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			if (files == null) {
+				return false;
+			}
+			for (File file : files) {
+				if (file.isDirectory()) {
+					deleteDirectory(file);
+				} else {
+					file.delete();
+				}
+			}
+		}
+		return (path.delete());
+	}
+	
+	public static boolean colides(Actor entity, Actor target) {
+		return entity.getPlane() == target.getPlane() && colides(entity.getX(), entity.getY(), entity.getSize(), target.getX(), target.getY(), target.getSize());
+	}
+	
+	public static boolean colides(int x1, int y1, int size1, int x2, int y2, int size2) {
+		int distanceX = x1 - x2;
+		int distanceY = y1 - y2;
+		return distanceX < size2 && distanceX > -size1 && distanceY < size2 && distanceY > -size1;
+	}
+	
+	public static boolean isOnRange(Actor entity, Actor target, int rangeRatio) {
+		return entity.getPlane() == target.getPlane() && isOnRange(entity.getX(), entity.getY(), entity.getSize(), target.getX(), target.getY(), target.getSize(), rangeRatio);
+	}
+	
+	public static boolean isOnRange(int x1, int y1, int size1, int x2, int y2, int size2, int maxDistance) {
+		int distanceX = x1 - x2;
+		int distanceY = y1 - y2;
+		return !(distanceX > size2 + maxDistance || distanceX < -size1 - maxDistance || distanceY > size2 + maxDistance || distanceY < -size1 - maxDistance);
 	}
 	
 	public enum Direction {

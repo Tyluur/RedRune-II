@@ -3,8 +3,8 @@ package com.rs.game.content.skills.herblore;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class Herblore extends Action {
 		}
 		if (ingredients != null) {
 			this.slot = ingredients.getSlot(otherItem.getId());
-			if (player.getSkills().getLevel(PlayerSkills.HERBLORE) < ingredients.getLevels()[slot]) {
+			if (player.getSkills().getLevel(SkillConstants.HERBLORE) < ingredients.getLevels()[slot]) {
 				player.getDialogueManager().startDialogue("SimpleMessage", "You need a herblore level of " + ingredients.getLevels()[slot] + " to combine these ingredients.");
 				return false;
 			}
@@ -101,14 +101,14 @@ public class Herblore extends Action {
 			player.getPackets().sendGameMessage("You combine the torstol with the potions and get an overload.");
 			if (player.getInventory().removeItems(new Item(node.getId()), new Item(15309), new Item(15313), new Item(15317), new Item(15321), new Item(15325))) {
 				player.getInventory().addItem(new Item(ingredients.getRewards()[slot], 1));
-				player.getSkills().addXp(PlayerSkills.HERBLORE, ingredients.getExperience()[slot]);
+				player.getSkills().addXp(SkillConstants.HERBLORE, ingredients.getExperience()[slot]);
 			}
 		} else {
 			player.getPackets().sendGameMessage("You mix the " + node.getDefinitions().getName().toLowerCase() + " into your potion.", true);
 		}
 		player.getInventory().removeItems(new Item(node.getId(), 1), rawIngredient == null ? new Item(otherItem.getId(), 1) : null);
 		player.getInventory().addItem(rawIngredient != null ? rawIngredient.getCrushedItem() : new Item(ingredients.getRewards()[slot], 1));
-		player.getSkills().addXp(PlayerSkills.HERBLORE, rawIngredient != null ? 0 : ingredients.getExperience()[slot]);
+		player.getSkills().addXp(SkillConstants.HERBLORE, rawIngredient != null ? 0 : ingredients.getExperience()[slot]);
 		if (ticks > 0) {
 			return 1;
 		}

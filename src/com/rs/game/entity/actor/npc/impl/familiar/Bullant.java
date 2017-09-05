@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public class Bullant extends Familiar {
 	
@@ -50,7 +50,7 @@ public class Bullant extends Familiar {
 			player.getPackets().sendGameMessage("This wouldn't effect you at all.");
 			return false;
 		}
-		int agilityLevel = getOwner().getSkills().getLevel(PlayerSkills.AGILITY);
+		int agilityLevel = getOwner().getSkills().getLevel(SkillConstants.AGILITY);
 		int runEnergy = player.getRunEnergy() + (Math.round(agilityLevel / 2));
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));

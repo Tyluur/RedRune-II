@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public class Mosstitan extends Familiar {
 
@@ -20,13 +20,13 @@ public class Mosstitan extends Familiar {
 
 	@Override
 	public boolean submitSpecial(Object object) {
-		int newLevel = getOwner().getSkills().getLevel(PlayerSkills.DEFENCE) + (getOwner().getSkills().getLevelForXp(PlayerSkills.DEFENCE) / (int) 12.5);
-		if (newLevel > getOwner().getSkills().getLevelForXp(PlayerSkills.DEFENCE) + (int) 12.5) {
-			newLevel = getOwner().getSkills().getLevelForXp(PlayerSkills.DEFENCE) + (int) 12.5;
+		int newLevel = getOwner().getSkills().getLevel(SkillConstants.DEFENCE) + (getOwner().getSkills().getLevelForXp(SkillConstants.DEFENCE) / (int) 12.5);
+		if (newLevel > getOwner().getSkills().getLevelForXp(SkillConstants.DEFENCE) + (int) 12.5) {
+			newLevel = getOwner().getSkills().getLevelForXp(SkillConstants.DEFENCE) + (int) 12.5;
 		}
 		getOwner().setNextGraphics(new Graphics(2011));
 		getOwner().setNextAnimation(new Animation(7660));
-		getOwner().getSkills().set(PlayerSkills.DEFENCE, newLevel);
+		getOwner().getSkills().set(SkillConstants.DEFENCE, newLevel);
 		return true;
 	}
 

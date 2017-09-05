@@ -3,11 +3,11 @@ package com.rs.game.content.skills.smithing;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.EquipmentConstants;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class Smelting extends Action {
 				return false;
 			}
 		}
-		if (player.getSkills().getLevel(PlayerSkills.SMITHING) < bar.getLevelRequired()) {
+		if (player.getSkills().getLevel(SkillConstants.SMITHING) < bar.getLevelRequired()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a Smithing level of at least " + bar.getLevelRequired() + " to smelt " + bar.getProducedBar().getDefinitions().getName());
 			return false;
 		}
@@ -64,7 +64,7 @@ public class Smelting extends Action {
 				return false;
 			}
 		}
-		if (player.getSkills().getLevel(PlayerSkills.SMITHING) < bar.getLevelRequired()) {
+		if (player.getSkills().getLevel(SkillConstants.SMITHING) < bar.getLevelRequired()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a Smithing level of at least " + bar.getLevelRequired() + " to smelt " + bar.getProducedBar().getDefinitions().getName());
 			return false;
 		}
@@ -76,7 +76,7 @@ public class Smelting extends Action {
 	public int processWithDelay(Player player) {
 		ticks--;
 		player.setNextAnimation(new Animation(3243));
-		player.getSkills().addXp(PlayerSkills.SMITHING, bar.getExperience());
+		player.getSkills().addXp(SkillConstants.SMITHING, bar.getExperience());
 		for (Item required : bar.getItemsRequired()) {
 			player.getInventory().deleteItem(required.getId(), required.getAmount());
 		}
@@ -97,7 +97,7 @@ public class Smelting extends Action {
 			if (player.getEquipment().getItem(EquipmentConstants.SLOT_RING) != null && player.getEquipment().getItem(EquipmentConstants.SLOT_RING).getId() == 2568) {
 				return true;
 			} else {
-				return Misc.getRandom(100) <= (player.getSkills().getLevel(PlayerSkills.SMITHING) >= 45 ? 80 : 50);
+				return Misc.getRandom(100) <= (player.getSkills().getLevel(SkillConstants.SMITHING) >= 45 ? 80 : 50);
 			}
 		}
 		return true;

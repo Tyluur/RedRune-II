@@ -2,7 +2,7 @@ package com.rs.game.entity.actor.link;
 
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
 
@@ -71,7 +71,7 @@ public final class PoisonManager implements Serializable {
 					heal = true;
 				}
 			}
-			actor.applyHit(new Hit(actor, poisonDamage, heal ? HitLook.HEALED_DAMAGE : HitLook.POISON_DAMAGE));
+			actor.applyHit(new Hit(actor, poisonDamage, heal ? HitSplat.HEALED_DAMAGE : HitSplat.POISON_DAMAGE));
 			poisonDamage -= 2;
 			if (isPoisoned()) {
 				poisonCount = 30;

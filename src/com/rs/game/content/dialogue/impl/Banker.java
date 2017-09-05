@@ -27,11 +27,10 @@ public class Banker extends Dialogue {
 				player.getBank().openSetPin();
 				end();
 			} else if (componentId == 3) {
-				// TODO collection boss
 				end();
 			} else if (componentId == 4) {
 				stage = 1;
-				sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { player.getDisplayName(), "What is this place?" }, IS_PLAYER, player.getIndex(), 9827);
+				player(9827, "What is this place?");
 			} else {
 				end();
 			}

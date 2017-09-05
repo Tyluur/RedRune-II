@@ -9,6 +9,7 @@ import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
@@ -29,7 +30,7 @@ public class KalphiteQueen extends NPC {
 	public ArrayList<Actor> getPossibleTargets() {
 		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
 		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = World.getRegion(regionId).getPlayerIndexes();
+			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
@@ -101,7 +102,7 @@ public class KalphiteQueen extends NPC {
 		setFinished(false);
 		World.addNPC(this);
 		setLastRegionId(0);
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		loadMapRegions();
 		checkMultiArea();
 	}

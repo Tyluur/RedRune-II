@@ -6,7 +6,7 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.codec.decode.WorldPacketsDecoder;
@@ -570,12 +570,12 @@ public final class EmotesManager implements Serializable {
 						}
 						int size = NPCDefinitions.getNPCDefinitions(1224).getSize();
 						WorldTile spawnTile = new WorldTile(new WorldTile(player.getX() + 1, player.getY(), player.getPlane()));
-						if (!World.canMoveNPC(spawnTile.getPlane(), spawnTile.getX(), spawnTile.getY(), size)) {
+						if (!RegionManager.canMoveNPC(spawnTile.getPlane(), spawnTile.getX(), spawnTile.getY(), size)) {
 							spawnTile = null;
 							int[][] dirs = Misc.getCoordOffsetsNear(size);
 							for (int dir = 0; dir < dirs[0].length; dir++) {
 								final WorldTile tile = new WorldTile(new WorldTile(player.getX() + dirs[0][dir], player.getY() + dirs[1][dir], player.getPlane()));
-								if (World.canMoveNPC(tile.getPlane(), tile.getX(), tile.getY(), size)) {
+								if (RegionManager.canMoveNPC(tile.getPlane(), tile.getX(), tile.getY(), size)) {
 									spawnTile = tile;
 									break;
 								}
@@ -635,7 +635,7 @@ public final class EmotesManager implements Serializable {
 						break;
 					case 20769: // Completionist Cape
 					case 20771: // Completionist Cape
-						if (!World.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 3)) {
+						if (!RegionManager.canMoveNPC(player.getPlane(), player.getX(), player.getY(), 3)) {
 							player.getPackets().sendGameMessage("Need more space to perform this skillcape emote.");
 							return;
 						} else if (player.getControllerManager().getController() != null) {

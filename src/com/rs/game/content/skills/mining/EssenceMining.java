@@ -4,10 +4,10 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 public class EssenceMining extends Action {
 	
@@ -54,7 +54,7 @@ public class EssenceMining extends Action {
 	}
 	
 	private int getMiningDelay(Player player) {
-		int mineTimer = definitions.getOreBaseTime() - player.getSkills().getLevel(PlayerSkills.MINING) - Misc.getRandom(pickaxeTime);
+		int mineTimer = definitions.getOreBaseTime() - player.getSkills().getLevel(SkillConstants.MINING) - Misc.getRandom(pickaxeTime);
 		if (mineTimer < 1 + definitions.getOreRandomTime()) {
 			mineTimer = 1 + Misc.getRandom(definitions.getOreRandomTime());
 		}
@@ -87,7 +87,7 @@ public class EssenceMining extends Action {
 	}
 	
 	private boolean setPickAxe(Player player) {
-		int level = player.getSkills().getLevel(PlayerSkills.MINING);
+		int level = player.getSkills().getLevel(SkillConstants.MINING);
 		int weaponId = player.getEquipment().getWeaponId();
 		if (weaponId != -1) {
 			switch (weaponId) {
@@ -200,7 +200,7 @@ public class EssenceMining extends Action {
 	}
 	
 	private boolean hasMiningLevel(Player player) {
-		if (definitions.getLevel() > player.getSkills().getLevel(PlayerSkills.MINING)) {
+		if (definitions.getLevel() > player.getSkills().getLevel(SkillConstants.MINING)) {
 			player.getPackets().sendGameMessage("You need a mining level of " + definitions.getLevel() + " to mind this rock.");
 			return false;
 		}
@@ -226,7 +226,7 @@ public class EssenceMining extends Action {
 	
 	private void addOre(Player player) {
 		double xpBoost = 1.0;
-		player.getSkills().addXp(PlayerSkills.MINING, definitions.getXp() * xpBoost);
+		player.getSkills().addXp(SkillConstants.MINING, definitions.getXp() * xpBoost);
 		player.getInventory().addItem(definitions.getOreId(), 1);
 		String oreName = ItemDefinitions.getItemDefinitions(definitions.getOreId()).getName().toLowerCase();
 		player.getPackets().sendGameMessage("You mine some " + oreName + ".", true);
@@ -238,7 +238,7 @@ public class EssenceMining extends Action {
 	}
 	
 	private boolean checkRock() {
-		return World.containsObjectWithId(rock.getId(), rock);
+		return RegionManager.containsObjectWithId(rock.getId(), rock);
 	}
 	
 	public enum EssenceDefinitions {

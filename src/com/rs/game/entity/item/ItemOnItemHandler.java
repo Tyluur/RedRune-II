@@ -1,7 +1,7 @@
 package com.rs.game.entity.item;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +34,10 @@ public class ItemOnItemHandler {
 				player.getInventory().addItem(itemOnItem.getItem3(), 1);
 				player.getSkills().addXp(skillStuff[0], skillStuff[2]);
 			} else {
-				player.getPackets().sendGameMessage("You need a " + PlayerSkills.SKILL_NAME[skillStuff[3]] + " level of " + PlayerSkills.SKILL_NAME[skillStuff[4]] + " to make this.");
+				player.getPackets().sendGameMessage("You need a " + SkillConstants.SKILL_NAME[skillStuff[3]] + " level of " + SkillConstants.SKILL_NAME[skillStuff[4]] + " to make this.");
 			}
 		} else {
-			player.getPackets().sendGameMessage("You need a " + PlayerSkills.SKILL_NAME[skillStuff[0]] + " level of " + skillStuff[1] + " to make this.");
+			player.getPackets().sendGameMessage("You need a " + SkillConstants.SKILL_NAME[skillStuff[0]] + " level of " + skillStuff[1] + " to make this.");
 		}
 	}
 	
@@ -48,17 +48,17 @@ public class ItemOnItemHandler {
 	 */
 	public enum ItemOnItem {
 		
-		DIVINE_SPIRIT_SHIELD(13748, 13736, 13740, PlayerSkills.PRAYER, 90, 10, PlayerSkills.SMITHING, 85, 10),
-		ELYSIAN_SPIRIT_SHIELD(13750, 13736, 13742, PlayerSkills.PRAYER, 90, 10, PlayerSkills.SMITHING, 85, 10),
-		ARCANE_SPIRIT_SHIELD(13746, 13738, 13740, PlayerSkills.PRAYER, 90, 10, PlayerSkills.SMITHING, 85, 10),
-		GODSWORD_SHARDS(11710, 11712, 11686, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		GODSWORD_BLADE(11688, 11686, 11690, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		GODSWORD_SHARDSs(11712, 11714, 11692, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		GODSWORD_SHARDSS(11710, 11714, 11688, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		ARMADYL_GODSWORD(11702, 11690, 11694, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		BANDOS_GODSWORD(11704, 11690, 11696, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		SARADOMIN_GODSWORD(11706, 11690, 11698, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10),
-		ZAMORAK_GODSWORD(11708, 11690, 11700, PlayerSkills.PRAYER, 1, 10, PlayerSkills.SMITHING, 1, 10);
+		DIVINE_SPIRIT_SHIELD(13748, 13736, 13740, SkillConstants.PRAYER, 90, 10, SkillConstants.SMITHING, 85, 10),
+		ELYSIAN_SPIRIT_SHIELD(13750, 13736, 13742, SkillConstants.PRAYER, 90, 10, SkillConstants.SMITHING, 85, 10),
+		ARCANE_SPIRIT_SHIELD(13746, 13738, 13740, SkillConstants.PRAYER, 90, 10, SkillConstants.SMITHING, 85, 10),
+		GODSWORD_SHARDS(11710, 11712, 11686, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		GODSWORD_BLADE(11688, 11686, 11690, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		GODSWORD_SHARDSs(11712, 11714, 11692, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		GODSWORD_SHARDSS(11710, 11714, 11688, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		ARMADYL_GODSWORD(11702, 11690, 11694, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		BANDOS_GODSWORD(11704, 11690, 11696, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		SARADOMIN_GODSWORD(11706, 11690, 11698, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10),
+		ZAMORAK_GODSWORD(11708, 11690, 11700, SkillConstants.PRAYER, 1, 10, SkillConstants.SMITHING, 1, 10);
 		
 		/**
 		 * A hasmap to store all the data.

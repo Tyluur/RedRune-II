@@ -12,8 +12,8 @@ public final class SkillCapeCustomizer {
 	}
 	
 	public static void resetSkillCapes(Player player) {
-		player.setMaxedCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(20767).originalModelColors, 4));
-		player.setCompletionistCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(20769).originalModelColors, 4));
+		player.setMaxedCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(20767).getOriginalModelColors(), 4));
+		player.setCompletionistCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(20769).getOriginalModelColors(), 4));
 	}
 	
 	public static void startCustomizing(Player player, int itemId) {
@@ -57,9 +57,9 @@ public final class SkillCapeCustomizer {
 		int[] skillCape = capeId == 20767 ? player.getMaxedCapeCustomized() : player.getCompletionistCapeCustomized();
 		if (buttonId == 58) { // reset
 			if (capeId == 20767) {
-				player.setMaxedCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(capeId).originalModelColors, 4));
+				player.setMaxedCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(capeId).getOriginalModelColors(), 4));
 			} else {
-				player.setCompletionistCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(capeId).originalModelColors, 4));
+				player.setCompletionistCapeCustomized(Arrays.copyOf(ItemDefinitions.getItemDefinitions(capeId).getOriginalModelColors(), 4));
 			}
 			for (int i = 0; i < 4; i++) {
 				player.getPackets().sendConfigByFile(9254 + i, skillCape[i]);

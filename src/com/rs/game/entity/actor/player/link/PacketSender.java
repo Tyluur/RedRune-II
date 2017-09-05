@@ -3,7 +3,7 @@ package com.rs.game.entity.actor.player.link;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 
 import java.util.List;
 
@@ -28,19 +28,17 @@ public final class PacketSender {
 	
 	public void refreshSpawnedObjects() {
 		for (int regionId : player.getMapRegionsIds()) {
-			List<WorldObject> spawnedObjects = World.getRegion(regionId).getSpawnedObjects();
+			List<WorldObject> removedObjects = RegionManager.getRegion(regionId).getRemovedObjects();
+			if (removedObjects != null) {
+				for (WorldObject object : removedObjects) {
+					player.getPackets().sendDestroyObject(object);
+				}
+			}
+			List<WorldObject> spawnedObjects = RegionManager.getRegion(regionId).getSpawnedObjects();
 			if (spawnedObjects != null) {
 				for (WorldObject object : spawnedObjects) {
 					if (object.getPlane() == player.getPlane()) {
 						player.getPackets().sendSpawnedObject(object);
-					}
-				}
-			}
-			List<WorldObject> removedObjects = World.getRegion(regionId).getRemovedObjects();
-			if (removedObjects != null) {
-				for (WorldObject object : removedObjects) {
-					if (object.getPlane() == player.getPlane()) {
-						player.getPackets().sendDestroyObject(object);
 					}
 				}
 			}
@@ -49,7 +47,7 @@ public final class PacketSender {
 	
 	public void refreshSpawnedItems() {
 		for (int regionId : player.getMapRegionsIds()) {
-			List<FloorItem> floorItems = World.getRegion(regionId).getFloorItems();
+			List<FloorItem> floorItems = RegionManager.getRegion(regionId).getFloorItems();
 			if (floorItems == null) {
 				continue;
 			}
@@ -61,7 +59,7 @@ public final class PacketSender {
 			}
 		}
 		for (int regionId : player.getMapRegionsIds()) {
-			List<FloorItem> floorItems = World.getRegion(regionId).getFloorItems();
+			List<FloorItem> floorItems = RegionManager.getRegion(regionId).getFloorItems();
 			if (floorItems == null) {
 				continue;
 			}

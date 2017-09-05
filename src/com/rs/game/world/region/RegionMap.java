@@ -1,7 +1,6 @@
 package com.rs.game.world.region;
 
 import com.rs.game.entity.WorldTile;
-import com.rs.game.world.World;
 
 /*
  * Author Alex(Also known as dragonkk)
@@ -436,9 +435,9 @@ public class RegionMap {
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
 			if (clipedOnly)
-				World.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			else
-				World.getRegion(tile.getRegionId()).forceGetRegionMap().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMap().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			return;
 		}
 		masks[plane][x][y] = mask;
@@ -451,9 +450,9 @@ public class RegionMap {
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
 			if (clipedOnly)
-				World.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			else
-				World.getRegion(tile.getRegionId()).forceGetRegionMap().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMap().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			return;
 		}
 		masks[plane][x][y] = masks[plane][x][y] | mask;
@@ -466,9 +465,9 @@ public class RegionMap {
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
 			if (clipedOnly)
-				World.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			else
-				World.getRegion(tile.getRegionId()).forceGetRegionMap().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMap().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			return;
 		}
 		masks[plane][x][y] &= (~mask);

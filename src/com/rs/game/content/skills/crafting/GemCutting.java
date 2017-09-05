@@ -4,8 +4,8 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.SkillConstants;
 
 public class GemCutting extends Action {
 	
@@ -29,7 +29,7 @@ public class GemCutting extends Action {
 	}
 	
 	public boolean checkAll(Player player) {
-		if (player.getSkills().getLevel(PlayerSkills.CRAFTING) < gem.getLevelRequired()) {
+		if (player.getSkills().getLevel(SkillConstants.CRAFTING) < gem.getLevelRequired()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a crafting level of " + gem.getLevelRequired() + " to cut that gem.");
 			return false;
 		}
@@ -49,7 +49,7 @@ public class GemCutting extends Action {
 	public int processWithDelay(Player player) {
 		player.getInventory().deleteItem(gem.getUncut(), 1);
 		player.getInventory().addItem(gem.getCut(), 1);
-		player.getSkills().addXp(PlayerSkills.CRAFTING, gem.getExperience());
+		player.getSkills().addXp(SkillConstants.CRAFTING, gem.getExperience());
 		player.getPackets().sendGameMessage("You cut the " + ItemDefinitions.getItemDefinitions(gem.getUncut()).getName().toLowerCase() + ".", true);
 		quantity--;
 		if (quantity <= 0) {

@@ -4,12 +4,13 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.ForceTalk;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class Thieving {
 		for (final Stalls stall : Stalls.values()) {
 			if (stall.getObjectId() == object.getId()) {
 				final WorldObject emptyStall = new WorldObject(stall.getReplaceObject(), 10, object.getRotation(), object.getX(), object.getY(), object.getPlane());
-				if (player.getSkills().getLevel(PlayerSkills.THIEVING) < stall.getLevel()) {
+				if (player.getSkills().getLevel(SkillConstants.THIEVING) < stall.getLevel()) {
 					player.getPackets().sendGameMessage("You need a thieving level of " + stall.getLevel() + " to steal from this.", true);
 					return;
 				}
@@ -46,17 +47,17 @@ public class Thieving {
 					public void run() {
 						// prevents multiempty stall spawn if many ppl using
 						// same spot and also checks if stall there still
-						if (!World.containsObjectWithId(object.getId(), object)) {
+						if (!RegionManager.containsObjectWithId(object.getId(), object)) {
 							stop();
 							return;
 						}
 						if (!gaveItems) {
 							player.getInventory().addItem(stall.getItem(Misc.getRandom(stall.item.length - 1)), Misc.getRandom(stall.getAmount()));
-							player.getSkills().addXp(PlayerSkills.THIEVING, stall.getExperience());
+							player.getSkills().addXp(SkillConstants.THIEVING, stall.getExperience());
 							gaveItems = true;
 							checkGuards(player);
 						} else {
-							World.spawnTemporaryObject(emptyStall, (int) (1500 * stall.getTime()));
+							RegionManager.spawnTemporaryObject(emptyStall, (int) (1500 * stall.getTime()));
 							stop();
 						}
 					}
@@ -69,7 +70,7 @@ public class Thieving {
 		NPC guard = null;
 		int lastDistance = -1;
 		for (int regionId : player.getMapRegionsIds()) {
-			List<Integer> npcIndexes = World.getRegion(regionId).getNPCsIndexes();
+			List<Integer> npcIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
 			if (npcIndexes == null) {
 				continue;
 			}

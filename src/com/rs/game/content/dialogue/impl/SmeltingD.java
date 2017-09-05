@@ -5,8 +5,8 @@ import com.rs.game.content.SkillsDialogue.ItemNameFilter;
 import com.rs.game.content.dialogue.Dialogue;
 import com.rs.game.content.skills.smithing.Smelting;
 import com.rs.game.content.skills.smithing.Smelting.SmeltingBar;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
+import com.rs.utility.constants.SkillConstants;
 
 public class SmeltingD extends Dialogue {
 	
@@ -25,7 +25,7 @@ public class SmeltingD extends Dialogue {
 			@Override
 			public String rename(String name) {
 				SmeltingBar bar = SmeltingBar.values()[count++];
-				if (player.getSkills().getLevel(PlayerSkills.SMITHING) < bar.getLevelRequired()) {
+				if (player.getSkills().getLevel(SkillConstants.SMITHING) < bar.getLevelRequired()) {
 					name = "<col=ff0000>" + name + "<br><col=ff0000>Level " + bar.getLevelRequired();
 				}
 				return name;

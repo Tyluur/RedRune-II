@@ -60,10 +60,10 @@ public class NPCSpawnRepository {
 	 * @param npc
 	 * 		The npc to remove the spawn for
 	 */
-	public static boolean removeSpawn(NPC npc) {
+	public static void removeSpawn(NPC npc) {
 		List<NPCSpawn> spawns = loadFromFile(npc.getRegionId());
 		if (spawns == null) {
-			return false;
+			return;
 		}
 		boolean removed = false;
 		Iterator<NPCSpawn> it$ = spawns.iterator();
@@ -78,7 +78,6 @@ public class NPCSpawnRepository {
 			saveData(npc.getRegionId(), spawns);
 			System.out.println("Removed npc and saved file!\t" + npc);
 		}
-		return removed;
 	}
 	
 	/**

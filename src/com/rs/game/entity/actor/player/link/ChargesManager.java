@@ -3,7 +3,6 @@ package com.rs.game.entity.actor.player.link;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.game.entity.item.ItemConstants;
 import com.rs.utility.Misc;
 
 import java.io.Serializable;
@@ -33,7 +32,7 @@ public class ChargesManager implements Serializable {
 				continue;
 			}
 			if (player.getAttackedByDelay() > Misc.currentTimeMillis()) {
-				int newId = ItemConstants.getDegradeItemWhenCombating(item.getId());
+				int newId = com.rs.utility.constants.ItemConstants.getDegradeItemWhenCombating(item.getId());
 				if (newId != -1) {
 					item.setId(newId);
 					player.getEquipment().refresh(slot);
@@ -41,11 +40,11 @@ public class ChargesManager implements Serializable {
 					player.getPackets().sendGameMessage("Your " + item.getDefinitions().getName() + " degraded.");
 				}
 			}
-			int defaultCharges = ItemConstants.getItemDefaultCharges(item.getId());
+			int defaultCharges = com.rs.utility.constants.ItemConstants.getItemDefaultCharges(item.getId());
 			if (defaultCharges == -1) {
 				continue;
 			}
-			if (ItemConstants.itemDegradesWhileWearing(item.getId())) {
+			if (com.rs.utility.constants.ItemConstants.itemDegradesWhileWearing(item.getId())) {
 				degrade(item.getId(), defaultCharges, slot);
 			} else if (player.getAttackedByDelay() > Misc.currentTimeMillis()) {
 				degrade(item.getId(), defaultCharges, slot);
@@ -60,7 +59,7 @@ public class ChargesManager implements Serializable {
 		} else {
 			c--;
 			if (c == 0) {
-				int newId = ItemConstants.getItemDegrade(itemId);
+				int newId = com.rs.utility.constants.ItemConstants.getItemDegrade(itemId);
 				player.getEquipment().getItems().set(slot, newId != -1 ? new Item(newId, 1) : null);
 				if (newId == -1) {
 					player.getPackets().sendGameMessage("Your " + ItemDefinitions.getItemDefinitions(itemId).getName() + " became into dust.");
@@ -94,20 +93,20 @@ public class ChargesManager implements Serializable {
 	 * return disapear;
 	 */
 	public boolean degradeCompletly(Item item) {
-		int defaultCharges = ItemConstants.getItemDefaultCharges(item.getId());
+		int defaultCharges = com.rs.utility.constants.ItemConstants.getItemDefaultCharges(item.getId());
 		if (defaultCharges == -1) {
 			return false;
 		}
 		while (true) {
-			if (ItemConstants.itemDegradesWhileWearing(item.getId()) || ItemConstants.itemDegradesWhileCombating(item.getId())) {
+			if (com.rs.utility.constants.ItemConstants.itemDegradesWhileWearing(item.getId()) || com.rs.utility.constants.ItemConstants.itemDegradesWhileCombating(item.getId())) {
 				charges.remove(item.getId());
-				int newId = ItemConstants.getItemDegrade(item.getId());
+				int newId = com.rs.utility.constants.ItemConstants.getItemDegrade(item.getId());
 				if (newId == -1) {
-					return ItemConstants.getItemDefaultCharges(item.getId()) != -1;
+					return com.rs.utility.constants.ItemConstants.getItemDefaultCharges(item.getId()) != -1;
 				}
 				item.setId(newId);
 			} else {
-				int newId = ItemConstants.getItemDegrade(item.getId());
+				int newId = com.rs.utility.constants.ItemConstants.getItemDegrade(item.getId());
 				if (newId != -1) {
 					charges.remove(item.getId());
 					item.setId(newId);
@@ -123,7 +122,7 @@ public class ChargesManager implements Serializable {
 		if (item == null) {
 			return;
 		}
-		int newId = ItemConstants.getDegradeItemWhenWear(item.getId());
+		int newId = com.rs.utility.constants.ItemConstants.getDegradeItemWhenWear(item.getId());
 		if (newId == -1) {
 			return;
 		}

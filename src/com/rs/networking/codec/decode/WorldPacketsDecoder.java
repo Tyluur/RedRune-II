@@ -10,13 +10,13 @@ import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerInventory;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.actor.player.data.RouteEvent;
 import com.rs.game.entity.actor.player.link.FriendChatsManager;
 import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
 import com.rs.game.plugin.PluginRepository;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.route.RouteFinder;
 import com.rs.game.world.route.strategy.FixedTileStrategy;
 import com.rs.networking.Session;
@@ -28,6 +28,7 @@ import com.rs.networking.codec.decode.handlers.ObjectHandler;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.cache.huffman.Huffman;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.game.player.PublicChatMessage;
 import com.rs.utility.game.player.QuickChatMessage;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
@@ -35,9 +36,6 @@ import com.rs.utility.repo.item.ItemCharacteristicRepository;
 import static com.rs.utility.game.ClickOption.*;
 
 public final class WorldPacketsDecoder extends Decoder {
-	
-	//public final static int AFK_PACKET = 85;
-	// private final static int AFK_PACKET = 93; ?
 	
 	private static final byte[] PACKET_SIZES = new byte[256];
 	
@@ -201,11 +199,11 @@ public final class WorldPacketsDecoder extends Decoder {
 				length = stream.readUnsignedShort();
 			} else if (length == -4) {
 				length = stream.getRemaining();
-				System.out.println("Invalid size for PacketId " + packetId + ". Size guessed to be " + length);
+				System.out.println("Unregistered packet size for packet # " + packetId + " - size guessed to be " + length);
 			}
 			if (length > stream.getRemaining()) {
 				length = stream.getRemaining();
-				System.out.println("PacketId " + packetId + " has fake size. - expected size " + length);
+				System.out.println("Packet # " + packetId + " has fake size - expected size " + length);
 			}
 			int startOffset = stream.getOffset();
 			processPackets(packetId, stream, length);
@@ -443,7 +441,7 @@ public final class WorldPacketsDecoder extends Decoder {
 					}
 				} else if (player.getTemporaryAttributtes().get("skillId") != null) {
 					int skillId = (Integer) player.getTemporaryAttributtes().remove("skillId");
-					if (skillId == PlayerSkills.HITPOINTS && value == 1) {
+					if (skillId == SkillConstants.HITPOINTS && value == 1) {
 						value = 10;
 					} else if (value < 1) {
 						value = 1;
@@ -451,7 +449,7 @@ public final class WorldPacketsDecoder extends Decoder {
 						value = 99;
 					}
 					player.getSkills().set(skillId, value);
-					player.getSkills().setXp(skillId, PlayerSkills.getXPForLevel(value));
+					player.getSkills().setXp(skillId, SkillConstants.getXPForLevel(value));
 					player.getAppearance().generateAppearanceData();
 					player.getDialogueManager().finishDialogue();
 				}
@@ -584,7 +582,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				if (!player.getMapRegionsIds().contains(regionId)) {
 					return;
 				}
-				final FloorItem item = World.getRegion(regionId).getGroundItem(id, tile, player);
+				final FloorItem item = RegionManager.getRegion(regionId).getGroundItem(id, tile, player);
 				if (item == null) {
 					return;
 				}
@@ -593,12 +591,12 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				player.stopAll(false);
 				player.setRouteEvent(new RouteEvent(item, () -> {
-					final FloorItem item1 = World.getRegion(regionId).getGroundItem(id, tile, player);
+					final FloorItem item1 = RegionManager.getRegion(regionId).getGroundItem(id, tile, player);
 					if (item1 == null) {
 						return;
 					}
 					player.setNextFaceWorldTile(tile);
-					World.removeGroundItem(player, item1);
+					RegionManager.removeGroundItem(player, item1);
 				}, true));
 			}
 			break;
@@ -1114,7 +1112,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				int x = stream.readUnsignedShortLE();
 				final WorldTile tile = new WorldTile(x, y, player.getPlane());
 				final int regionId = tile.getRegionId();
-				final FloorItem item = World.getRegion(regionId).getGroundItem(id, tile, player);
+				final FloorItem item = RegionManager.getRegion(regionId).getGroundItem(id, tile, player);
 				player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 				break;
 			}

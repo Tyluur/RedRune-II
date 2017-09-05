@@ -2,9 +2,9 @@ package com.rs.game.content.skills.agility;
 
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
+import com.rs.utility.constants.SkillConstants;
 
 public class Agility {
 	
@@ -31,7 +31,7 @@ public class Agility {
 					player.getAppearance().setRenderEmote(-1);
 					player.setRunHidden(running);
 					setGnomeStage(player, 0);
-					player.getSkills().addXp(PlayerSkills.AGILITY, 7.5);
+					player.getSkills().addXp(SkillConstants.AGILITY, 7.5);
 					player.getPackets().sendGameMessage("... and make it safely to the other side.", true);
 					stop();
 				}
@@ -55,7 +55,7 @@ public class Agility {
 				if (getGnomeStage(player) == 0) {
 					setGnomeStage(player, 1);
 				}
-				player.getSkills().addXp(PlayerSkills.AGILITY, 7.5);
+				player.getSkills().addXp(SkillConstants.AGILITY, 7.5);
 			}
 		}, 1);
 	}
@@ -77,7 +77,7 @@ public class Agility {
 				if (getGnomeStage(player) == 1) {
 					setGnomeStage(player, 2);
 				}
-				player.getSkills().addXp(PlayerSkills.AGILITY, 5);
+				player.getSkills().addXp(SkillConstants.AGILITY, 5);
 			}
 		}, 1);
 	}
@@ -101,7 +101,7 @@ public class Agility {
 				} else {
 					player.getAppearance().setRenderEmote(-1);
 					player.setRunHidden(running);
-					player.getSkills().addXp(PlayerSkills.AGILITY, 7);
+					player.getSkills().addXp(SkillConstants.AGILITY, 7);
 					player.getPackets().sendGameMessage("You passed the obstacle succesfully.", true);
 					stop();
 				}
@@ -131,7 +131,7 @@ public class Agility {
 					if (getGnomeStage(player) == 2) {
 						setGnomeStage(player, 3);
 					}
-					player.getSkills().addXp(PlayerSkills.AGILITY, 7);
+					player.getSkills().addXp(SkillConstants.AGILITY, 7);
 					player.getPackets().sendGameMessage("You passed the obstacle succesfully.", true);
 					stop();
 				}
@@ -147,7 +147,7 @@ public class Agility {
 				if (getGnomeStage(player) == 3) {
 					setGnomeStage(player, 4);
 				}
-				player.getSkills().addXp(PlayerSkills.AGILITY, 5);
+				player.getSkills().addXp(SkillConstants.AGILITY, 5);
 			}
 		}, 1);
 	}
@@ -164,7 +164,7 @@ public class Agility {
 				if (getGnomeStage(player) == 4) {
 					setGnomeStage(player, 5);
 				}
-				player.getSkills().addXp(PlayerSkills.AGILITY, 8);
+				player.getSkills().addXp(SkillConstants.AGILITY, 8);
 			}
 		}, 1);
 	}
@@ -186,10 +186,10 @@ public class Agility {
 				} else {
 					player.getAppearance().setRenderEmote(-1);
 					player.setRunHidden(running);
-					player.getSkills().addXp(PlayerSkills.AGILITY, 7);
+					player.getSkills().addXp(SkillConstants.AGILITY, 7);
 					if (getGnomeStage(player) == 5) {
 						removeGnomeStage(player);
-						player.getSkills().addXp(PlayerSkills.AGILITY, 39.5);
+						player.getSkills().addXp(SkillConstants.AGILITY, 39.5);
 						
 					}
 					stop();

@@ -5,6 +5,7 @@ import com.rs.game.entity.actor.mask.Hit;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.networking.NetworkConstants;
 import com.rs.networking.io.OutputStream;
 import com.rs.utility.Misc;
@@ -83,7 +84,7 @@ public final class LocalNPCUpdate {
 	
 	private void addInScreenNPCs(OutputStream stream, OutputStream updateBlockData) {
 		for (int regionId : player.getMapRegionsIds()) {
-			List<Integer> indexes = World.getRegion(regionId).getNPCsIndexes();
+			List<Integer> indexes = RegionManager.getRegion(regionId).getNPCsIndexes();
 			if (indexes == null) {
 				continue;
 			}

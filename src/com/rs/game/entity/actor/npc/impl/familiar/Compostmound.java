@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public class Compostmound extends Familiar {
 
@@ -21,9 +21,9 @@ public class Compostmound extends Familiar {
 	@Override
 	public boolean submitSpecial(Object object) {
 		Player player = (Player) object;
-		int newLevel = (int) (player.getSkills().getLevel(PlayerSkills.FARMING) + 1 + (Math.round(player.getSkills().getLevelForXp(PlayerSkills.FARMING) * .02)));
-		if (newLevel > player.getSkills().getLevelForXp(PlayerSkills.FARMING) + 1 + (Math.round(player.getSkills().getLevelForXp(PlayerSkills.FARMING) * .02))) {
-			newLevel = (int) (player.getSkills().getLevelForXp(PlayerSkills.FARMING) + 1 + (Math.round(player.getSkills().getLevelForXp(PlayerSkills.FARMING) * .02)));
+		int newLevel = (int) (player.getSkills().getLevel(SkillConstants.FARMING) + 1 + (Math.round(player.getSkills().getLevelForXp(SkillConstants.FARMING) * .02)));
+		if (newLevel > player.getSkills().getLevelForXp(SkillConstants.FARMING) + 1 + (Math.round(player.getSkills().getLevelForXp(SkillConstants.FARMING) * .02))) {
+			newLevel = (int) (player.getSkills().getLevelForXp(SkillConstants.FARMING) + 1 + (Math.round(player.getSkills().getLevelForXp(SkillConstants.FARMING) * .02)));
 		}
 		/*
 		 * if
@@ -36,7 +36,7 @@ public class Compostmound extends Familiar {
 		 */
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));
-		player.getSkills().set(PlayerSkills.FARMING, newLevel);
+		player.getSkills().set(SkillConstants.FARMING, newLevel);
 		return true;
 	}
 

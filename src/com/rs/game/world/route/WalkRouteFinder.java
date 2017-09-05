@@ -1,7 +1,7 @@
 package com.rs.game.world.route;
 
-import com.rs.game.world.World;
 import com.rs.game.world.region.Region;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.region.RegionMap;
 
 /**
@@ -197,7 +197,7 @@ public class WalkRouteFinder {
 			for (int transmitRegionY = graphBaseY >> 6; transmitRegionY <= (graphBaseY + (GRAPH_SIZE - 1)) >> 6; transmitRegionY++) {
 				int startX = Math.max(graphBaseX, transmitRegionX << 6), startY = Math.max(graphBaseY, transmitRegionY << 6);
 				int endX = Math.min(graphBaseX + GRAPH_SIZE, (transmitRegionX << 6) + 64), endY = Math.min(graphBaseY + GRAPH_SIZE, (transmitRegionY << 6) + 64);
-				Region region = World.getRegion(transmitRegionX << 8 | transmitRegionY, true);
+				Region region = RegionManager.getRegion(transmitRegionX << 8 | transmitRegionY, true);
 				RegionMap map = region.getRegionMap();
 				if (map == null || region.getLoadMapStage() != 2 || !region.isLoadedObjectSpawns()) {
 					for (int fillX = startX; fillX < endX; fillX++) {

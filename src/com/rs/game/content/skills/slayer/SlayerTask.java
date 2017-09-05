@@ -2,7 +2,7 @@ package com.rs.game.content.skills.slayer;
 
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,7 +52,7 @@ public class SlayerTask implements Serializable {
 	 * Called on npc death if part of task.
 	 */
 	public void onMonsterDeath(Player player, NPC n) {
-		player.getSkills().addXp(PlayerSkills.SLAYER, n.getCombatDefinitions().getHitpoints() / 10);
+		player.getSkills().addXp(SkillConstants.SLAYER, n.getCombatDefinitions().getHitpoints() / 10);
 		monstersLeft--;
 		int[] checkpoints = new int[] { 2, 3, 4, 5, 10, 15, 25, 50, 75, 100, 125, 150 };
 		for (int i : checkpoints) {

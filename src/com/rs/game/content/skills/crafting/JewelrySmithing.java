@@ -3,9 +3,9 @@ package com.rs.game.content.skills.crafting;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 /**
  * @author Gircat <gircat101@gmail.com> Created on Jul 28, 2014 at 12:51:21 PM.
@@ -78,7 +78,7 @@ public class JewelrySmithing {
 								return false;
 							}
 							int level = LEVEL[actionPrimaryIndex][actionSecondaryIndex];
-							if (player.getSkills().getLevel(PlayerSkills.CRAFTING) < level) {
+							if (player.getSkills().getLevel(SkillConstants.CRAFTING) < level) {
 								player.getPackets().sendGameMessage("You need a Crafting level of " + level + ".");
 								return false;
 							} else if (!player.getInventory().containsItem(2357, 1)) {
@@ -98,7 +98,7 @@ public class JewelrySmithing {
 							player.getInventory().deleteItem(2357, 1);
 							player.getInventory().deleteItem(GEMS[actionSecondaryIndex], 1);
 							player.getInventory().addItem(actionSecondaryIndex == 6 ? ONYX[actionPrimaryIndex] : ITEMS[actionPrimaryIndex][actionSecondaryIndex], 1);
-							player.getSkills().addXp(PlayerSkills.CRAFTING, EXPERIENCE[actionPrimaryIndex][actionSecondaryIndex]);
+							player.getSkills().addXp(SkillConstants.CRAFTING, EXPERIENCE[actionPrimaryIndex][actionSecondaryIndex]);
 							return 2;
 						}
 						

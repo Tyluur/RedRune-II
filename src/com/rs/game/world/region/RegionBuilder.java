@@ -39,8 +39,8 @@ public final class RegionBuilder {
 				}
 			}
 		}
-		World.getRegion(7503, true);
-		World.getRegion(7759, true);
+		RegionManager.getRegion(7503, true);
+		RegionManager.getRegion(7759, true);
 		/*for(int i = 0; i < 2000; i++) {
 			
 			int[] boundChuncks = RegionBuilder.findEmptyChunkBound(
@@ -68,7 +68,7 @@ public final class RegionBuilder {
 			for (int yn = y - ratio; yn < y + ratio; yn++) {
 				if (Math.pow(2, x - xn) + Math.pow(2, y - yn) <= Math.pow(2, ratio)) {
 					int regionId = new WorldTile(xn, yn, 0).getRegionId();
-					Region region = World.getRegion(regionId);
+					Region region = RegionManager.getRegion(regionId);
 					int baseLocalX = xn - ((regionId >> 8) * 64);
 					int baseLocalY = yn - ((regionId & 0xff) * 64);
 					while (region.getLoadMapStage() != 2) { // blocks waiting
@@ -198,7 +198,7 @@ public final class RegionBuilder {
 		if (Cache.STORE.getIndexes()[5].getArchiveId("m" + rx + "_" + ry) != -1) {
 			return false; // a real map already exists
 		}
-		Region region = World.getRegions().get((rx << 8) + ry);
+		Region region = RegionManager.getRegions().get((rx << 8) + ry);
 		return region == null || !(region instanceof DynamicRegion);
 	}
 	
@@ -221,7 +221,7 @@ public final class RegionBuilder {
 	 */
 	public static DynamicRegion createDynamicRegion(int regionId) {
 		synchronized (ALGORITHM_LOCK) {
-			Region region = World.getRegions().get(regionId);
+			Region region = RegionManager.getRegions().get(regionId);
 			if (region != null) {
 				if (region instanceof DynamicRegion) // if its already dynamic lets
 				// keep building it
@@ -232,7 +232,7 @@ public final class RegionBuilder {
 				}
 			}
 			DynamicRegion newRegion = new DynamicRegion(regionId);
-			World.getRegions().put(regionId, newRegion);
+			RegionManager.getRegions().put(regionId, newRegion);
 			return newRegion;
 		}
 	}
@@ -241,7 +241,7 @@ public final class RegionBuilder {
 	 * Safely destroys a dynamic region
 	 */
 	public static void destroyRegion(int regionId) {
-		Region region = World.getRegions().get(regionId);
+		Region region = RegionManager.getRegions().get(regionId);
 		if (region != null) {
 			List<Integer> playerIndexes = region.getPlayerIndexes();
 			List<Integer> npcIndexes = region.getNPCsIndexes();
@@ -263,7 +263,7 @@ public final class RegionBuilder {
 					npc.finish();
 				}
 			}
-			World.getRegions().remove(regionId);
+			RegionManager.getRegions().remove(regionId);
 			
 			if (playerIndexes != null) {
 				for (int playerIndex : playerIndexes) {
@@ -315,7 +315,7 @@ public final class RegionBuilder {
 					toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][1] = ry;
 					toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][2] = plane;
 					toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][3] = rotation;
-					World.getRegion((((rx / 8) << 8) + (ry / 8)), true);
+					RegionManager.getRegion((((rx / 8) << 8) + (ry / 8)), true);
 				}
 			}
 		}
@@ -373,7 +373,7 @@ public final class RegionBuilder {
 					toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][0] = fromThisRegionX;
 					toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][1] = fromThisRegionY;
 					toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][2] = fromPlanes[pIndex];
-					World.getRegion((regionId), true);
+					RegionManager.getRegion((regionId), true);
 				}
 			}
 		}
@@ -438,6 +438,6 @@ public final class RegionBuilder {
 		toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][1] = fromChunkY;
 		toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][2] = fromPlane;
 		toRegion.getRegionCoords()[toPlane][regionOffsetX][regionOffsetY][3] = rotation;
-		World.getRegion((((fromChunkY / 8) << 8) + (fromChunkX / 8)), true);
+		RegionManager.getRegion((((fromChunkY / 8) << 8) + (fromChunkX / 8)), true);
 	}
 }

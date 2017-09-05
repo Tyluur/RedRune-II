@@ -5,8 +5,8 @@ import com.rs.game.GameConstants;
 import com.rs.game.GameFlags;
 import com.rs.game.content.Magic;
 import com.rs.game.content.action.Action;
-import com.rs.game.content.action.impl.PlayerCombatAction;
 import com.rs.game.content.action.impl.WaterFillingAction;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.controller.impl.activity.Wilderness;
 import com.rs.game.content.skills.agility.Agility;
 import com.rs.game.content.skills.cooking.Cooking;
@@ -30,28 +30,29 @@ import com.rs.game.entity.actor.mask.ForceMovement;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerInventory;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.actor.player.data.RouteEvent;
 import com.rs.game.entity.actor.player.link.OwnedObjectManager;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.plugin.PluginRepository;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.game.ClickOption;
+import com.rs.utility.game.object.ObjectRemoval;
+import plugin.command.owner.StopObjectSpawnCommandPlugin;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import static com.rs.utility.game.ClickOption.*;
 
 public class ObjectHandler {
 	
-	/*
-	[WorldPacketsDecoder.java:217#processPackets][08.31.2017 05:36:24.591]  processing packet 29
-[WorldPacketsDecoder.java:217#processPackets][08.31.2017 05:36:24.727]  processing packet 84
-[WorldPacketsDecoder.java:217#processPackets][08.31.2017 05:36:24.728]  processing packet 11
-	 */
 	@SuppressWarnings("unused")
 	public static void decodeObjectStream(Player player, InputStream stream, ClickOption option) {
 		
@@ -71,11 +72,10 @@ public class ObjectHandler {
 			player.setRun(true);
 		}
 		
-		WorldObject object = World.getObjectWithId(tile, id);
+		WorldObject object = RegionManager.getObjectWithId(tile, id);
 		if (object == null || object.getId() != id) {
 			return;
 		}
-		System.out.println(object);
 		final ObjectDefinitions objectDef = object.getDefinitions();
 		switch (option) {
 			case FIRST:
@@ -107,7 +107,7 @@ public class ObjectHandler {
 					player.setNextAnimation(hunterNpc.getEquipment().getPickUpAnimation());
 					player.getInventory().addItem(hunterNpc.getItem(), 1);
 					player.getInventory().addItem(hunterNpc.getEquipment().getId(), 1);
-					player.getSkills().addXp(PlayerSkills.HUNTER, hunterNpc.getXp());
+					player.getSkills().addXp(SkillConstants.HUNTER, hunterNpc.getXp());
 					player.setTrapAmount(player.getTrapAmount() - 1);
 				} else {
 					player.getPackets().sendGameMessage("This isn't your trap.");
@@ -150,7 +150,7 @@ public class ObjectHandler {
 			} else if (object.getId() == 11554 || object.getId() == 11552) {
 				player.getPackets().sendGameMessage("That rock is currently unavailable.");
 			} else if (object.getId() == 2491) {
-				Action skill = new EssenceMining(object, player.getSkills().getLevel(PlayerSkills.MINING) < 30 ? EssenceDefinitions.Rune_Essence : EssenceDefinitions.Pure_Essence);
+				Action skill = new EssenceMining(object, player.getSkills().getLevel(SkillConstants.MINING) < 30 ? EssenceDefinitions.Rune_Essence : EssenceDefinitions.Pure_Essence);
 				player.getActionManager().setAction(skill);
 			} else if (object.getId() == 2478) {
 				Runecrafting.craftEssence(player, 556, 1, 5, false, 11, 2, 22, 3, 34, 4, 44, 5, 55, 6, 66, 7, 77, 88, 9, 99, 10);
@@ -255,7 +255,7 @@ public class ObjectHandler {
 				player.useStairs(-1, new WorldTile(GameConstants.RESPAWN_PLAYER_LOCATION.getX(), GameConstants.RESPAWN_PLAYER_LOCATION.getY(), GameConstants.RESPAWN_PLAYER_LOCATION.getPlane()), 2, 3, "You found your way back to home.");
 				player.addWalkSteps(3351, 3415, -1, false);
 			} else if (object.getId() == 9293) {
-				if (player.getSkills().getLevel(PlayerSkills.AGILITY) < 70) {
+				if (player.getSkills().getLevel(SkillConstants.AGILITY) < 70) {
 					player.getPackets().sendGameMessage("You need an agility level of 70 to use this obstacle.", true);
 					return;
 				}
@@ -329,7 +329,7 @@ public class ObjectHandler {
 				player.setNextWorldTile(new WorldTile(3214, 3782, 0));
 				player.getControllerManager().startController("Wilderness");
 			} else if (object.getId() == 38815 && object.getX() == 3209 && object.getY() == 3780 && object.getPlane() == 0) {
-				if (player.getSkills().getLevelForXp(PlayerSkills.WOODCUTTING) < 37 || player.getSkills().getLevelForXp(PlayerSkills.MINING) < 45 || player.getSkills().getLevelForXp(PlayerSkills.SUMMONING) < 23 || player.getSkills().getLevelForXp(PlayerSkills.FIREMAKING) < 47 || player.getSkills().getLevelForXp(PlayerSkills.PRAYER) < 55) {
+				if (player.getSkills().getLevelForXp(SkillConstants.WOODCUTTING) < 37 || player.getSkills().getLevelForXp(SkillConstants.MINING) < 45 || player.getSkills().getLevelForXp(SkillConstants.SUMMONING) < 23 || player.getSkills().getLevelForXp(SkillConstants.FIREMAKING) < 47 || player.getSkills().getLevelForXp(SkillConstants.PRAYER) < 55) {
 					player.getPackets().sendGameMessage("You need 23 Summoning, 37 Woodcutting, 45 Mining, 47 Firemaking and 55 Prayer to enter this dungeon.");
 					return;
 				}
@@ -372,15 +372,15 @@ public class ObjectHandler {
 			} else if (object.getId() == 62674) { // dominion entrance
 				player.useStairs(-1, new WorldTile(3744, 6405, 0), 0, 1);
 			} else {
-				switch (objectDef.name.toLowerCase()) {
+				switch (objectDef.getName().toLowerCase()) {
 					case "web":
 						if (objectDef.containsOption(0, "Slash")) {
-							player.setNextAnimation(new Animation(PlayerCombatAction.getWeaponAttackEmote(player.getEquipment().getWeaponId(), player.getCombatDefinitions().getAttackStyle())));
+							player.setNextAnimation(new Animation(CombatAlgorithm.getWeaponAttackEmote(player.getEquipment().getWeaponId(), player.getCombatDefinitions().getAttackStyle())));
 							slashWeb(player, object);
 						}
 						break;
 					case "bank booth":
-						if (objectDef.containsOption(0, "Bank") || objectDef.containsOption(0,"Use")) {
+						if (objectDef.containsOption(0, "Bank") || objectDef.containsOption(0, "Use")) {
 							player.getBank().openBank();
 						}
 						break;
@@ -447,7 +447,7 @@ public class ObjectHandler {
 					case "large door":
 					case "metal door":
 						if (object.getId() == 21600) {
-							World.removeObject(object);
+							RegionManager.removeObject(object);
 							return;
 						}
 						
@@ -457,7 +457,7 @@ public class ObjectHandler {
 						break;
 					case "door":
 						if (object.getId() == 21507 || object.getId() == 21505) {
-							World.removeObject(object);
+							RegionManager.removeObject(object);
 							return;
 						}
 						
@@ -477,7 +477,7 @@ public class ObjectHandler {
 						break;
 					case "altar":
 						if (objectDef.containsOption(0, "Pray-at")) {
-							final int maxPrayer = player.getSkills().getLevelForXp(PlayerSkills.PRAYER) * 10;
+							final int maxPrayer = player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10;
 							if (player.getPrayer().getPrayerpoints() < maxPrayer) {
 								player.addLockDelay(5);
 								player.getPackets().sendGameMessage("You pray to the gods...", true);
@@ -519,14 +519,14 @@ public class ObjectHandler {
 			}
 			if (object.getId() == 36786 || object.getId() == 42378 || object.getId() == 42377 || object.getId() == 42217 || object.getId() == 27663 || object.getId() == 57437 || object.getId() == 6084 || object.getId() == 22819 || object.getId() == 25808) {
 				player.getBank().openBank();
-			} else if (object.getDefinitions().name.equalsIgnoreCase("furnace")) {
+			} else if (object.getDefinitions().getName().equalsIgnoreCase("furnace")) {
 				player.getDialogueManager().startDialogue("SmeltingD", object);
 			} else if (object.getId() == 11758 || object.getId() == 782) {
 				player.getBank().openBank();
 			} else if (object.getId() == 34384 || object.getId() == 34383 || object.getId() == 14011 || object.getId() == 7053 || object.getId() == 34387 || object.getId() == 34386 || object.getId() == 34385) {
 				Thieving.handleStalls(player, object);
 			} else {
-				switch (objectDef.name.toLowerCase()) {
+				switch (objectDef.getName().toLowerCase()) {
 					case "gate":
 					case "metal door":
 						if (object.getType() == 0 && objectDef.containsOption(1, "Open")) {
@@ -535,7 +535,7 @@ public class ObjectHandler {
 						break;
 					case "door":
 						if (object.getId() == 21507) {
-							World.removeObject(object);
+							RegionManager.removeObject(object);
 							return;
 						}
 						if (object.getType() == 0 && objectDef.containsOption(1, "Open")) {
@@ -574,10 +574,10 @@ public class ObjectHandler {
 				return;
 			}
 			player.setNextFaceWorldTile(object);
-			if (object.getDefinitions().name.equalsIgnoreCase("bank booth")) {
+			if (object.getDefinitions().getName().equalsIgnoreCase("bank booth")) {
 				player.getInterfaceManager().sendInterface(109);
 			}
-			switch (objectDef.name.toLowerCase()) {
+			switch (objectDef.getName().toLowerCase()) {
 				case "gate":
 				case "metal door":
 					if (object.getType() == 0 && objectDef.containsOption(2, "Open")) {
@@ -612,7 +612,24 @@ public class ObjectHandler {
 	}
 	
 	private static void handleExamine(final Player player, final WorldObject object) {
-		player.getPackets().sendGameMessage("It's a " + object.getDefinitions().name + ".");
+		if (player.getAttribute("removing_objects", false)) {
+			try {
+				if (object.isSpawned()) {
+					player.getPackets().sendGameMessage("Unable to remove; spawned object[" + object + "]");
+					return;
+				}
+				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(ObjectRemoval.NONSPAWNING_OBJECTS_FILE, true)));
+				out.println(object.getId() + " " + object.getType() + " " + object.getRotation() + " " + object.getX() + " " + object.getY() + " " + object.getPlane());
+				out.close();
+				RegionManager.removeObject(object);
+				StopObjectSpawnCommandPlugin.STOPPED_OBJECTS.add(object);
+				System.out.println("Added " + object.getId() + " to be removed from spawns.");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+		player.getPackets().sendGameMessage("It's a " + object.getDefinitions().getName() + ".");
 		if (GameFlags.debugMode) {
 			System.out.println(object);
 		}
@@ -620,7 +637,7 @@ public class ObjectHandler {
 	
 	private static void slashWeb(Player player, WorldObject object) {
 		if (Misc.getRandom(1) == 0) {
-			World.spawnTemporaryObject(new WorldObject(object.getId() + 1, object.getType(), object.getRotation(), object.getX(), object.getY(), object.getPlane()), 60000, true);
+			RegionManager.spawnTemporaryObject(new WorldObject(object.getId() + 1, object.getType(), object.getRotation(), object.getX(), object.getY(), object.getPlane()), 60000);
 			player.getPackets().sendGameMessage("You slash through the web!");
 		} else {
 			player.getPackets().sendGameMessage("You fail to cut through the web.");
@@ -628,16 +645,16 @@ public class ObjectHandler {
 	}
 	
 	public static boolean handleGate(Player player, WorldObject object) {
-		if (World.isSpawnedObject(object)) {
+		if (RegionManager.isSpawnedObject(object)) {
 			return false;
 		}
 		if (object.getRotation() == 0) {
 			
 			boolean south = true;
-			WorldObject otherDoor = World.getObjectWithType(new WorldTile(object.getX(), object.getY() + 1, object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
-				otherDoor = World.getObjectWithType(new WorldTile(object.getX(), object.getY() - 1, object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
+			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() + 1, object.getPlane()), object.getType());
+			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
+				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() - 1, object.getPlane()), object.getType());
+				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
 					return false;
 				}
 				south = false;
@@ -654,19 +671,19 @@ public class ObjectHandler {
 				openedDoor2.setRotation(3);
 			}
 			
-			if (World.removeTemporaryObject(object, 60000) && World.removeTemporaryObject(otherDoor, 60000)) {
+			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
 				player.faceObject(openedDoor1);
-				World.spawnTemporaryObject(openedDoor1, 60000);
-				World.spawnTemporaryObject(openedDoor2, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
 				return true;
 			}
 		} else if (object.getRotation() == 2) {
 			
 			boolean south = true;
-			WorldObject otherDoor = World.getObjectWithType(new WorldTile(object.getX(), object.getY() + 1, object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
-				otherDoor = World.getObjectWithType(new WorldTile(object.getX(), object.getY() - 1, object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
+			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() + 1, object.getPlane()), object.getType());
+			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
+				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() - 1, object.getPlane()), object.getType());
+				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
 					return false;
 				}
 				south = false;
@@ -682,19 +699,19 @@ public class ObjectHandler {
 				openedDoor1.setRotation(1);
 				openedDoor2.moveLocation(1, 0, 0);
 			}
-			if (World.removeTemporaryObject(object, 60000) && World.removeTemporaryObject(otherDoor, 60000)) {
+			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
 				player.faceObject(openedDoor1);
-				World.spawnTemporaryObject(openedDoor1, 60000);
-				World.spawnTemporaryObject(openedDoor2, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
 				return true;
 			}
 		} else if (object.getRotation() == 3) {
 			
 			boolean right = true;
-			WorldObject otherDoor = World.getObjectWithType(new WorldTile(object.getX() - 1, object.getY(), object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
-				otherDoor = World.getObjectWithType(new WorldTile(object.getX() + 1, object.getY(), object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
+			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() - 1, object.getY(), object.getPlane()), object.getType());
+			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
+				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() + 1, object.getY(), object.getPlane()), object.getType());
+				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
 					return false;
 				}
 				right = false;
@@ -712,19 +729,19 @@ public class ObjectHandler {
 				openedDoor2.setRotation(2);
 				openedDoor2.moveLocation(0, -1, 0);
 			}
-			if (World.removeTemporaryObject(object, 60000) && World.removeTemporaryObject(otherDoor, 60000)) {
+			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
 				player.faceObject(openedDoor1);
-				World.spawnTemporaryObject(openedDoor1, 60000);
-				World.spawnTemporaryObject(openedDoor2, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
 				return true;
 			}
 		} else if (object.getRotation() == 1) {
 			
 			boolean right = true;
-			WorldObject otherDoor = World.getObjectWithType(new WorldTile(object.getX() - 1, object.getY(), object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
-				otherDoor = World.getObjectWithType(new WorldTile(object.getX() + 1, object.getY(), object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().name.equalsIgnoreCase(object.getDefinitions().name)) {
+			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() - 1, object.getY(), object.getPlane()), object.getType());
+			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
+				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() + 1, object.getY(), object.getPlane()), object.getType());
+				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
 					return false;
 				}
 				right = false;
@@ -740,10 +757,10 @@ public class ObjectHandler {
 				openedDoor2.setRotation(0);
 				openedDoor2.moveLocation(0, 1, 0);
 			}
-			if (World.removeTemporaryObject(object, 60000) && World.removeTemporaryObject(otherDoor, 60000)) {
+			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
 				player.faceObject(openedDoor1);
-				World.spawnTemporaryObject(openedDoor1, 60000);
-				World.spawnTemporaryObject(openedDoor2, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
+				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
 				return true;
 			}
 		}
@@ -751,7 +768,7 @@ public class ObjectHandler {
 	}
 	
 	private static void handleDoor(Player player, WorldObject object) {
-		if (World.isSpawnedObject(object)) {
+		if (RegionManager.isSpawnedObject(object)) {
 			return;
 		}
 		WorldObject openedDoor = new WorldObject(object.getId(), object.getType(), object.getRotation() + 1, object.getX(), object.getY(), object.getPlane());
@@ -764,9 +781,9 @@ public class ObjectHandler {
 		} else if (object.getRotation() == 3) {
 			openedDoor.moveLocation(0, -1, 0);
 		}
-		if (World.removeTemporaryObject(object, 60000)) {
+		if (RegionManager.removeTemporaryObject(object, 60000)) {
 			player.faceObject(openedDoor);
-			World.spawnTemporaryObject(openedDoor, 60000, true);
+			RegionManager.spawnTemporaryObject(openedDoor, 60000);
 		}
 	}
 	
@@ -833,7 +850,7 @@ public class ObjectHandler {
 		if (!player.getMapRegionsIds().contains(regionId)) {
 			return;
 		}
-		WorldObject mapObject = World.getObjectWithId(tile, id);
+		WorldObject mapObject = RegionManager.getObjectWithId(tile, id);
 		if (mapObject == null || mapObject.getId() != id) {
 			return;
 		}
@@ -857,7 +874,7 @@ public class ObjectHandler {
 			player.setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
 			if (interfaceId == PlayerInventory.INVENTORY_INTERFACE) { // inventory
 				
-				if (object.getDefinitions().name.equals("Anvil")) {
+				if (object.getDefinitions().getName().equals("Anvil")) {
 					player.getTemporaryAttributtes().put("itemUsed", itemId);
 					ForgingBar bar = ForgingBar.forId(itemId);
 					if (bar != null) {
@@ -876,55 +893,55 @@ public class ObjectHandler {
 				} else if (itemId == 1448 && object.getId() == 2453) {
 					Runecrafting.enterMindAltar(player);
 					
-				} else if (object.getDefinitions().name.equals("Furnace")) {
+				} else if (object.getDefinitions().getName().equals("Furnace")) {
 					if (item.getId() == 2357) {
 						JewelrySmithing.openInterface(player);
 					}
 					
-				} else if (itemId == 229 || itemId == 1923 || itemId == 1925 || itemId == 1935 || itemId == 3734 || itemId == 5350 && object.getDefinitions().name.equals("Fountain") || object.getDefinitions().name.equals("Well") || object.getDefinitions().name.equals("Sink")) {
+				} else if (itemId == 229 || itemId == 1923 || itemId == 1925 || itemId == 1935 || itemId == 3734 || itemId == 5350 && object.getDefinitions().getName().equals("Fountain") || object.getDefinitions().getName().equals("Well") || object.getDefinitions().getName().equals("Sink")) {
 					if (WaterFillingAction.isFilling(player, itemId, false)) {
 						return;
 					}
 					//I know this could be an int, but wasn't thinking until i finished...
-				} else if (itemId == 536 && object.getDefinitions().name.equals("Altar")) { //Dragon Bones
+				} else if (itemId == 536 && object.getDefinitions().getName().equals("Altar")) { //Dragon Bones
 					player.getPackets().sendGameMessage("You pray to the gods and they accept your offering.");
 					player.getInventory().deleteItem(new Item(536, 1));
-					player.getSkills().addXp(PlayerSkills.PRAYER, 650);
+					player.getSkills().addXp(SkillConstants.PRAYER, 650);
 					player.getPackets().sendSound(2738, 0, 1);
 					player.setNextAnimation(new Animation(896));
 					player.setNextGraphics(new Graphics(624));
 					player.getInventory().refresh();
 					
-				} else if (itemId == 18830 && object.getDefinitions().name.equals("Altar")) { //Frost Dragon bones
+				} else if (itemId == 18830 && object.getDefinitions().getName().equals("Altar")) { //Frost Dragon bones
 					player.getPackets().sendGameMessage("You pray to the gods and they accept your offering.");
 					player.getInventory().deleteItem(new Item(18830, 1));
-					player.getSkills().addXp(PlayerSkills.PRAYER, 1127);
+					player.getSkills().addXp(SkillConstants.PRAYER, 1127);
 					player.getPackets().sendSound(2738, 0, 1);
 					player.setNextAnimation(new Animation(896));
 					player.setNextGraphics(new Graphics(624));
 					player.getInventory().refresh();
 					
-				} else if (itemId == 526 && object.getDefinitions().name.equals("Altar")) { //Bones
+				} else if (itemId == 526 && object.getDefinitions().getName().equals("Altar")) { //Bones
 					player.getPackets().sendGameMessage("You pray to the gods and they accept your offering.");
 					player.getInventory().deleteItem(new Item(526, 1));
-					player.getSkills().addXp(PlayerSkills.PRAYER, 186);
+					player.getSkills().addXp(SkillConstants.PRAYER, 186);
 					player.getPackets().sendSound(2738, 0, 1);
 					player.setNextAnimation(new Animation(896));
 					player.setNextGraphics(new Graphics(624));
 					player.getInventory().refresh();
 					
-				} else if (itemId == 532 && object.getDefinitions().name.equals("Altar")) { //Big bones
+				} else if (itemId == 532 && object.getDefinitions().getName().equals("Altar")) { //Big bones
 					player.getPackets().sendGameMessage("You pray to the gods and they accept your offering.");
 					player.getInventory().deleteItem(new Item(532, 1));
-					player.getSkills().addXp(PlayerSkills.PRAYER, 249);
+					player.getSkills().addXp(SkillConstants.PRAYER, 249);
 					player.getPackets().sendSound(2738, 0, 1);
 					player.setNextAnimation(new Animation(896));
 					player.setNextGraphics(new Graphics(624));
 					player.getInventory().refresh();
 				} else if (object.getId() == 733 || object.getId() == 64729) {
-					player.setNextAnimation(new Animation(PlayerCombatAction.getWeaponAttackEmote(-1, 0)));
+					player.setNextAnimation(new Animation(CombatAlgorithm.getWeaponAttackEmote(-1, 0)));
 					slashWeb(player, object);
-				} else if (objectDef.name.toLowerCase().contains("range") || objectDef.name.toLowerCase().contains("stove") || id == 2732) {
+				} else if (objectDef.getName().toLowerCase().contains("range") || objectDef.getName().toLowerCase().contains("stove") || id == 2732) {
 					Cookables cook = Cooking.isCookingSkill(item);
 					if (cook != null) {
 						player.getDialogueManager().startDialogue("CookingD", cook, object);

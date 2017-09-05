@@ -10,7 +10,7 @@ import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
@@ -85,7 +85,7 @@ public abstract class Familiar extends NPC implements Serializable {
 		WorldTile teleTile = null;
 		for (int dir = 0; dir < checkNearDirs[0].length; dir++) {
 			final WorldTile tile = new WorldTile(new WorldTile(owner.getX() + checkNearDirs[0][dir], owner.getY() + checkNearDirs[1][dir], owner.getPlane()));
-			if (World.canMoveNPC(tile.getPlane(), tile.getX(), tile.getY(), size)) { // if found done
+			if (RegionManager.canMoveNPC(tile.getPlane(), tile.getX(), tile.getY(), size)) { // if found done
 				teleTile = tile;
 				break;
 			}

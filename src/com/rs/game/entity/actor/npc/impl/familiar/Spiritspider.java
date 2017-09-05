@@ -7,7 +7,7 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 public class Spiritspider extends Familiar {
@@ -31,7 +31,7 @@ public class Spiritspider extends Familiar {
 		// attemps to randomize tile by 4x4 area
 		for (int trycount = 0; trycount < Misc.getRandom(10); trycount++) {
 			tile = new WorldTile(this, 2);
-			if (World.canMoveNPC(this.getPlane(), tile.getX(), tile.getY(), player.getSize())) {
+			if (RegionManager.canMoveNPC(this.getPlane(), tile.getX(), tile.getY(), player.getSize())) {
 				return true;
 			}
 			for (Actor actor : this.getPossibleTargets()) {
@@ -39,7 +39,7 @@ public class Spiritspider extends Familiar {
 					Player players = (Player) actor;
 					players.getPackets().sendGraphics(new Graphics(1342), tile);
 				}
-				World.addGroundItem(new Item(223, 1), tile, player, false, 120, true);
+				RegionManager.addGroundItem(new Item(223, 1), tile, player, false, 120, true);
 			}
 		}
 		return true;

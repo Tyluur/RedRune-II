@@ -4,10 +4,10 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 public final class Mining extends Action {
 	
@@ -65,7 +65,7 @@ public final class Mining extends Action {
 				summoningBonus += 1;
 			}
 		}
-		int mineTimer = definitions.getOreBaseTime() - (player.getSkills().getLevel(PlayerSkills.MINING) + summoningBonus) - Misc.getRandom(pickaxeTime);
+		int mineTimer = definitions.getOreBaseTime() - (player.getSkills().getLevel(SkillConstants.MINING) + summoningBonus) - Misc.getRandom(pickaxeTime);
 		if (mineTimer < 1 + definitions.getOreRandomTime()) {
 			mineTimer = 1 + Misc.getRandom(definitions.getOreRandomTime());
 		}
@@ -98,7 +98,7 @@ public final class Mining extends Action {
 	}
 	
 	private boolean setPickaxe(Player player) {
-		int level = player.getSkills().getLevel(PlayerSkills.MINING);
+		int level = player.getSkills().getLevel(SkillConstants.MINING);
 		int weaponId = player.getEquipment().getWeaponId();
 		if (weaponId != -1) {
 			switch (weaponId) {
@@ -211,7 +211,7 @@ public final class Mining extends Action {
 	}
 	
 	private boolean hasMiningLevel(Player player) {
-		if (definitions.getLevel() > player.getSkills().getLevel(PlayerSkills.MINING)) {
+		if (definitions.getLevel() > player.getSkills().getLevel(SkillConstants.MINING)) {
 			player.getPackets().sendGameMessage("You need a mining level of " + definitions.getLevel() + " to mind this rock.");
 			return false;
 		}
@@ -231,7 +231,7 @@ public final class Mining extends Action {
 		if (!usedDeplateAurora && (1 + Math.random()) < player.getAuraManager().getChanceNotDepleteMN_WC()) {
 			usedDeplateAurora = true;
 		} else if (rock.getLife() <= 0) {
-			World.spawnTemporaryObject(new WorldObject(definitions.getEmptyId(), rock.getType(), rock.getRotation(), rock.getX(), rock.getY(), rock.getPlane()), definitions.respawnDelay * 600, false);
+			RegionManager.spawnTemporaryObject(new WorldObject(definitions.getEmptyId(), rock.getType(), rock.getRotation(), rock.getX(), rock.getY(), rock.getPlane()), definitions.respawnDelay * 600);
 			player.setNextAnimation(new Animation(-1));
 			return -1;
 		}
@@ -259,7 +259,7 @@ public final class Mining extends Action {
 		} else if (player.getFamiliar() != null && (player.getFamiliar().getId() == 7342 || player.getFamiliar().getId() == 7342)) {
 			xpBoost += 40;
 		}
-		player.getSkills().addXp(PlayerSkills.MINING, definitions.getXp() + xpBoost);
+		player.getSkills().addXp(SkillConstants.MINING, definitions.getXp() + xpBoost);
 		if (definitions.getOreId() != -1) {
 			player.getInventory().addItem(definitions.getOreId() + idSome, 1);
 			String oreName = ItemDefinitions.getItemDefinitions(definitions.getOreId() + idSome).getName().toLowerCase();
@@ -273,7 +273,7 @@ public final class Mining extends Action {
 	}
 	
 	private boolean checkRock() {
-		return World.containsObjectWithId(rock.getId(), rock);
+		return RegionManager.containsObjectWithId(rock.getId(), rock);
 	}
 	
 	public enum RockDefinitions {

@@ -3,7 +3,6 @@ package com.rs.game.entity.actor.player.link;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.game.entity.item.ItemConstants;
 import com.rs.game.entity.item.ItemsContainer;
 
 public class PriceCheckManager {
@@ -99,7 +98,7 @@ public class PriceCheckManager {
 		if (item == null) {
 			return;
 		}
-		if (!ItemConstants.isTradeable(item)) {
+		if (!com.rs.utility.constants.ItemConstants.isTradeable(item)) {
 			player.getPackets().sendGameMessage("That item isn't tradeable.");
 			return;
 		}

@@ -7,8 +7,7 @@ import com.rs.utility.Misc;
 
 public class PlayerRestAction extends Action {
 	
-	private static int[][] REST_DEFS = { { 5713, 1549, 5748 }, { 11786, 1550, 11788 }, { 5713, 1551, 2921 } // TODO First emote
-	
+	private static int[][] REST_DEFS = { { 5713, 1549, 5748 }, { 11786, 1550, 11788 }, { 5713, 1551, 2921 }
 	};
 	
 	private int index;

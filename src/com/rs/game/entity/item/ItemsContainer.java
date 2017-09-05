@@ -361,7 +361,7 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return true;
 	}
 	
-	private boolean hasSpaceForItem(T item) {
+	public boolean hasSpaceForItem(T item) {
 		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
 			for (Item aData : data) {
 				if (aData != null) {

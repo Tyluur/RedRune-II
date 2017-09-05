@@ -3,7 +3,6 @@ package com.rs.utility.constants;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.skills.runecrafting.Runecrafting;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 
 import java.util.HashMap;
@@ -169,7 +168,7 @@ public interface EquipmentConstants {
 		if (item == null || item.getId() != itemId) {
 			return false;
 		}
-		if (item.getDefinitions().isNoted() || !item.getDefinitions().isWearItem(player.getAppearance().isMale()) && item.getDefinitions().id != 4084) {
+		if (item.getDefinitions().isNoted() || !item.getDefinitions().isWearItem(player.getAppearance().isMale()) && item.getDefinitions().getId() != 4084) {
 			player.getPackets().sendGameMessage("You can't wear that.");
 			return true;
 		}
@@ -199,7 +198,7 @@ public interface EquipmentConstants {
 						player.getPackets().sendGameMessage("You are not high enough level to use this item.");
 					}
 					hasRequiriments = false;
-					String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
+					String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
 					player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".");
 				}
 				

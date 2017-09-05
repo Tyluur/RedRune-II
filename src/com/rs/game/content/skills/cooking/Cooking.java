@@ -3,11 +3,11 @@ package com.rs.game.content.skills.cooking;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class Cooking extends Action {
 		} else if (cook.isSpitRoast() && object.getId() != 11363) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You may only cook this on an iron spit.");
 			return false;
-		} else if (player.getSkills().getLevel(PlayerSkills.COOKING) < cook.getLvl()) {
+		} else if (player.getSkills().getLevel(SkillConstants.COOKING) < cook.getLvl()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a cooking level of " + cook.getLvl() + " to cook this food.");
 			return false;
 		}
@@ -51,7 +51,7 @@ public class Cooking extends Action {
 	
 	@Override
 	public boolean process(Player player) {
-		if (!World.containsObjectWithId(object.getId(), object)) {
+		if (!RegionManager.containsObjectWithId(object.getId(), object)) {
 			return false;
 		}
 		if (!player.getInventory().containsItem(item.getId(), 1)) {
@@ -60,7 +60,7 @@ public class Cooking extends Action {
 		if (!player.getInventory().containsItem(cook.getRawItem().getId(), 1)) {
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.COOKING) < cook.getLvl()) {
+		if (player.getSkills().getLevel(SkillConstants.COOKING) < cook.getLvl()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a level of " + cook.getLvl() + " to cook this.");
 			return false;
 		}
@@ -71,14 +71,14 @@ public class Cooking extends Action {
 	public int processWithDelay(Player player) {
 		amount--;
 		player.setNextAnimation(COOKING);
-		if ((player.getSkills().getLevel(PlayerSkills.COOKING) < cook.getBurningLvl()) && isBurned(player)) {
+		if ((player.getSkills().getLevel(SkillConstants.COOKING) < cook.getBurningLvl()) && isBurned(player)) {
 			player.getInventory().deleteItem(item.getId(), 1);
 			player.getInventory().addItem(cook.getBurntId().getId(), cook.getBurntId().getAmount());
 			player.getPackets().sendGameMessage("Oops! You accidently burnt the " + cook.getProduct().getDefinitions().getName().toLowerCase() + ".", true);
 		} else {
 			player.getInventory().deleteItem(item.getId(), 1);
 			player.getInventory().addItem(cook.getProduct().getId(), cook.getProduct().getAmount());
-			player.getSkills().addXp(PlayerSkills.COOKING, cook.getXp());
+			player.getSkills().addXp(SkillConstants.COOKING, cook.getXp());
 			player.getPackets().sendGameMessage("You successfully cook the " + cook.getProduct().getDefinitions().getName().toLowerCase() + ".", true);
 		}
 		if (amount > 0) {
@@ -89,7 +89,7 @@ public class Cooking extends Action {
 	}
 	
 	private boolean isBurned(Player player) {
-		int levelsToStopBurn = cook.getBurningLvl() - player.getSkills().getLevel(PlayerSkills.COOKING);
+		int levelsToStopBurn = cook.getBurningLvl() - player.getSkills().getLevel(SkillConstants.COOKING);
 		if (levelsToStopBurn > 20) {
 			levelsToStopBurn = 20;
 		}

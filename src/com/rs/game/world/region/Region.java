@@ -872,12 +872,12 @@ public class Region {
 			return;
 		}
 		if (type >= 0 && type <= 3) {
-			if (!objectDefinition.ignoreClipOnAlternativeRoute) //disabled those walls for now since theyre guard corners, temporary fix
+			if (!objectDefinition.isIgnoreClipOnAlternativeRoute()) //disabled those walls for now since theyre guard corners, temporary fix
 			{
-				map.addWall(plane, x, y, type, rotation, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
+				map.addWall(plane, x, y, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
 			}
-			if (objectDefinition.isProjectileCliped()) {
-				clipedOnlyMap.addWall(plane, x, y, type, rotation, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
+			if (objectDefinition.isProjectileClipped()) {
+				clipedOnlyMap.addWall(plane, x, y, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
 			}
 		} else if (type >= 9 && type <= 21) {
 			int sizeX;
@@ -889,9 +889,9 @@ public class Region {
 				sizeX = objectDefinition.getSizeY();
 				sizeY = objectDefinition.getSizeX();
 			}
-			map.addObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
-			if (objectDefinition.isProjectileCliped()) {
-				clipedOnlyMap.addObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
+			map.addObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
+			if (objectDefinition.isProjectileClipped()) {
+				clipedOnlyMap.addObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
 			}
 		} else if (type == 22) {
 			map.addFloor(plane, x, y); // dont ever fucking think about removing it..., some floor deco objects DOES BLOCK WALKING
@@ -926,9 +926,9 @@ public class Region {
 			return;
 		}
 		if (type >= 0 && type <= 3) {
-			map.removeWall(plane, x, y, type, rotation, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
-			if (objectDefinition.isProjectileCliped()) {
-				clipedOnlyMap.removeWall(plane, x, y, type, rotation, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
+			map.removeWall(plane, x, y, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
+			if (objectDefinition.isProjectileClipped()) {
+				clipedOnlyMap.removeWall(plane, x, y, type, rotation, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
 			}
 		} else if (type >= 9 && type <= 21) {
 			int sizeX;
@@ -940,9 +940,9 @@ public class Region {
 				sizeX = objectDefinition.getSizeY();
 				sizeY = objectDefinition.getSizeX();
 			}
-			map.removeObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
-			if (objectDefinition.isProjectileCliped()) {
-				clipedOnlyMap.removeObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileCliped(), !objectDefinition.ignoreClipOnAlternativeRoute);
+			map.removeObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
+			if (objectDefinition.isProjectileClipped()) {
+				clipedOnlyMap.removeObject(plane, x, y, sizeX, sizeY, objectDefinition.isProjectileClipped(), !objectDefinition.isIgnoreClipOnAlternativeRoute());
 			}
 		} else if (type == 22) {
 			map.removeFloor(plane, x, y);
@@ -1020,7 +1020,7 @@ public class Region {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			World.getRegion(tile.getRegionId()).setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			RegionManager.getRegion(tile.getRegionId()).setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
 			return;
 		}
 		
@@ -1126,7 +1126,7 @@ public class Region {
 		
 	}
 	
-	public WorldObject getStandartObject(int plane, int x, int y) {
+	public WorldObject getStandardObject(int plane, int x, int y) {
 		return getObjectWithSlot(plane, x, y, OBJECT_SLOT_FLOOR);
 	}
 	

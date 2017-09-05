@@ -2,7 +2,7 @@ package com.rs.game.entity.actor.player.link;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 import java.util.Iterator;
@@ -64,7 +64,7 @@ public class OwnedObjectManager {
 	}
 	
 	public void destroyObject(WorldObject object) {
-		World.removeObject(object);
+		RegionManager.removeObject(object);
 	}
 	
 	private void remove() {
@@ -75,7 +75,7 @@ public class OwnedObjectManager {
 	}
 	
 	private void spawnObject() {
-		World.spawnObject(objects[count]);
+		RegionManager.spawnObject(objects[count]);
 		resetLifeTime();
 	}
 	

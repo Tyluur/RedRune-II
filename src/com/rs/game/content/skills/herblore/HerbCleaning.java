@@ -1,10 +1,10 @@
 package com.rs.game.content.skills.herblore;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
+import com.rs.utility.constants.SkillConstants;
 
 public class HerbCleaning {
 	
@@ -13,7 +13,7 @@ public class HerbCleaning {
 		if (herb == null) {
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.HERBLORE) < herb.getLevel()) {
+		if (player.getSkills().getLevel(SkillConstants.HERBLORE) < herb.getLevel()) {
 			player.getPackets().sendGameMessage("You do not have the required level to clean this.", true);
 			return true;
 		}
@@ -29,7 +29,7 @@ public class HerbCleaning {
 				}
 				i.setId(herb.getCleanId());
 				player.getInventory().refresh(slotId);
-				player.getSkills().addXp(PlayerSkills.HERBLORE, herb.getExperience());
+				player.getSkills().addXp(SkillConstants.HERBLORE, herb.getExperience());
 				player.getPackets().sendGameMessage("You clean the herb.", true);
 			}
 			

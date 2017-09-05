@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public class Wolpertinger extends Familiar {
 
@@ -21,13 +21,13 @@ public class Wolpertinger extends Familiar {
 	@Override
 	public boolean submitSpecial(Object object) {
 		Player player = (Player) object;
-		int newLevel = player.getSkills().getLevel(PlayerSkills.MAGIC) + 7;
-		if (newLevel > player.getSkills().getLevelForXp(PlayerSkills.MAGIC) + 7) {
-			newLevel = player.getSkills().getLevelForXp(PlayerSkills.MAGIC) + 7;
+		int newLevel = player.getSkills().getLevel(SkillConstants.MAGIC) + 7;
+		if (newLevel > player.getSkills().getLevelForXp(SkillConstants.MAGIC) + 7) {
+			newLevel = player.getSkills().getLevelForXp(SkillConstants.MAGIC) + 7;
 		}
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));
-		player.getSkills().set(PlayerSkills.MAGIC, newLevel);
+		player.getSkills().set(SkillConstants.MAGIC, newLevel);
 		return true;
 	}
 

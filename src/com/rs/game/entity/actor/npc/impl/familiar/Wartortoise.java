@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public class Wartortoise extends Familiar {
 
@@ -21,13 +21,13 @@ public class Wartortoise extends Familiar {
 	@Override
 	public boolean submitSpecial(Object object) {
 		Player player = (Player) object;
-		int newLevel = player.getSkills().getLevel(PlayerSkills.DEFENCE) + 9;
-		if (newLevel > player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) + 9) {
-			newLevel = player.getSkills().getLevelForXp(PlayerSkills.DEFENCE) + 9;
+		int newLevel = player.getSkills().getLevel(SkillConstants.DEFENCE) + 9;
+		if (newLevel > player.getSkills().getLevelForXp(SkillConstants.DEFENCE) + 9) {
+			newLevel = player.getSkills().getLevelForXp(SkillConstants.DEFENCE) + 9;
 		}
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));
-		player.getSkills().set(PlayerSkills.DEFENCE, newLevel);
+		player.getSkills().set(SkillConstants.DEFENCE, newLevel);
 		return true;
 	}
 

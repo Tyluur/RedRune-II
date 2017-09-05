@@ -12,9 +12,9 @@ import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemsContainer;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
 import com.rs.game.world.region.DynamicRegion;
 import com.rs.game.world.region.Region;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.worldlist.WorldEntry;
 import com.rs.game.world.worldlist.WorldList;
 import com.rs.networking.NetworkConstants;
@@ -59,7 +59,7 @@ public class WorldPacketsEncoder extends Encoder {
 		sendMessage(filter ? 109 : 0, text, null);
 	}
 	
-	public void sendMessage(int type, String text, Player p) {
+	private final void sendMessage(int type, String text, Player p) {
 		int maskData = 0;
 		if (p != null) {
 			maskData |= 0x1;
@@ -807,7 +807,7 @@ public class WorldPacketsEncoder extends Encoder {
 					// y
 					// calcs
 					int regionId = (((thisRegionX / 8) << 8) + (thisRegionY / 8));
-					Region region = World.getRegion(regionId);
+					Region region = RegionManager.getRegion(regionId);
 					int realRegionX;
 					int realRegionY;
 					int realPlane;

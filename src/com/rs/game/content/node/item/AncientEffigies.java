@@ -2,7 +2,7 @@ package com.rs.game.content.node.item;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerInventory;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 /**
  * @author Raghav/Own4g3 <Raghav_ftw@hotmail.com>
@@ -12,9 +12,9 @@ public class AncientEffigies {
 	
 	public static final int STARVED_ANCIENT_EFFIGY = 18778, NOURISHED_ANCIENT_EFFIGY = 18779, SATED_ANCIENT_EFFIGY = 18780, GORGED_ANCIENT_EFFIGY = 18781, DRAGONKIN_LAMP = 18782;
 	
-	public static int[] SKILL_1 = { PlayerSkills.AGILITY, PlayerSkills.CONSTRUCTION, PlayerSkills.COOKING, PlayerSkills.FISHING, PlayerSkills.FLETCHING, PlayerSkills.HERBLORE, PlayerSkills.MINING, PlayerSkills.SUMMONING };
+	public static int[] SKILL_1 = { SkillConstants.AGILITY, SkillConstants.CONSTRUCTION, SkillConstants.COOKING, SkillConstants.FISHING, SkillConstants.FLETCHING, SkillConstants.HERBLORE, SkillConstants.MINING, SkillConstants.SUMMONING };
 	
-	public static int[] SKILL_2 = { PlayerSkills.CRAFTING, PlayerSkills.THIEVING, PlayerSkills.FIREMAKING, PlayerSkills.FARMING, PlayerSkills.WOODCUTTING, PlayerSkills.HUNTER, PlayerSkills.SMITHING, PlayerSkills.RUNECRAFTING };
+	public static int[] SKILL_2 = { SkillConstants.CRAFTING, SkillConstants.THIEVING, SkillConstants.FIREMAKING, SkillConstants.FARMING, SkillConstants.WOODCUTTING, SkillConstants.HUNTER, SkillConstants.SMITHING, SkillConstants.RUNECRAFTING };
 	
 	public static int getRequiredLevel(int id) {
 		switch (id) {
@@ -32,21 +32,21 @@ public class AncientEffigies {
 	
 	public static String getMessage(int skill) {
 		switch (skill) {
-			case PlayerSkills.AGILITY:
+			case SkillConstants.AGILITY:
 				return "deftness and precision";
-			case PlayerSkills.CONSTRUCTION:
+			case SkillConstants.CONSTRUCTION:
 				return "buildings and security";
-			case PlayerSkills.COOKING:
+			case SkillConstants.COOKING:
 				return "fire and preparation";
-			case PlayerSkills.FISHING:
+			case SkillConstants.FISHING:
 				return "life and cultivation";
-			case PlayerSkills.FLETCHING:
+			case SkillConstants.FLETCHING:
 				return "lumber and woodworking";
-			case PlayerSkills.HERBLORE:
+			case SkillConstants.HERBLORE:
 				return "flora and fuana";
-			case PlayerSkills.MINING:
+			case SkillConstants.MINING:
 				return "metalwork and minerals";
-			case PlayerSkills.SUMMONING:
+			case SkillConstants.SUMMONING:
 				return "binding essence and spirits";
 		}
 		return null;

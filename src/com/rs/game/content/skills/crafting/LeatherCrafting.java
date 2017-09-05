@@ -4,9 +4,9 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class LeatherCrafting extends Action {
 	}
 	
 	private boolean checkAll(Player player) {
-		if (data.getRequiredLevel() > player.getSkills().getLevel(PlayerSkills.CRAFTING)) {
+		if (data.getRequiredLevel() > player.getSkills().getLevel(SkillConstants.CRAFTING)) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a crafting level of " + data.getRequiredLevel() + " to craft this hide.");
 			return false;
 		}
@@ -83,7 +83,7 @@ public class LeatherCrafting extends Action {
 	public int processWithDelay(Player player) {
 		player.getInventory().deleteItem(data.getLeatherId(), data.getLeatherAmount());
 		player.getInventory().addItem(data.getFinalProduct(), 1);
-		player.getSkills().addXp(PlayerSkills.CRAFTING, data.getExperience());
+		player.getSkills().addXp(SkillConstants.CRAFTING, data.getExperience());
 		player.getPackets().sendGameMessage("You make a " + data.getName().toLowerCase() + ".");
 		quantity--;
 		removeThread--;

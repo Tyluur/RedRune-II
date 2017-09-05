@@ -1,10 +1,10 @@
 package plugin.command.player;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.plugin.type.CommandPlugin;
 import com.rs.game.world.World;
+import com.rs.utility.constants.SkillConstants;
 import plugin.command.CommandManifest;
 
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class CopyCommandPlugin extends CommandPlugin {
 							player.getPackets().sendGameMessage("You are not high enough level to use this item.");
 						}
 						hasRequirements = false;
-						String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
+						String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
 						player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".");
 					}
 					

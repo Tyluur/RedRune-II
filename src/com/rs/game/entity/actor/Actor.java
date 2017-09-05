@@ -8,16 +8,21 @@ import com.rs.game.entity.Entity;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.link.PoisonManager;
 import com.rs.game.entity.actor.mask.*;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.World;
 import com.rs.game.world.region.DynamicRegion;
+import com.rs.game.world.region.RegionManager;
+import com.rs.game.world.route.RouteFinder;
+import com.rs.game.world.route.strategy.ActorStrategy;
+import com.rs.game.world.route.strategy.FixedTileStrategy;
+import com.rs.game.world.route.strategy.ObjectStrategy;
 import com.rs.networking.NetworkConstants;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -279,7 +284,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		}
 		
 		if (check) {
-			if (!World.checkWalkStep(getPlane(), lastX, lastY, dir, getSize())) {
+			if (!RegionManager.checkWalkStep(getPlane(), lastX, lastY, dir, getSize())) {
 				return false;
 			}
 			if (this instanceof Player) {
@@ -330,10 +335,10 @@ public abstract class Actor extends WorldTile implements Entity {
 				return false;
 			}
 			if (checkClose) {
-				if (!World.checkWalkStep(getPlane(), lastTileX, lastTileY, dir, size)) {
+				if (!RegionManager.checkWalkStep(getPlane(), lastTileX, lastTileY, dir, size)) {
 					return false;
 				}
-			} else if (!World.checkProjectileStep(getPlane(), lastTileX, lastTileY, dir, size)) {
+			} else if (!RegionManager.checkProjectileStep(getPlane(), lastTileX, lastTileY, dir, size)) {
 				return false;
 			}
 			lastTileX = myX;
@@ -403,7 +408,7 @@ public abstract class Actor extends WorldTile implements Entity {
 			return false;
 		}
 		
-		return !check || World.checkWalkStep(getPlane(), lastX, lastY, dir, getSize());
+		return !check || RegionManager.checkWalkStep(getPlane(), lastX, lastY, dir, getSize());
 	}
 	
 	public int[] checkcalculatedStep(int myX, int myY, int destX, int destY, int lastX, int lastY, int size) {
@@ -634,7 +639,7 @@ public abstract class Actor extends WorldTile implements Entity {
 			if (this instanceof Player) {
 				((Player) this).setTemporaryMovementType(Player.TELE_MOVE_TYPE);
 			}
-			World.updateEntityRegion(this);
+			RegionManager.updateActorRegion(this);
 			if (needMapUpdate()) {
 				loadMapRegions();
 			} else if (this instanceof Player && lastPlane != getPlane()) {
@@ -684,7 +689,7 @@ public abstract class Actor extends WorldTile implements Entity {
 				}
 			}
 		}
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		if (needMapUpdate()) {
 			loadMapRegions();
 		}
@@ -721,7 +726,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		for (int xCalc = (regionX - mapHash) / 8; xCalc <= ((regionX + mapHash) / 8); xCalc++) {
 			for (int yCalc = (regionY - mapHash) / 8; yCalc <= ((regionY + mapHash) / 8); yCalc++) {
 				int regionId = yCalc + (xCalc << 8);
-				if (World.getRegion(regionId, this instanceof Player) instanceof DynamicRegion) {
+				if (RegionManager.getRegion(regionId, this instanceof Player) instanceof DynamicRegion) {
 					isAtDynamicRegion = true;
 				}
 				mapRegionsIds.add(yCalc + (xCalc << 8));
@@ -763,10 +768,10 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	public void removeHitpoints(Hit hit) {
-		if (isDead() || hit.getLook() == HitLook.ABSORB_DAMAGE) {
+		if (isDead() || hit.getLook() == HitSplat.ABSORB_DAMAGE) {
 			return;
 		}
-		if (hit.getLook() == HitLook.HEALED_DAMAGE) {
+		if (hit.getLook() == HitSplat.HEALED_DAMAGE) {
 			heal(hit.getDamage());
 			return;
 		}
@@ -781,14 +786,14 @@ public abstract class Actor extends WorldTile implements Entity {
 			Player player = (Player) this;
 			if (player.getEquipment().getRingId() == 2550) {
 				if (hit.getSource() != null && hit.getSource() != player) {
-					hit.getSource().applyHit(new Hit(player, (int) (hit.getDamage() * 0.1), HitLook.REFLECTED_DAMAGE));
+					hit.getSource().applyHit(new Hit(player, (int) (hit.getDamage() * 0.1), HitSplat.REFLECTED_DAMAGE));
 				}
 			}
 			if (player.getPrayer().hasPrayersOn()) {
 				if ((hitpoints < player.getMaxHitpoints() * 0.1) && player.getPrayer().usingPrayer(0, 23)) {
 					setNextGraphics(new Graphics(436));
-					hitpoints += player.getSkills().getLevelForXp(PlayerSkills.PRAYER) * 2.5;
-					player.getSkills().set(PlayerSkills.PRAYER, 0);
+					hitpoints += player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 2.5;
+					player.getSkills().set(SkillConstants.PRAYER, 0);
 					player.getPrayer().setPrayerpoints(0);
 				} else if (player.getEquipment().getAmuletId() != 11090 && player.getEquipment().getRingId() == 11090 && player.getHitpoints() <= player.getMaxHitpoints() * 0.1) {
 					Magic.sendNormalTeleportSpell(player, 1, 0, GameConstants.RESPAWN_PLAYER_LOCATION);
@@ -1147,7 +1152,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	public void playSound(int soundId, int type) {
 		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = World.getRegion(regionId).getPlayerIndexes();
+			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 			if (playerIndexes != null) {
 				for (int playerIndex : playerIndexes) {
 					Player player = World.getPlayers().get(playerIndex);
@@ -1181,7 +1186,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K getAttribute(String key, K defaultValue) {
+	public <K> K getAttribute(Object key, K defaultValue) {
 		K value = (K) getAttributes().get(key);
 		if (value == null) {
 			return defaultValue;
@@ -1194,7 +1199,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K getAttribute(String key) {
+	public <K> K getAttribute(Object key) {
 		return (K) getAttributes().get(key);
 	}
 	
@@ -1225,4 +1230,89 @@ public abstract class Actor extends WorldTile implements Entity {
 		return value;
 	}
 	
+	/**
+	 * Checks if the entity is moving
+	 */
+	public boolean isMoving() {
+		return nextWalkDirection != -1 || nextRunDirection != -1 || hasWalkSteps();
+	}
+	
+	public boolean calcFollow(WorldTile target, boolean inteligent) {
+		return calcFollow(target, -1, true, inteligent);
+	}
+	
+	//used for normal npc follow int maxStepsCount, boolean calculate used to save mem on normal path
+	public boolean calcFollow(WorldTile target, int maxStepsCount, boolean calculate, boolean inteligent) {
+		if (inteligent) {
+			int steps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, getX(), getY(), getPlane(), getSize(), target instanceof WorldObject ? new ObjectStrategy((WorldObject) target) : target instanceof Entity ? new ActorStrategy((Actor) target) : new FixedTileStrategy(target.getX(), target.getY()), true);
+			if (steps == -1) {
+				return false;
+			}
+			if (steps == 0) {
+				return true;
+			}
+			int[] bufferX = RouteFinder.getLastPathBufferX();
+			int[] bufferY = RouteFinder.getLastPathBufferY();
+			for (int step = steps - 1; step >= 0; step--) {
+				if (!addWalkSteps(bufferX[step], bufferY[step], 25, true)) {
+					break;
+				}
+			}
+			return true;
+		}
+		return findBasicRoute(this, target, maxStepsCount, true);
+	}
+	
+	public static boolean findBasicRoute(Actor src, WorldTile dest, int maxStepsCount, boolean calculate) {
+		int[] srcPos = src.getLastWalkTile();
+		int[] destPos = { dest.getX(), dest.getY() };
+		int srcSize = src.getSize();
+		//set destSize to 0 to walk under it else follows
+		int destSize = dest instanceof Actor ? ((Actor) dest).getSize() : 1;
+		int[] destScenePos = { destPos[0] + destSize - 1, destPos[1] + destSize - 1 };//Arrays.copyOf(destPos, 2);//destSize == 1 ? Arrays.copyOf(destPos, 2) : new int[] {WorldTile.getCoordFaceX(destPos[0], destSize, destSize, -1), WorldTile.getCoordFaceY(destPos[1], destSize, destSize, -1)};
+		while (maxStepsCount-- != 0) {
+			int[] srcScenePos = { srcPos[0] + srcSize - 1, srcPos[1] + srcSize - 1 };//srcSize == 1 ? Arrays.copyOf(srcPos, 2) : new int[] { WorldTile.getCoordFaceX(srcPos[0], srcSize, srcSize, -1), WorldTile.getCoordFaceY(srcPos[1], srcSize, srcSize, -1)};
+			if (!Misc.isOnRange(srcPos[0], srcPos[1], srcSize, destPos[0], destPos[1], destSize, 0)) {
+				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] < destScenePos[1] && src.addWalkStep(srcPos[0] + 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]++;
+					srcPos[1]++;
+					continue;
+				}
+				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] > destScenePos[1] && src.addWalkStep(srcPos[0] - 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]--;
+					srcPos[1]--;
+					continue;
+				}
+				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] > destScenePos[1] && src.addWalkStep(srcPos[0] + 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]++;
+					srcPos[1]--;
+					continue;
+				}
+				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] < destScenePos[1] && src.addWalkStep(srcPos[0] - 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+					srcPos[0]--;
+					srcPos[1]++;
+					continue;
+				}
+				if (srcScenePos[0] < destScenePos[0] && src.addWalkStep(srcPos[0] + 1, srcPos[1], srcPos[0], srcPos[1], true)) {
+					srcPos[0]++;
+					continue;
+				}
+				if (srcScenePos[0] > destScenePos[0] && src.addWalkStep(srcPos[0] - 1, srcPos[1], srcPos[0], srcPos[1], true)) {
+					srcPos[0]--;
+					continue;
+				}
+				if (srcScenePos[1] < destScenePos[1] && src.addWalkStep(srcPos[0], srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
+					srcPos[1]++;
+					continue;
+				}
+				if (srcScenePos[1] > destScenePos[1] && src.addWalkStep(srcPos[0], srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
+					srcPos[1]--;
+					continue;
+				}
+				return false;
+			}
+			break; //for now nothing between break and return
+		}
+		return true;
+	}
 }

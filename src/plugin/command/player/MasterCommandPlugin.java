@@ -1,8 +1,8 @@
 package plugin.command.player;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.plugin.type.CommandPlugin;
+import com.rs.utility.constants.SkillConstants;
 import plugin.command.CommandManifest;
 
 /**
@@ -15,7 +15,7 @@ public class MasterCommandPlugin extends CommandPlugin {
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
 		for (int skill = 0; skill < 25; skill++) {
-			player.getSkills().addXp(skill, PlayerSkills.MAXIMUM_EXP);
+			player.getSkills().addXp(skill, SkillConstants.MAXIMUM_EXP);
 		}
 	}
 	

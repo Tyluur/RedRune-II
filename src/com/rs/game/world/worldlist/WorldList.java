@@ -10,11 +10,15 @@ import static com.rs.game.world.worldlist.WorldListConstants.*;
  */
 public class WorldList {
 	
+	/**
+	 * The map of world entries
+	 */
 	private static final HashMap<Integer, WorldEntry> WORLDS = new HashMap<>();
 	
-	// String activity, String ip, int countryId, String countryName, boolean
-	// members
-	public static void init() {
+	/**
+	 * Registers all worlds
+	 */
+	public static void registerAll() {
 		WORLDS.put(1, new WorldEntry("Game Server", "127.0.0.1", 38, FLAG_MEMBERS | FLAG_LOOTSHARE | FLAG_HIGHLIGHT, "Canada", true));
 		WORLDS.put(2, new WorldEntry("PvP World", "127.0.0.1", 38, FLAG_MEMBERS | FLAG_LOOTSHARE | FLAG_HIGH_RISK, "Canada", true));
 	}

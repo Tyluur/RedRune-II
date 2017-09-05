@@ -112,16 +112,16 @@ public class PlayerAppearance implements Serializable {
 				if (item == null) {
 					stream.writeByte(0);
 				} else {
-					stream.writeShort(32768 + item.getEquipId());
+					stream.writeShort(32768 + ItemEquipIds.getEquipId(item.getId()));
 				}
 			}
 			Item item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_CHEST);
-			stream.writeShort(item == null ? 0x100 + looks[2] : 32768 + item.getEquipId());
+			stream.writeShort(item == null ? 0x100 + looks[2] : 32768 + ItemEquipIds.getEquipId(item.getId()));
 			item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_SHIELD);
 			if (item == null) {
 				stream.writeByte(0);
 			} else {
-				stream.writeShort(32768 + item.getEquipId());
+				stream.writeShort(32768 + ItemEquipIds.getEquipId(item.getId()));
 			}
 			item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_CHEST);
 			if (item == null || !EquipmentConstants.isFullBody(item)) {
@@ -130,7 +130,7 @@ public class PlayerAppearance implements Serializable {
 				stream.writeByte(0);
 			}
 			item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_LEGS);
-			stream.writeShort(glowRed ? 32768 + ItemEquipIds.getEquipId(2908) : item == null ? 0x100 + looks[5] : 32768 + item.getEquipId());
+			stream.writeShort(glowRed ? 32768 + ItemEquipIds.getEquipId(2908) : item == null ? 0x100 + looks[5] : 32768 + ItemEquipIds.getEquipId(item.getId()));
 			item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_HAT);
 			if (!glowRed && (item == null || (!EquipmentConstants.isFullMask(item) && !EquipmentConstants.isFullHat(item)))) {
 				stream.writeShort(0x100 + looks[0]);
@@ -138,9 +138,9 @@ public class PlayerAppearance implements Serializable {
 				stream.writeByte(0);
 			}
 			item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_HANDS);
-			stream.writeShort(glowRed ? 32768 + ItemEquipIds.getEquipId(2912) : item == null ? 0x100 + looks[4] : 32768 + item.getEquipId());
+			stream.writeShort(glowRed ? 32768 + ItemEquipIds.getEquipId(2912) : item == null ? 0x100 + looks[4] : 32768 + ItemEquipIds.getEquipId(item.getId()));
 			item = player.getEquipment().getItems().get(EquipmentConstants.SLOT_FEET);
-			stream.writeShort(glowRed ? 32768 + ItemEquipIds.getEquipId(2904) : item == null ? 0x100 + looks[6] : 32768 + item.getEquipId());
+			stream.writeShort(glowRed ? 32768 + ItemEquipIds.getEquipId(2904) : item == null ? 0x100 + looks[6] : 32768 + ItemEquipIds.getEquipId(item.getId()));
 			// tits for female, bear for male
 			item = player.getEquipment().getItems().get(male ? EquipmentConstants.SLOT_HAT : EquipmentConstants.SLOT_CHEST);
 			if (item == null || !EquipmentConstants.isFullMask(item)) {
@@ -152,7 +152,7 @@ public class PlayerAppearance implements Serializable {
 			if (item == null) {
 				stream.writeByte(0);
 			} else {
-				stream.writeShort(32768 + item.getEquipId());
+				stream.writeShort(32768 + ItemEquipIds.getEquipId(item.getId()));
 			}
 			int pos = stream.getOffset();
 			stream.writeShort(0);
@@ -167,7 +167,7 @@ public class PlayerAppearance implements Serializable {
 					int hatId = player.getEquipment().getHatId();
 					if (hatId == 20768 || hatId == 20770 || hatId == 20772) {
 						ItemDefinitions defs = ItemDefinitions.getItemDefinitions(hatId - 1);
-						if ((hatId == 20768 && Arrays.equals(player.getMaxedCapeCustomized(), defs.originalModelColors) || ((hatId == 20770 || hatId == 20772) && Arrays.equals(player.getCompletionistCapeCustomized(), defs.originalModelColors)))) {
+						if ((hatId == 20768 && Arrays.equals(player.getMaxedCapeCustomized(), defs.getOriginalModelColors()) || ((hatId == 20770 || hatId == 20772) && Arrays.equals(player.getCompletionistCapeCustomized(), defs.getOriginalModelColors())))) {
 							continue;
 						}
 						hash |= 1 << slotFlag;
@@ -183,7 +183,7 @@ public class PlayerAppearance implements Serializable {
 					int capeId = player.getEquipment().getCapeId();
 					if (capeId == 20767 || capeId == 20769 || capeId == 20771) {
 						ItemDefinitions defs = ItemDefinitions.getItemDefinitions(capeId);
-						if ((capeId == 20767 && Arrays.equals(player.getMaxedCapeCustomized(), defs.originalModelColors) || ((capeId == 20769 || capeId == 20771) && Arrays.equals(player.getCompletionistCapeCustomized(), defs.originalModelColors)))) {
+						if ((capeId == 20767 && Arrays.equals(player.getMaxedCapeCustomized(), defs.getOriginalModelColors()) || ((capeId == 20769 || capeId == 20771) && Arrays.equals(player.getCompletionistCapeCustomized(), defs.getOriginalModelColors())))) {
 							continue;
 						}
 						hash |= 1 << slotFlag;

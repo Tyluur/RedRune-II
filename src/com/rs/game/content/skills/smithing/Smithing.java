@@ -4,9 +4,9 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class Smithing extends Action {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a hammer in order to work with a bar of " + new Item(bar.getBarId(), 1).getDefinitions().getName().replace("Bar ", "") + ".");
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.SMITHING) < ForgingInterface.getLevels(index, player)) {
+		if (player.getSkills().getLevel(SkillConstants.SMITHING) < ForgingInterface.getLevels(index, player)) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a Smithing level of " + ForgingInterface.getLevels(index, player) + " to create this.");
 			return false;
 		}
@@ -57,7 +57,7 @@ public class Smithing extends Action {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You do not have sufficient bars!");
 			return false;
 		}
-		if (player.getSkills().getLevel(PlayerSkills.SMITHING) < ForgingInterface.getLevels(index, player)) {
+		if (player.getSkills().getLevel(SkillConstants.SMITHING) < ForgingInterface.getLevels(index, player)) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a Smithing level of " + ForgingInterface.getLevels(index, player) + " to create this.");
 			return false;
 		}
@@ -74,7 +74,7 @@ public class Smithing extends Action {
 		player.setNextAnimation(new Animation(898));
 		player.getInventory().deleteItem(bar.getBarId(), ForgingInterface.getActualAmount(bar.getLevel() + ForgingInterface.getFixedAmount(bar, bar.getItems()[index]), bar, bar.getItems()[index].getId()));
 		player.getInventory().addItem(bar.getItems()[index].getId(), ForgingInterface.getForgedAmount(bar.getItems()[index].getId()));
-		player.getSkills().addXp(PlayerSkills.SMITHING, getExperience(player));
+		player.getSkills().addXp(SkillConstants.SMITHING, getExperience(player));
 		if (ticks > 0) {
 			return 3;
 		}
@@ -301,7 +301,7 @@ public class Smithing extends Action {
 			if (levelRequired >= 99) {
 				levelRequired = 99;
 			}
-			if (player.getSkills().getLevel(PlayerSkills.SMITHING) >= levelRequired) {
+			if (player.getSkills().getLevel(SkillConstants.SMITHING) >= levelRequired) {
 				levelString.append("<col=FFFFFF>");
 			}
 			levelString.append(Misc.formatPlayerNameForDisplay(name.replace(barVariableName + " ", "")));

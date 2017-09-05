@@ -2,11 +2,13 @@ package com.rs.cache.loaders;
 
 import com.alex.utils.Constants;
 import com.rs.cache.Cache;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.EquipmentConstants;
+import com.rs.utility.constants.SkillConstants;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,103 +17,185 @@ import java.util.List;
 @SuppressWarnings("unused")
 public final class ItemDefinitions {
 	
-	public static final ItemDefinitions[] itemsDefinitions;
+	private static final ItemDefinitions[] itemsDefinitions;
 	
 	static { // that's why this is here
 		itemsDefinitions = new ItemDefinitions[Misc.getItemDefinitionsSize()];
 	}
 	
-	public int id;
+	@Getter
+	@Setter
+	private int id;
 	
-	public int modelId;
+	@Getter
+	@Setter
+	private int modelId;
 	
-	public String name;
+	@Getter
+	@Setter
+	private String name;
 	
-	public String[] inventoryOptions;
+	@Getter
+	@Setter
+	private String[] inventoryOptions;
 	
-	// model information
-	public int[] originalModelColors;
+	@Getter
+	@Setter
+	private int[] originalModelColors;
 	
-	public int[] modifiedModelColors;
+	@Getter
+	@Setter
+	private int[] modifiedModelColors;
 	
-	public short[] originalTextureColors;
+	@Getter
+	@Setter
+	private short[] originalTextureColors;
 	
+	@Getter
+	@Setter
 	private boolean loaded;
 	
-	// model size information
+	@Getter
+	@Setter
 	private int modelZoom;
 	
+	@Getter
+	@Setter
 	private int modelRotation1;
 	
+	@Getter
+	@Setter
 	private int modelRotation2;
 	
+	@Getter
+	@Setter
 	private int modelOffset1;
 	
+	@Getter
+	@Setter
 	private int modelOffset2;
 	
-	// extra information
+	@Getter
+	@Setter
 	private int stackable;
 	
+	@Setter
 	private int value;
 	
+	@Getter
+	@Setter
 	private boolean membersOnly;
 	
-	// wearing model information
+	@Getter
+	@Setter
 	private int maleEquip1;
 	
+	@Getter
+	@Setter
 	private int femaleEquip1;
 	
+	@Getter
+	@Setter
 	private int maleEquip2;
 	
+	@Getter
+	@Setter
 	private int femaleEquip2;
 	
-	// options
+	@Getter
+	@Setter
 	private String[] groundOptions;
 	
+	@Getter
+	@Setter
 	private short[] modifiedTextureColors;
 	
+	@Getter
+	@Setter
 	private byte[] recolourPallete;
 	
+	@Getter
+	@Setter
 	private int[] unknownArray2;
 	
+	@Getter
+	@Setter
 	private int maleEquipModelId3;
 	
+	@Getter
+	@Setter
 	private int femaleEquipModelId3;
 	
+	@Getter
+	@Setter
 	private int certId;
 	
+	@Getter
+	@Setter
 	private int certTemplateId;
 	
+	@Getter
+	@Setter
 	private int[] stackIds;
 	
+	@Getter
+	@Setter
 	private int[] stackAmounts;
 	
+	@Getter
+	@Setter
 	private int modelShadowing;
 	
+	@Getter
+	@Setter
 	private int teamId;
 	
+	@Getter
+	@Setter
 	private int lendId;
 	
+	@Getter
+	@Setter
 	private int lendTemplateId;
 	
+	@Getter
+	@Setter
 	private int maleDialogueModel;
 	
+	@Getter
+	@Setter
 	private int femaleDialogueModel;
 	
+	@Getter
+	@Setter
 	private int maleDialogueHat;
 	
+	@Getter
+	@Setter
 	private int femaleDialogueHat;
 	
+	@Getter
+	@Setter
 	private int rotationZoom;
 	
+	@Getter
+	@Setter
 	private int dummyItem;
 	
+	@Getter
+	@Setter
 	private int modelVerticesX;
 	
+	@Getter
+	@Setter
 	private int modelVerticesY;
 	
+	@Getter
+	@Setter
 	private int modelVerticesZ;
 	
+	@Getter
+	@Setter
 	private int modelLighting;
 	
 	private int unknownInt11;
@@ -144,8 +228,10 @@ public final class ItemDefinitions {
 	
 	private int unknownInt25;
 	
+	@Getter
 	private int equipSlot;
 	
+	@Getter
 	private int equipType;
 	
 	private int unknownValue1;
@@ -154,73 +240,84 @@ public final class ItemDefinitions {
 	
 	private int unknownValue3;
 	
-	// extra added
+	@Getter
+	@Setter
 	private boolean noted;
 	
+	@Getter
+	@Setter
 	private boolean lended;
 	
+	@Getter
+	@Setter
 	private boolean isTradeable;
 	
+	@Getter
+	@Setter
 	private boolean isExchangeable;
 	
+	@Getter
+	@Setter
 	private HashMap<Integer, Object> clientScriptData;
 	
-	private HashMap<Integer, Integer> itemRequiriments;
+	@Getter
+	@Setter
+	private HashMap<Integer, Integer> itemRequirements;
 	
 	public ItemDefinitions(int id) {
-		this.id = id;
+		this.setId(id);
 		setDefaultsVariableValues();
 		setDefaultOptions();
 		loadItemDefinitions();
 	}
 	
 	private void setDefaultsVariableValues() {
-		maleEquip1 = -1;
+		setMaleEquip1(-1);
 		unknownInt24 = -1;
-		maleEquip2 = -1;
-		rotationZoom = 0;
-		lendTemplateId = -1;
+		setMaleEquip2(-1);
+		setRotationZoom(0);
+		setLendTemplateId(-1);
 		unknownInt25 = -1;
 		unknownValue2 = -1;
-		maleEquipModelId3 = -1;
-		modelLighting = 0;
-		modelShadowing = 0;
-		femaleDialogueModel = -1;
-		modelZoom = 2000;
+		setMaleEquipModelId3(-1);
+		setModelLighting(0);
+		setModelShadowing(0);
+		setFemaleDialogueModel(-1);
+		setModelZoom(2000);
 		unknownInt18 = -1;
-		teamId = 0;
-		membersOnly = false;
-		modelVerticesY = 128;
-		modelOffset1 = 0;
-		name = "null";
+		setTeamId(0);
+		setMembersOnly(false);
+		setModelVerticesY(128);
+		setModelOffset1(0);
+		setName("null");
 		unknownInt23 = -1;
-		modelVerticesX = 128;
-		maleDialogueHat = -1;
-		femaleDialogueHat = -1;
+		setModelVerticesX(128);
+		setMaleDialogueHat(-1);
+		setFemaleDialogueHat(-1);
 		unknownInt18 = -1;
 		unknownInt20 = -1;
 		unknownInt21 = -1;
-		modelRotation2 = 0;
+		setModelRotation2(0);
 		unknownInt14 = 0;
 		unknownInt19 = -1;
 		unknownInt22 = -1;
 		unknownInt16 = 0;
-		femaleEquip2 = -1;
-		modelOffset2 = 0;
+		setFemaleEquip2(-1);
+		setModelOffset2(0);
 		unknownInt15 = 0;
-		maleDialogueModel = -1;
+		setMaleDialogueModel(-1);
 		unknownValue3 = 0;
-		stackable = 0;
-		modelVerticesZ = 128;
-		femaleEquipModelId3 = -1;
-		certTemplateId = -1;
-		certId = -1;
-		value = 1;
-		dummyItem = 0;
+		setStackable(0);
+		setModelVerticesZ(128);
+		setFemaleEquipModelId3(-1);
+		setCertTemplateId(-1);
+		setCertId(-1);
+		setValue(1);
+		setDummyItem(0);
 		unknownValue1 = -1;
-		modelRotation1 = 0;
-		lendId = -1;
-		femaleEquip1 = -1;
+		setModelRotation1(0);
+		setLendId(-1);
+		setFemaleEquip1(-1);
 		unknownInt13 = 0;
 		unknownInt17 = 0;
 		unknownInt12 = 0;
@@ -229,35 +326,35 @@ public final class ItemDefinitions {
 	}
 	
 	private void setDefaultOptions() {
-		groundOptions = new String[] { null, null, "take", null, null };
-		inventoryOptions = new String[] { null, null, null, null, "drop" };
+		setGroundOptions(new String[] { null, null, "take", null, null });
+		setInventoryOptions(new String[] { null, null, null, null, "drop" });
 	}
 	
-	private final void loadItemDefinitions() {
+	private void loadItemDefinitions() {
 		byte[] data = Cache.STORE.getIndexes()[Constants.ITEM_DEFINITIONS_INDEX].getFile(getArchiveId(), getFileId());
 		if (data == null) {
 			// System.out.println("Failed loading Item " + id+".");
 			return;
 		}
 		readOpcodeValues(new InputStream(data));
-		if (certTemplateId != -1) {
+		if (getCertTemplateId() != -1) {
 			toNote();
 		}
-		if (lendTemplateId != -1) {
+		if (getLendTemplateId() != -1) {
 			toLend();
 		}
 		if (unknownValue1 != -1) {
 			toLendBind();
 		}
-		loaded = true;
+		setLoaded(true);
 	}
 	
 	public int getArchiveId() {
-		return id >>> 8;
+		return getId() >>> 8;
 	}
 	
 	public int getFileId() {
-		return 0xff & id;
+		return 0xff & getId();
 	}
 	
 	private final void readOpcodeValues(InputStream stream) {
@@ -272,184 +369,184 @@ public final class ItemDefinitions {
 	
 	private void toNote() {
 		// ItemDefinitions noteItem; //certTemplateId
-		ItemDefinitions realItem = getItemDefinitions(certId);
-		membersOnly = realItem.membersOnly;
-		value = realItem.value;
-		name = realItem.name;
-		stackable = 1;
-		noted = true;
+		ItemDefinitions realItem = getItemDefinitions(getCertId());
+		setMembersOnly(realItem.isMembersOnly());
+		setValue(realItem.getValue());
+		setName(realItem.getName());
+		setStackable(1);
+		setNoted(true);
 	}
 	
 	private void toLend() {
-		ItemDefinitions realItem = getItemDefinitions(lendId);
-		originalModelColors = realItem.originalModelColors;
-		maleEquipModelId3 = realItem.maleEquipModelId3;
-		femaleEquipModelId3 = realItem.femaleEquipModelId3;
-		teamId = realItem.teamId;
-		value = 0;
-		membersOnly = realItem.membersOnly;
-		name = realItem.name;
-		inventoryOptions = new String[5];
-		groundOptions = realItem.groundOptions;
-		if (realItem.inventoryOptions != null) {
+		ItemDefinitions realItem = getItemDefinitions(getLendId());
+		setOriginalModelColors(realItem.getOriginalModelColors());
+		setMaleEquipModelId3(realItem.getMaleEquipModelId3());
+		setFemaleEquipModelId3(realItem.getFemaleEquipModelId3());
+		setTeamId(realItem.getTeamId());
+		setValue(0);
+		setMembersOnly(realItem.isMembersOnly());
+		setName(realItem.getName());
+		setInventoryOptions(new String[5]);
+		setGroundOptions(realItem.getGroundOptions());
+		if (realItem.getInventoryOptions() != null) {
 			for (int optionIndex = 0; optionIndex < 4; optionIndex++) {
-				inventoryOptions[optionIndex] = realItem.inventoryOptions[optionIndex];
+				getInventoryOptions()[optionIndex] = realItem.getInventoryOptions()[optionIndex];
 			}
 		}
-		inventoryOptions[4] = "Discard";
-		maleEquip1 = realItem.maleEquip1;
-		maleEquip2 = realItem.maleEquip2;
-		femaleEquip1 = realItem.femaleEquip1;
-		femaleEquip2 = realItem.femaleEquip2;
-		clientScriptData = realItem.clientScriptData;
+		getInventoryOptions()[4] = "Discard";
+		setMaleEquip1(realItem.getMaleEquip1());
+		setMaleEquip2(realItem.getMaleEquip2());
+		setFemaleEquip1(realItem.getFemaleEquip1());
+		setFemaleEquip2(realItem.getFemaleEquip2());
+		setClientScriptData(realItem.getClientScriptData());
 		equipSlot = realItem.equipSlot;
 		equipType = realItem.equipType;
-		lended = true;
+		setLended(true);
 	}
 	
 	private void toLendBind() {
 		// ItemDefinitions lendItem; //lendTemplateId
 		ItemDefinitions realItem = getItemDefinitions(unknownValue2);
-		originalModelColors = realItem.originalModelColors;
-		maleEquipModelId3 = realItem.maleEquipModelId3;
-		femaleEquipModelId3 = realItem.femaleEquipModelId3;
-		teamId = realItem.teamId;
-		value = 0;
-		membersOnly = realItem.membersOnly;
-		name = realItem.name;
-		inventoryOptions = new String[5];
-		groundOptions = realItem.groundOptions;
-		if (realItem.inventoryOptions != null) {
+		setOriginalModelColors(realItem.getOriginalModelColors());
+		setMaleEquipModelId3(realItem.getMaleEquipModelId3());
+		setFemaleEquipModelId3(realItem.getFemaleEquipModelId3());
+		setTeamId(realItem.getTeamId());
+		setValue(0);
+		setMembersOnly(realItem.isMembersOnly());
+		setName(realItem.getName());
+		setInventoryOptions(new String[5]);
+		setGroundOptions(realItem.getGroundOptions());
+		if (realItem.getInventoryOptions() != null) {
 			for (int optionIndex = 0; optionIndex < 4; optionIndex++) {
-				inventoryOptions[optionIndex] = realItem.inventoryOptions[optionIndex];
+				getInventoryOptions()[optionIndex] = realItem.getInventoryOptions()[optionIndex];
 			}
 		}
-		inventoryOptions[4] = "Discard";
-		maleEquip1 = realItem.maleEquip1;
-		maleEquip2 = realItem.maleEquip2;
-		femaleEquip1 = realItem.femaleEquip1;
-		femaleEquip2 = realItem.femaleEquip2;
-		clientScriptData = realItem.clientScriptData;
+		getInventoryOptions()[4] = "Discard";
+		setMaleEquip1(realItem.getMaleEquip1());
+		setMaleEquip2(realItem.getMaleEquip2());
+		setFemaleEquip1(realItem.getFemaleEquip1());
+		setFemaleEquip2(realItem.getFemaleEquip2());
+		setClientScriptData(realItem.getClientScriptData());
 		equipSlot = realItem.equipSlot;
 		equipType = realItem.equipType;
-		lended = true;
+		setLended(true);
 	}
 	
 	private final void readValues(InputStream stream, int opcode) {
 		if (opcode == 1) {
-			modelId = stream.readUnsignedShort();
+			setModelId(stream.readUnsignedShort());
 		} else if (opcode == 2) {
-			name = stream.readString();
+			setName(stream.readString());
 		} else if (opcode == 4) {
-			modelZoom = stream.readUnsignedShort();
+			setModelZoom(stream.readUnsignedShort());
 		} else if (opcode == 5) {
-			modelRotation1 = stream.readUnsignedShort();
+			setModelRotation1(stream.readUnsignedShort());
 		} else if (opcode == 6) {
-			modelRotation2 = stream.readUnsignedShort();
+			setModelRotation2(stream.readUnsignedShort());
 		} else if (opcode == 7) {
-			modelOffset1 = stream.readUnsignedShort();
-			if (modelOffset1 > 32767) {
-				modelOffset1 -= 65536;
+			setModelOffset1(stream.readUnsignedShort());
+			if (getModelOffset1() > 32767) {
+				setModelOffset1(getModelOffset1() - 65536);
 			}
 		} else if (opcode == 8) {
-			modelOffset2 = stream.readUnsignedShort();
-			if (modelOffset2 > 32767) {
-				modelOffset2 -= 65536;
+			setModelOffset2(stream.readUnsignedShort());
+			if (getModelOffset2() > 32767) {
+				setModelOffset2(getModelOffset2() - 65536);
 			}
 		} else if (opcode == 11) {
-			stackable = 1;
+			setStackable(1);
 		} else if (opcode == 12) {
-			value = stream.readInt();
+			setValue(stream.readInt());
 		} else if (opcode == 13) {
 			equipSlot = stream.readUnsignedByte();
 		} else if (opcode == 14) {
 			equipType = stream.readUnsignedByte();
 		} else if (opcode == 15) {
-			isTradeable = stream.readUnsignedByte() == 1;
+			setTradeable(stream.readUnsignedByte() == 1);
 		} else if (opcode == 17) {
-			isExchangeable = stream.readUnsignedByte() == 1;
+			setExchangeable(stream.readUnsignedByte() == 1);
 		} else if (opcode == 16) {
-			membersOnly = true;
+			setMembersOnly(true);
 		} else if (opcode == 18) {
 			unknownInt11 = stream.readUnsignedShort();
 		} else if (opcode == 23) {
-			maleEquip1 = stream.readUnsignedShort();
+			setMaleEquip1(stream.readUnsignedShort());
 		} else if (opcode == 24) {
-			maleEquip2 = stream.readUnsignedShort();
+			setMaleEquip2(stream.readUnsignedShort());
 		} else if (opcode == 25) {
-			femaleEquip1 = stream.readUnsignedShort();
+			setFemaleEquip1(stream.readUnsignedShort());
 		} else if (opcode == 26) {
-			femaleEquip2 = stream.readUnsignedShort();
+			setFemaleEquip2(stream.readUnsignedShort());
 		} else if (opcode >= 30 && opcode < 35) {
-			groundOptions[opcode - 30] = stream.readString();
+			getGroundOptions()[opcode - 30] = stream.readString();
 		} else if (opcode >= 35 && opcode < 40) {
-			inventoryOptions[opcode - 35] = stream.readString();
+			getInventoryOptions()[opcode - 35] = stream.readString();
 		} else if (opcode == 40) {
 			int length = stream.readUnsignedByte();
-			originalModelColors = new int[length];
-			modifiedModelColors = new int[length];
+			setOriginalModelColors(new int[length]);
+			setModifiedModelColors(new int[length]);
 			for (int index = 0; length > index; index++) {
-				originalModelColors[index] = (short) stream.readUnsignedShort();
-				modifiedModelColors[index] = (short) stream.readUnsignedShort();
+				getOriginalModelColors()[index] = (short) stream.readUnsignedShort();
+				getModifiedModelColors()[index] = (short) stream.readUnsignedShort();
 			}
 		} else if (opcode == 41) {
 			int length = stream.readUnsignedByte();
-			originalTextureColors = new short[length];
-			modifiedTextureColors = new short[length];
+			setOriginalTextureColors(new short[length]);
+			setModifiedTextureColors(new short[length]);
 			for (int index = 0; index < length; index++) {
-				originalTextureColors[index] = (short) stream.readUnsignedShort();
-				modifiedTextureColors[index] = (short) stream.readUnsignedShort();
+				getOriginalTextureColors()[index] = (short) stream.readUnsignedShort();
+				getModifiedTextureColors()[index] = (short) stream.readUnsignedShort();
 			}
 		} else if (opcode == 42) {
 			int length = stream.readUnsignedByte();
-			recolourPallete = new byte[length];
+			setRecolourPallete(new byte[length]);
 			for (int index = 0; index < length; index++) {
-				recolourPallete[index] = (byte) stream.readByte();
+				getRecolourPallete()[index] = (byte) stream.readByte();
 			}
 		} else if (opcode == 65) {
 		} else if (opcode == 78) {
-			maleEquipModelId3 = stream.readUnsignedShort();
+			setMaleEquipModelId3(stream.readUnsignedShort());
 		} else if (opcode == 79) {
-			femaleEquipModelId3 = stream.readUnsignedShort();
+			setFemaleEquipModelId3(stream.readUnsignedShort());
 		} else if (opcode == 90) {
-			maleDialogueModel = stream.readUnsignedShort();
+			setMaleDialogueModel(stream.readUnsignedShort());
 		} else if (opcode == 91) {
-			femaleDialogueModel = stream.readUnsignedShort();
+			setFemaleDialogueModel(stream.readUnsignedShort());
 		} else if (opcode == 92) {
-			maleDialogueHat = stream.readUnsignedShort();
+			setMaleDialogueHat(stream.readUnsignedShort());
 		} else if (opcode == 93) {
-			femaleDialogueHat = stream.readUnsignedShort();
+			setFemaleDialogueHat(stream.readUnsignedShort());
 		} else if (opcode == 95) {
-			rotationZoom = stream.readUnsignedShort();
+			setRotationZoom(stream.readUnsignedShort());
 		} else if (opcode == 96) {
-			dummyItem = stream.readUnsignedByte();
+			setDummyItem(stream.readUnsignedByte());
 		} else if (opcode == 97) {
-			certId = stream.readUnsignedShort();
+			setCertId(stream.readUnsignedShort());
 		} else if (opcode == 98) {
-			certTemplateId = stream.readUnsignedShort();
+			setCertTemplateId(stream.readUnsignedShort());
 		} else if (opcode >= 100 && opcode < 110) {
-			if (stackIds == null) {
-				stackIds = new int[10];
-				stackAmounts = new int[10];
+			if (getStackIds() == null) {
+				setStackIds(new int[10]);
+				setStackAmounts(new int[10]);
 			}
-			stackIds[opcode - 100] = stream.readUnsignedShort();
-			stackAmounts[opcode - 100] = stream.readUnsignedShort();
+			getStackIds()[opcode - 100] = stream.readUnsignedShort();
+			getStackAmounts()[opcode - 100] = stream.readUnsignedShort();
 		} else if (opcode == 110) {
-			modelVerticesX = stream.readUnsignedShort();
+			setModelVerticesX(stream.readUnsignedShort());
 		} else if (opcode == 111) {
-			modelVerticesY = stream.readUnsignedShort();
+			setModelVerticesY(stream.readUnsignedShort());
 		} else if (opcode == 112) {
-			modelVerticesZ = stream.readUnsignedShort();
+			setModelVerticesZ(stream.readUnsignedShort());
 		} else if (opcode == 113) {
-			modelLighting = stream.readByte();
+			setModelLighting(stream.readByte());
 		} else if (opcode == 114) {
-			modelShadowing = stream.readByte() * 5;
+			setModelShadowing(stream.readByte() * 5);
 		} else if (opcode == 115) {
-			teamId = stream.readUnsignedByte();
+			setTeamId(stream.readUnsignedByte());
 		} else if (opcode == 121) {
-			lendId = stream.readUnsignedShort();
+			setLendId(stream.readUnsignedShort());
 		} else if (opcode == 122) {
-			lendTemplateId = stream.readUnsignedShort();
+			setLendTemplateId(stream.readUnsignedShort());
 		} else if (opcode == 125) {
 			unknownInt12 = stream.readByte() << 2;
 			unknownInt13 = stream.readByte() << 2;
@@ -472,9 +569,9 @@ public final class ItemDefinitions {
 			unknownInt25 = stream.readUnsignedShort();
 		} else if (opcode == 132) {
 			int length = stream.readUnsignedByte();
-			unknownArray2 = new int[length];
+			setUnknownArray2(new int[length]);
 			for (int index = 0; index < length; index++) {
-				unknownArray2[index] = stream.readUnsignedShort();
+				getUnknownArray2()[index] = stream.readUnsignedShort();
 			}
 		} else if (opcode == 134) {
 			unknownValue3 = stream.readUnsignedByte();
@@ -484,14 +581,14 @@ public final class ItemDefinitions {
 			unknownValue1 = stream.readUnsignedShort();
 		} else if (opcode == 249) {
 			int length = stream.readUnsignedByte();
-			if (clientScriptData == null) {
-				clientScriptData = new HashMap<Integer, Object>(length);
+			if (getClientScriptData() == null) {
+				setClientScriptData(new HashMap<Integer, Object>(length));
 			}
 			for (int index = 0; index < length; index++) {
 				boolean stringInstance = stream.readUnsignedByte() == 1;
 				int key = stream.read24BitInt();
 				Object value = stringInstance ? stream.readString() : stream.readInt();
-				clientScriptData.put(key, value);
+				getClientScriptData().put(key, value);
 			}
 		} else {
 			//throw new RuntimeException("MISSING OPCODE " + opcode + " FOR ITEM " + name);
@@ -527,39 +624,22 @@ public final class ItemDefinitions {
 	
 	public static ItemDefinitions forName(String name) {
 		for (ItemDefinitions definition : itemsDefinitions) {
-			if (definition.name.equalsIgnoreCase(name)) {
+			if (definition.getName().equalsIgnoreCase(name)) {
 				return definition;
 			}
 		}
 		return null;
 	}
 	
-	public boolean isLoaded() {
-		return loaded;
-	}
-	
 	public int getValue(Object... params) {
 		return value <= 0 ? 1 : value;
 	}
-
-	/*
-	 * public boolean isWearItem() { return equipSlot != -1; }
-	 *
-	 * public boolean isWearItem(boolean male) { if (equipSlot <
-	 * Equipment.SLOT_RING && (male ? getMaleWornModelId1() == -1 :
-	 * getFemaleWornModelId1() == -1)) { return false; } return equipSlot != -1;
-	 * }
-	 */
-	
-	public void setValue(int value) {
-		this.value = value;
-	}
 	
 	public boolean isDestroyItem() {
-		if (inventoryOptions == null) {
+		if (getInventoryOptions() == null) {
 			return false;
 		}
-		for (String option : inventoryOptions) {
+		for (String option : getInventoryOptions()) {
 			if (option == null) {
 				continue;
 			}
@@ -571,10 +651,10 @@ public final class ItemDefinitions {
 	}
 	
 	public boolean isWearItem() {
-		if (inventoryOptions == null) {
+		if (getInventoryOptions() == null) {
 			return false;
 		}
-		for (String option : inventoryOptions) {
+		for (String option : getInventoryOptions()) {
 			if (option == null) {
 				continue;
 			}
@@ -586,13 +666,13 @@ public final class ItemDefinitions {
 	}
 	
 	public boolean isWearItem(boolean male) {
-		if (inventoryOptions == null) {
+		if (getInventoryOptions() == null) {
 			return false;
 		}
-		if (EquipmentConstants.getItemSlot(id) != EquipmentConstants.SLOT_RING && EquipmentConstants.getItemSlot(id) != EquipmentConstants.SLOT_ARROWS && EquipmentConstants.getItemSlot(id) != EquipmentConstants.SLOT_AURA && (male ? getMaleWornModelId1() == -1 : getFemaleWornModelId1() == -1)) {
+		if (EquipmentConstants.getItemSlot(getId()) != EquipmentConstants.SLOT_RING && EquipmentConstants.getItemSlot(getId()) != EquipmentConstants.SLOT_ARROWS && EquipmentConstants.getItemSlot(getId()) != EquipmentConstants.SLOT_AURA && (male ? getMaleWornModelId1() == -1 : getFemaleWornModelId1() == -1)) {
 			return false;
 		}
-		for (String option : inventoryOptions) {
+		for (String option : getInventoryOptions()) {
 			if (option == null) {
 				continue;
 			}
@@ -607,18 +687,18 @@ public final class ItemDefinitions {
 	}
 	
 	public int getMaleWornModelId1() {
-		return maleEquip1;
+		return getMaleEquip1();
 	}
 	
 	public int getFemaleWornModelId1() {
-		return femaleEquip1;
+		return getFemaleEquip1();
 	}
 	
 	public boolean hasSpecialBar() {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return false;
 		}
-		Object specialBar = clientScriptData.get(686);
+		Object specialBar = getClientScriptData().get(686);
 		if (specialBar != null && specialBar instanceof Integer) {
 			return (Integer) specialBar == 1;
 		}
@@ -642,13 +722,13 @@ public final class ItemDefinitions {
 	 */
 	
 	public int getRenderAnimId() {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return 1426;
 		}
-		if (id == 20821) {
+		if (getId() == 20821) {
 			return 2122;
 		}
-		Object animId = clientScriptData.get(644);
+		Object animId = getClientScriptData().get(644);
 		if (animId != null && animId instanceof Integer) {
 			return (Integer) animId;
 		}
@@ -656,10 +736,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getQuestId() {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return -1;
 		}
-		Object questId = clientScriptData.get(861);
+		Object questId = getClientScriptData().get(861);
 		if (questId != null && questId instanceof Integer) {
 			return (Integer) questId;
 		}
@@ -667,14 +747,14 @@ public final class ItemDefinitions {
 	}
 	
 	public List<Item> getCreateItemRequirements(boolean infusingScroll) {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return null;
 		}
 		List<Item> items = new ArrayList<Item>();
 		int requiredId = -1;
 		int requiredAmount = -1;
-		for (int key : clientScriptData.keySet()) {
-			Object value = clientScriptData.get(key);
+		for (int key : getClientScriptData().keySet()) {
+			Object value = getClientScriptData().get(key);
 			if (value instanceof String) {
 				continue;
 			}
@@ -705,19 +785,47 @@ public final class ItemDefinitions {
 		return items;
 	}
 	
-	public int getId() {
-		return id;
+	public HashMap<Integer, Integer> getWearingRequirements() {
+		HashMap<Integer, Integer> skills = new HashMap<>();
+		if (clientScriptData == null) {
+			return skills;
+		}
+		int nextLevel = -1;
+		int nextSkill = -1;
+		for (int key : clientScriptData.keySet()) {
+			Object value = clientScriptData.get(key);
+			if (value instanceof String) {
+				continue;
+			}
+			if (key >= 749 && key < 797) {
+				if (key % 2 == 0) {
+					nextLevel = (Integer) value;
+				} else {
+					nextSkill = (Integer) value;
+				}
+				if (nextLevel != -1 && nextSkill != -1) {
+					if (nextSkill >= SkillConstants.SKILL_NAME.length) {
+						skills.put(nextLevel, nextSkill);
+					} else {
+						skills.put(nextSkill, nextLevel);
+					}
+					nextLevel = -1;
+					nextSkill = -1;
+				}
+			}
+		}
+		return skills;
 	}
 	
 	public HashMap<Integer, Integer> getCreateItemRequirements() {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return null;
 		}
 		HashMap<Integer, Integer> items = new HashMap<Integer, Integer>();
 		int requiredId = -1;
 		int requiredAmount = -1;
-		for (int key : clientScriptData.keySet()) {
-			Object value = clientScriptData.get(key);
+		for (int key : getClientScriptData().keySet()) {
+			Object value = getClientScriptData().get(key);
 			if (value instanceof String) {
 				continue;
 			}
@@ -737,94 +845,54 @@ public final class ItemDefinitions {
 		return items;
 	}
 	
-	public HashMap<Integer, Object> getClientScriptData() {
-		return clientScriptData;
-	}
-	
 	public HashMap<Integer, Integer> getWearingSkillRequirements() {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return null;
 		}
-		if (itemRequiriments == null) {
+		if (getItemRequirements() == null) {
 			HashMap<Integer, Integer> skills = new HashMap<Integer, Integer>();
 			for (int i = 0; i < 10; i++) {
-				Integer skill = (Integer) clientScriptData.get(749 + (i * 2));
+				Integer skill = (Integer) getClientScriptData().get(749 + (i * 2));
 				if (skill != null) {
-					Integer level = (Integer) clientScriptData.get(750 + (i * 2));
+					Integer level = (Integer) getClientScriptData().get(750 + (i * 2));
 					if (level != null) {
 						skills.put(skill, level);
 					}
 				}
 			}
-			Integer maxedSkill = (Integer) clientScriptData.get(277);
+			Integer maxedSkill = (Integer) getClientScriptData().get(277);
 			if (maxedSkill != null) {
-				skills.put(maxedSkill, id == 19709 ? 120 : 99);
+				skills.put(maxedSkill, getId() == 19709 ? 120 : 99);
 			}
-			itemRequiriments = skills;
-			if (id == 7462) {
-				itemRequiriments.put(PlayerSkills.DEFENCE, 40);
-			} else if (name.equals("Dragon defender")) {
-				itemRequiriments.put(PlayerSkills.ATTACK, 60);
-				itemRequiriments.put(PlayerSkills.DEFENCE, 60);
+			setItemRequirements(skills);
+			if (getId() == 7462) {
+				getItemRequirements().put(SkillConstants.DEFENCE, 40);
+			} else if (getName().equals("Dragon defender")) {
+				getItemRequirements().put(SkillConstants.ATTACK, 60);
+				getItemRequirements().put(SkillConstants.DEFENCE, 60);
 			}
 		}
 		
-		return itemRequiriments;
-	}
-	
-	public String getName() {
-		return name;
+		return getItemRequirements();
 	}
 	
 	public int getFemaleWornModelId2() {
-		return femaleEquip2;
+		return getFemaleEquip2();
 	}
 	
 	public int getMaleWornModelId2() {
-		return maleEquip2;
-	}
-	
-	public boolean isLended() {
-		return lended;
+		return getMaleEquip2();
 	}
 	
 	public boolean isStackable() {
-		return stackable == 1 || (id == 10943 || id == 10944);
-	}
-	
-	public boolean isNoted() {
-		return noted;
-	}
-	
-	public boolean isTradeable() {
-		return isTradeable;
-	}
-	
-	public boolean isExchangeable() {
-		return isExchangeable;
-	}
-	
-	public int getLendId() {
-		return lendId;
-	}
-	
-	public int getCertId() {
-		return certId;
-	}
-	
-	public int getEquipSlot() {
-		return equipSlot;
-	}
-	
-	public int getEquipType() {
-		return equipType;
+		return getStackable() == 1;
 	}
 	
 	public int getStageOnDeath() {
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return 0;
 		}
-		Object protectedOnDeath = clientScriptData.get(1397);
+		Object protectedOnDeath = getClientScriptData().get(1397);
 		if (protectedOnDeath != null && protectedOnDeath instanceof Integer) {
 			return (Integer) protectedOnDeath;
 		}
@@ -832,13 +900,13 @@ public final class ItemDefinitions {
 	}
 	
 	public int getAttackSpeed() {
-		if (id >= 24455 && id <= 24457) {
+		if (getId() >= 24455 && getId() <= 24457) {
 			return 6;
 		}
-		if (clientScriptData == null) {
+		if (getClientScriptData() == null) {
 			return 4;
 		}
-		Object attackSpeed = clientScriptData.get(14);
+		Object attackSpeed = getClientScriptData().get(14);
 		if (attackSpeed != null && attackSpeed instanceof Integer) {
 			return (int) attackSpeed;
 		}
@@ -846,10 +914,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getStabAttack() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(0);
+		Object value = getClientScriptData().get(0);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -857,10 +925,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getSlashAttack() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(1);
+		Object value = getClientScriptData().get(1);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -868,10 +936,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getCrushAttack() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(2);
+		Object value = getClientScriptData().get(2);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -879,10 +947,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getMagicAttack() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(3);
+		Object value = getClientScriptData().get(3);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -890,10 +958,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getRangeAttack() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(4);
+		Object value = getClientScriptData().get(4);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -901,10 +969,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getStabDef() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(5);
+		Object value = getClientScriptData().get(5);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -912,10 +980,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getSlashDef() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(6);
+		Object value = getClientScriptData().get(6);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -923,10 +991,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getCrushDef() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(7);
+		Object value = getClientScriptData().get(7);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -934,10 +1002,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getMagicDef() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(8);
+		Object value = getClientScriptData().get(8);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -945,10 +1013,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getRangeDef() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(9);
+		Object value = getClientScriptData().get(9);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -956,10 +1024,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getSummoningDef() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(417);
+		Object value = getClientScriptData().get(417);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -967,10 +1035,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getAbsorveMeleeBonus() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(967);
+		Object value = getClientScriptData().get(967);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -978,10 +1046,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getAbsorveMageBonus() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(969);
+		Object value = getClientScriptData().get(969);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -989,10 +1057,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getAbsorveRangeBonus() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(968);
+		Object value = getClientScriptData().get(968);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -1000,10 +1068,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getStrengthBonus() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(641);
+		Object value = getClientScriptData().get(641);
 		if (value != null && value instanceof Integer) {
 			return (int) value / 10;
 		}
@@ -1011,10 +1079,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getRangedStrBonus() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(643);
+		Object value = getClientScriptData().get(643);
 		if (value != null && value instanceof Integer) {
 			return (int) value / 10;
 		}
@@ -1022,10 +1090,10 @@ public final class ItemDefinitions {
 	}
 	
 	public int getMagicDamage() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(685);
+		Object value = getClientScriptData().get(685);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
@@ -1033,13 +1101,29 @@ public final class ItemDefinitions {
 	}
 	
 	public int getPrayerBonus() {
-		if (id > 25439 || clientScriptData == null) {
+		if (getId() > 25439 || getClientScriptData() == null) {
 			return 0;
 		}
-		Object value = clientScriptData.get(11);
+		Object value = getClientScriptData().get(11);
 		if (value != null && value instanceof Integer) {
 			return (int) value;
 		}
 		return 0;
 	}
+	
+	/**
+	 * Checks if the item has the selected inventory option
+	 *
+	 * @param option
+	 * 		The option to look for
+	 */
+	public boolean hasOption(String option) {
+		for (String inventoryOption : getInventoryOptions()) {
+			if (inventoryOption != null && inventoryOption.equalsIgnoreCase(option)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

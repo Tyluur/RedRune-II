@@ -5,13 +5,13 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.ForceTalk;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.EquipmentConstants;
+import com.rs.utility.constants.SkillConstants;
 
 /**
  * Handels the pick pocketing.
@@ -91,8 +91,8 @@ public class PickPocketAction extends Action {
 	@Override
 	public boolean start(Player player) {
 		if (checkAll(player)) {
-			int thievingLevel = player.getSkills().getLevel(PlayerSkills.THIEVING);
-			int agilityLevel = player.getSkills().getLevel(PlayerSkills.AGILITY);
+			int thievingLevel = player.getSkills().getLevel(SkillConstants.THIEVING);
+			int agilityLevel = player.getSkills().getLevel(SkillConstants.AGILITY);
 			if (Misc.getRandom(50) < 5) { // Possibility of multiple
 				// pickpocket.
 				for (int i = 0; i < 4; i++) {
@@ -125,7 +125,7 @@ public class PickPocketAction extends Action {
 			player.setNextAnimation(new Animation(424));
 			player.setNextGraphics(new Graphics(80, 5, 60));
 			player.getPackets().sendGameMessage("You've been stuned.");
-			player.applyHit(new Hit(player, npcData.getStunDamage(), HitLook.REGULAR_DAMAGE));
+			player.applyHit(new Hit(player, npcData.getStunDamage(), HitSplat.REGULAR_DAMAGE));
 			if (npcData.equals(PickPocketableNPC.MASTER_FARMER) || npcData.equals(PickPocketableNPC.FARMER)) {
 				npc.setNextForceTalk(new ForceTalk("Cor blimey mate, what are ye doing in me pockets?"));
 			} else {
@@ -135,7 +135,7 @@ public class PickPocketAction extends Action {
 			stop(player);
 		} else {
 			player.getPackets().sendGameMessage("" + getMessage(player));
-			player.getSkills().addXp(PlayerSkills.THIEVING, npcData.getExperience());
+			player.getSkills().addXp(SkillConstants.THIEVING, npcData.getExperience());
 			for (int i = 0; i <= index; i++) {
 				Item item = npcData.getLoot()[Misc.random(npcData.getLoot().length)];
 				player.getInventory().addItem(item.getId(), item.getAmount());
@@ -157,7 +157,7 @@ public class PickPocketAction extends Action {
 	 * @return {@code True} if succesfull, {@code false} if not.
 	 */
 	private boolean isSuccesfull(Player player) {
-		int thievingLevel = player.getSkills().getLevel(PlayerSkills.THIEVING);
+		int thievingLevel = player.getSkills().getLevel(SkillConstants.THIEVING);
 		int increasedChance = getIncreasedChance(player);
 		int level = Misc.random(thievingLevel + increasedChance) + 1;
 		double ratio = level / (Misc.random(npcData.getThievingLevels()[0] + 5) + 1);
@@ -218,7 +218,7 @@ public class PickPocketAction extends Action {
 	 * 		The player.
 	 */
 	private boolean checkAll(Player player) {
-		if (player.getSkills().getLevel(PlayerSkills.THIEVING) < npcData.getThievingLevels()[0]) {
+		if (player.getSkills().getLevel(SkillConstants.THIEVING) < npcData.getThievingLevels()[0]) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a thieving level of " + npcData.getThievingLevels()[0] + "to steal from this npc.");
 			return false;
 		}

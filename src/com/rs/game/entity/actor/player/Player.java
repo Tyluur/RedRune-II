@@ -6,6 +6,7 @@ import com.rs.game.GameFlags;
 import com.rs.game.content.SkillCapeCustomizer;
 import com.rs.game.content.action.ActionManager;
 import com.rs.game.content.action.impl.PlayerCombatAction;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.controller.ControllerManager;
 import com.rs.game.content.cutscene.CutsceneManager;
 import com.rs.game.content.dialogue.DialogueManager;
@@ -20,7 +21,7 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.ForceTalk;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.data.*;
@@ -29,11 +30,13 @@ import com.rs.game.entity.actor.player.render.LocalNPCUpdate;
 import com.rs.game.entity.actor.player.render.LocalPlayerUpdate;
 import com.rs.game.entity.item.Item;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.networking.Session;
 import com.rs.networking.codec.encode.WorldPacketsEncoder;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.game.files.SerializableFilesManager;
 import com.rs.utility.game.player.PublicChatMessage;
 import com.rs.utility.game.player.QuickChatMessage;
@@ -377,7 +380,7 @@ public class Player extends Actor {
 	
 	@Override
 	public int getMaxHitpoints() {
-		return skills.getLevel(PlayerSkills.HITPOINTS) * 10 + equipment.getEquipmentHpIncrease();
+		return skills.getLevel(SkillConstants.HITPOINTS) * 10 + equipment.getEquipmentHpIncrease();
 	}
 	
 	@Override
@@ -500,56 +503,56 @@ public class Player extends Actor {
 				final Player target = this;
 				if (isAtMultiArea()) {
 					for (int regionId : getMapRegionsIds()) {
-						List<Integer> playersIndexes = World.getRegion(regionId).getPlayerIndexes();
+						List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 						if (playersIndexes != null) {
 							for (int playerIndex : playersIndexes) {
 								Player player = World.getPlayers().get(playerIndex);
 								if (player == null || !player.hasStarted() || player.isDead() || player.hasFinished() || !player.withinDistance(this, 1) || !this.getControllerManager().canHit(player)) {
 									continue;
 								}
-								player.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(PlayerSkills.PRAYER) * 2.5)), HitLook.REGULAR_DAMAGE));
+								player.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
 							}
 						}
-						List<Integer> npcsIndexes = World.getRegion(regionId).getNPCsIndexes();
+						List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
 						if (npcsIndexes != null) {
 							for (int npcIndex : npcsIndexes) {
 								NPC npc = World.getNPCs().get(npcIndex);
 								if (npc == null || npc.isDead() || npc.hasFinished() || !npc.withinDistance(this, 1) || !npc.getDefinitions().hasAttackOption() || !this.getControllerManager().canHit(npc)) {
 									continue;
 								}
-								npc.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(PlayerSkills.PRAYER) * 2.5)), HitLook.REGULAR_DAMAGE));
+								npc.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
 							}
 						}
 					}
 				} else {
 					if (source != null && source != this && !source.isDead() && !source.hasFinished() && source.withinDistance(this, 1)) {
-						source.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(PlayerSkills.PRAYER) * 2.5)), HitLook.REGULAR_DAMAGE));
+						source.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
 					}
 				}
 				WorldTasksManager.schedule(new WorldTask() {
 					@Override
 					public void run() {
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY(), target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY(), target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() - 1, target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() + 1, target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() - 1, target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() + 1, target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() - 1, target.getPlane()));
-						World.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() + 1, target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY(), target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY(), target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() - 1, target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() + 1, target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() - 1, target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() + 1, target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() - 1, target.getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() + 1, target.getPlane()));
 					}
 				});
 			} else if (prayer.usingPrayer(1, 17)) {
-				World.sendProjectile(this, new WorldTile(getX() + 2, getY() + 2, getPlane()), 2260, 24, 0, 41, 35, 30, 0);
-				World.sendProjectile(this, new WorldTile(getX() + 2, getY(), getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				World.sendProjectile(this, new WorldTile(getX() + 2, getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX() + 2, getY() + 2, getPlane()), 2260, 24, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX() + 2, getY(), getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX() + 2, getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
 				
-				World.sendProjectile(this, new WorldTile(getX() - 2, getY() + 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				World.sendProjectile(this, new WorldTile(getX() - 2, getY(), getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				World.sendProjectile(this, new WorldTile(getX() - 2, getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX() - 2, getY() + 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX() - 2, getY(), getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX() - 2, getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
 				
-				World.sendProjectile(this, new WorldTile(getX(), getY() + 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				World.sendProjectile(this, new WorldTile(getX(), getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX(), getY() + 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+				RegionManager.sendProjectile(this, new WorldTile(getX(), getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
 				final Player target = this;
 				WorldTasksManager.schedule(new WorldTask() {
 					@Override
@@ -558,48 +561,48 @@ public class Player extends Actor {
 						
 						if (isAtMultiArea()) {
 							for (int regionId : getMapRegionsIds()) {
-								List<Integer> playersIndexes = World.getRegion(regionId).getPlayerIndexes();
+								List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 								if (playersIndexes != null) {
 									for (int playerIndex : playersIndexes) {
 										Player player = World.getPlayers().get(playerIndex);
 										if (player == null || !player.hasStarted() || player.isDead() || player.hasFinished() || !player.withinDistance(target, 2) || !Player.this.getControllerManager().canHit(player)) {
 											continue;
 										}
-										player.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(PlayerSkills.PRAYER) * 3), HitLook.REGULAR_DAMAGE));
+										player.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
 									}
 								}
-								List<Integer> npcsIndexes = World.getRegion(regionId).getNPCsIndexes();
+								List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
 								if (npcsIndexes != null) {
 									for (int npcIndex : npcsIndexes) {
 										NPC npc = World.getNPCs().get(npcIndex);
 										if (npc == null || npc.isDead() || npc.hasFinished() || !npc.withinDistance(target, 2) || !npc.getDefinitions().hasAttackOption() || !Player.this.getControllerManager().canHit(npc)) {
 											continue;
 										}
-										npc.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(PlayerSkills.PRAYER) * 3), HitLook.REGULAR_DAMAGE));
+										npc.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
 									}
 								}
 							}
 						} else {
 							if (source != null && source != target && !source.isDead() && !source.hasFinished() && source.withinDistance(target, 2)) {
-								source.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(PlayerSkills.PRAYER) * 3), HitLook.REGULAR_DAMAGE));
+								source.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
 							}
 						}
 						
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY() + 2, getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY(), getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY() - 2, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY() + 2, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY(), getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY() - 2, getPlane()));
 						
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY() + 2, getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY(), getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY() - 2, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY() + 2, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY(), getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY() - 2, getPlane()));
 						
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX(), getY() + 2, getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX(), getY() - 2, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX(), getY() + 2, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX(), getY() - 2, getPlane()));
 						
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 1, getY() + 1, getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 1, getY() - 1, getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 1, getY() + 1, getPlane()));
-						World.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 1, getY() - 1, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 1, getY() + 1, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 1, getY() - 1, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 1, getY() + 1, getPlane()));
+						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 1, getY() - 1, getPlane()));
 					}
 				});
 			}
@@ -654,7 +657,7 @@ public class Player extends Actor {
 	
 	@Override
 	public void handleIngoingHit(final Hit hit) {
-		if (hit.getLook() != HitLook.MELEE_DAMAGE && hit.getLook() != HitLook.RANGE_DAMAGE && hit.getLook() != HitLook.MAGIC_DAMAGE) {
+		if (hit.getLook() != HitSplat.MELEE_DAMAGE && hit.getLook() != HitSplat.RANGE_DAMAGE && hit.getLook() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
 		if (auraManager.usingPenance()) {
@@ -689,38 +692,38 @@ public class Player extends Actor {
 			hit.setDamage((int) (hit.getDamage() * 0.5));
 		}
 		if (prayer.hasPrayersOn() && hit.getDamage() != 0) {
-			if (hit.getLook() == HitLook.MAGIC_DAMAGE) {
+			if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
 				if (prayer.usingPrayer(0, 17)) {
 					hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
 				} else if (prayer.usingPrayer(1, 7)) {
 					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
 					if (deflectedDamage > 0) {
-						source.applyHit(new Hit(this, deflectedDamage, HitLook.REFLECTED_DAMAGE));
+						source.applyHit(new Hit(this, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
 						setNextGraphics(new Graphics(2228));
 						setNextAnimation(new Animation(12573));
 					}
 				}
-			} else if (hit.getLook() == HitLook.RANGE_DAMAGE) {
+			} else if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
 				if (prayer.usingPrayer(0, 18)) {
 					hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
 				} else if (prayer.usingPrayer(1, 8)) {
 					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
 					if (deflectedDamage > 0) {
-						source.applyHit(new Hit(this, deflectedDamage, HitLook.REFLECTED_DAMAGE));
+						source.applyHit(new Hit(this, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
 						setNextGraphics(new Graphics(2229));
 						setNextAnimation(new Animation(12573));
 					}
 				}
-			} else if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+			} else if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
 				if (prayer.usingPrayer(0, 19)) {
 					hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
 				} else if (prayer.usingPrayer(1, 9)) {
 					int deflectedDamage = (int) (hit.getDamage() * 0.1);
 					hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
 					if (deflectedDamage > 0) {
-						source.applyHit(new Hit(this, deflectedDamage, HitLook.REFLECTED_DAMAGE));
+						source.applyHit(new Hit(this, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
 						setNextGraphics(new Graphics(2230));
 						setNextAnimation(new Animation(12573));
 					}
@@ -728,30 +731,30 @@ public class Player extends Actor {
 			}
 		}
 		if (hit.getDamage() >= 200) {
-			if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+			if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
 				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] / 100;
 				if (reducedDamage > 0) {
 					hit.setDamage(hit.getDamage() - reducedDamage);
-					hit.setSoaking(new Hit(source, reducedDamage, HitLook.ABSORB_DAMAGE));
+					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 				}
-			} else if (hit.getLook() == HitLook.RANGE_DAMAGE) {
+			} else if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
 				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] / 100;
 				if (reducedDamage > 0) {
 					hit.setDamage(hit.getDamage() - reducedDamage);
-					hit.setSoaking(new Hit(source, reducedDamage, HitLook.ABSORB_DAMAGE));
+					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 				}
-			} else if (hit.getLook() == HitLook.MAGIC_DAMAGE) {
+			} else if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
 				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] / 100;
 				if (reducedDamage > 0) {
 					hit.setDamage(hit.getDamage() - reducedDamage);
-					hit.setSoaking(new Hit(source, reducedDamage, HitLook.ABSORB_DAMAGE));
+					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 				}
 			}
 		}
 		if (getAttribute("cast_veng", false) && hit.getDamage() >= 4) {
 			removeAttribute("cast_veng");
 			setNextForceTalk(new ForceTalk("Taste vengeance!"));
-			source.applyHit(new Hit(this, (int) (hit.getDamage() * 0.75), HitLook.REGULAR_DAMAGE));
+			source.applyHit(new Hit(this, (int) (hit.getDamage() * 0.75), HitSplat.REGULAR_DAMAGE));
 		}
 		if (source instanceof Player) {
 			final Player p2 = (Player) source;
@@ -769,7 +772,7 @@ public class Player extends Actor {
 						return;
 					}
 					if (!p2.prayer.isBoostedLeech()) {
-						if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+						if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
 							if (p2.prayer.usingPrayer(1, 19)) {
 								if (Misc.getRandom(4) == 0) {
 									p2.prayer.increaseTurmoilBonus(this);
@@ -787,7 +790,7 @@ public class Player extends Actor {
 									p2.setNextAnimation(new Animation(12569));
 									p2.setNextGraphics(new Graphics(2214));
 									p2.prayer.setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2215, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2215, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -807,7 +810,7 @@ public class Player extends Actor {
 										}
 										p2.setNextAnimation(new Animation(12575));
 										p2.prayer.setBoostedLeech(true);
-										World.sendProjectile(p2, this, 2231, 35, 35, 20, 5, 0, 0);
+										RegionManager.sendProjectile(p2, this, 2231, 35, 35, 20, 5, 0, 0);
 										WorldTasksManager.schedule(new WorldTask() {
 											@Override
 											public void run() {
@@ -827,7 +830,7 @@ public class Player extends Actor {
 										}
 										p2.setNextAnimation(new Animation(12575));
 										p2.prayer.setBoostedLeech(true);
-										World.sendProjectile(p2, this, 2248, 35, 35, 20, 5, 0, 0);
+										RegionManager.sendProjectile(p2, this, 2248, 35, 35, 20, 5, 0, 0);
 										WorldTasksManager.schedule(new WorldTask() {
 											@Override
 											public void run() {
@@ -840,7 +843,7 @@ public class Player extends Actor {
 								
 							}
 						}
-						if (hit.getLook() == HitLook.RANGE_DAMAGE) {
+						if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
 							if (p2.prayer.usingPrayer(1, 2)) { // sap range
 								if (Misc.getRandom(4) == 0) {
 									if (p2.prayer.reachedMax(1)) {
@@ -852,7 +855,7 @@ public class Player extends Actor {
 									p2.setNextAnimation(new Animation(12569));
 									p2.setNextGraphics(new Graphics(2217));
 									p2.prayer.setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2218, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2218, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -871,7 +874,7 @@ public class Player extends Actor {
 									}
 									p2.setNextAnimation(new Animation(12575));
 									p2.prayer.setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2236, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2236, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -882,7 +885,7 @@ public class Player extends Actor {
 								}
 							}
 						}
-						if (hit.getLook() == HitLook.MAGIC_DAMAGE) {
+						if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
 							if (p2.prayer.usingPrayer(1, 3)) { // sap mage
 								if (Misc.getRandom(4) == 0) {
 									if (p2.prayer.reachedMax(2)) {
@@ -894,7 +897,7 @@ public class Player extends Actor {
 									p2.setNextAnimation(new Animation(12569));
 									p2.setNextGraphics(new Graphics(2220));
 									p2.prayer.setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2221, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2221, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -913,7 +916,7 @@ public class Player extends Actor {
 									}
 									p2.setNextAnimation(new Animation(12575));
 									p2.prayer.setBoostedLeech(true);
-									World.sendProjectile(p2, this, 2240, 35, 35, 20, 5, 0, 0);
+									RegionManager.sendProjectile(p2, this, 2240, 35, 35, 20, 5, 0, 0);
 									WorldTasksManager.schedule(new WorldTask() {
 										@Override
 										public void run() {
@@ -937,7 +940,7 @@ public class Player extends Actor {
 								}
 								p2.setNextAnimation(new Animation(12575));
 								p2.prayer.setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2244, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2244, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -958,7 +961,7 @@ public class Player extends Actor {
 								}
 								p2.setNextAnimation(new Animation(12575));
 								p2.prayer.setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2256, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2256, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -979,7 +982,7 @@ public class Player extends Actor {
 								}
 								p2.setNextAnimation(new Animation(12575));
 								p2.prayer.setBoostedLeech(true);
-								World.sendProjectile(p2, this, 2252, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2252, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -1000,7 +1003,7 @@ public class Player extends Actor {
 								} else {
 									combatDefinitions.desecreaseSpecialAttack(10);
 								}
-								World.sendProjectile(p2, this, 2224, 35, 35, 20, 5, 0, 0);
+								RegionManager.sendProjectile(p2, this, 2224, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
 									@Override
 									public void run() {
@@ -1048,7 +1051,7 @@ public class Player extends Actor {
 	public void sendSoulSplit(final Hit hit, final Actor user) {
 		final Player target = this;
 		if (hit.getDamage() > 0) {
-			World.sendProjectile(user, this, 2263, 11, 11, 20, 5, 0, 0);
+			RegionManager.sendProjectile(user, this, 2263, 11, 11, 20, 5, 0, 0);
 		}
 		user.heal(hit.getDamage() / 5);
 		prayer.drainPrayer(hit.getDamage() / 5);
@@ -1057,7 +1060,7 @@ public class Player extends Actor {
 			public void run() {
 				setNextGraphics(new Graphics(2264));
 				if (hit.getDamage() > 0) {
-					World.sendProjectile(target, user, 2263, 11, 11, 20, 5, 0, 0);
+					RegionManager.sendProjectile(target, user, 2263, 11, 11, 20, 5, 0, 0);
 				}
 			}
 		}, 1);
@@ -1142,7 +1145,7 @@ public class Player extends Actor {
 		packetsDecoderPing = Misc.currentTimeMillis();
 		// inited so lets add it
 		World.addPlayer(this);
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		System.out.println("Player Logged in: " + username);
 	}
 	
@@ -1190,9 +1193,9 @@ public class Player extends Actor {
 	}
 	
 	public void run() {
-		if (World.exiting_start != 0) {
-			int delayPassed = (int) ((Misc.currentTimeMillis() - World.exiting_start) / 1000);
-			getPackets().sendSystemUpdate(World.exiting_delay - delayPassed);
+		if (CoresManager.shutdownStart != 0) {
+			int delayPassed = (int) ((Misc.currentTimeMillis() - CoresManager.shutdownStart) / 1000);
+			getPackets().sendSystemUpdate(CoresManager.shutdownDelay - delayPassed);
 		}
 		if (GameFlags.debugMode) {
 			this.rights.add(PlayerRight.OWNER);
@@ -1296,7 +1299,7 @@ public class Player extends Actor {
 		setFinished(true);
 		session.setDecoder(-1);
 		SerializableFilesManager.savePlayer(this);
-		World.updateEntityRegion(this);
+		RegionManager.updateActorRegion(this);
 		World.removePlayer(this);
 		System.out.println("Finished Player: " + username + ", pass: " + password);
 	}
@@ -1373,7 +1376,7 @@ public class Player extends Actor {
 			getInventory().addItem(item);
 		}
 		for (Item item : containedItems) {
-			World.addGroundItem(item, getLastWorldTile(), killer, true, 180, true);
+			RegionManager.addGroundItem(item, getLastWorldTile(), killer, true, 180, true);
 		}
 	}
 	
@@ -1504,7 +1507,7 @@ public class Player extends Actor {
 	
 	public void sendPublicChatMessage(PublicChatMessage message) {
 		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playersIndexes = World.getRegion(regionId).getPlayerIndexes();
+			List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 			if (playersIndexes == null) {
 				continue;
 			}
@@ -1564,7 +1567,7 @@ public class Player extends Actor {
 	}
 	
 	public boolean hasInstantSpecial(final int weaponId) {
-		int specAmt = PlayerCombatAction.getSpecialAmmount(weaponId);
+		int specAmt = CombatAlgorithm.getSpecialAmmount(weaponId);
 		if (combatDefinitions.hasRingOfVigour()) {
 			specAmt *= 0.9;
 		}
@@ -1598,16 +1601,16 @@ public class Player extends Actor {
 				setNextAnimation(new Animation(1056));
 				setNextGraphics(new Graphics(246));
 				setNextForceTalk(new ForceTalk("Raarrrrrgggggghhhhhhh!"));
-				int defence = (int) (skills.getLevel(PlayerSkills.DEFENCE) * 0.90D);
-				int attack = (int) (skills.getLevel(PlayerSkills.ATTACK) * 0.90D);
-				int range = (int) (skills.getLevel(PlayerSkills.RANGE) * 0.90D);
-				int magic = (int) (skills.getLevel(PlayerSkills.MAGIC) * 0.90D);
-				int strength = (int) (skills.getLevel(PlayerSkills.STRENGTH) * 1.2D);
-				skills.set(PlayerSkills.DEFENCE, defence);
-				skills.set(PlayerSkills.ATTACK, attack);
-				skills.set(PlayerSkills.RANGE, range);
-				skills.set(PlayerSkills.MAGIC, magic);
-				skills.set(PlayerSkills.STRENGTH, strength);
+				int defence = (int) (skills.getLevel(SkillConstants.DEFENCE) * 0.90D);
+				int attack = (int) (skills.getLevel(SkillConstants.ATTACK) * 0.90D);
+				int range = (int) (skills.getLevel(SkillConstants.RANGE) * 0.90D);
+				int magic = (int) (skills.getLevel(SkillConstants.MAGIC) * 0.90D);
+				int strength = (int) (skills.getLevel(SkillConstants.STRENGTH) * 1.2D);
+				skills.set(SkillConstants.DEFENCE, defence);
+				skills.set(SkillConstants.ATTACK, attack);
+				skills.set(SkillConstants.RANGE, range);
+				skills.set(SkillConstants.MAGIC, magic);
+				skills.set(SkillConstants.STRENGTH, strength);
 				combatDefinitions.desecreaseSpecialAttack(specAmt);
 				return true;
 			case 35:// Excalibur
@@ -1617,7 +1620,7 @@ public class Player extends Actor {
 				setNextGraphics(new Graphics(247));
 				setNextForceTalk(new ForceTalk("For ZENITH!"));
 				final boolean enhanced = weaponId == 14632;
-				skills.set(PlayerSkills.DEFENCE, enhanced ? (int) (skills.getLevelForXp(PlayerSkills.DEFENCE) * 1.15D) : (skills.getLevel(PlayerSkills.DEFENCE) + 8));
+				skills.set(SkillConstants.DEFENCE, enhanced ? (int) (skills.getLevelForXp(SkillConstants.DEFENCE) * 1.15D) : (skills.getLevel(SkillConstants.DEFENCE) + 8));
 				WorldTasksManager.schedule(new WorldTask() {
 					int count = 5;
 					

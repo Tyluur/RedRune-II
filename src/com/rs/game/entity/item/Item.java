@@ -1,8 +1,9 @@
 package com.rs.game.entity.item;
 
 import com.rs.cache.loaders.ItemDefinitions;
-import com.rs.cache.loaders.ItemEquipIds;
 import com.rs.game.entity.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -16,9 +17,19 @@ public class Item implements Serializable, Entity {
 	
 	private static final long serialVersionUID = -6485003878697568087L;
 	
-	protected int amount;
+	/**
+	 * The id of the item
+	 */
+	@Getter
+	@Setter
+	private int id;
 	
-	private short id;
+	/**
+	 * The amount of the item
+	 */
+	@Getter
+	@Setter
+	protected int amount;
 	
 	public Item(int id) {
 		this(id, 1);
@@ -45,31 +56,22 @@ public class Item implements Serializable, Entity {
 		return this;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = (short) id;
-	}
-	
-	public int getEquipId() {
-		return ItemEquipIds.getEquipId(id);
-	}
-	
-	public int getAmount() {
-		return amount;
-	}
-	
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-	
+	/**
+	 * Gets the name of the item
+	 */
 	public String getName() {
 		return getDefinitions().getName();
 	}
 	
+	/**
+	 * Gets the {@code ItemDefinitions} of the item
+	 */
 	public ItemDefinitions getDefinitions() {
 		return ItemDefinitions.getItemDefinitions(id);
+	}
+	
+	@Override
+	public String toString() {
+		return "Item{" + "id=" + id + ", amount=" + amount + '}';
 	}
 }

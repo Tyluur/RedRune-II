@@ -149,50 +149,80 @@ public abstract class Dialogue {
 	}
 	
 	private static int[] getIComponentsIds(short interId) {
-		int[] childOptions;
+		int childOptions[];
 		switch (interId) {
-			case SEND_1_TEXT_INFO:
+			
+			case 458:
+				childOptions = new int[4];
+				for (int i = 0; i < childOptions.length; i++) {
+					childOptions[i] = i;
+				}
+				break;
+			case 210:
 				childOptions = new int[1];
 				childOptions[0] = 1;
 				break;
-			case SEND_2_TEXT_INFO:
+			
+			case 211:
 				childOptions = new int[2];
 				childOptions[0] = 1;
 				childOptions[1] = 2;
 				break;
-			case SEND_3_TEXT_INFO:
+			
+			case 212:
 				childOptions = new int[3];
 				childOptions[0] = 1;
 				childOptions[1] = 2;
 				childOptions[2] = 3;
 				break;
-			case SEND_4_TEXT_INFO:
+			
+			case 213:
 				childOptions = new int[4];
 				childOptions[0] = 1;
 				childOptions[1] = 2;
 				childOptions[2] = 3;
 				childOptions[3] = 4;
 				break;
-			case SEND_2_LARGE_OPTIONS:
+			
+			case 229:
 				childOptions = new int[3];
 				childOptions[0] = 1;
 				childOptions[1] = 2;
 				childOptions[2] = 3;
 				break;
-			case SEND_3_LARGE_OPTIONS:
+			
+			case 230:
 				childOptions = new int[4];
 				childOptions[0] = 1;
 				childOptions[1] = 2;
 				childOptions[2] = 3;
 				childOptions[3] = 4;
 				break;
-			case SEND_2_OPTIONS:
+			
+			case 231:
+				childOptions = new int[4];
+				childOptions[0] = 1;
+				childOptions[1] = 2;
+				childOptions[2] = 3;
+				childOptions[3] = 4;
+				break;
+			
+			case 235:
+				childOptions = new int[4];
+				childOptions[0] = 1;
+				childOptions[1] = 2;
+				childOptions[2] = 3;
+				childOptions[3] = 4;
+				break;
+			
+			case 236:
 				childOptions = new int[3];
 				childOptions[0] = 0;
 				childOptions[1] = 1;
 				childOptions[2] = 2;
 				break;
-			case SEND_4_OPTIONS:
+			
+			case 237:
 				childOptions = new int[5];
 				childOptions[0] = 0;
 				childOptions[1] = 1;
@@ -200,7 +230,8 @@ public abstract class Dialogue {
 				childOptions[3] = 3;
 				childOptions[4] = 4;
 				break;
-			case SEND_5_OPTIONS:
+			
+			case 238:
 				childOptions = new int[6];
 				childOptions[0] = 0;
 				childOptions[1] = 1;
@@ -209,29 +240,29 @@ public abstract class Dialogue {
 				childOptions[4] = 4;
 				childOptions[5] = 5;
 				break;
-			case SEND_1_TEXT_CHAT:
-			case SEND_NO_CONTINUE_1_TEXT_CHAT:
+			
+			case 64:
 				childOptions = new int[2];
 				childOptions[0] = 3;
 				childOptions[1] = 4;
 				break;
-			case SEND_2_TEXT_CHAT:
-			case SEND_NO_CONTINUE_2_TEXT_CHAT:
+			
+			case 65:
 				childOptions = new int[3];
 				childOptions[0] = 3;
 				childOptions[1] = 4;
 				childOptions[2] = 5;
 				break;
-			case SEND_3_TEXT_CHAT:
-			case SEND_NO_CONTINUE_3_TEXT_CHAT:
+			
+			case 66:
 				childOptions = new int[4];
 				childOptions[0] = 3;
 				childOptions[1] = 4;
 				childOptions[2] = 5;
 				childOptions[3] = 6;
 				break;
-			case SEND_4_TEXT_CHAT:
-			case SEND_NO_CONTINUE_4_TEXT_CHAT:
+			
+			case 67:
 				childOptions = new int[5];
 				childOptions[0] = 3;
 				childOptions[1] = 4;
@@ -239,6 +270,61 @@ public abstract class Dialogue {
 				childOptions[3] = 6;
 				childOptions[4] = 7;
 				break;
+			
+			case 241:
+			case 245:
+				childOptions = new int[2];
+				childOptions[0] = 3;
+				childOptions[1] = 4;
+				break;
+			
+			case 242:
+			case 246:
+				childOptions = new int[3];
+				childOptions[0] = 3;
+				childOptions[1] = 4;
+				childOptions[2] = 5;
+				break;
+			
+			case 243:
+			case 247:
+				childOptions = new int[4];
+				childOptions[0] = 3;
+				childOptions[1] = 4;
+				childOptions[2] = 5;
+				childOptions[3] = 6;
+				break;
+			
+			case 244:
+			case 248:
+				childOptions = new int[5];
+				childOptions[0] = 3;
+				childOptions[1] = 4;
+				childOptions[2] = 5;
+				childOptions[3] = 6;
+				childOptions[4] = 7;
+				break;
+			
+			case 214:
+			case 215:
+			case 216:
+			case 217:
+			case 218:
+			case 219:
+			case 220:
+			case 221:
+			case 222:
+			case 223:
+			case 224:
+			case 225:
+			case 226:
+			case 227:
+			case 228:
+			case 232:
+			case 233:
+			case 234:
+			case 239:
+			case 240:
 			default:
 				return null;
 		}

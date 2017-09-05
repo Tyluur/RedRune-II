@@ -6,7 +6,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 public final class Woodcutting extends Action {
@@ -240,21 +240,21 @@ public final class Woodcutting extends Action {
 			usedDeplateAurora = true;
 		} else if (Misc.getRandom(definitions.getRandomLifeProbability()) == 0) {
 			long time = definitions.respawnDelay * 600;
-			World.spawnTemporaryObject(new WorldObject(definitions.getStumpId(), tree.getType(), tree.getRotation(), tree.getX(), tree.getY(), tree.getPlane()), time);
+			RegionManager.spawnTemporaryObject(new WorldObject(definitions.getStumpId(), tree.getType(), tree.getRotation(), tree.getX(), tree.getY(), tree.getPlane()), time);
 			
 			if (tree.getPlane() < 3 && definitions != TreeDefinitions.IVY) {
-				WorldObject object = World.getStandartObject(new WorldTile(tree.getX() - 1, tree.getY() - 1, tree.getPlane() + 1));
+				WorldObject object = RegionManager.getStandardObject(new WorldTile(tree.getX() - 1, tree.getY() - 1, tree.getPlane() + 1));
 				if (object == null) {
-					object = World.getStandartObject(new WorldTile(tree.getX(), tree.getY() - 1, tree.getPlane() + 1));
+					object = RegionManager.getStandardObject(new WorldTile(tree.getX(), tree.getY() - 1, tree.getPlane() + 1));
 					if (object == null) {
-						object = World.getStandartObject(new WorldTile(tree.getX() - 1, tree.getY(), tree.getPlane() + 1));
+						object = RegionManager.getStandardObject(new WorldTile(tree.getX() - 1, tree.getY(), tree.getPlane() + 1));
 						if (object == null) {
-							object = World.getStandartObject(new WorldTile(tree.getX(), tree.getY(), tree.getPlane() + 1));
+							object = RegionManager.getStandardObject(new WorldTile(tree.getX(), tree.getY(), tree.getPlane() + 1));
 						}
 					}
 				}
 				if (object != null) {
-					World.removeTemporaryObject(object, time);
+					RegionManager.removeTemporaryObject(object, time);
 				}
 			}
 			player.setNextAnimation(new Animation(-1));
@@ -303,7 +303,7 @@ public final class Woodcutting extends Action {
 	}
 	
 	private boolean checkTree(Player player) {
-		return World.containsObjectWithId(tree.getId(), tree);
+		return RegionManager.containsObjectWithId(tree.getId(), tree);
 	}
 	
 	public enum TreeDefinitions {

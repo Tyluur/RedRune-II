@@ -7,7 +7,7 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 
 public class Macaw extends Familiar {
@@ -58,7 +58,7 @@ public class Macaw extends Familiar {
 		} else {
 			herb = Herbs.values()[Misc.getRandom(3)];
 		}
-		World.addGroundItem(new Item(herb.getHerbId(), 1), player);
+		RegionManager.addGroundItem(new Item(herb.getHerbId(), 1), player);
 		return true;
 	}
 }

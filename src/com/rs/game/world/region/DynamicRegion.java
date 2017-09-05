@@ -158,7 +158,7 @@ public class DynamicRegion extends Region {
 								}
 								if (realZ == renderChunkZ && (x >> 3) == renderLocalChunkX && (y >> 3) == renderLocalChunkY) {
 									ObjectDefinitions definition = ObjectDefinitions.getObjectDefinitions(objectId);
-									int[] coords = translate(x & 0x7, y & 0x7, rotation, definition.sizeX, definition.sizeY, rot);
+									int[] coords = translate(x & 0x7, y & 0x7, rotation, definition.getSizeX(), definition.getSizeY(), rot);
 									spawnObject(new WorldObject(objectId, type, (rotation + rot) & 0x3, (dynX << 3) + coords[0] + ((getRegionId() >> 8) << 6), (dynY << 3) + coords[1] + ((getRegionId() & 0xFF) << 6), dynZ), dynZ, (dynX << 3) + coords[0], (dynY << 3) + coords[1], true);
 								}
 							}

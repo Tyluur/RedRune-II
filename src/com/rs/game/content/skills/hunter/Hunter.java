@@ -3,10 +3,10 @@ package com.rs.game.content.skills.hunter;
 import com.rs.game.content.action.Action;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.actor.player.link.OwnedObjectManager;
 import com.rs.game.entity.object.WorldObject;
-import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +74,7 @@ public class Hunter extends Action {
 	}
 	
 	private boolean checkAll(Player player) {
-		if (player.getSkills().getLevel(PlayerSkills.HUNTER) < hunt.getBaseLevel()) {
+		if (player.getSkills().getLevel(SkillConstants.HUNTER) < hunt.getBaseLevel()) {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a Hunter level of " + hunt.getBaseLevel() + " to use this.");
 			return false;
 		}
@@ -82,7 +82,7 @@ public class Hunter extends Action {
 			player.getPackets().sendGameMessage("You can't setup more than " + player.getTrapAmount() + " traps.");
 			return false;
 		}
-		List<WorldObject> objects = World.getRegion(player.getRegionId()).getSpawnedObjects();
+		List<WorldObject> objects = RegionManager.getRegion(player.getRegionId()).getSpawnedObjects();
 		if (objects != null) {
 			for (WorldObject object : objects) {
 				if (object.getX() == player.getX() && object.getY() == player.getY() && object.getPlane() == player.getPlane()) {
@@ -105,7 +105,7 @@ public class Hunter extends Action {
 		int level = 20;
 		int trapAmount = 2;
 		for (int i = 0; i < 2; i++) {
-			if (player.getSkills().getLevel(PlayerSkills.HUNTER) >= level) {
+			if (player.getSkills().getLevel(SkillConstants.HUNTER) >= level) {
 				trapAmount++;
 				level += 20;
 			}

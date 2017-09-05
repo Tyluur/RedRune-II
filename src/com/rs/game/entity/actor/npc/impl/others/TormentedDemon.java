@@ -6,11 +6,12 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
@@ -122,7 +123,7 @@ public final class TormentedDemon extends NPC {
 		super.handleIngoingHit(hit);
 		if (hit.getSource() instanceof Player) {// darklight
 			Player player = (Player) hit.getSource();
-			if ((player.getEquipment().getWeaponId() == 6746 || player.getEquipment().getWeaponId() == 2402) && hit.getLook() == HitLook.MELEE_DAMAGE && hit.getDamage() > 0) {
+			if ((player.getEquipment().getWeaponId() == 6746 || player.getEquipment().getWeaponId() == 2402) && hit.getLook() == HitSplat.MELEE_DAMAGE && hit.getDamage() > 0) {
 				shieldTimer = 60;
 				player.getPackets().sendGameMessage("The demon is temporarily weakend by your weapon.");
 			}
@@ -131,27 +132,27 @@ public final class TormentedDemon extends NPC {
 			hit.setDamage((int) (hit.getDamage() * 0.25));
 			setNextGraphics(new Graphics(1885));
 		}
-		if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+		if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
 			if (demonPrayer[0]) {
 				hit.setDamage(0);
 			} else {
 				cachedDamage[0] += hit.getDamage();
 			}
-		} else if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+		} else if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
 			type = 1;
 			if (demonPrayer[1]) {
 				hit.setDamage(0);
 			} else {
 				cachedDamage[1] += hit.getDamage();
 			}
-		} else if (hit.getLook() == HitLook.RANGE_DAMAGE) {
+		} else if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
 			type = 2;
 			if (demonPrayer[2]) {
 				hit.setDamage(0);
 			} else {
 				cachedDamage[2] += hit.getDamage();
 			}
-		} else if (hit.getLook() == HitLook.MISSED) {
+		} else if (hit.getLook() == HitSplat.MISSED) {
 			cachedDamage[type] += 20;
 		} else {
 			cachedDamage[Misc.getRandom(2)] += 20;// random
@@ -172,7 +173,7 @@ public final class TormentedDemon extends NPC {
 				setFinished(false);
 				World.addNPC(npc);
 				npc.setLastRegionId(0);
-				World.updateEntityRegion(npc);
+				RegionManager.updateActorRegion(npc);
 				loadMapRegions();
 				checkMultiArea();
 				shieldTimer = 0;
@@ -185,9 +186,9 @@ public final class TormentedDemon extends NPC {
 	private void sendRandomProjectile() {
 		WorldTile tile = new WorldTile(getX() + Misc.random(7), getY() + Misc.random(7), getPlane());
 		setNextAnimation(new Animation(10918));
-		World.sendProjectile(this, tile, 1887, 34, 16, 40, 35, 16, 0);
+		RegionManager.sendProjectile(this, tile, 1887, 34, 16, 40, 35, 16, 0);
 		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = World.getRegion(regionId).getPlayerIndexes();
+			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
@@ -195,7 +196,7 @@ public final class TormentedDemon extends NPC {
 						continue;
 					}
 					player.getPackets().sendGameMessage("The demon's magical attack splashes on you.");
-					player.applyHit(new Hit(this, 281, HitLook.MAGIC_DAMAGE, 1));
+					player.applyHit(new Hit(this, 281, HitSplat.MAGIC_DAMAGE, 1));
 				}
 			}
 		}

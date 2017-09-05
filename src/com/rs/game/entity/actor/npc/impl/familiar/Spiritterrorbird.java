@@ -5,7 +5,7 @@ import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
+import com.rs.utility.constants.SkillConstants;
 
 public class Spiritterrorbird extends Familiar {
 
@@ -25,15 +25,15 @@ public class Spiritterrorbird extends Familiar {
 			player.getPackets().sendGameMessage("This wouldn't effect you at all.");
 			return false;
 		}
-		int newLevel = getOwner().getSkills().getLevel(PlayerSkills.AGILITY) + 2;
+		int newLevel = getOwner().getSkills().getLevel(SkillConstants.AGILITY) + 2;
 		int runEnergy = player.getRunEnergy() + (Math.round(newLevel / 2));
-		if (newLevel > getOwner().getSkills().getLevelForXp(PlayerSkills.AGILITY) + 2) {
-			newLevel = getOwner().getSkills().getLevelForXp(PlayerSkills.AGILITY) + 2;
+		if (newLevel > getOwner().getSkills().getLevelForXp(SkillConstants.AGILITY) + 2) {
+			newLevel = getOwner().getSkills().getLevelForXp(SkillConstants.AGILITY) + 2;
 		}
 		setNextAnimation(new Animation(8229));
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));
-		player.getSkills().set(PlayerSkills.AGILITY, newLevel);
+		player.getSkills().set(SkillConstants.AGILITY, newLevel);
 		player.setRunEnergy(runEnergy > 100 ? 100 : runEnergy);
 		return true;
 	}

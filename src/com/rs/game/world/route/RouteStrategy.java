@@ -47,7 +47,6 @@ public abstract class RouteStrategy {
 	 * Check's if we can interact wall decoration from current position.
 	 */
 	protected static boolean checkWallDecorationInteract(int[][] clip, int currentX, int currentY, int sizeXY, int targetX, int targetY, int targetType, int targetRotation) {
-		// TODO, include additional checks for size's bigger than 1.
 		if (currentX == targetX && currentY == targetY) {
 			return true;
 		}
@@ -105,7 +104,6 @@ public abstract class RouteStrategy {
 	 * Check's if we can interact wall object from current position.
 	 */
 	protected static boolean checkWallInteract(int[][] clips, int currentX, int currentY, int sizeXY, int targetX, int targetY, int targetType, int targetRotation) {
-		// TODO refactor
 		if (sizeXY == 1) {
 			if (currentX == targetX && currentY == targetY) {
 				return true; // we are inside the object
@@ -350,7 +348,6 @@ public abstract class RouteStrategy {
 	 * position.
 	 */
 	protected static boolean checkFilledRectangularInteract(int[][] clip, int currentX, int currentY, int sizeX, int sizeY, int targetX, int targetY, int targetSizeX, int targetSizeY, int accessBlockFlag) {
-		// TODO refactor
 		int srcEndX = currentX + sizeX;
 		int srcEndY = currentY + sizeY;
 		int destEndX = targetX + targetSizeX;

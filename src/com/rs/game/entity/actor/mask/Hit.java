@@ -2,39 +2,71 @@ package com.rs.game.entity.actor.mask;
 
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.player.Player;
+import lombok.Getter;
+import lombok.Setter;
 
 public final class Hit {
 	
+	/**
+	 * The source of the damage
+	 */
+	@Getter
+	@Setter
 	private Actor source;
 	
-	private HitLook look;
+	/**
+	 * The hit splat of the damage
+	 */
+	@Getter
+	@Setter
+	private HitSplat look;
 	
+	/**
+	 * The amount of damage
+	 */
+	@Getter
+	@Setter
 	private int damage;
 	
-	private boolean critical;
-	
+	/**
+	 * The soaking damage
+	 */
+	@Getter
+	@Setter
 	private Hit soaking;
 	
+	/**
+	 * The delay (used only in the mask aspect) of the hit
+	 */
+	@Getter
+	@Setter
 	private int delay;
 	
-	public Hit(Actor source, int damage, HitLook look) {
+	/**
+	 * The max hit possible to land
+	 */
+	private int maxHit = -1;
+	
+	public Hit(Actor source, int damage, HitSplat look) {
 		this(source, damage, look, 0);
 	}
 	
-	public Hit(Actor source, int damage, HitLook look, int delay) {
+	public Hit(Actor source, int damage, HitSplat look, int delay) {
 		this.source = source;
 		this.damage = damage;
 		this.look = look;
 		this.delay = delay;
 	}
 	
-	public void setCriticalMark() {
-		critical = true;
-	}
-	
-	public void setHealHit() {
-		look = HitLook.HEALED_DAMAGE;
-		critical = false;
+	/**
+	 * Checks if the hit is critical, based on the max hit and the hit landed.
+	 */
+	public boolean isCritical() {
+		if (maxHit == -1 || damage == 0) {
+			return false;
+		}
+		double criticalMinimum = maxHit * 0.90;
+		return damage >= criticalMinimum;
 	}
 	
 	public boolean missed() {
@@ -42,14 +74,14 @@ public final class Hit {
 	}
 	
 	public int getMark(Player player, Actor victm) {
-		if (HitLook.HEALED_DAMAGE == look) {
+		if (HitSplat.HEALED_DAMAGE == look) {
 			return look.getMark();
 		}
 		if (damage == 0) {
-			return HitLook.MISSED.getMark();
+			return HitSplat.MISSED.getMark();
 		}
 		int mark = look.getMark();
-		if (critical) {
+		if (isCritical()) {
 			mark += 10;
 		}
 		if (!interactingWith(player, victm)) {
@@ -62,43 +94,12 @@ public final class Hit {
 		return player == victm || player == source;
 	}
 	
-	public HitLook getLook() {
-		return look;
+	public Hit setMaxHit(int maxHit) {
+		this.maxHit = maxHit;
+		return this;
 	}
 	
-	public int getDamage() {
-		return damage;
-	}
-	
-	public void setDamage(int damage) {
-		this.damage = damage;
-	}
-	
-	public Actor getSource() {
-		return source;
-	}
-	
-	public void setSource(Actor source) {
-		this.source = source;
-	}
-	
-	public boolean isCriticalHit() {
-		return critical;
-	}
-	
-	public Hit getSoaking() {
-		return soaking;
-	}
-	
-	public void setSoaking(Hit soaking) {
-		this.soaking = soaking;
-	}
-	
-	public int getDelay() {
-		return delay;
-	}
-	
-	public enum HitLook {
+	public enum HitSplat {
 		
 		MISSED(8),
 		REGULAR_DAMAGE(3),
@@ -114,7 +115,7 @@ public final class Hit {
 		
 		private int mark;
 		
-		HitLook(int mark) {
+		HitSplat(int mark) {
 			this.mark = mark;
 		}
 		

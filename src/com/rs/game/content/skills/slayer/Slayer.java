@@ -1,8 +1,8 @@
 package com.rs.game.content.skills.slayer;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.*;
 
@@ -35,7 +35,7 @@ public class Slayer {
 	
 	public static boolean checkRequirement(Player player, SlayerMonsters slayer) {
 		if (slayer != null) {
-			if (player.getSkills().getLevel(PlayerSkills.SLAYER) < slayer.getRequirement()) {
+			if (player.getSkills().getLevel(SkillConstants.SLAYER) < slayer.getRequirement()) {
 				player.getPackets().sendGameMessage("This monster requires " + slayer.getRequirement() + " to slay.");
 				return false;
 			}

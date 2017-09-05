@@ -1,3 +1,14 @@
+9/4/17 {
+	+   Added brand new shop system
+	+   Lots more source code improvements for longterm stability & easy content creation
+	+   Adds lots more command plugins
+	+   Started on RedRune666 combat -> matrix conversion
+	+   Improved home area
+
+	[img]https://i.imgur.com/5Q1XCXc.png[/img]
+	[img]https://i.imgur.com/J9TXJru.png[/img]
+}
+
 9/1/17 {
 	+   Updated region system significantly
 	+   Updated movement event to fire controller changes [when you teleport/move into wilderness you will actually be in the wilderness]

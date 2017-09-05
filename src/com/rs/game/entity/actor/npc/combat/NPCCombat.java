@@ -1,6 +1,7 @@
 package com.rs.game.entity.actor.npc.combat;
 
 import com.rs.game.content.Combat;
+import com.rs.game.content.combat.npc.CombatScriptsHandler;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
@@ -163,7 +164,7 @@ public final class NPCCombat {
 			return 0;
 		}
 		addAttackedByDelay(target);
-		return CombatScriptsHandler.specialAttack(npc, target);
+		return CombatScriptsHandler.fireCombatScript(npc, target);
 	}
 	
 	public void addAttackedByDelay(Actor target) { // prevents multithread
@@ -172,11 +173,7 @@ public final class NPCCombat {
 		target.setAttackedByDelay(Misc.currentTimeMillis() + npc.getCombatDefinitions().getAttackDelay() * 600 + 600); // 8seconds
 	}
 	
-	protected void doDefenceEmote(Actor target) {
-		/*
-		 * if (target.getNextAnimation() != null) // if has att emote already
-		 * return;
-		 */
+	public void doDefenceEmote(Actor target) {
 		target.setNextAnimationNoPriority(new Animation(Combat.getDefenceEmote(target)));
 	}
 	

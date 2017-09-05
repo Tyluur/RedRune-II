@@ -3,11 +3,11 @@ package com.rs.game.content.node.item;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class Burying {
 			public void run() {
 				player.getPackets().sendGameMessage("You bury the " + itemDef.getName().toLowerCase());
 				player.getInventory().deleteItem(item.getId(), 1);
-				player.getSkills().addXp(PlayerSkills.PRAYER, bone.getExperience());
+				player.getSkills().addXp(SkillConstants.PRAYER, bone.getExperience());
 				stop();
 			}
 			
@@ -112,7 +112,7 @@ public class Burying {
 				public void run() {
 					player.getPackets().sendGameMessage("You bury the " + itemDef.getName().toLowerCase());
 					player.getInventory().deleteItem(item.getId(), 1);
-					player.getSkills().addXp(PlayerSkills.PRAYER, bone.getExperience());
+					player.getSkills().addXp(SkillConstants.PRAYER, bone.getExperience());
 					stop();
 				}
 				

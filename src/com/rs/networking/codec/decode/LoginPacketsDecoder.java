@@ -1,6 +1,7 @@
 package com.rs.networking.codec.decode;
 
 import com.rs.cache.Cache;
+import com.rs.cores.CoresManager;
 import com.rs.game.GameConstants;
 import com.rs.game.GameFlags;
 import com.rs.game.entity.actor.player.Player;
@@ -123,7 +124,7 @@ public final class LoginPacketsDecoder extends Decoder {
 	}
 	
 	public void decodeWorldLogin(InputStream buffer) {
-		if (World.exiting_start != 0) {
+		if (CoresManager.shutdownStart != 0) {
 			session.getLoginPackets().sendClientPacket(14);
 			return;
 		}
@@ -255,7 +256,7 @@ public final class LoginPacketsDecoder extends Decoder {
 			}
 		}
 		session.sync(player);
-		player.init(username, displayMode, width, height);
+		player.init(username, mode, width, height);
 		session.getLoginPackets().sendLoginDetails(player);
 		session.setDecoder(3, player);
 		session.setEncoder(2, player);

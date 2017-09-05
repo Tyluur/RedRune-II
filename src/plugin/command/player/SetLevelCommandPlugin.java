@@ -1,8 +1,8 @@
 package plugin.command.player;
 
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.plugin.type.CommandPlugin;
+import com.rs.utility.constants.SkillConstants;
 import plugin.command.CommandManifest;
 
 /**
@@ -21,7 +21,7 @@ public class SetLevelCommandPlugin extends CommandPlugin {
 			return;
 		}
 		player.getSkills().set(skill, level);
-		player.getSkills().setXp(skill, PlayerSkills.getXPForLevel(level));
+		player.getSkills().setXp(skill, SkillConstants.getXPForLevel(level));
 		player.getAppearance().generateAppearanceData();
 	}
 	

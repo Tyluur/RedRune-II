@@ -1,6 +1,7 @@
 package com.rs.game.content;
 
 import com.rs.cache.loaders.ItemDefinitions;
+import com.rs.cores.CoresManager;
 import com.rs.game.content.skills.summoning.Summoning;
 import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;
@@ -8,16 +9,17 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.ForceTalk;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitLook;
+import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.world.World;
+import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.game.files.SerializableFilesManager;
 
 import java.io.BufferedWriter;
@@ -162,7 +164,7 @@ public final class Commands {
 									player.getPackets().sendGameMessage("You are not high enough level to use this item.");
 								}
 								hasRequiriments = false;
-								String name = PlayerSkills.SKILL_NAME[skillId].toLowerCase();
+								String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
 								player.getPackets().sendGameMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".");
 							}
 							
@@ -233,7 +235,7 @@ public final class Commands {
 						return true;
 					}
 					player.getSkills().set(skill, level);
-					player.getSkills().setXp(skill, PlayerSkills.getXPForLevel(level));
+					player.getSkills().setXp(skill, SkillConstants.getXPForLevel(level));
 					player.getAppearance().generateAppearanceData();
 					return true;
 				} catch (NumberFormatException e) {
@@ -254,7 +256,7 @@ public final class Commands {
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("fishworld")) {
-				World.safeShutdown(1);
+				CoresManager.safeShutdown(1);
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("n")) {
@@ -309,7 +311,7 @@ public final class Commands {
 						return true;
 					}
 					player.getSkills().set(skill, level);
-					player.getSkills().setXp(skill, PlayerSkills.getXPForLevel(level));
+					player.getSkills().setXp(skill, SkillConstants.getXPForLevel(level));
 					player.getAppearance().generateAppearanceData();
 					return true;
 				} catch (NumberFormatException e) {
@@ -327,7 +329,7 @@ public final class Commands {
 			}
 			if (cmd[0].equalsIgnoreCase("object")) {
 				try {
-					World.spawnObject(new WorldObject(Integer.valueOf(cmd[1]), 10, -1, player.getX(), player.getY(), player.getPlane()));
+					RegionManager.spawnObject(new WorldObject(Integer.valueOf(cmd[1]), 10, -1, player.getX(), player.getY(), player.getPlane()));
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: setkills id");
 				}
@@ -352,7 +354,7 @@ public final class Commands {
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("killme")) {
-				player.applyHit(new Hit(player, 998, HitLook.REGULAR_DAMAGE));
+				player.applyHit(new Hit(player, 998, HitSplat.REGULAR_DAMAGE));
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("changepassother")) {
@@ -471,7 +473,7 @@ public final class Commands {
 			}
 			if (cmd[0].equalsIgnoreCase("hit")) {
 				for (int i = 0; i < 5; i++) {
-					player.applyHit(new Hit(player, Misc.getRandom(3), HitLook.HEALED_DAMAGE));
+					player.applyHit(new Hit(player, Misc.getRandom(3), HitSplat.HEALED_DAMAGE));
 				}
 			}
 			if (cmd[0].equalsIgnoreCase("iloop")) {
@@ -557,7 +559,7 @@ public final class Commands {
 			}
 			if (cmd[0].equalsIgnoreCase("level")) {
 				player.getSkills();
-				player.getSkills().addXp(Integer.valueOf(cmd[1]), PlayerSkills.getXPForLevel(Integer.valueOf(cmd[2])));
+				player.getSkills().addXp(Integer.valueOf(cmd[1]), SkillConstants.getXPForLevel(Integer.valueOf(cmd[2])));
 				return true;
 			}
 			if (cmd[0].equalsIgnoreCase("coords")) {
@@ -755,12 +757,12 @@ public final class Commands {
 			if (cmd[0].equalsIgnoreCase("master")) {
 				if (cmd.length < 2) {
 					for (int skill = 0; skill < 25; skill++) {
-						player.getSkills().addXp(skill, PlayerSkills.MAXIMUM_EXP);
+						player.getSkills().addXp(skill, SkillConstants.MAXIMUM_EXP);
 					}
 					return true;
 				}
 				try {
-					player.getSkills().addXp(Integer.valueOf(cmd[1]), PlayerSkills.MAXIMUM_EXP);
+					player.getSkills().addXp(Integer.valueOf(cmd[1]), SkillConstants.MAXIMUM_EXP);
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: ::master skill");
 				}
@@ -954,7 +956,7 @@ public final class Commands {
 						return true;
 					}
 				}
-				World.safeShutdown(delay);
+				CoresManager.safeShutdown(delay);
 				return true;
 			}
 			
@@ -1099,10 +1101,6 @@ public final class Commands {
 				} catch (NumberFormatException e) {
 					player.getPackets().sendPanelBoxMessage("Use: ::gfx id");
 				}
-				return true;
-			}
-			if (cmd[0].equalsIgnoreCase("mess")) {
-				player.getPackets().sendMessage(Integer.valueOf(cmd[1]), "", player);
 				return true;
 			}
 			
