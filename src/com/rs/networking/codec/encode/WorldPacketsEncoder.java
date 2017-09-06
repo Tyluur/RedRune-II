@@ -12,6 +12,7 @@ import com.rs.game.entity.item.FloorItem;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemsContainer;
 import com.rs.game.entity.object.WorldObject;
+import com.rs.game.world.projectile.Projectile;
 import com.rs.game.world.region.DynamicRegion;
 import com.rs.game.world.region.Region;
 import com.rs.game.world.region.RegionManager;
@@ -175,16 +176,6 @@ public class WorldPacketsEncoder extends Encoder {
 		session.write(stream);
 	}
 	
-	public WorldPacketsEncoder setInterfaceConfig(int interfaceId, int childId, boolean set) {
-		OutputStream stream = new OutputStream();
-		stream.setId(3);
-		stream.writeShort(0);
-		stream.writeByte(set ? 1 : 0);
-		stream.writeInt(interfaceId << 16 | childId);
-		player.getSession().write(stream);
-		return this;
-	}
-	
 	public void sendStopCameraShake() {
 		OutputStream stream = new OutputStream(1);
 		stream.writePacket(15);
@@ -273,7 +264,30 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writeByte(curve);
 		stream.writeShort(creatorSize * 64 + startDistanceOffset * 64);
 		session.write(stream);
-		
+	}
+	
+	public void sendProjectile(Projectile projectile) {
+		sendWorldTile(projectile.getSourceTile());
+		OutputStream stream = new OutputStream(17);
+		stream.writePacket(62);
+		WorldTile end = projectile.isLocationBased() ? projectile.getEndLocation() : projectile.getVictim();
+		WorldTile start = projectile.getSourceTile();
+		int localX = start.getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize());
+		int localY = start.getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize());
+		int offsetX = localX - ((localX >> 3) << 3);
+		int offsetY = localY - ((localY >> 3) << 3);
+		stream.writeByte((offsetX << 3) | offsetY);
+		stream.writeByte(end.getX() - start.getX());
+		stream.writeByte(end.getY() - start.getY());
+		stream.writeShort(projectile.getVictim() != null ? (projectile.getVictim().isPlayer() ? -(projectile.getVictim().getIndex() + 1) : (projectile.getVictim().getIndex() + 1)) : 0);
+		stream.writeShort(projectile.getProjectileId());
+		stream.writeByte(projectile.getStartHeight());
+		stream.writeByte(projectile.getEndHeight());
+		stream.writeShort(projectile.getDelay());
+		stream.writeShort(projectile.getSpeed());
+		stream.writeByte(projectile.getAngle());
+		stream.writeShort(projectile.getCreatorSize() * 64 + projectile.getStartDistanceOffset() * 64);
+		session.write(stream);
 	}
 	
 	public void sendUnlockIComponentOptionSlots(int interfaceId, int componentId, int fromSlot, int toSlot, int... optionsSlots) {

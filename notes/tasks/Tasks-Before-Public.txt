@@ -1,9 +1,3 @@
-# [Master Server Perfection] #
-1.  Login/Logout must be free from dupes and rollbacks [perhaps implement 30 seconds to login to the game from another world]
-
-[Friends Chat]
--   Write about this after friends communication done
-
 # [EXCHANGE] #
 1.  Shops setup
 

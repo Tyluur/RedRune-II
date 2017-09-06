@@ -15,7 +15,8 @@ public class MasterCommandPlugin extends CommandPlugin {
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
 		for (int skill = 0; skill < 25; skill++) {
-			player.getSkills().addXp(skill, SkillConstants.MAXIMUM_EXP);
+			player.getSkills().set(skill, 99);
+			player.getSkills().setXp(skill, SkillConstants.getXPForLevel(99));
 		}
 	}
 	

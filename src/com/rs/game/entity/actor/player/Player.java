@@ -5,8 +5,6 @@ import com.rs.game.GameConstants;
 import com.rs.game.GameFlags;
 import com.rs.game.content.SkillCapeCustomizer;
 import com.rs.game.content.action.ActionManager;
-import com.rs.game.content.action.impl.PlayerCombatAction;
-import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.controller.ControllerManager;
 import com.rs.game.content.cutscene.CutsceneManager;
 import com.rs.game.content.dialogue.DialogueManager;
@@ -17,11 +15,7 @@ import com.rs.game.content.skills.slayer.SlayerTask;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.data.CombatDefinitions;
-import com.rs.game.entity.actor.mask.Animation;
-import com.rs.game.entity.actor.mask.ForceTalk;
-import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.*;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.data.*;
@@ -657,8 +651,11 @@ public class Player extends Actor {
 	
 	@Override
 	public void handleIngoingHit(final Hit hit) {
-		if (hit.getLook() != HitSplat.MELEE_DAMAGE && hit.getLook() != HitSplat.RANGE_DAMAGE && hit.getLook() != HitSplat.MAGIC_DAMAGE) {
+		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
+		}
+		if (hit.getDamage() > 0) {
+			hit.fireLandTask();
 		}
 		if (auraManager.usingPenance()) {
 			int amount = (int) (hit.getDamage() * 0.2);
@@ -692,7 +689,7 @@ public class Player extends Actor {
 			hit.setDamage((int) (hit.getDamage() * 0.5));
 		}
 		if (prayer.hasPrayersOn() && hit.getDamage() != 0) {
-			if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
+			if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
 				if (prayer.usingPrayer(0, 17)) {
 					hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
 				} else if (prayer.usingPrayer(1, 7)) {
@@ -704,7 +701,7 @@ public class Player extends Actor {
 						setNextAnimation(new Animation(12573));
 					}
 				}
-			} else if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
+			} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
 				if (prayer.usingPrayer(0, 18)) {
 					hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
 				} else if (prayer.usingPrayer(1, 8)) {
@@ -716,7 +713,7 @@ public class Player extends Actor {
 						setNextAnimation(new Animation(12573));
 					}
 				}
-			} else if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
+			} else if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
 				if (prayer.usingPrayer(0, 19)) {
 					hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
 				} else if (prayer.usingPrayer(1, 9)) {
@@ -731,19 +728,19 @@ public class Player extends Actor {
 			}
 		}
 		if (hit.getDamage() >= 200) {
-			if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
+			if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
 				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] / 100;
 				if (reducedDamage > 0) {
 					hit.setDamage(hit.getDamage() - reducedDamage);
 					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 				}
-			} else if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
+			} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
 				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] / 100;
 				if (reducedDamage > 0) {
 					hit.setDamage(hit.getDamage() - reducedDamage);
 					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 				}
-			} else if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
+			} else if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
 				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] / 100;
 				if (reducedDamage > 0) {
 					hit.setDamage(hit.getDamage() - reducedDamage);
@@ -772,7 +769,7 @@ public class Player extends Actor {
 						return;
 					}
 					if (!p2.prayer.isBoostedLeech()) {
-						if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
+						if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
 							if (p2.prayer.usingPrayer(1, 19)) {
 								if (Misc.getRandom(4) == 0) {
 									p2.prayer.increaseTurmoilBonus(this);
@@ -843,7 +840,7 @@ public class Player extends Actor {
 								
 							}
 						}
-						if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
+						if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
 							if (p2.prayer.usingPrayer(1, 2)) { // sap range
 								if (Misc.getRandom(4) == 0) {
 									if (p2.prayer.reachedMax(1)) {
@@ -885,7 +882,7 @@ public class Player extends Actor {
 								}
 							}
 						}
-						if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
+						if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
 							if (p2.prayer.usingPrayer(1, 3)) { // sap mage
 								if (Misc.getRandom(4) == 0) {
 									if (p2.prayer.reachedMax(2)) {
@@ -978,7 +975,7 @@ public class Player extends Actor {
 									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
 								} else {
 									p2.combatDefinitions.restoreSpecialAttack();
-									combatDefinitions.desecreaseSpecialAttack(10);
+									combatDefinitions.decreaseSpecialEnergy(10);
 								}
 								p2.setNextAnimation(new Animation(12575));
 								p2.prayer.setBoostedLeech(true);
@@ -1001,7 +998,7 @@ public class Player extends Actor {
 								if (combatDefinitions.getSpecialAttackPercentage() <= 0) {
 									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
 								} else {
-									combatDefinitions.desecreaseSpecialAttack(10);
+									combatDefinitions.decreaseSpecialEnergy(10);
 								}
 								RegionManager.sendProjectile(p2, this, 2224, 35, 35, 20, 5, 0, 0);
 								WorldTasksManager.schedule(new WorldTask() {
@@ -1564,82 +1561,6 @@ public class Player extends Actor {
 			ownedObjectsManagerKeys = new LinkedList<>();
 		}
 		return ownedObjectsManagerKeys;
-	}
-	
-	public boolean hasInstantSpecial(final int weaponId) {
-		int specAmt = CombatAlgorithm.getSpecialAmmount(weaponId);
-		if (combatDefinitions.hasRingOfVigour()) {
-			specAmt *= 0.9;
-		}
-		if (combatDefinitions.getSpecialAttackPercentage() < specAmt) {
-			getPackets().sendGameMessage("You don't have enough power left.");
-			combatDefinitions.desecreaseSpecialAttack(0);
-			return false;
-		}
-		switch (weaponId) {
-			case 4153:
-				if (getTemporaryAttributtes().get("InstantSpecial") == null) {
-					getTemporaryAttributtes().put("InstantSpecial", 4153);
-				} else {
-					getTemporaryAttributtes().remove("InstantSpecial");
-				}
-				combatDefinitions.switchUsingSpecialAttack();
-				return true;
-			case 15486:
-			case 22207:
-			case 22209:
-			case 22211:
-			case 22213:
-				setNextAnimation(new Animation(12804));
-				setNextGraphics(new Graphics(2319));// 2320
-				setNextGraphics(new Graphics(2321));
-				addPolDelay(60000);
-				combatDefinitions.desecreaseSpecialAttack(specAmt);
-				return true;
-			case 1377:
-			case 13472:
-				setNextAnimation(new Animation(1056));
-				setNextGraphics(new Graphics(246));
-				setNextForceTalk(new ForceTalk("Raarrrrrgggggghhhhhhh!"));
-				int defence = (int) (skills.getLevel(SkillConstants.DEFENCE) * 0.90D);
-				int attack = (int) (skills.getLevel(SkillConstants.ATTACK) * 0.90D);
-				int range = (int) (skills.getLevel(SkillConstants.RANGE) * 0.90D);
-				int magic = (int) (skills.getLevel(SkillConstants.MAGIC) * 0.90D);
-				int strength = (int) (skills.getLevel(SkillConstants.STRENGTH) * 1.2D);
-				skills.set(SkillConstants.DEFENCE, defence);
-				skills.set(SkillConstants.ATTACK, attack);
-				skills.set(SkillConstants.RANGE, range);
-				skills.set(SkillConstants.MAGIC, magic);
-				skills.set(SkillConstants.STRENGTH, strength);
-				combatDefinitions.desecreaseSpecialAttack(specAmt);
-				return true;
-			case 35:// Excalibur
-			case 8280:
-			case 14632:
-				setNextAnimation(new Animation(1168));
-				setNextGraphics(new Graphics(247));
-				setNextForceTalk(new ForceTalk("For ZENITH!"));
-				final boolean enhanced = weaponId == 14632;
-				skills.set(SkillConstants.DEFENCE, enhanced ? (int) (skills.getLevelForXp(SkillConstants.DEFENCE) * 1.15D) : (skills.getLevel(SkillConstants.DEFENCE) + 8));
-				WorldTasksManager.schedule(new WorldTask() {
-					int count = 5;
-					
-					@Override
-					public void run() {
-						if (isDead() || hasFinished() || getHitpoints() >= getMaxHitpoints()) {
-							stop();
-							return;
-						}
-						heal(enhanced ? 80 : 40);
-						if (count-- == 0) {
-							stop();
-						}
-					}
-				}, 4, 2);
-				combatDefinitions.desecreaseSpecialAttack(specAmt);
-				return true;
-		}
-		return false;
 	}
 	
 	/**

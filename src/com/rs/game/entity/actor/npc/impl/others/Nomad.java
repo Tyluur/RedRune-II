@@ -85,7 +85,7 @@ public final class Nomad extends NPC {
 	// Player player = (Player) hit.getSource();
 	// if ((player.getEquipment().getWeaponId() == 6746 || player
 	// .getEquipment().getWeaponId() == 2402)
-	// && hit.getLook() == HitLook.MELEE_DAMAGE
+	// && hit.getSplat() == HitLook.MELEE_DAMAGE
 	// && hit.getDamage() > 0) {
 	// shieldTimer = 60;
 	// player.getPackets().sendGameMessage(
@@ -96,27 +96,27 @@ public final class Nomad extends NPC {
 	// hit.setDamage((int) (hit.getDamage() * 0.25));
 	// setNextGraphics(new Graphics(1885));
 	// }
-	// if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+	// if (hit.getSplat() == HitLook.MELEE_DAMAGE) {
 	// if (demonPrayer[0]) {
 	// hit.setDamage(0);
 	// } else {
 	// cachedDamage[0] += hit.getDamage();
 	// }
-	// } else if (hit.getLook() == HitLook.MELEE_DAMAGE) {
+	// } else if (hit.getSplat() == HitLook.MELEE_DAMAGE) {
 	// type = 1;
 	// if (demonPrayer[1]) {
 	// hit.setDamage(0);
 	// } else {
 	// cachedDamage[1] += hit.getDamage();
 	// }
-	// } else if (hit.getLook() == HitLook.RANGE_DAMAGE) {
+	// } else if (hit.getSplat() == HitLook.RANGE_DAMAGE) {
 	// type = 2;
 	// if (demonPrayer[2]) {
 	// hit.setDamage(0);
 	// } else {
 	// cachedDamage[2] += hit.getDamage();
 	// }
-	// } else if (hit.getLook() == HitLook.MISSED) {
+	// } else if (hit.getSplat() == HitLook.MISSED) {
 	// cachedDamage[type] += 20;
 	// } else {
 	// cachedDamage[Utils.getRandom(2)] += 20;// random

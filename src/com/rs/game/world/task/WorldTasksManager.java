@@ -4,107 +4,63 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class manages all world tasks
+ */
 public class WorldTasksManager {
 	
-	private static final List<WorldTaskInformation> tasks = Collections.synchronizedList(new LinkedList<WorldTaskInformation>());
+	/**
+	 * The list of tasks that are being processed
+	 */
+	private static final List<WorldTaskInformation> TASKS = Collections.synchronizedList(new LinkedList<WorldTaskInformation>());
 	
-	private WorldTasksManager() {
-	
-	}
-	
-	public static void main(String[] args) {
-		for (int i = 0; i < 100000; i++) {
-			schedule(new WorldTask() {
-				
-				@Override
-				public void run() {
-				
-				}
-				
-			});
-		}
-		processTasks();
-		for (int i = 0; i < 100000; i++) {
-			schedule(new WorldTask() {
-				
-				@Override
-				public void run() {
-				
-				}
-				
-			});
-		}
-		processTasks();
-		for (int i = 0; i < 100000; i++) {
-			schedule(new WorldTask() {
-				
-				@Override
-				public void run() {
-				
-				}
-				
-			});
-		}
-		processTasks();
-		
-	}
-	
-	public static void schedule(WorldTask task) {
-		if (task == null) {
-			return;
-		}
-		tasks.add(new WorldTaskInformation(task, 0, -1));
-	}
-	
+	/**
+	 * Processes all the tasks in the world
+	 */
 	public static void processTasks() {
-		for (WorldTaskInformation taskInformation : tasks.toArray(new WorldTaskInformation[tasks.size()])) {
-			if (taskInformation.continueCount > 0) {
-				taskInformation.continueCount--;
-				continue;
-			}
-			taskInformation.task.run();
-			if (taskInformation.task.needRemove) {
-				tasks.remove(taskInformation);
-			} else {
-				taskInformation.continueCount = taskInformation.continueMaxCount;
+		for (WorldTaskInformation taskInformation : TASKS.toArray(new WorldTaskInformation[TASKS.size()])) {
+			try {
+				if (taskInformation.getInitialTickDelay() > 0) {
+					taskInformation.setInitialTickDelay(taskInformation.getInitialTickDelay() - 1);
+					continue;
+				}
+				// so we can store the ticks passed in the info class
+				taskInformation.getTask().setTicksPassed(taskInformation.getTask().getTicksPassed() + 1);
+				taskInformation.getTask().run();
+				if (taskInformation.getTask().needRemove) {
+					TASKS.remove(taskInformation);
+				} else {
+					taskInformation.setInitialTickDelay(taskInformation.getRepeatTickDelay());
+				}
+			} catch (Exception e) {
+				TASKS.remove(taskInformation);
+				e.printStackTrace();
 			}
 		}
 	}
 	
+	/**
+	 * Schedules a new task with a 0 initial delay and never repeating
+	 */
+	public static void schedule(WorldTask task) {
+		schedule(task, 0, -1);
+	}
+	
+	/**
+	 * Schedules a task with a set delay count but never repeating
+	 */
+	public static void schedule(WorldTask task, int delayCount) {
+		schedule(task, delayCount, -1);
+	}
+	
+	/**
+	 * Schedules a task with a set delay count and a set repeat count
+	 */
 	public static void schedule(WorldTask task, int delayCount, int periodCount) {
 		if (task == null || delayCount < 0 || periodCount < 0) {
 			return;
 		}
-		tasks.add(new WorldTaskInformation(task, delayCount, periodCount));
-	}
-	
-	public static void schedule(WorldTask task, int delayCount) {
-		if (task == null || delayCount < 0) {
-			return;
-		}
-		tasks.add(new WorldTaskInformation(task, delayCount, -1));
-	}
-	
-	public static int getTasksCount() {
-		return tasks.size();
-	}
-	
-	private static final class WorldTaskInformation {
-		
-		private WorldTask task;
-		
-		private int continueMaxCount;
-		
-		private int continueCount;
-		
-		public WorldTaskInformation(WorldTask task, int continueCount, int continueMaxCount) {
-			this.task = task;
-			this.continueCount = continueCount;
-			this.continueMaxCount = continueMaxCount;
-			if (continueMaxCount == -1) {
-				task.needRemove = true;
-			}
-		}
+		TASKS.add(new WorldTaskInformation(task, delayCount, periodCount));
 	}
 	
 }

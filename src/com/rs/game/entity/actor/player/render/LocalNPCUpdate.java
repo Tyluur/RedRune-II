@@ -22,7 +22,7 @@ public final class LocalNPCUpdate {
 	
 	public LocalNPCUpdate(Player player) {
 		this.player = player;
-		localNPCs = new LinkedList<NPC>();
+		localNPCs = new LinkedList<>();
 	}
 	
 	public void reset() {

@@ -1,12 +1,11 @@
 package plugin.inter;
 
 import com.rs.cores.CoresManager;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.game.world.task.WorldTask;
-import com.rs.game.world.task.WorldTasksManager;
 
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -17,21 +16,17 @@ public class CombatTabInterfacePlugin extends InterfacePlugin {
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (componentId == 4) {
-			if (player.hasInstantSpecial(player.getEquipment().getWeaponId())) {
-				return true;
-			}
-			CoresManager.fastExecutor.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					WorldTasksManager.schedule(new WorldTask() {
-						@Override
-						public void run() {
-							player.getCombatDefinitions().switchUsingSpecialAttack();
-						}
-					}, 0);
-					
+			player.putAttribute("special_attack_toggled", true);
+			CoresManager.slowExecutor.schedule(() -> {
+				try {
+					if (player.isDead()) {
+						return;
+					}
+					CombatAlgorithm.checkSpecialToggle(player, 0);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			}, 200);
+			}, 400, TimeUnit.MILLISECONDS);
 		} else if (componentId >= 11 && componentId <= 14) {
 			player.getCombatDefinitions().setAttackStyle(componentId - 11);
 		} else if (componentId == 15) {

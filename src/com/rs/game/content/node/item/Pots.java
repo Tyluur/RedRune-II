@@ -3,7 +3,7 @@ package com.rs.game.content.node.item;
 import com.rs.game.content.controller.impl.activity.Wilderness;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.world.task.WorldTask;

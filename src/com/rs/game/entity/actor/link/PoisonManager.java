@@ -2,7 +2,7 @@ package com.rs.game.entity.actor.link;
 
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
 

@@ -156,7 +156,7 @@ public interface EquipmentConstants {
 			player.getPackets().sendConfig(491, 0);
 		}
 		if (slotId == 3) {
-			player.getCombatDefinitions().desecreaseSpecialAttack(0);
+			player.getCombatDefinitions().decreaseSpecialEnergy(0);
 		}
 	}
 	
@@ -250,7 +250,7 @@ public interface EquipmentConstants {
 		player.getAppearance().generateAppearanceData();
 		player.getPackets().sendSound(2240, 0, 1);
 		if (targetSlot == 3) {
-			player.getCombatDefinitions().desecreaseSpecialAttack(0);
+			player.getCombatDefinitions().decreaseSpecialEnergy(0);
 		}
 		player.getCharges().wear(targetSlot);
 		return true;

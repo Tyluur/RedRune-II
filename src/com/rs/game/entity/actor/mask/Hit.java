@@ -19,7 +19,7 @@ public final class Hit {
 	 */
 	@Getter
 	@Setter
-	private HitSplat look;
+	private HitSplat splat;
 	
 	/**
 	 * The amount of damage
@@ -47,14 +47,20 @@ public final class Hit {
 	 */
 	private int maxHit = -1;
 	
-	public Hit(Actor source, int damage, HitSplat look) {
-		this(source, damage, look, 0);
+	/**
+	 * The task to execute once the hit lands
+	 */
+	@Setter
+	private Runnable landTask;
+	
+	public Hit(Actor source, int damage, HitSplat splat) {
+		this(source, damage, splat, 0);
 	}
 	
-	public Hit(Actor source, int damage, HitSplat look, int delay) {
+	public Hit(Actor source, int damage, HitSplat splat, int delay) {
 		this.source = source;
 		this.damage = damage;
-		this.look = look;
+		this.splat = splat;
 		this.delay = delay;
 	}
 	
@@ -69,59 +75,63 @@ public final class Hit {
 		return damage >= criticalMinimum;
 	}
 	
+	/**
+	 * If the hit missed
+	 */
 	public boolean missed() {
 		return damage == 0;
 	}
 	
-	public int getMark(Player player, Actor victm) {
-		if (HitSplat.HEALED_DAMAGE == look) {
-			return look.getMark();
+	/**
+	 * Gets the hitmark of the hit
+	 */
+	public int getMark(Player player, Actor victim) {
+		if (HitSplat.HEALED_DAMAGE == splat) {
+			return splat.getMark();
 		}
 		if (damage == 0) {
 			return HitSplat.MISSED.getMark();
 		}
-		int mark = look.getMark();
+		int mark = splat.getMark();
 		if (isCritical()) {
 			mark += 10;
 		}
-		if (!interactingWith(player, victm)) {
+		if (!interactingWith(player, victim)) {
 			mark += 14;
 		}
 		return mark;
 	}
 	
-	public boolean interactingWith(Player player, Actor victm) {
-		return player == victm || player == source;
+	/**
+	 * If the player is interacting with the victim, used to shade hitsplats more
+	 */
+	public boolean interactingWith(Player player, Actor victim) {
+		return player == victim || player == source;
 	}
 	
+	/**
+	 * Sets the max hit and
+	 *
+	 * @return This instance for chaining
+	 */
 	public Hit setMaxHit(int maxHit) {
 		this.maxHit = maxHit;
 		return this;
 	}
 	
-	public enum HitSplat {
-		
-		MISSED(8),
-		REGULAR_DAMAGE(3),
-		MELEE_DAMAGE(0),
-		RANGE_DAMAGE(1),
-		MAGIC_DAMAGE(2),
-		REFLECTED_DAMAGE(4),
-		ABSORB_DAMAGE(5),
-		POISON_DAMAGE(6),
-		DESEASE_DAMAGE(7),
-		HEALED_DAMAGE(9),
-		CANNON_DAMAGE(13);
-		
-		private int mark;
-		
-		HitSplat(int mark) {
-			this.mark = mark;
+	@Override
+	public String toString() {
+		return "Hit{" + "source=" + source + ", splat=" + splat + ", damage=" + damage + ", soaking=" + soaking + ", delay=" + delay + ", maxHit=" + maxHit + '}';
+	}
+	
+	/**
+	 * Fires the hit land task
+	 */
+	public void fireLandTask() {
+		if (landTask == null) {
+			return;
 		}
-		
-		public int getMark() {
-			return mark;
-		}
+		landTask.run();
 	}
 	
 }

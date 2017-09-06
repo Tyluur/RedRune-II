@@ -183,6 +183,7 @@ public class InventoryOptionsHandler {
 				return;
 			}
 			long passedTime = Misc.currentTimeMillis() - WorldThread.LAST_CYCLE_CTM;
+			player.stopAll(false);
 			WorldTasksManager.schedule(new WorldTask() {
 				
 				@Override
@@ -194,10 +195,10 @@ public class InventoryOptionsHandler {
 					}
 					player.getSwitchItemCache().clear();
 					PlayerEquipment.equipMultipleSlots(player, slot);
-					player.stopAll(false);
+					stop();
 				}
 				
-			}, passedTime >= 600 ? 0 : passedTime > 400 ? 1 : 0);
+			}, passedTime >= 600 ? 0 : passedTime > 400 ? 1 : 0, 1);
 			if (player.getSwitchItemCache().contains(slotId)) {
 				return;
 			}

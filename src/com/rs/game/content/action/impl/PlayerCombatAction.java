@@ -7,6 +7,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.AttributeConstants;
+import lombok.Getter;
 
 /**
  * This class handles the player combat action.
@@ -19,6 +20,7 @@ public class PlayerCombatAction extends Action {
 	/**
 	 * The target of our combat action
 	 */
+	@Getter
 	private Actor target;
 	
 	/**
@@ -50,11 +52,13 @@ public class PlayerCombatAction extends Action {
 		if (!checkAll(player)) {
 			return false;
 		}
+		player.setNextFaceActor(target);
 		if (target != null) {
 			target.putAttribute("last_target", player);
 			target.putAttribute("last_time_combatted", System.currentTimeMillis());
+			player.putAttribute("combat_target", target);
 		}
-		player.putAttribute("combat_target", target);
+		checkSpecials(player);
 		player.putAttribute("last_time_combatted", System.currentTimeMillis());
 		return checkAll(player);
 	}
@@ -76,8 +80,6 @@ public class PlayerCombatAction extends Action {
 		final int delay = style.getDelay(player);
 		// the multiplier on the speed of the combat action
 		double multiplier = 1.0;
-		// if we're using special
-		final boolean usingSpecial = player.getCombatDefinitions().isUsingSpecialAttack();
 		// the delay wasn't found [this is only possible when we don't have a magic spell
 		// otherwise, delays are calculated in the swing
 		if (delay == -1) {
@@ -88,16 +90,9 @@ public class PlayerCombatAction extends Action {
 		if (player.getAttribute(AttributeConstants.MIASMIC_EFFECT) == Boolean.TRUE) {
 			multiplier = 1.5;
 		}
-		/*
-		// the special attack event
-		Optional<SpecialAttackEvent> specialOptional = getSpecialAttackEvent(player, weaponId, usingSpecial);
-		// sends the swing
-		if (!type.getSwing().run(player, target, id, player.getCombatDefinitions().getAttackStyle(), specialOptional.orElse(null))) {
+		if (!style.getStyle().fireSwing(player, target)) {
 			return -1;
 		}
-		 */
-		System.out.println(style);
-		style.getStyle().fireSwing(player, target);
 		// after combat has been sent, we must send listeners
 		CombatAlgorithm.fireCombatListeners(player, target);
 		return (int) (delay * multiplier);
@@ -170,5 +165,17 @@ public class PlayerCombatAction extends Action {
 		}
 		// anything else ?
 		return true;
+	}
+	
+	/**
+	 * Checks the special attacks, this sends instant specs as well as toggles the queued special attack on before we
+	 * use the weapon.
+	 *
+	 * @param player
+	 * 		The player.
+	 */
+	private void checkSpecials(Player player) {
+		// if the special attack was toggled on and is queued.
+		CombatAlgorithm.checkSpecialToggle(player, 0);
 	}
 }

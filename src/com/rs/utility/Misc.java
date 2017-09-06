@@ -1,5 +1,6 @@
 package com.rs.utility;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rs.cache.Cache;
@@ -17,6 +18,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.function.Consumer;
 
 public final class Misc {
 	
@@ -1093,6 +1095,25 @@ public final class Misc {
 		int distanceX = x1 - x2;
 		int distanceY = y1 - y2;
 		return !(distanceX > size2 + maxDistance || distanceX < -size1 - maxDistance || distanceY > size2 + maxDistance || distanceY < -size1 - maxDistance);
+	}
+	
+	/**
+	 * Polls every element within the specified {@link Queue} and performs the specified {@link Consumer} event for each
+	 * element.
+	 *
+	 * @param queue
+	 * 		The {@link Queue} to poll elements from. Must not be {@code null}.
+	 * @param consumer
+	 * 		The {@link Consumer} to execute for each polled element. Must not be {@code null}.
+	 */
+	public static <T> void pollAll(Queue<T> queue, Consumer<T> consumer) {
+		Preconditions.checkNotNull(queue, "Queue may not be null");
+		Preconditions.checkNotNull(consumer, "Consumer may not be null");
+		
+		T element;
+		while ((element = queue.poll()) != null) {
+			consumer.accept(element);
+		}
 	}
 	
 	public enum Direction {

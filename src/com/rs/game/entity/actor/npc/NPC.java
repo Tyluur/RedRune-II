@@ -9,7 +9,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.npc.combat.NPCCombat;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
@@ -352,12 +352,15 @@ public class NPC extends Actor implements Serializable {
 		if (capDamage != -1 && hit.getDamage() > capDamage) {
 			hit.setDamage(capDamage);
 		}
-		if (hit.getLook() != HitSplat.MELEE_DAMAGE && hit.getLook() != HitSplat.RANGE_DAMAGE && hit.getLook() != HitSplat.MAGIC_DAMAGE) {
+		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
 		Actor source = hit.getSource();
 		if (source == null) {
 			return;
+		}
+		if (hit.getDamage() > 0) {
+			hit.fireLandTask();
 		}
 		if (source instanceof Player) {
 			final Player p2 = (Player) source;
@@ -383,7 +386,7 @@ public class NPC extends Actor implements Serializable {
 					return;
 				}
 				if (!p2.getPrayer().isBoostedLeech()) {
-					if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
+					if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
 						if (p2.getPrayer().usingPrayer(1, 19)) {
 							p2.getPrayer().setBoostedLeech(true);
 							return;
@@ -452,7 +455,7 @@ public class NPC extends Actor implements Serializable {
 							
 						}
 					}
-					if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
+					if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
 						if (p2.getPrayer().usingPrayer(1, 2)) { // sap range
 							if (Misc.getRandom(4) == 0) {
 								if (p2.getPrayer().reachedMax(1)) {
@@ -494,7 +497,7 @@ public class NPC extends Actor implements Serializable {
 							}
 						}
 					}
-					if (hit.getLook() == HitSplat.MAGIC_DAMAGE) {
+					if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
 						if (p2.getPrayer().usingPrayer(1, 3)) { // sap mage
 							if (Misc.getRandom(4) == 0) {
 								if (p2.getPrayer().reachedMax(2)) {

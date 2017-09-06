@@ -8,7 +8,6 @@ import com.rs.game.entity.Entity;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.link.PoisonManager;
 import com.rs.game.entity.actor.mask.*;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.player.Player;
@@ -768,10 +767,10 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	public void removeHitpoints(Hit hit) {
-		if (isDead() || hit.getLook() == HitSplat.ABSORB_DAMAGE) {
+		if (isDead() || hit.getSplat() == HitSplat.ABSORB_DAMAGE) {
 			return;
 		}
-		if (hit.getLook() == HitSplat.HEALED_DAMAGE) {
+		if (hit.getSplat() == HitSplat.HEALED_DAMAGE) {
 			heal(hit.getDamage());
 			return;
 		}
@@ -832,10 +831,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		if (isDead()) {
 			return;
 		}
-		// todo damage for who gets drop
-		receivedHits.add(hit); // added hit first because, soaking added after,
-		// if applyhit used right there shouldnt be any
-		// problem
+		receivedHits.add(hit);
 		handleIngoingHit(hit);
 	}
 	
@@ -1062,6 +1058,21 @@ public abstract class Actor extends WorldTile implements Entity {
 				}
 			}
 		}
+	}
+	
+	public void addFreezeDelay(long time, boolean entangleMessage, Entity freezer) {
+		long currentTime = Misc.currentTimeMillis();
+		if (currentTime > freezeDelay) {
+			resetWalkSteps();
+			freezeDelay = time + currentTime;
+			if (isPlayer()) {
+				Player p = (Player) this;
+				if (!entangleMessage) {
+					p.getPackets().sendGameMessage("You have been frozen.");
+				}
+			}
+		}
+		putAttribute("frozen_by", freezer);
 	}
 	
 	public Actor getAttackedBy() {
@@ -1314,5 +1325,15 @@ public abstract class Actor extends WorldTile implements Entity {
 			break; //for now nothing between break and return
 		}
 		return true;
+	}
+	
+	/**
+	 * Gets the center location.
+	 *
+	 * @return The center location.
+	 */
+	public WorldTile getCenterLocation() {
+		int offset = getSize() >> 1;
+		return getWorldTile().transform(offset, offset, 0);
 	}
 }

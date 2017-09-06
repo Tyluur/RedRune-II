@@ -551,7 +551,7 @@ public class PlayerPrayer implements Serializable {
 		return true;
 	}
 	
-	private void recalculatePrayer() {
+	public void recalculatePrayer() {
 		int value = 0;
 		int index = 0;
 		for (boolean prayer : (!usingQuickPrayer ? onPrayers[getPrayerBook()] : quickPrayers[getPrayerBook()])) {
@@ -634,7 +634,7 @@ public class PlayerPrayer implements Serializable {
 		}
 	}
 	
-	private void closePrayers(int[]... prayers) {
+	public void closePrayers(int[]... prayers) {
 		for (int[] prayer : prayers) {
 			for (int prayerId : prayer) {
 				if (usingQuickPrayer) {
@@ -645,7 +645,6 @@ public class PlayerPrayer implements Serializable {
 					}
 					onPrayers[getPrayerBook()][prayerId] = false;
 					closePrayers(prayerId);
-					
 				}
 			}
 		}

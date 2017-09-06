@@ -5,7 +5,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.data.CombatDefinitions;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Steeltitan;
 import com.rs.game.entity.actor.player.Player;
@@ -40,7 +40,7 @@ public abstract class CombatScript {
 					}
 					target.applyHit(hit);
 					npc.getCombat().doDefenceEmote(target);
-					if (hit.getLook() == HitSplat.MAGIC_DAMAGE && hit.getDamage() == 0) {
+					if (hit.getSplat() == HitSplat.MAGIC_DAMAGE && hit.getDamage() == 0) {
 						target.setNextGraphics(new Graphics(85, 0, 100));
 					}
 					if (target instanceof Player) {

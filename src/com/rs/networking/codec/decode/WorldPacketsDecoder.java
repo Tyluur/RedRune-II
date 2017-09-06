@@ -671,7 +671,6 @@ public final class WorldPacketsDecoder extends Decoder {
 				@SuppressWarnings("unused") boolean unknown = stream.readByte128() == 1;
 				int npcIndex = stream.readUnsignedShort128();
 				NPC npc = World.getNPCs().get(npcIndex);
-				System.out.println("" + npc.getId());
 				if (npc == null || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || !npc.getDefinitions().hasAttackOption()) {
 					return;
 				}

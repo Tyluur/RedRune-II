@@ -2,7 +2,7 @@ package com.rs.game.entity.actor.npc.impl.others;
 
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 
 @SuppressWarnings("serial")
@@ -35,7 +35,7 @@ public class Lucien extends NPC {
 	
 	@Override
 	public void handleIngoingHit(Hit hit) {
-		if (hit.getLook() != HitSplat.MELEE_DAMAGE && hit.getLook() != HitSplat.RANGE_DAMAGE && hit.getLook() != HitSplat.MAGIC_DAMAGE) {
+		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
 		super.handleIngoingHit(hit);

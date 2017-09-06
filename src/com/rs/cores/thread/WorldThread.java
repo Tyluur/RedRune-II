@@ -12,6 +12,8 @@ public final class WorldThread extends Thread {
 	
 	public static long LAST_CYCLE_CTM;
 	
+	private static int ticksPassed = 0;
+	
 	public WorldThread() {
 		setPriority(Thread.MAX_PRIORITY);
 		setName("World Thread");
@@ -22,6 +24,7 @@ public final class WorldThread extends Thread {
 		while (!CoresManager.shutdown) {
 			long currentTime = Misc.currentTimeMillis();
 			try {
+				CoresManager.scheduler.pulse();
 				WorldTasksManager.processTasks();
 				for (Player player : World.getPlayers()) {
 					if (player == null || !player.hasStarted() || player.hasFinished()) {
@@ -51,13 +54,18 @@ public final class WorldThread extends Thread {
 						continue;
 					}
 					player.resetMasks();
-					player.getSession().flush();
 				}
 				for (NPC npc : World.getNPCs()) {
 					if (npc == null || npc.hasFinished()) {
 						continue;
 					}
 					npc.resetMasks();
+				}
+				for (Player player : World.getPlayers()) {
+					if (player == null || !player.hasStarted() || player.hasFinished()) {
+						continue;
+					}
+					player.getSession().flush();
 				}
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -67,6 +75,7 @@ public final class WorldThread extends Thread {
 			if (sleepTime <= 0) {
 				continue;
 			}
+			ticksPassed++;
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
@@ -75,4 +84,7 @@ public final class WorldThread extends Thread {
 		}
 	}
 	
+	public static int getTicksPassed() {
+		return ticksPassed;
+	}
 }

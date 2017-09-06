@@ -2,6 +2,7 @@ package com.rs.game.content.combat.player;
 
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.combat.player.style.MeleeCombatStyle;
+import com.rs.game.content.combat.player.style.RangeCombatStyle;
 import com.rs.game.entity.actor.player.Player;
 import lombok.Getter;
 
@@ -50,7 +51,7 @@ public enum CombatStyle {
 			}
 		}
 	},
-	RANGE(null) {
+	RANGE(new RangeCombatStyle()) {
 		@Override
 		public int getDelay(Player player) {
 			int weaponId = player.getEquipment().getWeaponId();

@@ -6,7 +6,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
@@ -123,7 +123,7 @@ public final class TormentedDemon extends NPC {
 		super.handleIngoingHit(hit);
 		if (hit.getSource() instanceof Player) {// darklight
 			Player player = (Player) hit.getSource();
-			if ((player.getEquipment().getWeaponId() == 6746 || player.getEquipment().getWeaponId() == 2402) && hit.getLook() == HitSplat.MELEE_DAMAGE && hit.getDamage() > 0) {
+			if ((player.getEquipment().getWeaponId() == 6746 || player.getEquipment().getWeaponId() == 2402) && hit.getSplat() == HitSplat.MELEE_DAMAGE && hit.getDamage() > 0) {
 				shieldTimer = 60;
 				player.getPackets().sendGameMessage("The demon is temporarily weakend by your weapon.");
 			}
@@ -132,27 +132,27 @@ public final class TormentedDemon extends NPC {
 			hit.setDamage((int) (hit.getDamage() * 0.25));
 			setNextGraphics(new Graphics(1885));
 		}
-		if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
+		if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
 			if (demonPrayer[0]) {
 				hit.setDamage(0);
 			} else {
 				cachedDamage[0] += hit.getDamage();
 			}
-		} else if (hit.getLook() == HitSplat.MELEE_DAMAGE) {
+		} else if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
 			type = 1;
 			if (demonPrayer[1]) {
 				hit.setDamage(0);
 			} else {
 				cachedDamage[1] += hit.getDamage();
 			}
-		} else if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
+		} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
 			type = 2;
 			if (demonPrayer[2]) {
 				hit.setDamage(0);
 			} else {
 				cachedDamage[2] += hit.getDamage();
 			}
-		} else if (hit.getLook() == HitSplat.MISSED) {
+		} else if (hit.getSplat() == HitSplat.MISSED) {
 			cachedDamage[type] += 20;
 		} else {
 			cachedDamage[Misc.getRandom(2)] += 20;// random

@@ -224,4 +224,41 @@ public class WorldTile implements Serializable {
 	public boolean matches(WorldTile other) {
 		return x == other.x && y == other.y && plane == other.plane;
 	}
+	
+	/**
+	 * Returns a location.
+	 *
+	 * @param diffX
+	 * 		The amount to increase the current x-coordinate with.
+	 * @param diffY
+	 * 		The amount to increase the current y-coordinate with.
+	 * @param diffZ
+	 * 		The amount to increase the current height with.
+	 * @return The location.
+	 */
+	public WorldTile transform(int diffX, int diffY, int diffZ) {
+		return new WorldTile(x + diffX, y + diffY, plane + diffZ);
+	}
+	
+	/**
+	 * Returns a location calculated by increasing this coordinates with the given location's coordinates..
+	 *
+	 * @param other
+	 * 		The delta location.
+	 * @return The location.
+	 */
+	public WorldTile transform(WorldTile other) {
+		return new WorldTile(x + other.x, y + other.y, plane + other.plane);
+	}
+	
+	/**
+	 * Gets the distance between this location and the given location.
+	 *
+	 * @param tile
+	 * 		The location argued.
+	 * @return The distance.
+	 */
+	public int getDistance(WorldTile tile) {
+		return Misc.getDistance(getX(), getY(), tile.getX(), tile.getY());
+	}
 }

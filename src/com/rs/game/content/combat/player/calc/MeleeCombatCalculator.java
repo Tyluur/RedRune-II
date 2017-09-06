@@ -16,8 +16,8 @@ public class MeleeCombatCalculator extends AbstractCombatCalculator {
 	@Override
 	public double getAttackBonus(Player player) {
 		final int weaponId = player.getEquipment().getWeaponId();
-		final int attackStyle = /*(int) params[1];*/ 1; // TODO get combat style
-		final boolean specialAttack = false;
+		final int attackStyle = player.getCombatDefinitions().getAttackStyle();
+		final boolean specialAttack = player.getCombatDefinitions().isUsingSpecialAttack();
 		
 		final int style = CombatAlgorithm.getMeleeBonusStyle(weaponId, attackStyle);
 		int baseLevel = player.getSkills().getLevelForXp(ATTACK);
@@ -72,10 +72,9 @@ public class MeleeCombatCalculator extends AbstractCombatCalculator {
 	}
 	
 	@Override
-	public int getMaximumHit(Player player) {
+	public int getMaximumHit(Player player, double multiplier) {
 		final int weaponId = player.getEquipment().getWeaponId();
 		final int attackStyle = player.getCombatDefinitions().getAttackStyle();
-		final double multiplier =/* (double) params[2];*/ 1D;
 		
 		double strengthLvl = player.getSkills().getLevel(STRENGTH);
 		int xpStyle = CombatAlgorithm.getXpStyle(weaponId, attackStyle);
@@ -84,16 +83,15 @@ public class MeleeCombatCalculator extends AbstractCombatCalculator {
 		boolean berserk = player.getEquipment().getIdInSlot(SLOT_AMULET) == 11128 && (weaponId == 6528 || weaponId == 6527 || weaponId == 6523 || weaponId == 6526);
 		double otherBonus = berserk ? 1.20 : 1;
 		double effectiveStrength = 8 + Math.floor((strengthLvl * player.getPrayer().getStrengthMultiplier()) + styleBonus);
-		/*if (StaticCombatFormulae.fullVoidEquipped(player, 11665, 11676)) {
+		if (CombatAlgorithm.fullVoidEquipped(player, 11665, 11676)) {
 			effectiveStrength = Math.floor(effectiveStrength * 1.1);
-		}*/
+		}
 		// if we have the dharoks armour set equipped
-		/*if (StaticCombatFormulae.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok", "dharok", "dharok")) {
-			// Example: 99 LP out of 999 LP total. 99 / 999 = 0.1; 2  - 0.1 = 1.9 for a 90% damage boost.
-			double dharokMultiplier = 2 - ((double) player.getHealthPoints() / (double) player.getMaxHealth());
+		if (CombatAlgorithm.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok", "dharok", "dharok")) {
+			double dharokMultiplier = 2 - ((double) player.getHitpoints() / (double) player.getMaxHitpoints());
 			// multiplying the
 			otherBonus *= dharokMultiplier;
-		}*/
+		}
 		double strengthBonus = player.getCombatDefinitions().getBonus(STRENGTH_BONUS);
 		double baseDamage = 5 + effectiveStrength * (1 + (strengthBonus / 64));
 		double max = Math.floor(baseDamage * multiplier * otherBonus);

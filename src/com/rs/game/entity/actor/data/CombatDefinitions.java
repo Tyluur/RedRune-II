@@ -379,16 +379,16 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public void resetSpecialAttack() {
-		desecreaseSpecialAttack(0);
+		decreaseSpecialEnergy(0);
 		specialAttackPercentage = 100;
 		refreshSpecialAttackPercentage();
 	}
 	
-	public void desecreaseSpecialAttack(int ammount) {
+	public void decreaseSpecialEnergy(int amount) {
 		usingSpecialAttack = false;
 		refreshUsingSpecialAttack();
-		if (ammount > 0) {
-			specialAttackPercentage -= ammount;
+		if (amount > 0) {
+			specialAttackPercentage -= amount;
 			refreshSpecialAttackPercentage();
 		}
 	}
@@ -402,7 +402,7 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public void setSpecialAttack(int special) {
-		desecreaseSpecialAttack(0);
+		decreaseSpecialEnergy(0);
 		specialAttackPercentage = (byte) special;
 		refreshSpecialAttackPercentage();
 	}
@@ -559,6 +559,11 @@ public final class CombatDefinitions implements Serializable {
 	public void switchUsingSpecialAttack() {
 		usingSpecialAttack = !usingSpecialAttack;
 		refreshUsingSpecialAttack();
+	}
+	
+	public void setUsingSpecialAttack(boolean usingSpecialAttack) {
+		this.usingSpecialAttack = usingSpecialAttack;
+		refreshUsingSpecialAttack();;
 	}
 	
 	public boolean hasRingOfVigour() {

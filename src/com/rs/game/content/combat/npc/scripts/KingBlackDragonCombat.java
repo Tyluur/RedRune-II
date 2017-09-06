@@ -1,6 +1,6 @@
 package com.rs.game.content.combat.npc.scripts;
 
-import com.rs.game.content.Combat;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
@@ -37,7 +37,7 @@ public class KingBlackDragonCombat extends CombatScript {
 		} else if (attackStyle == 1 || attackStyle == 2) {
 			int damage = Misc.getRandom(650);
 			final Player player = target instanceof Player ? (Player) target : null;
-			if (Combat.hasAntiDragProtection(target) || (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7)))) {
+			if (CombatAlgorithm.hasAntiDragProtection(target) || (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7)))) {
 				damage = 0;
 			}
 			if (player != null && player.getFireImmune() > Misc.currentTimeMillis()) {
@@ -56,7 +56,7 @@ public class KingBlackDragonCombat extends CombatScript {
 		} else if (attackStyle == 3) {
 			int damage;
 			final Player player = target instanceof Player ? (Player) target : null;
-			if (Combat.hasAntiDragProtection(target)) {
+			if (CombatAlgorithm.hasAntiDragProtection(target)) {
 				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
 				if (player != null) {
 					player.getPackets().sendGameMessage("Your shield absorbs most of the dragon's poisonous breath!", true);
@@ -81,7 +81,7 @@ public class KingBlackDragonCombat extends CombatScript {
 		} else if (attackStyle == 4) {
 			int damage;
 			final Player player = target instanceof Player ? (Player) target : null;
-			if (Combat.hasAntiDragProtection(target)) {
+			if (CombatAlgorithm.hasAntiDragProtection(target)) {
 				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
 				if (player != null) {
 					player.getPackets().sendGameMessage("Your shield absorbs most of the dragon's freezing breath!", true);
@@ -106,7 +106,7 @@ public class KingBlackDragonCombat extends CombatScript {
 		} else {
 			int damage;
 			final Player player = target instanceof Player ? (Player) target : null;
-			if (Combat.hasAntiDragProtection(target)) {
+			if (CombatAlgorithm.hasAntiDragProtection(target)) {
 				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
 				if (player != null) {
 					player.getPackets().sendGameMessage("Your shield absorbs most of the dragon's shocking breath!", true);

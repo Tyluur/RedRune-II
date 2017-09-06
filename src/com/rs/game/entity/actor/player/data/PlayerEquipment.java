@@ -156,9 +156,9 @@ public final class PlayerEquipment implements Serializable {
 		}
 		Item item2 = new Item(itemId, oldAmt + item.getAmount());
 		player.getEquipment().getItems().set(targetSlot, item2);
-		player.getEquipment().refresh(targetSlot, targetSlot == 3 ? 5 : targetSlot == 3 ? 0 : 3);
+		player.getEquipment().refresh(targetSlot, targetSlot == 3 ? 5 : 3);
 		if (targetSlot == 3) {
-			player.getCombatDefinitions().desecreaseSpecialAttack(0);
+			player.getCombatDefinitions().decreaseSpecialEnergy(0);
 		}
 		player.getCharges().wear(targetSlot);
 		return true;

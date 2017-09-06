@@ -3,14 +3,21 @@ package com.rs.game.content.combat.player.style;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.combat.CombatRoll;
+import com.rs.game.content.combat.CombatSwingDetail;
 import com.rs.game.content.combat.player.AbstractCombatStyle;
 import com.rs.game.content.combat.player.calc.MeleeCombatCalculator;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.data.CombatDefinitions;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.player.Player;
+import com.rs.game.plugin.PluginRepository;
+import com.rs.game.plugin.combat.SpecialAttackPlugin;
+import com.rs.game.world.task.WorldTask;
+import com.rs.game.world.task.WorldTasksManager;
+
+import java.util.Optional;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -23,26 +30,38 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 	}
 	
 	@Override
-	public void fireSwing(Player source, Actor target) {
+	public boolean fireSwing(Player source, Actor target) {
 		int weaponId = source.getEquipment().getWeaponId();
 		int combatStyle = source.getCombatDefinitions().getAttackStyle();
 		
-		String weaponName = weaponId == -1 ? "unarmed" : ItemDefinitions.getItemDefinitions(weaponId).getName();
-		
-		// the damage
-		int damage = getRandomDamage(source, target);
-		
-		// the delay on the hit
-		final int hitDelay = weaponId == 10887 || (weaponName.toLowerCase().contains("maul") && !weaponName.startsWith("Granite")) ? 2 : 1;
-		
-		// animations
-		final int animation = CombatAlgorithm.getWeaponAttackEmote(weaponId, combatStyle);
-		
-		// sends the hit to the target
-		sendHit(source, target, calculator.getMaximumHit(source), damage);
-		
-		// the player does the attack animation
-		source.setNextAnimation(new Animation(animation));
+		if (source.getCombatDefinitions().isUsingSpecialAttack()) {
+			Optional<SpecialAttackPlugin> optional = PluginRepository.getSpecialPlugin(weaponId);
+			int energy = CombatAlgorithm.getSpecialAmount(weaponId);
+			if (energy == 0 || !optional.isPresent()) {
+				source.getPackets().sendGameMessage("This weapon has no special attack registered; please report this on forums.");
+				return false;
+			}
+			source.getCombatDefinitions().switchUsingSpecialAttack();
+			if (source.getCombatDefinitions().getSpecialAttackPercentage() < energy) {
+				source.getPackets().sendGameMessage("You don't have enough power left.");
+				return false;
+			}
+			SpecialAttackPlugin plugin = optional.get();
+			plugin.fire(source, target, this);
+			source.getCombatDefinitions().decreaseSpecialEnergy(energy);
+		} else {
+			String weaponName = weaponId == -1 ? "unarmed" : ItemDefinitions.getItemDefinitions(weaponId).getName();
+			
+			// the delay until the hitsplat appears
+			final int hitDelay = weaponId == 10887 || (weaponName.toLowerCase().contains("maul") && !weaponName.startsWith("Granite")) ? 1 : 0;
+			
+			// the player does the attack animation
+			source.setNextAnimation(new Animation(CombatAlgorithm.getWeaponAttackEmote(weaponId, combatStyle)));
+			
+			// sends the hit to the target
+			sendHit(source, target, calculator.getMaximumHit(source, 1), getRandomDamage(source, target, 1), hitDelay);
+		}
+		return true;
 	}
 	
 	@Override
@@ -51,7 +70,7 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 		double combatXp = damage / 2.5;
 		if (combatXp > 0) {
 			source.getAuraManager().checkSuccefulHits(hit.getDamage());
-			if (hit.getLook() == HitSplat.RANGE_DAMAGE) {
+			if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
 				if (attackStyle == 2) {
 					if (target.isPlayer()) {
 						source.getSkills().addXpNoModifier(RANGE, combatXp / 2);
@@ -99,15 +118,23 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 	}
 	
 	@Override
-	public int getRandomDamage(Player source, Actor target) {
+	public int getRandomDamage(Player source, Actor target, double multiplier) {
 		int weaponId = source.getEquipment().getWeaponId();
 		int combatStyle = source.getCombatDefinitions().getAttackStyle();
-		return CombatRoll.randomizeHit(calculator.getMaximumHit(source), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
+		return CombatRoll.randomizeHit(calculator.getMaximumHit(source, 1), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
 	}
 	
 	@Override
-	public void sendHit(Actor source, Actor target, int maxHit, int damage) {
-		System.out.println("max=" + maxHit);
-		target.applyHit(new Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit));
+	public CombatSwingDetail sendHit(Player source, Actor target, int maxHit, int damage, int delay) {
+		final Hit hit = new Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
+		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
+		target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
+		WorldTasksManager.schedule(new WorldTask() {
+			@Override
+			public void run() {
+				target.applyHit(hit);
+			}
+		}, delay);
+		return new CombatSwingDetail(source, target, hit);
 	}
 }

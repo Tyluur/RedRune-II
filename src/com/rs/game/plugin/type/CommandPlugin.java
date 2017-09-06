@@ -89,16 +89,6 @@ public abstract class CommandPlugin extends Plugin {
 	}
 	
 	/**
-	 * Converts a varargs parameter to the String[] array
-	 *
-	 * @param varArgs
-	 * 		The var args
-	 */
-	protected String[] arguments(String... varArgs) {
-		return varArgs;
-	}
-	
-	/**
 	 * Gets an integer from the parameter
 	 *
 	 * @param args

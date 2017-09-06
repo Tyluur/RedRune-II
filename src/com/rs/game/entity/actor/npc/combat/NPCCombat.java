@@ -1,6 +1,6 @@
 package com.rs.game.entity.actor.npc.combat;
 
-import com.rs.game.content.Combat;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.combat.npc.CombatScriptsHandler;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
@@ -174,7 +174,7 @@ public final class NPCCombat {
 	}
 	
 	public void doDefenceEmote(Actor target) {
-		target.setNextAnimationNoPriority(new Animation(Combat.getDefenceEmote(target)));
+		target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
 	}
 	
 	public Actor getTarget() {

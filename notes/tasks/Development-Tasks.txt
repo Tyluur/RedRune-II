@@ -6,6 +6,7 @@
 +   Appearance modification
 	-   Beard/gender/shoes/clothing
 +   Player Combat rewrite
+	-   Special attack max hit modifiers need to be included inline
 +   SQL integration
 	-   Account creation as well
 

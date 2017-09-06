@@ -25,5 +25,5 @@ public abstract class AbstractCombatCalculator implements SkillConstants, Equipm
 	/**
 	 * Gets the maximum hit of a player
 	 */
-	public abstract int getMaximumHit(Player player);
+	public abstract int getMaximumHit(Player player, double multiplier);
 }

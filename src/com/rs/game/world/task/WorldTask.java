@@ -1,10 +1,29 @@
 package com.rs.game.world.task;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public abstract class WorldTask implements Runnable {
 	
-	protected boolean needRemove;
+	@Getter
+	@Setter
+	protected int ticksPassed;
 	
-	public final void stop() {
+	/**
+	 * If the task needs to be removed
+	 */
+	@Getter
+	boolean needRemove;
+	
+	@Override
+	public String toString() {
+		return "WorldTask[ticksPassed=" + ticksPassed + ", needRemove=" + needRemove + "]";
+	}
+	
+	/**
+	 * Stops the task
+	 */
+	public void stop() {
 		needRemove = true;
 	}
 }

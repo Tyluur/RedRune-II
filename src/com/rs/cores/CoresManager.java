@@ -7,6 +7,7 @@ import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.cache.loaders.ObjectDefinitions;
 import com.rs.cores.factory.DecoderThreadFactory;
 import com.rs.cores.factory.SlowThreadFactory;
+import com.rs.cores.schedule.Scheduler;
 import com.rs.cores.thread.WorldThread;
 import com.rs.game.GameConstants;
 import com.rs.game.entity.actor.mask.Graphics;
@@ -33,6 +34,8 @@ public final class CoresManager {
 	public static ExecutorService serverWorkerChannelExecutor;
 	
 	public static ExecutorService serverBossChannelExecutor;
+	
+	public static Scheduler scheduler;
 	
 	public static Timer fastExecutor;
 	
@@ -63,6 +66,7 @@ public final class CoresManager {
 		fastExecutor = new Timer("Fast Executor");
 		slowExecutor = availableProcessors >= 6 ? Executors.newScheduledThreadPool(availableProcessors >= 12 ? 4 : 2, new SlowThreadFactory()) : Executors.newSingleThreadScheduledExecutor(new SlowThreadFactory());
 		worldThread.start();
+		scheduler = new Scheduler();
 		registerTasks();
 	}
 	

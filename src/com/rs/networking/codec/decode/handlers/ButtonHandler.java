@@ -1,7 +1,9 @@
 package com.rs.networking.codec.decode.handlers;
 
+import com.rs.game.GameFlags;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.PluginRepository;
+import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 
@@ -39,7 +41,10 @@ public class ButtonHandler {
 		if (!player.getControllerManager().processButtonClick(interfaceId, componentId, slotId, packetId)) {
 			return;
 		}
-		PluginRepository.handleInterface(player, interfaceId, componentId, itemId, slotId, packetId);
+		InterfacePlugin plugin = PluginRepository.handleInterface(player, interfaceId, componentId, itemId, slotId, packetId);
+		if (plugin != null && GameFlags.debugMode) {
+			System.out.println("[" + plugin.getClass().getSimpleName() + "] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]");
+		}
 	}
 	
 }

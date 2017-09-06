@@ -1,13 +1,28 @@
 package com.rs.game.content.combat;
 
+import com.google.common.base.Preconditions;
 import com.rs.cache.loaders.ItemDefinitions;
+import com.rs.cores.CoresManager;
+import com.rs.game.content.action.impl.PlayerCombatAction;
 import com.rs.game.content.combat.player.CombatStyle;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
+import com.rs.game.plugin.PluginRepository;
+import com.rs.game.plugin.combat.SpecialAttackPlugin;
+import com.rs.game.world.World;
+import com.rs.game.world.region.Region;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.BonusConstants;
-import com.rs.utility.constants.EquipmentConstants;
 import com.rs.utility.constants.SkillConstants;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import static com.rs.utility.constants.EquipmentConstants.*;
 
 /**
  * This class handles all the functions/algorithms that remain static throughout player combat.
@@ -24,7 +39,6 @@ public final class CombatAlgorithm implements BonusConstants {
 	 * 		The player
 	 */
 	public static CombatStyle findCombatStyle(Player player) {
-		System.out.println(player.getCombatDefinitions().getAutoCastSpell());
 		// magic gets first priority
 		int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutoCastSpell());
 		if (spellId != 0) {
@@ -61,7 +75,7 @@ public final class CombatAlgorithm implements BonusConstants {
 		if (name.contains("knife") || name.contains("dart") || name.contains("javelin") || name.contains("thrownaxe") || name.contains("throwing axe") || name.contains("crystal bow") || name.equalsIgnoreCase("zaryte bow") || name.contains("chinchompa") || name.contains("bolas") || name.contains("sling") || name.contains("toktz-xil-ul")) {
 			return 2;
 		}
-		int ammoId = player.getEquipment().getIdInSlot(EquipmentConstants.SLOT_ARROWS);
+		int ammoId = player.getEquipment().getIdInSlot(SLOT_ARROWS);
 		switch (weaponId) {
 			case 15241: // Hand cannon
 				switch (ammoId) {
@@ -556,6 +570,15 @@ public final class CombatAlgorithm implements BonusConstants {
 		}
 	}
 	
+	public static double getSpecialMaxModifier(int itemId) {
+		switch (itemId) {
+			case 11694:
+				return 1.375;
+			default:
+				return 1;
+		}
+	}
+	
 	/**
 	 * Gets the accuracy multiplier of a weapon when on special
 	 *
@@ -689,10 +712,92 @@ public final class CombatAlgorithm implements BonusConstants {
 	}
 	
 	public static boolean canFight(Player player, Actor target) {
-		if (player.isDead() || player.hasFinished() || target.isDead() || target.hasFinished()) {
-			return false;
+		return !player.isDead() && !player.hasFinished() && !target.isDead() && !target.hasFinished();
+	}
+	
+	/**
+	 * Checks if we have an armour set equipped. This uses lowercase naming. <br> Example usage:
+	 * <br>armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_chest, SLOT_LEGS, SLOT_WEAPON }, "dharok", "dharok",
+	 * "dharok", "dharok");// armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_AMMY, SLOT_LEGS, SLOT_WEAPON },
+	 * "dharok", "dharok", "dharok", "dharok");
+	 *
+	 * @param player
+	 * 		The player
+	 * @param slots
+	 * 		The slots
+	 * @param nameFlags
+	 * 		The name flags, with the indexes corresponding to the slots indexes.
+	 */
+	public static boolean armourSetEquipped(Player player, int[] slots, String... nameFlags) {
+		Preconditions.checkArgument(slots.length == nameFlags.length, "Name flags and slot length must be equal!");
+		for (int i = 0; i < slots.length; i++) {
+			int slot = slots[i];
+			int itemInSlot = player.getEquipment().getIdInSlot(slot);
+			// theres no item in the slot, so its not possible to match the name
+			if (itemInSlot == -1) {
+				return false;
+			}
+			String itemInSlotName = ItemDefinitions.getItemDefinitions(itemInSlot).getName().toLowerCase();
+			
+			String nameFlag = nameFlags[i].toLowerCase();
+			// the item in that slot's name didn't have the expected flag
+			if (!itemInSlotName.contains(nameFlag)) {
+				return false;
+			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Checks if we have full void equipped, with the possible helmet ids
+	 *
+	 * @param player
+	 * 		The player to check on
+	 * @param helmetIds
+	 * 		The helmet id
+	 */
+	public static boolean fullVoidEquipped(Player player, int... helmetIds) {
+		boolean hasDeflector = player.getEquipment().getIdInSlot(SLOT_SHIELD) == 19712;
+		if (player.getEquipment().getIdInSlot(SLOT_HANDS) != 8842) {
+			if (hasDeflector) {
+				hasDeflector = false;
+			} else {
+				return false;
+			}
+		}
+		int legsId = player.getEquipment().getIdInSlot(SLOT_LEGS);
+		boolean hasLegs = legsId != -1 && (legsId == 8840 || legsId == 19786 || legsId == 19788 || legsId == 19790);
+		if (!hasLegs) {
+			if (hasDeflector) {
+				hasDeflector = false;
+			} else {
+				return false;
+			}
+		}
+		int torsoId = player.getEquipment().getIdInSlot(SLOT_CHEST);
+		boolean hasTorso = torsoId != -1 && (torsoId == 8839 || torsoId == 10611 || torsoId == 19785 || torsoId == 19787 || torsoId == 19789);
+		if (!hasTorso) {
+			if (hasDeflector) {
+				hasDeflector = false;
+			} else {
+				return false;
+			}
+		}
+		if (hasDeflector) {
+			return true;
+		}
+		int helmId = player.getEquipment().getIdInSlot(SLOT_HAT);
+		if (helmId == -1) {
+			return false;
+		}
+		boolean hasHelm = false;
+		for (int id : helmetIds) {
+			if (helmId == id) {
+				hasHelm = true;
+				break;
+			}
+		}
+		return hasHelm;
 	}
 	
 	/**
@@ -703,7 +808,7 @@ public final class CombatAlgorithm implements BonusConstants {
 	 * @param target
 	 * 		The target
 	 * @param style
-	 * 		The combat type
+	 * 		The combat style
 	 */
 	public static boolean isWithinDistance(Player player, Actor target, CombatStyle style) {
 		// the distance change
@@ -748,7 +853,7 @@ public final class CombatAlgorithm implements BonusConstants {
 	 * 		The style of combat the player is using
 	 */
 	public static int getMinimumDistance(Player player, CombatStyle style) {
-		final int weaponId = player.getEquipment().getIdInSlot(EquipmentConstants.SLOT_WEAPON);
+		final int weaponId = player.getEquipment().getIdInSlot(SLOT_WEAPON);
 		final int attackStyle = player.getCombatDefinitions().getAttackStyle();
 		final String name = weaponId == -1 ? "null" : ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
 		switch (style) {
@@ -1080,10 +1185,10 @@ public final class CombatAlgorithm implements BonusConstants {
 	public static int getDefenceEmote(Actor actor) {
 		if (actor.isPlayer()) {
 			Player player = actor.toPlayer();
-			int shieldId = player.getEquipment().getIdInSlot(EquipmentConstants.SLOT_SHIELD);
+			int shieldId = player.getEquipment().getIdInSlot(SLOT_SHIELD);
 			String shieldName = shieldId == -1 ? null : ItemDefinitions.getItemDefinitions(shieldId).getName().toLowerCase();
 			if (shieldId == -1 || (shieldName.contains("book") && shieldId != 18346)) {
-				int weaponId = player.getEquipment().getIdInSlot(EquipmentConstants.SLOT_WEAPON);
+				int weaponId = player.getEquipment().getIdInSlot(SLOT_WEAPON);
 				if (weaponId == -1) {
 					return 424;
 				}
@@ -1559,7 +1664,87 @@ public final class CombatAlgorithm implements BonusConstants {
 		}
 	}
 	
-	public static int getSpecialAmmount(int weaponId) {
+	/**
+	 * Performing some checks to toggle the special attack bar. It must be done after players stop switching if they are
+	 * to make combat smooth.
+	 *
+	 * @param player
+	 * 		The player
+	 * @param attempt
+	 * 		The attempt number
+	 */
+	public static void checkSpecialToggle(Player player, final int attempt) {
+		if (!player.getSwitchItemCache().isEmpty() && attempt <= 3) {
+			CoresManager.slowExecutor.schedule(() -> checkSpecialToggle(player, attempt + 1), 100, TimeUnit.MILLISECONDS);
+			return;
+		}
+		if (player.removeAttribute("special_attack_toggled", false)) {
+			player.getCombatDefinitions().switchUsingSpecialAttack();
+		}
+		if (player.getCombatDefinitions().isUsingSpecialAttack()) {
+			int weaponId = player.getEquipment().getWeaponId();
+			Optional<SpecialAttackPlugin> optional = PluginRepository.getSpecialPlugin(weaponId);
+			if (!optional.isPresent()) {
+				return;
+			}
+			SpecialAttackPlugin plugin = optional.get();
+			if (!plugin.isInstant()) {
+				return;
+			}
+			final boolean energyRequired = player.getCombatDefinitions().getSpecialAttackPercentage() < getSpecialAmount(player.getEquipment().getWeaponId());
+			// not enough energy
+			if (energyRequired) {
+				player.getPackets().sendGameMessage("You don't have enough special attack energy.");
+				player.getCombatDefinitions().setUsingSpecialAttack(false);
+				return;
+			}
+			// the combat action
+			PlayerCombatAction action = player.getActionManager().getAction() instanceof PlayerCombatAction ? (PlayerCombatAction) player.getActionManager().getAction() : null;
+			Actor target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
+			// no target and it was necessary
+			if (target == null && plugin.requiresFight()) {
+				player.getCombatDefinitions().setUsingSpecialAttack(false);
+				return;
+			}
+			// we can't allow a swing on dead target
+			if (target != null && target.isDead()) {
+				player.getCombatDefinitions().setUsingSpecialAttack(false);
+				return;
+			}
+			if (plugin.requiresFight()) {
+				if (!canFight(player, target)) {
+					return;
+				}
+				
+				// just in case [nearly certain all instant specs are melee...]
+				CombatStyle style = findCombatStyle(player);
+				if (style == null) {
+					return;
+				}
+				// we are far away
+				if (!isWithinDistance(player, target, style)) {
+					return;
+				}
+				plugin.fire(player, target, style.getStyle());
+				player.setNextFaceActor(target);
+			} else {
+				plugin.fire(player, target, null);
+			}
+			// dropping the special attack amount
+			player.getCombatDefinitions().decreaseSpecialEnergy(getSpecialAmount(player.getEquipment().getWeaponId()));
+			// we used spec so it is triggered off
+			player.getCombatDefinitions().setUsingSpecialAttack(false);
+		}
+	}
+	
+	/**
+	 * Gets the amount of special energy a weapon uses
+	 */
+	public static int getSpecialAmount(int weaponId) {
+		ItemDefinitions defs = ItemDefinitions.getItemDefinitions(weaponId);
+		if (defs.isLended()) {
+			weaponId = defs.getLendId();
+		}
 		switch (weaponId) {
 			case 4587: // dragon sci
 			case 859: // magic longbow
@@ -1594,23 +1779,26 @@ public final class CombatAlgorithm implements BonusConstants {
 			case 13772:
 			case 13774:
 			case 13776:
+			case 11716:
 				return 25;
 			case 15442:// whip start
 			case 15443:
 			case 15444:
 			case 15441:
 			case 4151:
+			case 23691:
 			case 11698: // sgs
+			case 23681:
 			case 11694: // ags
-			case 13902: // statius hammer
+			case 23679:
 			case 13904:
 			case 13905: // vesta spear
 			case 13907:
 			case 14484: // d claws
+			case 23695:
 			case 10887: // anchor
 			case 3204: // d hally
 			case 4153: // granite maul
-			case 14684: // zanik cbow
 			case 15241: // hand cannon
 			case 13908:
 			case 13954:// morrigan javelin
@@ -1624,8 +1812,11 @@ public final class CombatAlgorithm implements BonusConstants {
 			case 13957:
 				return 50;
 			case 11730: // ss
+			case 23690:
 			case 11696: // bgs
+			case 23680:
 			case 11700: // zgs
+			case 23682:
 			case 35:// Excalibur
 			case 8280:
 			case 14632:
@@ -1638,9 +1829,183 @@ public final class CombatAlgorithm implements BonusConstants {
 			case 22213:
 				return 100;
 			case 19784: // korasi sword
+			case 7158: // d2h
+			case 21371: // vine whip
 				return 60;
+			case 14684: // zanik cbow
+				return 50;
+			case 13902: // statius hammer
+				return 35;
 			default:
 				return 0;
 		}
 	}
+	
+	public static Actor[] getMultiAttackTargets(Player player, Actor target) {
+		return getMultiAttackTargets(player, target, 1, 9);
+	}
+	
+	public static Actor[] getMultiAttackTargets(Player player, Actor target, int maxDistance, int maxAmtTargets) {
+		List<Actor> possibleTargets = new ArrayList<>();
+		possibleTargets.add(target);
+		if (target.isAtMultiArea()) {
+			y:
+			for (int regionId : target.getMapRegionsIds()) {
+				Region region = RegionManager.getRegion(regionId);
+				if (target instanceof Player) {
+					List<Integer> playerIndexes = region.getPlayerIndexes();
+					if (playerIndexes == null) {
+						continue;
+					}
+					for (int playerIndex : playerIndexes) {
+						Player p2 = World.getPlayers().get(playerIndex);
+						if (p2 == null || p2 == player || p2 == target || p2.isDead() || !p2.hasStarted() || p2.hasFinished() || !p2.isCanPvp() || !p2.isAtMultiArea() || !p2.withinDistance(target, maxDistance) || !player.getControllerManager().canHit(p2)) {
+							continue;
+						}
+						possibleTargets.add(p2);
+						if (possibleTargets.size() == maxAmtTargets) {
+							break y;
+						}
+					}
+				} else {
+					List<Integer> npcIndexes = region.getNPCsIndexes();
+					if (npcIndexes == null) {
+						continue;
+					}
+					for (int npcIndex : npcIndexes) {
+						NPC n = World.getNPCs().get(npcIndex);
+						if (n == null || n == target || n == player.getFamiliar() || n.isDead() || n.hasFinished() || !n.isAtMultiArea() || !n.withinDistance(target, maxDistance) || !n.getDefinitions().hasAttackOption() || !player.getControllerManager().canHit(n)) {
+							continue;
+						}
+						possibleTargets.add(n);
+						if (possibleTargets.size() == maxAmtTargets) {
+							break y;
+						}
+					}
+				}
+			}
+		}
+		return possibleTargets.toArray(new Actor[possibleTargets.size()]);
+	}
+	
+	public static boolean hasAntiDragProtection(Actor target) {
+		if (target instanceof NPC) {
+			return false;
+		}
+		Player p2 = (Player) target;
+		int shieldId = p2.getEquipment().getShieldId();
+		return shieldId == 1540 || shieldId == 11283 || shieldId == 11284;
+	}
+	
+	/**
+	 * Gets the graphics id of the thrown weapon
+	 *
+	 * @param weaponId
+	 * 		The id of the weapon
+	 */
+	public static int getKnifeThrowGfxId(int weaponId) {
+		// knives
+		if (weaponId == 868) { // rune
+			return 218;
+		} else if (weaponId == 867) { // addy
+			return 217;
+		} else if (weaponId == 866) {  // mith
+			return 216;
+		} else if (weaponId == 869) { // black
+			return 215;
+		} else if (weaponId == 865) { // steel
+			return 214;
+		} else if (weaponId == 863) { // iron
+			return 213;
+		} else if (weaponId == 864) { // bronze
+			return 212;
+		}
+		// darts
+		if (weaponId == 806) { // bronze
+			return 226;
+		} else if (weaponId == 807) { // iron
+			return 227;
+		} else if (weaponId == 808) { // steel
+			return 228;
+		} else if (weaponId == 3093) { // black
+			return 34;
+		} else if (weaponId == 809) { // mithril
+			return 229;
+		} else if (weaponId == 810) { // addy
+			return 230;
+		} else if (weaponId == 811) { // rune
+			return 231;
+		} else if (weaponId == 11230) { // dragon
+			return 1122;
+		}
+		// javelins
+		if (weaponId >= 13954 && weaponId <= 13956 || weaponId >= 13879 && weaponId <= 13882) {
+			return 1837;
+		}
+		// thrownaxe
+		if (weaponId == 13883 || weaponId == 13957) {
+			return 1839;
+		}
+		// obby rings
+		if (weaponId == 6522) {
+			return 442;
+		}
+		if (weaponId == 800) {
+			return 43;
+		} else if (weaponId == 13954 || weaponId == 13955 || weaponId == 13956 || weaponId == 13879 || weaponId == 13880 || weaponId == 13881 || weaponId == 13882) {
+			return 1837;
+		}
+		return 219;
+	}
+	
+	/**
+	 * Gets the graphics id of an arrow
+	 *
+	 * @param arrowId
+	 * 		The arrow
+	 */
+	public static int getArrowThrowGfxId(int arrowId) {
+		if (arrowId == 884) {
+			return 18;
+		} else if (arrowId == 886) {
+			return 20;
+		} else if (arrowId == 888) {
+			return 21;
+		} else if (arrowId == 890) {
+			return 22;
+		} else if (arrowId == 892) {
+			return 24;
+		}
+		return 19; // bronze default
+	}
+	
+	/**
+	 * Gets the projectile id based on the weapon and the arrow
+	 *
+	 * @param weaponId
+	 * 		The weapon
+	 * @param arrowId
+	 * 		The arrow
+	 */
+	public static int getArrowProjectileGfxId(int weaponId, int arrowId) {
+		if (arrowId == 882) {
+			return 9;
+		} else if (arrowId == 884) {
+			return 10;
+		} else if (arrowId == 886) {
+			return 11;
+		} else if (arrowId == 888) {
+			return 12;
+		} else if (arrowId == 890) {
+			return 13;
+		} else if (arrowId == 892) {
+			return 15;
+		} else if (arrowId == 11212) {
+			return 1120;
+		} else if (weaponId == 20171) {
+			return 1066;
+		}
+		return 10;// bronze default
+	}
+	
 }

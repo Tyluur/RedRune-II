@@ -4,7 +4,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.Hit.HitSplat;
+import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.content.combat.npc.CombatScript;
 import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;

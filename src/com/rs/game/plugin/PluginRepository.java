@@ -1,8 +1,11 @@
 package com.rs.game.plugin;
 
+import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.object.WorldObject;
+import com.rs.game.plugin.combat.RangeWeaponPlugin;
+import com.rs.game.plugin.combat.SpecialAttackPlugin;
 import com.rs.game.plugin.type.CommandPlugin;
 import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.game.plugin.type.NPCPlugin;
@@ -12,6 +15,9 @@ import com.rs.utility.game.ClickOption;
 import plugin.command.CommandManifest;
 
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -40,6 +46,16 @@ public class PluginRepository {
 	private static final Map<String, CommandPlugin> COMMAND_PLUGINS = new HashMap<>();
 	
 	/**
+	 * The map of special attack plugins
+	 */
+	private static final Map<Integer, SpecialAttackPlugin> SPECIAL_PLUGINS = new HashMap<>();
+	
+	/**
+	 * The map of range plugins
+	 */
+	private static final Map<String, RangeWeaponPlugin> RANGE_PLUGINS = new HashMap<>();
+	
+	/**
 	 * Reloads all plugins
 	 */
 	public static void reload() {
@@ -55,7 +71,7 @@ public class PluginRepository {
 	 */
 	public static void registerAll() {
 		Misc.getClasses("plugin").stream().filter(Plugin.class::isInstance).forEach(clazz -> ((Plugin) clazz).register());
-		System.out.println("Registered " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, and " + OBJECT_PLUGINS.size() + " object plugins.");
+		System.out.println("Registered " + SPECIAL_PLUGINS.size() + " special plugins, " + RANGE_PLUGINS.size() + " range plugins, " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, and " + OBJECT_PLUGINS.size() + " object plugins.");
 	}
 	
 	/**
@@ -76,6 +92,10 @@ public class PluginRepository {
 				pluginList.add((InterfacePlugin) plugin);
 				INTERFACE_PLUGINS.put(key, pluginList);
 			}
+		} else if (plugin instanceof SpecialAttackPlugin) {
+			for (int key : keys) {
+				SPECIAL_PLUGINS.put(key, (SpecialAttackPlugin) plugin);
+			}
 		}
 	}
 	
@@ -91,6 +111,10 @@ public class PluginRepository {
 		if (plugin instanceof CommandPlugin) {
 			for (String key : keys) {
 				COMMAND_PLUGINS.put(key, (CommandPlugin) plugin);
+			}
+		} else if (plugin instanceof RangeWeaponPlugin) {
+			for (String key : keys) {
+				RANGE_PLUGINS.put(key, (RangeWeaponPlugin) plugin);
 			}
 		}
 	}
@@ -136,19 +160,43 @@ public class PluginRepository {
 	 * 		The slot id on the interface, -1 if none.
 	 * @param packetId
 	 * 		The packet id of the click, different ids are used for different options
-	 * @return {@code True} if it was handled successfully
+	 * @return The plugin that handled the interface
 	 */
-	public static boolean handleInterface(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
+	public static InterfacePlugin handleInterface(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		List<InterfacePlugin> interfacePlugins = INTERFACE_PLUGINS.get(interfaceId);
 		if (interfacePlugins == null) {
-			return false;
+			return null;
 		}
 		for (InterfacePlugin plugin : interfacePlugins) {
 			if (plugin.handle(player, interfaceId, componentId, itemId, slotId, packetId)) {
-				return true;
+				return plugin;
 			}
 		}
-		return false;
+		return null;
+	}
+	
+	/**
+	 * Gets a special plugin by the id of a weapon
+	 */
+	public static Optional<SpecialAttackPlugin> getSpecialPlugin(int weaponId) {
+		return Optional.ofNullable(SPECIAL_PLUGINS.get(weaponId));
+	}
+	
+	/**
+	 * Finds an {@code Optional} {@code RangeWeaponPlugin} instance of a weapon
+	 */
+	public static Optional<RangeWeaponPlugin> getRangeWeapon(int weaponId) {
+		String name = weaponId == -1 ? "unarmed" : ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
+		for (Entry<String, RangeWeaponPlugin> entry : RANGE_PLUGINS.entrySet()) {
+			String specialName = entry.getKey();
+			String regex = specialName.replaceAll("\\*", ".*");
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(name);
+			if (matcher.find()) {
+				return Optional.of(entry.getValue());
+			}
+		}
+		return Optional.empty();
 	}
 	
 	/**

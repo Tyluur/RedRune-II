@@ -30,7 +30,7 @@ public class LavaTitanCombat extends CombatScript {
 			delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 140, NPCConstants.MELEE, target)));
 			if (damage <= 4 && target instanceof Player) {
 				Player player = (Player) target;
-				player.getCombatDefinitions().desecreaseSpecialAttack((player.getCombatDefinitions().getSpecialAttackPercentage() / 10));
+				player.getCombatDefinitions().decreaseSpecialEnergy((player.getCombatDefinitions().getSpecialAttackPercentage() / 10));
 			}
 		} else {
 			damage = getRandomMaxHit(npc, 140, NPCConstants.MELEE, target);
