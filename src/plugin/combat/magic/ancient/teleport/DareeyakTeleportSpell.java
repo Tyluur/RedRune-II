@@ -1,0 +1,41 @@
+package plugin.combat.magic.ancient.teleport;
+
+import com.rs.game.entity.WorldTile;
+import com.rs.game.plugin.combat.spell.type.TeleportSpellPlugin;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 7/27/2017
+ */
+public class DareeyakTeleportSpell extends TeleportSpellPlugin {
+	
+	@Override
+	public int levelRequired() {
+		return 78;
+	}
+	
+	@Override
+	public int[] runesRequired() {
+		return arguments(LAW_RUNE, 2, FIRE_RUNE, 3, AIR_RUNE, 2);
+	}
+	
+	@Override
+	public WorldTile destination() {
+		return new WorldTile(2990, 3696, 0);
+	}
+	
+	@Override
+	public int spellId() {
+		return 44;
+	}
+	
+	@Override
+	public double exp() {
+		return 88;
+	}
+	
+	@Override
+	public MagicBook book() {
+		return MagicBook.ANCIENTS;
+	}
+}

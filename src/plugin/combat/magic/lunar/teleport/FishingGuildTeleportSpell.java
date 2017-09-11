@@ -1,0 +1,46 @@
+package plugin.combat.magic.lunar.teleport;
+
+import com.rs.game.entity.WorldTile;
+import com.rs.game.plugin.combat.spell.type.TeleportSpellPlugin;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 7/28/2017
+ */
+public class FishingGuildTeleportSpell extends TeleportSpellPlugin {
+	
+	@Override
+	public int levelRequired() {
+		return 85;
+	}
+	
+	@Override
+	public int[] runesRequired() {
+		return arguments(ASTRAL_RUNE, 3, LAW_RUNE, 3, WATER_RUNE, 8);
+	}
+	
+	@Override
+	public WorldTile destination() {
+		return new WorldTile(2614, 3386, 0);
+	}
+	
+	@Override
+	public int spellId() {
+		return 40;
+	}
+	
+	@Override
+	public double exp() {
+		return 90;
+	}
+	
+	@Override
+	public MagicBook book() {
+		return MagicBook.LUNAR;
+	}
+	
+	@Override
+	public boolean randomize() {
+		return false;
+	}
+}

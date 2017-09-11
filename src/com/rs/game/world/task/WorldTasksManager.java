@@ -57,7 +57,7 @@ public class WorldTasksManager {
 	 * Schedules a task with a set delay count and a set repeat count
 	 */
 	public static void schedule(WorldTask task, int delayCount, int periodCount) {
-		if (task == null || delayCount < 0 || periodCount < 0) {
+		if (task == null || delayCount < 0) {
 			return;
 		}
 		TASKS.add(new WorldTaskInformation(task, delayCount, periodCount));

@@ -9,8 +9,8 @@ import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.PacketConstants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public final class EmotesManager implements Serializable {
 			case 1:
 				return 3;
 			case 2:
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					return 4;
 				} else {
 					return -1; // TODO new bow emote

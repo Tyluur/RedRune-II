@@ -4,7 +4,7 @@ import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
+import com.rs.utility.constants.PacketConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -73,19 +73,19 @@ public class FamiliarInterfacePlugin extends InterfacePlugin {
 				return true;
 			}
 			if (componentId == 0) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					player.getFamiliar().getBob().addItem(slotId, 1);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.getFamiliar().getBob().addItem(slotId, 5);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					player.getFamiliar().getBob().addItem(slotId, 10);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getFamiliar().getBob().addItem(slotId, Integer.MAX_VALUE);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					player.getTemporaryAttributtes().put("bob_item_X_Slot", slotId);
 					player.getTemporaryAttributtes().remove("bob_isRemove");
 					player.getPackets().sendRunScript(108, "Enter Amount:");
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON9_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					player.getInventory().sendExamine(slotId);
 				}
 			}
@@ -94,15 +94,15 @@ public class FamiliarInterfacePlugin extends InterfacePlugin {
 				return true;
 			}
 			if (componentId == 27) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					player.getFamiliar().getBob().removeItem(slotId, 1);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.getFamiliar().getBob().removeItem(slotId, 5);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					player.getFamiliar().getBob().removeItem(slotId, 10);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getFamiliar().getBob().removeItem(slotId, Integer.MAX_VALUE);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					player.getTemporaryAttributtes().put("bob_item_X_Slot", slotId);
 					player.getTemporaryAttributtes().put("bob_isRemove", Boolean.TRUE);
 					player.getPackets().sendRunScript(108, "Enter Amount:");

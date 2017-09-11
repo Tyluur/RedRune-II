@@ -2,8 +2,8 @@ package com.rs.game.entity.actor.player.link;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.PacketConstants;
 import com.rs.utility.game.player.QuickChatMessage;
 
 import java.io.Serializable;
@@ -179,9 +179,9 @@ public class ContactManager implements Serializable {
 			}
 		} else if (interfaceId == 1108) {
 			if (componentId == 22) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					player.getPackets().sendRunScript(109, "Enter chat prefix:");
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					if (chatName != null) {
 						chatName = null;
 						refreshChatName();
@@ -189,85 +189,85 @@ public class ContactManager implements Serializable {
 					}
 				}
 			} else if (componentId == 23) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					whoCanEnterChat = -1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					whoCanEnterChat = 0;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					whoCanEnterChat = 1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					whoCanEnterChat = 2;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					whoCanEnterChat = 3;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON9_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					whoCanEnterChat = 4;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON6_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON6_PACKET) {
 					whoCanEnterChat = 5;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON7_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON7_PACKET) {
 					whoCanEnterChat = 6;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON10_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON10_PACKET) {
 					whoCanEnterChat = 7;
 				}
 				refreshWhoCanEnterChat();
 			} else if (componentId == 24) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					whoCanTalkOnChat = -1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					whoCanTalkOnChat = 0;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					whoCanTalkOnChat = 1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					whoCanTalkOnChat = 2;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					whoCanTalkOnChat = 3;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON9_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					whoCanTalkOnChat = 4;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON6_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON6_PACKET) {
 					whoCanTalkOnChat = 5;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON7_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON7_PACKET) {
 					whoCanTalkOnChat = 6;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON10_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON10_PACKET) {
 					whoCanTalkOnChat = 7;
 				}
 				refreshWhoCanTalkOnChat();
 			} else if (componentId == 25) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					whoCanKickOnChat = -1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					whoCanKickOnChat = 0;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					whoCanKickOnChat = 1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					whoCanKickOnChat = 2;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					whoCanKickOnChat = 3;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON9_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					whoCanKickOnChat = 4;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON6_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON6_PACKET) {
 					whoCanKickOnChat = 5;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON7_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON7_PACKET) {
 					whoCanKickOnChat = 6;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON10_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON10_PACKET) {
 					whoCanKickOnChat = 7;
 				}
 				refreshWhoCanKickOnChat();
 				FriendChatsManager.refreshChat(player);
 			} else if (componentId == 26) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					whoCanShareloot = -1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					whoCanShareloot = 0;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					whoCanShareloot = 1;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					whoCanShareloot = 2;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					whoCanShareloot = 3;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON9_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					whoCanShareloot = 4;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON6_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON6_PACKET) {
 					whoCanShareloot = 5;
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON7_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON7_PACKET) {
 					whoCanShareloot = 6;
 				}
 				refreshWhoCanShareloot();

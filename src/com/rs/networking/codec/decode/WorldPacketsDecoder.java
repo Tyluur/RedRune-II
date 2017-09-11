@@ -1,9 +1,9 @@
 package com.rs.networking.codec.decode;
 
-import com.rs.game.content.Magic;
 import com.rs.game.content.SkillCapeCustomizer;
 import com.rs.game.content.action.impl.PlayerCombatAction;
 import com.rs.game.content.action.impl.PlayerFollowAction;
+import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
@@ -28,6 +28,7 @@ import com.rs.networking.codec.decode.handlers.ObjectHandler;
 import com.rs.networking.io.InputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.cache.huffman.Huffman;
+import com.rs.utility.constants.PacketConstants;
 import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.game.player.PublicChatMessage;
 import com.rs.utility.game.player.QuickChatMessage;
@@ -37,142 +38,8 @@ import static com.rs.utility.game.ClickOption.*;
 
 public final class WorldPacketsDecoder extends Decoder {
 	
-	private static final byte[] PACKET_SIZES = new byte[256];
-	
-	public final static int ACTION_BUTTON1_PACKET = 61;
-	
-	public final static int ACTION_BUTTON2_PACKET = 64;
-	
-	public final static int ACTION_BUTTON3_PACKET = 4;
-	
-	public final static int ACTION_BUTTON4_PACKET = 52;
-	
-	public final static int ACTION_BUTTON5_PACKET = 81;
-	
-	public final static int ACTION_BUTTON6_PACKET = 18;
-	
-	public final static int ACTION_BUTTON7_PACKET = 10;
-	
-	public final static int ACTION_BUTTON8_PACKET = 25;
-	
-	public final static int ACTION_BUTTON9_PACKET = 91;
-	
-	public final static int ACTION_BUTTON10_PACKET = 20;
-	
-	public final static int RECEIVE_PACKET_COUNT_PACKET = 15;
-	
-	private final static int ACCEPT_TRADE_CHAT_PACKET = 46;
-	
-	private final static int PLAYER_TRADE_OPTION_PACKET = 77;
-	
-	private final static int WALKING_PACKET = 12;
-	
-	private final static int MINI_WALKING_PACKET = 83;
-	
-	private final static int MAGIC_ON_ITEM_PACKET = -1;
-	
-	private final static int MOVE_CAMERA_PACKET = 5;
-	
-	private final static int MAGIC_ON_GROUND_PACKET = -1;
-	
-	private final static int CLICK_PACKET = 84;
-	
-	private final static int MOUVE_MOUSE_PACKET = 29;
-	
-	private final static int KEY_TYPED_PACKET = 68;
-	
-	private final static int CLOSE_INTERFACE_PACKET = 56;
-	
-	private final static int COMMANDS_PACKET = 70;
-	
-	private final static int ITEM_ON_ITEM_PACKET = 73;
-	
-	private final static int IN_OUT_SCREEN_PACKET = 75;
-	
-	private final static int SWITCH_DETAIL = 4;
-	
-	private final static int DONE_LOADING_REGION = 33;
-	
-	private final static int PING_PACKET = 16;
-	
-	private final static int SCREEN_PACKET = 87;
-	
-	private final static int CHAT_TYPE_PACKET = 23;
-	
-	private final static int CHAT_PACKET = 36;
-	
-	private final static int PUBLIC_QUICK_CHAT_PACKET = 30;
-	
-	private final static int ADD_FRIEND_PACKET = 51;
-	
-	private final static int JOIN_FRIEND_CHAT_PACKET = 1;
-	
-	private final static int CHANGE_FRIEND_CHAT_PACKET = 41;
-	
-	private final static int KICK_FRIEND_CHAT_PACKET = 32;
-	
-	private final static int REMOVE_FRIEND_PACKET = 8;
-	
-	private final static int SEND_FRIEND_MESSAGE_PACKET = 72;
-	
-	private final static int SEND_FRIEND_QUICK_CHAT_PACKET = 79;
-	
-	private final static int OBJECT_CLICK1_PACKET = 11;
-	
-	private final static int OBJECT_CLICK2_PACKET = 2;
-	
-	private final static int OBJECT_CLICK3_PACKET = 76;
-	
-	private final static int OBJECT_EXAMINE_PACKET = 47;
-	
-	private final static int NPC_CLICK1_PACKET = 9;
-	
-	private final static int NPC_CLICK2_PACKET = 31;
-	
-	private final static int NPC_CLICK3_PACKET = 67;
-	
-	private final static int NPC_CLICK4_PACKET = 28;
-	
-	private final static int ATTACK_NPC = 66;
-	
-	private final static int REPORT_ABUSE_PACKET = 11;
-	
-	private final static int PLAYER_OPTION_1_PACKET = 14;
-	
-	private final static int PLAYER_OPTION_2_PACKET = 53;
-	
-	private final static int ITEM_TAKE_PACKET = 24;
-	
-	private final static int DIALOGUE_CONTINUE_PACKET = 54;
-	
-	private final static int ENTER_INTEGER_PACKET = 3;
-	
-	private final static int ENTER_STRING_PACKET = 59;
-	
-	private final static int SWITCH_INTERFACE_ITEM_PACKET = 26;
-	
-	private final static int INTERFACE_ON_PLAYER = 40;
-	
-	private final static int INTERFACE_ON_NPC = 65;
-	
-	private final static int ITEM_ON_OBJECT_PACKET = 42;
-	
-	private final static int NPC_EXAMINE_PACKET = 92;
-	
-	private final static int ITEM_EXAMINE_PACKET = 27;
-	
-	private final static int COLOR_ID_PACKET = 22;
-	
-	private final static int CLAN_NAME_PACKET = 7;
-	
-	private final static int CLAN_FORUM_THREAD_PACKET = 74;
-	
-	private static final int WORLD_LIST_REQUEST_PACKET = 34;
-	
-	private static final int WINDOW_SWITCH_PACKET = 93;
-	
 	static {
-		loadPacketSizes();
+		PacketConstants.loadPacketSizes();
 	}
 	
 	private Player player;
@@ -188,11 +55,11 @@ public final class WorldPacketsDecoder extends Decoder {
 	public void decode(InputStream stream) {
 		while (stream.getRemaining() > 0 && session.getChannel().isConnected() && !player.hasFinished()) {
 			int packetId = stream.readUnsignedByte();
-			if (packetId >= PACKET_SIZES.length) {
+			if (packetId >= PacketConstants.PACKET_SIZES.length) {
 				System.out.println("PacketId " + packetId + " has fake packet id.");
 				break;
 			}
-			int length = PACKET_SIZES[packetId];
+			int length = PacketConstants.PACKET_SIZES[packetId];
 			if (length == -1) {
 				length = stream.readUnsignedByte();
 			} else if (length == -2) {
@@ -214,37 +81,37 @@ public final class WorldPacketsDecoder extends Decoder {
 	private void processPackets(final int packetId, InputStream stream, int length) {
 		player.setPacketsDecoderPing(Misc.currentTimeMillis());
 		switch (packetId) {
-			case PING_PACKET:
+			case PacketConstants.PING_PACKET:
 				// kk we ping :)
 				break;
-			case MOUVE_MOUSE_PACKET:
+			case PacketConstants.MOUVE_MOUSE_PACKET:
 				// USELESS PACKET
 				break;
-			case KEY_TYPED_PACKET:
+			case PacketConstants.KEY_TYPED_PACKET:
 				// USELESS PACKET
 				break;
-			case RECEIVE_PACKET_COUNT_PACKET:
+			case PacketConstants.RECEIVE_PACKET_COUNT_PACKET:
 				// interface packets
 				stream.readInt();
 				break;
-			case ITEM_ON_ITEM_PACKET:
+			case PacketConstants.ITEM_ON_ITEM_PACKET:
 				InventoryOptionsHandler.handleItemOnItem(player, stream);
 				break;
-			case PLAYER_TRADE_OPTION_PACKET: {
+			case PacketConstants.PLAYER_TRADE_OPTION_PACKET: {
 				long currentTime = System.currentTimeMillis();
 				boolean unknown2 = stream.readByte() == 1;
 				int playerIndex = stream.readUnsignedShort();
 				Player other = World.getPlayers().get(playerIndex);
 				break;
 			}
-			case ACCEPT_TRADE_CHAT_PACKET: {
+			case PacketConstants.ACCEPT_TRADE_CHAT_PACKET: {
 				long currentTime = System.currentTimeMillis();
 				boolean unknown2 = stream.readByte() == 1;
 				int playerIndex = stream.readUnsignedShort();
 				Player other = World.getPlayers().get(playerIndex);
 				break;
 			}
-			case MAGIC_ON_GROUND_PACKET: {
+			case PacketConstants.MAGIC_ON_GROUND_PACKET: {
 				int inventoryInter = stream.readInt() >> 16;
 				int itemId = stream.readShort();
 				int junk = stream.readShort();
@@ -304,23 +171,23 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				break;
 			}*/
-			case CLOSE_INTERFACE_PACKET:
+			case PacketConstants.CLOSE_INTERFACE_PACKET:
 				if (!player.isRunning()) {
 					player.run();
 					return;
 				}
 				player.stopAll();
 				break;
-			case MOVE_CAMERA_PACKET:
+			case PacketConstants.MOVE_CAMERA_PACKET:
 				// not using it atm
 				stream.readUnsignedShort();
 				stream.readUnsignedShort();
 				break;
-			case IN_OUT_SCREEN_PACKET:
+			case PacketConstants.IN_OUT_SCREEN_PACKET:
 				// not using this check because not 100% efficient
 				@SuppressWarnings("unused") boolean inScreen = stream.readByte() == 1;
 				break;
-			case SCREEN_PACKET:
+			case PacketConstants.SCREEN_PACKET:
 				int displayMode = stream.readUnsignedByte();
 				player.setScreenWidth(stream.readUnsignedShort());
 				player.setScreenHeight(stream.readUnsignedShort());
@@ -333,7 +200,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getInterfaceManager().sendInterfaces();
 				player.getInterfaceManager().sendInterface(742);
 				break;
-			case CLICK_PACKET: {
+			case PacketConstants.CLICK_PACKET: {
 				int mouseHash = stream.readShortLE128();
 				int mouseButton = mouseHash >> 15;
 				int time = mouseHash - (mouseButton << 15); // time
@@ -353,7 +220,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				clicked = true;
 				break;
 			}
-			case DIALOGUE_CONTINUE_PACKET: {
+			case PacketConstants.DIALOGUE_CONTINUE_PACKET: {
 				int interfaceHash = stream.readIntV2();
 				@SuppressWarnings("unused") int junk = stream.readShortLE128();
 				int interfaceId = interfaceHash >> 16;
@@ -370,19 +237,19 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getDialogueManager().continueDialogue(interfaceId, componentId);
 				break;
 			}
-			case ACTION_BUTTON1_PACKET:
-			case ACTION_BUTTON2_PACKET:
-			case ACTION_BUTTON4_PACKET:
-			case ACTION_BUTTON5_PACKET:
-			case ACTION_BUTTON6_PACKET:
-			case ACTION_BUTTON7_PACKET:
-			case ACTION_BUTTON8_PACKET:
-			case ACTION_BUTTON3_PACKET:
-			case ACTION_BUTTON9_PACKET:
-			case ACTION_BUTTON10_PACKET:
+			case PacketConstants.ACTION_BUTTON1_PACKET:
+			case PacketConstants.ACTION_BUTTON2_PACKET:
+			case PacketConstants.ACTION_BUTTON4_PACKET:
+			case PacketConstants.ACTION_BUTTON5_PACKET:
+			case PacketConstants.ACTION_BUTTON6_PACKET:
+			case PacketConstants.ACTION_BUTTON7_PACKET:
+			case PacketConstants.ACTION_BUTTON8_PACKET:
+			case PacketConstants.ACTION_BUTTON3_PACKET:
+			case PacketConstants.ACTION_BUTTON9_PACKET:
+			case PacketConstants.ACTION_BUTTON10_PACKET:
 				ButtonHandler.decodeInterfaceStream(player, stream, packetId);
 				break;
-			case ENTER_STRING_PACKET: {
+			case PacketConstants.ENTER_STRING_PACKET: {
 				if (!player.isRunning() || player.isDead()) {
 					return;
 				}
@@ -392,7 +259,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				break;
 			}
-			case ENTER_INTEGER_PACKET: {
+			case PacketConstants.ENTER_INTEGER_PACKET: {
 				if (!player.isRunning() || player.isDead()) {
 					return;
 				}
@@ -455,7 +322,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				break;
 			}
-			case SWITCH_INTERFACE_ITEM_PACKET:
+			case PacketConstants.SWITCH_INTERFACE_ITEM_PACKET:
 				stream.readUnsignedShort();
 				int fromSlot = stream.readUnsignedShortLE();
 				stream.readUnsignedShort128();
@@ -497,30 +364,30 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				System.out.println("Switch item " + fromInterfaceId + ", " + fromSlot + ", " + toSlot);
 				break;
-			case DONE_LOADING_REGION:
+			case PacketConstants.DONE_LOADING_REGION:
 				if (!player.clientHasLoadedMapRegion()) {
 					player.setClientHasLoadedMapRegion();
 				}
 				player.getPacketSender().refreshSpawnedObjects();
 				player.getPacketSender().refreshSpawnedItems();
 				break;
-			case OBJECT_CLICK1_PACKET:
+			case PacketConstants.OBJECT_CLICK1_PACKET:
 				ObjectHandler.decodeObjectStream(player, stream, FIRST);
 				break;
-			case OBJECT_CLICK2_PACKET:
+			case PacketConstants.OBJECT_CLICK2_PACKET:
 				ObjectHandler.decodeObjectStream(player, stream, SECOND);
 				break;
-			case OBJECT_CLICK3_PACKET:
+			case PacketConstants.OBJECT_CLICK3_PACKET:
 				ObjectHandler.decodeObjectStream(player, stream, THIRD);
 				break;
-			case OBJECT_EXAMINE_PACKET:
+			case PacketConstants.OBJECT_EXAMINE_PACKET:
 				ObjectHandler.decodeObjectStream(player, stream, EXAMINE);
 				break;
-			case ITEM_ON_OBJECT_PACKET:
+			case PacketConstants.ITEM_ON_OBJECT_PACKET:
 				ObjectHandler.handleItemOnObject(player, stream);
 				break;
-			case WALKING_PACKET:
-			case MINI_WALKING_PACKET: {
+			case PacketConstants.WALKING_PACKET:
+			case PacketConstants.MINI_WALKING_PACKET: {
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
@@ -568,7 +435,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 			}
 			break;
-			case ITEM_TAKE_PACKET: {
+			case PacketConstants.ITEM_TAKE_PACKET: {
 				long currentTime = Misc.currentTimeMillis();
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead() || player.getLockDelay() > currentTime || player.isFrozen()) {
 					return;
@@ -600,7 +467,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}, true));
 			}
 			break;
-			case PLAYER_OPTION_2_PACKET: {
+			case PacketConstants.PLAYER_OPTION_2_PACKET: {
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
@@ -617,7 +484,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getActionManager().setAction(new PlayerFollowAction(p2));
 				break;
 			}
-			case PLAYER_OPTION_1_PACKET: {
+			case PacketConstants.PLAYER_OPTION_1_PACKET: {
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
@@ -661,7 +528,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getActionManager().setAction(new PlayerCombatAction(p2));
 				break;
 			}
-			case ATTACK_NPC: {
+			case PacketConstants.ATTACK_NPC: {
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
@@ -703,7 +570,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getActionManager().setAction(new PlayerCombatAction(npc));
 				break;
 			}
-			case INTERFACE_ON_PLAYER: {
+			case PacketConstants.INTERFACE_ON_PLAYER: {
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
@@ -773,55 +640,6 @@ public final class WorldPacketsDecoder extends Decoder {
 						}
 						break;
 					case 193:
-						switch (componentId) {
-							case 28:
-							case 32:
-							case 24:
-							case 20:
-							case 30:
-							case 34:
-							case 26:
-							case 22:
-							case 29:
-							case 33:
-							case 25:
-							case 21:
-							case 31:
-							case 35:
-							case 27:
-							case 23:
-								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
-									player.setNextFaceWorldTile(new WorldTile(p2.getCoordFaceX(p2.getSize()), p2.getCoordFaceY(p2.getSize()), p2.getPlane()));
-									if (!player.getControllerManager().canAttack(p2)) {
-										return;
-									}
-									if (!player.isCanPvp() || !p2.isCanPvp()) {
-										player.getPackets().sendGameMessage("You can only attack players in a player-vs-player area.");
-										return;
-									}
-									if (!p2.isAtMultiArea() || !player.isAtMultiArea()) {
-										if (player.getAttackedBy() != p2 && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
-											player.getPackets().sendGameMessage("That " + (player.getAttackedBy() instanceof Player ? "player" : "npc") + " is already in combat.");
-											return;
-										}
-										if (p2.getAttackedBy() != player && p2.getAttackedByDelay() > Misc.currentTimeMillis()) {
-											if (p2.getAttackedBy() instanceof NPC) {
-												p2.setAttackedBy(player); // changes enemy
-												// to player,
-												// player has
-												// priority over
-												// npc on single
-												// areas
-											} else {
-												player.getPackets().sendGameMessage("That player is already in combat.");
-												return;
-											}
-										}
-									}
-									player.getActionManager().setAction(new PlayerCombatAction(p2));
-								}
-								break;
-						}
 					case 192:
 						switch (componentId) {
 							case 25: // air strike
@@ -829,7 +647,6 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 30: // earth strike
 							case 32: // fire strike
 							case 34: // air bolt
-							case 39: // water bolt
 							case 42: // earth bolt
 							case 45: // fire bolt
 							case 49: // air blast
@@ -840,19 +657,37 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 73: // water wave
 							case 77: // earth wave
 							case 80: // fire wave
-							case 86: // teleblock
 							case 84: // air surge
 							case 87: // water surge
 							case 89: // earth surge
-							case 91: // fire surge
-							case 99: // storm of armadyl
-							case 36: // bind
 							case 66: // Sara Strike
 							case 67: // Guthix Claws
 							case 68: // Flame of Zammy
+							case 93:
+							case 91: // fire surge
+							case 99: // storm of Armadyl
 							case 55: // snare
 							case 81: // entangle
-								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
+							case 24:
+							case 20:
+							case 26:
+							case 22:
+							case 29:
+							case 33:
+							case 21:
+							case 31:
+							case 35:
+							case 27:
+							case 23:
+							case 75:
+							case 78:
+							case 82:
+							case 86: // teleblock
+							case 36: // bind
+							case 37:
+							case 38:
+							case 39: // water bolt
+								if (CombatAlgorithm.checkCombatSpell(player, componentId, 1, false)) {
 									player.setNextFaceWorldTile(new WorldTile(p2.getCoordFaceX(p2.getSize()), p2.getCoordFaceY(p2.getSize()), p2.getPlane()));
 									if (!player.getControllerManager().canAttack(p2)) {
 										return;
@@ -868,12 +703,7 @@ public final class WorldPacketsDecoder extends Decoder {
 										}
 										if (p2.getAttackedBy() != player && p2.getAttackedByDelay() > Misc.currentTimeMillis()) {
 											if (p2.getAttackedBy() instanceof NPC) {
-												p2.setAttackedBy(player); // changes enemy
-												// to player,
-												// player has
-												// priority over
-												// npc on single
-												// areas
+												p2.setAttackedBy(player);
 											} else {
 												player.getPackets().sendGameMessage("That player is already in combat.");
 												return;
@@ -886,10 +716,9 @@ public final class WorldPacketsDecoder extends Decoder {
 						}
 						break;
 				}
-				System.out.println("Spell:" + componentId);
 				break;
 			}
-			case INTERFACE_ON_NPC: {
+			case PacketConstants.INTERFACE_ON_NPC: {
 				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
@@ -897,13 +726,10 @@ public final class WorldPacketsDecoder extends Decoder {
 					return;
 				}
 				int slot = stream.readUnsignedShortLE128();
-				if (slot == 65535) {
-					return;
-				}
-				@SuppressWarnings("unused") int junk2 = stream.readUnsignedShortLE();
+				stream.readUnsignedShortLE();
 				int npcIndex = stream.readUnsignedShortLE();
 				int interfaceHash = stream.readIntV2();
-				@SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;
+				stream.readByte();
 				int interfaceId = interfaceHash >> 16;
 				int componentId = interfaceHash - (interfaceId << 16);
 				
@@ -930,9 +756,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.stopAll(false);
 				switch (interfaceId) {
 					case PlayerInventory.INVENTORY_INTERFACE:
-						Item item = player.getInventory().getItem(slot);// construct
-						// only if
-						// needed
+						Item item = player.getInventory().getItem(slot);
 						if (item == null) {
 							return;
 						}
@@ -969,63 +793,14 @@ public final class WorldPacketsDecoder extends Decoder {
 							}
 						}
 						break;
-					case 193:
-						switch (componentId) {
-							case 28:
-							case 32:
-							case 24:
-							case 20:
-							case 30:
-							case 34:
-							case 26:
-							case 22:
-							case 29:
-							case 33:
-							case 25:
-							case 21:
-							case 31:
-							case 35:
-							case 27:
-							case 23:
-								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
-									player.setNextFaceWorldTile(new WorldTile(npc.getCoordFaceX(npc.getSize()), npc.getCoordFaceY(npc.getSize()), npc.getPlane()));
-									if (!player.getControllerManager().canAttack(npc)) {
-										return;
-									}
-									if (npc instanceof Familiar) {
-										Familiar familiar = (Familiar) npc;
-										if (familiar == player.getFamiliar()) {
-											player.getPackets().sendGameMessage("You can't attack your own familiar.");
-											return;
-										}
-										if (!familiar.canAttack(player)) {
-											player.getPackets().sendGameMessage("You can't attack this npc.");
-											return;
-										}
-									} else if (!npc.isForceMultiAttacked()) {
-										if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
-											if (player.getAttackedBy() != npc && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
-												player.getPackets().sendGameMessage("You are already in combat.");
-												return;
-											}
-											if (npc.getAttackedBy() != player && npc.getAttackedByDelay() > Misc.currentTimeMillis()) {
-												player.getPackets().sendGameMessage("This npc is already in combat.");
-												return;
-											}
-										}
-									}
-									player.getActionManager().setAction(new PlayerCombatAction(npc));
-								}
-								break;
-						}
 					case 192:
+					case 193:
 						switch (componentId) {
 							case 25: // air strike
 							case 28: // water strike
 							case 30: // earth strike
 							case 32: // fire strike
 							case 34: // air bolt
-							case 39: // water bolt
 							case 42: // earth bolt
 							case 45: // fire bolt
 							case 49: // air blast
@@ -1045,10 +820,28 @@ public final class WorldPacketsDecoder extends Decoder {
 							case 93:
 							case 91: // fire surge
 							case 99: // storm of Armadyl
-							case 36: // bind
 							case 55: // snare
 							case 81: // entangle
-								if (Magic.checkCombatSpell(player, componentId, 1, false)) {
+							case 24:
+							case 20:
+							case 26:
+							case 22:
+							case 29:
+							case 33:
+							case 21:
+							case 31:
+							case 35:
+							case 27:
+							case 23:
+							case 75:
+							case 78:
+							case 82:
+							case 86: // teleblock
+							case 36: // bind
+							case 37:
+							case 38:
+							case 39: // water bolt
+								if (CombatAlgorithm.checkCombatSpell(player, componentId, 1, false)) {
 									player.setNextFaceWorldTile(new WorldTile(npc.getCoordFaceX(npc.getSize()), npc.getCoordFaceY(npc.getSize()), npc.getPlane()));
 									if (!player.getControllerManager().canAttack(npc)) {
 										return;
@@ -1084,26 +877,26 @@ public final class WorldPacketsDecoder extends Decoder {
 				System.out.println("Spell:" + componentId);
 				break;
 			}
-			case NPC_CLICK1_PACKET:
+			case PacketConstants.NPC_CLICK1_PACKET:
 				NPCHandler.decodeNPCStream(player, stream, FIRST);
 				break;
-			case NPC_CLICK2_PACKET:
+			case PacketConstants.NPC_CLICK2_PACKET:
 				NPCHandler.decodeNPCStream(player, stream, SECOND);
 				break;
-			case NPC_CLICK3_PACKET:
+			case PacketConstants.NPC_CLICK3_PACKET:
 				NPCHandler.decodeNPCStream(player, stream, THIRD);
 				break;
-			case NPC_CLICK4_PACKET:
+			case PacketConstants.NPC_CLICK4_PACKET:
 				NPCHandler.decodeNPCStream(player, stream, FOURTH);
 				break;
-			case NPC_EXAMINE_PACKET:
+			case PacketConstants.NPC_EXAMINE_PACKET:
 				NPCHandler.decodeNPCStream(player, stream, EXAMINE);
 				break;
-			case CLAN_NAME_PACKET:
+			case PacketConstants.CLAN_NAME_PACKET:
 				break;
-			case CLAN_FORUM_THREAD_PACKET:
+			case PacketConstants.CLAN_FORUM_THREAD_PACKET:
 				break;
-			case ITEM_EXAMINE_PACKET: {
+			case PacketConstants.ITEM_EXAMINE_PACKET: {
 				final int id = stream.readUnsignedShort128();
 				@SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;// Dont delete this.
 				
@@ -1115,41 +908,38 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 				break;
 			}
-			case JOIN_FRIEND_CHAT_PACKET:
+			case PacketConstants.JOIN_FRIEND_CHAT_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
 				FriendChatsManager.joinChat(stream.readString(), player);
 				break;
-			case KICK_FRIEND_CHAT_PACKET:
+			case PacketConstants.KICK_FRIEND_CHAT_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
-				player.setLastPublicMessage(Misc.currentTimeMillis() + 1000); // avoids
-				
-				// message
-				// appearing
+				player.setLastPublicMessage(Misc.currentTimeMillis() + 1000);
 				player.kickPlayerFromFriendsChannel(stream.readString());
 				break;
-			case CHANGE_FRIEND_CHAT_PACKET:
+			case PacketConstants.CHANGE_FRIEND_CHAT_PACKET:
 				if (!player.hasStarted() || !player.getInterfaceManager().containsInterface(1108)) {
 					return;
 				}
 				player.getContactManager().changeRank(stream.readString(), stream.readUnsignedByteC());
 				break;
-			case ADD_FRIEND_PACKET:
+			case PacketConstants.ADD_FRIEND_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
 				player.getContactManager().addFriend(stream.readString());
 				break;
-			case REMOVE_FRIEND_PACKET:
+			case PacketConstants.REMOVE_FRIEND_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
 				player.getContactManager().removeFriend(stream.readString());
 				break;
-			case SEND_FRIEND_MESSAGE_PACKET: {
+			case PacketConstants.SEND_FRIEND_MESSAGE_PACKET: {
 				if (!player.hasStarted()) {
 					return;
 				}
@@ -1161,7 +951,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getContactManager().sendMessage(p2, Misc.fixChatMessage(Huffman.readEncryptedMessage(150, stream)));
 				break;
 			}
-			case SEND_FRIEND_QUICK_CHAT_PACKET: {
+			case PacketConstants.SEND_FRIEND_QUICK_CHAT_PACKET: {
 				if (!player.hasStarted()) {
 					return;
 				}
@@ -1180,7 +970,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				player.getContactManager().sendQuickChatMessage(p2, new QuickChatMessage(fileId, data));
 				break;
 			}
-			case PUBLIC_QUICK_CHAT_PACKET: {
+			case PacketConstants.PUBLIC_QUICK_CHAT_PACKET: {
 				if (!player.hasStarted()) {
 					return;
 				}
@@ -1203,14 +993,15 @@ public final class WorldPacketsDecoder extends Decoder {
 					player.sendPublicChatMessage(new QuickChatMessage(fileId, data));
 				} else if (chatType == 1) {
 					player.sendFriendsChannelQuickMessage(new QuickChatMessage(fileId, data));
+				} else {
+					System.out.println("Unknown chat type: " + chatType);
 				}
-				System.out.println("Unknown chat type: " + chatType);
 				break;
 			}
-			case CHAT_TYPE_PACKET:
+			case PacketConstants.CHAT_TYPE_PACKET:
 				chatType = stream.readUnsignedByte();
 				break;
-			case CHAT_PACKET:
+			case PacketConstants.CHAT_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
@@ -1237,7 +1028,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				}
 				System.out.println("Chat type: " + chatType);
 				break;
-			case COMMANDS_PACKET: {
+			case PacketConstants.COMMANDS_PACKET: {
 				if (!player.isRunning()) {
 					return;
 				}
@@ -1247,7 +1038,7 @@ public final class WorldPacketsDecoder extends Decoder {
 				PluginRepository.handleCommand(player, command.replaceFirst("::", "").split(" "), true, clientCommand);
 				break;
 			}
-			case COLOR_ID_PACKET:
+			case PacketConstants.COLOR_ID_PACKET:
 				if (!player.hasStarted()) {
 					return;
 				}
@@ -1256,118 +1047,17 @@ public final class WorldPacketsDecoder extends Decoder {
 					SkillCapeCustomizer.handleSkillCapeCustomizerColor(player, colorId);
 				}
 				break;
-			case WORLD_LIST_REQUEST_PACKET:
+			case PacketConstants.WORLD_LIST_REQUEST_PACKET:
 				int updateType = stream.readInt();
 				player.getPackets().sendWorldList(updateType == 0);
 				break;
-			case WINDOW_SWITCH_PACKET:
+			case PacketConstants.WINDOW_SWITCH_PACKET:
 				boolean dominant = stream.readByte() == 1;
 				break;
 			default:
-				System.out.println("Missing packet " + packetId + ", expected size: " + length + ", actual size: " + PACKET_SIZES[packetId]);
+				System.out.println("Missing packet " + packetId + ", expected size: " + length + ", actual size: " + PacketConstants.PACKET_SIZES[packetId]);
 				break;
 		}
-	}
-	
-	public static void loadPacketSizes() {
-		for (int id = 0; id < 256; id++) {
-			PACKET_SIZES[id] = -4;
-		}
-		PACKET_SIZES[64] = 8;
-		PACKET_SIZES[18] = 8;
-		PACKET_SIZES[25] = 8;
-		PACKET_SIZES[41] = -1;
-		PACKET_SIZES[14] = 3;
-		PACKET_SIZES[46] = 3;
-		PACKET_SIZES[87] = 6;
-		PACKET_SIZES[47] = 7;
-		PACKET_SIZES[57] = 3;
-		PACKET_SIZES[67] = 3;
-		PACKET_SIZES[91] = 8;
-		PACKET_SIZES[24] = 7;
-		PACKET_SIZES[73] = 16;
-		PACKET_SIZES[40] = 11;
-		PACKET_SIZES[36] = -1;
-		PACKET_SIZES[74] = -1;
-		PACKET_SIZES[31] = 3;
-		PACKET_SIZES[54] = 6;
-		PACKET_SIZES[12] = 5;
-		PACKET_SIZES[23] = 1;
-		PACKET_SIZES[9] = 3;
-		PACKET_SIZES[17] = -1;
-		PACKET_SIZES[44] = -1;
-		PACKET_SIZES[88] = -1;
-		PACKET_SIZES[42] = 17;
-		PACKET_SIZES[49] = 3;
-		PACKET_SIZES[21] = 15;
-		PACKET_SIZES[59] = -1;
-		PACKET_SIZES[37] = -1;
-		PACKET_SIZES[6] = 8;
-		PACKET_SIZES[55] = 7;
-		PACKET_SIZES[69] = 9;
-		PACKET_SIZES[26] = 16;
-		PACKET_SIZES[39] = 12;
-		PACKET_SIZES[71] = 4;
-		PACKET_SIZES[22] = 2;
-		PACKET_SIZES[32] = -1;
-		PACKET_SIZES[79] = -1;
-		PACKET_SIZES[89] = 4;
-		PACKET_SIZES[90] = -1;
-		PACKET_SIZES[15] = 4;
-		PACKET_SIZES[72] = -2;
-		PACKET_SIZES[20] = 8;
-		PACKET_SIZES[92] = 3;
-		PACKET_SIZES[82] = 3;
-		PACKET_SIZES[28] = 3;
-		PACKET_SIZES[81] = 8;
-		PACKET_SIZES[7] = -1;
-		PACKET_SIZES[4] = 8;
-		PACKET_SIZES[60] = -1;
-		PACKET_SIZES[13] = 2;
-		PACKET_SIZES[52] = 8;
-		PACKET_SIZES[65] = 11;
-		PACKET_SIZES[85] = 2;
-		PACKET_SIZES[86] = 7;
-		PACKET_SIZES[78] = -1;
-		PACKET_SIZES[83] = 18;
-		PACKET_SIZES[27] = 7;
-		PACKET_SIZES[2] = 7;
-		PACKET_SIZES[93] = 1;
-		PACKET_SIZES[70] = -1;
-		PACKET_SIZES[1] = -1;
-		PACKET_SIZES[8] = -1;
-		PACKET_SIZES[11] = 7;
-		PACKET_SIZES[0] = 9;
-		PACKET_SIZES[51] = -1;
-		PACKET_SIZES[5] = 4;
-		PACKET_SIZES[45] = 7;
-		PACKET_SIZES[75] = 4;
-		PACKET_SIZES[53] = 3;
-		PACKET_SIZES[33] = 0;
-		PACKET_SIZES[50] = 3;
-		PACKET_SIZES[76] = 7;
-		PACKET_SIZES[80] = -1;
-		PACKET_SIZES[77] = 3;
-		PACKET_SIZES[68] = -1;
-		PACKET_SIZES[43] = 3;
-		PACKET_SIZES[30] = -1;
-		PACKET_SIZES[19] = 3;
-		PACKET_SIZES[16] = 0;
-		PACKET_SIZES[34] = 4;
-		PACKET_SIZES[48] = 0;
-		PACKET_SIZES[56] = 0;
-		PACKET_SIZES[58] = 2;
-		PACKET_SIZES[10] = 8;
-		PACKET_SIZES[35] = 7;
-		PACKET_SIZES[84] = 6;
-		PACKET_SIZES[66] = 3;
-		PACKET_SIZES[61] = 8;
-		PACKET_SIZES[29] = -1;
-		PACKET_SIZES[62] = 3;
-		PACKET_SIZES[3] = 4;
-		PACKET_SIZES[63] = 4;
-		PACKET_SIZES[73] = 16;
-		PACKET_SIZES[38] = -1;
 	}
 	
 	public Player getPlayer() {

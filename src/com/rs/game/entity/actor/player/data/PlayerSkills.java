@@ -68,6 +68,36 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 		return xp[skill];
 	}
 	
+	/**
+	 * Drains a skill level with a cap on it
+	 *
+	 * @param skill
+	 * 		The skill id to drain
+	 * @param drainAmount
+	 * 		The amount to drain
+	 * @param drainCap
+	 * 		The amount we are capped by
+	 */
+	public void drainLevel(int skill, double drainAmount, double drainCap) {
+		int skillLevel = level[skill];
+		int levelForXp = getLevelForXp(skill);
+		int lowestAllowed = levelForXp - (int) Math.round(levelForXp * drainCap);
+		// can no longer drain past this
+		if (skillLevel <= lowestAllowed) {
+			return;
+		}
+		int drain = (int) Math.round(levelForXp * drainAmount);
+		drainLevel(skill, drain);
+	}
+	
+	/**
+	 * Drains a level
+	 *
+	 * @param skill
+	 * 		The skill
+	 * @param drain
+	 * 		The amount to drain
+	 */
 	public int drainLevel(int skill, int drain) {
 		int drainLeft = drain - level[skill];
 		if (drainLeft < 0) {

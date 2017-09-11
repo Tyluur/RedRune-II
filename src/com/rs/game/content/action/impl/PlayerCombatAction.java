@@ -6,7 +6,7 @@ import com.rs.game.content.combat.player.CombatStyle;
 import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
-import com.rs.utility.constants.AttributeConstants;
+import com.rs.utility.constants.AttributeKey;
 import lombok.Getter;
 
 /**
@@ -73,7 +73,7 @@ public class PlayerCombatAction extends Action {
 		// the id of the weapon equipped
 		final int weaponId = player.getEquipment().getWeaponId();
 		// the spell we're casting
-		final int spellId = player.getAttribute("spell_cast_id", player.getCombatDefinitions().getAutoCastSpell());
+		final int spellId = player.getCombatDefinitions().getRealSpellId();
 		// the id of the combat flag [weapon or spell id]
 		final int id = style == CombatStyle.MAGIC ? spellId : weaponId;
 		// the delay we will have
@@ -87,7 +87,7 @@ public class PlayerCombatAction extends Action {
 			player.getCombatDefinitions().resetSpells(true);
 			return -1;
 		}
-		if (player.getAttribute(AttributeConstants.MIASMIC_EFFECT) == Boolean.TRUE) {
+		if (player.getAttribute(AttributeKey.MIASMIC_EFFECT) == Boolean.TRUE) {
 			multiplier = 1.5;
 		}
 		if (!style.getStyle().fireSwing(player, target)) {
@@ -100,7 +100,10 @@ public class PlayerCombatAction extends Action {
 	
 	@Override
 	public void stop(Player player) {
-		player.setNextFaceActor(null);
+		// otherwise we don't face when casting magic
+		if (style != null && style != CombatStyle.MAGIC) {
+			player.setNextFaceActor(null);
+		}
 	}
 	
 	private boolean checkAll(Player player) {

@@ -1,10 +1,16 @@
 package com.rs.game.content.combat.player;
 
 import com.rs.cache.loaders.ItemDefinitions;
+import com.rs.game.content.combat.player.style.MagicCombatStyle;
 import com.rs.game.content.combat.player.style.MeleeCombatStyle;
 import com.rs.game.content.combat.player.style.RangeCombatStyle;
 import com.rs.game.entity.actor.player.Player;
+import com.rs.game.plugin.PluginRepository;
+import com.rs.game.plugin.combat.spell.type.CombatSpellPlugin;
+import com.rs.game.plugin.combat.spell.SpellPlugin;
 import lombok.Getter;
+
+import java.util.Optional;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -96,10 +102,17 @@ public enum CombatStyle {
 			return delay;
 		}
 	},
-	MAGIC(null) {
+	MAGIC(new MagicCombatStyle()) {
 		@Override
 		public int getDelay(Player player) {
-			return 0;
+			Optional<SpellPlugin> optional = PluginRepository.getSpellPlugin(player.getCombatDefinitions().getMagicBook(), player.getCombatDefinitions().getRealSpellId());
+			return optional.map(spellPlugin -> {
+				if (spellPlugin instanceof CombatSpellPlugin) {
+					return ((CombatSpellPlugin) spellPlugin).delay(player);
+				} else {
+					return -1;
+				}
+			}).orElse(-1);
 		}
 	};
 	

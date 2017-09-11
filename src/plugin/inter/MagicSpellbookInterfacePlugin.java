@@ -26,7 +26,7 @@ public class MagicSpellbookInterfacePlugin extends InterfacePlugin {
 			} else if (componentId >= 15 & componentId <= 17) {
 				player.getCombatDefinitions().setSortSpellBook(componentId - 15);
 			} else {
-				Magic.processNormalSpell(player, componentId, packetId);
+				Magic.processNormalSpell(player, componentId);
 			}
 		} else if (interfaceId == 193) {
 			if (componentId == 5) {
@@ -38,7 +38,7 @@ public class MagicSpellbookInterfacePlugin extends InterfacePlugin {
 			} else if (componentId == 18) {
 				player.getCombatDefinitions().switchDefensiveCasting();
 			} else {
-				Magic.processAncientSpell(player, componentId, packetId);
+				Magic.processAncientSpell(player, componentId);
 			}
 		} else if (interfaceId == 430) {
 			if (componentId == 5) {
@@ -52,7 +52,7 @@ public class MagicSpellbookInterfacePlugin extends InterfacePlugin {
 			} else if (componentId == 20) {
 				player.getCombatDefinitions().switchDefensiveCasting();
 			} else {
-				Magic.processLunarSpell(player, componentId, packetId);
+				Magic.processLunarSpell(player, componentId);
 			}
 		}
 		return true;

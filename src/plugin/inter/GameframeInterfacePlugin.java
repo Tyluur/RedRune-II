@@ -9,9 +9,9 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.EquipmentConstants;
+import com.rs.utility.constants.PacketConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -23,12 +23,12 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (interfaceId == 548 || interfaceId == 746 || interfaceId == 387) {
 			if (componentId == 11) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					int capeId = player.getEquipment().getCapeId();
 					if (capeId == 20769 || capeId == 20771) {
 						SkillCapeCustomizer.startCustomizing(player, capeId);
 					}
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					int capeId = player.getEquipment().getCapeId();
 					if (capeId == 20767) {
 						SkillCapeCustomizer.startCustomizing(player, capeId);
@@ -37,7 +37,7 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 			}
 			if (componentId == 14) {
 				int amuletId = player.getEquipment().getAmuletId();
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					if (amuletId <= 1712 && amuletId >= 1706 || amuletId >= 10354 && amuletId <= 10361) {
 						if (Magic.sendItemTeleportSpell(player, true, Transportation.EMOTE, Transportation.GFX, 4, new WorldTile(3087, 3496, 0))) {
 							Item amulet = player.getEquipment().getItem(EquipmentConstants.SLOT_AMULET);
@@ -49,7 +49,7 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 					} else if (amuletId == 1704 || amuletId == 10352) {
 						player.getPackets().sendGameMessage("The amulet has ran out of charges. You need to recharge it if you wish it use it once more.");
 					}
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					if (amuletId <= 1712 && amuletId >= 1706 || amuletId >= 10354 && amuletId <= 10361) {
 						if (Magic.sendItemTeleportSpell(player, true, Transportation.EMOTE, Transportation.GFX, 4, new WorldTile(2918, 3176, 0))) {
 							Item amulet = player.getEquipment().getItem(EquipmentConstants.SLOT_AMULET);
@@ -59,7 +59,7 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 							}
 						}
 					}
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					if (amuletId <= 1712 && amuletId >= 1706 || amuletId >= 10354 && amuletId <= 10361) {
 						if (Magic.sendItemTeleportSpell(player, true, Transportation.EMOTE, Transportation.GFX, 4, new WorldTile(3105, 3251, 0))) {
 							Item amulet = player.getEquipment().getItem(EquipmentConstants.SLOT_AMULET);
@@ -69,7 +69,7 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 							}
 						}
 					}
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					if (amuletId <= 1712 && amuletId >= 1706 || amuletId >= 10354 && amuletId <= 10361) {
 						if (Magic.sendItemTeleportSpell(player, true, Transportation.EMOTE, Transportation.GFX, 4, new WorldTile(3293, 3163, 0))) {
 							Item amulet = player.getEquipment().getItem(EquipmentConstants.SLOT_AMULET);
@@ -82,14 +82,14 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 				}
 			}
 			if (componentId == 50) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					EquipmentConstants.sendRemove(player, EquipmentConstants.SLOT_AURA);
 					player.getAuraManager().removeAura();
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON8_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON8_PACKET) {
 					player.getEquipment().sendExamine(EquipmentConstants.SLOT_AURA);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.getAuraManager().activate();
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					player.getAuraManager().sendAuraRemainingTime();
 				}
 			}
@@ -111,17 +111,17 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 			
 		} else if ((interfaceId == 548 && componentId == 0) || (interfaceId == 746 && componentId == 229)) {
 			// xp counter reset
-			if (packetId == WorldPacketsDecoder.ACTION_BUTTON7_PACKET) {
+			if (packetId == PacketConstants.ACTION_BUTTON7_PACKET) {
 				player.getSkills().resetXpCounter();
 			}
 		} else if (interfaceId == 750) {
 			if (componentId == 1) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					player.toggleRun(!player.isResting());
 					if (player.isResting()) {
 						player.stopAll();
 					}
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					if (player.isResting()) {
 						player.stopAll();
 						return true;
@@ -141,17 +141,17 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 			}
 		} else if (interfaceId == 751) {
 			if (componentId == 25) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.getContactManager().setPrivateStatus(0);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					player.getContactManager().setPrivateStatus(1);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getContactManager().setPrivateStatus(2);
 				}
 			} else if (componentId == 31) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.setFilterGame(false);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.setFilterGame(true);
 				}
 			}

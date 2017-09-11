@@ -54,7 +54,7 @@ public final class CombatRoll {
 	 * @param defenceBonus
 	 * 		The defence bonus
 	 */
-	public int randomizeHit(double minimumHit, double maxHit, double attackBonus, double defenceBonus, boolean roll) {
+	public static int randomizeHit(double minimumHit, double maxHit, double attackBonus, double defenceBonus, boolean roll) {
 		if (roll && !rollHit(attackBonus, defenceBonus)) {
 			//System.out.println("rolled a miss [" + maxHit + ", " + attackBonus + ", " + defenceBonus + "]");
 			return 0;

@@ -1,6 +1,8 @@
 package com.rs.game.content.combat.player.style;
 
 import com.rs.cache.loaders.ItemDefinitions;
+import com.rs.cores.CoresManager;
+import com.rs.cores.schedule.ScheduledTask;
 import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.combat.CombatRoll;
 import com.rs.game.content.combat.CombatSwingDetail;
@@ -14,8 +16,6 @@ import com.rs.game.entity.actor.mask.HitSplat;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.PluginRepository;
 import com.rs.game.plugin.combat.SpecialAttackPlugin;
-import com.rs.game.world.task.WorldTask;
-import com.rs.game.world.task.WorldTasksManager;
 
 import java.util.Optional;
 
@@ -129,12 +129,12 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 		final Hit hit = new Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
 		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
 		target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
-		WorldTasksManager.schedule(new WorldTask() {
+		CoresManager.scheduler.schedule(new ScheduledTask(delay) {
 			@Override
 			public void run() {
 				target.applyHit(hit);
 			}
-		}, delay);
+		});
 		return new CombatSwingDetail(source, target, hit);
 	}
 }

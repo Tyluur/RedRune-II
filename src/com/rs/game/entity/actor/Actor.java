@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Actor extends WorldTile implements Entity {
 	
@@ -1038,8 +1039,8 @@ public abstract class Actor extends WorldTile implements Entity {
 		this.frozenBlocked = time;
 	}
 	
-	public void addFrozenBlockedDelay(int time) {
-		frozenBlocked = time + Misc.currentTimeMillis();
+	public void addFrozenBlockedDelay(long time) {
+		frozenBlocked = Misc.currentTimeMillis() + time;
 	}
 	
 	public void addFreezeDelay(long time) {
@@ -1058,6 +1059,23 @@ public abstract class Actor extends WorldTile implements Entity {
 				}
 			}
 		}
+	}
+	
+	public boolean freezeDelayed() {
+		return frozenBlocked >= Misc.currentTimeMillis();
+	}
+	
+	public void freeze(Entity freezer, long time, String message) {
+		long currentTime = Misc.currentTimeMillis();
+		if (currentTime > freezeDelay) {
+			resetWalkSteps();
+			freezeDelay = time + currentTime;
+			addFrozenBlockedDelay(time + TimeUnit.SECONDS.toMillis(3));
+			if (isPlayer()) {
+				toPlayer().getPackets().sendGameMessage(message);
+			}
+		}
+		putAttribute("frozen_by", freezer);
 	}
 	
 	public void addFreezeDelay(long time, boolean entangleMessage, Entity freezer) {
@@ -1222,18 +1240,18 @@ public abstract class Actor extends WorldTile implements Entity {
 	 * @param value
 	 * 		The value
 	 */
-	public <K> K putAttribute(String key, K value) {
+	public <K> K putAttribute(Object key, K value) {
 		getAttributes().put(key, value);
 		return value;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K removeAttribute(String key) {
+	public <K> K removeAttribute(Object key) {
 		return (K) getAttributes().remove(key);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K removeAttribute(String key, K defaultValue) {
+	public <K> K removeAttribute(Object key, K defaultValue) {
 		K value = (K) getAttributes().remove(key);
 		if (value == null) {
 			return defaultValue;

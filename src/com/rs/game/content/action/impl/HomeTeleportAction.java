@@ -9,6 +9,7 @@ import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.MagicConstants;
 
 public class HomeTeleportAction extends Action {
 	
@@ -59,7 +60,7 @@ public class HomeTeleportAction extends Action {
 			player.setNextWorldTile(teleTile);
 			player.setNextAnimation(new Animation(HOME_ANIMATION + 1));
 			player.setNextGraphics(new Graphics(HOME_GRAPHIC + 1));
-			player.getControllerManager().magicTeleported(Magic.MAGIC_TELEPORT);
+			player.getControllerManager().magicTeleported(MagicConstants.MAGIC_TELEPORT);
 			if (player.getControllerManager().getController() == null) {
 				Magic.teleControllersCheck(player, teleTile);
 			}

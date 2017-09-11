@@ -1,3 +1,14 @@
+9/8/17 {
+	+   Added magic combat
+		-   All game teleports in all spellbooks have been registered as plugins
+		-   All combat spells in ancient and normal spellbook have been registered as plugins
+		-   Magic combat hit chance is accurate to r-s
+		-   Projectiles are perfect in all spells
+			+   Added all the small spells that aren't in other RSPS [confuse/enfeeble/etc.]
+		-   Added god spell charging
+		-
+}
+
 9/6/17 {
 	+   Started melee combat
 		-   Added 19 different special attacks

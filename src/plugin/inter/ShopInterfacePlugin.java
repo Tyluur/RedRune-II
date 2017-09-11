@@ -4,11 +4,11 @@ import com.rs.game.content.market.Shop;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.plugin.type.InterfacePlugin;
+import com.rs.utility.constants.PacketConstants;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 import static com.rs.game.content.market.Shop.INTERFACE_ID;
 import static com.rs.game.content.market.Shop.INVENTORY_INTERFACE_ID;
-import static com.rs.networking.codec.decode.WorldPacketsDecoder.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -25,25 +25,25 @@ public class ShopInterfacePlugin extends InterfacePlugin {
 		if (interfaceId == INTERFACE_ID) {
 			if (componentId == 25) {
 				switch(packetId) {
-					case ACTION_BUTTON1_PACKET:
+					case PacketConstants.ACTION_BUTTON1_PACKET:
 						shop.value(player, slotId, false);
 						break;
-					case ACTION_BUTTON2_PACKET:
+					case PacketConstants.ACTION_BUTTON2_PACKET:
 						shop.buy(player, slotId, 1);
 						break;
-					case ACTION_BUTTON3_PACKET:
+					case PacketConstants.ACTION_BUTTON3_PACKET:
 						shop.buy(player, slotId, 5);
 						break;
-					case ACTION_BUTTON4_PACKET:
+					case PacketConstants.ACTION_BUTTON4_PACKET:
 						shop.buy(player, slotId, 10);
 						break;
-					case ACTION_BUTTON5_PACKET:
+					case PacketConstants.ACTION_BUTTON5_PACKET:
 						shop.buy(player, slotId, 50);
 						break;
-					case ACTION_BUTTON9_PACKET:
+					case PacketConstants.ACTION_BUTTON9_PACKET:
 						shop.buy(player, slotId, 500);
 						break;
-					case ACTION_BUTTON8_PACKET:
+					case PacketConstants.ACTION_BUTTON8_PACKET:
 						Item item = shop.getItem(slotId / 6);
 						player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item));
 						break;
@@ -52,22 +52,22 @@ public class ShopInterfacePlugin extends InterfacePlugin {
 		} else if (interfaceId == INVENTORY_INTERFACE_ID) {
 			if (componentId == 0) {
 				switch (packetId) {
-					case ACTION_BUTTON1_PACKET:
+					case PacketConstants.ACTION_BUTTON1_PACKET:
 						shop.value(player, slotId, true);
 						break;
-					case ACTION_BUTTON2_PACKET:
+					case PacketConstants.ACTION_BUTTON2_PACKET:
 						shop.sell(player, slotId, 1);
 						break;
-					case ACTION_BUTTON3_PACKET:
+					case PacketConstants.ACTION_BUTTON3_PACKET:
 						shop.sell(player, slotId, 5);
 						break;
-					case ACTION_BUTTON4_PACKET:
+					case PacketConstants.ACTION_BUTTON4_PACKET:
 						shop.sell(player, slotId, 10);
 						break;
-					case ACTION_BUTTON5_PACKET:
+					case PacketConstants.ACTION_BUTTON5_PACKET:
 						shop.sell(player, slotId, 50);
 						break;
-					case ACTION_BUTTON9_PACKET:
+					case PacketConstants.ACTION_BUTTON9_PACKET:
 						player.getInventory().sendExamine(slotId);
 						break;
 				}

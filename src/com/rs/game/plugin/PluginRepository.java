@@ -6,11 +6,13 @@ import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.object.WorldObject;
 import com.rs.game.plugin.combat.RangeWeaponPlugin;
 import com.rs.game.plugin.combat.SpecialAttackPlugin;
+import com.rs.game.plugin.combat.spell.SpellPlugin;
 import com.rs.game.plugin.type.CommandPlugin;
 import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.game.plugin.type.NPCPlugin;
 import com.rs.game.plugin.type.ObjectPlugin;
 import com.rs.utility.Misc;
+import com.rs.utility.constants.MagicConstants.MagicBook;
 import com.rs.utility.game.ClickOption;
 import plugin.command.CommandManifest;
 
@@ -56,13 +58,21 @@ public class PluginRepository {
 	private static final Map<String, RangeWeaponPlugin> RANGE_PLUGINS = new HashMap<>();
 	
 	/**
+	 * The map of spell plugins
+	 */
+	private static final Map<MagicBook, Map<Integer, SpellPlugin>> SPELL_PLUGINS = new HashMap<>();
+	
+	/**
 	 * Reloads all plugins
 	 */
 	public static void reload() {
+		SPECIAL_PLUGINS.clear();
+		RANGE_PLUGINS.clear();
+		SPELL_PLUGINS.clear();
 		COMMAND_PLUGINS.clear();
-		OBJECT_PLUGINS.clear();
-		NPC_PLUGINS.clear();
 		INTERFACE_PLUGINS.clear();
+		NPC_PLUGINS.clear();
+		OBJECT_PLUGINS.clear();
 		registerAll();
 	}
 	
@@ -71,7 +81,20 @@ public class PluginRepository {
 	 */
 	public static void registerAll() {
 		Misc.getClasses("plugin").stream().filter(Plugin.class::isInstance).forEach(clazz -> ((Plugin) clazz).register());
-		System.out.println("Registered " + SPECIAL_PLUGINS.size() + " special plugins, " + RANGE_PLUGINS.size() + " range plugins, " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, and " + OBJECT_PLUGINS.size() + " object plugins.");
+		System.out.println("Registered " + SPECIAL_PLUGINS.size() + " special plugins, " + RANGE_PLUGINS.size() + " range plugins, " + getSpellCount() + " spell plugins, " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, and " + OBJECT_PLUGINS.size() + " object plugins.");
+	}
+	
+	/**
+	 * Gets the amount of spells registered
+	 */
+	private static int getSpellCount() {
+		int count = 0;
+		for (Entry<MagicBook, Map<Integer, SpellPlugin>> entry : SPELL_PLUGINS.entrySet()) {
+			for (Entry<Integer, SpellPlugin> pluginEntry : entry.getValue().entrySet()) {
+				count++;
+			}
+		}
+		return count;
 	}
 	
 	/**
@@ -117,6 +140,18 @@ public class PluginRepository {
 				RANGE_PLUGINS.put(key, (RangeWeaponPlugin) plugin);
 			}
 		}
+	}
+	
+	/**
+	 * Registers a spell plugin
+	 */
+	public static void register(SpellPlugin spellPlugin, MagicBook book, int spellId) {
+		Map<Integer, SpellPlugin> spellPluginMap = SPELL_PLUGINS.get(book);
+		if (spellPluginMap == null) {
+			spellPluginMap = new HashMap<>();
+		}
+		spellPluginMap.put(spellId, spellPlugin);
+		SPELL_PLUGINS.put(book, spellPluginMap);
 	}
 	
 	/**
@@ -197,6 +232,17 @@ public class PluginRepository {
 			}
 		}
 		return Optional.empty();
+	}
+	
+	/**
+	 * Gets a spell plugin from the map
+	 */
+	public static Optional<SpellPlugin> getSpellPlugin(MagicBook book, int spellId) {
+		Map<Integer, SpellPlugin> spellPluginMap = SPELL_PLUGINS.get(book);
+		if (spellPluginMap == null) {
+			return Optional.empty();
+		}
+		return Optional.ofNullable(spellPluginMap.get(spellId));
 	}
 	
 	/**

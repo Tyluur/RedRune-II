@@ -4,8 +4,8 @@ import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerEquipment;
 import com.rs.game.entity.item.Item;
 import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
 import com.rs.utility.constants.EquipmentConstants;
+import com.rs.utility.constants.PacketConstants;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
 /**
@@ -117,14 +117,14 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 					if (item == null) {
 						return true;
 					}
-					if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+					if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 						if (EquipmentConstants.sendWear(player, slotId, item.getId())) {
 							PlayerEquipment.refreshEquipBonuses(player);
 							player.getPackets().sendGlobalConfig(779, player.getEquipment().getWeaponRenderEmote());
 						}
-					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+					} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 						showStats(player, item);
-					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+					} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 						player.getInventory().sendExamine(slotId);
 					}
 				}
@@ -138,13 +138,13 @@ public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
 					if (item == null) {
 						return true;
 					}
-					if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+					if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 						EquipmentConstants.sendRemove(player, slotId);
 						PlayerEquipment.refreshEquipBonuses(player);
 						player.getPackets().sendGlobalConfig(779, player.getEquipment().getWeaponRenderEmote());
-					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON10_PACKET) {
+					} else if (packetId == PacketConstants.ACTION_BUTTON10_PACKET) {
 						showStats(player, item);
-					} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON8_PACKET) {
+					} else if (packetId == PacketConstants.ACTION_BUTTON8_PACKET) {
 						player.getPackets().sendGameMessage(ItemCharacteristicRepository.getExamine(item.getId()));
 					}
 				}

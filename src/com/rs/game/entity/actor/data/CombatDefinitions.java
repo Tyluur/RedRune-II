@@ -4,6 +4,7 @@ import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
+import com.rs.utility.constants.MagicConstants.MagicBook;
 import com.rs.utility.constants.SkillConstants;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
@@ -238,6 +239,11 @@ public final class CombatDefinitions implements Serializable {
 		}
 	}
 	
+	public int getRealSpellId() {
+		int tempCastSpell = player.getAttribute("tempCastSpell", -1);
+		return tempCastSpell != -1 ? tempCastSpell : autoCastSpell;
+	}
+	
 	public int getSpellId() {
 		Integer tempCastSpell = (Integer) player.getTemporaryAttributtes().get("tempCastSpell");
 		if (tempCastSpell != null) {
@@ -275,7 +281,10 @@ public final class CombatDefinitions implements Serializable {
 				return 430; // lunar
 			}
 		}
-		
+	}
+	
+	public MagicBook getMagicBook() {
+		return MagicBook.getMagicBook(getSpellBook()).orElse(MagicBook.REGULAR);
 	}
 	
 	public void setSpellBook(int id) {
@@ -626,5 +635,9 @@ public final class CombatDefinitions implements Serializable {
 			dungeonneringSpellBook = false;
 			player.getInterfaceManager().sendMagicBook();
 		}
+	}
+	
+	public boolean isAutocasting() {
+		return player.getAttribute("tempCastSpell", -1) == -1 && autoCastSpell != 0;
 	}
 }

@@ -58,6 +58,7 @@ public final class CoresManager {
 	}
 	
 	public static void init() {
+		scheduler = new Scheduler();
 		worldThread = new WorldThread();
 		int availableProcessors = Runtime.getRuntime().availableProcessors();
 		serverWorkersCount = availableProcessors >= 6 ? availableProcessors - (availableProcessors >= 12 ? 7 : 5) : 1;
@@ -66,7 +67,6 @@ public final class CoresManager {
 		fastExecutor = new Timer("Fast Executor");
 		slowExecutor = availableProcessors >= 6 ? Executors.newScheduledThreadPool(availableProcessors >= 12 ? 4 : 2, new SlowThreadFactory()) : Executors.newSingleThreadScheduledExecutor(new SlowThreadFactory());
 		worldThread.start();
-		scheduler = new Scheduler();
 		registerTasks();
 	}
 	

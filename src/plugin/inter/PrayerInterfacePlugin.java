@@ -2,7 +2,7 @@ package plugin.inter;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
+import com.rs.utility.constants.PacketConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -20,10 +20,10 @@ public class PrayerInterfacePlugin extends InterfacePlugin {
 			}
 		} else if (interfaceId == 749) {
 			if (componentId == 1) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) // activate
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) // activate
 				{
 					player.getPrayer().switchQuickPrayers();
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) // switch
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) // switch
 				{
 					player.getPrayer().switchSettingQuickPrayer();
 				}

@@ -2,7 +2,7 @@ package plugin.inter;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.networking.codec.decode.WorldPacketsDecoder;
+import com.rs.utility.constants.PacketConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -14,15 +14,15 @@ public class PriceCheckerInterfacePlugin extends InterfacePlugin {
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (interfaceId == 206) {
 			if (componentId == 15) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					player.getPriceCheckManager().removeItem(slotId, 1);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.getPriceCheckManager().removeItem(slotId, 5);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					player.getPriceCheckManager().removeItem(slotId, 10);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getPriceCheckManager().removeItem(slotId, Integer.MAX_VALUE);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					player.getTemporaryAttributtes().put("pc_item_X_Slot", slotId);
 					player.getTemporaryAttributtes().put("pc_isRemove", Boolean.TRUE);
 					player.getPackets().sendRunScript(108, "Enter Amount:");
@@ -30,19 +30,19 @@ public class PriceCheckerInterfacePlugin extends InterfacePlugin {
 			}
 		} else if (interfaceId == 207) {
 			if (componentId == 0) {
-				if (packetId == WorldPacketsDecoder.ACTION_BUTTON1_PACKET) {
+				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
 					player.getPriceCheckManager().addItem(slotId, 1);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON2_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
 					player.getPriceCheckManager().addItem(slotId, 5);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON3_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
 					player.getPriceCheckManager().addItem(slotId, 10);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON4_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getPriceCheckManager().addItem(slotId, Integer.MAX_VALUE);
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON5_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
 					player.getTemporaryAttributtes().put("pc_item_X_Slot", slotId);
 					player.getTemporaryAttributtes().remove("pc_isRemove");
 					player.getPackets().sendRunScript(108, "Enter Amount:");
-				} else if (packetId == WorldPacketsDecoder.ACTION_BUTTON9_PACKET) {
+				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					player.getInventory().sendExamine(slotId);
 				}
 			}
