@@ -27,5 +27,6 @@ public class MakeoverMageNPCPlugin extends NPCPlugin {
 	@Override
 	public void register() {
 		register(2676, FIRST, SECOND);
+		register(599, FIRST, SECOND);
 	}
 }

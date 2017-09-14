@@ -16,7 +16,7 @@ public class Agility {
 		}
 		final boolean running = player.isRunning();
 		player.setRunHidden(false);
-		player.addLockDelay(8);
+		player.getLocks().lock((int) (long) 8);
 		player.addWalkSteps(2474, 3429, -1, false);
 		player.getPackets().sendGameMessage("You walk carefully across the slippery log...", true);
 		WorldTasksManager.schedule(new WorldTask() {
@@ -88,7 +88,7 @@ public class Agility {
 		}
 		final boolean running = player.isRunning();
 		player.setRunHidden(false);
-		player.addLockDelay(7);
+		player.getLocks().lock((int) (long) 7);
 		player.addWalkSteps(2477, 3420, -1, false);
 		WorldTasksManager.schedule(new WorldTask() {
 			boolean secondloop;
@@ -115,7 +115,7 @@ public class Agility {
 		}
 		final boolean running = player.isRunning();
 		player.setRunHidden(false);
-		player.addLockDelay(7);
+		player.getLocks().lock((int) (long) 7);
 		player.addWalkSteps(2483, 3420, -1, false);
 		WorldTasksManager.schedule(new WorldTask() {
 			boolean secondloop;
@@ -172,7 +172,7 @@ public class Agility {
 	public static void enterGnomePipe(final Player player, int objectX, int objectY) {
 		final boolean running = player.isRunning();
 		player.setRunHidden(false);
-		player.addLockDelay(8);
+		player.getLocks().lock((int) (long) 8);
 		player.addWalkSteps(objectX, objectY == 3431 ? 3437 : 3430, -1, false);
 		player.getPackets().sendGameMessage("You pulled yourself through the pipes.", true);
 		WorldTasksManager.schedule(new WorldTask() {

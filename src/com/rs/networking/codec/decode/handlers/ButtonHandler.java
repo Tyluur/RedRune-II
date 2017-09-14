@@ -29,7 +29,7 @@ public class ButtonHandler {
 		if (Misc.getInterfaceDefinitionsSize() <= interfaceId) {
 			return;
 		}
-		if (player.isDead() || !player.getInterfaceManager().containsInterface(interfaceId)) {
+		if (player.isDead() || player.getLocks().isComponentLocked() || !player.getInterfaceManager().containsInterface(interfaceId)) {
 			return;
 		}
 		final int componentId = interfaceHash - (interfaceId << 16);

@@ -1,4 +1,4 @@
-package com.rs.game.content.node.item;
+package com.rs.game.content.actor.item;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.actor.player.data.PlayerInventory;

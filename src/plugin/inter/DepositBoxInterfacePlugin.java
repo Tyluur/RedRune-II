@@ -3,6 +3,8 @@ package plugin.inter;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.utility.constants.PacketConstants;
+import com.rs.utility.game.InputEvent;
+import com.rs.utility.game.InputEvent.InputEventType;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -22,9 +24,12 @@ public class DepositBoxInterfacePlugin extends InterfacePlugin {
 			} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 				player.getBank().depositItem(slotId, Integer.MAX_VALUE, false);
 			} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
-				player.getTemporaryAttributtes().put("bank_item_X_Slot", slotId);
-				player.getTemporaryAttributtes().remove("bank_isWithdraw");
-				player.getPackets().sendRunScript(108, "Enter Amount:");
+				player.getPackets().requestClientInput(new InputEvent("Enter Amount:", InputEventType.INTEGER) {
+					@Override
+					public void handleInput() {
+						player.getBank().depositItem(slotId, getInput(), false);
+					}
+				});
 			} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 				player.getInventory().sendExamine(slotId);
 			}

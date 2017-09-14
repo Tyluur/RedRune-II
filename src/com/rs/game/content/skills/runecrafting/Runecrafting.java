@@ -88,7 +88,7 @@ public final class Runecrafting {
 		}
 		player.setNextGraphics(new Graphics(186));
 		player.setNextAnimation(new Animation(791));
-		player.addLockDelay(5);
+		player.getLocks().lock((int) (long) 5);
 		player.getInventory().addItem(rune, runes);
 		player.getPackets().sendGameMessage("You bind the temple's power into " + ItemDefinitions.getItemDefinitions(rune).getName().toLowerCase() + "s.");
 	}

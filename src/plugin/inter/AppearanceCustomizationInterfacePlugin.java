@@ -1,6 +1,6 @@
 package plugin.inter;
 
-import com.rs.game.content.PlayerDesign;
+import com.rs.game.content.actor.player.design.PlayerDesign;
 import com.rs.game.content.PlayerLook;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;

@@ -17,7 +17,7 @@ public class CompCape extends Dialogue {
 	public void run(int interfaceId, int componentId) {
 		if (stage == -1) {
 			stage = 0;
-			sendDialogue(SEND_4_OPTIONS, SEND_DEFAULT_OPTIONS_TITLE, "Open my bank.", "Home teleport.", "Change Display Name(?)", "Close features.");
+			sendDialogue(SEND_4_OPTIONS, DEFAULT_OPTION, "Open my bank.", "Home teleport.", "Change Display Name(?)", "Close features.");
 		} else if (stage == 0) {
 			if (componentId == 1) {
 				player.getBank().openBank();

@@ -46,7 +46,7 @@ public interface PacketConstants {
 	
 	int CLICK_PACKET = 84;
 	
-	int MOUVE_MOUSE_PACKET = 29;
+	int MOVE_MOUSE_PACKET = 29;
 	
 	int KEY_TYPED_PACKET = 68;
 	
@@ -132,7 +132,7 @@ public interface PacketConstants {
 	
 	int COLOR_ID_PACKET = 22;
 	
-	int CLAN_NAME_PACKET = 7;
+	int ENTER_LONG_STRING_PACKET = 7;
 	
 	int CLAN_FORUM_THREAD_PACKET = 74;
 	

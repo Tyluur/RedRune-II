@@ -2,6 +2,8 @@ package com.rs.game.entity.actor.player.link;
 
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.punishment.PunishmentRepository;
+import com.rs.game.world.punishment.PunishmentType;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.PacketConstants;
 import com.rs.utility.game.player.QuickChatMessage;
@@ -127,6 +129,10 @@ public class ContactManager implements Serializable {
 	}
 	
 	public void sendMessage(Player p2, String message) {
+		if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_MUTE, PunishmentType.ADDRESS_MUTE)) {
+			player.getPackets().sendGameMessage("You are muted.");
+			return;
+		}
 		if (privateStatus == 2) {// off
 			privateStatus = 0;
 			sendFriendsMyStatus(true);

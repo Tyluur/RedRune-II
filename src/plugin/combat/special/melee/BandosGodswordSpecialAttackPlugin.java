@@ -26,8 +26,8 @@ public class BandosGodswordSpecialAttackPlugin extends SpecialAttackPlugin {
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
-		int damage = style.getRandomDamage(source, target, 1);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), damage, 0);
+		int damage = style.getRandomDamage(source, target, 1.21);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1.21), damage, 0);
 		if (target.isPlayer()) {
 			Player targetPlayer = target.toPlayer();
 			int amountLeft;

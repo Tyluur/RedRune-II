@@ -33,7 +33,7 @@ public class HandCannonSpecialAttackPlugin extends SpecialAttackPlugin {
 			
 			@Override
 			public void run() {
-				if ((target.isDead() || source.isDead() || loop > 1)) {
+				if (target.isDead() || source.isDead() || loop > 1) {
 					stop();
 					return;
 				}
@@ -41,12 +41,12 @@ public class HandCannonSpecialAttackPlugin extends SpecialAttackPlugin {
 					source.setNextAnimation(FIRE_ANIMATION);
 					source.setNextGraphics(GRAPHICS);
 					ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(source, target, 2143, 18, 36, 41, 5, 0));
-					style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), ProjectileManager.getProjectileDelay(source, target));
+					style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.05), style.getRandomDamage(source, target, 1.05), ProjectileManager.getProjectileDelay(source, target));
 				} else if (loop == 1) {
 					source.setNextAnimation(FIRE_ANIMATION);
 					source.setNextGraphics(GRAPHICS);
 					ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(source, target, 2143, 18, 36, 41, 5, 0));
-					style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), ProjectileManager.getProjectileDelay(source, target));
+					style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.05), style.getRandomDamage(source, target, 1.05), ProjectileManager.getProjectileDelay(source, target));
 					stop();
 				}
 				loop++;

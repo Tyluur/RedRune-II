@@ -13,7 +13,7 @@ public class BarrowsD extends Dialogue {
 	public void run(int interfaceId, int componentId) {
 		if (stage == -1) {
 			stage = 0;
-			sendDialogue(SEND_2_LARGE_OPTIONS, SEND_DEFAULT_OPTIONS_TITLE, "Yes, I'm fearless.", "No way, that looks scary!");
+			sendDialogue(SEND_2_LARGE_OPTIONS, DEFAULT_OPTION, "Yes, I'm fearless.", "No way, that looks scary!");
 		} else if (stage == 0) {
 			if (componentId == 2) {
 				player.setNextWorldTile(new WorldTile(3551, 9692, 0));

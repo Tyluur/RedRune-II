@@ -1,8 +1,10 @@
 package com.rs.game.entity.actor.player.data;
 
+import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.entity.item.Item;
 import com.rs.game.entity.item.ItemsContainer;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;
 import com.rs.utility.repo.item.ItemCharacteristicRepository;
 
@@ -228,4 +230,27 @@ public final class PlayerInventory implements Serializable {
 		return items.getSize();
 	}
 	
+	
+	public boolean addItemDrop(Item item) {
+		if (item.getId() < 0 || item.getAmount() < 0 || !Misc.itemExists(item.getId()) || !player.getControllerManager().canAddInventoryItem(item.getId(), item.getAmount())) {
+			return false;
+		}
+		Item[] itemsBefore = items.getItemsCopy();
+		WorldTile tile = player;
+		if (!items.add(item)) {
+			if (item.getDefinitions().isStackable()) {
+				RegionManager.addGroundItem(item, tile, player, true, 180, 3, 150);
+			} else {
+				for (int i = 0; i < item.getAmount(); i++) {
+					RegionManager.addGroundItem(new Item(item.getId(), 1), tile, player, true, 180, 3, 150);
+				}
+			}
+			String name = item.getName();
+			String formattedName = name + (item.getAmount() > 1 ? (name.endsWith("s") ? "" : "s") : "");
+			player.getPackets().sendGameMessage(item.getAmount() + " " + formattedName + " have been dropped to your feet because your inventory was full.");
+		} else {
+			refreshItems(itemsBefore);
+		}
+		return true;
+	}
 }

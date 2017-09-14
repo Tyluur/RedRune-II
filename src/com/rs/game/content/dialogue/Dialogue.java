@@ -3,12 +3,17 @@ package com.rs.game.content.dialogue;
 import com.rs.cache.loaders.ItemDefinitions;
 import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.game.entity.actor.player.Player;
+import com.rs.utility.constants.ColorConstants;
+import com.rs.utility.game.Expressions;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Dialogue {
+public abstract class Dialogue implements Expressions, ColorConstants {
+	
+	public static final int FIRST = 1, SECOND = 2, THIRD = 3, FOURTH = 4, FIFTH = 5, YES = 1, NO = 2;
 	
 	public static final int OPTION_1 = 11, OPTION_2 = 13, OPTION_3 = 14, OPTION_4 = 15, OPTION_5 = 16;
 	
@@ -20,7 +25,7 @@ public abstract class Dialogue {
 	
 	protected static final short SEND_4_TEXT_INFO = 213;
 	
-	protected static final String SEND_DEFAULT_OPTIONS_TITLE = "Select an Option";
+	protected static final String DEFAULT_OPTION = "Select an Option";
 	
 	protected static final short SEND_2_OPTIONS = 236;
 	
@@ -70,6 +75,7 @@ public abstract class Dialogue {
 	
 	protected Player player;
 	
+	@Getter
 	protected byte stage = -1;
 	
 	public Dialogue() {
@@ -138,8 +144,10 @@ public abstract class Dialogue {
 		if (componentOptions == null) {
 			return false;
 		}
+		if (player == null) { return false; }
 		player.getInterfaceManager().sendChatBoxInterface(interId);
-		if (talkDefinitons.length != componentOptions.length) {
+		int properLength = (interId > 213 ? talkDefinitons.length - 1 : talkDefinitons.length);
+		if (properLength != componentOptions.length) {
 			return false;
 		}
 		for (int childOptionId = 0; childOptionId < componentOptions.length; childOptionId++) {
@@ -406,6 +414,26 @@ public abstract class Dialogue {
 		int length = text.length;
 		short interfaceId = (length == 4 ? SEND_4_TEXT_INFO : length == 3 ? SEND_3_TEXT_INFO : length == 2 ? SEND_2_TEXT_INFO : SEND_1_TEXT_INFO);
 		sendDialogue(interfaceId, text);
+	}
+	
+	public void options(String... text) {
+		int l = text.length;
+		int interfaceId = (l == 6 ? 238 : l == 5 ? 237 : l == 4 ? 230 : 236);
+		
+		String[] messages = new String[text.length + 1];
+		System.arraycopy(text, 0, messages, 0, text.length);
+		sendDialogue((short) interfaceId, messages);
+	}
+	
+	/**
+	 * Gets a parameter from the {@link #parameters} array and casts the type to it
+	 *
+	 * @param indexId
+	 * 		The index in the parameters array
+	 */
+	@SuppressWarnings("unchecked")
+	protected <K> K getParam(int indexId) {
+		return (K) parameters[indexId];
 	}
 	
 }

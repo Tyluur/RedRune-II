@@ -24,6 +24,7 @@ import com.rs.networking.codec.Encoder;
 import com.rs.networking.io.OutputStream;
 import com.rs.utility.Misc;
 import com.rs.utility.cache.huffman.Huffman;
+import com.rs.utility.game.InputEvent;
 import com.rs.utility.game.map.HintIcon;
 import com.rs.utility.game.map.MapArchiveKeys;
 import com.rs.utility.game.player.PublicChatMessage;
@@ -1050,7 +1051,7 @@ public class WorldPacketsEncoder extends Encoder {
 	public void sendUpdateItems(int key, boolean negativeKey, Item[] items, int... slots) {
 		OutputStream stream = new OutputStream();
 		stream.writePacketVarShort(80);
-		stream.writeShort(negativeKey ? -key : key);
+		stream.writeShort(key);
 		stream.writeByte(negativeKey ? 1 : 0);
 		for (int slotId : slots) {
 			if (slotId >= items.length) {
@@ -1085,14 +1086,10 @@ public class WorldPacketsEncoder extends Encoder {
 		session.write(stream);
 	}
 	
-	public void sendExecMessage(String command) {
-		sendMessage(1337, command, null);
-	}
-	
-	public void sendLogout() {
+	public void sendLogout(boolean lobby) {
 		OutputStream stream = new OutputStream();
-		stream.writePacket(51);
-		ChannelFuture future = session.write(stream);
+		stream.writePacket(lobby ? 59 : 51);
+		ChannelFuture future = session.writeWithFuture(stream);
 		if (future != null) {
 			future.addListener(ChannelFutureListener.CLOSE);
 		} else {
@@ -1361,5 +1358,15 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writeByte(255);
 		stream.writeByte128(255);
 		session.write(stream);
+	}
+	
+	public void requestClientInput(InputEvent event) {
+		sendRunScript(event.getType().getScriptId(), event.getText());
+		player.putAttribute("input_event", event);
+	}
+	
+	public void cancelInputRequest() {
+		sendRunScript(1548, 0);
+		player.removeAttribute("input_event");
 	}
 }

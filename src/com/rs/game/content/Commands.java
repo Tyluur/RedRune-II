@@ -276,11 +276,6 @@ public final class Commands {
 				player.getPackets().sendScrollIComponent(Integer.valueOf(cmd[1]), Integer.valueOf(cmd[2]), Integer.valueOf(cmd[3]));
 				return true;
 			}
-			if (cmd[0].equalsIgnoreCase("female")) {
-				player.getAppearance().femaleResetAppearance();
-				player.getAppearance().generateAppearanceData();
-				return true;
-			}
 			if (cmd[0].equalsIgnoreCase("male")) {
 				player.getAppearance().male();
 				player.getAppearance().generateAppearanceData();

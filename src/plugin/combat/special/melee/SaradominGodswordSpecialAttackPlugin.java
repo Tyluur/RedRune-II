@@ -24,11 +24,11 @@ public class SaradominGodswordSpecialAttackPlugin extends SpecialAttackPlugin {
 	
 	@Override
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
-		int damage = style.getRandomDamage(source, target, 1);
+		int damage = style.getRandomDamage(source, target, 1.1);
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
 		source.heal(damage / 2);
 		source.getPrayer().restorePrayer((damage / 4) * 10);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), damage, 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.1), damage, 0);
 	}
 }

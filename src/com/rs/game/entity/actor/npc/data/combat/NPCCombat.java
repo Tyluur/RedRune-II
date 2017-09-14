@@ -1,4 +1,4 @@
-package com.rs.game.entity.actor.npc.combat;
+package com.rs.game.entity.actor.npc.data.combat;
 
 import com.rs.game.content.combat.CombatAlgorithm;
 import com.rs.game.content.combat.npc.CombatScriptsHandler;

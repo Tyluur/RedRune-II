@@ -121,7 +121,7 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 	public int getRandomDamage(Player source, Actor target, double multiplier) {
 		int weaponId = source.getEquipment().getWeaponId();
 		int combatStyle = source.getCombatDefinitions().getAttackStyle();
-		return CombatRoll.randomizeHit(calculator.getMaximumHit(source, 1), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
+		return CombatRoll.randomizeHit(calculator.getMaximumHit(source, multiplier), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
 	}
 	
 	@Override

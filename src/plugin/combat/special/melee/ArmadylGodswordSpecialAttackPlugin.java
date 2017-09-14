@@ -26,7 +26,7 @@ public class ArmadylGodswordSpecialAttackPlugin extends SpecialAttackPlugin {
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1.375), style.getRandomDamage(source, target, 1.375), 0);
 	}
 	
 }

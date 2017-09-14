@@ -6,7 +6,7 @@ import java.io.*;
 
 public final class SerializableFilesManager {
 	
-	private static final String PATH = "data/characters/";
+	private static final String PATH = "data/saves/characters/";
 	
 	private SerializableFilesManager() {
 	

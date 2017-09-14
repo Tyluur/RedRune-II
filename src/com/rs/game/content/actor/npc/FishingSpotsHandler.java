@@ -1,4 +1,4 @@
-package com.rs.game.content.node.npc;
+package com.rs.game.content.actor.npc;
 
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.npc.NPC;

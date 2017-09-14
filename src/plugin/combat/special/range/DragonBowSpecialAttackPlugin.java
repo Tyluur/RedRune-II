@@ -39,9 +39,9 @@ public class DragonBowSpecialAttackPlugin extends SpecialAttackPlugin {
 		boolean dragon;
 		
 		if (arrowId == 11212) {
-			maxHit = style.getCalculator().getMaximumHit(source,1);
-			damage = style.getRandomDamage(source, target, 1);
-			damage2 = style.getRandomDamage(source, target, 1);
+			maxHit = style.getCalculator().getMaximumHit(source, 1);
+			damage = style.getRandomDamage(source, target, 1.5);
+			damage2 = style.getRandomDamage(source, target, 1.5);
 			if (damage < 80) {
 				damage = 80;
 			}
@@ -50,9 +50,9 @@ public class DragonBowSpecialAttackPlugin extends SpecialAttackPlugin {
 			}
 			visualize(source, target, dragon = true);
 		} else {
-			maxHit = style.getCalculator().getMaximumHit(source,1);
-			damage = style.getRandomDamage(source, target, 1);
-			damage2 = style.getRandomDamage(source, target, 1);
+			maxHit = style.getCalculator().getMaximumHit(source, 1);
+			damage = style.getRandomDamage(source, target, 1.3);
+			damage2 = style.getRandomDamage(source, target, 1.3);
 			if (damage < 50) {
 				damage = 50;
 			}

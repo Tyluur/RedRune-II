@@ -3,6 +3,8 @@ package plugin.inter;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.utility.constants.PacketConstants;
+import com.rs.utility.game.InputEvent;
+import com.rs.utility.game.InputEvent.InputEventType;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -23,9 +25,12 @@ public class PriceCheckerInterfacePlugin extends InterfacePlugin {
 				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getPriceCheckManager().removeItem(slotId, Integer.MAX_VALUE);
 				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
-					player.getTemporaryAttributtes().put("pc_item_X_Slot", slotId);
-					player.getTemporaryAttributtes().put("pc_isRemove", Boolean.TRUE);
-					player.getPackets().sendRunScript(108, "Enter Amount:");
+					player.getPackets().requestClientInput(new InputEvent("Enter Amount:", InputEventType.INTEGER) {
+						@Override
+						public void handleInput() {
+							player.getPriceCheckManager().removeItem(slotId, getInput());
+						}
+					});
 				}
 			}
 		} else if (interfaceId == 207) {
@@ -39,9 +44,12 @@ public class PriceCheckerInterfacePlugin extends InterfacePlugin {
 				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getPriceCheckManager().addItem(slotId, Integer.MAX_VALUE);
 				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
-					player.getTemporaryAttributtes().put("pc_item_X_Slot", slotId);
-					player.getTemporaryAttributtes().remove("pc_isRemove");
-					player.getPackets().sendRunScript(108, "Enter Amount:");
+					player.getPackets().requestClientInput(new InputEvent("Enter Amount:", InputEventType.INTEGER) {
+						@Override
+						public void handleInput() {
+							player.getPriceCheckManager().addItem(slotId, getInput());
+						}
+					});
 				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					player.getInventory().sendExamine(slotId);
 				}

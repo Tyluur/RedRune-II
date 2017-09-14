@@ -215,7 +215,7 @@ public class Wilderness extends Controller {
 	public boolean canEntityClick(Entity entity, ClickOption option) {
 		WorldObject object = entity.toObject();
 		if (entity.isObject() && isDitch(object.getId())) {
-			player.setInfiniteStopDelay();
+			player.getLocks().lock();
 			player.setNextAnimation(new Animation(6132));
 			final WorldTile toTile = new WorldTile(player.getX(), object.getY() - 1, object.getPlane());
 			player.setNextForceMovement(new ForceMovement(new WorldTile(player), 1, toTile, 2, 2));
@@ -227,7 +227,7 @@ public class Wilderness extends Controller {
 					player.setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
 					removeIcon();
 					removeController();
-					player.resetLockDelay();
+					player.getLocks().unlock();
 				}
 			}, 2);
 			return false;

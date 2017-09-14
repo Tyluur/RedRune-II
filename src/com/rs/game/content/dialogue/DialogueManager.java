@@ -32,6 +32,10 @@ public class DialogueManager {
 		if (lastDialogue == null) {
 			return;
 		}
+		if (lastDialogue.getStage() == -2) {
+			finishDialogue();
+			return;
+		}
 		lastDialogue.run(interfaceId, componentId);
 	}
 	

@@ -10,8 +10,9 @@ import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.mask.Graphics;
 import com.rs.game.entity.actor.mask.Hit;
 import com.rs.game.entity.actor.mask.HitSplat;
-import com.rs.game.entity.actor.npc.combat.NPCCombat;
-import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
+import com.rs.game.entity.actor.npc.data.combat.NPCCombat;
+import com.rs.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
+import com.rs.game.entity.actor.npc.data.extension.NPCExtension;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
 import com.rs.game.entity.actor.npc.mask.Transformation;
 import com.rs.game.entity.actor.player.Player;
@@ -40,6 +41,10 @@ public class NPC extends Actor implements Serializable {
 	private static final long serialVersionUID = -4794678936277614443L;
 	
 	private int id;
+	
+	private String name;
+	
+	private int combatLevel;
 	
 	private WorldTile respawnTile;
 	
@@ -72,14 +77,11 @@ public class NPC extends Actor implements Serializable {
 	
 	private boolean forceMultiAttacked;
 	
-	// name changing masks
-	private String name;
-	
-	private int combatLevel;
-	
 	@Getter
 	@Setter
 	private int walkType;
+	
+	private List<NPCExtension> extensions = new ArrayList<>();
 	
 	private transient NPCCombat combat;
 	
@@ -213,6 +215,7 @@ public class NPC extends Actor implements Serializable {
 		if (isDead()) {
 			return;
 		}
+		extensions.forEach(extension -> extension.process(this));
 		if (!combat.process()) { // if not under combat
 			if (!isForceWalking()) {// combat still processed for attack delay
 				// go down
@@ -845,5 +848,15 @@ public class NPC extends Actor implements Serializable {
 		} else {
 			return bonuses[index];
 		}
+	}
+	
+	/**
+	 * Adds an extension to the npc
+	 *
+	 * @param extension
+	 * 		The extension to add
+	 */
+	public void addExtension(NPCExtension extension) {
+		extensions.add(extension);
 	}
 }

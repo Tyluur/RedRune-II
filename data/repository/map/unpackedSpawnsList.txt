@@ -4,10 +4,8 @@
 2562 10 3 ~ 3082 3492 0 true // comp cape stand
 61353 10 0 ~ 3097 3505 0 true // edge stall
 1814 4 1 ~ 3095 3506 0 true // lever outside edge
-61871 10 1 ~ 3090 3495 0 true // bench
 36711 10 2 ~ 3082 3493 0 true // edge bushes decoration
 36711 10 2 ~ 3082 3495 0 true // edge bushes decoration
-20599 10 3 ~ 3074 3498 0 true // rev cave entrance
 54639 10 3 ~ 3083 3500 0 true // new fountain
 47762 10 2 ~ 3090 3499 0 true // presents
 47760 10 4 ~ 3090 3497 0 true // presents

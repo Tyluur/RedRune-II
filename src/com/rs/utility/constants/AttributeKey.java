@@ -8,4 +8,5 @@ public enum AttributeKey {
 	MIASMIC_EFFECT,
 	GOD_CHARGED,
 	MIASMIC_IMMUNITY,
+	TRADE_TARGET,
 }

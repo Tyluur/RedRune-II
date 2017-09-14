@@ -309,6 +309,7 @@ public final class PlayerEquipment implements Serializable {
 			items.remove(SLOT_ARROWS, new Item(ammoId, amount));
 			refresh(SLOT_ARROWS);
 		}
+		player.getAppearance().generateAppearanceData();
 	}
 	
 	public int getAuraId() {

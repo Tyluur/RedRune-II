@@ -1,6 +1,6 @@
 package com.rs.game.entity.actor.npc.impl.familiar;
 
-import com.rs.game.content.node.item.Foods.Food;
+import com.rs.game.content.actor.item.Foods.Food;
 import com.rs.game.content.skills.fishing.Fishing.Fish;
 import com.rs.game.content.skills.summoning.Summoning.Pouches;
 import com.rs.game.entity.WorldTile;

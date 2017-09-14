@@ -26,11 +26,11 @@ public class DragonDaggerSpecialAttackPlugin extends SpecialAttackPlugin {
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), style.getRandomDamage(source, target, 1), 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.15), style.getRandomDamage(source, target, 1.15), 0);
 		if (target.isPlayer()) {
-			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), style.getRandomDamage(source, target, 1), 0);
+			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.15), style.getRandomDamage(source, target, 1.15), 0);
 		} else {
-			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), style.getRandomDamage(source, target, 1), 1);
+			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.15), style.getRandomDamage(source, target, 1.15), 1);
 		}
 		style.playSound(2537, source, target);
 	}

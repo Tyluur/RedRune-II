@@ -388,4 +388,22 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		return data;
 	}
 	
+	public boolean canAdd(T item) {
+		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
+			for (Item aData : data) {
+				if (aData != null) {
+					if (aData.getId() == item.getId()) {
+						return true;
+					}
+				}
+			}
+		} else {
+			if (item.getAmount() > 1) {
+				return freeSlots() >= item.getAmount();
+			}
+		}
+		int index = freeSlot();
+		return index != -1;
+	}
+	
 }

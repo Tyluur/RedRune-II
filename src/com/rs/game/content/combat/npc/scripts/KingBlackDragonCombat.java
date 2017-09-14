@@ -5,7 +5,7 @@ import com.rs.game.entity.actor.Actor;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.content.combat.npc.CombatScript;
-import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
+import com.rs.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.region.RegionManager;
 import com.rs.utility.Misc;

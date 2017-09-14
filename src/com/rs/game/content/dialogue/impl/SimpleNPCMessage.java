@@ -1,15 +1,17 @@
 package com.rs.game.content.dialogue.impl;
 
-import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.game.content.dialogue.Dialogue;
 
 public class SimpleNPCMessage extends Dialogue {
 	
 	@Override
 	public void start() {
-		int npcId = (Integer) parameters[0];
-		String message = (String) parameters[1];
-		sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), message }, IS_NPC, npcId, 9827);
+		int npcId = getParam(0);
+		String[] messages = new String[parameters.length - 1];
+		for (int i = 0; i < messages.length; i++) {
+			messages[i] = (String) parameters[i + 1];
+		}
+		npc(npcId, 9827, messages);
 	}
 	
 	@Override

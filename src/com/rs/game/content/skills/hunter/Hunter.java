@@ -43,7 +43,7 @@ public class Hunter extends Action {
 		}
 		player.getPackets().sendGameMessage("You start setting up the trap..");
 		player.setNextAnimation(new Animation(5208));
-		player.addLockDelay(3);
+		player.getLocks().lock((int) (long) 3);
 		setActionDelay(player, 2);
 		return true;
 	}

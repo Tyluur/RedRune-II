@@ -7,6 +7,8 @@ import com.rs.game.content.skills.slayer.SlayerHelp;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.ActorList;
 import com.rs.game.entity.actor.npc.NPC;
+import com.rs.game.entity.actor.npc.data.extension.NPCExtension;
+import com.rs.game.entity.actor.npc.data.extension.NPCExtensionHolder;
 import com.rs.game.entity.actor.npc.impl.corp.CorporealBeast;
 import com.rs.game.entity.actor.npc.impl.dragons.KingBlackDragon;
 import com.rs.game.entity.actor.npc.impl.jad.TzTokJad;
@@ -20,6 +22,8 @@ import com.rs.game.entity.actor.player.Player;
 import com.rs.utility.Misc;
 import com.rs.utility.Misc.Direction;
 import com.rs.utility.networking.AntiFlood;
+
+import java.util.Optional;
 
 /**
  * This class denotes a world
@@ -154,6 +158,10 @@ public final class World {
 			n = new Glacor(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
 		} else {
 			n = new NPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
+		}
+		Optional<NPCExtension> optional = NPCExtensionHolder.getExtension(id);
+		if (n != null && optional.isPresent()) {
+			n.addExtension(optional.get());
 		}
 		return n;
 	}

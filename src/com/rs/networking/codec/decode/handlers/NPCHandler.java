@@ -34,7 +34,7 @@ public class NPCHandler {
 		boolean running = stream.readByte128() == 1;
 		int npcIndex = stream.readUnsignedShort128();
 		final NPC npc = World.getNPCs().get(npcIndex);
-		if (npc == null || npc.isCantInteract() || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId())) {
+		if (npc == null || npc.isCantInteract() || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
 			return;
 		}
 		if (running) {

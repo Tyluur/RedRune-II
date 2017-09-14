@@ -26,7 +26,7 @@ public class SaradominSwordSpecialAttackPlugin extends SpecialAttackPlugin {
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
 		target.setNextGraphics(GRAPHICS);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1.25), style.getRandomDamage(source, target, 1.25), 0);
 		style.playSound(3853, source, target);
 	}
 }

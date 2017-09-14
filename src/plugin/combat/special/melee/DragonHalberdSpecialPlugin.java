@@ -32,9 +32,9 @@ public class DragonHalberdSpecialPlugin extends SpecialAttackPlugin {
 			target.setNextGraphics(GRAPHICS1);
 			target.setNextGraphics(GRAPHICS2);
 		}
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), style.getRandomDamage(source, target, 1), 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.1), style.getRandomDamage(source, target, 1.1), 0);
 		if (target.getSize() > 1) {
-			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), style.getRandomDamage(source, target, 1), 1);
+			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.1), style.getRandomDamage(source, target, 1.1), 1);
 		}
 	}
 }

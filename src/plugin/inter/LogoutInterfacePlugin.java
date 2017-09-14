@@ -15,9 +15,10 @@ public class LogoutInterfacePlugin extends InterfacePlugin {
 			return true;
 		}
 		if (componentId == 6 || componentId == 13) {
-			if (!player.hasFinished()) {
-				player.logout();
+			if (player.hasFinished()) {
+				return true;
 			}
+			player.logout(false);
 		}
 		return true;
 	}

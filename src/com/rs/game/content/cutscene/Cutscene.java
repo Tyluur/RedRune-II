@@ -110,19 +110,16 @@ public abstract class Cutscene {
 		}
 		player.getPackets().sendConfig(1241, 0);
 		player.getPackets().sendResetCamera();
-		player.resetLockDelay();
+		player.getLocks().unlock();
 		deleteCache();
 		if (currentMapData != null) {
-			CoresManager.slowExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						if (currentMapData != null) {
-							RegionBuilder.destroyMap(currentMapData[0], currentMapData[1], currentMapData[1], currentMapData[2]);
-						}
-					} catch (Throwable e) {
-						e.printStackTrace();
+			CoresManager.slowExecutor.execute(() -> {
+				try {
+					if (currentMapData != null) {
+						RegionBuilder.destroyMap(currentMapData[0], currentMapData[1], currentMapData[1], currentMapData[2]);
 					}
+				} catch (Throwable e) {
+					e.printStackTrace();
 				}
 			});
 		}
@@ -174,7 +171,7 @@ public abstract class Cutscene {
 			player.getPackets().sendBlackOut(2); // minimap
 		}
 		player.getPackets().sendConfig(1241, 1);
-		player.setInfiniteStopDelay();
+		player.getLocks().lock();
 		player.stopAll(true, false);
 	}
 	

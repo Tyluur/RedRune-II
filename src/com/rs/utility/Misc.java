@@ -5,8 +5,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rs.cache.Cache;
 import com.rs.game.entity.actor.Actor;
+import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.region.Region;
+import com.rs.game.world.region.RegionManager;
 import com.rs.utility.constants.SkillConstants;
 import org.jboss.netty.channel.Channel;
 
@@ -18,6 +21,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 public final class Misc {
@@ -1114,6 +1118,62 @@ public final class Misc {
 		while ((element = queue.poll()) != null) {
 			consumer.accept(element);
 		}
+	}
+	
+	/**
+	 * Finds an npc in the players region by the id
+	 *
+	 * @param player
+	 * 		The player
+	 * @param id
+	 * 		the id of the npc
+	 */
+	public static NPC findLocalNPC(Player player, int id) {
+		CopyOnWriteArrayList<Integer> regionIds = player.getMapRegionsIds();
+		for (int regionId : regionIds) {
+			Region region = RegionManager.getRegion(regionId);
+			if (region == null) {
+				continue;
+			}
+			List<Integer> npcIndexes = region.getNPCsIndexes();
+			if (npcIndexes == null) {
+				continue;
+			}
+			for (int index : npcIndexes) {
+				NPC npc = World.getNPCs().get(index);
+				if (npc == null) {
+					continue;
+				}
+				if (npc.getId() == id) {
+					return npc;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Checks if the amount of time necessary has passed
+	 *
+	 * @param eventTime
+	 * 		The time the certain event happened
+	 * @param timeToCheck
+	 * 		The amount of time that should have elapsed
+	 */
+	public static boolean timeHasPassed(long eventTime, long timeToCheck) {
+		return eventTime == -1 || System.currentTimeMillis() - eventTime >= timeToCheck;
+	}
+	
+	public static <K> K randomArraySlot(K[] array) {
+		return array[random(array.length)];
+	}
+	
+	public static boolean itemExists(int id) {
+		if (id >= getItemDefinitionsSize()) // setted because of custom items
+		{
+			return false;
+		}
+		return Cache.STORE.getIndexes()[19].fileExists(id >>> 8, 0xff & id);
 	}
 	
 	public enum Direction {

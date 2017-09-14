@@ -1,3 +1,25 @@
+9/13/17 {
+	+   Added all special attack accuracy boosts
+	+   Added morrigan throwing axe/morrigan javelin specials
+	+   Added all thrown ammo [obby rings/javelins] with correct projectiles
+	+   Added player appearance customization
+		+   Hair/Beard changing
+		+   Gender/skin color changing
+		+   Clothing changing
+		+   Complete character customization ["crafter/archer" defaults]
+	+   Added player trading
+	+   Added new "lock" system [stopping players from interacting during things like teleporting/agility/etc...]
+	+   Added scheduled messages from npcs like rewards trader
+	+   Added punishment handling
+		-   Json storage of punishments, auto-lapsing
+		-   Mac & ip address storage to make sure you can't ban evade
+
+	[img]https://i.imgur.com/FB7yekN.png[/img]
+	[img]https://i.imgur.com/7Iy2Cxp.png[/img]
+	[img]https://i.imgur.com/YVpRWoN.png[/img]
+	[img]https://i.imgur.com/249paZY.png[/img]
+}
+
 9/8/17 {
 	+   Added magic combat
 		-   All game teleports in all spellbooks have been registered as plugins

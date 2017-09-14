@@ -7,10 +7,12 @@ import com.rs.game.content.controller.ControllerHandler;
 import com.rs.game.content.cutscene.CutscenesHandler;
 import com.rs.game.content.dialogue.DialogueHandler;
 import com.rs.game.content.market.ShopRepository;
-import com.rs.game.content.node.npc.FishingSpotsHandler;
+import com.rs.game.content.actor.npc.FishingSpotsHandler;
 import com.rs.game.content.combat.npc.CombatScriptsHandler;
+import com.rs.game.entity.actor.npc.data.extension.NPCExtensionHolder;
 import com.rs.game.entity.actor.player.link.FriendChatsManager;
 import com.rs.game.plugin.PluginRepository;
+import com.rs.game.world.punishment.PunishmentRepository;
 import com.rs.game.world.region.RegionBuilder;
 import com.rs.game.world.worldlist.WorldList;
 import com.rs.networking.NetworkConstants;
@@ -52,6 +54,7 @@ public final class Launcher {
 		ObjectSpawns.init();
 		System.out.println("Initiating Object Spawns");
 		NPCWalkingFlag.registerFlags();
+		NPCExtensionHolder.registerAll();
 		System.out.println("Initiating Item Handlers");
 		FishingSpotsHandler.init();
 		CombatScriptsHandler.registerAll();
@@ -71,6 +74,7 @@ public final class Launcher {
 		System.out.println("Initiating Server Channel Handler");
 		WorldList.registerAll();
 		PluginRepository.registerAll();
+		PunishmentRepository.loadAll();
 		try {
 			ServerChannelHandler.init();
 		} catch (Throwable e) {

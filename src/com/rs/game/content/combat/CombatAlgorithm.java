@@ -1937,23 +1937,14 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 			return 231;
 		} else if (weaponId == 11230) { // dragon
 			return 1122;
-		}
-		// javelins
-		if (weaponId >= 13954 && weaponId <= 13956 || weaponId >= 13879 && weaponId <= 13882) {
+		} else if (weaponId >= 13954 && weaponId <= 13956 || weaponId >= 13879 && weaponId <= 13882) {// morrjavelins
 			return 1837;
-		}
-		// thrownaxe
-		if (weaponId == 13883 || weaponId == 13957) {
+		} else if (weaponId == 13883 || weaponId == 13957) { // morr thrownaxe
 			return 1839;
-		}
-		// obby rings
-		if (weaponId == 6522) {
+		} else if (weaponId == 6522) { // obby rings
 			return 442;
-		}
-		if (weaponId == 800) {
+		} else if (weaponId == 800) {
 			return 43;
-		} else if (weaponId == 13954 || weaponId == 13955 || weaponId == 13956 || weaponId == 13879 || weaponId == 13880 || weaponId == 13881 || weaponId == 13882) {
-			return 1837;
 		}
 		return 219;
 	}

@@ -8,6 +8,7 @@ import com.rs.cache.loaders.ObjectDefinitions;
 import com.rs.cores.factory.DecoderThreadFactory;
 import com.rs.cores.factory.SlowThreadFactory;
 import com.rs.cores.schedule.Scheduler;
+import com.rs.cores.schedule.impl.PunishmentTask;
 import com.rs.cores.thread.WorldThread;
 import com.rs.game.GameConstants;
 import com.rs.game.entity.actor.mask.Graphics;
@@ -82,6 +83,7 @@ public final class CoresManager {
 		addRestoreSpecialAttackTask();
 		addSummoningEffectTask();
 		addOwnedObjectsTask();
+		addScheduledTasks();
 	}
 	
 	private static void addAccountsSavingTask() {
@@ -92,7 +94,7 @@ public final class CoresManager {
 				e.printStackTrace();
 			}
 			
-		}, 1, 1, TimeUnit.SECONDS);
+		}, 15, 15, TimeUnit.SECONDS);
 	}
 	
 	private static void addCleanMemoryTask() {
@@ -236,6 +238,10 @@ public final class CoresManager {
 				e.printStackTrace();
 			}
 		}, 0, 1, TimeUnit.SECONDS);
+	}
+	
+	private static void addScheduledTasks() {
+		scheduler.schedule(new PunishmentTask());
 	}
 	
 	private static void saveFiles() {

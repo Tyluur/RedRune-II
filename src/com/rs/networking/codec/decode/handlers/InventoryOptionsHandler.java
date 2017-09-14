@@ -4,8 +4,8 @@ import com.rs.cores.thread.WorldThread;
 import com.rs.game.GameFlags;
 import com.rs.game.content.Magic;
 import com.rs.game.content.SkillCapeCustomizer;
-import com.rs.game.content.node.item.*;
-import com.rs.game.content.node.item.Burying.Bone;
+import com.rs.game.content.actor.item.*;
+import com.rs.game.content.actor.item.Burying.Bone;
 import com.rs.game.content.skills.crafting.GemCutting;
 import com.rs.game.content.skills.crafting.GemCutting.Gem;
 import com.rs.game.content.skills.crafting.LeatherCrafting;
@@ -44,7 +44,7 @@ public class InventoryOptionsHandler {
 	
 	public static void handleItemOption1(Player player, final int slotId, final int itemId, Item item) {
 		long time = Misc.currentTimeMillis();
-		if (player.getLockDelay() >= time || player.getEmotesManager().getNextEmoteEnd() >= time) {
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= time) {
 			return;
 		}
 		player.stopAll(false);
@@ -223,6 +223,9 @@ public class InventoryOptionsHandler {
 		int interfaceId2 = stream.readIntV2() >> 16;
 		int itemUsedWithId = stream.readUnsignedShort128();
 		int toSlot = stream.readUnsignedShortLE();
+		if (player.getLocks().isComponentLocked()) {
+			return;
+		}
 		if ((interfaceId2 == 747 || interfaceId2 == 662) && interfaceId == PlayerInventory.INVENTORY_INTERFACE) {
 			if (player.getFamiliar() != null) {
 				player.getFamiliar().setSpecial(true);
@@ -379,7 +382,7 @@ public class InventoryOptionsHandler {
 	
 	public static void handleItemOption3(Player player, int slotId, int itemId, Item item) {
 		long time = Misc.currentTimeMillis();
-		if (player.getLockDelay() >= time || player.getEmotesManager().getNextEmoteEnd() >= time) {
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= time) {
 			return;
 		}
 		player.stopAll(false);
@@ -423,7 +426,7 @@ public class InventoryOptionsHandler {
 			return;
 		}
 		long time = Misc.currentTimeMillis();
-		if (player.getLockDelay() >= time || player.getEmotesManager().getNextEmoteEnd() >= time) {
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= time) {
 			return;
 		}
 		player.stopAll(false);
@@ -453,7 +456,7 @@ public class InventoryOptionsHandler {
 	
 	public static void handleItemOption7(Player player, int slotId, int itemId, Item item) {
 		long time = System.currentTimeMillis();
-		if (player.getLockDelay() >= time || player.getEmotesManager().getNextEmoteEnd() >= time) {
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= time) {
 			return;
 		}
 		player.stopAll(false);

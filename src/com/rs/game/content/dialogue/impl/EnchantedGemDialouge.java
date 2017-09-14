@@ -23,7 +23,7 @@ public class EnchantedGemDialouge extends Dialogue {
 		Master master = (Master) player.getTemporaryAttributtes().get("SlayerMaster");
 		if (stage == -1) {
 			stage = 0;
-			sendEntityDialogue(SEND_4_OPTIONS, new String[] { SEND_DEFAULT_OPTIONS_TITLE, "How many monsters do I have left?", "Where are you located in the land of " + GameConstants.SERVER_NAME + "?", "Give me a tip.", "Nothing, Nevermind." }, IS_PLAYER, player.getIndex(), 9827);
+			sendEntityDialogue(SEND_4_OPTIONS, new String[] { DEFAULT_OPTION, "How many monsters do I have left?", "Where are you located in the land of " + GameConstants.SERVER_NAME + "?", "Give me a tip.", "Nothing, Nevermind." }, IS_PLAYER, player.getIndex(), 9827);
 		} else if (stage == 0) {
 			if (componentId == 1) {
 				SlayerTask task = (SlayerTask) player.getTemporaryAttributtes().get("SlayerTask");

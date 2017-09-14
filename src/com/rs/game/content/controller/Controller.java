@@ -1,7 +1,7 @@
 package com.rs.game.content.controller;
 
-import com.rs.game.content.node.item.Foods.Food;
-import com.rs.game.content.node.item.Pots.Pot;
+import com.rs.game.content.actor.item.Foods.Food;
+import com.rs.game.content.actor.item.Pots.Pot;
 import com.rs.game.entity.Entity;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.Actor;

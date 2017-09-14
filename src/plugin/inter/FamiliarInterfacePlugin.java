@@ -5,6 +5,8 @@ import com.rs.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.plugin.type.InterfacePlugin;
 import com.rs.utility.constants.PacketConstants;
+import com.rs.utility.game.InputEvent;
+import com.rs.utility.game.InputEvent.InputEventType;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -57,7 +59,7 @@ public class FamiliarInterfacePlugin extends InterfacePlugin {
 				player.getFamiliar().takeBob();
 			} else if (componentId == 13 || componentId == 22) {
 				player.getFamiliar().renewFamiliar();
-			} else if (componentId == 18 || componentId == 18) {
+			} else if (componentId == 18) {
 				player.getFamiliar().sendFollowerDetails();
 			} else if (componentId == 17) {
 				if (player.getFamiliar().getSpecialAttack() == SpecialAttack.CLICK) {
@@ -82,9 +84,12 @@ public class FamiliarInterfacePlugin extends InterfacePlugin {
 				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getFamiliar().getBob().addItem(slotId, Integer.MAX_VALUE);
 				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
-					player.getTemporaryAttributtes().put("bob_item_X_Slot", slotId);
-					player.getTemporaryAttributtes().remove("bob_isRemove");
-					player.getPackets().sendRunScript(108, "Enter Amount:");
+					player.getPackets().requestClientInput(new InputEvent("Enter Amount:", InputEventType.INTEGER) {
+						@Override
+						public void handleInput() {
+							player.getFamiliar().getBob().addItem(slotId, getInput());
+						}
+					});
 				} else if (packetId == PacketConstants.ACTION_BUTTON9_PACKET) {
 					player.getInventory().sendExamine(slotId);
 				}
@@ -103,9 +108,12 @@ public class FamiliarInterfacePlugin extends InterfacePlugin {
 				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
 					player.getFamiliar().getBob().removeItem(slotId, Integer.MAX_VALUE);
 				} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
-					player.getTemporaryAttributtes().put("bob_item_X_Slot", slotId);
-					player.getTemporaryAttributtes().put("bob_isRemove", Boolean.TRUE);
-					player.getPackets().sendRunScript(108, "Enter Amount:");
+					player.getPackets().requestClientInput(new InputEvent("Enter Amount:", InputEventType.INTEGER) {
+						@Override
+						public void handleInput() {
+							player.getFamiliar().getBob().removeItem(slotId, getInput());
+						}
+					});
 				}
 			} else if (componentId == 29) {
 				player.getFamiliar().takeBob();

@@ -13,7 +13,7 @@ public class MakeOverMage extends Dialogue {
 		npcId = (Integer) parameters[0];
 		int v = (Integer) parameters[1];
 		if (v == 0) {
-			sendEntityDialogue(SEND_3_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), "Hello there! I am know as the Makeover Mage! I have", "spent many years researching magicks that can change", "your physical appearence." }, IS_NPC, npcId, 9827);
+			sendEntityDialogue(SEND_3_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), "Hello there! I am know as the Makeover Mage! I have", "spent many years researching magicks that can change", "your physical appearance." }, IS_NPC, npcId, 9827);
 		} else if (v == 1) {
 			stage = -2;
 			sendEntityDialogue(SEND_2_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), "That is no different from what you already have. I guess I", "shouldn't charge you if I'm not changing anything." }, IS_NPC, npcId, 9827);
@@ -27,23 +27,28 @@ public class MakeOverMage extends Dialogue {
 	public void run(int interfaceId, int componentId) {
 		if (stage == -1) {
 			stage = 0;
-			sendEntityDialogue(SEND_2_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), "I call it a 'makeover'.", "Would you like to perform my magicks on you?" }, IS_NPC, npcId, 9827);
+			npc(npcId, 9827, "I call it a 'makeover'.", "Would you like me to perform my magicks on you?");
 		} else if (stage == 0) {
 			stage = 1;
-			sendDialogue(SEND_4_OPTIONS, SEND_DEFAULT_OPTIONS_TITLE, "Tell me more about this 'makeover'.", "Sure, do it.", "No thanks.", "Cool amulet! Can i have one?");
+			options(DEFAULT_OPTION, "I would like a makeover", "I would like a haircut", "I would like a clothing change", "No thanks.");
 		} else if (stage == 1) {
-			if (componentId == 1) {
-				stage = 2;
-				sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { player.getDisplayName(), "Tell me more about this 'makeover'." }, IS_PLAYER, player.getIndex(), 9827);
-			} else if (componentId == 2) {
-				stage = 11;
-				sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { player.getDisplayName(), "Sure, do it." }, IS_PLAYER, player.getIndex(), 9827);
-			} else if (componentId == 3) {
-				stage = 13;
-				sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { player.getDisplayName(), "No thanks. I'm happy as Saradomin made me." }, IS_PLAYER, player.getIndex(), 9827);
-			} else {
-				stage = 14;
-				sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { player.getDisplayName(), "Cool amulet! Can i have one?" }, IS_PLAYER, player.getIndex(), 9827);
+			switch (componentId) {
+				case FIRST:
+					player(CALM, "I would like a makeover.");
+					stage = 22;
+					break;
+				case SECOND:
+					player(CALM, "I would like a haircut.");
+					stage = 23;
+					break;
+				case THIRD:
+					player(CALM, "I would like a clothing change.");
+					stage = 24;
+					break;
+				case FOURTH:
+					player(CALM, "No thanks.");
+					stage = -2;
+					break;
 			}
 		} else if (stage == 2) {
 			stage = 3;
@@ -71,7 +76,7 @@ public class MakeOverMage extends Dialogue {
 			sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), "So what do you say? Feel like a change?" }, IS_NPC, npcId, 9827);
 		} else if (stage == 9) {
 			stage = 10;
-			sendDialogue(SEND_2_OPTIONS, SEND_DEFAULT_OPTIONS_TITLE, "Sure do it.", "No thanks.");
+			sendDialogue(SEND_2_OPTIONS, DEFAULT_OPTION, "Sure do it.", "No thanks.");
 		} else if (stage == 10) {
 			if (componentId == 1) {
 				stage = 11;
@@ -94,7 +99,7 @@ public class MakeOverMage extends Dialogue {
 			sendEntityDialogue(SEND_3_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(npcId).getName(), "No problem, but please remember that the amulet I will", "sell you is only a copy of my own. It contains no magical", "powers and, as such, it will only cost you 100 coins." }, IS_NPC, npcId, 9827);
 		} else if (stage == 15) {
 			stage = 16;
-			sendDialogue(SEND_2_OPTIONS, SEND_DEFAULT_OPTIONS_TITLE, "Sure, here you go.", "No way! That's too expensive.");
+			sendDialogue(SEND_2_OPTIONS, DEFAULT_OPTION, "Sure, here you go.", "No way! That's too expensive.");
 		} else if (stage == 16) {
 			if (componentId == 1) {
 				if (!player.getInventory().containsItem(995, 100)) {
@@ -124,6 +129,15 @@ public class MakeOverMage extends Dialogue {
 		} else if (stage == 21) {
 			stage = -2;
 			sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { player.getDisplayName(), "	Uh, thanks, I guess." }, IS_PLAYER, player.getIndex(), 9827);
+		} else if (stage == 22) {
+			PlayerLook.openMageMakeOver(player);
+			end();
+		} else if (stage == 23) {
+			PlayerLook.openHairdresserSalon(player);
+			end();
+		} else if (stage == 24) {
+			PlayerLook.openThessaliasMakeOver(player);
+			end();
 		} else {
 			end();
 		}

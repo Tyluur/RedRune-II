@@ -131,7 +131,7 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 						player.getPackets().sendGameMessage("You can't rest while perfoming an emote.");
 						return true;
 					}
-					if (player.getLockDelay() >= currentTime) {
+					if (player.getLocks().isLocked("emote")) {
 						player.getPackets().sendGameMessage("You can't rest while perfoming an action.");
 						return true;
 					}

@@ -1,26 +1,30 @@
-[Wrappers/Systems]
-+   Trade system
-+   Duel system
-
 [Necessities]
-+   Appearance modification
-	-   Beard/gender/shoes/clothing
-+   Player Combat rewrite
-	-   Special attack max hit modifiers need to be included inline
 +   SQL integration
 	-   Account creation as well
 
+[Content]
++	Dungeoneering [Team-Based Minigame]
++	Barrows
++	Godwars 
++	Deep-wilderness pking areas
++	Deep-wilderness skilling zone
++	Start Tutorial
++	Duel System
++	Skilling
+	-	Wilderness skilling results in wilderness point tokens 
+		+	Agility/Wildy Resource Area
++	Wilderness Point Token
+	-	Need to figure out what we should be able to buy with these
++	New Player Tutorial
+
 [Punishments]
++   Add mac/lastmac server/client
 
 [Unfinished]
 +   Magic Combat Spells
 	-   Regular Spellbook
 		-   Need to add alchemy spells
 +   'You can't reach that' [stops interaction through walls]
-+   Teleport-other with closeby players [1 tile]
-	-   Interface 326
-	-   Can be done with one attribute
-	-   Example code from arios: https://paste.ee/p/trgn8
 
 [Data]
 +	NPC examines

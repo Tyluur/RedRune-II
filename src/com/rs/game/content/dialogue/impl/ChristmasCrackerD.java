@@ -19,7 +19,7 @@ public class ChristmasCrackerD extends Dialogue {
 	@Override
 	public void start() {
 		usedOn = (Player) parameters[0];
-		sendDialogue(SEND_3_OPTIONS, SEND_DEFAULT_OPTIONS_TITLE, "If you pull the cracker, it will be destroyed.", "That's okay, I might get a party hat!", "Stop. I want to keep my cracker.");
+		sendDialogue(SEND_3_OPTIONS, DEFAULT_OPTION, "If you pull the cracker, it will be destroyed.", "That's okay, I might get a party hat!", "Stop. I want to keep my cracker.");
 	}
 	
 	@Override

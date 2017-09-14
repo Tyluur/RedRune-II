@@ -7,6 +7,7 @@ import com.rs.game.content.Magic;
 import com.rs.game.entity.Entity;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.link.PoisonManager;
+import com.rs.game.entity.actor.lock.ActionLocks;
 import com.rs.game.entity.actor.mask.*;
 import com.rs.game.entity.actor.npc.NPC;
 import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
@@ -22,6 +23,7 @@ import com.rs.game.world.route.strategy.ObjectStrategy;
 import com.rs.networking.NetworkConstants;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.SkillConstants;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +129,12 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	private transient ConcurrentHashMap<Object, Object> temporaryAttributes;
 	
+	/**
+	 * The action locks.
+	 */
+	@Getter
+	private transient ActionLocks locks;
+	
 	// creates Entity and saved classes
 	public Actor(WorldTile tile) {
 		super(tile);
@@ -147,6 +155,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		receivedHits = new ConcurrentLinkedQueue<>();
 		receivedDamage = new ConcurrentHashMap<>();
 		temporaryAttributes = new ConcurrentHashMap<>();
+		locks = new ActionLocks();
 		nextHits = new ArrayList<>();
 		nextWalkDirection = nextRunDirection - 1;
 		lastFaceEntity = -1;

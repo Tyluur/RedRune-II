@@ -6,6 +6,10 @@ import com.google.gson.reflect.TypeToken;
 import com.rs.utility.Misc;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Modifier;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -30,6 +34,25 @@ public class JsonFileManager {
 		}
 		return GSON.fromJson(Misc.getText(file.getAbsolutePath()), new TypeToken<K>() {
 		}.getType());
+	}
+	
+	/**
+	 * Saves the data to the file
+	 *
+	 * @param data
+	 * 		The list to save
+	 * @param location
+	 * 		The location to save to
+	 */
+	@SuppressWarnings("hiding")
+	public static <T> void save(T data, String location) {
+		try (Writer writer = new FileWriter(location)) {
+			GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.STATIC);
+			Gson gson = builder.create();
+			gson.toJson(data, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

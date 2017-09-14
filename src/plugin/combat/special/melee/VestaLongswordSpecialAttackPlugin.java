@@ -22,6 +22,6 @@ public class VestaLongswordSpecialAttackPlugin extends SpecialAttackPlugin {
 	@Override
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1.20), style.getRandomDamage(source, target, 1.20), 0);
 	}
 }

@@ -1,26 +1,32 @@
 package com.rs.game.content;
 
 import com.rs.cache.loaders.ClientScriptMap;
+import com.rs.game.content.dialogue.impl.MakeOverMage;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.player.Player;
 
 public final class PlayerLook {
 	
 	private PlayerLook() {
+		
+	}
 	
+	public static void openMageMakeOver(Player player) {
+		player.getInterfaceManager().sendInterface(900);
+		player.getPackets().sendIComponentText(900, 33, "CONFIRM (3000 Gold)");
+		player.getPackets().sendConfigByFile(6098, player.getAppearance().isMale() ? 0 : 1);
+		player.getPackets().sendConfigByFile(6099, player.getAppearance().getSkinColor());
+		player.getTemporaryAttributtes().put("MageMakeOverGender", player.getAppearance().isMale());
+		player.getTemporaryAttributtes().put("MageMakeOverSkin", player.getAppearance().getSkinColor());
 	}
 	
 	public static void handleMageMakeOverButtons(Player player, int buttonId) {
 		if (buttonId == 14 || buttonId == 16 || buttonId == 15 || buttonId == 17) {
-			player.getTemporaryAttributtes().put("MageMakeOverGender", buttonId == 14 || buttonId == 16);
+			player.getAttributes().put("MageMakeOverGender", buttonId == 14 || buttonId == 16);
 		} else if (buttonId >= 20 && buttonId <= 31) {
 			
 			int skin;
-			if (buttonId == 31) {
-				skin = 11;
-			} else if (buttonId == 30) {
-				skin = 10;
-			} else if (buttonId == 20) {
+			if (buttonId == 31) { skin = 11; } else if (buttonId == 30) { skin = 10; } else if (buttonId == 20) {
 				skin = 9;
 			} else if (buttonId == 21) {
 				skin = 8;
@@ -38,31 +44,24 @@ public final class PlayerLook {
 				skin = 2;
 			} else if (buttonId == 24) {
 				skin = 1;
-			} else {
-				skin = 0;
-			}
-			player.getTemporaryAttributtes().put("MageMakeOverSkin", skin);
+			} else { skin = 0; }
+			player.getAttributes().put("MageMakeOverSkin", skin);
 		} else if (buttonId == 33) {
-			Boolean male = (Boolean) player.getTemporaryAttributtes().remove("MageMakeOverGender");
-			Integer skin = (Integer) player.getTemporaryAttributtes().remove("MageMakeOverSkin");
+			Boolean male = (Boolean) player.getAttributes().remove("MageMakeOverGender");
+			Integer skin = (Integer) player.getAttributes().remove("MageMakeOverSkin");
 			player.closeInterfaces();
-			if (male == null || skin == null) {
-				return;
-			}
+			if (male == null || skin == null) { 
+				return; }
 			if (male == player.getAppearance().isMale() && skin == player.getAppearance().getSkinColor()) {
-				player.getDialogueManager().startDialogue("MakeOverMage", 2676, 1);
+				player.getDialogueManager().startDialogue(MakeOverMage.class, 2676, 1);
 			} else {
-				player.getDialogueManager().startDialogue("MakeOverMage", 2676, 2);
+				player.getDialogueManager().startDialogue(MakeOverMage.class, 2676, 2);
 				if (player.getAppearance().isMale() != male) {
 					if (player.getEquipment().isWearingArmour()) {
 						player.getDialogueManager().startDialogue("SimpleMessage", "You cannot have armor on while changing your gender.");
 						return;
 					}
-					if (male) {
-						player.getAppearance().resetAppearance();
-					} else {
-						player.getAppearance().femaleResetAppearance();
-					}
+					if (male) { player.getAppearance().resetAppearence(); } else { player.getAppearance().female(); }
 				}
 				player.getAppearance().setSkinColor(skin);
 				player.getAppearance().generateAppearanceData();
@@ -70,8 +69,30 @@ public final class PlayerLook {
 		}
 	}
 	
-	public static void handleHairdresserSalonButtons(Player player, int buttonId, int slotId) {// Hair and color match button count so just loop and
-		// do ++, but cant find button ids
+	public static void openHairdresserSalon(final Player player) {
+		if (player.getEquipment().getHatId() != -1) {
+			player.getDialogueManager().startDialogue("SimpleNPCMessage", 598, "I'm afraid I can't see your head at the moment.", "Please remove your headgear first.");
+			return;
+		}
+		if (player.getEquipment().getWeaponId() != -1 || player.getEquipment().getShieldId() != -1) {
+			player.getDialogueManager().startDialogue("SimpleNPCMessage", 598, "I don't feel comfortable cutting hair", "when you are wielding something.", "Please remove what you are holding first.");
+			return;
+		}
+		player.setNextAnimation(new Animation(11623));
+		player.getInterfaceManager().sendInterface(309);
+		player.getPackets().sendUnlockIComponentOptionSlots(309, 10, 0, ClientScriptMap.getMap(player.getAppearance().isMale() ? 2339 : 2342).getSize() * 2, 0);
+		player.getPackets().sendUnlockIComponentOptionSlots(309, 16, 0, ClientScriptMap.getMap(2345).getSize() * 2, 0);
+		player.getPackets().sendIComponentText(309, 20, "Free!");
+		player.putAttribute("hairSaloon", true);
+		player.setCloseInterfacesEvent(() -> {
+			player.getTemporaryAttributtes().remove("hairSaloon");
+			player.getDialogueManager().startDialogue("SimpleNPCMessage", 598, "An excellent choice, " + (player.getAppearance().isMale() ? "sir" : "lady") + ".");
+			player.setNextAnimation(new Animation(-1));
+			player.getAppearance().generateAppearanceData();
+		});
+	}
+	
+	public static void handleHairdresserSalonButtons(Player player, int buttonId, int slotId) {
 		if (buttonId == 6) {
 			player.getTemporaryAttributtes().put("hairSaloon", true);
 		} else if (buttonId == 7) {
@@ -90,13 +111,28 @@ public final class PlayerLook {
 		}
 	}
 	
-	public static void openMageMakeOver(Player player) {
-		player.getInterfaceManager().sendInterface(900);
-		player.getPackets().sendIComponentText(900, 33, "CONFIRM (3000 Gold)");
-		player.getPackets().sendConfigByFile(6098, player.getAppearance().isMale() ? 0 : 1);
-		player.getPackets().sendConfigByFile(6099, player.getAppearance().getSkinColor());
-		player.getTemporaryAttributtes().put("MageMakeOverGender", player.getAppearance().isMale());
-		player.getTemporaryAttributtes().put("MageMakeOverSkin", player.getAppearance().getSkinColor());
+	public static void openThessaliasMakeOver(final Player player) {
+		if (player.getEquipment().isWearingArmour()) {
+			player.getDialogueManager().startDialogue("SimpleNPCMessage", 548, "You're not able to try on my clothes with all that armour.");
+			return;
+		}
+		player.setNextAnimation(new Animation(11623));
+		player.getInterfaceManager().sendInterface(729);
+		player.getPackets().sendIComponentText(729, 21, "Free!");
+		player.getTemporaryAttributtes().put("ThessaliasMakeOver", 0);
+		player.getPackets().sendUnlockIComponentOptionSlots(729, 12, 0, 100, 0);
+		player.getPackets().sendUnlockIComponentOptionSlots(729, 17, 0, ClientScriptMap.getMap(3282).getSize() * 2, 0);
+		player.setCloseInterfacesEvent(new Runnable() {
+			
+			@Override
+			public void run() {
+				player.getDialogueManager().startDialogue("SimpleNPCMessage", 548, "A marvellous choise. You look splendid!");
+				player.setNextAnimation(new Animation(-1));
+				player.getAppearance().getAppearanceData();
+				player.getTemporaryAttributtes().remove("ThessaliasMakeOver");
+			}
+			
+		});
 	}
 	
 	public static void handleThessaliasMakeOverButtons(Player player, int buttonId, int slotId) {
@@ -145,58 +181,6 @@ public final class PlayerLook {
 				player.getAppearance().setLegsColor(ClientScriptMap.getMap(3284).getIntValue(slotId / 2));
 			}
 		}
-	}
-	
-	public static void openThessaliasMakeOver(final Player player) {
-		if (player.getEquipment().isWearingArmour()) {
-			player.getDialogueManager().startDialogue("SimpleNPCMessage", 548, "You're not able to try on my clothes with all that armour.");
-			return;
-		}
-		player.setNextAnimation(new Animation(11623));
-		player.getInterfaceManager().sendInterface(729);
-		player.getPackets().sendIComponentText(729, 21, "Free!");
-		player.getTemporaryAttributtes().put("ThessaliasMakeOver", 0);
-		player.getPackets().sendUnlockIComponentOptionSlots(729, 12, 0, 100, 0);
-		player.getPackets().sendUnlockIComponentOptionSlots(729, 17, 0, ClientScriptMap.getMap(3282).getSize() * 2, 0);
-		player.setCloseInterfacesEvent(new Runnable() {
-			
-			@Override
-			public void run() {
-				player.getDialogueManager().startDialogue("SimpleNPCMessage", 548, "A marvellous choise. You look splendid!");
-				player.setNextAnimation(new Animation(-1));
-				player.getAppearance().getAppearanceData();
-				player.getTemporaryAttributtes().remove("ThessaliasMakeOver");
-			}
-			
-		});
-	}
-	
-	public static void openHairdresserSalon(final Player player) {
-		if (player.getEquipment().getHatId() != -1) {
-			player.getDialogueManager().startDialogue("SimpleNPCMessage", 598, "I'm afraid I can't see your head at the moment. Please remove your headgear first.");
-			return;
-		}
-		if (player.getEquipment().getWeaponId() != -1 || player.getEquipment().getShieldId() != -1) {
-			player.getDialogueManager().startDialogue("SimpleNPCMessage", 598, "I don't feel comfortable cutting hair when you are wielding something. Please remove what you are holding first.");
-			return;
-		}
-		player.setNextAnimation(new Animation(11623));
-		player.getInterfaceManager().sendInterface(309);
-		player.getPackets().sendUnlockIComponentOptionSlots(309, 10, 0, ClientScriptMap.getMap(player.getAppearance().isMale() ? 2339 : 2342).getSize() * 2, 0);
-		player.getPackets().sendUnlockIComponentOptionSlots(309, 16, 0, ClientScriptMap.getMap(2345).getSize() * 2, 0);
-		player.getPackets().sendIComponentText(309, 20, "Free!");
-		player.getTemporaryAttributtes().put("hairSaloon", true);
-		player.setCloseInterfacesEvent(new Runnable() {
-			
-			@Override
-			public void run() {
-				player.getDialogueManager().startDialogue("SimpleNPCMessage", 598, "An excellent choice, " + (player.getAppearance().isMale() ? "sir" : "lady") + ".");
-				player.setNextAnimation(new Animation(-1));
-				player.getAppearance().getAppearanceData();
-				player.getTemporaryAttributtes().remove("hairSaloon");
-			}
-			
-		});
 	}
 	
 }

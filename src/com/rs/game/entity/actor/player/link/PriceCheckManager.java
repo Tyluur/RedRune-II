@@ -75,11 +75,11 @@ public class PriceCheckManager {
 		for (int index = 0; index < itemsBefore.length; index++) {
 			Item item = pcInv.getItems()[index];
 			if (item != null) {
-				totalPrice += ItemDefinitions.getItemDefinitions(item.getId()).getValue(item.getId()) * item.getAmount();
+				totalPrice += ItemDefinitions.getItemDefinitions(item.getId()).getValue() * item.getAmount();
 			}
 			if (itemsBefore[index] != item) {
 				changedSlots[count++] = index;
-				player.getPackets().sendGlobalConfig(700 + index, item == null ? 0 : ItemDefinitions.getItemDefinitions(item.getId()).getValue(item.getId()));
+				player.getPackets().sendGlobalConfig(700 + index, item == null ? 0 : ItemDefinitions.getItemDefinitions(item.getId()).getValue());
 			}
 			
 		}

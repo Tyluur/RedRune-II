@@ -55,6 +55,9 @@ public class RouteEvent {
 			player.getPackets().sendResetMinimapFlag();
 			return true;
 		}
+		if (player.getLocks().isMovementLocked()) {
+			return true;
+		}
 		RouteStrategy[] strategies = generateStrategies();
 		// so we face actors when we're pathing to them
 		if (!facedDestination && destination instanceof Actor) {

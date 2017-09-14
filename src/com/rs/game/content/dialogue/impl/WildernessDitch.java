@@ -23,7 +23,7 @@ public class WildernessDitch extends Dialogue {
 	public void run(int interfaceId, int componentId) {
 		if (interfaceId == 382 && componentId == 19) {
 			player.stopAll();
-			player.addLockDelay(4);
+			player.getLocks().lock(4);
 			player.setNextAnimation(new Animation(6132));
 			final WorldTile toTile = new WorldTile(player.getX(), ditch.getY() + 2, ditch.getPlane());
 			player.setNextForceMovement(new ForceMovement(new WorldTile(player), 1, toTile, 2, 0));

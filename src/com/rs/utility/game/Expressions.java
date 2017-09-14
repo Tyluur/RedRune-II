@@ -1,0 +1,22 @@
+package com.rs.utility.game;
+
+/**
+ * A class for storing facial expressions.
+ *
+ * @author Thomas Le Godais
+ */
+public interface Expressions {
+	
+	int NO_EXPRESSION = 9760, SAD = 9764, SAD_TWO = 9768, NO_EXPRESSION_TWO = 9772, WHY = 9776;
+	
+	int SCARED = 9780, MIDLY_ANGRY = 9750, ANGRY = 9752, VERY_ANGRY = 9792, ANGRY_TWO = 9796;
+	
+	int MANIC_FACE = 9800, CALM = 9804, CALM_TALKING = 9808, LOOK_DOWN = 9812, HAPPY = 9843;
+	
+	int WHAT_THE = 9816, WHAT_THE_TWO = 9820, EYES_WIDE = 9824, CROOKED_HEAD = 9828;
+	
+	int GLANCE_DOWN = 9832, UNSURE = 9836, LISTEN_LAUGH = 9840, TALK_SWING = 9844, NORMAL = 9847;
+	
+	int GOOFY_LAUGH = 9851, NORMAL_STILL = 9855, THINKING_STILL = 9859, LOOKING_UP = 9862, CASUAL = 9827;
+	
+}

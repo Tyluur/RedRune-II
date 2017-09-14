@@ -297,12 +297,6 @@ public class PlayerAppearance implements Serializable {
 		return 1;
 	}
 	
-	public void femaleResetAppearance() {
-		looks = new int[7];
-		colors = new byte[10];
-		female();
-	}
-	
 	public void female() {
 		looks[0] = 48; // Hair
 		looks[1] = 57; // Beard
@@ -406,4 +400,11 @@ public class PlayerAppearance implements Serializable {
 	public void setBodyColor(int index, short value) {
 		this.looks[index] = value;
 	}
+	
+	public void resetAppearence() {
+		looks = new int[7];
+		colors = new byte[10];
+		male();
+	}
+	
 }

@@ -631,7 +631,7 @@ public final class ItemDefinitions {
 		return null;
 	}
 	
-	public int getValue(Object... params) {
+	public int getValue() {
 		return value <= 0 ? 1 : value;
 	}
 	

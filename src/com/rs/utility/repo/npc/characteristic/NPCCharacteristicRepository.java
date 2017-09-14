@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rs.cache.loaders.NPCDefinitions;
 import com.rs.game.entity.actor.npc.Drop;
-import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
+import com.rs.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.NPCConstants;
 

@@ -137,7 +137,7 @@ public class BeastOfBurden implements Serializable {
 		if (item == null) {
 			return;
 		}
-		if (!com.rs.utility.constants.ItemConstants.isTradeable(item) || item.getId() == 4049 || (familiar.canStoreEssOnly() && item.getId() != 1436 && item.getId() != 7936) || item.getDefinitions().getValue(item.getId()) > 50000) {
+		if (!com.rs.utility.constants.ItemConstants.isTradeable(item) || item.getId() == 4049 || (familiar.canStoreEssOnly() && item.getId() != 1436 && item.getId() != 7936) || item.getDefinitions().getValue() > 50000) {
 			player.getPackets().sendGameMessage("You cannot store this item.");
 			return;
 		}

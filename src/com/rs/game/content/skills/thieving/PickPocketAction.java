@@ -131,7 +131,7 @@ public class PickPocketAction extends Action {
 			} else {
 				npc.setNextForceTalk(new ForceTalk("What do you think you're doing?"));
 			}
-			player.addLockDelay(npcData.getStunTime());
+			player.getLocks().lock((int) (long) npcData.getStunTime());
 			stop(player);
 		} else {
 			player.getPackets().sendGameMessage("" + getMessage(player));

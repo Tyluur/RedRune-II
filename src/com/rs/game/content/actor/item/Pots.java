@@ -1,4 +1,4 @@
-package com.rs.game.content.node.item;
+package com.rs.game.content.actor.item;
 
 import com.rs.game.content.controller.impl.activity.Wilderness;
 import com.rs.game.entity.actor.mask.Animation;

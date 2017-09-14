@@ -1,7 +1,7 @@
 package com.rs.game.content.dialogue.impl;
 
 import com.rs.game.content.dialogue.Dialogue;
-import com.rs.game.content.node.item.AncientEffigies;
+import com.rs.game.content.actor.item.AncientEffigies;
 import com.rs.utility.Misc;
 import com.rs.utility.constants.SkillConstants;
 

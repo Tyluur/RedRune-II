@@ -6,6 +6,8 @@ import com.rs.game.GameConstants;
 import com.rs.game.GameFlags;
 import com.rs.game.entity.actor.player.Player;
 import com.rs.game.world.World;
+import com.rs.game.world.punishment.PunishmentRepository;
+import com.rs.game.world.punishment.PunishmentType;
 import com.rs.networking.NetworkConstants;
 import com.rs.networking.Session;
 import com.rs.networking.codec.Decoder;
@@ -13,6 +15,7 @@ import com.rs.networking.io.InputStream;
 import com.rs.networking.io.buffer.FixedBuffer;
 import com.rs.utility.Misc;
 import com.rs.utility.game.files.SerializableFilesManager;
+import com.rs.utility.game.player.ReturnCode;
 import com.rs.utility.networking.AntiFlood;
 
 public final class LoginPacketsDecoder extends Decoder {
@@ -118,6 +121,10 @@ public final class LoginPacketsDecoder extends Decoder {
 			}
 		}
 		player.init(username, session);
+		if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_BAN, PunishmentType.ADDRESS_BAN)) {
+			session.getLoginPackets().sendClientPacket(ReturnCode.ACCOUNT_DISABLED.getValue());
+			return;
+		}
 		session.getLoginPackets().sendLobbyDetails(player);
 		session.setDecoder(3, player);
 		session.setEncoder(2, player);
@@ -255,7 +262,12 @@ public final class LoginPacketsDecoder extends Decoder {
 				return;
 			}
 		}
+		player.setUsername(username);
 		session.sync(player);
+		if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_BAN, PunishmentType.ADDRESS_BAN)) {
+			session.getLoginPackets().sendClientPacket(ReturnCode.ACCOUNT_DISABLED.getValue());
+			return;
+		}
 		player.init(username, mode, width, height);
 		session.getLoginPackets().sendLoginDetails(player);
 		session.setDecoder(3, player);

@@ -13,6 +13,7 @@ import com.rs.networking.codec.encode.WorldPacketsEncoder;
 import com.rs.networking.io.OutputStream;
 import com.rs.utility.Misc;
 import lombok.Getter;
+import lombok.Setter;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -52,6 +53,13 @@ public final class Session {
 	 */
 	@Getter
 	private Player player;
+	
+	/**
+	 * The mac address of the session
+	 */
+	@Getter
+	@Setter
+	private String macAddress = "";
 	
 	public Session(Channel channel) {
 		this.channel = channel;
@@ -114,6 +122,20 @@ public final class Session {
 			outgoingQueue.add(outStream);
 		}
 		return null;
+	}
+	
+	/**
+	 * Writes to the channel a buffered stream, and returns a {@code ChannelFuture}. The data is also copied.
+	 *
+	 * @param outStream
+	 * 		The output stream
+	 * @return {@code ChannelFuture} {@code Object}
+	 */
+	public final ChannelFuture writeWithFuture(OutputStream outStream) {
+		if (outStream == null || !channel.isOpen()) {
+			return null;
+		}
+		return channel.write(ChannelBuffers.copiedBuffer(outStream.getBuffer(), 0, outStream.getOffset()));
 	}
 	
 	/**

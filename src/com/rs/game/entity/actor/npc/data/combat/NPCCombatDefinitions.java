@@ -1,4 +1,4 @@
-package com.rs.game.entity.actor.npc.combat;
+package com.rs.game.entity.actor.npc.data.combat;
 
 import lombok.Getter;
 import lombok.Setter;

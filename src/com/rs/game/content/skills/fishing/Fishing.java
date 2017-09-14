@@ -1,7 +1,7 @@
 package com.rs.game.content.skills.fishing;
 
 import com.rs.game.content.action.Action;
-import com.rs.game.content.node.npc.FishingSpotsHandler;
+import com.rs.game.content.actor.npc.FishingSpotsHandler;
 import com.rs.game.entity.WorldTile;
 import com.rs.game.entity.actor.mask.Animation;
 import com.rs.game.entity.actor.npc.NPC;

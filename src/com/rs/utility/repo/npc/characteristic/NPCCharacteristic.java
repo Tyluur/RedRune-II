@@ -1,7 +1,7 @@
 package com.rs.utility.repo.npc.characteristic;
 
 import com.rs.game.entity.actor.npc.Drop;
-import com.rs.game.entity.actor.npc.combat.NPCCombatDefinitions;
+import com.rs.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 
 import java.util.HashMap;
 import java.util.List;

@@ -8,7 +8,7 @@ import com.rs.game.content.action.ActionManager;
 import com.rs.game.content.controller.ControllerManager;
 import com.rs.game.content.cutscene.CutsceneManager;
 import com.rs.game.content.dialogue.DialogueManager;
-import com.rs.game.content.node.item.Pots;
+import com.rs.game.content.actor.item.Pots;
 import com.rs.game.content.skills.slayer.Slayer;
 import com.rs.game.content.skills.slayer.Slayer.SlayerMonsters;
 import com.rs.game.content.skills.slayer.SlayerTask;
@@ -58,6 +58,10 @@ public class Player extends Actor {
 	@Getter
 	private String lastIP;
 	
+	@Getter
+	@Setter
+	private String lastMac;
+	
 	/**
 	 * The set of the rights the player has
 	 */
@@ -104,6 +108,9 @@ public class Player extends Actor {
 	
 	@Getter
 	private AuraManager auraManager;
+	
+	@Getter
+	private PlayerSaving saving;
 	
 	@Getter
 	@Setter
@@ -238,6 +245,9 @@ public class Player extends Actor {
 	@Getter
 	private transient LocalNPCUpdate localNPCUpdate;
 	
+	@Getter
+	private transient TradeManager tradeManager;
+	
 	private transient boolean started;
 	
 	@Getter
@@ -254,10 +264,6 @@ public class Player extends Actor {
 	
 	@Getter
 	private transient boolean canPvp;
-	
-	@Getter
-	@Setter
-	private transient long lockDelay; // used for doors and stuff like that
 	
 	@Getter
 	@Setter
@@ -306,12 +312,13 @@ public class Player extends Actor {
 		contactManager = new ContactManager();
 		charges = new ChargesManager();
 		auraManager = new AuraManager();
+		saving = new PlayerSaving();
 		runEnergy = 100;
 		allowChatEffects = true;
 		mouseButtons = true;
 		pouches = new int[4];
 		slayerTask = new SlayerTask();
-		this.rights = new LinkedHashSet<>(Collections.singletonList(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER));
+		rights = new LinkedHashSet<>(Collections.singletonList(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER));
 		SkillCapeCustomizer.resetSkillCapes(this);
 		ownedObjectsManagerKeys = new LinkedList<>();
 	}
@@ -323,7 +330,7 @@ public class Player extends Actor {
 		}
 		finishing = true;
 		long currentTime = Misc.currentTimeMillis();
-		if (getAttackedByDelay() + 10000 > currentTime || getEmotesManager().getNextEmoteEnd() >= currentTime || lockDelay >= currentTime) {
+		if (getAttackedByDelay() + 10000 > currentTime || getEmotesManager().getNextEmoteEnd() >= currentTime) {
 			CoresManager.slowExecutor.schedule(() -> {
 				try {
 					packetsDecoderPing = Misc.currentTimeMillis();
@@ -452,7 +459,7 @@ public class Player extends Actor {
 	
 	@Override
 	public void processReceivedHits() {
-		if (lockDelay > Misc.currentTimeMillis()) {
+		if (getLocks().isMovementLocked() || getLocks().isTeleportLocked()) {
 			return;
 		}
 		super.processReceivedHits();
@@ -605,7 +612,7 @@ public class Player extends Actor {
 		if (!controllerManager.sendDeath()) {
 			return;
 		}
-		addLockDelay(7);
+		getLocks().lock((int) (long) 7);
 		stopAll();
 		if (familiar != null) {
 			familiar.sendDeath(this);
@@ -1122,6 +1129,7 @@ public class Player extends Actor {
 		setPacketSender(new PacketSender(this));
 		actionManager = new ActionManager(this);
 		cutsceneManager = new CutsceneManager(this);
+		tradeManager = new TradeManager(this);
 		// loads player on saved instances
 		appearance.setPlayer(this);
 		inventory.setPlayer(this);
@@ -1256,7 +1264,7 @@ public class Player extends Actor {
 		OwnedObjectManager.linkKeys(this);
 	}
 	
-	public void logout() {
+	public void logout(boolean lobby) {
 		if (!running) {
 			return;
 		}
@@ -1269,12 +1277,13 @@ public class Player extends Actor {
 			getPackets().sendGameMessage("You can't log out while perfoming an emote.");
 			return;
 		}
-		if (lockDelay >= currentTime) {
-			getPackets().sendGameMessage("You can't log out while perfoming an action.");
-			return;
-		}
-		getPackets().sendLogout();
+		getPackets().sendLogout(lobby);
 		running = false;
+	}
+	
+	public void forceOffline() {
+		realFinish();
+		getPackets().sendLogout(false);
 	}
 	
 	public void realFinish() {
@@ -1358,8 +1367,8 @@ public class Player extends Actor {
 		Item lastItem = new Item(1, 1);
 		for (int i = 0; i < keptAmount; i++) {
 			for (Item item : containedItems) {
-				int price = item.getDefinitions().getValue(item.getId());
-				if (price >= lastItem.getDefinitions().getValue(item.getId())) {
+				int price = item.getDefinitions().getValue();
+				if (price >= lastItem.getDefinitions().getValue()) {
 					lastItem = item;
 				}
 			}
@@ -1384,21 +1393,13 @@ public class Player extends Actor {
 		getPackets().sendPlayerUnderNPCPriority(canPvp);
 	}
 	
-	public void setInfiniteStopDelay() {
-		lockDelay = Long.MAX_VALUE;
-	}
-	
-	public void resetLockDelay() {
-		lockDelay = 0;
-	}
-	
 	public void useStairs(int emoteId, final WorldTile dest, int useDelay, int totalDelay) {
 		useStairs(emoteId, dest, useDelay, totalDelay, null);
 	}
 	
 	public void useStairs(int emoteId, final WorldTile dest, int useDelay, int totalDelay, final String message) {
 		stopAll();
-		addLockDelay(totalDelay);
+		getLocks().lock((int) (long) totalDelay);
 		if (emoteId != -1) {
 			setNextAnimation(new Animation(emoteId));
 		}
@@ -1422,10 +1423,6 @@ public class Player extends Actor {
 	
 	public void stopAll() {
 		stopAll(true);
-	}
-	
-	public void addLockDelay(long delay) {
-		lockDelay = Misc.currentTimeMillis() + (delay * 600);
 	}
 	
 	public void stopAll(boolean stopWalk) {

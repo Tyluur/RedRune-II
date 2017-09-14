@@ -39,7 +39,7 @@ public class Thieving {
 				}
 				
 				player.setNextAnimation(new Animation(881));
-				player.addLockDelay(2);
+				player.getLocks().lock((int) (long) 2);
 				WorldTasksManager.schedule(new WorldTask() {
 					boolean gaveItems;
 					

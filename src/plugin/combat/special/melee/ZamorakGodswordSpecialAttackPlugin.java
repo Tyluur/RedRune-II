@@ -24,13 +24,13 @@ public class ZamorakGodswordSpecialAttackPlugin extends SpecialAttackPlugin {
 	
 	@Override
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
-		int damage = style.getRandomDamage(source, target, 1);
+		int damage = style.getRandomDamage(source, target, 1.1);
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
 		if (damage != 0 && target.getSize() <= 1) {
 			target.setNextGraphics(new Graphics(2104));
 			target.addFreezeDelay(18000, false, source); // 18seconds
 		}
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), damage, 0);
+		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1.1), damage, 0);
 	}
 }

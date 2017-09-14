@@ -12,7 +12,6 @@ import com.rs.game.plugin.combat.spell.type.CombatSpellPlugin;
 import com.rs.game.world.region.RegionManager;
 import com.rs.game.world.task.WorldTask;
 import com.rs.game.world.task.WorldTasksManager;
-import com.rs.utility.Misc;
 import com.rs.utility.constants.MagicConstants;
 import com.rs.utility.constants.MagicConstants.MagicBook;
 import com.rs.utility.constants.SkillConstants;
@@ -87,8 +86,7 @@ public class Magic {
 	}
 	
 	public static boolean sendTeleportSpell(final Player player, int upEmoteId, final int downEmoteId, int upGraphicId, final int downGraphicId, int level, final double xp, final WorldTile tile, int delay, final boolean randomize, final int teleType, int... runes) {// TODO, fix wilderness
-		long currentTime = Misc.currentTimeMillis();
-		if (player.getLockDelay() > currentTime) {
+		if (player.getLocks().isTeleportLocked()) {
 			return false;
 		}
 		if (player.getSkills().getLevel(SkillConstants.MAGIC) < level) {
@@ -122,7 +120,7 @@ public class Magic {
 		if (teleType == MagicConstants.MAGIC_TELEPORT) {
 			player.getPackets().sendSound(5527, 0, 2);
 		}
-		player.addLockDelay(3 + delay);
+		player.getLocks().lockTeleport(3 + delay);
 		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {
@@ -172,11 +170,11 @@ public class Magic {
 			return;
 		}
 		player.setNextAnimation(new Animation(2140));
-		player.setInfiniteStopDelay();
+		player.getLocks().lock();
 		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {
-				player.resetLockDelay();
+				player.getLocks().unlock();
 				Magic.sendObjectTeleportSpell(player, false, tile);
 			}
 		}, 1);
@@ -200,7 +198,7 @@ public class Magic {
 		if (!player.getControllerManager().processItemTeleport(tile)) {
 			return false;
 		}
-		player.setInfiniteStopDelay();
+		player.getLocks().lock();
 		player.setNextAnimation(new Animation(9597));
 		player.setNextGraphics(new Graphics(1680));
 		WorldTasksManager.schedule(new WorldTask() {
@@ -229,7 +227,7 @@ public class Magic {
 					player.setNextFaceWorldTile(new WorldTile(teleTile.getX(), teleTile.getY() - 1, teleTile.getPlane()));
 					player.setDirection(6);
 					player.setNextAnimation(new Animation(-1));
-					player.resetLockDelay();
+					player.getLocks().unlock();
 					stop();
 				}
 			}

@@ -68,6 +68,9 @@ public class ObjectHandler {
 		if (!player.getMapRegionsIds().contains(regionId)) {
 			return;
 		}
+		if (player.getLocks().isInteractionLocked()) {
+			return;
+		}
 		if (forceRun) {
 			player.setRun(true);
 		}
@@ -479,7 +482,7 @@ public class ObjectHandler {
 						if (objectDef.containsOption(0, "Pray-at")) {
 							final int maxPrayer = player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10;
 							if (player.getPrayer().getPrayerpoints() < maxPrayer) {
-								player.addLockDelay(5);
+								player.getLocks().lock((int) (long) 5);
 								player.getPackets().sendGameMessage("You pray to the gods...", true);
 								player.setNextAnimation(new Animation(645));
 								WorldTasksManager.schedule(new WorldTask() {
@@ -832,9 +835,7 @@ public class ObjectHandler {
 			return;
 		}
 		long currentTime = Misc.currentTimeMillis();
-		if (player.getLockDelay() >= currentTime
-				    // || player.getFreezeDelay() >= currentTime
-				    || player.getEmotesManager().getNextEmoteEnd() >= currentTime) {
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= currentTime) {
 			return;
 		}
 		@SuppressWarnings("unused") final int unknown = stream.readUnsignedByteC();
@@ -859,10 +860,7 @@ public class ObjectHandler {
 		if (player.isDead() || Misc.getInterfaceDefinitionsSize() <= interfaceId) {
 			return;
 		}
-		if (player.getLockDelay() > Misc.currentTimeMillis()) {
-			return;
-		}
-		if (!player.getInterfaceManager().containsInterface(interfaceId)) {
+		if (player.getLocks().isInteractionLocked() || !player.getInterfaceManager().containsInterface(interfaceId)) {
 			return;
 		}
 		if (item == null || item.getId() != itemId) {
