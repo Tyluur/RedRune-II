@@ -41,6 +41,7 @@ public final class ClientPacketsDecoder extends Decoder {
 	private void decodeGrab(InputStream stream) {
 		if (stream.getRemaining() != 4) {
 			session.getChannel().close();
+			System.out.println("Bad remaining");
 			return;
 		}
 		session.setEncoder(0);

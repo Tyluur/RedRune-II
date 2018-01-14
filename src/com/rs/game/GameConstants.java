@@ -19,7 +19,7 @@ public interface GameConstants {
 	/**
 	 * The path that the cache is at
 	 */
-	String CACHE_PATH = "data/cache/";
+	String CACHE_PATH = "F:\\Users\\PC\\Google Drive\\Development\\RedRune\\Caches\\1. first 2018 cache\\";
 	
 	/**
 	 * The location that players spawn at

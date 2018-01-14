@@ -56,7 +56,6 @@ public final class GrabPacketsEncoder extends Encoder {
 	public ChannelBuffer getArchivePacketData(int indexId, int archiveId, boolean priority) {
 		byte[] archive = (indexId == 255 ? Cache.STORE.getIndex255() : Cache.STORE.getIndexes()[indexId].getMainFile()).getArchiveData(archiveId);
 		if (archive == null) {
-			System.out.println("no archive...");
 			return null;
 		}
 		
