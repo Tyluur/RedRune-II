@@ -46,16 +46,24 @@ public abstract class CombatScript {
 					if (target instanceof Player) {
 						Player p2 = (Player) target;
 						if (p2.getCombatDefinitions().isAutoRelatie() && !p2.getActionManager().hasSkillWorking() && !p2.hasWalkSteps()) {
-							p2.closeInterfaces();
-							p2.getActionManager().setAction(new PlayerCombatAction(npc));
+							WorldTasksManager.schedule(new WorldTask() {
+								
+								@Override
+								public void run() {
+									if (p2.getCombatDefinitions().isAutoRelatie() && !p2.getActionManager().hasSkillWorking() && !p2.hasWalkSteps()) {
+										p2.closeInterfaces();
+										p2.getActionManager().setAction(new PlayerCombatAction(npc));
+									}
+									stop();
+								}
+							}, 1);
 						}
 					} else {
 						NPC n = (NPC) target;
-						if (!n.isUnderCombat() || n.canBeAttackedByAutoRelatie()) {
+						if (!n.isUnderCombat() || n.canBeAttackedByAutoRetaliate()) {
 							n.setTarget(npc);
 						}
 					}
-					
 				}
 			}
 			

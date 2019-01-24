@@ -7,19 +7,15 @@ import com.rs.game.entity.WorldTile;
  */
 public interface GameConstants {
 	
-	// Server Connection Settings
-	
 	/**
 	 * The name of the server
 	 */
 	String SERVER_NAME = "RedRune";
 	
-	//	public static final String UPDATE = "N/A";
-	
 	/**
 	 * The path that the cache is at
 	 */
-	String CACHE_PATH = "F:\\Users\\PC\\Google Drive\\Development\\RedRune\\Caches\\1. first 2018 cache\\";
+	String CACHE_PATH = "./data/cache/";
 	
 	/**
 	 * The location that players spawn at

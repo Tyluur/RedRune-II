@@ -708,7 +708,7 @@ public class NPC extends Actor implements Serializable {
 		return combat.underCombat();
 	}
 	
-	public boolean canBeAttackedByAutoRelatie() {
+	public boolean canBeAttackedByAutoRetaliate() {
 		return Misc.currentTimeMillis() - lastAttackedByTarget > lureDelay;
 	}
 	

@@ -1,0 +1,4 @@
+January 22nd, 2019
+
+1]  Fixed slow update server
+2]

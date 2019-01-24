@@ -3,12 +3,12 @@ package com.rs;
 import com.rs.cache.Cache;
 import com.rs.cache.loaders.ItemEquipIds;
 import com.rs.cores.CoresManager;
+import com.rs.game.content.actor.npc.FishingSpotsHandler;
+import com.rs.game.content.combat.npc.CombatScriptsHandler;
 import com.rs.game.content.controller.ControllerHandler;
 import com.rs.game.content.cutscene.CutscenesHandler;
 import com.rs.game.content.dialogue.DialogueHandler;
 import com.rs.game.content.market.ShopRepository;
-import com.rs.game.content.actor.npc.FishingSpotsHandler;
-import com.rs.game.content.combat.npc.CombatScriptsHandler;
 import com.rs.game.entity.actor.npc.data.extension.NPCExtensionHolder;
 import com.rs.game.entity.actor.player.link.FriendChatsManager;
 import com.rs.game.plugin.PluginRepository;
@@ -108,7 +108,6 @@ public final class Launcher {
 			System.exit(1);
 			return;
 		}
-		
 		hostMode = Boolean.parseBoolean(cmd.getOptionValue("hostMode"));
 		debugMode = Boolean.parseBoolean(cmd.getOptionValue("debugMode"));
 		System.out.println("hostMode=" + hostMode + ", debugMode=" + debugMode);
