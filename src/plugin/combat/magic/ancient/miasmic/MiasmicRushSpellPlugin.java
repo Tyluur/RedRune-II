@@ -1,14 +1,13 @@
 package plugin.combat.magic.ancient.miasmic;
 
-import com.rs.cores.CoresManager;
-import com.rs.cores.schedule.ScheduledTask;
-import com.rs.game.content.combat.player.style.MagicCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.spell.type.CombatSpellPlugin;
-import com.rs.game.world.projectile.ProjectileManager;
-import com.rs.utility.constants.AttributeKey;
-import com.rs.utility.constants.MagicConstants.MagicBook;
+import org.redrune.engine.SystemManager;
+import org.redrune.engine.tick.schedule.ScheduledTask;
+import org.redrune.game.content.combat.player.style.MagicCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.entity.projectile.ProjectileManager;
+import org.redrune.utility.constants.AttributeKey;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -47,7 +46,7 @@ public class MiasmicRushSpellPlugin extends CombatSpellPlugin {
 			p.getPackets().sendGameMessage("You feel slowed down.");
 			target.putAttribute(AttributeKey.MIASMIC_IMMUNITY, true);
 			target.putAttribute(AttributeKey.MIASMIC_EFFECT, true);
-			CoresManager.scheduler.schedule(new ScheduledTask(1, 35) {
+			SystemManager.SCHEDULER.schedule(new ScheduledTask(1, 35) {
 				@Override
 				public void run() {
 					if (getTicksPassed() == 20) {

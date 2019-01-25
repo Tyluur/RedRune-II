@@ -1,9 +1,9 @@
 package plugin.inter;
 
-import com.rs.cores.CoresManager;
-import com.rs.game.content.combat.CombatAlgorithm;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.InterfacePlugin;
+import org.redrune.engine.SystemManager;
+import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.InterfacePlugin;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +17,7 @@ public class CombatTabInterfacePlugin extends InterfacePlugin {
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (componentId == 4) {
 			player.putAttribute("special_attack_toggled", true);
-			CoresManager.slowExecutor.schedule(() -> {
+			SystemManager.SLOW_EXECUTOR.schedule(() -> {
 				try {
 					if (player.isDead()) {
 						return;

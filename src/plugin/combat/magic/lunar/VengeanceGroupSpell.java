@@ -1,14 +1,14 @@
 package plugin.combat.magic.lunar;
 
-import com.rs.game.content.combat.CombatAlgorithm;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.mask.Animation;
-import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.spell.type.RegularSpellPlugin;
-import com.rs.game.world.World;
-import com.rs.game.world.region.Region;
-import com.rs.game.world.region.RegionManager;
+import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.mask.Animation;
+import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.spell.type.RegularSpellPlugin;
+import org.redrune.game.global.World;
+import org.redrune.game.global.map.region.Region;
+import org.redrune.game.global.map.region.RegionManager;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

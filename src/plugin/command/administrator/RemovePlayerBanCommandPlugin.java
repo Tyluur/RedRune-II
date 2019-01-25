@@ -1,9 +1,9 @@
 package plugin.command.administrator;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.game.world.punishment.PunishmentHandler;
-import com.rs.game.world.punishment.PunishmentType;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.global.punishment.PunishmentHandler;
+import org.redrune.game.global.punishment.PunishmentType;
 import plugin.command.CommandManifest;
 
 /**

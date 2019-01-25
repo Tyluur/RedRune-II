@@ -1,10 +1,10 @@
 package plugin.combat.range;
 
-import com.rs.game.content.combat.player.AbstractCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.RangeWeaponPlugin;
-import com.rs.game.world.projectile.ProjectileManager;
+import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.entity.projectile.ProjectileManager;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

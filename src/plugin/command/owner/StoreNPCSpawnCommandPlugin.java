@@ -1,9 +1,9 @@
 package plugin.command.owner;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.utility.Misc.Direction;
-import com.rs.utility.repo.npc.spawn.NPCSpawnRepository;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.utility.functions.Misc.Direction;
+import org.redrune.utility.game.repository.npc.spawn.NPCSpawnRepository;
 import plugin.command.CommandManifest;
 
 /**

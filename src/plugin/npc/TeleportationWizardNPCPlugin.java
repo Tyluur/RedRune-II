@@ -1,14 +1,11 @@
 package plugin.npc;
 
-import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.NPCPlugin;
-import com.rs.utility.game.ClickOption;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.NPCPlugin;
+import org.redrune.utility.constants.AttributeKey;
 import plugin.inter.TeleportationInterfacePlugin;
 import plugin.inter.TeleportationInterfacePlugin.TransportationLocation;
-
-import static com.rs.utility.game.ClickOption.FIRST;
-import static com.rs.utility.game.ClickOption.SECOND;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -17,20 +14,25 @@ import static com.rs.utility.game.ClickOption.SECOND;
 public class TeleportationWizardNPCPlugin extends NPCPlugin {
 	
 	@Override
-	public void handle(Player player, NPC npc, ClickOption option) {
-		if (option == FIRST) {
-			TeleportationInterfacePlugin.displaySelectionInterface(player, true);
-		} else if (option == SECOND) {
-			TransportationLocation last = player.getSaving().getAttribute("last_transportation_location");
-			if (last == null) {
-				return;
-			}
-			TeleportationInterfacePlugin.teleportPlayer(player, last.getDestination(), () -> last.getLocations().handlePostTeleportation(player, last.getOptionIndex()));
+	public boolean handle(Player player, NPC npc, String option) {
+		switch (option) {
+			case "Talk-to":
+				TeleportationInterfacePlugin.displaySelectionInterface(player, true);
+				return true;
+			case "Previous":
+				TransportationLocation last = player.getSaving().getAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION);
+				if (last == null) {
+					return true;
+				}
+				TeleportationInterfacePlugin.teleportPlayer(player, last.getDestination(), () -> last.getLocations().handlePostTeleportation(player, last.getOptionIndex()));
+				return true;
 		}
+		return false;
 	}
 	
 	@Override
 	public void register() {
-		register(14332, FIRST, SECOND);
+		register(14332, "Talk-to");
+		register(14332, "Previous");
 	}
 }

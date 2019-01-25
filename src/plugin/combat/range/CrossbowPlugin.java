@@ -1,18 +1,18 @@
 package plugin.combat.range;
 
-import com.rs.cache.loaders.ItemDefinitions;
-import com.rs.cores.thread.WorldThread;
-import com.rs.game.content.combat.CombatAlgorithm;
-import com.rs.game.content.combat.CombatSwingDetail;
-import com.rs.game.content.combat.player.AbstractCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.HitSplat;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.RangeWeaponPlugin;
-import com.rs.game.world.projectile.ProjectileManager;
-import com.rs.utility.tools.RandomFunction;
+import org.redrune.cache.loaders.ItemDefinitions;
+import org.redrune.engine.thread.WorldThread;
+import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.content.combat.CombatSwingDetail;
+import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.mask.Hit;
+import org.redrune.game.entity.actor.mask.HitSplat;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.entity.projectile.ProjectileManager;
+import org.redrune.utility.functions.RandomFunction;
 import lombok.Getter;
 
 import java.util.Optional;

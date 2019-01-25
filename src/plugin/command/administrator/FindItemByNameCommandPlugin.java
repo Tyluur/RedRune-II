@@ -1,10 +1,10 @@
 package plugin.command.administrator;
 
-import com.rs.cache.loaders.ItemDefinitions;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.utility.Misc;
-import com.rs.utility.constants.ColorConstants;
+import org.redrune.cache.loaders.ItemDefinitions;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.utility.functions.Misc;
+import org.redrune.utility.constants.ColorConstants;
 import plugin.command.CommandManifest;
 
 import java.util.ArrayList;

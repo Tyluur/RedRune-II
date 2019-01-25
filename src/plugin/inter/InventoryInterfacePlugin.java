@@ -1,10 +1,10 @@
 package plugin.inter;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.item.Item;
-import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.networking.codec.decode.handlers.InventoryOptionsHandler;
-import com.rs.utility.constants.PacketConstants;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.item.Item;
+import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.networking.codec.decode.handlers.InventoryOptionsHandler;
+import org.redrune.utility.constants.PacketConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

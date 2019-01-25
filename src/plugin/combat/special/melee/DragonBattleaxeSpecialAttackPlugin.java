@@ -1,13 +1,13 @@
 package plugin.combat.special.melee;
 
-import com.rs.game.content.combat.player.AbstractCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.mask.Animation;
-import com.rs.game.entity.actor.mask.ForceTalk;
-import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerSkills;
-import com.rs.game.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.mask.Animation;
+import org.redrune.game.entity.actor.mask.ForceTalk;
+import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.actor.player.data.PlayerSkills;
+import org.redrune.game.plugin.combat.SpecialAttackPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

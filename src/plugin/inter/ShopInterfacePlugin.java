@@ -1,14 +1,14 @@
 package plugin.inter;
 
-import com.rs.game.content.market.Shop;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.item.Item;
-import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.utility.constants.PacketConstants;
-import com.rs.utility.repo.item.ItemCharacteristicRepository;
+import org.redrune.game.content.market.Shop;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.item.Item;
+import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.utility.constants.PacketConstants;
+import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 
-import static com.rs.game.content.market.Shop.INTERFACE_ID;
-import static com.rs.game.content.market.Shop.INVENTORY_INTERFACE_ID;
+import static org.redrune.game.content.market.Shop.INTERFACE_ID;
+import static org.redrune.game.content.market.Shop.INVENTORY_INTERFACE_ID;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

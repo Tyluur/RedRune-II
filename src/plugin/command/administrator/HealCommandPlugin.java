@@ -1,8 +1,8 @@
 package plugin.command.administrator;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.utility.constants.SkillConstants;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.utility.constants.SkillConstants;
 import plugin.command.CommandManifest;
 
 /**

@@ -1,17 +1,17 @@
 package plugin.combat.range;
 
-import com.rs.game.content.combat.player.AbstractCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.mask.Animation;
-import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.actor.mask.Hit;
-import com.rs.game.entity.actor.mask.HitSplat;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.RangeWeaponPlugin;
-import com.rs.game.world.projectile.ProjectileManager;
-import com.rs.utility.Misc;
+import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.mask.Animation;
+import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.mask.Hit;
+import org.redrune.game.entity.actor.mask.HitSplat;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.entity.projectile.ProjectileManager;
+import org.redrune.utility.functions.Misc;
 
-import static com.rs.utility.constants.SkillConstants.FIREMAKING;
+import static org.redrune.utility.constants.SkillConstants.FIREMAKING;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

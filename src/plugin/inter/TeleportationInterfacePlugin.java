@@ -1,19 +1,20 @@
 package plugin.inter;
 
-import com.rs.game.content.Magic;
-import com.rs.game.content.controller.impl.activity.Wilderness;
-import com.rs.game.content.dialogue.Dialogue;
-import com.rs.game.entity.WorldTile;
-import com.rs.game.entity.actor.mask.ForceTalk;
-import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.game.world.task.WorldTask;
-import com.rs.game.world.task.WorldTasksManager;
-import com.rs.utility.Misc;
-import com.rs.utility.constants.ColorConstants;
-import com.rs.utility.constants.MagicConstants;
-import com.rs.utility.game.map.Coordinates;
+import org.redrune.game.content.Magic;
+import org.redrune.game.content.controller.impl.activity.Wilderness;
+import org.redrune.game.content.dialogue.Dialogue;
+import org.redrune.game.global.WorldTile;
+import org.redrune.game.entity.actor.mask.ForceTalk;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.AttributeKey;
+import org.redrune.utility.functions.Misc;
+import org.redrune.utility.constants.ColorConstants;
+import org.redrune.utility.constants.MagicConstants;
+import org.redrune.utility.game.map.Coordinates;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -60,7 +61,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 			if (teleportSlotId < uncollapsedTeleportsStart) {
 				if (teleportSlotId == uncollapsedTeleportsSlot) {
 					displaySelectionInterface(player, false);
-					player.getSaving().removeAttribute("last_uncollapsed_teleport");
+					player.getSaving().removeAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT);
 				} else {
 					player.putAttribute("uncollapsed_teleport", uncollapsed = TravelLocations.values()[teleportSlotId]);
 					uncollapse(player, uncollapsed);
@@ -117,7 +118,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 				}
 			}
 		}
-		player.getSaving().putAttribute("last_uncollapsed_teleport", travelLocations);
+		player.getSaving().putAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, travelLocations);
 	}
 	
 	/**
@@ -148,7 +149,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 		if (!showLastUncollapsed) {
 			return;
 		}
-		Object last = player.getSaving().getAttribute("last_uncollapsed_teleport", null);
+		Object last = player.getSaving().getAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, null);
 		if (last != null) {
 			TravelLocations locations = TravelLocations.valueOf(last.toString());
 			player.putAttribute("uncollapsed_teleport", locations);
@@ -211,7 +212,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 				
 			});
 		} else {
-			player.getSaving().putAttribute("last_transportation_location", new TransportationLocation(destination, travelLocations, optionIndex));
+			player.getSaving().putAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION, new TransportationLocation(destination, travelLocations, optionIndex));
 			teleportPlayer(player, destination, () -> travelLocations.handlePostTeleportation(player, optionIndex));
 		}
 	}

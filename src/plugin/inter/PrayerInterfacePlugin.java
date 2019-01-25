@@ -1,8 +1,8 @@
 package plugin.inter;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.utility.constants.PacketConstants;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.utility.constants.PacketConstants;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -1,8 +1,8 @@
 package plugin.inter;
 
-import com.rs.game.content.skills.smithing.Smithing.ForgingInterface;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.skills.smithing.Smithing.ForgingInterface;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.InterfacePlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

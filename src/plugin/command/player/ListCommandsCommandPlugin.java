@@ -1,11 +1,11 @@
 package plugin.command.player;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerRight;
-import com.rs.game.plugin.PluginRepository;
-import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.utility.Misc;
-import com.rs.utility.constants.InterfaceConstants;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.actor.player.data.PlayerRight;
+import org.redrune.game.plugin.PluginRepository;
+import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.utility.functions.Misc;
+import org.redrune.utility.constants.InterfaceConstants;
 import plugin.command.CommandManifest;
 
 import java.util.*;

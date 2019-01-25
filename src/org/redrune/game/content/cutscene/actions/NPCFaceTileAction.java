@@ -1,0 +1,25 @@
+package org.redrune.game.content.cutscene.actions;
+
+import org.redrune.game.content.cutscene.Cutscene;
+import org.redrune.game.global.WorldTile;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+
+public class NPCFaceTileAction extends CutsceneAction {
+	
+	private int x, y;
+	
+	public NPCFaceTileAction(int cachedObjectIndex, int x, int y, int actionDelay) {
+		super(cachedObjectIndex, actionDelay);
+		this.x = x;
+		this.y = y;
+	}
+	
+	@Override
+	public void process(Player player, Object[] cache) {
+		Cutscene scene = (Cutscene) cache[0];
+		NPC npc = (NPC) cache[getCachedObjectIndex()];
+		npc.setNextFaceWorldTile(new WorldTile(scene.getBaseX() + x, scene.getBaseY() + y, npc.getPlane()));
+	}
+	
+}

@@ -1,9 +1,9 @@
 package plugin.inter;
 
-import com.rs.game.content.actor.player.design.PlayerDesign;
-import com.rs.game.content.PlayerLook;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.actor.player.design.PlayerDesign;
+import org.redrune.game.content.PlayerLook;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.InterfacePlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

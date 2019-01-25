@@ -1,8 +1,8 @@
 package plugin.command.owner;
 
-import com.rs.cores.CoresManager;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.CommandPlugin;
+import org.redrune.engine.SystemManager;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.CommandPlugin;
 import plugin.command.CommandManifest;
 
 /**
@@ -15,7 +15,7 @@ public class UpdateCommandPlugin extends CommandPlugin {
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
 		int delay = intParam(args, 1);
-		CoresManager.safeShutdown(delay);
+		SystemManager.safeShutdown(delay);
 	}
 	
 	@Override

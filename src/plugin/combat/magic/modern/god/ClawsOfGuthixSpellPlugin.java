@@ -1,12 +1,11 @@
 package plugin.combat.magic.modern.god;
 
-import com.rs.cores.thread.WorldThread;
-import com.rs.game.content.combat.player.style.MagicCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.spell.type.CombatSpellPlugin;
-import com.rs.utility.constants.AttributeKey;
-import com.rs.utility.constants.MagicConstants.MagicBook;
+import org.redrune.engine.thread.WorldThread;
+import org.redrune.game.content.combat.player.style.MagicCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.utility.constants.AttributeKey;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

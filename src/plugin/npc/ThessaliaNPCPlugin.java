@@ -1,10 +1,9 @@
 package plugin.npc;
 
-import com.rs.game.content.PlayerLook;
-import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.NPCPlugin;
-import com.rs.utility.game.ClickOption;
+import org.redrune.game.content.PlayerLook;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.NPCPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -13,12 +12,17 @@ import com.rs.utility.game.ClickOption;
 public class ThessaliaNPCPlugin extends NPCPlugin {
 	
 	@Override
-	public void handle(Player player, NPC npc, ClickOption option) {
-		PlayerLook.openThessaliasMakeOver(player);
+	public boolean handle(Player player, NPC npc, String option) {
+		switch (option) {
+			case "Change-clothes":
+				PlayerLook.openThessaliasMakeOver(player);
+				return true;
+		}
+		return false;
 	}
 	
 	@Override
 	public void register() {
-		register(548, ClickOption.FIRST);
+		register(548, "Change-clothes");
 	}
 }

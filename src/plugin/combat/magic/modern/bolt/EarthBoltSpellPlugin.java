@@ -1,12 +1,11 @@
 package plugin.combat.magic.modern.bolt;
 
-import com.rs.game.content.combat.player.style.MagicCombatStyle;
-import com.rs.game.entity.actor.Actor;
-import com.rs.game.entity.actor.mask.Graphics;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.combat.spell.type.CombatSpellPlugin;
-import com.rs.game.world.projectile.ProjectileManager;
-import com.rs.utility.constants.MagicConstants.MagicBook;
+import org.redrune.game.content.combat.player.style.MagicCombatStyle;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.entity.projectile.ProjectileManager;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

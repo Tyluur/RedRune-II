@@ -1,12 +1,12 @@
 package plugin.inter;
 
-import com.rs.game.entity.actor.npc.impl.familiar.Familiar;
-import com.rs.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.utility.constants.PacketConstants;
-import com.rs.utility.game.InputEvent;
-import com.rs.utility.game.InputEvent.InputEventType;
+import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
+import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.utility.constants.PacketConstants;
+import org.redrune.utility.game.InputEvent;
+import org.redrune.utility.game.InputEvent.InputEventType;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

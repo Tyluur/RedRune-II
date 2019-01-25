@@ -1,13 +1,9 @@
 package plugin.npc;
 
-import com.rs.game.content.PlayerLook;
-import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.NPCPlugin;
-import com.rs.utility.game.ClickOption;
-
-import static com.rs.utility.game.ClickOption.FIRST;
-import static com.rs.utility.game.ClickOption.SECOND;
+import org.redrune.game.content.PlayerLook;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.NPCPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -16,17 +12,24 @@ import static com.rs.utility.game.ClickOption.SECOND;
 public class MakeoverMageNPCPlugin extends NPCPlugin {
 	
 	@Override
-	public void handle(Player player, NPC npc, ClickOption option) {
-		if (option == FIRST) {
-			player.getDialogueManager().startDialogue("MakeOverMage", npc.getId(), 0);
-		} else if (option == SECOND) {
-			PlayerLook.openMageMakeOver(player);
+	public boolean handle(Player player, NPC npc, String option) {
+		switch (option) {
+			case "Talk-to":
+				player.getDialogueManager().startDialogue("MakeOverMage", npc.getId(), 0);
+				return true;
+			case "Makeover":
+				PlayerLook.openMageMakeOver(player);
+				return true;
 		}
+		return false;
 	}
 	
 	@Override
 	public void register() {
-		register(2676, FIRST, SECOND);
-		register(599, FIRST, SECOND);
+		int[] ids = { 2676, 599 };
+		for (int id : ids) {
+			register(id, "Talk-to");
+			register(id, "Makeover");
+		}
 	}
 }

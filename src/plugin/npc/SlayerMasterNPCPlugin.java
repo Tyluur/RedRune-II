@@ -1,9 +1,8 @@
 package plugin.npc;
 
-import com.rs.game.entity.actor.npc.NPC;
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.NPCPlugin;
-import com.rs.utility.game.ClickOption;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.NPCPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -12,12 +11,17 @@ import com.rs.utility.game.ClickOption;
 public class SlayerMasterNPCPlugin extends NPCPlugin {
 	
 	@Override
-	public void handle(Player player, NPC npc, ClickOption option) {
-		player.getDialogueManager().startDialogue("Turael", npc.getId());
+	public boolean handle(Player player, NPC npc, String option) {
+		switch (option) {
+			case "Talk-to":
+				player.getDialogueManager().startDialogue("Turael", npc.getId());
+				return true;
+		}
+		return false;
 	}
 	
 	@Override
 	public void register() {
-		register(8461, ClickOption.FIRST);
+		register(8461, "Talk-to");
 	}
 }

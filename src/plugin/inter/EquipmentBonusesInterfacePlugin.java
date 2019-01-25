@@ -1,12 +1,12 @@
 package plugin.inter;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.entity.actor.player.data.PlayerEquipment;
-import com.rs.game.entity.item.Item;
-import com.rs.game.plugin.type.InterfacePlugin;
-import com.rs.utility.constants.EquipmentConstants;
-import com.rs.utility.constants.PacketConstants;
-import com.rs.utility.repo.item.ItemCharacteristicRepository;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.actor.player.data.PlayerEquipment;
+import org.redrune.game.entity.item.Item;
+import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.utility.constants.EquipmentConstants;
+import org.redrune.utility.constants.PacketConstants;
+import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

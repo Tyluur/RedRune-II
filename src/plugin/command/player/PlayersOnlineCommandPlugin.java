@@ -1,8 +1,8 @@
 package plugin.command.player;
 
-import com.rs.game.entity.actor.player.Player;
-import com.rs.game.plugin.type.CommandPlugin;
-import com.rs.game.world.World;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.global.World;
 import plugin.command.CommandManifest;
 
 /**
