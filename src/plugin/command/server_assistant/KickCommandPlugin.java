@@ -1,7 +1,7 @@
 package plugin.command.server_assistant;
 
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.content.plugin.type.CommandPlugin;
 import org.redrune.game.global.World;
 import plugin.command.CommandManifest;
 

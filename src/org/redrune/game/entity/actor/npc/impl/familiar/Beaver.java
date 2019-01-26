@@ -1,8 +1,8 @@
 package org.redrune.game.entity.actor.npc.impl.familiar;
 
-import org.redrune.game.content.skills.summoning.Summoning.Pouches;
-import org.redrune.game.content.skills.woodcutting.Woodcutting;
-import org.redrune.game.content.skills.woodcutting.Woodcutting.TreeDefinitions;
+import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning.Pouches;
+import org.redrune.game.content.entity.actor.player.skills.woodcutting.Woodcutting;
+import org.redrune.game.content.entity.actor.player.skills.woodcutting.Woodcutting.TreeDefinitions;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;

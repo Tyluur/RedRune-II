@@ -2,7 +2,7 @@ package plugin.inter;
 
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

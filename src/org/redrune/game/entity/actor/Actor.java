@@ -1,10 +1,12 @@
 package org.redrune.game.entity.actor;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.redrune.cache.loaders.AnimationDefinitions;
 import org.redrune.cache.loaders.ObjectDefinitions;
-import org.redrune.game.GameConstants;
-import org.redrune.game.content.Magic;
+import org.redrune.game.entity.actor.link.InteractionManager;
+import org.redrune.utility.constants.GameConstants;
+import org.redrune.game.content.combat.function.Magic;
 import org.redrune.game.entity.Entity;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.link.PoisonManager;
@@ -130,6 +132,13 @@ public abstract class Actor extends WorldTile implements Entity {
 	private transient ConcurrentHashMap<Object, Object> temporaryAttributes;
 	
 	/**
+	 * The manager for all actor-actor interactions
+	 */
+	@Getter
+	@Setter
+	private transient InteractionManager interactionManager;
+	
+	/**
 	 * The action locks.
 	 */
 	@Getter
@@ -155,6 +164,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		receivedHits = new ConcurrentLinkedQueue<>();
 		receivedDamage = new ConcurrentHashMap<>();
 		temporaryAttributes = new ConcurrentHashMap<>();
+		interactionManager = new InteractionManager(this);
 		locks = new ActionLocks();
 		nextHits = new ArrayList<>();
 		nextWalkDirection = nextRunDirection - 1;
@@ -1013,6 +1023,12 @@ public abstract class Actor extends WorldTile implements Entity {
 		return nextFaceEntity;
 	}
 	
+	/**
+	 * This method faces the actor as long as the next face entity != -1
+	 *
+	 * @param actor
+	 * 		The actor to face
+	 */
 	public void setNextFaceActor(Actor actor) {
 		if (actor == null) {
 			nextFaceEntity = -1;
@@ -1149,7 +1165,13 @@ public abstract class Actor extends WorldTile implements Entity {
 		this.nextForceTalk = nextForceTalk;
 	}
 	
-	public void faceEntity(Actor target) {
+	/**
+	 * This method faces the actor's tile
+	 *
+	 * @param target
+	 * 		The target
+	 */
+	public void faceActor(Actor target) {
 		setNextFaceWorldTile(new WorldTile(target.getCoordFaceX(target.getSize()), target.getCoordFaceY(target.getSize()), target.getPlane()));
 	}
 	

@@ -1,8 +1,8 @@
 package plugin.command.administrator;
 
-import org.redrune.game.content.market.ShopRepository;
+import org.redrune.game.content.entity.actor.player.market.ShopRepository;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.content.plugin.type.CommandPlugin;
 import plugin.command.CommandManifest;
 
 /**

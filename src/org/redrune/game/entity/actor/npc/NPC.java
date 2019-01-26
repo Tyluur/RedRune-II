@@ -3,7 +3,7 @@ package org.redrune.game.entity.actor.npc;
 import org.redrune.cache.Cache;
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.engine.SystemManager;
-import org.redrune.game.content.controller.impl.activity.Wilderness;
+import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
@@ -32,14 +32,15 @@ import lombok.Setter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class NPC extends Actor implements Serializable {
 	
-	public static int NO_WALK = 0x0, NORMAL_WALK = 0x2, WATER_WALK = 0x4, FLY_WALK = 0x8;
-	
 	private static final long serialVersionUID = -4794678936277614443L;
+	
+	public static int NO_WALK = 0x0, NORMAL_WALK = 0x2, WATER_WALK = 0x4, FLY_WALK = 0x8;
 	
 	private int id;
 	
@@ -124,10 +125,6 @@ public class NPC extends Actor implements Serializable {
 		checkMultiArea();
 	}
 	
-	public void setRandomWalk(boolean forceRandomWalk) {
-		setWalkType(forceRandomWalk ? NORMAL_WALK : NO_WALK);
-	}
-	
 	public NPCDefinitions getDefinitions() {
 		return NPCDefinitions.getNPCDefinitions(id);
 	}
@@ -210,114 +207,6 @@ public class NPC extends Actor implements Serializable {
 	public void processEntity() {
 		super.processEntity();
 		processNPC();
-	}
-	
-	public void processNPC() {
-		if (isDead()) {
-			return;
-		}
-		extensions.forEach(extension -> extension.process(this));
-		if (!combat.process()) { // if not under combat
-			if (!isForceWalking()) {// combat still processed for attack delay
-				// go down
-				// random walk
-				if (!cantInteract) {
-					if (!checkAgressivity()) {
-						if (getFreezeDelay() < Misc.currentTimeMillis()) {
-							if (((getWalkType() & NORMAL_WALK) != 0) && Math.random() * 1000.0 < 100.0) {
-								int moveX = (int) Math.round(Math.random() * 10.0 - 5.0);
-								int moveY = (int) Math.round(Math.random() * 10.0 - 5.0);
-								resetWalkSteps();
-								if (!withinDistanceFromSpawn()) {
-									forceWalkRespawnTile();
-									return;
-								}
-								addWalkSteps(respawnTile.getX() + moveX, respawnTile.getY() + moveY, 5);
-							}
-						}
-					}
-				}
-			}
-		}
-		if (isForceWalking()) {
-			if (getFreezeDelay() < Misc.currentTimeMillis()) {
-				if (getX() != forceWalk.getX() || getY() != forceWalk.getY()) {
-					if (!hasWalkSteps()) {
-						addWalkSteps(forceWalk.getX(), forceWalk.getY(), getSize(), true);
-					}
-					if (!hasWalkSteps()) {
-						setNextWorldTile(new WorldTile(forceWalk));
-						forceWalk = null;
-					}
-				} else {
-					forceWalk = null;
-				}
-			}
-		}
-	}
-	
-	public boolean isForceWalking() {
-		return forceWalk != null;
-	}
-	
-	public boolean checkAgressivity() {
-		// if(!(Wilderness.isAtWild(this) &&
-		// getDefinitions().hasAttackOption())) {
-		if (!forceAgressive) {
-			NPCCombatDefinitions defs = getCombatDefinitions();
-			if (defs.getAggressivenessType() == NPCConstants.PASSIVE) {
-				return false;
-			}
-		}
-		// }
-		ArrayList<Actor> possibleTarget = getPossibleTargets();
-		if (!possibleTarget.isEmpty()) {
-			Actor target = possibleTarget.get(Misc.getRandom(possibleTarget.size() - 1));
-			setTarget(target);
-			target.setAttackedBy(target);
-			target.setFindTargetDelay(Misc.currentTimeMillis() + 10000);
-			return true;
-		}
-		return false;
-	}
-	
-	public int getMapAreaNameHash() {
-		return mapAreaNameHash;
-	}
-	
-	public void forceWalkRespawnTile() {
-		setForceWalk(respawnTile);
-	}
-	
-	public ArrayList<Actor> getPossibleTargets() {
-		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
-		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
-			if (playerIndexes != null) {
-				for (int npcIndex : playerIndexes) {
-					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isInRange(getX(), getY(), getSize(), player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
-						continue;
-					}
-					possibleTarget.add(player);
-				}
-			}
-		}
-		return possibleTarget;
-	}
-	
-	public void setTarget(Actor actor) {
-		if (isForceWalking()) // if force walk not gonna get target
-		{
-			return;
-		}
-		combat.setTarget(actor);
-		lastAttackedByTarget = Misc.currentTimeMillis();
-	}
-	
-	public void setForceWalk(WorldTile tile) {
-		resetWalkSteps();
-		forceWalk = tile;
 	}
 	
 	@Override
@@ -582,7 +471,119 @@ public class NPC extends Actor implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "NPC{" + "id=" + id + ", tile=" + getWorldTile() + ", name='" + getName() + '\'' + '}';
+		return "NPC{" + "id=" + id + ", name='" + name + '\'' + ", combatLevel=" + combatLevel + ", respawnTile=" + respawnTile + ", bonuses=" + Arrays.toString(bonuses) + ", spawned=" + spawned + '}';
+	}
+	
+	public void setRandomWalk(boolean forceRandomWalk) {
+		setWalkType(forceRandomWalk ? NORMAL_WALK : NO_WALK);
+	}
+	
+	public void processNPC() {
+		if (isDead()) {
+			return;
+		}
+		extensions.forEach(extension -> extension.process(this));
+		if (!combat.process()) { // if not under combat
+			if (!isForceWalking()) {// combat still processed for attack delay
+				// go down
+				// random walk
+				if (!cantInteract) {
+					if (!checkAgressivity()) {
+						if (!getInteractionManager().isInteracting() && getFreezeDelay() < Misc.currentTimeMillis()) {
+							if (((getWalkType() & NORMAL_WALK) != 0) && Math.random() * 1000.0 < 100.0) {
+								int moveX = (int) Math.round(Math.random() * 10.0 - 5.0);
+								int moveY = (int) Math.round(Math.random() * 10.0 - 5.0);
+								resetWalkSteps();
+								if (!withinDistanceFromSpawn()) {
+									forceWalkRespawnTile();
+									return;
+								}
+								addWalkSteps(respawnTile.getX() + moveX, respawnTile.getY() + moveY, 5);
+							}
+						}
+					}
+				}
+			}
+		}
+		if (isForceWalking()) {
+			if (getFreezeDelay() < Misc.currentTimeMillis()) {
+				if (getX() != forceWalk.getX() || getY() != forceWalk.getY()) {
+					if (!hasWalkSteps()) {
+						addWalkSteps(forceWalk.getX(), forceWalk.getY(), getSize(), true);
+					}
+					if (!hasWalkSteps()) {
+						setNextWorldTile(new WorldTile(forceWalk));
+						forceWalk = null;
+					}
+				} else {
+					forceWalk = null;
+				}
+			}
+		}
+	}
+	
+	public boolean isForceWalking() {
+		return forceWalk != null;
+	}
+	
+	public boolean checkAgressivity() {
+		// if(!(Wilderness.isAtWild(this) &&
+		// getDefinitions().hasAttackOption())) {
+		if (!forceAgressive) {
+			NPCCombatDefinitions defs = getCombatDefinitions();
+			if (defs.getAggressivenessType() == NPCConstants.PASSIVE) {
+				return false;
+			}
+		}
+		// }
+		ArrayList<Actor> possibleTarget = getPossibleTargets();
+		if (!possibleTarget.isEmpty()) {
+			Actor target = possibleTarget.get(Misc.getRandom(possibleTarget.size() - 1));
+			setTarget(target);
+			target.setAttackedBy(target);
+			target.setFindTargetDelay(Misc.currentTimeMillis() + 10000);
+			return true;
+		}
+		return false;
+	}
+	
+	public int getMapAreaNameHash() {
+		return mapAreaNameHash;
+	}
+	
+	public void forceWalkRespawnTile() {
+		setForceWalk(respawnTile);
+	}
+	
+	public ArrayList<Actor> getPossibleTargets() {
+		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
+		for (int regionId : getMapRegionsIds()) {
+			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
+			if (playerIndexes != null) {
+				for (int npcIndex : playerIndexes) {
+					Player player = World.getPlayers().get(npcIndex);
+					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isInRange(getX(), getY(), getSize(), player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
+						continue;
+					}
+					possibleTarget.add(player);
+				}
+			}
+		}
+		return possibleTarget;
+	}
+	
+	public void setTarget(Actor actor) {
+		if (isForceWalking()) // if force walk not gonna get target
+		{
+			return;
+		}
+		combat.setTarget(actor);
+		lastAttackedByTarget = Misc.currentTimeMillis();
+	}
+	
+	public void setForceWalk(WorldTile tile) {
+		resetWalkSteps();
+		forceWalk = tile;
 	}
 	
 	public String getName() {
@@ -695,10 +696,6 @@ public class NPC extends Actor implements Serializable {
 	
 	public int getMaxHit() {
 		return getCombatDefinitions().getMaxHit();
-	}
-	
-	public int[] getBonuses() {
-		return bonuses == null ? new int[10] : bonuses;
 	}
 	
 	public WorldTile getRespawnTile() {
@@ -834,9 +831,9 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	/**
-	 * Gets the bonus at an index. <p>To find out the sorting of the bonuses list, see {@link
-	 * BonusConstants} order. NPC bonuses only reach the 10th index [range defence]. The
-	 * bonuses are always defined because on construct we set the bonuses regardless of whether they exist in file.</p>
+	 * Gets the bonus at an index. <p>To find out the sorting of the bonuses list, see {@link BonusConstants} order. NPC
+	 * bonuses only reach the 10th index [range defence]. The bonuses are always defined because on construct we set the
+	 * bonuses regardless of whether they exist in file.</p>
 	 *
 	 * @param index
 	 * 		The index
@@ -849,6 +846,10 @@ public class NPC extends Actor implements Serializable {
 		} else {
 			return bonuses[index];
 		}
+	}
+	
+	public int[] getBonuses() {
+		return bonuses == null ? new int[10] : bonuses;
 	}
 	
 	/**

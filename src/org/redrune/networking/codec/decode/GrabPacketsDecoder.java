@@ -1,7 +1,7 @@
 package org.redrune.networking.codec.decode;
 
 import org.redrune.cache.Cache;
-import org.redrune.engine.thread.factory.JS5ThreadFactory;
+import org.redrune.engine.factory.JS5ThreadFactory;
 import org.redrune.networking.Session;
 import org.redrune.networking.codec.Decoder;
 import org.redrune.networking.stream.InputStream;

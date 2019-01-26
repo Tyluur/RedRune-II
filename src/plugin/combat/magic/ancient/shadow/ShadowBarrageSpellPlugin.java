@@ -3,7 +3,7 @@ package plugin.combat.magic.ancient.shadow;
 import org.redrune.game.content.combat.player.style.MagicCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.utility.constants.SkillConstants;
 
 /**

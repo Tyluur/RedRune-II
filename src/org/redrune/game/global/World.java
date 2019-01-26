@@ -1,9 +1,9 @@
 package org.redrune.game.global;
 
-import org.redrune.game.GameConstants;
-import org.redrune.game.content.controller.impl.activity.Wilderness;
-import org.redrune.game.content.skills.hunter.Hunter.HunterNPC;
-import org.redrune.game.content.skills.slayer.SlayerHelp;
+import org.redrune.utility.constants.GameConstants;
+import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
+import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterNPC;
+import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerHelp;
 import org.redrune.game.entity.actor.ActorList;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtension;

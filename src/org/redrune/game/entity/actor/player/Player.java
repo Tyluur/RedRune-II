@@ -3,18 +3,19 @@ package org.redrune.game.entity.actor.player;
 import lombok.Getter;
 import lombok.Setter;
 import org.redrune.engine.SystemManager;
-import org.redrune.game.GameConstants;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.SkillCapeCustomizer;
-import org.redrune.game.content.action.ActionManager;
-import org.redrune.game.content.actor.item.Pots;
-import org.redrune.game.content.controller.ControllerManager;
+import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.cutscene.CutsceneManager;
-import org.redrune.game.content.dialogue.DialogueManager;
-import org.redrune.game.content.skills.slayer.Slayer;
-import org.redrune.game.content.skills.slayer.Slayer.SlayerMonsters;
-import org.redrune.game.content.skills.slayer.SlayerTask;
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.content.entity.actor.player.action.ActionManager;
+import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
+import org.redrune.game.content.entity.actor.player.dialogue.DialogueManager;
+import org.redrune.game.content.entity.actor.player.event.EventManager;
+import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;
+import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.SlayerMonsters;
+import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask;
+import org.redrune.game.content.entity.item.Pots;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.data.CombatDefinitions;
 import org.redrune.game.entity.actor.mask.*;
@@ -26,14 +27,14 @@ import org.redrune.game.entity.actor.player.render.LocalNPCUpdate;
 import org.redrune.game.entity.actor.player.render.LocalPlayerUpdate;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.networking.Session;
 import org.redrune.networking.codec.encode.WorldPacketsEncoder;
-import org.redrune.utility.functions.Misc;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.file.SerializableFilesManager;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.entity.actor.player.PublicChatMessage;
 import org.redrune.utility.game.entity.actor.player.QuickChatMessage;
 
@@ -226,6 +227,9 @@ public class Player extends Actor {
 	
 	@Getter
 	private transient ActionManager actionManager;
+	
+	@Getter
+	private transient EventManager eventManager;
 	
 	@Getter
 	private transient CutsceneManager cutsceneManager;
@@ -449,9 +453,15 @@ public class Player extends Actor {
 		}
 		charges.process();
 		auraManager.process();
-		if (routeEvent != null && routeEvent.processEvent(this)) {
+		try {
+			if (routeEvent != null && routeEvent.processEvent(this)) {
+				routeEvent = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			routeEvent = null;
 		}
+		eventManager.process();
 		actionManager.process();
 		prayer.processPrayer();
 		controllerManager.process();
@@ -1100,6 +1110,16 @@ public class Player extends Actor {
 		return this;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof Player && ((Player) o).getUsername().equals(username);
+	}
+	
+	@Override
+	public String toString() {
+		return "Player{" + "displayName='" + displayName + '\'' + ", rights=" + rights + '}';
+	}
+	
 	public void setRouteEvent(RouteEvent routeEvent) {
 		this.routeEvent = routeEvent;
 		// so when a route event is set it auto-processes it
@@ -1117,6 +1137,16 @@ public class Player extends Actor {
 		System.out.println("Inited Player: " + string + ", pass: " + password);
 	}
 	
+	/**
+	 * Gives the player the right
+	 *
+	 * @param right
+	 * 		The right
+	 */
+	public void giveRight(PlayerRight right) {
+		this.rights.add(right);
+	}
+	
 	public void init(String username, int displayMode, int screenWidth, int screenHeight) {
 		// temporary deleted after reset all chars
 		this.username = username;
@@ -1131,6 +1161,7 @@ public class Player extends Actor {
 		localNPCUpdate = new LocalNPCUpdate(this);
 		setPacketSender(new PacketSender(this));
 		actionManager = new ActionManager(this);
+		eventManager = new EventManager(this);
 		cutsceneManager = new CutsceneManager(this);
 		tradeManager = new TradeManager(this);
 		// loads player on saved instances
@@ -1332,6 +1363,7 @@ public class Player extends Actor {
 		}
 		actionManager.forceStop();
 		combatDefinitions.resetSpells(false);
+		getInteractionManager().cancelActorInteraction();
 		setNextFaceActor(null);
 	}
 	
@@ -1601,16 +1633,6 @@ public class Player extends Actor {
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Gives the player the right
-	 *
-	 * @param right
-	 * 		The right
-	 */
-	public void giveRight(PlayerRight right) {
-		this.rights.add(right);
 	}
 	
 	/**

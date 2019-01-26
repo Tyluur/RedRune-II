@@ -51,8 +51,8 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 			buf.readBytes(buffer);
 			try {
 				session.getDecoder().decode(new InputStream(buffer));
-			} catch (Throwable er) {
-				er.printStackTrace();
+			} catch (Throwable t) {
+				t.printStackTrace();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package org.redrune.game.entity.actor.player.link;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
 import org.redrune.networking.stream.OutputStream;

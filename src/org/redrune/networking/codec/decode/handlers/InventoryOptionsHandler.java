@@ -1,25 +1,26 @@
 package org.redrune.networking.codec.decode.handlers;
 
-import org.redrune.engine.thread.WorldThread;
+import org.redrune.engine.cycle.GameCycleWorker;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.Magic;
-import org.redrune.game.content.SkillCapeCustomizer;
-import org.redrune.game.content.actor.item.*;
-import org.redrune.game.content.actor.item.Burying.Bone;
-import org.redrune.game.content.skills.crafting.GemCutting;
-import org.redrune.game.content.skills.crafting.GemCutting.Gem;
-import org.redrune.game.content.skills.crafting.LeatherCrafting;
-import org.redrune.game.content.skills.firemaking.Firemaking;
-import org.redrune.game.content.skills.fletching.Fletching;
-import org.redrune.game.content.skills.fletching.Fletching.Fletch;
-import org.redrune.game.content.skills.herblore.HerbCleaning;
-import org.redrune.game.content.skills.herblore.Herblore;
-import org.redrune.game.content.skills.hunter.Hunter;
-import org.redrune.game.content.skills.hunter.Hunter.HunterEquipment;
-import org.redrune.game.content.skills.runecrafting.Runecrafting;
-import org.redrune.game.content.skills.summoning.Summoning;
-import org.redrune.game.content.skills.summoning.Summoning.Pouches;
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
+import org.redrune.game.content.entity.actor.player.skills.crafting.GemCutting;
+import org.redrune.game.content.entity.actor.player.skills.crafting.GemCutting.Gem;
+import org.redrune.game.content.entity.actor.player.skills.crafting.LeatherCrafting;
+import org.redrune.game.content.entity.actor.player.skills.firemaking.Firemaking;
+import org.redrune.game.content.entity.actor.player.skills.fletching.Fletching;
+import org.redrune.game.content.entity.actor.player.skills.fletching.Fletching.Fletch;
+import org.redrune.game.content.entity.actor.player.skills.herblore.HerbCleaning;
+import org.redrune.game.content.entity.actor.player.skills.herblore.Herblore;
+import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter;
+import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterEquipment;
+import org.redrune.game.content.entity.actor.player.skills.runecrafting.Runecrafting;
+import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning;
+import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning.Pouches;
+import org.redrune.game.content.entity.item.*;
+import org.redrune.game.content.entity.item.Burying.Bone;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
@@ -30,12 +31,11 @@ import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.item.ItemOnItemHandler;
 import org.redrune.game.entity.item.ItemOnItemHandler.ItemOnItem;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.networking.stream.InputStream;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.EquipmentConstants;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 
 import java.util.List;
@@ -182,8 +182,9 @@ public class InventoryOptionsHandler {
 			if (player.isEquipDisabled()) {
 				return;
 			}
-			long passedTime = Misc.currentTimeMillis() - WorldThread.LAST_CYCLE_CTM;
+			long passedTime = Misc.currentTimeMillis() - GameCycleWorker.lastCycleTime;
 			player.stopAll(false);
+			
 			WorldTasksManager.schedule(new WorldTask() {
 				
 				@Override
@@ -198,7 +199,7 @@ public class InventoryOptionsHandler {
 					stop();
 				}
 				
-			}, passedTime >= 600 ? 0 : passedTime > 400 ? 1 : 0, 1);
+			}, passedTime >= 450 ? 0 : passedTime > 300 ? 1 : 0, 1);
 			if (player.getSwitchItemCache().contains(slotId)) {
 				return;
 			}
@@ -478,7 +479,7 @@ public class InventoryOptionsHandler {
 	
 	public static void handleItemOnPlayer(final Player player, final Player usedOn, final int itemId) {
 		player.setRouteEvent(new RouteEvent(usedOn, () -> {
-			player.faceEntity(usedOn);
+			player.faceActor(usedOn);
 			if (usedOn.getInterfaceManager().containsScreenInter()) {
 				player.getPackets().sendGameMessage(usedOn.getDisplayName() + " is busy.");
 				return;

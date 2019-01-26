@@ -1,10 +1,10 @@
 package plugin.combat.magic.modern.god;
 
-import org.redrune.engine.thread.WorldThread;
+import org.redrune.engine.cycle.GameCycleWorker;
 import org.redrune.game.content.combat.player.style.MagicCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.utility.constants.AttributeKey;
 
 /**
@@ -30,7 +30,7 @@ public class FlamesOfZamorakSpellPlugin extends CombatSpellPlugin {
 	
 	@Override
 	public int maxHit(Player player, Actor target) {
-		if (player.getAttribute(AttributeKey.GOD_CHARGED, -1L) >= WorldThread.getTicksPassed()) {
+		if (player.getAttribute(AttributeKey.GOD_CHARGED, -1L) >= GameCycleWorker.getTicksPassed()) {
 			return 300;
 		} else {
 			return 200;

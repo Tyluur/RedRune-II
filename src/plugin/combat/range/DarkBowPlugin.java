@@ -5,7 +5,7 @@ import org.redrune.game.content.combat.player.AbstractCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
 import org.redrune.game.entity.projectile.Projectile;
 import org.redrune.game.entity.projectile.ProjectileManager;
 

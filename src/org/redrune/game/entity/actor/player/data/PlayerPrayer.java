@@ -484,7 +484,7 @@ public class PlayerPrayer implements Serializable {
 			switch (prayerId) {
 				case 0:
 					if (!usingQuickPrayer) {
-						player.setNextAnimation(new Animation(12567));
+						player.setNextAnimationNoPriority(new Animation(12567));
 						player.setNextGraphics(new Graphics(2213));
 					}
 					closePrayers(closePrayers[getPrayerBook()][0]);
@@ -497,7 +497,7 @@ public class PlayerPrayer implements Serializable {
 					break;
 				case 5:
 					if (!usingQuickPrayer) {
-						player.setNextAnimation(new Animation(12589));
+						player.setNextAnimationNoPriority(new Animation(12589));
 						player.setNextGraphics(new Graphics(2266));
 					}
 					closePrayers(closePrayers[getPrayerBook()][2]);
@@ -524,9 +524,8 @@ public class PlayerPrayer implements Serializable {
 					closePrayers(closePrayers[getPrayerBook()][1], closePrayers[getPrayerBook()][6]);
 					break;
 				case 19:
-					// stop changing this idiot. it doesnt stop walk on rs
 					if (!usingQuickPrayer) {
-						player.setNextAnimation(new Animation(12565));
+						player.setNextAnimationNoPriority(new Animation(12565));
 						player.setNextGraphics(new Graphics(2226));
 					}
 					closePrayers(closePrayers[getPrayerBook()][1], closePrayers[getPrayerBook()][5], closePrayers[getPrayerBook()][6]);

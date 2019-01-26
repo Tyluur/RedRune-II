@@ -3,7 +3,7 @@ package plugin.inter;
 import org.redrune.engine.SystemManager;
 import org.redrune.game.content.combat.CombatAlgorithm;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 
 import java.util.concurrent.TimeUnit;
 

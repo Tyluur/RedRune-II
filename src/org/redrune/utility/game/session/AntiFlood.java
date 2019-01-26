@@ -1,6 +1,6 @@
 package org.redrune.utility.game.session;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 
 import java.util.ArrayList;
 

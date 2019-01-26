@@ -7,7 +7,7 @@ import org.redrune.game.entity.actor.mask.ForceTalk;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerSkills;
-import org.redrune.game.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

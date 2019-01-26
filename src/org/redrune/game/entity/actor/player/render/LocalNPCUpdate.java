@@ -1,6 +1,6 @@
 package org.redrune.game.entity.actor.player.render;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;

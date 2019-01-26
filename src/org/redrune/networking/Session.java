@@ -1,5 +1,11 @@
 package org.redrune.networking;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBuffers;
+import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.ChannelFuture;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.networking.codec.Decoder;
 import org.redrune.networking.codec.Encoder;
@@ -12,12 +18,6 @@ import org.redrune.networking.codec.encode.LoginPacketsEncoder;
 import org.redrune.networking.codec.encode.WorldPacketsEncoder;
 import org.redrune.networking.stream.OutputStream;
 import org.redrune.utility.functions.Misc;
-import lombok.Getter;
-import lombok.Setter;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFuture;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -141,7 +141,7 @@ public final class Session {
 	/**
 	 * Flushes the {@link #outgoingQueue} to the channel
 	 */
-	public void flush() {
+	public void flushOutgoingQueue() {
 		OutputStream stream;
 		while ((stream = outgoingQueue.poll()) != null) {
 			channel.write(ChannelBuffers.copiedBuffer(stream.getBuffer(), 0, stream.getOffset()));

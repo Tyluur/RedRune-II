@@ -1,37 +1,41 @@
 package org.redrune;
 
-import org.apache.commons.cli.*;
 import org.redrune.cache.Cache;
 import org.redrune.cache.huffman.Huffman;
 import org.redrune.cache.loaders.ItemEquipIds;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.boot.BootHandler;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.actor.npc.FishingSpotsHandler;
+import org.redrune.game.content.entity.actor.npc.FishingSpotsHandler;
 import org.redrune.game.content.combat.npc.CombatScriptsHandler;
-import org.redrune.game.content.controller.ControllerHandler;
+import org.redrune.game.content.entity.actor.player.controller.ControllerHandler;
 import org.redrune.game.content.cutscene.CutscenesHandler;
-import org.redrune.game.content.dialogue.DialogueHandler;
-import org.redrune.game.content.market.ShopRepository;
+import org.redrune.game.content.entity.actor.player.dialogue.DialogueHandler;
+import org.redrune.game.content.entity.actor.player.market.ShopRepository;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder;
 import org.redrune.game.entity.actor.player.link.FriendChatsManager;
 import org.redrune.game.global.map.region.RegionBuilder;
 import org.redrune.game.global.punishment.PunishmentRepository;
 import org.redrune.game.global.worldlist.WorldList;
-import org.redrune.game.plugin.PluginRepository;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.networking.ServerChannelHandler;
 import org.redrune.networking.codec.packet.IncomingPacketRepository;
 import org.redrune.utility.constants.NetworkConstants;
-import org.redrune.utility.game.map.MapArchiveKeys;
+import org.redrune.utility.functions.OutLogger;
 import org.redrune.utility.game.entity.actor.npc.NPCWalkingFlag;
 import org.redrune.utility.game.entity.object.ObjectRemoval;
 import org.redrune.utility.game.entity.object.ObjectSpawns;
-import org.redrune.utility.functions.OutLogger;
+import org.redrune.utility.game.map.MapArchiveKeys;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.redrune.utility.functions.ArgumentParser.parseArgs;
+
 /**
- * This class handles the startup of the game.
+ * This class runs the server
+ *
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since January 25th, 2019
  */
 public final class Bootstrap {
 	
@@ -39,8 +43,24 @@ public final class Bootstrap {
 	 * The main method invoked by the jvm
 	 */
 	public static void main(String[] args) {
+		// making sure the RedRune logger is used before anything is printed
 		System.setOut(new OutLogger(System.out));
+		// parsing the arguments
 		parseArgs(args);
+		// startup work
+		registerStartupRequirements();
+		
+		System.out.println("Server successfully bound game server to port: " + NetworkConstants.PORT_ID + " in " + BootHandler.getSTOPWATCH().elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + "]");
+	}
+	
+	/**
+	 * This method uses {@link BootHandler} to prepare all requirements for the game to start efficiently. All tasks
+	 * that require each other are are performed in the same parallel instance, other ones can be performed
+	 * individually.
+	 *
+	 * This is a blocking method due to {@link BootHandler#await()}
+	 */
+	private static void registerStartupRequirements() {
 		BootHandler.addWork(() -> {
 			try {
 				System.out.println("Initializing cache");
@@ -83,34 +103,6 @@ public final class Bootstrap {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Server successfully binded game server to port: " + NetworkConstants.PORT_ID + " in " + BootHandler.getSTOPWATCH().elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + "]");
-	}
-	
-	/**
-	 * Parses the arguments from the jvm
-	 */
-	private static void parseArgs(String[] args) {
-		Options options = new Options();
-		Option hostOption = new Option("hostMode", "input", true, "game host mode");
-		hostOption.setRequired(true);
-		Option debugOption = new Option("debugMode", "input", true, "debug server mode");
-		options.addOption(hostOption);
-		options.addOption(debugOption);
-		
-		CommandLineParser parser = new DefaultParser();
-		HelpFormatter formatter = new HelpFormatter();
-		CommandLine cmd;
-		
-		try {
-			cmd = parser.parse(options, args);
-		} catch (ParseException e) {
-			System.out.println(e.getMessage());
-			formatter.printHelp("utility-name", options);
-			System.exit(1);
-			return;
-		}
-		GameFlags.hostMode = Boolean.parseBoolean(cmd.getOptionValue("hostMode"));
-		GameFlags.debugMode = Boolean.parseBoolean(cmd.getOptionValue("debugMode"));
 	}
 	
 }

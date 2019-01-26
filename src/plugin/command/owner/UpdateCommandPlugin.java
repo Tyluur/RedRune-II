@@ -2,7 +2,7 @@ package plugin.command.owner;
 
 import org.redrune.engine.SystemManager;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.content.plugin.type.CommandPlugin;
 import plugin.command.CommandManifest;
 
 /**

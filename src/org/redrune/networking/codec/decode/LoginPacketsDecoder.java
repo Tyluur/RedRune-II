@@ -2,7 +2,7 @@ package org.redrune.networking.codec.decode;
 
 import org.redrune.cache.Cache;
 import org.redrune.engine.SystemManager;
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;

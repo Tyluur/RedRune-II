@@ -1,7 +1,7 @@
 package org.redrune.utility.constants;
 
-import org.redrune.game.content.actor.player.design.DefaultDesign;
-import org.redrune.game.content.actor.player.design.DefaultDesign.DefaultSubDesign;
+import org.redrune.game.content.entity.actor.player.design.DefaultDesign;
+import org.redrune.game.content.entity.actor.player.design.DefaultDesign.DefaultSubDesign;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

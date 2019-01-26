@@ -1,13 +1,13 @@
 package plugin.inter;
 
-import org.redrune.game.content.Magic;
-import org.redrune.game.content.controller.impl.activity.Wilderness;
-import org.redrune.game.content.dialogue.Dialogue;
+import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
+import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.ForceTalk;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.utility.constants.AttributeKey;

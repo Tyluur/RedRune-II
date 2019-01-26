@@ -1,7 +1,7 @@
 package org.redrune.game.entity.actor.npc.impl.familiar;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.content.skills.summoning.Summoning.Pouches;
+import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning.Pouches;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;

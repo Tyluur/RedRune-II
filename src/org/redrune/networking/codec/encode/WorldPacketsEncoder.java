@@ -1,6 +1,6 @@
 package org.redrune.networking.codec.encode;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;

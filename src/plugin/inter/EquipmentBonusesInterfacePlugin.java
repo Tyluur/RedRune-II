@@ -3,7 +3,7 @@ package plugin.inter;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerEquipment;
 import org.redrune.game.entity.item.Item;
-import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.PacketConstants;
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;

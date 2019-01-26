@@ -1,7 +1,7 @@
 package plugin.inter;
 
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -18,7 +18,7 @@ public class LogoutInterfacePlugin extends InterfacePlugin {
 			if (player.hasFinished()) {
 				return true;
 			}
-			player.logout(false);
+			player.logout(componentId == 6);
 		}
 		return true;
 	}

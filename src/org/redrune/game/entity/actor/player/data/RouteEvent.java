@@ -34,11 +34,6 @@ public class RouteEvent {
 	 */
 	private RouteStrategy[] last;
 	
-	/**
-	 * If we've faced the destination, only applicable in actor cases
-	 */
-	private boolean facedDestination;
-	
 	public RouteEvent(Object destination, Runnable event) {
 		this(destination, event, false);
 	}
@@ -59,11 +54,6 @@ public class RouteEvent {
 			return true;
 		}
 		RouteStrategy[] strategies = generateStrategies();
-		// so we face actors when we're pathing to them
-		if (!facedDestination && destination instanceof Actor) {
-			player.setNextFaceActor((Actor) destination);
-			facedDestination = true;
-		}
 		if (last != null && match(strategies, last) && player.hasWalkSteps()) {
 			return false;
 		} else if (last != null && match(strategies, last) && !player.hasWalkSteps()) {
@@ -164,6 +154,10 @@ public class RouteEvent {
 		boolean moving = player.hasWalkSteps() || player.getNextRunDirection() != -1 || player.getNextWalkDirection() != -1;
 		if (moving) {
 			return false;
+		}
+		if (destination instanceof Actor) {
+			((Actor) destination).faceActor(player);
+			player.setNextFaceActor((Actor) destination);
 		}
 		event.run();
 		return true;

@@ -2,7 +2,7 @@ package plugin.command.owner;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.content.plugin.type.CommandPlugin;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.game.entity.object.ObjectSpawns;
 import plugin.command.CommandManifest;

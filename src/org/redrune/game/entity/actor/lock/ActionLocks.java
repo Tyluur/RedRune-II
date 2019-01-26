@@ -1,6 +1,6 @@
 package org.redrune.game.entity.actor.lock;
 
-import org.redrune.engine.thread.WorldThread;
+import org.redrune.engine.cycle.GameCycleWorker;
 import org.redrune.game.entity.actor.Actor;
 
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public final class ActionLocks {
 	 * Locks all default actions (movement, teleport & interaction) for indefinite time.
 	 */
 	public void lock() {
-		lock(Integer.MAX_VALUE - WorldThread.getTicksPassed());
+		lock(Integer.MAX_VALUE - GameCycleWorker.getTicksPassed());
 	}
 	
 	/**

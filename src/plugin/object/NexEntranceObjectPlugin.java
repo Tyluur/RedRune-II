@@ -2,7 +2,7 @@ package plugin.object;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.game.plugin.type.ObjectPlugin;
+import org.redrune.game.content.plugin.type.ObjectPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

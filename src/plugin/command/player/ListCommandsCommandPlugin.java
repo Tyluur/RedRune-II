@@ -2,8 +2,8 @@ package plugin.command.player;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerRight;
-import org.redrune.game.plugin.PluginRepository;
-import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.type.CommandPlugin;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.InterfaceConstants;
 import plugin.command.CommandManifest;

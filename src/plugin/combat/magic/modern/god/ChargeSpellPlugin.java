@@ -1,12 +1,12 @@
 package plugin.combat.magic.modern.god;
 
-import org.redrune.engine.thread.WorldThread;
+import org.redrune.engine.cycle.GameCycleWorker;
 import org.redrune.game.content.combat.player.style.MagicCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.utility.constants.AttributeKey;
 
 /**
@@ -43,7 +43,7 @@ public class ChargeSpellPlugin extends CombatSpellPlugin {
 	public void cast(Player source, Actor target, MagicCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
-		source.putAttribute(AttributeKey.GOD_CHARGED, WorldThread.getTicksPassed() + 600);
+		source.putAttribute(AttributeKey.GOD_CHARGED, GameCycleWorker.getTicksPassed() + 600);
 	}
 	
 	@Override

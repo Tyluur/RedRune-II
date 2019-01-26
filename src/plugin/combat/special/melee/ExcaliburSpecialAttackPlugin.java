@@ -1,6 +1,6 @@
 package plugin.combat.special.melee;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.content.combat.player.AbstractCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
@@ -8,7 +8,7 @@ import org.redrune.game.entity.actor.mask.ForceTalk;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerSkills;
-import org.redrune.game.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.utility.constants.SkillConstants;

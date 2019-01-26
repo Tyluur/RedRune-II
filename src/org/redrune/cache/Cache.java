@@ -1,7 +1,7 @@
 package org.redrune.cache;
 
 import com.alex.store.Store;
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 
 import java.io.IOException;
 

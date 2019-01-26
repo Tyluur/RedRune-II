@@ -1,7 +1,7 @@
 package org.redrune.game.entity.actor.player.data;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;

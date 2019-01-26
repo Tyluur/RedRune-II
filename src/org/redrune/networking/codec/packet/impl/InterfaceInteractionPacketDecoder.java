@@ -1,8 +1,10 @@
 package org.redrune.networking.codec.packet.impl;
 
+import org.redrune.game.GameFlags;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
-import org.redrune.networking.codec.decode.handlers.ButtonHandler;
 import org.redrune.networking.codec.packet.IncomingPacketDecoder;
 import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.functions.Misc;
@@ -66,7 +68,7 @@ public class InterfaceInteractionPacketDecoder implements IncomingPacketDecoder 
 			case ACTION_BUTTON3_PACKET:
 			case ACTION_BUTTON9_PACKET:
 			case ACTION_BUTTON10_PACKET:
-				ButtonHandler.decodeInterfaceStream(player, stream, packetId);
+				decodeInterfaceStream(player, stream, packetId);
 				break;
 			case SWITCH_INTERFACE_ITEM_PACKET:
 				stream.readUnsignedShort();
@@ -110,6 +112,40 @@ public class InterfaceInteractionPacketDecoder implements IncomingPacketDecoder 
 				}
 				System.out.println("Switch item " + fromInterfaceId + ", " + fromSlot + ", " + toSlot);
 				break;
+		}
+	}
+	
+	/**
+	 * Decodes the interface packet stream received from any interaction with an interface
+	 *
+	 * @param player
+	 * 		The player
+	 * @param stream
+	 * 		The stream
+	 * @param packetId
+	 * 		The id of the packet
+	 */
+	private static void decodeInterfaceStream(final Player player, InputStream stream, int packetId) {
+		int interfaceHash = stream.readIntV2();
+		int interfaceId = interfaceHash >> 16;
+		if (Misc.getInterfaceDefinitionsSize() <= interfaceId) {
+			return;
+		}
+		if (player.isDead() || player.getLocks().isComponentLocked() || !player.getInterfaceManager().containsInterface(interfaceId)) {
+			return;
+		}
+		final int componentId = interfaceHash - (interfaceId << 16);
+		if (componentId != 65535 && Misc.getInterfaceDefinitionsComponentsSize(interfaceId) <= componentId) {
+			return;
+		}
+		final int itemId = stream.readUnsignedShortLE128();
+		final int slotId = stream.readUnsignedShort();
+		if (!player.getControllerManager().processButtonClick(interfaceId, componentId, slotId, packetId)) {
+			return;
+		}
+		InterfacePlugin plugin = PluginRepository.handleInterface(player, interfaceId, componentId, itemId, slotId, packetId);
+		if (plugin != null && GameFlags.debugMode) {
+			System.out.println("[" + plugin.getClass().getSimpleName() + "] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]");
 		}
 	}
 }

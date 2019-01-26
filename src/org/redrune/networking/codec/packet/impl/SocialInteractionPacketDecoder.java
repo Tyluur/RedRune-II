@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.link.FriendChatsManager;
 import org.redrune.game.global.World;
 import org.redrune.game.global.punishment.PunishmentRepository;
 import org.redrune.game.global.punishment.PunishmentType;
-import org.redrune.game.plugin.PluginRepository;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.networking.codec.packet.IncomingPacketDecoder;
 import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.functions.Misc;

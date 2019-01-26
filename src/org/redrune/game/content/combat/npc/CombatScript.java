@@ -1,6 +1,6 @@
 package org.redrune.game.content.combat.npc;
 
-import org.redrune.game.content.action.impl.PlayerCombatAction;
+import org.redrune.game.content.entity.actor.player.action.impl.PlayerCombatAction;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.data.CombatDefinitions;
 import org.redrune.game.entity.actor.mask.Graphics;
@@ -56,7 +56,7 @@ public abstract class CombatScript {
 									}
 									stop();
 								}
-							}, 1);
+							}, 0);
 						}
 					} else {
 						NPC n = (NPC) target;

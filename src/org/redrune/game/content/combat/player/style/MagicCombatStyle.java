@@ -13,9 +13,9 @@ import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.PluginRepository;
-import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.game.plugin.combat.spell.SpellPlugin;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 
 import java.util.ArrayList;

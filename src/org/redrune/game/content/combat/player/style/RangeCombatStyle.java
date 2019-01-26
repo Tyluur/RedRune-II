@@ -13,9 +13,9 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.PluginRepository;
-import org.redrune.game.plugin.combat.RangeWeaponPlugin;
-import org.redrune.game.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 
 import java.util.Optional;
 

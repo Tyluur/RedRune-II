@@ -1,8 +1,8 @@
 package plugin.combat.magic.modern.teleport;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.global.WorldTile;
-import org.redrune.game.plugin.combat.spell.type.TeleportSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

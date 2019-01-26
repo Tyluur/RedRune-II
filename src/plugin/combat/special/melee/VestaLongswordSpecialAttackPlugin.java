@@ -4,7 +4,7 @@ import org.redrune.game.content.combat.player.AbstractCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

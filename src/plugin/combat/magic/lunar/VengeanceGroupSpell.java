@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.spell.type.RegularSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.RegularSpellPlugin;
 import org.redrune.game.global.World;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;

@@ -1,7 +1,7 @@
 package org.redrune.networking.codec.packet.impl;
 
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.PluginRepository;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.networking.codec.packet.IncomingPacketDecoder;
 import org.redrune.networking.stream.InputStream;
 

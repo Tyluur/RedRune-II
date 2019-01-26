@@ -1,7 +1,7 @@
 package plugin.combat.range;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.engine.thread.WorldThread;
+import org.redrune.engine.cycle.GameCycleWorker;
 import org.redrune.game.content.combat.CombatAlgorithm;
 import org.redrune.game.content.combat.CombatSwingDetail;
 import org.redrune.game.content.combat.player.AbstractCombatStyle;
@@ -10,7 +10,7 @@ import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 import org.redrune.utility.functions.RandomFunction;
 import lombok.Getter;
@@ -112,13 +112,13 @@ public class CrossbowPlugin extends RangeWeaponPlugin {
 			
 			@Override
 			public boolean canFire(Player source, Actor target) {
-				return source.getAttribute("onyx-effect", 0L) <= WorldThread.getTicksPassed() && super.canFire(source, target);
+				return source.getAttribute("onyx-effect", 0L) <= GameCycleWorker.getTicksPassed() && super.canFire(source, target);
 			}
 			
 			@Override
 			public CombatSwingDetail fire(Player source, Actor target, AbstractCombatStyle style, int weaponId) {
 				return super.fire(source, target, style, weaponId).consume(detail -> {
-					source.putAttribute("onyx-effect", WorldThread.getTicksPassed() + 12);
+					source.putAttribute("onyx-effect", GameCycleWorker.getTicksPassed() + 12);
 					source.heal((int) (detail.getHit().getDamage() * 0.25));
 				});
 			}

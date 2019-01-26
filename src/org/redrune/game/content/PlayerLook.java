@@ -1,7 +1,7 @@
 package org.redrune.game.content;
 
 import org.redrune.cache.loaders.ClientScriptMap;
-import org.redrune.game.content.dialogue.impl.MakeOverMage;
+import org.redrune.game.content.entity.actor.player.dialogue.impl.MakeOverMage;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.player.Player;
 

@@ -1,7 +1,7 @@
 package plugin.command.player;
 
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.CommandPlugin;
+import org.redrune.game.content.plugin.type.CommandPlugin;
 import org.redrune.utility.constants.SkillConstants;
 import plugin.command.CommandManifest;
 

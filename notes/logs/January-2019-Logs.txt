@@ -1,3 +1,41 @@
+January 25th - Combat visual improvements, interaction system, event system, and more
+
+	Journal
+		1:	Interaction system for players to npcs
+		2:	Introduced an event system and transferred npc and player events into it
+		3:	Combat visual updates [facing, correct messages]
+			+	Prioritized animations
+			+	Prioritized graphics
+			+	Properly prioritized attack messages
+		4:	Updated route events to sync with facing actors perfectly
+		5:	Updated graphics and animations for curse prayer book, correct priority and overlap
+		6:	Tons of core changes
+			+	Rework of the engine and introduction of parallel processing with blocking
+			+	
+	
+	Media	
+		https://i.imgur.com/5WhbUT8.gif
+		https://i.imgur.com/yztjSIg.gif
+		https://i.imgur.com/AQ8U6RK.gif
+
+January 24th, 2019 - Lobby Perfection, The start of important core changes, and more
+
+Journal
+
+	1:  Player accounts will now automatically transfer from the lobby to the game world (but they will see the lobby loading icon) (credits to Scu11)
+	2:  Restructured server packaging
+	3:  Implemented my previous speedup boot handler which runs tasks in parallel to increase boot speed
+	4:  Updated npc/object plugins to handle options based on option name
+	5:  Implemented a new saving mechanism for variables using generics instead of things like "player.getPkPoints()"
+	6:  Updated packet decoding to work on a class-per-packet basis [multiple bindings per class for similar packets]
+	7:  Fixed an auto retaliate combat bug with retaliate being a tick too fast vs npcs
+
+Media
+
+	https://i.imgur.com/2QsOPiD.gif
+	https://i.imgur.com/V7tK69Z.png
+	https://i.imgur.com/pRQh3P6.gif
+
 January 22nd, 2019
 
 1]  Fixed slow update server

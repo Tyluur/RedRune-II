@@ -5,20 +5,20 @@ import org.redrune.cache.Cache;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.cache.loaders.ObjectDefinitions;
-import org.redrune.engine.thread.WorldThread;
-import org.redrune.engine.thread.factory.DecoderThreadFactory;
-import org.redrune.engine.thread.factory.SlowThreadFactory;
+import org.redrune.engine.cycle.GameCycleWorker;
+import org.redrune.engine.factory.DecoderThreadFactory;
+import org.redrune.engine.factory.SlowThreadFactory;
 import org.redrune.engine.tick.schedule.Scheduler;
 import org.redrune.engine.tick.schedule.impl.PunishmentTask;
-import org.redrune.game.GameConstants;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.link.OwnedObjectManager;
+import org.redrune.game.global.World;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.game.global.World;
 import org.redrune.networking.ServerChannelHandler;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.file.SerializableFilesManager;
 import org.redrune.utility.functions.Misc;
@@ -45,15 +45,13 @@ public final class SystemManager {
 	
 	public static final ScheduledExecutorService SLOW_EXECUTOR = PROCESSOR_COUNT >= 6 ? Executors.newScheduledThreadPool(PROCESSOR_COUNT >= 12 ? 4 : 2, new SlowThreadFactory()) : Executors.newSingleThreadScheduledExecutor(new SlowThreadFactory());
 	
-	public static final Timer FAST_EXECUTOR = new Timer("Fast Executor");
+	private static final Timer FAST_EXECUTOR = new Timer("Fast Executor");
 	
 	public static final ExecutorService SERVER_WORKER_CHANNEL_EXECUTOR = PROCESSOR_COUNT >= 6 ? Executors.newFixedThreadPool(PROCESSOR_COUNT - (PROCESSOR_COUNT >= 12 ? 7 : 5), new DecoderThreadFactory()) : Executors.newSingleThreadExecutor(new DecoderThreadFactory());
 	
 	public static final ExecutorService SERVER_BOSS_CHANNEL_EXECUTOR = Executors.newSingleThreadExecutor(new DecoderThreadFactory());
 	
 	public static final Scheduler SCHEDULER = new Scheduler();
-	
-	private static final WorldThread WORLD_THREAD = new WorldThread();
 	
 	public static int serverWorkersCount;
 	
@@ -65,13 +63,15 @@ public final class SystemManager {
 	
 	private static boolean checkAgility;
 	
+	private static final GameCycleWorker CYCLE_WORKER = new GameCycleWorker();
+	
 	private SystemManager() {
 	
 	}
 	
 	public static void initialize() {
+		CYCLE_WORKER.start();
 		serverWorkersCount = PROCESSOR_COUNT >= 6 ? PROCESSOR_COUNT - (PROCESSOR_COUNT >= 12 ? 7 : 5) : 1;
-		WORLD_THREAD.start();
 		registerTasks();
 	}
 	

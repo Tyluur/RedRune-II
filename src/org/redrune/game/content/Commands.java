@@ -2,8 +2,9 @@ package org.redrune.game.content;
 
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.engine.SystemManager;
-import org.redrune.game.content.skills.summoning.Summoning;
-import org.redrune.game.content.skills.summoning.Summoning.Pouches;
+import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning;
+import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning.Pouches;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.ForceTalk;

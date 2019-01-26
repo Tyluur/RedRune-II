@@ -1,6 +1,6 @@
 package org.redrune.game.entity.actor.player.render;
 
-import org.redrune.game.GameConstants;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
@@ -420,8 +420,7 @@ public final class LocalPlayerUpdate {
 	}
 	
 	private void applyFaceDirectionMask(Player p, OutputStream data) {
-		data.writeShort(p.getDirection()); // also works as face tile as dir
-		// calced on setnextfacetile
+		data.writeShort(p.getDirection());
 	}
 	
 	private void applyMoveTypeMask(Player p, OutputStream data) {

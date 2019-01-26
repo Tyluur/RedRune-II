@@ -1,6 +1,6 @@
 package org.redrune.game.entity.actor.lock;
 
-import org.redrune.engine.thread.WorldThread;
+import org.redrune.engine.cycle.GameCycleWorker;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,7 +53,7 @@ public class Lock {
 	 * Locks for an indefinite time.
 	 */
 	public void lock() {
-		lock(Integer.MAX_VALUE - WorldThread.getTicksPassed());
+		lock(Integer.MAX_VALUE - GameCycleWorker.getTicksPassed());
 	}
 	
 	/**
@@ -63,8 +63,8 @@ public class Lock {
 	 * 		The amount of ticks to lock for.
 	 */
 	public void lock(int ticks) {
-		if (ticks > expiration - WorldThread.getTicksPassed()) {
-			this.expiration = WorldThread.getTicksPassed() + ticks;
+		if (ticks > expiration - GameCycleWorker.getTicksPassed()) {
+			this.expiration = GameCycleWorker.getTicksPassed() + ticks;
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class Lock {
 	 * @return {@code True} if so.
 	 */
 	public boolean isLocked() {
-		return expiration > WorldThread.getTicksPassed();
+		return expiration > GameCycleWorker.getTicksPassed();
 	}
 	
 }

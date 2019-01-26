@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;

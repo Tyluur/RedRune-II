@@ -1,6 +1,6 @@
 package org.redrune.game.entity.actor.npc.impl.others;
 
-import org.redrune.game.content.skills.hunter.Hunter.HunterNPC;
+import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterNPC;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;

@@ -1,6 +1,6 @@
 package org.redrune.networking.codec.packet.impl;
 
-import org.redrune.game.content.SkillCapeCustomizer;
+import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.networking.codec.packet.IncomingPacketDecoder;
 import org.redrune.networking.stream.InputStream;

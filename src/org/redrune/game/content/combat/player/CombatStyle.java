@@ -5,9 +5,9 @@ import org.redrune.game.content.combat.player.style.MagicCombatStyle;
 import org.redrune.game.content.combat.player.style.MeleeCombatStyle;
 import org.redrune.game.content.combat.player.style.RangeCombatStyle;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.PluginRepository;
-import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.game.plugin.combat.spell.SpellPlugin;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
 import lombok.Getter;
 
 import java.util.Optional;

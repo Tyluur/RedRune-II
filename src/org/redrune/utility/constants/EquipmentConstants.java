@@ -1,7 +1,7 @@
 package org.redrune.utility.constants;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.content.skills.runecrafting.Runecrafting;
+import org.redrune.game.content.entity.actor.player.skills.runecrafting.Runecrafting;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 

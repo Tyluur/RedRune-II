@@ -3,7 +3,7 @@ package plugin.npc;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.impl.slayer.Strykewyrm;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.type.NPCPlugin;
+import org.redrune.game.content.plugin.type.NPCPlugin;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

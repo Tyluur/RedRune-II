@@ -3,7 +3,7 @@ package plugin.combat.magic.ancient.smoke;
 import org.redrune.game.content.combat.player.style.MagicCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 import org.redrune.utility.functions.RandomFunction;
 

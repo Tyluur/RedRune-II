@@ -1,14 +1,14 @@
 package plugin.inter;
 
-import org.redrune.game.content.Magic;
-import org.redrune.game.content.SkillCapeCustomizer;
-import org.redrune.game.content.action.impl.PlayerRestAction;
-import org.redrune.game.content.dialogue.impl.Transportation;
+import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
+import org.redrune.game.content.entity.actor.player.action.impl.PlayerRestAction;
+import org.redrune.game.content.entity.actor.player.dialogue.impl.Transportation;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.game.plugin.type.InterfacePlugin;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.PacketConstants;
