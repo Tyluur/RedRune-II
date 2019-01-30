@@ -11,6 +11,7 @@ import java.util.Map;
  *
  * @author Emperor
  * @author Aero
+ * @author Tyluur <itstyluur@gmail.com>
  */
 public final class ActionLocks {
 	
@@ -37,7 +38,7 @@ public final class ActionLocks {
 	/**
 	 * The equipment lock.
 	 */
-	private Lock equipmentLock = null;
+	private Lock equipmentLock = new Lock();
 	
 	/**
 	 * A mapping of custom locks (used for eg. food delay).
@@ -97,7 +98,8 @@ public final class ActionLocks {
 	}
 	
 	/**
-	 * Checks if movement actions are locked.
+	 * Checks if movement actions are locked. This stops all movement actions from being executed, such as walking to a
+	 * tile or interacting with a node that requires a path to be traversed
 	 *
 	 * @return {@code True} if so.
 	 */
@@ -129,6 +131,15 @@ public final class ActionLocks {
 	 */
 	public boolean isTeleportLocked() {
 		return teleportLock.isLocked();
+	}
+	
+	/**
+	 * Checks if equipment actions are locked
+	 *
+	 * @return {@code True} if so.
+	 */
+	public boolean isEquipmentLocked() {
+		return equipmentLock.isLocked();
 	}
 	
 	/**

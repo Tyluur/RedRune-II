@@ -12,7 +12,7 @@ import org.redrune.utility.constants.SkillConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class CurseSpellPlugin extends CombatSpellPlugin {
+public class CurseSpellPlugin implements CombatSpellPlugin {
 	
 	private static final Graphics GRAPHICS = new Graphics(108);
 	

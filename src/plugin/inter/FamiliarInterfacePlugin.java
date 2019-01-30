@@ -12,7 +12,7 @@ import org.redrune.utility.game.InputEvent.InputEventType;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class FamiliarInterfacePlugin extends InterfacePlugin {
+public class FamiliarInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {

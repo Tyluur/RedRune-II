@@ -87,7 +87,7 @@ public class PlayerAppearance implements Serializable {
 		}
 		stream.writeByte(flag);
 		stream.writeByte(title); // mobi arms titles
-		stream.writeByte(player.hasSkull() ? player.getSkullId() : -1); // pk
+		stream.writeByte(player.getAttributes().hasSkull() ? player.getAttributes().getSkullId() : -1); // pk
 		// icon
 		stream.writeByte(player.getPrayer().getPrayerHeadIcon()); // prayer icon
 		stream.writeByte(hidePlayer ? 1 : 0);
@@ -167,12 +167,12 @@ public class PlayerAppearance implements Serializable {
 					int hatId = player.getEquipment().getHatId();
 					if (hatId == 20768 || hatId == 20770 || hatId == 20772) {
 						ItemDefinitions defs = ItemDefinitions.getItemDefinitions(hatId - 1);
-						if ((hatId == 20768 && Arrays.equals(player.getMaxedCapeCustomized(), defs.getOriginalModelColors()) || ((hatId == 20770 || hatId == 20772) && Arrays.equals(player.getCompletionistCapeCustomized(), defs.getOriginalModelColors())))) {
+						if ((hatId == 20768 && Arrays.equals(player.getAttributes().getMaxedCapeCustomized(), defs.getOriginalModelColors()) || ((hatId == 20770 || hatId == 20772) && Arrays.equals(player.getAttributes().getCompletionistCapeCustomized(), defs.getOriginalModelColors())))) {
 							continue;
 						}
 						hash |= 1 << slotFlag;
 						stream.writeByte(0x4); // modify 4 model colors
-						int[] hat = hatId == 20768 ? player.getMaxedCapeCustomized() : player.getCompletionistCapeCustomized();
+						int[] hat = hatId == 20768 ? player.getAttributes().getMaxedCapeCustomized() : player.getAttributes().getCompletionistCapeCustomized();
 						int slots = 1 << 4 | 2 << 8 | 3 << 12;
 						stream.writeShort(slots);
 						for (int i = 0; i < 4; i++) {
@@ -183,12 +183,12 @@ public class PlayerAppearance implements Serializable {
 					int capeId = player.getEquipment().getCapeId();
 					if (capeId == 20767 || capeId == 20769 || capeId == 20771) {
 						ItemDefinitions defs = ItemDefinitions.getItemDefinitions(capeId);
-						if ((capeId == 20767 && Arrays.equals(player.getMaxedCapeCustomized(), defs.getOriginalModelColors()) || ((capeId == 20769 || capeId == 20771) && Arrays.equals(player.getCompletionistCapeCustomized(), defs.getOriginalModelColors())))) {
+						if ((capeId == 20767 && Arrays.equals(player.getAttributes().getMaxedCapeCustomized(), defs.getOriginalModelColors()) || ((capeId == 20769 || capeId == 20771) && Arrays.equals(player.getAttributes().getCompletionistCapeCustomized(), defs.getOriginalModelColors())))) {
 							continue;
 						}
 						hash |= 1 << slotFlag;
 						stream.writeByte(0x4); // modify 4 model colors
-						int[] cape = capeId == 20767 ? player.getMaxedCapeCustomized() : player.getCompletionistCapeCustomized();
+						int[] cape = capeId == 20767 ? player.getAttributes().getMaxedCapeCustomized() : player.getAttributes().getCompletionistCapeCustomized();
 						int slots = 1 << 4 | 2 << 8 | 3 << 12;
 						stream.writeShort(slots);
 						for (int i = 0; i < 4; i++) {

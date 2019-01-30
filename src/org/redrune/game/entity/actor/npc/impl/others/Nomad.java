@@ -150,50 +150,24 @@ public final class Nomad extends NPC {
 		}, 0, 1);
 	}
 	
-	// private void sendRandomProjectile() {
-	// WorldTile tile = new WorldTile(getX() + Utils.random(7), getY()
-	// + Utils.random(7), getPlane());
-	// setNextAnimation(new Animation(10918));
-	// World.sendProjectile(this, tile, 1887, 34, 16, 40, 35, 16, 0);
-	// for (int regionId : getMapRegionsIds()) {
-	// List<Integer> playerIndexes = World.getRegion(regionId)
-	// .getPlayerIndexes();
-	// if (playerIndexes != null) {
-	// for (int npcIndex : playerIndexes) {
-	// Player player = World.getPlayers().get(npcIndex);
-	// if (player == null || player.isDead()
-	// || player.hasFinished() || !player.isRunning()
-	// || !player.withinDistance(tile, 3))
-	// continue;
-	// player.getPackets().sendGameMessage(
-	// "The Corporeal Beast's magical attack splashes on you.");
-	// player.applyHit(new Hit(this, 281, HitLook.MAGIC_DAMAGE, 1));
-	// }
-	// }
-	// }
-	// }
-	
 	@Override
 	public void setRespawnTask() {
-		if (!hasFinished()) {
+		if (!isFinished()) {
 			reset();
 			setLocation(getRespawnTile());
 			finish();
 		}
 		final NPC npc = this;
-		SystemManager.SLOW_EXECUTOR.schedule(new Runnable() {
-			@Override
-			public void run() {
-				setFinished(false);
-				World.addNPC(npc);
-				npc.setLastRegionId(0);
-				RegionManager.updateActorRegion(npc);
-				loadMapRegions();
-				checkMultiArea();
-				// shieldTimer = 0;
-				fixedCombatType = 0;
-				fixedAmount = 0;
-			}
+		SystemManager.SLOW_EXECUTOR.schedule(() -> {
+			setFinished(false);
+			World.addNPC(npc);
+			npc.setLastRegionId(0);
+			RegionManager.updateActorRegion(npc);
+			loadMapRegions();
+			checkMultiArea();
+			// shieldTimer = 0;
+			fixedCombatType = 0;
+			fixedAmount = 0;
 		}, getCombatDefinitions().getRespawnDelay() * 400, TimeUnit.MILLISECONDS);
 	}
 	

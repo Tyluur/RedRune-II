@@ -712,7 +712,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 	}
 	
 	public static boolean canFight(Player player, Actor target) {
-		return !player.isDead() && !player.hasFinished() && !target.isDead() && !target.hasFinished();
+		return !player.isDead() && !player.isFinished() && !target.isDead() && !target.isFinished();
 	}
 	
 	/**
@@ -812,7 +812,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 	 */
 	public static boolean isWithinDistance(Player player, Actor target, CombatStyle style) {
 		// the distance change
-		int distance = player.getRun() /*&& target.getMovement().isRunning()*/ ? 2 : 1;
+		int distance = player.isRunModeOn() /*&& target.getMovement().isRunning()*/ ? 2 : 1;
 		int weaponId = player.getEquipment().getWeaponId();
 		String weaponName = weaponId == -1 ? "unarmed" : ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
 		boolean halberd = weaponName.contains("halberd");
@@ -1674,11 +1674,11 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 	 * 		The attempt number
 	 */
 	public static void checkSpecialToggle(Player player, final int attempt) {
-		if (!player.getSwitchItemCache().isEmpty() && attempt <= 3) {
+		if (!player.getAttributes().getSwitchItemCache().isEmpty() && attempt <= 3) {
 			SystemManager.SLOW_EXECUTOR.schedule(() -> checkSpecialToggle(player, attempt + 1), 100, TimeUnit.MILLISECONDS);
 			return;
 		}
-		if (player.removeAttribute("special_attack_toggled", false)) {
+		if (player.removeTemporaryAttribute("special_attack_toggled", false)) {
 			player.getCombatDefinitions().switchUsingSpecialAttack();
 		}
 		if (player.getCombatDefinitions().isUsingSpecialAttack()) {
@@ -1700,7 +1700,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 			}
 			// the combat action
 			PlayerCombatAction action = player.getActionManager().getAction() instanceof PlayerCombatAction ? (PlayerCombatAction) player.getActionManager().getAction() : null;
-			Actor target = player.getAttribute("combat_target", action == null ? null : action.getTarget());
+			Actor target = player.getTemporaryAttribute("combat_target", action == null ? null : action.getTarget());
 			// no target and it was necessary
 			if (target == null && plugin.requiresFight()) {
 				player.getCombatDefinitions().setUsingSpecialAttack(false);
@@ -1848,7 +1848,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 	public static List<Actor> getMultiAttackTargets(Player player, Actor target, int maxDistance, int maxAmtTargets) {
 		List<Actor> possibleTargets = new ArrayList<>();
 		possibleTargets.add(target);
-		if (target.isAtMultiArea()) {
+		if (target.isInMultiArea()) {
 			y:
 			for (int regionId : target.getMapRegionsIds()) {
 				Region region = RegionManager.getRegion(regionId);
@@ -1859,7 +1859,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 					}
 					for (int playerIndex : playerIndexes) {
 						Player p2 = World.getPlayers().get(playerIndex);
-						if (p2 == null || p2 == player || p2 == target || p2.isDead() || !p2.hasStarted() || p2.hasFinished() || !p2.isCanPvp() || !p2.isAtMultiArea() || !p2.withinDistance(target, maxDistance) || !player.getControllerManager().canHit(p2)) {
+						if (p2 == null || p2 == player || p2 == target || p2.isDead() || !p2.hasStarted() || p2.isFinished() || !p2.getAttributes().isCanPvp() || !p2.isInMultiArea() || !p2.withinDistance(target, maxDistance) || !player.getControllerManager().canHit(p2)) {
 							continue;
 						}
 						possibleTargets.add(p2);
@@ -1874,7 +1874,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 					}
 					for (int npcIndex : npcIndexes) {
 						NPC n = World.getNPCs().get(npcIndex);
-						if (n == null || n == target || n == player.getFamiliar() || n.isDead() || n.hasFinished() || !n.isAtMultiArea() || !n.withinDistance(target, maxDistance) || !n.getDefinitions().hasAttackOption() || !player.getControllerManager().canHit(n)) {
+						if (n == null || n == target || n == player.getFamiliar() || n.isDead() || n.isFinished() || !n.isInMultiArea() || !n.withinDistance(target, maxDistance) || !n.getDefinitions().hasAttackOption() || !player.getControllerManager().canHit(n)) {
 							continue;
 						}
 						possibleTargets.add(n);
@@ -2336,7 +2336,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
 			if (set == 0) {
 				player.getCombatDefinitions().setAutoCastSpell(spellId);
 			} else {
-				player.getTemporaryAttributtes().put("tempCastSpell", spellId);
+				player.getTemporaryAttributes().put("tempCastSpell", spellId);
 			}
 		}
 		return true;

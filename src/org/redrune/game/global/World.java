@@ -1,10 +1,11 @@
 package org.redrune.game.global;
 
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterNPC;
 import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerHelp;
+import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.ActorList;
+import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtension;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder;
@@ -18,16 +19,26 @@ import org.redrune.game.entity.actor.npc.impl.normal.Slayer;
 import org.redrune.game.entity.actor.npc.impl.others.*;
 import org.redrune.game.entity.actor.npc.impl.slayer.Strykewyrm;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.object.WorldObject;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.Misc.Direction;
 import org.redrune.utility.game.session.AntiFlood;
 
+import java.util.List;
 import java.util.Optional;
+
+import static org.redrune.game.global.map.region.RegionManager.getRegion;
 
 /**
  * This class denotes a world
  */
 public final class World {
+	
+	/**
+	 * The list of players in the world
+	 */
+	private static final ActorList<Player> lobbyPlayers = new ActorList<>(GameConstants.PLAYERS_LIMIT);
 	
 	/**
 	 * The list of players in the world
@@ -48,7 +59,7 @@ public final class World {
 	 * 		If the message is only for staff members
 	 */
 	public static void sendWorldMessage(String message, boolean forStaff) {
-		for (Player p : World.getPlayers()) {
+		for (Player p : getPlayers()) {
 			if (p == null || !p.isRunning() || (forStaff && !p.isStaff())) {
 				continue;
 			}
@@ -64,6 +75,13 @@ public final class World {
 	}
 	
 	/**
+	 * Gets all the players in the lobby
+	 */
+	public static ActorList<Player> getLobbyPlayers() {
+		return lobbyPlayers;
+	}
+	
+	/**
 	 * Gets all the npcs in the world
 	 */
 	public static ActorList<NPC> getNPCs() {
@@ -73,17 +91,31 @@ public final class World {
 	/**
 	 * Adds a player to the world
 	 */
-	public static void addPlayer(Player player) {
+	public static void addWorldPlayer(Player player) {
 		players.add(player);
 		AntiFlood.add(player.getSession().getIp());
+	}
+	
+	/**
+	 * Adds a player to the lobby
+	 *
+	 * @param player
+	 * 		The player
+	 */
+	public static void addLobbyPlayer(Player player) {
+		lobbyPlayers.add(player);
 	}
 	
 	/**
 	 * Removes a player from the world
 	 */
 	public static void removePlayer(Player player) {
-		players.remove(player);
-		AntiFlood.remove(player.getSession().getIp());
+		if (player.getSession().isInLobby()) {
+			lobbyPlayers.remove(player);
+		} else {
+			players.remove(player);
+			AntiFlood.remove(player.getSession().getIp());
+		}
 	}
 	
 	/**
@@ -115,7 +147,7 @@ public final class World {
 	 */
 	public static NPC spawnNPC(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, Direction direction) {
 		NPC npc = spawnNPC(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
-		npc.setDirection(direction.getValue());
+		npc.setFaceDirection(direction.getValue());
 		return npc;
 	}
 	
@@ -234,6 +266,35 @@ public final class World {
 		// in
 		
 		// multi
+	}
+	
+	public static void sendObjectAnimation(WorldObject object, Animation animation) {
+		sendObjectAnimation(null, object, animation);
+	}
+	
+	public static void sendObjectAnimation(Actor creator, WorldObject object, Animation animation) {
+		if (creator == null) {
+			for (Player player : World.getPlayers()) {
+				if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(object)) {
+					continue;
+				}
+				player.getPackets().sendObjectAnimation(object, animation);
+			}
+		} else {
+			for (int regionId : creator.getMapRegionsIds()) {
+				List<Integer> playersIndexes = getRegion(regionId).getPlayerIndexes();
+				if (playersIndexes == null) {
+					continue;
+				}
+				for (Integer playerIndex : playersIndexes) {
+					Player player = players.get(playerIndex);
+					if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(object)) {
+						continue;
+					}
+					player.getPackets().sendObjectAnimation(object, animation);
+				}
+			}
+		}
 	}
 	
 	/**

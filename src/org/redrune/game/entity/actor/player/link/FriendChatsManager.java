@@ -1,11 +1,12 @@
 package org.redrune.game.entity.actor.player.link;
 
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
 import org.redrune.networking.stream.OutputStream;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.file.SerializableFilesManager;
+import org.redrune.utility.game.entity.actor.player.ChatMessage;
+import org.redrune.utility.game.entity.actor.player.PlayerSaving;
 import org.redrune.utility.game.entity.actor.player.QuickChatMessage;
 
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class FriendChatsManager {
 		synchronized (this) {
 			for (Player player : players) {
 				player.setCurrentFriendChat(null);
-				player.setCurrentFriendChatOwner(null);
+				player.getAttributes().setCurrentFriendChatOwner(null);
 				player.getPackets().sendFriendsChatChannel();
 				player.getPackets().sendGameMessage("You have been removed from this channel!");
 			}
@@ -159,11 +160,11 @@ public class FriendChatsManager {
 					owner = World.getPlayerByDisplayName(ownerName);
 				}
 				if (owner == null) {
-					if (!SerializableFilesManager.containsPlayer(formatedName)) {
+					if (!PlayerSaving.playerExists(formatedName)) {
 						player.getPackets().sendGameMessage("The channel you tried to join does not exist.");
 						return;
 					}
-					owner = SerializableFilesManager.loadPlayer(formatedName);
+					owner = PlayerSaving.fromFile(formatedName);
 					if (owner == null) {
 						player.getPackets().sendGameMessage("The channel you tried to join does not exist.");
 						return;
@@ -227,11 +228,30 @@ public class FriendChatsManager {
 				refreshChannel();
 			}
 			if (!logout) {
-				player.setCurrentFriendChatOwner(null);
+				player.getAttributes().setCurrentFriendChatOwner(null);
 				player.getPackets().sendGameMessage("You have left the channel.");
 				player.getPackets().sendFriendsChatChannel();
 			}
 		}
+	}
+	
+	private void joinChatNoCheck(Player player) {
+		synchronized (this) {
+			players.add(player);
+			player.setCurrentFriendChat(this);
+			player.getAttributes().setCurrentFriendChatOwner(owner);
+			player.getPackets().sendGameMessage("You are now talking in the friends chat channel " + settings.getChatName());
+			player.getPackets().sendGameMessage("To talk, start each line of chat with the / symbol.");
+			refreshChannel();
+		}
+	}
+	
+	public byte[] getDataBlock() {
+		return dataBlock;
+	}
+	
+	public void kickPlayerFromFriendsChannel(String name, Player player) {
+		kickPlayerFromChat(player, name);
 	}
 	
 	public void kickPlayerFromChat(Player player, String username) {
@@ -253,20 +273,13 @@ public class FriendChatsManager {
 				return;
 			}
 			kicked.setCurrentFriendChat(null);
-			kicked.setCurrentFriendChatOwner(null);
+			kicked.getAttributes().setCurrentFriendChatOwner(null);
 			players.remove(kicked);
 			bannedPlayers.put(kicked.getUsername(), Misc.currentTimeMillis());
 			kicked.getPackets().sendFriendsChatChannel();
 			kicked.getPackets().sendGameMessage("You have been kicked from the friends chat channel.");
 			player.getPackets().sendGameMessage("You have kicked " + kicked.getUsername() + " from friends chat channel.");
-			String formatedName = Misc.formatPlayerNameForDisplay(player.getUsername());
-			String displayName = player.getDisplayName();
-			int rights = player.getMessageIcon();
-			for (Player p2 : players) {
-				p2.getPackets().receiveFriendChatMessage(formatedName, displayName, rights, settings.getChatName(), "[Attempting to kick/ban " + kicked.getDisplayName() + "from this channel.]");
-			}
 			refreshChannel();
-			
 		}
 	}
 	
@@ -280,15 +293,27 @@ public class FriendChatsManager {
 		return null;
 	}
 	
-	private void joinChatNoCheck(Player player) {
+	public void sendFriendsChannelMessage(ChatMessage message, Player player) {
+		sendMessage(player, message);
+	}
+	
+	private void sendMessage(Player player, ChatMessage message) {
 		synchronized (this) {
-			players.add(player);
-			player.setCurrentFriendChat(this);
-			player.setCurrentFriendChatOwner(owner);
-			player.getPackets().sendGameMessage("You are now talking in the friends chat channel " + settings.getChatName());
-			player.getPackets().sendGameMessage("To talk, start each line of chat with the / symbol.");
-			refreshChannel();
+			if (!player.getUsername().equals(owner) && !settings.canTalk(player)) {
+				player.getPackets().sendGameMessage("You do not have a enough rank to talk on this friends chat channel.");
+				return;
+			}
+			String formattedName = Misc.formatPlayerNameForDisplay(player.getUsername());
+			String displayName = player.getDisplayName();
+			int rights = player.getMessageIcon();
+			for (Player p2 : players) {
+				p2.getPackets().receiveFriendChatMessage(formattedName, displayName, rights, settings.getChatName(), message);
+			}
 		}
+	}
+	
+	public void sendFriendsChannelQuickMessage(QuickChatMessage message, Player player) {
+		sendQuickMessage(player, message);
 	}
 	
 	public void sendQuickMessage(Player player, QuickChatMessage message) {
@@ -305,24 +330,4 @@ public class FriendChatsManager {
 			}
 		}
 	}
-	
-	public void sendMessage(Player player, String message) {
-		synchronized (this) {
-			if (!player.getUsername().equals(owner) && !settings.canTalk(player)) {
-				player.getPackets().sendGameMessage("You do not have a enough rank to talk on this friends chat channel.");
-				return;
-			}
-			String formatedName = Misc.formatPlayerNameForDisplay(player.getUsername());
-			String displayName = player.getDisplayName();
-			int rights = player.getMessageIcon();
-			for (Player p2 : players) {
-				p2.getPackets().receiveFriendChatMessage(formatedName, displayName, rights, settings.getChatName(), message);
-			}
-		}
-	}
-	
-	public byte[] getDataBlock() {
-		return dataBlock;
-	}
-	
 }

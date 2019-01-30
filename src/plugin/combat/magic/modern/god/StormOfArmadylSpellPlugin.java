@@ -12,7 +12,7 @@ import org.redrune.utility.constants.SkillConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class StormOfArmadylSpellPlugin extends CombatSpellPlugin {
+public class StormOfArmadylSpellPlugin implements CombatSpellPlugin {
 	
 	private static final Graphics GRAPHICS = new Graphics(457);
 	

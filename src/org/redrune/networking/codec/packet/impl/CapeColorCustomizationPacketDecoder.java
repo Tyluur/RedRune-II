@@ -22,7 +22,7 @@ public class CapeColorCustomizationPacketDecoder implements IncomingPacketDecode
 			return;
 		}
 		int colorId = stream.readUnsignedShort();
-		if (player.getTemporaryAttributtes().get("SkillcapeCustomize") != null) {
+		if (player.getTemporaryAttributes().get("SkillcapeCustomize") != null) {
 			SkillCapeCustomizer.handleSkillCapeCustomizerColor(player, colorId);
 		}
 	}

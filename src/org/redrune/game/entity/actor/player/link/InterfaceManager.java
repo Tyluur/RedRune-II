@@ -1,5 +1,7 @@
 package org.redrune.game.entity.actor.player.link;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
 
@@ -29,7 +31,21 @@ public class InterfaceManager {
 	
 	private boolean resizableScreen;
 	
+	@Getter
+	@Setter
 	private int windowsPane;
+	
+	@Getter
+	@Setter
+	private transient int displayMode;
+	
+	@Getter
+	@Setter
+	private transient int screenHeight;
+	
+	@Getter
+	@Setter
+	private transient int screenWidth;
 	
 	public InterfaceManager(Player player) {
 		this.player = player;
@@ -68,7 +84,7 @@ public class InterfaceManager {
 	}
 	
 	public final void sendInterfaces() {
-		if (player.getDisplayMode() == 2 || player.getDisplayMode() == 3) {
+		if (player.getInterfaceManager().getDisplayMode() == 2 || player.getInterfaceManager().getDisplayMode() == 3) {
 			resizableScreen = true;
 			sendFullScreenInterfaces();
 		} else {
@@ -478,23 +494,9 @@ public class InterfaceManager {
 		return resizableScreen;
 	}
 	
-	public int getWindowsPane() {
-		return windowsPane;
-	}
-	
-	public void setWindowsPane(int windowsPane) {
-		this.windowsPane = windowsPane;
-	}
-	
 	public int openGameTab(int tabId) {
 		player.getPackets().sendGlobalConfig(168, tabId);
-		int lastTab = 4;
-		return lastTab;
-	}
-	
-	public boolean GotResisableScreen() {
-		// TODO Auto-generated method stub
-		return resizableScreen;
+		return 4;
 	}
 	
 }

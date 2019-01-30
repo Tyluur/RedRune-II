@@ -142,7 +142,7 @@ public interface EquipmentConstants {
 	}
 	
 	static void sendRemove(Player player, int slotId) {
-		if (slotId >= 15) {
+		if (player.getLocks().isEquipmentLocked() || slotId >= 15) {
 			return;
 		}
 		Item item = player.getEquipment().getItem(slotId);
@@ -161,7 +161,7 @@ public interface EquipmentConstants {
 	}
 	
 	static boolean sendWear(Player player, int slotId, int itemId) {
-		if (player.hasFinished() || player.isDead()) {
+		if (player.isFinished() || player.isDead()) {
 			return false;
 		}
 		Item item = player.getInventory().getItem(slotId);

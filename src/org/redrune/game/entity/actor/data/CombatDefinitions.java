@@ -2,6 +2,9 @@ package org.redrune.game.entity.actor.data;
 
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.mask.Hit;
+import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.utility.constants.MagicConstants.MagicBook;
@@ -240,12 +243,12 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public int getRealSpellId() {
-		int tempCastSpell = player.getAttribute("tempCastSpell", -1);
+		int tempCastSpell = player.getTemporaryAttribute("tempCastSpell", -1);
 		return tempCastSpell != -1 ? tempCastSpell : autoCastSpell;
 	}
 	
 	public int getSpellId() {
-		Integer tempCastSpell = (Integer) player.getTemporaryAttributtes().get("tempCastSpell");
+		Integer tempCastSpell = (Integer) player.getTemporaryAttributes().get("tempCastSpell");
 		if (tempCastSpell != null) {
 			return tempCastSpell + 256;
 		}
@@ -262,7 +265,7 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public void resetSpells(boolean removeAutoSpell) {
-		player.getTemporaryAttributtes().remove("tempCastSpell");
+		player.getTemporaryAttributes().remove("tempCastSpell");
 		if (removeAutoSpell) {
 			setAutoCastSpell(0);
 			refreshAutoCastSpell();
@@ -352,6 +355,28 @@ public final class CombatDefinitions implements Serializable {
 	
 	public int[] getBonuses() {
 		return bonuses;
+	}
+	
+	public void handleSoaking(Actor source, Hit hit) {
+		if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
+			int reducedDamage = hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] / 100;
+			if (reducedDamage > 0) {
+				hit.setDamage(hit.getDamage() - reducedDamage);
+				hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
+			}
+		} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
+			int reducedDamage = hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] / 100;
+			if (reducedDamage > 0) {
+				hit.setDamage(hit.getDamage() - reducedDamage);
+				hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
+			}
+		} else if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
+			int reducedDamage = hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] / 100;
+			if (reducedDamage > 0) {
+				hit.setDamage(hit.getDamage() - reducedDamage);
+				hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
+			}
+		}
 	}
 	
 	/**
@@ -638,6 +663,6 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public boolean isAutocasting() {
-		return player.getAttribute("tempCastSpell", -1) == -1 && autoCastSpell != 0;
+		return player.getTemporaryAttribute("tempCastSpell", -1) == -1 && autoCastSpell != 0;
 	}
 }

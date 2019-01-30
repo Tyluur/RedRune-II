@@ -44,7 +44,7 @@ public class ExcaliburSpecialAttackPlugin extends SpecialAttackPlugin {
 			
 			@Override
 			public void run() {
-				if (source.isDead() || source.hasFinished() || source.getHitpoints() >= source.getMaxHitpoints()) {
+				if (source.isDead() || source.isFinished() || source.getHitpoints() >= source.getMaxHitpoints()) {
 					stop();
 					return;
 				}

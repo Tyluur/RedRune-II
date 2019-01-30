@@ -14,11 +14,11 @@ import static org.redrune.game.content.entity.actor.player.market.Shop.INVENTORY
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/4/2017
  */
-public class ShopInterfacePlugin extends InterfacePlugin {
+public class ShopInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		Shop shop = player.getAttribute("open_shop");
+		Shop shop = player.getTemporaryAttribute("open_shop");
 		if (shop == null) {
 			return true;
 		}

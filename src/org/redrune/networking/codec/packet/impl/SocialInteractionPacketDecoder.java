@@ -1,15 +1,16 @@
 package org.redrune.networking.codec.packet.impl;
 
 import org.redrune.cache.huffman.Huffman;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.link.FriendChatsManager;
 import org.redrune.game.global.World;
 import org.redrune.game.global.punishment.PunishmentRepository;
 import org.redrune.game.global.punishment.PunishmentType;
-import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.networking.codec.packet.IncomingPacketDecoder;
 import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.functions.Misc;
+import org.redrune.utility.game.entity.actor.player.ChatMessage;
 import org.redrune.utility.game.entity.actor.player.PublicChatMessage;
 import org.redrune.utility.game.entity.actor.player.QuickChatMessage;
 
@@ -37,8 +38,8 @@ public class SocialInteractionPacketDecoder implements IncomingPacketDecoder {
 				if (!player.hasStarted()) {
 					return;
 				}
-				player.setLastPublicMessage(Misc.currentTimeMillis() + 1000);
-				player.kickPlayerFromFriendsChannel(stream.readString());
+				player.getAttributes().setLastPublicMessage(Misc.currentTimeMillis() + 1000);
+				player.getCurrentFriendChat().kickPlayerFromFriendsChannel(stream.readString(), player);
 				break;
 			case CHANGE_FRIEND_CHAT_PACKET:
 				if (!player.hasStarted() || !player.getInterfaceManager().containsInterface(1108)) {
@@ -93,21 +94,21 @@ public class SocialInteractionPacketDecoder implements IncomingPacketDecoder {
 				if (!player.hasStarted()) {
 					return;
 				}
-				if (player.getLastPublicMessage() > Misc.currentTimeMillis()) {
+				if (player.getAttributes().getLastPublicMessage() > Misc.currentTimeMillis()) {
 					return;
 				}
 				if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_MUTE, PunishmentType.ADDRESS_MUTE)) {
 					player.getPackets().sendGameMessage("You are muted.");
 					return;
 				}
-				player.setLastPublicMessage(Misc.currentTimeMillis() + 300);
+				player.getAttributes().setLastPublicMessage(Misc.currentTimeMillis() + 300);
 				// just tells you which client script created packet
 				@SuppressWarnings("unused") boolean secondClientScript = stream.readByte() == 1;// script 5059
 				
 				// or 5061
 				int fileId = stream.readUnsignedShort();
 				byte[] data = null;
-				int chatType = player.getAttribute("chatType", 0);
+				int chatType = player.getTemporaryAttribute("chatType", 0);
 				if (packetLength > 3) {
 					data = new byte[packetLength - 3];
 					stream.readBytes(data);
@@ -116,7 +117,7 @@ public class SocialInteractionPacketDecoder implements IncomingPacketDecoder {
 				if (chatType == 0) {
 					player.sendPublicChatMessage(new QuickChatMessage(fileId, data));
 				} else if (chatType == 1) {
-					player.sendFriendsChannelQuickMessage(new QuickChatMessage(fileId, data));
+					player.getCurrentFriendChat().sendFriendsChannelQuickMessage(new QuickChatMessage(fileId, data), player);
 				} else {
 					System.out.println("Unknown chat type: " + chatType);
 				}
@@ -131,11 +132,11 @@ public class SocialInteractionPacketDecoder implements IncomingPacketDecoder {
 				if (!player.hasStarted()) {
 					return;
 				}
-				if (player.getLastPublicMessage() > Misc.currentTimeMillis()) {
+				if (player.getAttributes().getLastPublicMessage() > Misc.currentTimeMillis()) {
 					return;
 				}
 				
-				player.setLastPublicMessage(Misc.currentTimeMillis() + 300);
+				player.getAttributes().setLastPublicMessage(Misc.currentTimeMillis() + 300);
 				int colorEffect = stream.readUnsignedByte();
 				int moveEffect = stream.readUnsignedByte();
 				String message = Huffman.readEncryptedMessage(250, stream);
@@ -151,9 +152,9 @@ public class SocialInteractionPacketDecoder implements IncomingPacketDecoder {
 					return;
 				}
 				int effects = (colorEffect << 8) | (moveEffect & 0xff);
-				int chatType = player.getAttribute("chatType", 0);
+				int chatType = player.getTemporaryAttribute("chatType", 0);
 				if (chatType == 1) {
-					player.sendFriendsChannelMessage(Misc.fixChatMessage(message));
+					player.getCurrentFriendChat().sendFriendsChannelMessage(new ChatMessage(message), player);
 				} else {
 					player.sendPublicChatMessage(new PublicChatMessage(Misc.fixChatMessage(message), effects));
 				}

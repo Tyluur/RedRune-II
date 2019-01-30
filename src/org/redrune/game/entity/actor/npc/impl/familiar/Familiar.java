@@ -53,7 +53,7 @@ public abstract class Familiar extends NPC implements Serializable {
 	
 	public Familiar(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(pouch.getNpcId(), tile, mapAreaNameHash, canBeAttackFromOutOfArea, false);
-		setRun(true);
+		setRunModeOn(true);
 		this.owner = owner;
 		this.pouch = pouch;
 		resetTickets();
@@ -176,8 +176,8 @@ public abstract class Familiar extends NPC implements Serializable {
 	}
 	
 	public static void sendLeftClickOption(Player player) {
-		player.getPackets().sendConfig(1493, player.getSummoningLeftClickOption());
-		player.getPackets().sendConfig(1494, player.getSummoningLeftClickOption());
+		player.getPackets().sendConfig(1493, player.getAttributes().getSummoningLeftClickOption());
+		player.getPackets().sendConfig(1494, player.getAttributes().getSummoningLeftClickOption());
 	}
 	
 	@Override
@@ -204,11 +204,11 @@ public abstract class Familiar extends NPC implements Serializable {
 			}
 			sendTimeRemaining();
 		}
-		if (owner.isCanPvp() && getId() != pouch.getNpcId()) {
+		if (owner.getAttributes().isCanPvp() && getId() != pouch.getNpcId()) {
 			transformIntoNPC(pouch.getNpcId());
 			call(false);
 			return;
-		} else if (!owner.isCanPvp() && getId() == pouch.getNpcId()) {
+		} else if (!owner.getAttributes().isCanPvp() && getId() == pouch.getNpcId()) {
 			transformIntoNPC(pouch.getNpcId() - 1);
 			call(false);
 			return;
@@ -279,10 +279,10 @@ public abstract class Familiar extends NPC implements Serializable {
 	}
 	
 	public static void setLeftclickOption(Player player, int summoningLeftClickOption) {
-		if (summoningLeftClickOption == player.getSummoningLeftClickOption()) {
+		if (summoningLeftClickOption == player.getAttributes().getSummoningLeftClickOption()) {
 			return;
 		}
-		player.setSummoningLeftClickOption(summoningLeftClickOption);
+		player.getAttributes().setSummoningLeftClickOption(summoningLeftClickOption);
 		sendLeftClickOption(player);
 	}
 	
@@ -342,11 +342,11 @@ public abstract class Familiar extends NPC implements Serializable {
 	public boolean canAttack(Actor target) {
 		if (target instanceof Player) {
 			Player player = (Player) target;
-			if (!owner.isCanPvp() || !player.isCanPvp()) {
+			if (!owner.getAttributes().isCanPvp() || !player.getAttributes().isCanPvp()) {
 				return false;
 			}
 		}
-		return !target.isDead() && owner.isAtMultiArea() && isAtMultiArea() && target.isAtMultiArea() && owner.getControllerManager().canAttack(target);
+		return !target.isDead() && owner.isInMultiArea() && isInMultiArea() && target.isInMultiArea() && owner.getControllerManager().canAttack(target);
 	}
 	
 	public boolean renewFamiliar() {
@@ -418,13 +418,13 @@ public abstract class Familiar extends NPC implements Serializable {
 	
 	public void setSpecial(boolean on) {
 		if (!on) {
-			owner.getTemporaryAttributtes().remove("FamiliarSpec");
+			owner.getTemporaryAttributes().remove("FamiliarSpec");
 		} else {
 			if (specialEnergy < getSpecialAmount()) {
 				owner.getPackets().sendGameMessage("You familiar doesn't have enough special energy.");
 				return;
 			}
-			owner.getTemporaryAttributtes().put("FamiliarSpec", Boolean.TRUE);
+			owner.getTemporaryAttributes().put("FamiliarSpec", Boolean.TRUE);
 		}
 	}
 	
@@ -437,7 +437,7 @@ public abstract class Familiar extends NPC implements Serializable {
 	}
 	
 	public boolean hasSpecialOn() {
-		if (owner.getTemporaryAttributtes().remove("FamiliarSpec") != null) {
+		if (owner.getTemporaryAttributes().remove("FamiliarSpec") != null) {
 			if (!owner.getInventory().containsItem(pouch.getScrollId(), 1)) {
 				owner.getPackets().sendGameMessage("You don't have the scrolls to use this move.");
 				return false;

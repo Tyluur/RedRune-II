@@ -4,12 +4,12 @@ package org.redrune.game.content.plugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/30/2017
  */
-public abstract class Plugin  {
+public interface Plugin  {
 	
 	/**
 	 * Handles the registration of a plugin
 	 */
-	public abstract void register();
+	void register();
 	
 	/**
 	 * Converts a varargs parameter to the String[] array
@@ -17,7 +17,7 @@ public abstract class Plugin  {
 	 * @param varArgs
 	 * 		The var args
 	 */
-	public String[] arguments(String... varArgs) {
+	default String[] arguments(String... varArgs) {
 		return varArgs;
 	}
 	
@@ -27,7 +27,7 @@ public abstract class Plugin  {
 	 * @param varArgs
 	 * 		The var args
 	 */
-	public int[] arguments(int... varArgs) {
+	default int[] arguments(int... varArgs) {
 		return varArgs;
 	}
 }

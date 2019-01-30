@@ -1,18 +1,12 @@
 package org.redrune.utility.game.entity.actor.player;
 
-public class PublicChatMessage {
-	
-	private String message;
+public class PublicChatMessage extends ChatMessage {
 	
 	private int effects;
 	
 	public PublicChatMessage(String message, int effects) {
-		this.message = message;
+		super(message);
 		this.effects = effects;
-	}
-	
-	public String getMessage() {
-		return message;
 	}
 	
 	public int getEffects() {

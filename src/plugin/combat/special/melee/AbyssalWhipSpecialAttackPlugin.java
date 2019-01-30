@@ -28,7 +28,7 @@ public class AbyssalWhipSpecialAttackPlugin extends SpecialAttackPlugin {
 		target.setNextGraphics(GRAPHICS);
 		if (target instanceof Player) {
 			Player p2 = (Player) target;
-			p2.setRunEnergy(p2.getRunEnergy() > 25 ? p2.getRunEnergy() - 25 : 0);
+			p2.getAttributes().setRunEnergy(p2.getAttributes().getRunEnergy() > 25 ? p2.getAttributes().getRunEnergy() - 25 : 0);
 		}
 		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), 0);
 	}

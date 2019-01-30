@@ -10,23 +10,23 @@ public class EnchantedGemDialouge extends Dialogue {
 	
 	@Override
 	public void start() {
-		Master master = (Master) player.getTemporaryAttributtes().get("SlayerMaster");
+		Master master = (Master) player.getTemporaryAttributes().get("SlayerMaster");
 		if (master == null) {
-			player.getTemporaryAttributtes().put("SlayerMaster", Master.SPRIA);
-			master = (Master) player.getTemporaryAttributtes().get("SlayerMaster");
+			player.getTemporaryAttributes().put("SlayerMaster", Master.SPRIA);
+			master = (Master) player.getTemporaryAttributes().get("SlayerMaster");
 		}
 		sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(master.getMaster()).getName(), "Good day, How may I help you?" }, IS_NPC, master.getMaster(), 9827);
 	}
 	
 	@Override
 	public void run(int interfaceId, int componentId) {
-		Master master = (Master) player.getTemporaryAttributtes().get("SlayerMaster");
+		Master master = (Master) player.getTemporaryAttributes().get("SlayerMaster");
 		if (stage == -1) {
 			stage = 0;
 			sendEntityDialogue(SEND_4_OPTIONS, new String[] { DEFAULT_OPTION, "How many monsters do I have left?", "Where are you located in the land of " + GameConstants.SERVER_NAME + "?", "Give me a tip.", "Nothing, Nevermind." }, IS_PLAYER, player.getIndex(), 9827);
 		} else if (stage == 0) {
 			if (componentId == 1) {
-				SlayerTask task = (SlayerTask) player.getTemporaryAttributtes().get("SlayerTask");
+				SlayerTask task = (SlayerTask) player.getTemporaryAttributes().get("SlayerTask");
 				if (task != null) {
 					
 					sendEntityDialogue(SEND_1_TEXT_CHAT, new String[] { NPCDefinitions.getNPCDefinitions(master.getMaster()).getName(), "You're current assigned to kill " + task.getName().toLowerCase() + " only " + task.getAmount() + " more to go." }, IS_NPC, master.getMaster(), 9827);

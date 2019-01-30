@@ -46,7 +46,7 @@ public final class NPCCombat {
 		if (target == null) {
 			return false;
 		}
-		if (npc.isDead() || npc.hasFinished() || npc.isForceWalking() || target.isDead() || target.hasFinished()) {
+		if (npc.isDead() || npc.isFinished() || npc.isForceWalking() || target.isDead() || target.isFinished()) {
 			return false;
 		}
 		if (npc.getFreezeDelay() >= Misc.currentTimeMillis()) {
@@ -77,7 +77,7 @@ public final class NPCCombat {
 			}
 		} else {
 			if (!npc.isForceMultiAttacked()) {
-				if (!target.isAtMultiArea() || !npc.isAtMultiArea()) {
+				if (!target.isInMultiArea() || !npc.isInMultiArea()) {
 					if (npc.getAttackedBy() != target && npc.getAttackedByDelay() > System.currentTimeMillis()) {
 						return false;
 					}

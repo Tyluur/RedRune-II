@@ -9,7 +9,7 @@ import org.redrune.game.content.plugin.type.NPCPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class MakeoverMageNPCPlugin extends NPCPlugin {
+public class MakeoverMageNPCPlugin implements NPCPlugin {
 	
 	@Override
 	public boolean handle(Player player, NPC npc, String option) {
@@ -28,8 +28,8 @@ public class MakeoverMageNPCPlugin extends NPCPlugin {
 	public void register() {
 		int[] ids = { 2676, 599 };
 		for (int id : ids) {
-			register(id, "Talk-to");
-			register(id, "Makeover");
+			registerNPC(id, "Talk-to");
+			registerNPC(id, "Makeover");
 		}
 	}
 }

@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/27/2017
  */
-public class HomeTeleportSpell extends TeleportSpellPlugin {
+public class HomeTeleportSpell implements TeleportSpellPlugin {
 	
 	@Override
 	public int levelRequired() {

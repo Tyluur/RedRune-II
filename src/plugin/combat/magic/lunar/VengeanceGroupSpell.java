@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/27/2017
  */
-public class VengeanceGroupSpell extends RegularSpellPlugin {
+public class VengeanceGroupSpell implements RegularSpellPlugin {
 	
 	private static final Animation ANIMATION = new Animation(4411);
 	
@@ -41,7 +41,7 @@ public class VengeanceGroupSpell extends RegularSpellPlugin {
 	@Override
 	public void cast(Player player, Actor target) {
 		
-		Long lastTimeCast = player.getAttribute("LAST_VENG", -1L);
+		Long lastTimeCast = player.getTemporaryAttribute("LAST_VENG", -1L);
 		if (player.getSkills().getLevel(MAGIC) < 94) {
 			player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 			return;

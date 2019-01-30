@@ -12,7 +12,7 @@ import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/30/2017
  */
-public class EquipmentBonusesInterfacePlugin extends InterfacePlugin {
+public class EquipmentBonusesInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {

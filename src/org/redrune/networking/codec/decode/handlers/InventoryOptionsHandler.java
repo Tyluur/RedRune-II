@@ -179,7 +179,7 @@ public class InventoryOptionsHandler {
 			Runecrafting.emptyPouch(player, pouch);
 			player.stopAll(false);
 		} else {
-			if (player.isEquipDisabled()) {
+			if (player.getAttributes().isEquipDisabled()) {
 				return;
 			}
 			long passedTime = Misc.currentTimeMillis() - GameCycleWorker.lastCycleTime;
@@ -189,21 +189,21 @@ public class InventoryOptionsHandler {
 				
 				@Override
 				public void run() {
-					List<Integer> slots = player.getSwitchItemCache();
+					List<Integer> slots = player.getAttributes().getSwitchItemCache();
 					int[] slot = new int[slots.size()];
 					for (int i = 0; i < slot.length; i++) {
 						slot[i] = slots.get(i);
 					}
-					player.getSwitchItemCache().clear();
+					player.getAttributes().getSwitchItemCache().clear();
 					PlayerEquipment.equipMultipleSlots(player, slot);
 					stop();
 				}
 				
 			}, passedTime >= 450 ? 0 : passedTime > 300 ? 1 : 0, 1);
-			if (player.getSwitchItemCache().contains(slotId)) {
+			if (player.getAttributes().getSwitchItemCache().contains(slotId)) {
 				return;
 			}
-			player.getSwitchItemCache().add(slotId);
+			player.getAttributes().getSwitchItemCache().add(slotId);
 		}
 	}
 	
@@ -388,7 +388,7 @@ public class InventoryOptionsHandler {
 		}
 		player.stopAll(false);
 		if (itemId == 21371) {
-			if (!player.isCanPvp()) {
+			if (!player.getAttributes().isCanPvp()) {
 				if (player.getInventory().getFreeSlots() > 1) {
 					player.getInventory().deleteItem(21371, 1);
 					player.getInventory().addItem(4151, 1);

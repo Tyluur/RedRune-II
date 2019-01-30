@@ -9,7 +9,7 @@ import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class BloodBarrageSpellPlugin extends CombatSpellPlugin {
+public class BloodBarrageSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

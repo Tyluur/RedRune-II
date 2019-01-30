@@ -18,6 +18,7 @@ public class MasterCommandPlugin extends CommandPlugin {
 			player.getSkills().set(skill, 99);
 			player.getSkills().setXp(skill, SkillConstants.getXPForLevel(99));
 		}
+		player.getSkills().restoreSkills();
 	}
 	
 	@Override

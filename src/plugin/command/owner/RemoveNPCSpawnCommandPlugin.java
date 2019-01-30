@@ -11,8 +11,8 @@ public class RemoveNPCSpawnCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-			player.putAttribute("removing_npcs", !player.getAttribute("removing_npcs", false));
-			player.getPackets().sendGameMessage("You are now " + (player.getAttribute("removing_npcs", false) ? "removing" : "examining") + " npcs.");
+			player.putAttribute("removing_npcs", !player.getTemporaryAttribute("removing_npcs", false));
+			player.getPackets().sendGameMessage("You are now " + (player.getTemporaryAttribute("removing_npcs", false) ? "removing" : "examining") + " npcs.");
 	}
 	
 	@Override

@@ -36,7 +36,7 @@ public final class SkillsDialogue {
 	}
 	
 	public static void setMaxQuantity(Player player, int maxQuantity) {
-		player.getTemporaryAttributtes().put("SkillsDialogueMaxQuantity", maxQuantity);
+		player.getTemporaryAttributes().put("SkillsDialogueMaxQuantity", maxQuantity);
 		player.getPackets().sendConfigByFile(8094, maxQuantity);
 	}
 	
@@ -51,14 +51,14 @@ public final class SkillsDialogue {
 		} else if (quantity < 0) {
 			quantity = 0;
 		}
-		player.getTemporaryAttributtes().put("SkillsDialogueQuantity", quantity);
+		player.getTemporaryAttributes().put("SkillsDialogueQuantity", quantity);
 		if (refresh) {
 			player.getPackets().sendConfigByFile(8095, quantity);
 		}
 	}
 	
 	public static int getMaxQuantity(Player player) {
-		Integer maxQuantity = (Integer) player.getTemporaryAttributtes().get("SkillsDialogueMaxQuantity");
+		Integer maxQuantity = (Integer) player.getTemporaryAttributes().get("SkillsDialogueMaxQuantity");
 		if (maxQuantity == null) {
 			return 0;
 		}
@@ -82,7 +82,7 @@ public final class SkillsDialogue {
 	}
 	
 	public static int getQuantity(Player player) {
-		Integer quantity = (Integer) player.getTemporaryAttributtes().get("SkillsDialogueQuantity");
+		Integer quantity = (Integer) player.getTemporaryAttributes().get("SkillsDialogueQuantity");
 		if (quantity == null) {
 			return 0;
 		}

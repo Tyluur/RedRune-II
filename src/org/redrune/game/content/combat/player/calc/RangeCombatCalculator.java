@@ -36,7 +36,11 @@ public class RangeCombatCalculator extends AbstractCombatCalculator {
 		}
 		double effective = Math.floor(((level * prayer) * additional) + styleBonus + weaponBonus);
 		int bonus = player.getCombatDefinitions().getBonus(BonusConstants.RANGE_ATTACK);
-		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
+		double voidAccuracy = 1.0;
+		if (CombatAlgorithm.fullVoidEquipped(player, 11664, 11675)) {
+			voidAccuracy = 1.1;
+		}
+		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10) * voidAccuracy;
 	}
 	
 	@Override

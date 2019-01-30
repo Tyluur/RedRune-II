@@ -45,8 +45,8 @@ public class DialogueInteractionPacketDecoder implements IncomingPacketDecoder {
 				if (value.equals("")) {
 					return;
 				}
-				if (player.getAttribute("input_event", null) != null) {
-					InputEvent event = player.removeAttribute("input_event");
+				if (player.getTemporaryAttribute("input_event", null) != null) {
+					InputEvent event = player.removeTemporaryAttribute("input_event");
 					event.setInput(value);
 					event.handleInput();
 					return;
@@ -61,8 +61,8 @@ public class DialogueInteractionPacketDecoder implements IncomingPacketDecoder {
 				if (value.equals("")) {
 					return;
 				}
-				if (player.getAttribute("input_event") != null) {
-					InputEvent event = player.removeAttribute("input_event");
+				if (player.getTemporaryAttribute("input_event") != null) {
+					InputEvent event = player.removeTemporaryAttribute("input_event");
 					event.setInput(value);
 					event.handleInput();
 				}
@@ -73,8 +73,8 @@ public class DialogueInteractionPacketDecoder implements IncomingPacketDecoder {
 					return;
 				}
 				int value = stream.readInt();
-				if (player.getAttribute("input_event") != null) {
-					InputEvent event = player.removeAttribute("input_event");
+				if (player.getTemporaryAttribute("input_event") != null) {
+					InputEvent event = player.removeTemporaryAttribute("input_event");
 					event.setInput(value);
 					event.handleInput();
 					return;

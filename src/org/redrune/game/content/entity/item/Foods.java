@@ -24,7 +24,7 @@ public class Foods {
 		if (food == null) {
 			return false;
 		}
-		if (player.getFoodDelay() > Misc.currentTimeMillis()) {
+		if (player.getAttributes().getFoodDelay() > Misc.currentTimeMillis()) {
 			return true;
 		}
 		if (!player.getControllerManager().canEat(food)) {
@@ -32,7 +32,7 @@ public class Foods {
 		}
 		player.getPackets().sendGameMessage("You eat the " + ItemDefinitions.getItemDefinitions(food.getId()).getName().toLowerCase() + ".");
 		player.setNextAnimation(EAT_ANIM);
-		player.addFoodDelay(1800);
+		player.getAttributes().addFoodDelay(1800);
 		if (player.getActionManager().getActionDelay() < 3) {
 			player.getActionManager().setActionDelay(3);
 		}
@@ -341,7 +341,7 @@ public class Foods {
 		 *
 		 * @param id
 		 * 		The food id
-		 * @param health
+		 * @param heal
 		 * 		The healing health received
 		 */
 		Food(int id, int heal) {
@@ -426,12 +426,11 @@ public class Foods {
 		SUMMER_PIE {
 			public void effect(Object object) {
 				Player player = (Player) object;
-				player.setRunEnergy((int) (player.getRunEnergy() + (player.getRunEnergy() * 0.1)));
+				player.getAttributes().setRunEnergy((int) (player.getAttributes().getRunEnergy() + (player.getAttributes().getRunEnergy() * 0.1)));
 				int level = player.getSkills().getLevel(SkillConstants.AGILITY);
 				int realLevel = player.getSkills().getLevelForXp(SkillConstants.AGILITY);
 				player.getSkills().set(SkillConstants.AGILITY, level >= realLevel ? realLevel + 5 : level + 5);
 			}
-			
 		},
 		
 		GARDEN_PIE {

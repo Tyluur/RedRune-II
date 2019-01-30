@@ -42,7 +42,7 @@ public final class PlayerEquipment implements Serializable {
 	 * 		The slot ids to equip
 	 */
 	public static void equipMultipleSlots(Player player, int[] slotIds) {
-		if (player.hasFinished() || player.isDead()) {
+		if (player.isFinished() || player.isDead() || player.getLocks().isEquipmentLocked()) {
 			return;
 		}
 		boolean worn = false;
@@ -74,7 +74,7 @@ public final class PlayerEquipment implements Serializable {
 	 * 		The id of the item
 	 */
 	public static boolean equipItem(Player player, int slotId, int itemId) {
-		if (player.hasFinished() || player.isDead()) {
+		if (player.isFinished() || player.isDead() || player.getLocks().isEquipmentLocked()) {
 			return false;
 		}
 		Item item = player.getInventory().getItem(slotId);

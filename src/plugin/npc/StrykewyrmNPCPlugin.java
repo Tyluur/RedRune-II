@@ -9,11 +9,11 @@ import org.redrune.game.content.plugin.type.NPCPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class StrykewyrmNPCPlugin extends NPCPlugin {
+public class StrykewyrmNPCPlugin implements NPCPlugin {
 	
 	@Override
 	public void register() {
-		register(9462, "Investigate");
+		registerNPC(9462, "Investigate");
 	}
 	
 	@Override

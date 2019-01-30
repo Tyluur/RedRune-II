@@ -34,7 +34,7 @@ public class OwnedObjectManager {
 		this.objects = objects;
 		this.player = player;
 		spawnObject();
-		player.getOwnedObjectManagerKeys().add(managerKey);
+		player.getAttributes().getOwnedObjectManagerKeys().add(managerKey);
 		ownedObjects.put(managerKey, this);
 	}
 	
@@ -70,7 +70,7 @@ public class OwnedObjectManager {
 	private void remove() {
 		ownedObjects.remove(managerKey);
 		if (player != null) {
-			player.getOwnedObjectManagerKeys().remove(managerKey);
+			player.getAttributes().getOwnedObjectManagerKeys().remove(managerKey);
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class OwnedObjectManager {
 	}
 	
 	public static boolean isPlayerObject(Player player, WorldObject object) {
-		for (Iterator<String> it = player.getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
+		for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
 			OwnedObjectManager manager = ownedObjects.get(it.next());
 			if (manager == null) {
 				it.remove();
@@ -121,7 +121,7 @@ public class OwnedObjectManager {
 	}
 	
 	public static boolean removeObject(Player player, WorldObject object) {
-		for (Iterator<String> it = player.getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
+		for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
 			OwnedObjectManager manager = ownedObjects.get(it.next());
 			if (manager == null) {
 				it.remove();
@@ -141,7 +141,7 @@ public class OwnedObjectManager {
 	}
 	
 	public static void linkKeys(Player player) {
-		for (Iterator<String> it = player.getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
+		for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
 			OwnedObjectManager manager = ownedObjects.get(it.next());
 			if (manager == null) {
 				it.remove();

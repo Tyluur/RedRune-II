@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.loaders.AnimationDefinitions;
 import org.redrune.cache.loaders.ObjectDefinitions;
-import org.redrune.game.entity.actor.link.InteractionManager;
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.content.combat.function.Magic;
 import org.redrune.game.entity.Entity;
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.entity.actor.link.InteractionManager;
 import org.redrune.game.entity.actor.link.PoisonManager;
 import org.redrune.game.entity.actor.lock.ActionLocks;
 import org.redrune.game.entity.actor.mask.*;
@@ -17,15 +15,18 @@ import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.DynamicRegion;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.game.global.map.route.RouteFinder;
 import org.redrune.game.global.map.route.strategy.ActorStrategy;
 import org.redrune.game.global.map.route.strategy.FixedTileStrategy;
 import org.redrune.game.global.map.route.strategy.ObjectStrategy;
+import org.redrune.utility.constants.GameConstants;
+import org.redrune.utility.constants.MagicConstants;
 import org.redrune.utility.constants.NetworkConstants;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,95 +41,117 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	public abstract void finish();
 	
+	/**
+	 * The prayer multiplier for magic combat
+	 */
 	public abstract double getMagePrayerMultiplier();
 	
+	/**
+	 * The prayer multiplier for ranged combat
+	 */
 	public abstract double getRangePrayerMultiplier();
 	
+	/**
+	 * The prayer multiplier for melee combat
+	 */
 	public abstract double getMeleePrayerMultiplier();
 	
-	// saving stuff
+	/**
+	 * The hitpoints of the actor
+	 */
+	@Getter
+	@Setter
 	private int hitpoints;
 	
-	private int mapSize; // default 0, can be setted other value usefull on
+	/**
+	 * The size of the map of the actor
+	 */
+	@Getter
+	@Setter
+	private int mapSize;
 	
-	// static maps
-	private boolean run;
-	
+	/**
+	 * The handler and container of poison
+	 */
+	@Getter
 	private PoisonManager poisonManager;
 	
-	// transient stuff
+	/**
+	 * If run mode is on, this is used for processing movement in a 2-tile-per-step fashion
+	 */
+	@Getter
+	@Setter
+	private boolean runModeOn;
+	
+	/**
+	 * The index of the actor
+	 */
+	@Getter
+	@Setter
 	private transient int index;
 	
-	private transient int lastRegionId; // the last region the actor was at
+	/**
+	 * The faceDirection to face
+	 */
+	@Getter
+	@Setter
+	private transient int faceDirection;
 	
+	/**
+	 * The id of the last region the actor was in
+	 */
+	@Getter
+	@Setter
+	private transient int lastRegionId;
+	
+	/**
+	 * When {@link #loadMapRegions()} is called, this value is updated with a new instance of a world tile
+	 */
 	private transient WorldTile lastLoadedMapRegionTile;
 	
+	/**
+	 * A list of all the region ids the actor is in
+	 */
 	private transient CopyOnWriteArrayList<Integer> mapRegionsIds;
 	
-	private transient int direction;
-	
+	/**
+	 * The last world tile this actor was at, in regards to walking
+	 */
 	private transient WorldTile lastWorldTile;
 	
+	/**
+	 * The next world tile this actor will be at, in regards to teleporting
+	 */
+	@Setter
 	private transient WorldTile nextWorldTile;
 	
+	/**
+	 * The next direction in the walk block for the walk step
+	 */
+	@Getter
+	@Setter
 	private transient int nextWalkDirection;
 	
+	/**
+	 * The next direction in the walk block for the run step
+	 */
+	@Getter
+	@Setter
 	private transient int nextRunDirection;
 	
+	/**
+	 * The next tile we should face
+	 */
 	private transient WorldTile nextFaceWorldTile;
 	
+	/**
+	 * The boolean used for synchronizing teleportation
+	 */
 	private transient boolean teleported;
 	
-	private transient ConcurrentLinkedQueue<int[]> walkSteps;// called by more
-	
-	// than 1thread
-	// so concurent
-	private transient ConcurrentLinkedQueue<Hit> receivedHits;
-	
-	private transient ConcurrentHashMap<Actor, Integer> receivedDamage;
-	
-	private transient boolean finished; // if removed
-	
-	private transient long freezeDelay;
-	
-	// actor masks
-	private transient Animation nextAnimation;
-	
-	private transient Graphics nextGraphics1;
-	
-	private transient Graphics nextGraphics2;
-	
-	private transient Graphics nextGraphics3;
-	
-	private transient Graphics nextGraphics4;
-	
-	private transient ArrayList<Hit> nextHits;
-	
-	private transient ForceMovement nextForceMovement;
-	
-	private transient ForceTalk nextForceTalk;
-	
-	private transient int nextFaceEntity;
-	
-	private transient int lastFaceEntity;
-	
-	private transient Actor attackedBy; // whos attacking you, used for single
-	
-	private transient long attackedByDelay; // delay till someone else can
-	
-	// attack you
-	private transient boolean multiArea;
-	
-	private transient boolean isAtDynamicRegion;
-	
-	private transient long lastAnimationEnd;
-	
-	private transient boolean forceMultiArea;
-	
-	private transient long frozenBlocked;
-	
-	private transient long findTargetDelay;
-	
+	/**
+	 * The temporary attributes of this actor
+	 */
 	private transient ConcurrentHashMap<Object, Object> temporaryAttributes;
 	
 	/**
@@ -144,6 +167,137 @@ public abstract class Actor extends WorldTile implements Entity {
 	@Getter
 	private transient ActionLocks locks;
 	
+	/**
+	 * The steps to walk to, these are called by more than 1 thread so they must be concurrently modifiable
+	 */
+	@Getter
+	private transient ConcurrentLinkedQueue<int[]> walkSteps;
+	
+	/**
+	 * The hits the actor has received, each time a hit is received, the hit is stored here
+	 */
+	private transient ConcurrentLinkedQueue<Hit> receivedHits;
+	
+	/**
+	 * A collection of actors and the amount of damage they have done
+	 */
+	private transient ConcurrentHashMap<Actor, Integer> receivedDamage;
+	
+	/**
+	 * If this actor has been finished, in regards to their existence in the game world
+	 */
+	@Getter
+	@Setter
+	private transient boolean finished;
+	
+	/**
+	 * The next animation we should perform
+	 */
+	@Getter
+	private transient Animation nextAnimation;
+	
+	/**
+	 * One of the four next graphics to perform
+	 */
+	@Getter
+	private transient Graphics nextGraphics1, nextGraphics2, nextGraphics3, nextGraphics4;
+	
+	/**
+	 * The next hits to show in the player updating sequence, this is used for when there are too many hits on the
+	 * player at the current moment and more should appear
+	 */
+	private transient ArrayList<Hit> nextHits;
+	
+	/**
+	 * The next force movement mask
+	 */
+	@Getter
+	@Setter
+	private transient ForceMovement nextForceMovement;
+	
+	/**
+	 * The force talk mask
+	 */
+	@Getter
+	@Setter
+	private transient ForceTalk nextForceTalk;
+	
+	/**
+	 * The actor this actor should face next, -2 and -1 mean none
+	 */
+	@Getter
+	private transient int nextFaceEntity;
+	
+	/**
+	 * The actor this actor faced last
+	 */
+	@Getter
+	@Setter
+	private transient int lastFaceEntity;
+	
+	/**
+	 * The actor who last attacked us
+	 */
+	@Getter
+	@Setter
+	private transient Actor attackedBy;
+	
+	/**
+	 * The last time we were attacked is stored here, this is used to calculate when actions can next be done
+	 */
+	@Getter
+	@Setter
+	private transient long attackedByDelay;
+	
+	/**
+	 * If this actor is in a multi area
+	 */
+	@Getter
+	@Setter
+	private transient boolean inMultiArea;
+	
+	/**
+	 * If this actor is at a dynamic region
+	 */
+	@Getter
+	@Setter
+	private transient boolean atDynamicRegion;
+	
+	/**
+	 * The time the last animation we performed should've ended at
+	 */
+	@Getter
+	@Setter
+	private transient long lastAnimationEnd;
+	
+	/**
+	 * If we should force the current area we are at to appear as a multi area for us only
+	 */
+	@Getter
+	private transient boolean forceMultiArea;
+	
+	/**
+	 * How long the actor is frozen for
+	 */
+	@Getter
+	@Setter
+	private transient long freezeDelay;
+	
+	/**
+	 * The time that we are not allowed to be frozen again, tihs is a gap between being frozen and the next time we can
+	 * be frozen
+	 */
+	@Getter
+	@Setter
+	private transient long frozenBlocked;
+	
+	/**
+	 * The delay until the actor [npc only] can find its next target
+	 */
+	@Getter
+	@Setter
+	private transient long findTargetDelay;
+	
 	// creates Entity and saved classes
 	public Actor(WorldTile tile) {
 		super(tile);
@@ -152,10 +306,6 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	public boolean isFamiliar() {
 		return this instanceof Familiar;
-	}
-	
-	public boolean inArea(int a, int b, int c, int d) {
-		return getX() >= a && getY() >= b && getX() <= c && getY() <= d;
 	}
 	
 	public final void initEntity() {
@@ -183,6 +333,9 @@ public abstract class Actor extends WorldTile implements Entity {
 		temporaryAttributes.clear();
 	}
 	
+	/**
+	 * The maximum hitpoints that this actor can have
+	 */
 	public abstract int getMaxHitpoints();
 	
 	public void resetCombat() {
@@ -236,10 +389,6 @@ public abstract class Actor extends WorldTile implements Entity {
 			
 		}
 		return player;
-	}
-	
-	public boolean hasWalkSteps() {
-		return !walkSteps.isEmpty();
 	}
 	
 	public boolean addWalkSteps(int destX, int destY) {
@@ -583,10 +732,6 @@ public abstract class Actor extends WorldTile implements Entity {
 		return new int[] { myX, myY };
 	}
 	
-	public ConcurrentLinkedQueue<int[]> getWalkSteps() {
-		return walkSteps;
-	}
-	
 	public boolean restoreHitPoints() {
 		int maxHp = getMaxHitpoints();
 		if (hitpoints > maxHp) {
@@ -637,7 +782,6 @@ public abstract class Actor extends WorldTile implements Entity {
 		poisonManager.processPoison();
 		processMovement();
 		processReceivedHits();
-		// processReceivedDamage();
 	}
 	
 	public void processMovement() {
@@ -645,7 +789,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		if (lastFaceEntity >= 0) {
 			Actor target = lastFaceEntity >= 32768 ? World.getPlayers().get(lastFaceEntity - 32768) : World.getNPCs().get(lastFaceEntity);
 			if (target != null) {
-				direction = Misc.getFaceDirection(target.getCoordFaceX(target.getSize()) - getX(), target.getCoordFaceY(target.getSize()) - getY());
+				faceDirection = Misc.getFaceDirection(target.getCoordFaceX(target.getSize()) - getX(), target.getCoordFaceY(target.getSize()) - getY());
 			}
 		}
 		nextWalkDirection = nextRunDirection = -1;
@@ -655,13 +799,13 @@ public abstract class Actor extends WorldTile implements Entity {
 			nextWorldTile = null;
 			teleported = true;
 			if (this instanceof Player) {
-				((Player) this).setTemporaryMovementType(Player.TELE_MOVE_TYPE);
+				((Player) this).getAttributes().setTemporaryMovementType(MagicConstants.TELE_MOVE_TYPE);
 			}
 			RegionManager.updateActorRegion(this);
 			if (needMapUpdate()) {
 				loadMapRegions();
 			} else if (this instanceof Player && lastPlane != getPlane()) {
-				((Player) this).setClientHasntLoadedMapRegion();
+				((Player) this).getAttributes().setClientHasntLoadedMapRegion();
 			}
 			resetWalkSteps();
 			return;
@@ -685,9 +829,9 @@ public abstract class Actor extends WorldTile implements Entity {
 				}
 			}
 			moveLocation(Misc.DIRECTION_DELTA_X[nextWalkDirection], Misc.DIRECTION_DELTA_Y[nextWalkDirection], 0);
-			if (run) {
-				if (this instanceof Player && ((Player) this).getRunEnergy() <= 0) {
-					setRun(false);
+			if (runModeOn) {
+				if (this instanceof Player && ((Player) this).getAttributes().getRunEnergy() <= 0) {
+					setRunModeOn(false);
 				} else {
 					nextRunDirection = getNextWalkStep();
 					if (nextRunDirection != -1) {
@@ -698,11 +842,11 @@ public abstract class Actor extends WorldTile implements Entity {
 								resetWalkSteps();
 								return;
 							}
-							player.drainRunEnergy();
+							player.getAttributes().drainRunEnergy();
 						}
 						moveLocation(Misc.DIRECTION_DELTA_X[nextRunDirection], Misc.DIRECTION_DELTA_Y[nextRunDirection], 0);
 					} else if (this instanceof Player) {
-						((Player) this).setTemporaryMovementType(Player.WALK_MOVE_TYPE);
+						((Player) this).getAttributes().setTemporaryMovementType(MagicConstants.WALK_MOVE_TYPE);
 					}
 				}
 			}
@@ -714,10 +858,9 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	public void processReceivedHits() {
-		if (this instanceof Player) {
-			if (((Player) this).getEmotesManager().getNextEmoteEnd() >= Misc.currentTimeMillis()) {
-				return;
-			}
+		// agility locks movement and interactions, so if they're both locked then hits should queue
+		if (isPlayer() && toPlayer().getEmotesManager().getNextEmoteEnd() >= Misc.currentTimeMillis() || (locks.isMovementLocked() && locks.isInteractionLocked())) {
+			return;
 		}
 		Hit hit;
 		int count = 0;
@@ -737,7 +880,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	public void loadMapRegions() {
 		mapRegionsIds.clear();
-		isAtDynamicRegion = false;
+		atDynamicRegion = false;
 		int regionX = getChunkX();
 		int regionY = getChunkY();
 		int mapHash = NetworkConstants.MAP_SIZES[mapSize] >> 4;
@@ -745,7 +888,7 @@ public abstract class Actor extends WorldTile implements Entity {
 			for (int yCalc = (regionY - mapHash) / 8; yCalc <= ((regionY + mapHash) / 8); yCalc++) {
 				int regionId = yCalc + (xCalc << 8);
 				if (RegionManager.getRegion(regionId, this instanceof Player) instanceof DynamicRegion) {
-					isAtDynamicRegion = true;
+					atDynamicRegion = true;
 				}
 				mapRegionsIds.add(yCalc + (xCalc << 8));
 			}
@@ -770,7 +913,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	@Override
 	public void moveLocation(int xOffset, int yOffset, int planeOffset) {
 		super.moveLocation(xOffset, yOffset, planeOffset);
-		direction = Misc.getFaceDirection(xOffset, yOffset);
+		faceDirection = Misc.getFaceDirection(xOffset, yOffset);
 	}
 	
 	private void processHit(Hit hit) {
@@ -850,8 +993,12 @@ public abstract class Actor extends WorldTile implements Entity {
 		if (isDead()) {
 			return;
 		}
+		// agility locks movement, but regular teleportation only locks teleporting
+		if (getLocks().isTeleportLocked() && !getLocks().isMovementLocked()) {
+			return;
+		}
 		receivedHits.add(hit);
-		handleIngoingHit(hit);
+		handleIncomingHit(hit);
 	}
 	
 	public void setNextGraphics(Graphics nextGraphics) {
@@ -881,54 +1028,17 @@ public abstract class Actor extends WorldTile implements Entity {
 		}
 	}
 	
-	public int getHitpoints() {
-		return hitpoints;
-	}
-	
 	public void heal(int ammount, int extra) {
 		hitpoints = hitpoints + ammount >= getMaxHitpoints() + extra ? getMaxHitpoints() + extra : hitpoints + ammount;
 	}
 	
-	public abstract void handleIngoingHit(Hit hit);
-	
-	public void setHitpoints(int hitpoints) {
-		this.hitpoints = hitpoints;
-		
-	}
-	
-	public int getIndex() {
-		return index;
-	}
-	
-	public void setIndex(int index) {
-		this.index = index;
-	}
-	
-	public int getLastRegionId() {
-		return lastRegionId;
-	}
-	
-	public void setLastRegionId(int lastRegionId) {
-		this.lastRegionId = lastRegionId;
-	}
-	
-	public int getMapSize() {
-		return mapSize;
-	}
-	
-	public void setMapSize(int size) {
-		this.mapSize = size;
-	}
+	public abstract void handleIncomingHit(Hit hit);
 	
 	public void setNextAnimationNoPriority(Animation nextAnimation) {
 		if (lastAnimationEnd > Misc.currentTimeMillis()) {
 			return;
 		}
 		setNextAnimation(nextAnimation);
-	}
-	
-	public Animation getNextAnimation() {
-		return nextAnimation;
 	}
 	
 	public void setNextAnimation(Animation nextAnimation) {
@@ -938,64 +1048,12 @@ public abstract class Actor extends WorldTile implements Entity {
 		this.nextAnimation = nextAnimation;
 	}
 	
-	public Graphics getNextGraphics1() {
-		return nextGraphics1;
-	}
-	
-	public Graphics getNextGraphics2() {
-		return nextGraphics2;
-	}
-	
-	public Graphics getNextGraphics3() {
-		return nextGraphics3;
-	}
-	
-	public Graphics getNextGraphics4() {
-		return nextGraphics4;
-	}
-	
-	public int getDirection() {
-		return direction;
-	}
-	
-	public void setDirection(int direction) {
-		this.direction = direction;
-	}
-	
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
-	
-	public WorldTile getNextWorldTile() {
-		return nextWorldTile;
-	}
-	
-	public void setNextWorldTile(WorldTile nextWorldTile) {
-		this.nextWorldTile = nextWorldTile;
-	}
-	
 	public boolean hasTeleported() {
 		return teleported;
 	}
 	
 	public WorldTile getLastLoadedMapRegionTile() {
 		return lastLoadedMapRegionTile;
-	}
-	
-	public int getNextWalkDirection() {
-		return nextWalkDirection;
-	}
-	
-	public int getNextRunDirection() {
-		return nextRunDirection;
-	}
-	
-	public boolean getRun() {
-		return run;
-	}
-	
-	public void setRun(boolean run) {
-		this.run = run;
 	}
 	
 	public WorldTile getNextFaceWorldTile() {
@@ -1008,19 +1066,15 @@ public abstract class Actor extends WorldTile implements Entity {
 		}
 		this.nextFaceWorldTile = nextFaceWorldTile;
 		if (nextWorldTile != null) {
-			direction = Misc.getFaceDirection(nextFaceWorldTile.getX() - nextWorldTile.getX(), nextFaceWorldTile.getY() - nextWorldTile.getY());
+			faceDirection = Misc.getFaceDirection(nextFaceWorldTile.getX() - nextWorldTile.getX(), nextFaceWorldTile.getY() - nextWorldTile.getY());
 		} else {
-			direction = Misc.getFaceDirection(nextFaceWorldTile.getX() - getX(), nextFaceWorldTile.getY() - getY());
+			faceDirection = Misc.getFaceDirection(nextFaceWorldTile.getX() - getX(), nextFaceWorldTile.getY() - getY());
 		}
 	}
 	
 	public void cancelFaceEntityNoCheck() {
 		nextFaceEntity = -2;
 		lastFaceEntity = -1;
-	}
-	
-	public int getNextFaceEntity() {
-		return nextFaceEntity;
 	}
 	
 	/**
@@ -1041,30 +1095,6 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	public int getClientIndex() {
 		return index + (this instanceof Player ? 32768 : 0);
-	}
-	
-	public long getFreezeDelay() {
-		return freezeDelay; // 2500 delay
-	}
-	
-	public void setFreezeDelay(int time) {
-		this.freezeDelay = time;
-	}
-	
-	public int getLastFaceEntity() {
-		return lastFaceEntity;
-	}
-	
-	public long getFrozenBlockedDelay() {
-		return frozenBlocked;
-	}
-	
-	public void setFrozeBlocked(int time) {
-		this.frozenBlocked = time;
-	}
-	
-	public void addFrozenBlockedDelay(long time) {
-		frozenBlocked = Misc.currentTimeMillis() + time;
 	}
 	
 	public void addFreezeDelay(long time) {
@@ -1102,6 +1132,27 @@ public abstract class Actor extends WorldTile implements Entity {
 		putAttribute("frozen_by", freezer);
 	}
 	
+	private void addFrozenBlockedDelay(long time) {
+		frozenBlocked = Misc.currentTimeMillis() + time;
+	}
+	
+	/**
+	 * Puts the key into the attributes map
+	 *
+	 * @param key
+	 * 		The key
+	 * @param value
+	 * 		The value
+	 */
+	public <K> K putAttribute(Object key, K value) {
+		getTemporaryAttributes().put(key, value);
+		return value;
+	}
+	
+	public ConcurrentHashMap<Object, Object> getTemporaryAttributes() {
+		return temporaryAttributes;
+	}
+	
 	public void addFreezeDelay(long time, boolean entangleMessage, Entity freezer) {
 		long currentTime = Misc.currentTimeMillis();
 		if (currentTime > freezeDelay) {
@@ -1115,54 +1166,6 @@ public abstract class Actor extends WorldTile implements Entity {
 			}
 		}
 		putAttribute("frozen_by", freezer);
-	}
-	
-	public Actor getAttackedBy() {
-		return attackedBy;
-	}
-	
-	public void setAttackedBy(Actor attackedBy) {
-		this.attackedBy = attackedBy;
-	}
-	
-	public long getAttackedByDelay() {
-		return attackedByDelay;
-	}
-	
-	public void setAttackedByDelay(long attackedByDelay) {
-		this.attackedByDelay = attackedByDelay;
-	}
-	
-	public boolean isAtMultiArea() {
-		return multiArea;
-	}
-	
-	public void setAtMultiArea(boolean multiArea) {
-		this.multiArea = multiArea;
-	}
-	
-	public boolean isAtDynamicRegion() {
-		return isAtDynamicRegion;
-	}
-	
-	public ForceMovement getNextForceMovement() {
-		return nextForceMovement;
-	}
-	
-	public void setNextForceMovement(ForceMovement nextForceMovement) {
-		this.nextForceMovement = nextForceMovement;
-	}
-	
-	public PoisonManager getPoisonManager() {
-		return poisonManager;
-	}
-	
-	public ForceTalk getNextForceTalk() {
-		return nextForceTalk;
-	}
-	
-	public void setNextForceTalk(ForceTalk nextForceTalk) {
-		this.nextForceTalk = nextForceTalk;
 	}
 	
 	/**
@@ -1180,25 +1183,13 @@ public abstract class Actor extends WorldTile implements Entity {
 		setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
 	}
 	
-	public long getLastAnimationEnd() {
-		return lastAnimationEnd;
-	}
-	
-	public ConcurrentHashMap<Object, Object> getTemporaryAttributtes() {
-		return temporaryAttributes;
-	}
-	
-	public boolean isForceMultiArea() {
-		return forceMultiArea;
-	}
-	
 	public void setForceMultiArea(boolean forceMultiArea) {
 		this.forceMultiArea = forceMultiArea;
 		checkMultiArea();
 	}
 	
 	public void checkMultiArea() {
-		multiArea = forceMultiArea || World.isMultiArea(this);
+		inMultiArea = forceMultiArea || World.isMultiArea(this);
 	}
 	
 	public WorldTile getLastWorldTile() {
@@ -1215,7 +1206,7 @@ public abstract class Actor extends WorldTile implements Entity {
 			if (playerIndexes != null) {
 				for (int playerIndex : playerIndexes) {
 					Player player = World.getPlayers().get(playerIndex);
-					if (player == null || !player.isRunning() || player.hasFinished() || !withinDistance(player)) {
+					if (player == null || !player.isRunning() || player.isFinished() || !withinDistance(player)) {
 						continue;
 					}
 					player.getPackets().sendSound(soundId, 0, type);
@@ -1228,61 +1219,32 @@ public abstract class Actor extends WorldTile implements Entity {
 		return mapRegionsIds;
 	}
 	
-	public boolean hasFinished() {
-		return finished;
-	}
-	
-	public long getFindTargetDelay() {
-		return findTargetDelay;
-	}
-	
-	public void setFindTargetDelay(long findTargetDelay) {
-		this.findTargetDelay = findTargetDelay;
-	}
-	
 	public boolean isFrozen() {
 		return freezeDelay >= Misc.currentTimeMillis();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K getAttribute(Object key, K defaultValue) {
-		K value = (K) getAttributes().get(key);
+	public <K> K getTemporaryAttribute(Object key, K defaultValue) {
+		K value = (K) getTemporaryAttributes().get(key);
 		if (value == null) {
 			return defaultValue;
 		}
 		return value;
 	}
 	
-	public ConcurrentHashMap<Object, Object> getAttributes() {
-		return temporaryAttributes;
+	@SuppressWarnings("unchecked")
+	public <K> K getTemporaryAttribute(Object key) {
+		return (K) getTemporaryAttributes().get(key);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K getAttribute(Object key) {
-		return (K) getAttributes().get(key);
-	}
-	
-	/**
-	 * Puts the key into the attributes map
-	 *
-	 * @param key
-	 * 		The key
-	 * @param value
-	 * 		The value
-	 */
-	public <K> K putAttribute(Object key, K value) {
-		getAttributes().put(key, value);
-		return value;
+	public <K> K removeTemporaryAttribute(Object key) {
+		return (K) getTemporaryAttributes().remove(key);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K removeAttribute(Object key) {
-		return (K) getAttributes().remove(key);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <K> K removeAttribute(Object key, K defaultValue) {
-		K value = (K) getAttributes().remove(key);
+	public <K> K removeTemporaryAttribute(Object key, K defaultValue) {
+		K value = (K) getTemporaryAttributes().remove(key);
 		if (value == null) {
 			return defaultValue;
 		}
@@ -1294,6 +1256,10 @@ public abstract class Actor extends WorldTile implements Entity {
 	 */
 	public boolean isMoving() {
 		return nextWalkDirection != -1 || nextRunDirection != -1 || hasWalkSteps();
+	}
+	
+	public boolean hasWalkSteps() {
+		return !walkSteps.isEmpty();
 	}
 	
 	public boolean calcFollow(WorldTile target, boolean inteligent) {
@@ -1319,60 +1285,7 @@ public abstract class Actor extends WorldTile implements Entity {
 			}
 			return true;
 		}
-		return findBasicRoute(this, target, maxStepsCount, true);
-	}
-	
-	public static boolean findBasicRoute(Actor src, WorldTile dest, int maxStepsCount, boolean calculate) {
-		int[] srcPos = src.getLastWalkTile();
-		int[] destPos = { dest.getX(), dest.getY() };
-		int srcSize = src.getSize();
-		//set destSize to 0 to walk under it else follows
-		int destSize = dest instanceof Actor ? ((Actor) dest).getSize() : 1;
-		int[] destScenePos = { destPos[0] + destSize - 1, destPos[1] + destSize - 1 };//Arrays.copyOf(destPos, 2);//destSize == 1 ? Arrays.copyOf(destPos, 2) : new int[] {WorldTile.getCoordFaceX(destPos[0], destSize, destSize, -1), WorldTile.getCoordFaceY(destPos[1], destSize, destSize, -1)};
-		while (maxStepsCount-- != 0) {
-			int[] srcScenePos = { srcPos[0] + srcSize - 1, srcPos[1] + srcSize - 1 };//srcSize == 1 ? Arrays.copyOf(srcPos, 2) : new int[] { WorldTile.getCoordFaceX(srcPos[0], srcSize, srcSize, -1), WorldTile.getCoordFaceY(srcPos[1], srcSize, srcSize, -1)};
-			if (!Misc.isOnRange(srcPos[0], srcPos[1], srcSize, destPos[0], destPos[1], destSize, 0)) {
-				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] < destScenePos[1] && src.addWalkStep(srcPos[0] + 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
-					srcPos[0]++;
-					srcPos[1]++;
-					continue;
-				}
-				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] > destScenePos[1] && src.addWalkStep(srcPos[0] - 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
-					srcPos[0]--;
-					srcPos[1]--;
-					continue;
-				}
-				if (srcScenePos[0] < destScenePos[0] && srcScenePos[1] > destScenePos[1] && src.addWalkStep(srcPos[0] + 1, srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
-					srcPos[0]++;
-					srcPos[1]--;
-					continue;
-				}
-				if (srcScenePos[0] > destScenePos[0] && srcScenePos[1] < destScenePos[1] && src.addWalkStep(srcPos[0] - 1, srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
-					srcPos[0]--;
-					srcPos[1]++;
-					continue;
-				}
-				if (srcScenePos[0] < destScenePos[0] && src.addWalkStep(srcPos[0] + 1, srcPos[1], srcPos[0], srcPos[1], true)) {
-					srcPos[0]++;
-					continue;
-				}
-				if (srcScenePos[0] > destScenePos[0] && src.addWalkStep(srcPos[0] - 1, srcPos[1], srcPos[0], srcPos[1], true)) {
-					srcPos[0]--;
-					continue;
-				}
-				if (srcScenePos[1] < destScenePos[1] && src.addWalkStep(srcPos[0], srcPos[1] + 1, srcPos[0], srcPos[1], true)) {
-					srcPos[1]++;
-					continue;
-				}
-				if (srcScenePos[1] > destScenePos[1] && src.addWalkStep(srcPos[0], srcPos[1] - 1, srcPos[0], srcPos[1], true)) {
-					srcPos[1]--;
-					continue;
-				}
-				return false;
-			}
-			break; //for now nothing between break and return
-		}
-		return true;
+		return RouteFinder.findBasicRoute(this, target, maxStepsCount, true);
 	}
 	
 	/**

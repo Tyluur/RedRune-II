@@ -436,27 +436,27 @@ public class Region {
 			// clan wars free for all:
 			case 11094:
 				return "Clan Wars";
-		/*
-		 * tutorial island
-		 */
+			/*
+			 * tutorial island
+			 */
 			case 12336:
 				return "Newbie Melody";
-		/*
-		 * darkmeyer
-		 */
+			/*
+			 * darkmeyer
+			 */
 			case 14644:
 				return "Darkmeyer";
-		/*
-		 * kalaboss
-		 */
+			/*
+			 * kalaboss
+			 */
 			case 13626:
 			case 13627:
 			case 13882:
 			case 13881:
 				return "Daemonheim Entrance";
-		/*
-		 * Lumbridge, falador and region.
-		 */
+			/*
+			 * Lumbridge, falador and region.
+			 */
 			case 11574: // heroes guild
 				return "Splendour";
 			case 12851:
@@ -523,9 +523,9 @@ public class Region {
 				return "Attention";
 			case 11827: // north rimmigton
 				return "Nightfall";
-		/*
-		 * Camelot and region.
-		 */
+			/*
+			 * Camelot and region.
+			 */
 			case 11062:
 			case 10805:
 				return "Camelot";
@@ -556,9 +556,9 @@ public class Region {
 				return "Village";
 			case 13877: // canafis south
 				return "Waterlogged";
-		/*
-		 * Mobilies Armies.
-		 */
+			/*
+			 * Mobilies Armies.
+			 */
 			case 9516:
 				return "Command Centre";
 			case 12596: // champions guild
@@ -591,9 +591,9 @@ public class Region {
 			
 			case 11575: // burthope
 				return "Taverley Adventure";
-		/*
-		 * kalaboss
-		 */
+			/*
+			 * kalaboss
+			 */
 			case 13626:
 			case 13627:
 			case 13882:
@@ -844,7 +844,7 @@ public class Region {
 			// clips spawned object(either original or non original)
 			clip(object, localX, localY);
 			for (Player p2 : World.getPlayers()) {
-				if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
+				if (p2 == null || !p2.hasStarted() || p2.isFinished() || !p2.getMapRegionsIds().contains(regionId)) {
 					continue;
 				}
 				p2.getPackets().sendSpawnedObject(object);
@@ -1114,7 +1114,7 @@ public class Region {
 			return;
 		}
 		for (Player p2 : World.getPlayers()) {
-			if (p2 == null || !p2.hasStarted() || p2.hasFinished() || !p2.getMapRegionsIds().contains(regionId)) {
+			if (p2 == null || !p2.hasStarted() || p2.isFinished() || !p2.getMapRegionsIds().contains(regionId)) {
 				continue;
 			}
 			if (original != null) {

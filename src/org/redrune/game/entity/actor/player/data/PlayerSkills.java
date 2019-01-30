@@ -58,6 +58,7 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 	
 	public void refresh(int skill) {
 		player.getPackets().sendSkillLevel(skill);
+		player.getAppearance().generateAppearanceData();
 	}
 	
 	public void setPlayer(Player player) {
@@ -176,14 +177,14 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 	}
 	
 	public void addXpNoModifier(int skill, double exp) {
-		if (player.isExperienceLocked()) {
+		if (player.getAttributes().isExperienceLocked()) {
 			return;
 		}
 		trackExperienceChange(skill, exp);
 	}
 	
 	public void addXp(int skill, double exp) {
-		if (player.isExperienceLocked()) {
+		if (player.getAttributes().isExperienceLocked()) {
 			return;
 		}
 		trackExperienceChange(skill, exp);

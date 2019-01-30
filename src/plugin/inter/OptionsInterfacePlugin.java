@@ -7,7 +7,7 @@ import org.redrune.game.content.plugin.type.InterfacePlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class OptionsInterfacePlugin extends InterfacePlugin {
+public class OptionsInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
@@ -21,12 +21,15 @@ public class OptionsInterfacePlugin extends InterfacePlugin {
 			}
 			player.stopAll();
 			player.getInterfaceManager().sendInterface(742);
+		} else if (componentId == 3) {
+			player.getAttributes().setFilteringProfanity(!player.getAttributes().isFilteringProfanity());
+			player.getPackets().sendProfanityFilterConfig();
 		} else if (componentId == 4) {
-			player.getPacketSender().switchAllowChatEffects();
+			player.getPackets().switchAllowChatEffects();
 		} else if (componentId == 5) {
 			player.getInterfaceManager().sendSettings(982);
 		} else if (componentId == 6) {
-			player.getPacketSender().switchMouseButtons();
+			player.getPackets().switchMouseButtons();
 		} else if (componentId == 16) {
 			if (player.getInterfaceManager().containsScreenInter()) {
 				player.getPackets().sendGameMessage("Please close the interface you have open before setting your audio options.");

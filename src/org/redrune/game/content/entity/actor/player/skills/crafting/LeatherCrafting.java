@@ -113,7 +113,7 @@ public class LeatherCrafting extends Action {
 	public static boolean handleItemOnItem(Player player, Item itemUsed, Item usedWith) {
 		for (int i = 0; i < LEATHER.length; i++) {
 			if (itemUsed.getId() == LEATHER[i] || usedWith.getId() == LEATHER[i]) {
-				player.getTemporaryAttributtes().put("leatherType", LEATHER[i]);
+				player.getTemporaryAttributes().put("leatherType", LEATHER[i]);
 				int index = getIndex(player);
 				if (index == -1) {
 					return true;
@@ -126,7 +126,7 @@ public class LeatherCrafting extends Action {
 	}
 	
 	public static int getIndex(Player player) {
-		int leather = (Integer) player.getTemporaryAttributtes().get("leatherType");
+		int leather = (Integer) player.getTemporaryAttributes().get("leatherType");
 		if (leather == LEATHER[0]) {
 			return 0;
 		}

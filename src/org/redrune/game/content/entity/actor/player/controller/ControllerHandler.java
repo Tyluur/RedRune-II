@@ -28,7 +28,7 @@ public final class ControllerHandler {
 		try {
 			register("Wilderness", Wilderness.class);
 			register("CorpBeastController", CorpBeastController.class);
-			System.out.println("LOADED " + CACHED_CONTROLLERS.size() + " game controllers");
+			System.out.println("Loaded " + CACHED_CONTROLLERS.size() + " game controllers");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

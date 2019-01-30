@@ -22,7 +22,7 @@ public final class Pots {
 		if (pot == null) {
 			return false;
 		}
-		if (player.getPotDelay() > Misc.currentTimeMillis()) {
+		if (player.getAttributes().getPotDelay() > Misc.currentTimeMillis()) {
 			return true;
 		}
 		if (!player.getControllerManager().canPot(pot)) {
@@ -31,7 +31,7 @@ public final class Pots {
 		if (!pot.effect.canDrink(player)) {
 			return true;
 		}
-		player.addPotDelay(1200);
+		player.getAttributes().addPotDelay(1200);
 		String name = item.getDefinitions().getName();
 		int index = name.indexOf("(");
 		int dosesLeft = 0;
@@ -111,7 +111,7 @@ public final class Pots {
 			}
 			player.heal(500);
 		}
-		player.setOverloadDelay(0);
+		player.getAttributes().setOverloadDelay(0);
 		player.getPackets().sendGameMessage("The effects of overload have worn off.");
 	}
 	
@@ -260,14 +260,14 @@ public final class Pots {
 		ANTIPOISON() {
 			@Override
 			public void extra(Player player) {
-				player.addPoisonImmune(180000);
+				player.getAttributes().addPoisonImmune(180000);
 				player.getPackets().sendGameMessage("You are now immune to poison.");
 			}
 		},
 		ANTI_FIRE() {
 			@Override
 			public void extra(Player player) {
-				player.addFireImmune(360000);
+				player.getAttributes().addFireImmune(360000);
 				player.getPackets().sendGameMessage("You are now immune to dragonfire.");
 			}
 		},
@@ -420,7 +420,7 @@ public final class Pots {
 					player.getPackets().sendGameMessage("You cannot drink this potion here.");
 					return false;
 				}
-				Long time = (Long) player.getTemporaryAttributtes().get("Recover_Special_Pot");
+				Long time = (Long) player.getTemporaryAttributes().get("Recover_Special_Pot");
 				if (time != null && Misc.currentTimeMillis() - time < 30000) {
 					player.getPackets().sendGameMessage("You may only use this pot every 30 seconds.");
 					return false;
@@ -430,7 +430,7 @@ public final class Pots {
 			
 			@Override
 			public void extra(Player player) {
-				player.getTemporaryAttributtes().put("Recover_Special_Pot", Misc.currentTimeMillis());
+				player.getTemporaryAttributes().put("Recover_Special_Pot", Misc.currentTimeMillis());
 				player.getCombatDefinitions().restoreSpecialAttack(25);
 			}
 		},
@@ -460,7 +460,7 @@ public final class Pots {
 					player.getPackets().sendGameMessage("You cannot drink this potion here.");
 					return false;
 				}
-				if (player.getOverloadDelay() > 0) {
+				if (player.getAttributes().getOverloadDelay() > 0) {
 					player.getPackets().sendGameMessage("You may only use this potion every five minutes.");
 					return false;
 				}
@@ -473,7 +473,7 @@ public final class Pots {
 			
 			@Override
 			public void extra(final Player player) {
-				player.setOverloadDelay(501);
+				player.getAttributes().setOverloadDelay(501);
 				WorldTasksManager.schedule(new WorldTask() {
 					int count = 4;
 					

@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.type.ObjectPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/1/2017
  */
-public class NexEntranceObjectPlugin extends ObjectPlugin {
+public class NexEntranceObjectPlugin implements ObjectPlugin {
 	
 	@Override
 	public boolean handle(Player player, WorldObject object, String option) {
@@ -22,6 +22,6 @@ public class NexEntranceObjectPlugin extends ObjectPlugin {
 	
 	@Override
 	public void register() {
-		register(57225, "Climb-over");
+		registerObject(57225, "Climb-over");
 	}
 }

@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.file.JsonFileManager;
-import org.redrune.utility.file.SerializableFilesManager;
+import org.redrune.utility.functions.Misc;
+import org.redrune.utility.game.entity.actor.player.PlayerSaving;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -172,8 +172,8 @@ public class PunishmentRepository {
 					}
 					break;
 				case ADDRESS_BAN:
-					target = SerializableFilesManager.loadPlayer(name);
-					if (target != null && (target.getLastIP().equals(punishment.getIp().orElse("n/a")) || target.getLastMac().equals(punishment.getMac().orElse("n/a")))) {
+					target = PlayerSaving.fromFile(name);
+					if (target != null && (target.getAttributes().getLastIP().equals(punishment.getIp().orElse("n/a")) || target.getAttributes().getLastMac().equals(punishment.getMac().orElse("n/a")))) {
 						punishments.add(punishment);
 					}
 					break;

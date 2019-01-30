@@ -17,7 +17,7 @@ import org.redrune.utility.constants.PacketConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class GameframeInterfacePlugin extends InterfacePlugin {
+public class GameframeInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
@@ -117,12 +117,12 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 		} else if (interfaceId == 750) {
 			if (componentId == 1) {
 				if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
-					player.toggleRun(!player.isResting());
-					if (player.isResting()) {
+					player.getAttributes().toggleRun(!player.getAttributes().isResting());
+					if (player.getAttributes().isResting()) {
 						player.stopAll();
 					}
 				} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
-					if (player.isResting()) {
+					if (player.getAttributes().isResting()) {
 						player.stopAll();
 						return true;
 					}
@@ -150,9 +150,9 @@ public class GameframeInterfacePlugin extends InterfacePlugin {
 				}
 			} else if (componentId == 31) {
 				if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
-					player.setFilterGame(false);
+					player.getAttributes().setFilterGame(false);
 				} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
-					player.setFilterGame(true);
+					player.getAttributes().setFilterGame(true);
 				}
 			}
 		}

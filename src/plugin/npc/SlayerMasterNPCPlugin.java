@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.type.NPCPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class SlayerMasterNPCPlugin extends NPCPlugin {
+public class SlayerMasterNPCPlugin implements NPCPlugin {
 	
 	@Override
 	public boolean handle(Player player, NPC npc, String option) {
@@ -22,6 +22,6 @@ public class SlayerMasterNPCPlugin extends NPCPlugin {
 	
 	@Override
 	public void register() {
-		register(8461, "Talk-to");
+		registerNPC(8461, "Talk-to");
 	}
 }

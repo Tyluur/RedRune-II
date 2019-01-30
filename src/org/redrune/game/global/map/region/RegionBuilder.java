@@ -11,8 +11,6 @@ import java.util.List;
 
 public final class RegionBuilder {
 	
-	public static final int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
-	
 	private static final Object ALGORITHM_LOCK = new Object();
 	
 	private static final List<Integer> EXISTING_MAPS = new ArrayList<Integer>();
@@ -268,10 +266,10 @@ public final class RegionBuilder {
 			if (playerIndexes != null) {
 				for (int playerIndex : playerIndexes) {
 					Player player = World.getPlayers().get(playerIndex);
-					if (player == null || !player.hasStarted() || player.hasFinished()) {
+					if (player == null || !player.hasStarted() || player.isFinished()) {
 						continue;
 					}
-					player.setForceNextMapLoadRefresh(true);
+					player.getAttributes().setForceNextMapLoadRefresh(true);
 					player.loadMapRegions();
 				}
 			}

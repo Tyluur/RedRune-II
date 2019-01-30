@@ -26,7 +26,7 @@ import java.util.List;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/12/2017
  */
-public class TeleportationInterfacePlugin extends InterfacePlugin {
+public class TeleportationInterfacePlugin implements InterfacePlugin {
 	
 	/**
 	 * The possible messages the wizard can say
@@ -40,12 +40,12 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		if (!player.getAttribute("quest_selection_interface", "null").equalsIgnoreCase("teleportation")) {
+		if (!player.getTemporaryAttribute("quest_selection_interface", "null").equalsIgnoreCase("teleportation")) {
 			return false;
 		}
 		
 		int teleportSlotId = (componentId - 7);
-		TravelLocations uncollapsed = player.getAttribute("uncollapsed_teleport") != null ? player.getAttribute("uncollapsed_teleport") : null;
+		TravelLocations uncollapsed = player.getTemporaryAttribute("uncollapsed_teleport") != null ? player.getTemporaryAttribute("uncollapsed_teleport") : null;
 		
 		// a player has not selected a place to travel to
 		if (uncollapsed == null) {
@@ -61,7 +61,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 			if (teleportSlotId < uncollapsedTeleportsStart) {
 				if (teleportSlotId == uncollapsedTeleportsSlot) {
 					displaySelectionInterface(player, false);
-					player.getSaving().removeAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT);
+					player.getAttributes().removeAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT);
 				} else {
 					player.putAttribute("uncollapsed_teleport", uncollapsed = TravelLocations.values()[teleportSlotId]);
 					uncollapse(player, uncollapsed);
@@ -118,7 +118,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 				}
 			}
 		}
-		player.getSaving().putAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, travelLocations);
+		player.getAttributes().putAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, travelLocations);
 	}
 	
 	/**
@@ -144,12 +144,12 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 		}
 		player.getPackets().sendGlobalString(211, "Select a Destination");
 		player.putAttribute("quest_selection_interface", "teleportation");
-		player.removeAttribute("uncollapsed_teleport");
+		player.removeTemporaryAttribute("uncollapsed_teleport");
 		
 		if (!showLastUncollapsed) {
 			return;
 		}
-		Object last = player.getSaving().getAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, null);
+		Object last = player.getAttributes().getAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, null);
 		if (last != null) {
 			TravelLocations locations = TravelLocations.valueOf(last.toString());
 			player.putAttribute("uncollapsed_teleport", locations);
@@ -212,7 +212,7 @@ public class TeleportationInterfacePlugin extends InterfacePlugin {
 				
 			});
 		} else {
-			player.getSaving().putAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION, new TransportationLocation(destination, travelLocations, optionIndex));
+			player.getAttributes().putAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION, new TransportationLocation(destination, travelLocations, optionIndex));
 			teleportPlayer(player, destination, () -> travelLocations.handlePostTeleportation(player, optionIndex));
 		}
 	}

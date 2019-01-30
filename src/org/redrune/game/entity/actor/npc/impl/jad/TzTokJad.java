@@ -38,7 +38,7 @@ public class TzTokJad extends NPC {
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || !player.withinDistance(this, 64) || ((!isAtMultiArea() || !player.isAtMultiArea()) && player.getAttackedBy() != this && player.getAttackedByDelay() > System.currentTimeMillis()) || !clipedProjectile(player, false)) {
+					if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || !player.withinDistance(this, 64) || ((!isInMultiArea() || !player.isInMultiArea()) && player.getAttackedBy() != this && player.getAttackedByDelay() > System.currentTimeMillis()) || !clipedProjectile(player, false)) {
 						continue;
 					}
 					possibleTarget.add(player);
@@ -83,7 +83,7 @@ public class TzTokJad extends NPC {
 	
 	@Override
 	public void setRespawnTask() {
-		if (!hasFinished()) {
+		if (!isFinished()) {
 			reset();
 			setLocation(getRespawnTile());
 			finish();

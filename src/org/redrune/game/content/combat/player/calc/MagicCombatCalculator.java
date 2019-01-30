@@ -1,5 +1,6 @@
 package org.redrune.game.content.combat.player.calc;
 
+import org.redrune.game.content.combat.CombatAlgorithm;
 import org.redrune.game.content.combat.player.AbstractCombatCalculator;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
@@ -21,7 +22,11 @@ public class MagicCombatCalculator extends AbstractCombatCalculator {
 		double effective = Math.floor(level * prayer);
 		// the bonus from your equipment
 		int bonus = player.getCombatDefinitions().getBonus(MAGIC_ATTACK);
-		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10);
+		double voidAccuracy = 1.0;
+		if (CombatAlgorithm.fullVoidEquipped(player, 11663, 11674)) {
+			voidAccuracy = 1.45;
+		}
+		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10) * voidAccuracy;
 	}
 	
 	@Override

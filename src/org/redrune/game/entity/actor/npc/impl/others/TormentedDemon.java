@@ -118,9 +118,9 @@ public final class TormentedDemon extends NPC {
 	}
 	
 	@Override
-	public void handleIngoingHit(final Hit hit) {
+	public void handleIncomingHit(final Hit hit) {
 		int type = 0;
-		super.handleIngoingHit(hit);
+		super.handleIncomingHit(hit);
 		if (hit.getSource() instanceof Player) {// darklight
 			Player player = (Player) hit.getSource();
 			if ((player.getEquipment().getWeaponId() == 6746 || player.getEquipment().getWeaponId() == 2402) && hit.getSplat() == HitSplat.MELEE_DAMAGE && hit.getDamage() > 0) {
@@ -161,25 +161,22 @@ public final class TormentedDemon extends NPC {
 	
 	@Override
 	public void setRespawnTask() {
-		if (!hasFinished()) {
+		if (!isFinished()) {
 			reset();
 			setLocation(getRespawnTile());
 			finish();
 		}
 		final NPC npc = this;
-		SystemManager.SLOW_EXECUTOR.schedule(new Runnable() {
-			@Override
-			public void run() {
-				setFinished(false);
-				World.addNPC(npc);
-				npc.setLastRegionId(0);
-				RegionManager.updateActorRegion(npc);
-				loadMapRegions();
-				checkMultiArea();
-				shieldTimer = 0;
-				fixedCombatType = 0;
-				fixedAmount = 0;
-			}
+		SystemManager.SLOW_EXECUTOR.schedule(() -> {
+			setFinished(false);
+			World.addNPC(npc);
+			npc.setLastRegionId(0);
+			RegionManager.updateActorRegion(npc);
+			loadMapRegions();
+			checkMultiArea();
+			shieldTimer = 0;
+			fixedCombatType = 0;
+			fixedAmount = 0;
 		}, getCombatDefinitions().getRespawnDelay() * 600, TimeUnit.MILLISECONDS);
 	}
 	
@@ -192,7 +189,7 @@ public final class TormentedDemon extends NPC {
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || !player.withinDistance(tile, 3)) {
+					if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || !player.withinDistance(tile, 3)) {
 						continue;
 					}
 					player.getPackets().sendGameMessage("The demon's magical attack splashes on you.");

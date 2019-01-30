@@ -40,7 +40,7 @@ public class ClientFrameEventPacketDecoder implements IncomingPacketDecoder {
 				
 				@SuppressWarnings("unused") boolean clicked;
 				// mass click or stupid autoclicker, lets stop lagg
-				if (time <= 1 || x < 0 || x > player.getScreenWidth() || y < 0 || y > player.getScreenHeight()) {
+				if (time <= 1 || x < 0 || x > player.getInterfaceManager().getScreenWidth() || y < 0 || y > player.getInterfaceManager().getScreenHeight()) {
 					// player.getSession().getChannel().close();
 					clicked = false;
 					return;

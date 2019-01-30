@@ -1,7 +1,8 @@
 package org.redrune.utility.game.entity.object;
 
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;
+import org.redrune.game.global.WorldTile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -95,5 +96,20 @@ public class ObjectRemoval {
 		}
 		return null;
 	}
+	
+	public static void handleRegionChange(Player player) {
+		if (!player.hasStarted()) {
+			return;
+		}
+		OBJECTS.stream().filter(object -> object.getRegionId() == player.getRegionId()).forEach(object -> {
+			String key = "destroyed_object_" + object.getId() + "_" + object.getRegionId();
+			if (player.getTemporaryAttribute(key, false)) {
+				return;
+			}
+			player.getPackets().sendDestroyObject(object);
+			player.putAttribute(key, true);
+		});
+	}
+	
 	
 }

@@ -112,7 +112,7 @@ public class CrossbowPlugin extends RangeWeaponPlugin {
 			
 			@Override
 			public boolean canFire(Player source, Actor target) {
-				return source.getAttribute("onyx-effect", 0L) <= GameCycleWorker.getTicksPassed() && super.canFire(source, target);
+				return source.getTemporaryAttribute("onyx-effect", 0L) <= GameCycleWorker.getTicksPassed() && super.canFire(source, target);
 			}
 			
 			@Override

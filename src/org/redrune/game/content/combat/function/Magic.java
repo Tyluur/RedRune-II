@@ -152,7 +152,7 @@ public class Magic {
 				if (teleType == MagicConstants.MAGIC_TELEPORT) {
 					player.getPackets().sendSound(5524, 0, 2);
 					player.setNextFaceWorldTile(new WorldTile(teleTile.getX(), teleTile.getY() - 1, teleTile.getPlane()));
-					player.setDirection(6);
+					player.setFaceDirection(6);
 				}
 			}
 		}, delay);
@@ -225,7 +225,7 @@ public class Magic {
 						teleControllersCheck(player, teleTile);
 					}
 					player.setNextFaceWorldTile(new WorldTile(teleTile.getX(), teleTile.getY() - 1, teleTile.getPlane()));
-					player.setDirection(6);
+					player.setFaceDirection(6);
 					player.setNextAnimation(new Animation(-1));
 					player.getLocks().unlock();
 					stop();

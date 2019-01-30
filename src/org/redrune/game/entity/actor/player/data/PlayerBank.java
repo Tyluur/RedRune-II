@@ -16,26 +16,34 @@ public class PlayerBank implements Serializable {
 	private static final long MAX_BANK_SIZE = 506;
 	
 	/**
-	 *
+	 * The items in the bank tabs
 	 */
-	
-	private int Loyaltytokens;
-	
-	// tab, items
 	private Item[][] bankTabs;
 	
-	@SuppressWarnings("unused")
-	private short bankPin;
+	/**
+	 * If the player is withdrawing as notes
+	 */
+	private boolean withdrawNotes;
 	
+	/**
+	 * If the player is inserting instead of swapping
+	 */
+	private boolean insertItems;
+	
+	/**
+	 * The player this bank is an instance for
+	 */
 	private transient Player player;
 	
+	/**
+	 * The current tab the player is on
+	 */
 	private transient int currentTab;
 	
+	/**
+	 * A copy of the last tab the player was on
+	 */
 	private transient Item[] lastContainerCopy;
-	
-	private transient boolean withdrawNotes;
-	
-	private transient boolean insertItems;
 	
 	public PlayerBank() {
 		bankTabs = new Item[1][0];
@@ -49,7 +57,7 @@ public class PlayerBank implements Serializable {
 	}
 	
 	public void withdrawLastAmount(int bankSlot) {
-		Integer lastAmount = (Integer) player.getTemporaryAttributtes().get("bank_lastAmount");
+		Integer lastAmount = (Integer) player.getTemporaryAttributes().get("bank_lastAmount");
 		if (lastAmount == null) {
 			return;
 		}
@@ -70,7 +78,7 @@ public class PlayerBank implements Serializable {
 	}
 	
 	public void depositLastAmount(int bankSlot) {
-		Integer lastAmount = (Integer) player.getTemporaryAttributtes().get("bank_lastAmount");
+		Integer lastAmount = (Integer) player.getTemporaryAttributes().get("bank_lastAmount");
 		if (lastAmount == null) {
 			return;
 		}
@@ -96,17 +104,17 @@ public class PlayerBank implements Serializable {
 		return lastContainerCopy;
 	}
 	
-	public void refreshViewingTab() {
+	private void refreshViewingTab() {
 		player.getPackets().sendConfigByFile(4893, currentTab + 1);
 	}
 	
-	public void refreshTabs() {
+	private void refreshTabs() {
 		for (int slot = 1; slot < 9; slot++) {
 			refreshTab(slot);
 		}
 	}
 	
-	public void unlockButtons() {
+	private void unlockButtons() {
 		int interfaceId = 762;
 		// removing the equipment stats button
 		player.getPackets().sendHideIComponent(interfaceId, 117, true);
@@ -117,7 +125,12 @@ public class PlayerBank implements Serializable {
 		player.getPackets().sendIComponentSettings(763, 0, 0, 27, 2425982);
 	}
 	
-	public Item[] generateContainer() {
+	private void sendConfigurations() {
+		player.getVarManager().sendVar(115, withdrawNotes ? 1 : 0);
+		player.getVarManager().sendVar(304, insertItems ? 1 : 0);
+	}
+	
+	private Item[] generateContainer() {
 		Item[] container = new Item[getBankSize()];
 		int count = 0;
 		for (int slot = 1; slot < bankTabs.length; slot++) {
@@ -128,14 +141,14 @@ public class PlayerBank implements Serializable {
 		return container;
 	}
 	
-	public void refreshTab(int slot) {
+	private void refreshTab(int slot) {
 		if (slot == 0) {
 			return;
 		}
 		player.getPackets().sendConfigByFile(4885 + (slot - 1), getTabSize(slot));
 	}
 	
-	public int getBankSize() {
+	private int getBankSize() {
 		int size = 0;
 		for (int i = 0; i < bankTabs.length; i++) {
 			size += bankTabs[i].length;
@@ -143,7 +156,7 @@ public class PlayerBank implements Serializable {
 		return size;
 	}
 	
-	public int getTabSize(int slot) {
+	private int getTabSize(int slot) {
 		if (slot >= bankTabs.length) {
 			return 0;
 		}
@@ -222,8 +235,6 @@ public class PlayerBank implements Serializable {
 	}
 	
 	public void switchItem(int fromSlot, int toSlot, int fromComponentId, int toComponentId) {
-		
-		// System.out.println(fromSlot+", "+toSlot+", "+fromComponentId+", "+toComponentId);
 		if (toSlot == 65535) {
 			int toTab = toComponentId >= 74 ? 8 - (82 - toComponentId) : 9 - ((toComponentId - 44) / 2);
 			if (toTab < 0 || toTab > 9) {
@@ -231,6 +242,9 @@ public class PlayerBank implements Serializable {
 			}
 			if (bankTabs.length == toTab) {
 				int[] fromRealSlot = getRealSlot(fromSlot);
+				if (fromRealSlot == null) {
+					return;
+				}
 				if (toTab == fromRealSlot[0]) {
 					switchItem(fromSlot, getStartSlot(toTab));
 					return;
@@ -247,6 +261,9 @@ public class PlayerBank implements Serializable {
 				refreshItems();
 			} else if (bankTabs.length > toTab) {
 				int[] fromRealSlot = getRealSlot(fromSlot);
+				if (fromRealSlot == null) {
+					return;
+				}
 				if (toTab == fromRealSlot[0]) {
 					switchItem(fromSlot, getStartSlot(toTab));
 					return;
@@ -265,8 +282,47 @@ public class PlayerBank implements Serializable {
 				addItem(item.getId(), item.getAmount(), toTab, true);
 			}
 		} else {
-			switchItem(fromSlot, toSlot);
+			if (insertItems) {
+				insertItem(fromSlot, toSlot);
+			} else {
+				switchItem(fromSlot, toSlot);
+			}
 		}
+	}
+	
+	public void insertItem(int fromSlot, int toSlot) {
+		int[] fromRealSlot = getRealSlot(fromSlot);
+		Item fromItem = getItem(fromRealSlot);
+		if (fromItem == null) {
+			return;
+		}
+		int[] toRealSlot = getRealSlot(toSlot);
+		Item toItem = getItem(toRealSlot);
+		if (toItem == null) {
+			return;
+		}
+		if (toRealSlot[0] != fromRealSlot[0]) {
+			bankTabs[fromRealSlot[0]][fromRealSlot[1]] = toItem;
+			bankTabs[toRealSlot[0]][toRealSlot[1]] = fromItem;
+		} else {
+			if (toRealSlot[1] > fromRealSlot[1]) {
+				for (int i = fromRealSlot[1]; i < toRealSlot[1]; i++) {
+					Item toShift = bankTabs[toRealSlot[0]][fromRealSlot[1] += 1];
+					bankTabs[fromRealSlot[0]][i] = toShift;
+				}
+			} else if (fromRealSlot[1] > toRealSlot[1]) {
+				for (int i = fromRealSlot[1]; i > toRealSlot[1]; i--) {
+					Item toShift = bankTabs[toRealSlot[0]][fromRealSlot[1] -= 1];
+					bankTabs[fromRealSlot[0]][i] = toShift;
+				}
+			}
+			bankTabs[toRealSlot[0]][toRealSlot[1]] = fromItem;
+		}
+		refreshTab(fromRealSlot[0]);
+		if (fromRealSlot[0] != toRealSlot[0]) {
+			refreshTab(toRealSlot[0]);
+		}
+		refreshItems();
 	}
 	
 	public void switchItem(int fromSlot, int toSlot) {
@@ -319,6 +375,7 @@ public class PlayerBank implements Serializable {
 	public void openBank() {
 		player.getInterfaceManager().sendInterface(762);
 		player.getInterfaceManager().sendInventoryInterface(763);
+		sendConfigurations();
 		refreshViewingTab();
 		refreshTabs();
 		unlockButtons();
@@ -611,11 +668,12 @@ public class PlayerBank implements Serializable {
 	
 	public void switchWithdrawNotes() {
 		withdrawNotes = !withdrawNotes;
+		player.getVarManager().sendVar(115, withdrawNotes ? 1 : 0);
 	}
 	
 	public void switchInsertItems() {
 		insertItems = !insertItems;
-		player.getPackets().sendConfig(305, insertItems ? 1 : 0);
+		player.getVarManager().sendVar(304, insertItems ? 1 : 0);
 	}
 	
 	public void setCurrentTab(int currentTab) {
@@ -623,14 +681,6 @@ public class PlayerBank implements Serializable {
 			return;
 		}
 		this.currentTab = currentTab;
-	}
-	
-	public int getLoyaltyTokens() {
-		return Loyaltytokens;
-	}
-	
-	public void setLoyaltyTokens(int Loyaltytokens) {
-		this.Loyaltytokens = Loyaltytokens;
 	}
 	
 }

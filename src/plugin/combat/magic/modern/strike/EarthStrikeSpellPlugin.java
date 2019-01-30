@@ -11,7 +11,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/2/2017
  */
-public class EarthStrikeSpellPlugin extends CombatSpellPlugin {
+public class EarthStrikeSpellPlugin implements CombatSpellPlugin {
 	
 	private static final Graphics NEXT_GRAPHICS = new Graphics(2713);
 	

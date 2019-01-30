@@ -47,7 +47,7 @@ public class Strykewyrm extends NPC {
 		if (npc.isCantInteract()) {
 			return;
 		}
-		if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
+		if (!npc.isInMultiArea() || !player.isInMultiArea()) {
 			if (player.getAttackedBy() != npc && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
 				player.getPackets().sendGameMessage("I'm already under attack.");
 				return;

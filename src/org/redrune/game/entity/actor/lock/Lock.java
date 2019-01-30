@@ -35,7 +35,7 @@ public class Lock {
 	/**
 	 * Constructs a new {@code Lock} {@code Object}.
 	 */
-	public Lock() {
+	Lock() {
 		this(null);
 	}
 	
@@ -45,7 +45,7 @@ public class Lock {
 	 * @param message
 	 * 		The message.
 	 */
-	public Lock(String message) {
+	private Lock(String message) {
 		this.message = message;
 	}
 	
@@ -80,7 +80,7 @@ public class Lock {
 	 *
 	 * @return {@code True} if so.
 	 */
-	public boolean isLocked() {
+	boolean isLocked() {
 		return expiration > GameCycleWorker.getTicksPassed();
 	}
 	

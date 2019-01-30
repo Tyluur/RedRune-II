@@ -367,7 +367,7 @@ public class AuraManager implements Serializable {
 	}
 	
 	public void useInspiration() {
-		Integer atts = (Integer) player.getTemporaryAttributtes().get("InspirationAura");
+		Integer atts = (Integer) player.getTemporaryAttributes().get("InspirationAura");
 		if (atts == null) {
 			atts = 0;
 		}
@@ -376,7 +376,7 @@ public class AuraManager implements Serializable {
 			atts = 0;
 			player.getCombatDefinitions().restoreSpecialAttack(1);
 		}
-		player.getTemporaryAttributtes().put("InspirationAura", atts);
+		player.getTemporaryAttributes().put("InspirationAura", atts);
 	}
 	
 	public void useVampyrism(int damage) {

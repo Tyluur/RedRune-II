@@ -54,7 +54,7 @@ public final class LocalNPCUpdate {
 		// for (NPC n : localNPCs.toArray(new NPC[localNPCs.size()])) {
 		for (Iterator<NPC> it = localNPCs.iterator(); it.hasNext(); ) {
 			NPC n = it.next();
-			if (n.hasFinished() || !player.withinDistance(n) || n.hasTeleported()) {
+			if (n.isFinished() || !player.withinDistance(n) || n.hasTeleported()) {
 				stream.writeBits(1, 1);
 				stream.writeBits(2, 3);
 				it.remove();
@@ -93,11 +93,11 @@ public final class LocalNPCUpdate {
 					break;
 				}
 				NPC n = World.getNPCs().get(npcIndex);
-				if (n == null || n.hasFinished() || localNPCs.contains(n) || !player.withinDistance(n) || n.isDead()) {
+				if (n == null || n.isFinished() || localNPCs.contains(n) || !player.withinDistance(n) || n.isDead()) {
 					continue;
 				}
 				stream.writeBits(15, n.getIndex());
-				stream.writeBits(3, n.getDirection());
+				stream.writeBits(3, n.getFaceDirection());
 				boolean needUpdate = n.needMasksUpdate() || n.getLastFaceEntity() != -1;
 				stream.writeBits(1, needUpdate ? 1 : 0);
 				int y = n.getY() - player.getY();

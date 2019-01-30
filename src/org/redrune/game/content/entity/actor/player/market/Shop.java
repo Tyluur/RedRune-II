@@ -314,7 +314,7 @@ public final class Shop {
 		sendInventoryInterface(player);
 		sendShopItems(player);
 		player.putAttribute("open_shop", this);
-		player.setCloseInterfacesEvent(() -> player.removeAttribute("open_shop"));
+		player.setCloseInterfacesEvent(() -> player.removeTemporaryAttribute("open_shop"));
 	}
 	
 	/**

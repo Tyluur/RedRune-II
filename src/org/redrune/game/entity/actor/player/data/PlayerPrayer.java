@@ -1,12 +1,22 @@
 package org.redrune.game.entity.actor.player.data;
 
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.mask.Hit;
+import org.redrune.game.entity.actor.mask.HitSplat;
+import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
+import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PlayerPrayer implements Serializable {
 	
@@ -220,52 +230,6 @@ public class PlayerPrayer implements Serializable {
 		return value;
 	}
 	
-	public boolean reachedMax(int bonus) {
-		if (bonus != 8 && bonus != 9 && bonus != 10) {
-			return leechBonuses[bonus] >= 20;
-		} else {
-			return false;
-		}
-	}
-	
-	public void increaseLeechBonus(int bonus) {
-		leechBonuses[bonus]++;
-		if (bonus == 0) {
-			adjustStat(0, leechBonuses[bonus]);
-			adjustStat(1, leechBonuses[bonus]);
-			adjustStat(2, leechBonuses[bonus]);
-		} else if (bonus == 1) {
-			adjustStat(2, leechBonuses[bonus]);
-			adjustStat(3, leechBonuses[bonus]);
-		} else if (bonus == 2) {
-			adjustStat(2, leechBonuses[bonus]);
-			adjustStat(4, leechBonuses[bonus]);
-		} else if (bonus == 3) {
-			adjustStat(0, leechBonuses[bonus]);
-		} else if (bonus == 4) {
-			adjustStat(3, leechBonuses[bonus]);
-		} else if (bonus == 5) {
-			adjustStat(4, leechBonuses[bonus]);
-		} else if (bonus == 6) {
-			adjustStat(2, leechBonuses[bonus]);
-		} else if (bonus == 7) {
-			adjustStat(1, leechBonuses[bonus]);
-		}
-	}
-	
-	public void adjustStat(int stat, int percentage) {
-		player.getPackets().sendConfigByFile(6857 + stat, 30 + percentage);
-	}
-	
-	public void increaseTurmoilBonus(Player p2) {
-		leechBonuses[8] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.ATTACK))) / p2.getSkills().getLevelForXp(SkillConstants.ATTACK));
-		leechBonuses[9] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.DEFENCE))) / p2.getSkills().getLevelForXp(SkillConstants.DEFENCE));
-		leechBonuses[10] = (int) ((100 * Math.floor(0.1 * p2.getSkills().getLevelForXp(SkillConstants.STRENGTH))) / p2.getSkills().getLevelForXp(SkillConstants.STRENGTH));
-		adjustStat(0, leechBonuses[8]);
-		adjustStat(1, leechBonuses[10]);
-		adjustStat(2, leechBonuses[9]);
-	}
-	
 	public int getPrayerHeadIcon() {
 		if (onPrayersCount == 0) {
 			return -1;
@@ -395,7 +359,7 @@ public class PlayerPrayer implements Serializable {
 				return false;
 			}
 		}
-		if (player.getPrayerDelay() >= Misc.currentTimeMillis()) {
+		if (player.getAttributes().getPrayerDelay() >= Misc.currentTimeMillis()) {
 			player.getPackets().sendGameMessage("You are currently injured and cannot use protection prayers!");
 			if (ancientcurses && prayerId >= 6 && prayerId <= 9) {
 				return false;
@@ -653,6 +617,10 @@ public class PlayerPrayer implements Serializable {
 		drainDelay = 3;
 	}
 	
+	public void adjustStat(int stat, int percentage) {
+		player.getPackets().sendConfigByFile(6857 + stat, 30 + percentage);
+	}
+	
 	public void setPrayerBook(boolean ancientcurses) {
 		closeAllPrayers();
 		this.ancientcurses = ancientcurses;
@@ -728,14 +696,6 @@ public class PlayerPrayer implements Serializable {
 		return usingQuickPrayer;
 	}
 	
-	public boolean isBoostedLeech() {
-		return boostedLeech;
-	}
-	
-	public void setBoostedLeech(boolean boostedLeech) {
-		this.boostedLeech = boostedLeech;
-	}
-	
 	public int getPrayerpoints() {
 		return prayerpoints;
 	}
@@ -775,4 +735,496 @@ public class PlayerPrayer implements Serializable {
 		refreshPrayerPoints();
 	}
 	
+	/**
+	 * Sends the redemption prayer effect on death
+	 *
+	 * @param source
+	 * 		The source of the kill
+	 */
+	public void sendRedemption(Actor source) {
+		player.setNextGraphics(new Graphics(437));
+		final Player target = player;
+		PlayerPrayer prayerInstance = this;
+		if (player.isInMultiArea()) {
+			for (int regionId : player.getMapRegionsIds()) {
+				List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
+				if (playersIndexes != null) {
+					for (int playerIndex : playersIndexes) {
+						Player player = World.getPlayers().get(playerIndex);
+						if (player == null || !player.hasStarted() || player.isDead() || player.isFinished() || !player.withinDistance(prayerInstance.player, 2) || !prayerInstance.player.getControllerManager().canHit(player)) {
+							continue;
+						}
+						player.applyHit(new Hit(target, Misc.getRandom((int) (player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
+					}
+				}
+				List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
+				if (npcsIndexes != null) {
+					for (int npcIndex : npcsIndexes) {
+						NPC npc = World.getNPCs().get(npcIndex);
+						if (npc == null || npc.isDead() || npc.isFinished() || !npc.withinDistance(prayerInstance.player, 2) || !npc.getDefinitions().hasAttackOption() || !prayerInstance.player.getControllerManager().canHit(npc)) {
+							continue;
+						}
+						npc.applyHit(new Hit(target, Misc.getRandom((int) (player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
+					}
+				}
+			}
+		} else {
+			if (source != null && source != player && !source.isDead() && !source.isFinished() && source.withinDistance(player, 1)) {
+				source.applyHit(new Hit(target, Misc.getRandom((int) (player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
+			}
+		}
+		WorldTasksManager.schedule(new WorldTask() {
+			@Override
+			public void run() {
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY(), target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY(), target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() - 1, target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() + 1, target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() - 1, target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() + 1, target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() - 1, target.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() + 1, target.getPlane()));
+			}
+		});
+	}
+	
+	/**
+	 * Sends the wrath prayer effect on death
+	 *
+	 * @param source
+	 * 		The source of the kill
+	 */
+	public void sendWrath(Actor source) {
+		RegionManager.sendProjectile(player, new WorldTile(player.getX() + 2, player.getY() + 2, player.getPlane()), 2260, 24, 0, 41, 35, 30, 0);
+		RegionManager.sendProjectile(player, new WorldTile(player.getX() + 2, player.getY(), player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		RegionManager.sendProjectile(player, new WorldTile(player.getX() + 2, player.getY() - 2, player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		
+		RegionManager.sendProjectile(player, new WorldTile(player.getX() - 2, player.getY() + 2, player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		RegionManager.sendProjectile(player, new WorldTile(player.getX() - 2, player.getY(), player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		RegionManager.sendProjectile(player, new WorldTile(player.getX() - 2, player.getY() - 2, player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		
+		RegionManager.sendProjectile(player, new WorldTile(player.getX(), player.getY() + 2, player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		RegionManager.sendProjectile(player, new WorldTile(player.getX(), player.getY() - 2, player.getPlane()), 2260, 41, 0, 41, 35, 30, 0);
+		final Player target = player;
+		PlayerPrayer prayerInstance = this;
+		WorldTasksManager.schedule(new WorldTask() {
+			@Override
+			public void run() {
+				player.setNextGraphics(new Graphics(2259));
+				if (player.isInMultiArea()) {
+					for (int regionId : player.getMapRegionsIds()) {
+						List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
+						if (playersIndexes != null) {
+							for (int playerIndex : playersIndexes) {
+								Player player = World.getPlayers().get(playerIndex);
+								if (player == null || !player.hasStarted() || player.isDead() || player.isFinished() || !player.withinDistance(prayerInstance.player, 2) || !prayerInstance.player.getControllerManager().canHit(player)) {
+									continue;
+								}
+								player.applyHit(new Hit(target, Misc.getRandom(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
+							}
+						}
+						List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
+						if (npcsIndexes != null) {
+							for (int npcIndex : npcsIndexes) {
+								NPC npc = World.getNPCs().get(npcIndex);
+								if (npc == null || npc.isDead() || npc.isFinished() || !npc.withinDistance(prayerInstance.player, 2) || !npc.getDefinitions().hasAttackOption() || !prayerInstance.player.getControllerManager().canHit(npc)) {
+									continue;
+								}
+								npc.applyHit(new Hit(target, Misc.getRandom(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
+							}
+						}
+					}
+				} else {
+					if (source != null && source != target && !source.isDead() && !source.isFinished() && source.withinDistance(target, 2)) {
+						source.applyHit(new Hit(target, Misc.getRandom(player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
+					}
+				}
+				
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() + 2, player.getY() + 2, player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() + 2, player.getY(), player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() + 2, player.getY() - 2, player.getPlane()));
+				
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() - 2, player.getY() + 2, player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() - 2, player.getY(), player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() - 2, player.getY() - 2, player.getPlane()));
+				
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX(), player.getY() + 2, player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX(), player.getY() - 2, player.getPlane()));
+				
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() + 1, player.getY() + 1, player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() + 1, player.getY() - 1, player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() - 1, player.getY() + 1, player.getPlane()));
+				RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(player.getX() - 1, player.getY() - 1, player.getPlane()));
+			}
+		});
+	}
+	
+	public void handleCombatDeflection(Actor source, Hit hit) {
+		if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
+			if (usingPrayer(0, 17)) {
+				hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
+			} else if (usingPrayer(1, 7)) {
+				int deflectedDamage = (int) (hit.getDamage() * 0.1);
+				hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
+				if (deflectedDamage > 0) {
+					source.applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
+					player.setNextGraphics(new Graphics(2228));
+					player.setNextAnimation(new Animation(12573));
+				}
+			}
+		} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
+			if (usingPrayer(0, 18)) {
+				hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
+			} else if (usingPrayer(1, 8)) {
+				int deflectedDamage = (int) (hit.getDamage() * 0.1);
+				hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
+				if (deflectedDamage > 0) {
+					source.applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
+					player.setNextGraphics(new Graphics(2229));
+					player.setNextAnimation(new Animation(12573));
+				}
+			}
+		} else if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
+			if (usingPrayer(0, 19)) {
+				hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
+			} else if (usingPrayer(1, 9)) {
+				int deflectedDamage = (int) (hit.getDamage() * 0.1);
+				hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
+				if (deflectedDamage > 0) {
+					source.applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
+					player.setNextGraphics(new Graphics(2230));
+					player.setNextAnimation(new Animation(12573));
+				}
+			}
+		}
+	}
+	
+	public void handleCurseBoosts(Player p2, Hit hit) {
+		
+		if (p2.getPrayer().hasPrayersOn()) {
+			if (p2.getPrayer().usingPrayer(0, 24)) { // smite
+				int drain = hit.getDamage() / 4;
+				if (drain > 0) {
+					drainPrayer(drain);
+				}
+			} else {
+				if (p2.getPrayer().usingPrayer(1, 18)) {
+					sendSoulSplit(hit, p2);
+				}
+				if (hit.getDamage() == 0) {
+					return;
+				}
+				if (!p2.getPrayer().isBoostedLeech()) {
+					if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
+						if (p2.getPrayer().usingPrayer(1, 19)) {
+							if (Misc.getRandom(4) == 0) {
+								p2.getPrayer().increaseTurmoilBonus(player);
+								p2.getPrayer().setBoostedLeech(true);
+								return;
+							}
+						} else if (p2.getPrayer().usingPrayer(1, 1)) { // sap att
+							if (Misc.getRandom(4) == 0) {
+								if (p2.getPrayer().reachedMax(0)) {
+									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
+								} else {
+									p2.getPrayer().increaseLeechBonus(0);
+									p2.getPackets().sendGameMessage("Your curse drains Attack from the enemy, boosting your Attack.", true);
+								}
+								p2.setNextAnimation(new Animation(12569));
+								p2.setNextGraphics(new Graphics(2214));
+								p2.getPrayer().setBoostedLeech(true);
+								RegionManager.sendProjectile(p2, player, 2215, 35, 35, 20, 5, 0, 0);
+								WorldTasksManager.schedule(new WorldTask() {
+									@Override
+									public void run() {
+										player.setNextGraphics(new Graphics(2216));
+									}
+								}, 1);
+								return;
+							}
+						} else {
+							if (p2.getPrayer().usingPrayer(1, 10)) {
+								if (Misc.getRandom(7) == 0) {
+									if (p2.getPrayer().reachedMax(3)) {
+										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+									} else {
+										p2.getPrayer().increaseLeechBonus(3);
+										p2.getPackets().sendGameMessage("Your curse drains Attack from the enemy, boosting your Attack.", true);
+									}
+									p2.setNextAnimation(new Animation(12575));
+									p2.getPrayer().setBoostedLeech(true);
+									RegionManager.sendProjectile(p2, player, 2231, 35, 35, 20, 5, 0, 0);
+									WorldTasksManager.schedule(new WorldTask() {
+										@Override
+										public void run() {
+											player.setNextGraphics(new Graphics(2232));
+										}
+									}, 1);
+									return;
+								}
+							}
+							if (p2.getPrayer().usingPrayer(1, 14)) {
+								if (Misc.getRandom(7) == 0) {
+									if (p2.getPrayer().reachedMax(7)) {
+										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+									} else {
+										p2.getPrayer().increaseLeechBonus(7);
+										p2.getPackets().sendGameMessage("Your curse drains Strength from the enemy, boosting your Strength.", true);
+									}
+									p2.setNextAnimation(new Animation(12575));
+									p2.getPrayer().setBoostedLeech(true);
+									RegionManager.sendProjectile(p2, player, 2248, 35, 35, 20, 5, 0, 0);
+									WorldTasksManager.schedule(new WorldTask() {
+										@Override
+										public void run() {
+											player.setNextGraphics(new Graphics(2250));
+										}
+									}, 1);
+									return;
+								}
+							}
+							
+						}
+					}
+					if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
+						if (p2.getPrayer().usingPrayer(1, 2)) { // sap range
+							if (Misc.getRandom(4) == 0) {
+								if (p2.getPrayer().reachedMax(1)) {
+									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
+								} else {
+									p2.getPrayer().increaseLeechBonus(1);
+									p2.getPackets().sendGameMessage("Your curse drains Range from the enemy, boosting your Range.", true);
+								}
+								p2.setNextAnimation(new Animation(12569));
+								p2.setNextGraphics(new Graphics(2217));
+								p2.getPrayer().setBoostedLeech(true);
+								RegionManager.sendProjectile(p2, player, 2218, 35, 35, 20, 5, 0, 0);
+								WorldTasksManager.schedule(new WorldTask() {
+									@Override
+									public void run() {
+										player.setNextGraphics(new Graphics(2219));
+									}
+								}, 1);
+								return;
+							}
+						} else if (p2.getPrayer().usingPrayer(1, 11)) {
+							if (Misc.getRandom(7) == 0) {
+								if (p2.getPrayer().reachedMax(4)) {
+									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+								} else {
+									p2.getPrayer().increaseLeechBonus(4);
+									p2.getPackets().sendGameMessage("Your curse drains Range from the enemy, boosting your Range.", true);
+								}
+								p2.setNextAnimation(new Animation(12575));
+								p2.getPrayer().setBoostedLeech(true);
+								RegionManager.sendProjectile(p2, player, 2236, 35, 35, 20, 5, 0, 0);
+								WorldTasksManager.schedule(new WorldTask() {
+									@Override
+									public void run() {
+										player.setNextGraphics(new Graphics(2238));
+									}
+								});
+								return;
+							}
+						}
+					}
+					if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
+						if (p2.getPrayer().usingPrayer(1, 3)) { // sap mage
+							if (Misc.getRandom(4) == 0) {
+								if (p2.getPrayer().reachedMax(2)) {
+									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
+								} else {
+									p2.getPrayer().increaseLeechBonus(2);
+									p2.getPackets().sendGameMessage("Your curse drains Magic from the enemy, boosting your Magic.", true);
+								}
+								p2.setNextAnimation(new Animation(12569));
+								p2.setNextGraphics(new Graphics(2220));
+								p2.getPrayer().setBoostedLeech(true);
+								RegionManager.sendProjectile(p2, player, 2221, 35, 35, 20, 5, 0, 0);
+								WorldTasksManager.schedule(new WorldTask() {
+									@Override
+									public void run() {
+										player.setNextGraphics(new Graphics(2222));
+									}
+								}, 1);
+								return;
+							}
+						} else if (p2.getPrayer().usingPrayer(1, 12)) {
+							if (Misc.getRandom(7) == 0) {
+								if (p2.getPrayer().reachedMax(5)) {
+									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+								} else {
+									p2.getPrayer().increaseLeechBonus(5);
+									p2.getPackets().sendGameMessage("Your curse drains Magic from the enemy, boosting your Magic.", true);
+								}
+								p2.setNextAnimation(new Animation(12575));
+								p2.getPrayer().setBoostedLeech(true);
+								RegionManager.sendProjectile(p2, player, 2240, 35, 35, 20, 5, 0, 0);
+								WorldTasksManager.schedule(new WorldTask() {
+									@Override
+									public void run() {
+										player.setNextGraphics(new Graphics(2242));
+									}
+								}, 1);
+								return;
+							}
+						}
+					}
+					
+					// overall
+					
+					if (p2.getPrayer().usingPrayer(1, 13)) { // leech defence
+						if (Misc.getRandom(10) == 0) {
+							if (p2.getPrayer().reachedMax(6)) {
+								p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+							} else {
+								p2.getPrayer().increaseLeechBonus(6);
+								p2.getPackets().sendGameMessage("Your curse drains Defence from the enemy, boosting your Defence.", true);
+							}
+							p2.setNextAnimation(new Animation(12575));
+							p2.getPrayer().setBoostedLeech(true);
+							RegionManager.sendProjectile(p2, player, 2244, 35, 35, 20, 5, 0, 0);
+							WorldTasksManager.schedule(new WorldTask() {
+								@Override
+								public void run() {
+									player.setNextGraphics(new Graphics(2246));
+								}
+							}, 1);
+							return;
+						}
+					}
+					
+					if (p2.getPrayer().usingPrayer(1, 15)) {
+						if (Misc.getRandom(10) == 0) {
+							if (player.getAttributes().getRunEnergy() <= 0) {
+								p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+							} else {
+								p2.getAttributes().setRunEnergy(p2.getAttributes().getRunEnergy() > 90 ? 100 : p2.getAttributes().getRunEnergy() + 10);
+								player.getAttributes().setRunEnergy(p2.getAttributes().getRunEnergy() > 10 ? player.getAttributes().getRunEnergy() - 10 : 0);
+							}
+							p2.setNextAnimation(new Animation(12575));
+							p2.getPrayer().setBoostedLeech(true);
+							RegionManager.sendProjectile(p2, player, 2256, 35, 35, 20, 5, 0, 0);
+							WorldTasksManager.schedule(new WorldTask() {
+								@Override
+								public void run() {
+									player.setNextGraphics(new Graphics(2258));
+								}
+							}, 1);
+							return;
+						}
+					}
+					
+					if (p2.getPrayer().usingPrayer(1, 16)) {
+						if (Misc.getRandom(10) == 0) {
+							if (player.getCombatDefinitions().getSpecialAttackPercentage() <= 0) {
+								p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
+							} else {
+								p2.getCombatDefinitions().restoreSpecialAttack();
+								player.getCombatDefinitions().decreaseSpecialEnergy(10);
+							}
+							p2.setNextAnimation(new Animation(12575));
+							p2.getPrayer().setBoostedLeech(true);
+							RegionManager.sendProjectile(p2, player, 2252, 35, 35, 20, 5, 0, 0);
+							WorldTasksManager.schedule(new WorldTask() {
+								@Override
+								public void run() {
+									player.setNextGraphics(new Graphics(2254));
+								}
+							}, 1);
+							return;
+						}
+					}
+					
+					if (p2.getPrayer().usingPrayer(1, 4)) { // sap spec
+						if (Misc.getRandom(10) == 0) {
+							p2.setNextAnimation(new Animation(12569));
+							p2.setNextGraphics(new Graphics(2223));
+							p2.getPrayer().setBoostedLeech(true);
+							if (player.getCombatDefinitions().getSpecialAttackPercentage() <= 0) {
+								p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
+							} else {
+								player.getCombatDefinitions().decreaseSpecialEnergy(10);
+							}
+							RegionManager.sendProjectile(p2, player, 2224, 35, 35, 20, 5, 0, 0);
+							WorldTasksManager.schedule(new WorldTask() {
+								@Override
+								public void run() {
+									player.setNextGraphics(new Graphics(2225));
+								}
+							}, 1);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void sendSoulSplit(final Hit hit, final Actor user) {
+		final Player target = player;
+		if (hit.getDamage() > 0) {
+			RegionManager.sendProjectile(user, player, 2263, 11, 11, 20, 5, 0, 0);
+		}
+		user.heal(hit.getDamage() / 5);
+		drainPrayer(hit.getDamage() / 5);
+		WorldTasksManager.schedule(new WorldTask() {
+			@Override
+			public void run() {
+				player.setNextGraphics(new Graphics(2264));
+				if (hit.getDamage() > 0) {
+					RegionManager.sendProjectile(target, user, 2263, 11, 11, 20, 5, 0, 0);
+				}
+			}
+		}, 1);
+	}
+	
+	public boolean isBoostedLeech() {
+		return boostedLeech;
+	}
+	
+	public void increaseTurmoilBonus(Player p2) {
+		leechBonuses[8] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.ATTACK))) / p2.getSkills().getLevelForXp(SkillConstants.ATTACK));
+		leechBonuses[9] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.DEFENCE))) / p2.getSkills().getLevelForXp(SkillConstants.DEFENCE));
+		leechBonuses[10] = (int) ((100 * Math.floor(0.1 * p2.getSkills().getLevelForXp(SkillConstants.STRENGTH))) / p2.getSkills().getLevelForXp(SkillConstants.STRENGTH));
+		adjustStat(0, leechBonuses[8]);
+		adjustStat(1, leechBonuses[10]);
+		adjustStat(2, leechBonuses[9]);
+	}
+	
+	public boolean reachedMax(int bonus) {
+		if (bonus != 8 && bonus != 9 && bonus != 10) {
+			return leechBonuses[bonus] >= 20;
+		} else {
+			return false;
+		}
+	}
+	
+	public void increaseLeechBonus(int bonus) {
+		leechBonuses[bonus]++;
+		if (bonus == 0) {
+			adjustStat(0, leechBonuses[bonus]);
+			adjustStat(1, leechBonuses[bonus]);
+			adjustStat(2, leechBonuses[bonus]);
+		} else if (bonus == 1) {
+			adjustStat(2, leechBonuses[bonus]);
+			adjustStat(3, leechBonuses[bonus]);
+		} else if (bonus == 2) {
+			adjustStat(2, leechBonuses[bonus]);
+			adjustStat(4, leechBonuses[bonus]);
+		} else if (bonus == 3) {
+			adjustStat(0, leechBonuses[bonus]);
+		} else if (bonus == 4) {
+			adjustStat(3, leechBonuses[bonus]);
+		} else if (bonus == 5) {
+			adjustStat(4, leechBonuses[bonus]);
+		} else if (bonus == 6) {
+			adjustStat(2, leechBonuses[bonus]);
+		} else if (bonus == 7) {
+			adjustStat(1, leechBonuses[bonus]);
+		}
+	}
+	
+	public void setBoostedLeech(boolean boostedLeech) {
+		this.boostedLeech = boostedLeech;
+	}
 }

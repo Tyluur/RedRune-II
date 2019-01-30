@@ -68,11 +68,23 @@ public final class LocalPlayerUpdate {
 	}
 	
 	private boolean needsRemove(Player p) {
-		return (p.hasFinished() || !player.withinDistance(p));
+		return (p.isFinished() || !withinDistance(p));
 	}
 	
+	public boolean withinDistance(Player tile) {
+		if (player.getCutsceneManager().hasCutscene()) {
+			return player.getMapRegionsIds().contains(tile.getRegionId());
+		} else {
+			if (tile.getPlane() != player.getPlane()) {
+				return false;
+			}
+			return Math.abs(tile.getX() - player.getX()) <= 14 && Math.abs(tile.getY() - player.getY()) <= 14;
+		}
+	}
+	
+	
 	private boolean needsAdd(Player p) {
-		return p != null && !p.hasFinished() && player.withinDistance(p);
+		return p != null && !p.isFinished() && withinDistance(p);
 	}
 	
 	private void updateRegionHash(OutputStream stream, int oldHash, int newHash) {
@@ -292,7 +304,7 @@ public final class LocalPlayerUpdate {
 		if (p.getNextGraphics3() != null) {
 			maskData |= 0x40000;
 		}
-		if (p.getTemporaryMovementType() != 0) {
+		if (p.getAttributes().getTemporaryMovementType() != 0) {
 			maskData |= 0x200;
 		}
 		if (p.getNextGraphics4() != null) {
@@ -307,7 +319,7 @@ public final class LocalPlayerUpdate {
 		if (p.getNextForceTalk() != null) {
 			maskData |= 0x4000;
 		}
-		if (added || p.isUpdateMovementType()) {
+		if (added || p.getAttributes().isUpdateMovementType()) {
 			maskData |= 0x1;
 		}
 		if (p.getNextFaceEntity() != -2 || (added && p.getLastFaceEntity() != -1)) {
@@ -344,7 +356,7 @@ public final class LocalPlayerUpdate {
 		if (p.getNextGraphics3() != null) {
 			applyGraphicsMask3(p, data);
 		}
-		if (p.getTemporaryMovementType() != 0) {
+		if (p.getAttributes().getTemporaryMovementType() != 0) {
 			applyTemporaryMoveTypeMask(p, data);
 		}
 		if (p.getNextGraphics4() != null) {
@@ -359,7 +371,7 @@ public final class LocalPlayerUpdate {
 		if (p.getNextForceTalk() != null) {
 			applyForceTalkMask(p, data);
 		}
-		if (added || p.isUpdateMovementType()) {
+		if (added || p.getAttributes().isUpdateMovementType()) {
 			applyMoveTypeMask(p, data);
 		}
 		if (p.getNextFaceEntity() != -2 || (added && p.getLastFaceEntity() != -1)) {
@@ -420,15 +432,15 @@ public final class LocalPlayerUpdate {
 	}
 	
 	private void applyFaceDirectionMask(Player p, OutputStream data) {
-		data.writeShort(p.getDirection());
+		data.writeShort(p.getFaceDirection());
 	}
 	
 	private void applyMoveTypeMask(Player p, OutputStream data) {
-		data.write128Byte(p.getRun() ? 2 : 1);
+		data.write128Byte(p.isRunModeOn() ? 2 : 1);
 	}
 	
 	private void applyTemporaryMoveTypeMask(Player p, OutputStream data) {
-		data.writeByteC(p.getTemporaryMovementType());
+		data.writeByteC(p.getAttributes().getTemporaryMovementType());
 	}
 	
 	private void applyGraphicsMask1(Player p, OutputStream data) {

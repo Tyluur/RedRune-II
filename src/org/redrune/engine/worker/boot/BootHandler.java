@@ -1,4 +1,4 @@
-package org.redrune.engine.boot;
+package org.redrune.engine.worker.boot;
 
 import com.google.common.base.Stopwatch;
 import lombok.Getter;

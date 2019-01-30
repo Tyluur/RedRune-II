@@ -49,18 +49,18 @@ public class MorriganJavelinSpecialAttackPlugin extends SpecialAttackPlugin {
 				
 				@Override
 				public void run() {
-					if (finalTarget.isDead() || finalTarget.hasFinished()) {
+					if (finalTarget.isDead() || finalTarget.isFinished()) {
 						stop();
 						return;
 					}
 					if (damage > 50) {
 						damage -= 50;
 						
-						if (!target.getAttribute("teleporting", false)) {
+						if (!target.getTemporaryAttribute("teleporting", false)) {
 							finalTarget.applyHit(new Hit(source, 50, HitSplat.REGULAR_DAMAGE));
 						}
 					} else {
-						if (!target.getAttribute("teleporting", false)) {
+						if (!target.getTemporaryAttribute("teleporting", false)) {
 							finalTarget.applyHit(new Hit(source, damage, HitSplat.REGULAR_DAMAGE));
 						}
 						stop();

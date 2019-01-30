@@ -12,7 +12,7 @@ import org.redrune.utility.constants.AttributeKey;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class MiasmicBurstSpellPlugin extends CombatSpellPlugin {
+public class MiasmicBurstSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {
@@ -38,7 +38,7 @@ public class MiasmicBurstSpellPlugin extends CombatSpellPlugin {
 	public void cast(Player source, Actor target, MagicCombatStyle style) {
 		style.sendMultiSpell(source, target, this, null, null).forEach(spellContext -> {
 			Actor spellTarget = spellContext.getTarget();
-			if (!spellTarget.isPlayer() || spellTarget.getAttribute(AttributeKey.MIASMIC_IMMUNITY, false)) {
+			if (!spellTarget.isPlayer() || spellTarget.getTemporaryAttribute(AttributeKey.MIASMIC_IMMUNITY, false)) {
 				return;
 			}
 			Player p = spellTarget.toPlayer();
@@ -49,9 +49,9 @@ public class MiasmicBurstSpellPlugin extends CombatSpellPlugin {
 				@Override
 				public void run() {
 					if (getTicksPassed() == 40) {
-						spellTarget.removeAttribute(AttributeKey.MIASMIC_EFFECT);
+						spellTarget.removeTemporaryAttribute(AttributeKey.MIASMIC_EFFECT);
 					} else if (getTicksPassed() == 55) {
-						spellTarget.removeAttribute(AttributeKey.MIASMIC_IMMUNITY);
+						spellTarget.removeTemporaryAttribute(AttributeKey.MIASMIC_IMMUNITY);
 					}
 				}
 			});

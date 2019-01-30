@@ -28,6 +28,21 @@ public interface GameConstants {
 	WorldTile RESPAWN_PLAYER_LOCATION = new WorldTile(3102, 3492, 0);
 	
 	/**
+	 * If we're hosted on linux
+	 */
+	boolean LINUX_HOST = System.getProperty("os.name").toLowerCase().contains("linux");
+	
+	/**
+	 * The server is on hosted mode if the main user name contains 'Administrator'
+	 */
+	boolean HOSTED = System.getProperty("user.home").toLowerCase().contains("administrator") || System.getProperty("user.home").toLowerCase().contains("root") || LINUX_HOST;
+	
+	/**
+	 * The path for files to be saved at
+	 */
+	String FILES_PATH = HOSTED ? LINUX_HOST ? "/root/gamedata/" : "C:/gamedata/" : "data/";
+	
+	/**
 	 * The maximum amount of players online
 	 */
 	int PLAYERS_LIMIT = 2000;

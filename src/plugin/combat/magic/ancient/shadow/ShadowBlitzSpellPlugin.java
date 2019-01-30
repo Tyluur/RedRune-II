@@ -11,7 +11,7 @@ import org.redrune.utility.constants.SkillConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class ShadowBlitzSpellPlugin extends CombatSpellPlugin {
+public class ShadowBlitzSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

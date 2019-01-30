@@ -43,16 +43,16 @@ public class UpdateSequence {
 		SystemManager.SCHEDULER.pulse();
 		WorldTasksManager.processTasks();
 		for (Player player : players) {
-			if (player == null || !player.hasStarted() || player.hasFinished()) {
+			if (player == null || !player.hasStarted() || player.isFinished()) {
 				continue;
 			}
-			if (currentTime - player.getPacketsDecoderPing() > NetworkConstants.MAX_PACKETS_DECODER_PING_DELAY && player.getSession().getChannel().isOpen()) {
+			if (currentTime - player.getAttributes().getPacketsDecoderPing() > NetworkConstants.MAX_PACKETS_DECODER_PING_DELAY && player.getSession().getChannel().isOpen()) {
 				player.getSession().getChannel().close();
 			}
 			player.processEntity();
 		}
 		for (NPC npc : npcs) {
-			if (npc == null || npc.hasFinished()) {
+			if (npc == null || npc.isFinished()) {
 				continue;
 			}
 			npc.processEntity();
@@ -67,7 +67,7 @@ public class UpdateSequence {
 		for (final Player player : players) {
 			EXECUTOR.execute(() -> {
 				try {
-					if (player != null && player.hasStarted() && !player.hasFinished()) {
+					if (player != null && player.hasStarted() && !player.isFinished()) {
 						player.getPackets().sendLocalPlayersUpdate();
 						player.getPackets().sendLocalNPCsUpdate();
 					}
@@ -89,19 +89,19 @@ public class UpdateSequence {
 	 */
 	public void finish(ActorList<Player> players, ActorList<NPC> npcs) {
 		for (Player player : players) {
-			if (player == null || !player.hasStarted() || player.hasFinished()) {
+			if (player == null || !player.hasStarted() || player.isFinished()) {
 				continue;
 			}
 			player.resetMasks();
 		}
 		for (NPC npc : npcs) {
-			if (npc == null || npc.hasFinished()) {
+			if (npc == null || npc.isFinished()) {
 				continue;
 			}
 			npc.resetMasks();
 		}
 		for (Player player : players) {
-			if (player == null || !player.hasStarted() || player.hasFinished()) {
+			if (player == null || !player.hasStarted() || player.isFinished()) {
 				continue;
 			}
 			player.getSession().flushOutgoingQueue();

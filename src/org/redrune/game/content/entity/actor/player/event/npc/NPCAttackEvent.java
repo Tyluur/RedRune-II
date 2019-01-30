@@ -36,7 +36,7 @@ public class NPCAttackEvent extends Event {
 				return;
 			}
 		} else if (!target.isForceMultiAttacked()) {
-			if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
+			if (!target.isInMultiArea() || !player.isInMultiArea()) {
 				if (player.getAttackedBy() != target && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
 					player.getPackets().sendGameMessage("I'm already under attack.");
 					return;

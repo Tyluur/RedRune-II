@@ -15,7 +15,7 @@ import org.redrune.utility.functions.Misc;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/5/2017
  */
-public abstract class RangeWeaponPlugin extends Plugin {
+public abstract class RangeWeaponPlugin implements Plugin {
 	
 	/**
 	 * The pattern-matching names of weapons that will use this plugin

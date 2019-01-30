@@ -21,12 +21,12 @@ public class Spiritterrorbird extends Familiar {
 	@Override
 	public boolean submitSpecial(Object object) {
 		Player player = (Player) object;
-		if (player.getRunEnergy() == 100) {
+		if (player.getAttributes().getRunEnergy() == 100) {
 			player.getPackets().sendGameMessage("This wouldn't effect you at all.");
 			return false;
 		}
 		int newLevel = getOwner().getSkills().getLevel(SkillConstants.AGILITY) + 2;
-		int runEnergy = player.getRunEnergy() + (Math.round(newLevel / 2));
+		int runEnergy = player.getAttributes().getRunEnergy() + (Math.round(newLevel / 2));
 		if (newLevel > getOwner().getSkills().getLevelForXp(SkillConstants.AGILITY) + 2) {
 			newLevel = getOwner().getSkills().getLevelForXp(SkillConstants.AGILITY) + 2;
 		}
@@ -34,7 +34,7 @@ public class Spiritterrorbird extends Familiar {
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));
 		player.getSkills().set(SkillConstants.AGILITY, newLevel);
-		player.setRunEnergy(runEnergy > 100 ? 100 : runEnergy);
+		player.getAttributes().setRunEnergy(runEnergy > 100 ? 100 : runEnergy);
 		return true;
 	}
 

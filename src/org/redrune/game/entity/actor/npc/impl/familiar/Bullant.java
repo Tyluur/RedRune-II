@@ -46,15 +46,15 @@ public class Bullant extends Familiar {
 	@Override
 	public boolean submitSpecial(Object object) {
 		Player player = (Player) object;
-		if (player.getRunEnergy() == 100) {
+		if (player.getAttributes().getRunEnergy() == 100) {
 			player.getPackets().sendGameMessage("This wouldn't effect you at all.");
 			return false;
 		}
 		int agilityLevel = getOwner().getSkills().getLevel(SkillConstants.AGILITY);
-		int runEnergy = player.getRunEnergy() + (Math.round(agilityLevel / 2));
+		int runEnergy = player.getAttributes().getRunEnergy() + (Math.round(agilityLevel / 2));
 		player.setNextGraphics(new Graphics(1300));
 		player.setNextAnimation(new Animation(7660));
-		player.setRunEnergy(runEnergy > 100 ? 100 : runEnergy);
+		player.getAttributes().setRunEnergy(runEnergy > 100 ? 100 : runEnergy);
 		return true;
 	}
 }

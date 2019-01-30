@@ -78,7 +78,7 @@ public class Wilderness extends Controller {
 	public void removeIcon() {
 		if (showingSkull) {
 			showingSkull = false;
-			player.setCanPvp(false);
+			player.getAttributes().setCanPvp(false);
 			player.getPackets().closeInterface(player.getInterfaceManager().hasRezizableScreen() ? 10 : 19);
 			player.getAppearance().generateAppearanceData();
 			player.getEquipment().refresh(null);
@@ -94,7 +94,7 @@ public class Wilderness extends Controller {
 			return false;
 		}
 		if (target.getAttackedBy() != player && player.getAttackedBy() != target) {
-			player.setWildernessSkull();
+			player.getAttributes().setWildernessSkull();
 		}
 		return true;
 	}
@@ -103,7 +103,7 @@ public class Wilderness extends Controller {
 	public boolean canAttack(Actor target) {
 		if (target instanceof Player) {
 			Player p2 = (Player) target;
-			if (player.isCanPvp() && !p2.isCanPvp()) {
+			if (player.getAttributes().isCanPvp() && !p2.getAttributes().isCanPvp()) {
 				player.getPackets().sendGameMessage("You can't attack players who aren't in the Wilderness.");
 				return false;
 			}
@@ -132,13 +132,13 @@ public class Wilderness extends Controller {
 		boolean isAtWildSafe = isAtWildSafe();
 		if (!showingSkull && isAtWild && !isAtWildSafe) {
 			showingSkull = true;
-			player.setCanPvp(true);
+			player.getAttributes().setCanPvp(true);
 			showSkull();
 			player.getAppearance().generateAppearanceData();
 		} else if (showingSkull && (isAtWildSafe || !isAtWild)) {
 			removeIcon();
 		} else if (!isAtWildSafe && !isAtWild) {
-			player.setCanPvp(false);
+			player.getAttributes().setCanPvp(false);
 			removeIcon();
 			removeController();
 		}
@@ -157,7 +157,7 @@ public class Wilderness extends Controller {
 			player.getPackets().sendGameMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
-		if (player.getTeleBlockDelay() > Misc.currentTimeMillis()) {
+		if (player.getAttributes().getTeleBlockDelay() > Misc.currentTimeMillis()) {
 			player.getPackets().sendGameMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
@@ -171,7 +171,7 @@ public class Wilderness extends Controller {
 			player.getPackets().sendGameMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
-		if (player.getTeleBlockDelay() > Misc.currentTimeMillis()) {
+		if (player.getAttributes().getTeleBlockDelay() > Misc.currentTimeMillis()) {
 			player.getPackets().sendGameMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
@@ -180,7 +180,7 @@ public class Wilderness extends Controller {
 	
 	@Override
 	public boolean processObjectTeleport(WorldTile toTile) {
-		Long teleBlockDelay = player.getTeleBlockDelay();
+		Long teleBlockDelay = player.getAttributes().getTeleBlockDelay();
 		if (teleBlockDelay != -1 && teleBlockDelay > Misc.currentTimeMillis()) {
 			player.getPackets().sendGameMessage("A mysterious force prevents you from teleporting.");
 			return false;

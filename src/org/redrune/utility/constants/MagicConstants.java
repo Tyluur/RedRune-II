@@ -62,6 +62,12 @@ public interface MagicConstants {
 	
 	int OBJECT_TELEPORT = 2;
 	
+	int TELE_MOVE_TYPE = 127;
+	
+	int WALK_MOVE_TYPE = 1;
+	
+	int RUN_MOVE_TYPE = 2;
+	
 	enum MagicBook {
 		REGULAR(192),
 		ANCIENTS(193),

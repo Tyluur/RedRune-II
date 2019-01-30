@@ -33,7 +33,7 @@ public class Smithing extends Action {
 	
 	@Override
 	public boolean start(Player player) {
-		if ((bar = ForgingBar.forId(((Integer) player.getTemporaryAttributtes().get("itemUsed")))) == null) {
+		if ((bar = ForgingBar.forId(((Integer) player.getTemporaryAttributes().get("itemUsed")))) == null) {
 			return false;
 		}
 		if (!player.getInventory().containsOneItem(HAMMER, bar.getBarId())) {
@@ -192,7 +192,7 @@ public class Smithing extends Action {
 		}
 		
 		public static int getLevels(int slot, Player player) {
-			ForgingBar bar = ForgingBar.forId((Integer) player.getTemporaryAttributtes().get("itemUsed"));
+			ForgingBar bar = ForgingBar.forId((Integer) player.getTemporaryAttributes().get("itemUsed"));
 			int base = bar.getLevel();
 			int barAmount = getFixedAmount(bar, bar.getItems()[slot]);
 			int level = base + barAmount;
@@ -253,7 +253,7 @@ public class Smithing extends Action {
 		
 		public static void sendSmithingInterface(Player player) {
 			calculateComponentConfigurations();
-			ForgingBar bar = ForgingBar.forId((Integer) player.getTemporaryAttributtes().get("itemUsed"));
+			ForgingBar bar = ForgingBar.forId((Integer) player.getTemporaryAttributes().get("itemUsed"));
 			sendComponentConfigs(player, bar);
 			for (int i = 0; i < bar.getItems().length; i++) {
 				player.getPackets().sendItemOnIComponent(SMITHING_INTERFACE, componentChilds[i], bar.getItems()[i].getId(), 1);

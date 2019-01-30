@@ -47,13 +47,13 @@ public class InterfaceInteractionPacketDecoder implements IncomingPacketDecoder 
 				break;
 			case SCREEN_PACKET:
 				int displayMode = stream.readUnsignedByte();
-				player.setScreenWidth(stream.readUnsignedShort());
-				player.setScreenHeight(stream.readUnsignedShort());
+				player.getInterfaceManager().setScreenWidth(stream.readUnsignedShort());
+				player.getInterfaceManager().setScreenHeight(stream.readUnsignedShort());
 				@SuppressWarnings("unused") boolean switchScreenMode = stream.readUnsignedByte() == 1;
-				if (!player.hasStarted() || player.hasFinished() || displayMode == player.getDisplayMode() || !player.getInterfaceManager().containsInterface(742)) {
+				if (!player.hasStarted() || player.isFinished() || displayMode == player.getInterfaceManager().getDisplayMode() || !player.getInterfaceManager().containsInterface(742)) {
 					return;
 				}
-				player.setDisplayMode(displayMode);
+				player.getInterfaceManager().setDisplayMode(displayMode);
 				player.getInterfaceManager().removeAll();
 				player.getInterfaceManager().sendInterfaces();
 				player.getInterfaceManager().sendInterface(742);
@@ -144,8 +144,12 @@ public class InterfaceInteractionPacketDecoder implements IncomingPacketDecoder 
 			return;
 		}
 		InterfacePlugin plugin = PluginRepository.handleInterface(player, interfaceId, componentId, itemId, slotId, packetId);
-		if (plugin != null && GameFlags.debugMode) {
-			System.out.println("[" + plugin.getClass().getSimpleName() + "] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]");
+		if (GameFlags.debugMode) {
+			if (plugin != null) {
+				System.out.println("[" + plugin.getClass().getSimpleName() + "] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]");
+			} else {
+				System.out.println("[N/A] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]");
+			}
 		}
 	}
 }

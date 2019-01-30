@@ -26,16 +26,16 @@ public class Turael extends Dialogue {
 			sendDialogue((short) 236, "What would you like to say?", "I would like a slayer task.", "What is my current slayer task?");
 		} else if (stage == 0) {
 			if (componentId == 1) {
-				if (player.slayerTask.getTaskMonstersLeft() < 1) {
+				if (player.getAttributes().getSlayerTask().getTaskMonstersLeft() < 1) {
 					Slayer.assignTask(player, SlayerMaster.TURAEL);
-					sendEntityDialogue((short) 241, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "Your slayer task is to kill " + player.slayerTask.getTaskMonstersLeft() + " " + player.slayerTask.getCurrentTask().simpleName }, (byte) 1, 8461, 9827);
+					sendEntityDialogue((short) 241, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "Your slayer task is to kill " + player.getAttributes().getSlayerTask().getTaskMonstersLeft() + " " + player.getAttributes().getSlayerTask().getCurrentTask().simpleName }, (byte) 1, 8461, 9827);
 				} else {
-					sendEntityDialogue((short) 243, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "You already have a slayer task!", "You need to kill " + player.slayerTask.getTaskMonstersLeft() + " " + player.slayerTask.getCurrentTask().simpleName, "Would you like a new slayer task?" }, (byte) 1, 8461, 9827);
+					sendEntityDialogue((short) 243, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "You already have a slayer task!", "You need to kill " + player.getAttributes().getSlayerTask().getTaskMonstersLeft() + " " + player.getAttributes().getSlayerTask().getCurrentTask().simpleName, "Would you like a new slayer task?" }, (byte) 1, 8461, 9827);
 				}
 				stage = 1;
 			} else if (componentId == 2) {
-				if (player.slayerTask.getTaskMonstersLeft() > 0) {
-					sendEntityDialogue((short) 242, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "You have a short memory, don't you?", "You need to kill " + player.slayerTask.getTaskMonstersLeft() + " " + player.slayerTask.getCurrentTask() }, (byte) 1, 8461, 9827);
+				if (player.getAttributes().getSlayerTask().getTaskMonstersLeft() > 0) {
+					sendEntityDialogue((short) 242, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "You have a short memory, don't you?", "You need to kill " + player.getAttributes().getSlayerTask().getTaskMonstersLeft() + " " + player.getAttributes().getSlayerTask().getCurrentTask() }, (byte) 1, 8461, 9827);
 				} else {
 					sendEntityDialogue((short) 241, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "Foolish warrior. You don't have a slayer task!" }, (byte) 1, 8461, 9827);
 				}
@@ -54,7 +54,7 @@ public class Turael extends Dialogue {
 			player.getPackets().sendGameMessage("" + componentId);
 			if (componentId == 1) {
 				Slayer.assignTask(player, SlayerMaster.TURAEL);
-				sendEntityDialogue((short) 241, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "Your slayer task is to kill " + player.slayerTask.getTaskMonstersLeft() + " " + player.slayerTask.getCurrentTask().simpleName }, (byte) 1, 8461, 9827);
+				sendEntityDialogue((short) 241, new String[] { NPCDefinitions.getNPCDefinitions(8461).getName(), "Your slayer task is to kill " + player.getAttributes().getSlayerTask().getTaskMonstersLeft() + " " + player.getAttributes().getSlayerTask().getCurrentTask().simpleName }, (byte) 1, 8461, 9827);
 			} else {
 				end();
 				stage = -1;

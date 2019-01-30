@@ -24,11 +24,11 @@ public class PlayerAttackEvent extends Event {
 	@Override
 	public void run(Player player) {
 		player.setNextFaceActor(target);
-		if (!player.isCanPvp() || !target.isCanPvp()) {
+		if (!player.getAttributes().isCanPvp() || !target.getAttributes().isCanPvp()) {
 			player.getPackets().sendGameMessage("You can't attack players when you're not in the Wilderness.");
 			return;
 		}
-		if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
+		if (!target.isInMultiArea() || !player.isInMultiArea()) {
 			if (player.getAttackedBy() != target && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
 				player.getPackets().sendGameMessage("I'm already under attack.");
 				return;

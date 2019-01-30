@@ -19,12 +19,12 @@ public class Burying {
 		if (item == null || Bone.forId(item.getId()) == null) {
 			return false;
 		}
-		if (player.getBoneDelay() > Misc.currentTimeMillis()) {
+		if (player.getAttributes().getBoneDelay() > Misc.currentTimeMillis()) {
 			return true;
 		}
 		final Bone bone = Bone.forId(item.getId());
 		final ItemDefinitions itemDef = new ItemDefinitions(item.getId());
-		player.addBoneDelay(3000);
+		player.getAttributes().addBoneDelay(3000);
 		player.getPackets().sendSound(2738, 0, 1);
 		player.setNextAnimation(new Animation(827));
 		player.getPackets().sendGameMessage("You dig a hole in the ground...");
@@ -98,12 +98,12 @@ public class Burying {
 			if (item == null || Bone.forId(item.getId()) == null) {
 				return;
 			}
-			if (player.getBoneDelay() > Misc.currentTimeMillis()) {
+			if (player.getAttributes().getBoneDelay() > Misc.currentTimeMillis()) {
 				return;
 			}
 			final Bone bone = Bone.forId(item.getId());
 			final ItemDefinitions itemDef = new ItemDefinitions(item.getId());
-			player.addBoneDelay(3000);
+			player.getAttributes().addBoneDelay(3000);
 			player.getPackets().sendSound(2738, 0, 1);
 			player.setNextAnimation(new Animation(827));
 			player.getPackets().sendGameMessage("You dig a hole in the ground...");

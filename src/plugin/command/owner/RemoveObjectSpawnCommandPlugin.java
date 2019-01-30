@@ -11,8 +11,8 @@ public class RemoveObjectSpawnCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		player.putAttribute("removing_objects", !player.getAttribute("removing_objects", false));
-		player.getPackets().sendGameMessage("You are now " + (player.getAttribute("removing_objects", false) ? "removing" : "examining") + " objects.");
+		player.putAttribute("removing_objects", !player.getTemporaryAttribute("removing_objects", false));
+		player.getPackets().sendGameMessage("You are now " + (player.getTemporaryAttribute("removing_objects", false) ? "removing" : "examining") + " objects.");
 	}
 	
 	@Override

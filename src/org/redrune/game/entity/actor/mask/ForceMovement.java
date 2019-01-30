@@ -4,6 +4,14 @@ import org.redrune.game.global.WorldTile;
 
 public final class ForceMovement {
 	
+	public static final int NORTH = 0;
+	
+	public static final int EAST = 1;
+	
+	public static final int SOUTH = 2;
+	
+	public static final int WEST = 3;
+	
 	private WorldTile toFirstTile;
 	
 	private WorldTile toSecondTile;

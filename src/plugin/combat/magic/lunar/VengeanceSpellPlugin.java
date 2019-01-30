@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/8/2017
  */
-public class VengeanceSpellPlugin extends RegularSpellPlugin {
+public class VengeanceSpellPlugin implements RegularSpellPlugin {
 	
 	@Override
 	public int spellId() {
@@ -34,7 +34,7 @@ public class VengeanceSpellPlugin extends RegularSpellPlugin {
 	
 	@Override
 	public void cast(Player player, Actor target) {
-		Long lastTimeCast = player.getAttribute("last_veng_time", -1L);
+		Long lastTimeCast = player.getTemporaryAttribute("last_veng_time", -1L);
 		if (player.getSkills().getLevel(SkillConstants.MAGIC) < 94) {
 			player.getPackets().sendGameMessage("Your Magic level is not high enough for this spell.");
 			return;

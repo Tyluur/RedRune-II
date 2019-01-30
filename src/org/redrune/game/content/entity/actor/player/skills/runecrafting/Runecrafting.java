@@ -9,11 +9,11 @@ import org.redrune.utility.constants.SkillConstants;
 
 public final class Runecrafting {
 	
-	public final static int[] LEVEL_REQ = { 1, 25, 50, 75 };
+	private final static int[] LEVEL_REQ = { 1, 25, 50, 75 };
 	
 	public final static int RUNE_ESSENCE = 1436, PURE_ESSENCE = 7936, AIR_TIARA = 5527, MIND_TIARA = 5529, WATER_TIARA = 5531, BODY_TIARA = 5533, EARTH_TIARA = 5535, FIRE_TIARA = 5537, COSMIC_TIARA = 5539, NATURE_TIARA = 5541, CHAOS_TIARA = 5543, LAW_TIARA = 5545, DEATH_TIARA = 5547, BLOOD_TIARA = 5549, SOUL_TIARA = 5551, ASTRAL_TIARA = 9106, OMNI_TIARA = 13655;
 	
-	public static final int[] POUCH_SIZE = { 3, 6, 9, 12 };
+	private static final int[] POUCH_SIZE = { 3, 6, 9, 12 };
 	
 	private Runecrafting() {
 	
@@ -117,9 +117,7 @@ public final class Runecrafting {
 		if (i < 0) {
 			return;
 		}
-		p.getPackets().sendGameMessage(
-				
-				"This pouch has " + p.getPouches()[i] + " rune essences in it.", false);
+		p.getPackets().sendGameMessage("This pouch has " + p.getAttributes().getPouches()[i] + " rune essences in it.", false);
 	}
 	
 	public static void fillPouch(Player p, int i) {
@@ -130,16 +128,16 @@ public final class Runecrafting {
 			p.getPackets().sendGameMessage("You need a runecrafting level of " + LEVEL_REQ[i] + " to fill this pouch.", false);
 			return;
 		}
-		int essenceToAdd = POUCH_SIZE[i] - p.getPouches()[i];
+		int essenceToAdd = POUCH_SIZE[i] - p.getAttributes().getPouches()[i];
 		if (essenceToAdd > p.getInventory().getItems().getNumberOf(1436)) {
 			essenceToAdd = p.getInventory().getItems().getNumberOf(1436);
 		}
-		if (essenceToAdd > POUCH_SIZE[i] - p.getPouches()[i]) {
-			essenceToAdd = POUCH_SIZE[i] - p.getPouches()[i];
+		if (essenceToAdd > POUCH_SIZE[i] - p.getAttributes().getPouches()[i]) {
+			essenceToAdd = POUCH_SIZE[i] - p.getAttributes().getPouches()[i];
 		}
 		if (essenceToAdd > 0) {
 			p.getInventory().deleteItem(1436, essenceToAdd);
-			p.getPouches()[i] += essenceToAdd;
+			p.getAttributes().getPouches()[i] += essenceToAdd;
 		}
 		if (!p.getInventory().containsOneItem(1436)) {
 			p.getPackets().sendGameMessage("You don't have any essence with you.", false);
@@ -155,17 +153,16 @@ public final class Runecrafting {
 		if (i < 0) {
 			return;
 		}
-		int toAdd = p.getPouches()[i];
+		int toAdd = p.getAttributes().getPouches()[i];
 		if (toAdd > p.getInventory().getFreeSlots()) {
 			toAdd = p.getInventory().getFreeSlots();
 		}
 		if (toAdd > 0) {
 			p.getInventory().addItem(1436, toAdd);
-			p.getPouches()[i] -= toAdd;
+			p.getAttributes().getPouches()[i] -= toAdd;
 		}
 		if (toAdd == 0) {
 			p.getPackets().sendGameMessage("Your pouch has no essence left in it.", false);
-			return;
 		}
 	}
 }

@@ -4,25 +4,26 @@ import org.redrune.cache.Cache;
 import org.redrune.cache.huffman.Huffman;
 import org.redrune.cache.loaders.ItemEquipIds;
 import org.redrune.engine.SystemManager;
-import org.redrune.engine.boot.BootHandler;
+import org.redrune.engine.worker.boot.BootHandler;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.entity.actor.npc.FishingSpotsHandler;
 import org.redrune.game.content.combat.npc.CombatScriptsHandler;
-import org.redrune.game.content.entity.actor.player.controller.ControllerHandler;
 import org.redrune.game.content.cutscene.CutscenesHandler;
+import org.redrune.game.content.entity.actor.npc.FishingSpotsHandler;
+import org.redrune.game.content.entity.actor.player.controller.ControllerHandler;
 import org.redrune.game.content.entity.actor.player.dialogue.DialogueHandler;
 import org.redrune.game.content.entity.actor.player.market.ShopRepository;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder;
 import org.redrune.game.entity.actor.player.link.FriendChatsManager;
 import org.redrune.game.global.map.region.RegionBuilder;
 import org.redrune.game.global.punishment.PunishmentRepository;
 import org.redrune.game.global.worldlist.WorldList;
-import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.networking.ServerChannelHandler;
 import org.redrune.networking.codec.packet.IncomingPacketRepository;
 import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.functions.OutLogger;
 import org.redrune.utility.game.entity.actor.npc.NPCWalkingFlag;
+import org.redrune.utility.game.entity.actor.player.Censor;
 import org.redrune.utility.game.entity.object.ObjectRemoval;
 import org.redrune.utility.game.entity.object.ObjectSpawns;
 import org.redrune.utility.game.map.MapArchiveKeys;
@@ -77,6 +78,7 @@ public final class Bootstrap {
 				MapArchiveKeys.initialize();
 				ObjectSpawns.initialize();
 				IncomingPacketRepository.initialize();
+				Censor.initialize();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

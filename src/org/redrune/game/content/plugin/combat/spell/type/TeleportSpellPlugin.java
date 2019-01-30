@@ -13,15 +13,15 @@ import static org.redrune.game.content.combat.function.Magic.sendTeleportSpell;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/8/2017
  */
-public abstract class TeleportSpellPlugin extends SpellPlugin {
+public interface TeleportSpellPlugin extends SpellPlugin {
 	
 	@Override
-	public void register() {
+	default void register() {
 		PluginRepository.register(this, book(), spellId());
 	}
 	
 	@Override
-	public void cast(Player player, Actor target) {
+	default void cast(Player player, Actor target) {
 		switch (book()) {
 			case REGULAR:
 				sendModernTeleport(player, destination(), levelRequired(), exp(), randomize(), runesRequired());
@@ -50,24 +50,24 @@ public abstract class TeleportSpellPlugin extends SpellPlugin {
 	/**
 	 * The destination of the teleportation
 	 */
-	public abstract WorldTile destination();
+	WorldTile destination();
 	
 	/**
 	 * The level required to use the spell
 	 */
-	public abstract int levelRequired();
+	int levelRequired();
 	
 	/**
 	 * If the teleport spell should randomize the coordinates to arrive at
 	 */
-	public boolean randomize() {
+	default boolean randomize() {
 		return true;
 	}
 	
 	/**
 	 * The runes that are required
 	 */
-	public abstract int[] runesRequired();
+	int[] runesRequired();
 	
 	/**
 	 * Sends an ancients teleport spell

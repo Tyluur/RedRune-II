@@ -1,5 +1,6 @@
 package org.redrune.networking.codec.packet;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.functions.Misc;
@@ -61,7 +62,7 @@ public class IncomingPacketRepository {
 				return;
 			}
 			decoder.decode(player, stream, packetId, packetLength);
-			/*if (GameFlags.debugMode) {
+		/*	if (GameFlags.debugMode) {
 				System.out.println("Handled packet #" + packetId + " with decoder " + decoder.getClass().getSimpleName());
 			}*/
 		} catch (Exception e) {

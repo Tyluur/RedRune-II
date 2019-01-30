@@ -37,7 +37,11 @@ public class MeleeCombatCalculator extends AbstractCombatCalculator {
 		final int styleBonus = attackStyle == 0 ? 3 : attackStyle == 2 ? 1 : 0;
 		int bonus = player.getCombatDefinitions().getBonus(style);
 		double effective = Math.floor(((level * prayer) * additional) + styleBonus + weaponBonus);
-		return (int) Math.floor((((effective + 8) * (bonus + 64)) / 10) * 1.10);
+		double voidAccuracy = 1.0;
+		if (CombatAlgorithm.fullVoidEquipped(player, 11665, 11676)) {
+			voidAccuracy = 1.1;
+		}
+		return (int) Math.floor((((effective + 8) * (bonus + 64)) / 10) * voidAccuracy);
 	}
 	
 	@Override

@@ -6,19 +6,21 @@ import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
 import org.redrune.game.content.entity.actor.player.dialogue.DialogueManager;
 import org.redrune.game.content.entity.actor.player.event.EventManager;
+import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.SlayerMonsters;
-import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask;
 import org.redrune.game.content.entity.item.Pots;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.data.CombatDefinitions;
-import org.redrune.game.entity.actor.mask.*;
+import org.redrune.game.entity.actor.mask.Animation;
+import org.redrune.game.entity.actor.mask.ForceTalk;
+import org.redrune.game.entity.actor.mask.Hit;
+import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.player.data.*;
@@ -33,10 +35,9 @@ import org.redrune.networking.Session;
 import org.redrune.networking.codec.encode.WorldPacketsEncoder;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
-import org.redrune.utility.file.SerializableFilesManager;
 import org.redrune.utility.functions.Misc;
+import org.redrune.utility.game.entity.actor.player.PlayerSaving;
 import org.redrune.utility.game.entity.actor.player.PublicChatMessage;
-import org.redrune.utility.game.entity.actor.player.QuickChatMessage;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -44,20 +45,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Player extends Actor {
 	
-	public static final int TELE_MOVE_TYPE = 127, WALK_MOVE_TYPE = 1, RUN_MOVE_TYPE = 2;
-	
 	private static final long serialVersionUID = 2011932556974180375L;
 	
-	public SlayerTask slayerTask;
-	
-	private String displayName;
-	
+	/**
+	 * The attributes the player has
+	 */
 	@Getter
-	private String lastIP;
-	
-	@Getter
-	@Setter
-	private String lastMac;
+	private PlayerAttributes attributes;
 	
 	/**
 	 * The set of the rights the player has
@@ -65,239 +59,214 @@ public class Player extends Actor {
 	@Getter
 	private Set<PlayerRight> rights;
 	
+	/**
+	 * The password for logging in
+	 */
 	@Getter
 	@Setter
 	private String password;
 	
+	/**
+	 * The appearance handler and container
+	 */
 	@Getter
 	private PlayerAppearance appearance;
 	
+	/**
+	 * The inventory container and handler
+	 */
 	@Getter
 	private PlayerInventory inventory;
 	
+	/**
+	 * The equipment container and handler
+	 */
 	@Getter
 	private PlayerEquipment equipment;
 	
+	/**
+	 * The skill handler and container
+	 */
 	@Getter
 	private PlayerSkills skills;
 	
-	@Getter
-	private CombatDefinitions combatDefinitions;
-	
-	@Getter
-	private PlayerPrayer prayer;
-	
+	/**
+	 * The bank handler and container
+	 */
 	@Getter
 	private PlayerBank bank;
 	
+	/**
+	 * The prayer handler
+	 */
+	@Getter
+	private PlayerPrayer prayer;
+	
+	/**
+	 * The definitions used for combat events
+	 */
+	@Getter
+	private CombatDefinitions combatDefinitions;
+	
+	/**
+	 * The manager for {@code Controller}s
+	 */
 	@Getter
 	@Setter
 	private ControllerManager controllerManager;
 	
+	/**
+	 * The handler for music
+	 */
 	@Getter
 	private MusicsManager musicsManager;
 	
+	/**
+	 * The handler for emotes
+	 */
 	@Getter
 	private EmotesManager emotesManager;
 	
+	/**
+	 * The handler for all social interaction
+	 */
 	@Getter
 	private ContactManager contactManager;
 	
+	/**
+	 * The handler for auras
+	 */
 	@Getter
 	private AuraManager auraManager;
 	
-	@Getter
-	private PlayerSaving saving;
-	
+	/**
+	 * The instance of the familiar the player owns
+	 */
 	@Getter
 	@Setter
 	private Familiar familiar;
 	
-	@Getter
-	private byte runEnergy;
-	
-	@Getter
-	@Setter
-	private boolean allowChatEffects;
-	
-	@Getter
-	@Setter
-	private boolean mouseButtons;
-	
-	@Getter
-	@Setter
-	private int privateChatSetup;
-	
-	private int skullDelay;
-	
-	@Getter
-	private int skullId;
-	
-	@Getter
-	@Setter
-	private boolean forceNextMapLoadRefresh;
-	
-	@Getter
-	private long poisonImmune;
-	
-	@Getter
-	private long fireImmune;
-	
-	@Getter
-	private int[] pouches;
-	
-	@Getter
-	@Setter
-	private boolean filterGame;
-	
+	/**
+	 * The handler for items with charges, meaning degradable items
+	 */
 	@Getter
 	private ChargesManager charges;
 	
-	@Getter
-	@Setter
-	private int[] maxedCapeCustomized;
-	
-	@Getter
-	@Setter
-	private int[] completionistCapeCustomized;
-	
-	@Getter
-	@Setter
-	private int overloadDelay;
-	
-	@Getter
-	@Setter
-	private String currentFriendChatOwner;
-	
-	@Getter
-	@Setter
-	private int summoningLeftClickOption;
-	
-	private List<String> ownedObjectsManagerKeys;
-	
-	@Getter
-	@Setter
-	private boolean experienceLocked;
-	
-	@Getter
-	@Setter
-	private int temporaryMovementType;
-	
-	@Getter
-	private boolean updateMovementType;
-	
-	@Getter
-	@Setter
-	private transient PacketSender packetSender;
-	
+	/**
+	 * The username, saved as a transient because it changes every time the player logs in
+	 */
 	@Getter
 	@Setter
 	private transient String username;
 	
+	/**
+	 * The session object used for the player
+	 */
 	@Getter
 	@Setter
 	private transient Session session;
 	
-	private transient boolean clientLoadedMapRegion;
-	
-	@Getter
-	@Setter
-	private transient int displayMode;
-	
-	@Getter
-	@Setter
-	private transient int trapAmount;
-	
-	@Getter
-	@Setter
-	private transient int screenHeight;
-	
-	@Getter
-	@Setter
-	private transient int screenWidth;
-	
+	/**
+	 * The container and handler for interfaces
+	 */
 	@Getter
 	private transient InterfaceManager interfaceManager;
 	
+	/**
+	 * The handler for dialogues
+	 */
 	@Getter
 	private transient DialogueManager dialogueManager;
 	
+	/**
+	 * The handler and container for hint icons
+	 */
 	@Getter
 	private transient HintIconsManager hintIconsManager;
 	
+	/**
+	 * The handler for all game {@link org.redrune.game.content.entity.actor.player.action.Action}s
+	 */
 	@Getter
 	private transient ActionManager actionManager;
 	
+	/**
+	 * The handler for all game {@link org.redrune.game.content.entity.actor.player.event.Event}s
+	 */
 	@Getter
 	private transient EventManager eventManager;
 	
+	/**
+	 * The handler for {@link org.redrune.game.content.cutscene.Cutscene}s
+	 */
 	@Getter
 	private transient CutsceneManager cutsceneManager;
 	
+	/**
+	 * The handler for the price checking interface
+	 */
 	@Getter
 	private transient PriceCheckManager priceCheckManager;
 	
+	/**
+	 * The route event the player is engaged in, contains the task to perform once the destination has been properly
+	 * arrived at as well
+	 */
 	private transient RouteEvent routeEvent;
 	
+	/**
+	 * The event to perform when the interfaces we have open are closed
+	 */
+	@Setter
+	private transient Runnable closeInterfacesEvent;
+	
+	/**
+	 * The handler and container for friends chats
+	 */
 	@Getter
 	@Setter
 	private transient FriendChatsManager currentFriendChat;
 	
+	/**
+	 * The player updating handler
+	 */
 	@Getter
 	private transient LocalPlayerUpdate localPlayerUpdate;
 	
+	/**
+	 * The npc update handler
+	 */
 	@Getter
 	private transient LocalNPCUpdate localNPCUpdate;
 	
+	/**
+	 * The var manager
+	 */
+	@Getter
+	private transient VarManager varManager;
+	
+	/**
+	 * The container and handler for trades
+	 */
 	@Getter
 	private transient TradeManager tradeManager;
 	
+	/**
+	 * If the player's game session has properly started, this is flagged before {@link #run()} is called
+	 */
 	private transient boolean started;
 	
+	/**
+	 * if the player's game session is properly running, this is  flagged after {@link #run()} is called
+	 */
 	@Getter
 	private transient boolean running;
 	
+	/**
+	 * If the player's game session is finishing, used for x-log prevention, this is flagged during the {@link
+	 * #finish()} process
+	 */
 	private transient boolean finishing;
-	
-	@Getter
-	@Setter
-	private transient long packetsDecoderPing;
-	
-	@Getter
-	private transient boolean resting;
-	
-	@Getter
-	private transient boolean canPvp;
-	
-	@Getter
-	@Setter
-	private transient long foodDelay;
-	
-	@Getter
-	@Setter
-	private transient long potDelay;
-	
-	@Getter
-	@Setter
-	private transient long boneDelay;
-	
-	@Setter
-	private transient Runnable closeInterfacesEvent;
-	
-	@Getter
-	@Setter
-	private transient long lastPublicMessage;
-	
-	@Getter
-	@Setter
-	private transient long polDelay;
-	
-	@Getter
-	private transient List<Integer> switchItemCache;
-	
-	@Getter
-	@Setter
-	private transient boolean equipDisabled;
 	
 	public Player(String password) {
 		super(GameConstants.START_PLAYER_LOCATION);
@@ -316,20 +285,14 @@ public class Player extends Actor {
 		contactManager = new ContactManager();
 		charges = new ChargesManager();
 		auraManager = new AuraManager();
-		saving = new PlayerSaving();
-		runEnergy = 100;
-		allowChatEffects = true;
-		mouseButtons = true;
-		pouches = new int[4];
-		slayerTask = new SlayerTask();
+		attributes = new PlayerAttributes();
 		rights = new LinkedHashSet<>(Collections.singletonList(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER));
 		SkillCapeCustomizer.resetSkillCapes(this);
-		ownedObjectsManagerKeys = new LinkedList<>();
 	}
 	
 	@Override
 	public void finish() {
-		if (finishing || hasFinished()) {
+		if (finishing || isFinished()) {
 			return;
 		}
 		finishing = true;
@@ -337,7 +300,7 @@ public class Player extends Actor {
 		if (getAttackedByDelay() + 10000 > currentTime || getEmotesManager().getNextEmoteEnd() >= currentTime) {
 			SystemManager.SLOW_EXECUTOR.schedule(() -> {
 				try {
-					packetsDecoderPing = Misc.currentTimeMillis();
+					attributes.setPacketsDecoderPing(Misc.currentTimeMillis());
 					finishing = false;
 					finish();
 				} catch (Throwable e) {
@@ -373,13 +336,13 @@ public class Player extends Actor {
 		combatDefinitions.resetSpecialAttack();
 		prayer.reset();
 		combatDefinitions.resetSpells(true);
-		resting = false;
-		skullDelay = 0;
-		foodDelay = 0;
-		potDelay = 0;
-		poisonImmune = 0;
-		fireImmune = 0;
-		setRunEnergy(100);
+		attributes.setResting(false);
+		attributes.setSkullDelay(0);
+		attributes.setFoodDelay(0);
+		attributes.setPotDelay(0);
+		attributes.setPoisonImmune(0);
+		attributes.setFireImmune(0);
+		attributes.setRunEnergy(100);
 		appearance.generateAppearanceData();
 	}
 	
@@ -400,7 +363,7 @@ public class Player extends Actor {
 			if (prayer.usingPrayer(0, 9)) {
 				super.restoreHitPoints();
 			}
-			if (resting) {
+			if (attributes.isResting()) {
 				super.restoreHitPoints();
 			}
 			refreshHitPoints();
@@ -410,19 +373,19 @@ public class Player extends Actor {
 	
 	@Override
 	public boolean needMasksUpdate() {
-		return super.needMasksUpdate() || temporaryMovementType != 0 || updateMovementType;
+		return super.needMasksUpdate() || attributes.getTemporaryMovementType() != 0 || attributes.isUpdateMovementType();
 	}
 	
 	@Override
 	public void resetMasks() {
 		super.resetMasks();
-		temporaryMovementType = 0;
-		updateMovementType = false;
-		if (!clientHasLoadedMapRegion()) {
-			// load objects and items here
-			setClientHasLoadedMapRegion();
-			getPacketSender().refreshSpawnedObjects();
-			getPacketSender().refreshSpawnedItems();
+		attributes.setTemporaryMovementType(0);
+		attributes.setUpdateMovementType(false);
+		
+		if (!attributes.clientHasLoadedMapRegion()) {
+			attributes.setClientHasLoadedMapRegion();
+			getPackets().refreshSpawnedObjects();
+			getPackets().refreshSpawnedItems();
 		}
 	}
 	
@@ -433,23 +396,23 @@ public class Player extends Actor {
 		if (musicsManager.musicEnded()) {
 			musicsManager.replayMusic();
 		}
-		if (hasSkull()) {
-			skullDelay--;
-			if (!hasSkull()) {
+		if (attributes.hasSkull()) {
+			attributes.setSkullDelay(attributes.getSkullDelay() - 1);
+			if (!attributes.hasSkull()) {
 				appearance.generateAppearanceData();
 			}
 		}
-		if (polDelay == 1) {
+		if (attributes.getPolDelay() == 1) {
 			getPackets().sendGameMessage("The power of the light fades. Your resistance to melee attacks return to normal.");
 		}
-		if (overloadDelay > 0) {
-			if (overloadDelay == 1 || isDead()) {
+		if (attributes.getOverloadDelay() > 0) {
+			if (attributes.getOverloadDelay() == 1 || isDead()) {
 				Pots.resetOverLoadEffect(this);
 				return;
-			} else if ((overloadDelay - 1) % 25 == 0) {
+			} else if ((attributes.getOverloadDelay() - 1) % 25 == 0) {
 				Pots.applyOverLoadEffect(this);
 			}
-			overloadDelay--;
+			attributes.setOverloadDelay(attributes.getOverloadDelay() - 1);
 		}
 		charges.process();
 		auraManager.process();
@@ -469,7 +432,7 @@ public class Player extends Actor {
 	
 	@Override
 	public void processReceivedHits() {
-		if (getLocks().isMovementLocked() || getLocks().isTeleportLocked()) {
+		if (getLocks().isTeleportLocked()) {
 			return;
 		}
 		super.processReceivedHits();
@@ -479,11 +442,11 @@ public class Player extends Actor {
 	public void loadMapRegions() {
 		boolean wasAtDynamicRegion = isAtDynamicRegion();
 		super.loadMapRegions();
-		clientLoadedMapRegion = false;
+		attributes.setClientHasntLoadedMapRegion();
 		if (!started) {
 			if (isAtDynamicRegion()) {
 				getPackets().sendMapRegion(!started);
-				forceNextMapLoadRefresh = true;
+				attributes.setForceNextMapLoadRefresh(true);
 			}
 		}
 		if (isAtDynamicRegion()) {
@@ -497,7 +460,7 @@ public class Player extends Actor {
 				localNPCUpdate.reset();
 			}
 		}
-		forceNextMapLoadRefresh = false;
+		attributes.setForceNextMapLoadRefresh(false);
 	}
 	
 	@Override
@@ -508,114 +471,11 @@ public class Player extends Actor {
 	
 	@Override
 	public void sendDeath(final Actor source) {
-		if (prayer.hasPrayersOn() && getTemporaryAttributtes().get("startedDuel") != Boolean.TRUE) {
+		if (prayer.hasPrayersOn() && getTemporaryAttributes().get("startedDuel") != Boolean.TRUE) {
 			if (prayer.usingPrayer(0, 22)) {
-				setNextGraphics(new Graphics(437));
-				final Player target = this;
-				if (isAtMultiArea()) {
-					for (int regionId : getMapRegionsIds()) {
-						List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
-						if (playersIndexes != null) {
-							for (int playerIndex : playersIndexes) {
-								Player player = World.getPlayers().get(playerIndex);
-								if (player == null || !player.hasStarted() || player.isDead() || player.hasFinished() || !player.withinDistance(this, 1) || !this.getControllerManager().canHit(player)) {
-									continue;
-								}
-								player.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
-							}
-						}
-						List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
-						if (npcsIndexes != null) {
-							for (int npcIndex : npcsIndexes) {
-								NPC npc = World.getNPCs().get(npcIndex);
-								if (npc == null || npc.isDead() || npc.hasFinished() || !npc.withinDistance(this, 1) || !npc.getDefinitions().hasAttackOption() || !this.getControllerManager().canHit(npc)) {
-									continue;
-								}
-								npc.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
-							}
-						}
-					}
-				} else {
-					if (source != null && source != this && !source.isDead() && !source.hasFinished() && source.withinDistance(this, 1)) {
-						source.applyHit(new Hit(target, Misc.getRandom((int) (skills.getLevelForXp(SkillConstants.PRAYER) * 2.5)), HitSplat.REGULAR_DAMAGE));
-					}
-				}
-				WorldTasksManager.schedule(new WorldTask() {
-					@Override
-					public void run() {
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY(), target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY(), target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() - 1, target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX(), target.getY() + 1, target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() - 1, target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() - 1, target.getY() + 1, target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() - 1, target.getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(438), new WorldTile(target.getX() + 1, target.getY() + 1, target.getPlane()));
-					}
-				});
+				prayer.sendRedemption(source);
 			} else if (prayer.usingPrayer(1, 17)) {
-				RegionManager.sendProjectile(this, new WorldTile(getX() + 2, getY() + 2, getPlane()), 2260, 24, 0, 41, 35, 30, 0);
-				RegionManager.sendProjectile(this, new WorldTile(getX() + 2, getY(), getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				RegionManager.sendProjectile(this, new WorldTile(getX() + 2, getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				
-				RegionManager.sendProjectile(this, new WorldTile(getX() - 2, getY() + 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				RegionManager.sendProjectile(this, new WorldTile(getX() - 2, getY(), getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				RegionManager.sendProjectile(this, new WorldTile(getX() - 2, getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				
-				RegionManager.sendProjectile(this, new WorldTile(getX(), getY() + 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				RegionManager.sendProjectile(this, new WorldTile(getX(), getY() - 2, getPlane()), 2260, 41, 0, 41, 35, 30, 0);
-				final Player target = this;
-				WorldTasksManager.schedule(new WorldTask() {
-					@Override
-					public void run() {
-						setNextGraphics(new Graphics(2259));
-						
-						if (isAtMultiArea()) {
-							for (int regionId : getMapRegionsIds()) {
-								List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
-								if (playersIndexes != null) {
-									for (int playerIndex : playersIndexes) {
-										Player player = World.getPlayers().get(playerIndex);
-										if (player == null || !player.hasStarted() || player.isDead() || player.hasFinished() || !player.withinDistance(target, 2) || !Player.this.getControllerManager().canHit(player)) {
-											continue;
-										}
-										player.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
-									}
-								}
-								List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
-								if (npcsIndexes != null) {
-									for (int npcIndex : npcsIndexes) {
-										NPC npc = World.getNPCs().get(npcIndex);
-										if (npc == null || npc.isDead() || npc.hasFinished() || !npc.withinDistance(target, 2) || !npc.getDefinitions().hasAttackOption() || !Player.this.getControllerManager().canHit(npc)) {
-											continue;
-										}
-										npc.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
-									}
-								}
-							}
-						} else {
-							if (source != null && source != target && !source.isDead() && !source.hasFinished() && source.withinDistance(target, 2)) {
-								source.applyHit(new Hit(target, Misc.getRandom(skills.getLevelForXp(SkillConstants.PRAYER) * 3), HitSplat.REGULAR_DAMAGE));
-							}
-						}
-						
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY() + 2, getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY(), getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 2, getY() - 2, getPlane()));
-						
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY() + 2, getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY(), getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 2, getY() - 2, getPlane()));
-						
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX(), getY() + 2, getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX(), getY() - 2, getPlane()));
-						
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 1, getY() + 1, getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() + 1, getY() - 1, getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 1, getY() + 1, getPlane()));
-						RegionManager.sendGraphics(target, new Graphics(2260), new WorldTile(getX() - 1, getY() - 1, getPlane()));
-					}
-				});
+				prayer.sendWrath(source);
 			}
 		}
 		setNextAnimation(new Animation(-1));
@@ -639,16 +499,13 @@ public class Player extends Actor {
 					getPackets().sendGameMessage("Oh dear, you have died.");
 				} else if (loop == 3) {
 					Player killer = getMostDamageReceivedSourcePlayer();
-					// killer.inventory.addItem(24158, 2);
 					if (killer != null) {
 						killer.removeDamage(thisPlayer);
-						//						killer.increaseKillCount(thisPlayer);
 						sendItemsOnDeath(killer);
 					}
 					equipment.init();
 					inventory.init();
 					reset();
-					
 					setNextWorldTile(new WorldTile(GameConstants.RESPAWN_PLAYER_LOCATION));
 					setNextAnimation(new Animation(-1));
 				} else if (loop == 4) {
@@ -667,7 +524,7 @@ public class Player extends Actor {
 	}
 	
 	@Override
-	public void handleIngoingHit(final Hit hit) {
+	public void handleIncomingHit(final Hit hit) {
 		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
@@ -702,348 +559,37 @@ public class Player extends Actor {
 				prayer.drainPrayer(drain);
 			}
 		}
-		if (polDelay > Misc.currentTimeMillis()) {
+		if (attributes.getPolDelay() > Misc.currentTimeMillis()) {
 			hit.setDamage((int) (hit.getDamage() * 0.5));
 		}
 		if (prayer.hasPrayersOn() && hit.getDamage() != 0) {
-			if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
-				if (prayer.usingPrayer(0, 17)) {
-					hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
-				} else if (prayer.usingPrayer(1, 7)) {
-					int deflectedDamage = (int) (hit.getDamage() * 0.1);
-					hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
-					if (deflectedDamage > 0) {
-						source.applyHit(new Hit(this, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
-						setNextGraphics(new Graphics(2228));
-						setNextAnimation(new Animation(12573));
-					}
-				}
-			} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
-				if (prayer.usingPrayer(0, 18)) {
-					hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
-				} else if (prayer.usingPrayer(1, 8)) {
-					int deflectedDamage = (int) (hit.getDamage() * 0.1);
-					hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
-					if (deflectedDamage > 0) {
-						source.applyHit(new Hit(this, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
-						setNextGraphics(new Graphics(2229));
-						setNextAnimation(new Animation(12573));
-					}
-				}
-			} else if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
-				if (prayer.usingPrayer(0, 19)) {
-					hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
-				} else if (prayer.usingPrayer(1, 9)) {
-					int deflectedDamage = (int) (hit.getDamage() * 0.1);
-					hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
-					if (deflectedDamage > 0) {
-						source.applyHit(new Hit(this, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
-						setNextGraphics(new Graphics(2230));
-						setNextAnimation(new Animation(12573));
-					}
-				}
-			}
+			prayer.handleCombatDeflection(source, hit);
 		}
 		if (hit.getDamage() >= 200) {
-			if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
-				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] / 100;
-				if (reducedDamage > 0) {
-					hit.setDamage(hit.getDamage() - reducedDamage);
-					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
-				}
-			} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
-				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] / 100;
-				if (reducedDamage > 0) {
-					hit.setDamage(hit.getDamage() - reducedDamage);
-					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
-				}
-			} else if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
-				int reducedDamage = hit.getDamage() * combatDefinitions.getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] / 100;
-				if (reducedDamage > 0) {
-					hit.setDamage(hit.getDamage() - reducedDamage);
-					hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
-				}
-			}
+			getCombatDefinitions().handleSoaking(source, hit);
 		}
-		if (getAttribute("cast_veng", false) && hit.getDamage() >= 4) {
-			removeAttribute("cast_veng");
+		if (getTemporaryAttribute("cast_veng", false) && hit.getDamage() >= 4) {
+			removeTemporaryAttribute("cast_veng");
 			setNextForceTalk(new ForceTalk("Taste vengeance!"));
 			source.applyHit(new Hit(this, (int) (hit.getDamage() * 0.75), HitSplat.REGULAR_DAMAGE));
 		}
-		if (source instanceof Player) {
-			final Player p2 = (Player) source;
-			if (p2.prayer.hasPrayersOn()) {
-				if (p2.prayer.usingPrayer(0, 24)) { // smite
-					int drain = hit.getDamage() / 4;
-					if (drain > 0) {
-						prayer.drainPrayer(drain);
-					}
-				} else {
-					if (p2.prayer.usingPrayer(1, 18)) {
-						sendSoulSplit(hit, p2);
-					}
-					if (hit.getDamage() == 0) {
-						return;
-					}
-					if (!p2.prayer.isBoostedLeech()) {
-						if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
-							if (p2.prayer.usingPrayer(1, 19)) {
-								if (Misc.getRandom(4) == 0) {
-									p2.prayer.increaseTurmoilBonus(this);
-									p2.prayer.setBoostedLeech(true);
-									return;
-								}
-							} else if (p2.prayer.usingPrayer(1, 1)) { // sap att
-								if (Misc.getRandom(4) == 0) {
-									if (p2.prayer.reachedMax(0)) {
-										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
-									} else {
-										p2.prayer.increaseLeechBonus(0);
-										p2.getPackets().sendGameMessage("Your curse drains Attack from the enemy, boosting your Attack.", true);
-									}
-									p2.setNextAnimation(new Animation(12569));
-									p2.setNextGraphics(new Graphics(2214));
-									p2.prayer.setBoostedLeech(true);
-									RegionManager.sendProjectile(p2, this, 2215, 35, 35, 20, 5, 0, 0);
-									WorldTasksManager.schedule(new WorldTask() {
-										@Override
-										public void run() {
-											setNextGraphics(new Graphics(2216));
-										}
-									}, 1);
-									return;
-								}
-							} else {
-								if (p2.prayer.usingPrayer(1, 10)) {
-									if (Misc.getRandom(7) == 0) {
-										if (p2.prayer.reachedMax(3)) {
-											p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-										} else {
-											p2.prayer.increaseLeechBonus(3);
-											p2.getPackets().sendGameMessage("Your curse drains Attack from the enemy, boosting your Attack.", true);
-										}
-										p2.setNextAnimation(new Animation(12575));
-										p2.prayer.setBoostedLeech(true);
-										RegionManager.sendProjectile(p2, this, 2231, 35, 35, 20, 5, 0, 0);
-										WorldTasksManager.schedule(new WorldTask() {
-											@Override
-											public void run() {
-												setNextGraphics(new Graphics(2232));
-											}
-										}, 1);
-										return;
-									}
-								}
-								if (p2.prayer.usingPrayer(1, 14)) {
-									if (Misc.getRandom(7) == 0) {
-										if (p2.prayer.reachedMax(7)) {
-											p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-										} else {
-											p2.prayer.increaseLeechBonus(7);
-											p2.getPackets().sendGameMessage("Your curse drains Strength from the enemy, boosting your Strength.", true);
-										}
-										p2.setNextAnimation(new Animation(12575));
-										p2.prayer.setBoostedLeech(true);
-										RegionManager.sendProjectile(p2, this, 2248, 35, 35, 20, 5, 0, 0);
-										WorldTasksManager.schedule(new WorldTask() {
-											@Override
-											public void run() {
-												setNextGraphics(new Graphics(2250));
-											}
-										}, 1);
-										return;
-									}
-								}
-								
-							}
-						}
-						if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
-							if (p2.prayer.usingPrayer(1, 2)) { // sap range
-								if (Misc.getRandom(4) == 0) {
-									if (p2.prayer.reachedMax(1)) {
-										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
-									} else {
-										p2.prayer.increaseLeechBonus(1);
-										p2.getPackets().sendGameMessage("Your curse drains Range from the enemy, boosting your Range.", true);
-									}
-									p2.setNextAnimation(new Animation(12569));
-									p2.setNextGraphics(new Graphics(2217));
-									p2.prayer.setBoostedLeech(true);
-									RegionManager.sendProjectile(p2, this, 2218, 35, 35, 20, 5, 0, 0);
-									WorldTasksManager.schedule(new WorldTask() {
-										@Override
-										public void run() {
-											setNextGraphics(new Graphics(2219));
-										}
-									}, 1);
-									return;
-								}
-							} else if (p2.prayer.usingPrayer(1, 11)) {
-								if (Misc.getRandom(7) == 0) {
-									if (p2.prayer.reachedMax(4)) {
-										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-									} else {
-										p2.prayer.increaseLeechBonus(4);
-										p2.getPackets().sendGameMessage("Your curse drains Range from the enemy, boosting your Range.", true);
-									}
-									p2.setNextAnimation(new Animation(12575));
-									p2.prayer.setBoostedLeech(true);
-									RegionManager.sendProjectile(p2, this, 2236, 35, 35, 20, 5, 0, 0);
-									WorldTasksManager.schedule(new WorldTask() {
-										@Override
-										public void run() {
-											setNextGraphics(new Graphics(2238));
-										}
-									});
-									return;
-								}
-							}
-						}
-						if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
-							if (p2.prayer.usingPrayer(1, 3)) { // sap mage
-								if (Misc.getRandom(4) == 0) {
-									if (p2.prayer.reachedMax(2)) {
-										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
-									} else {
-										p2.prayer.increaseLeechBonus(2);
-										p2.getPackets().sendGameMessage("Your curse drains Magic from the enemy, boosting your Magic.", true);
-									}
-									p2.setNextAnimation(new Animation(12569));
-									p2.setNextGraphics(new Graphics(2220));
-									p2.prayer.setBoostedLeech(true);
-									RegionManager.sendProjectile(p2, this, 2221, 35, 35, 20, 5, 0, 0);
-									WorldTasksManager.schedule(new WorldTask() {
-										@Override
-										public void run() {
-											setNextGraphics(new Graphics(2222));
-										}
-									}, 1);
-									return;
-								}
-							} else if (p2.prayer.usingPrayer(1, 12)) {
-								if (Misc.getRandom(7) == 0) {
-									if (p2.prayer.reachedMax(5)) {
-										p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-									} else {
-										p2.prayer.increaseLeechBonus(5);
-										p2.getPackets().sendGameMessage("Your curse drains Magic from the enemy, boosting your Magic.", true);
-									}
-									p2.setNextAnimation(new Animation(12575));
-									p2.prayer.setBoostedLeech(true);
-									RegionManager.sendProjectile(p2, this, 2240, 35, 35, 20, 5, 0, 0);
-									WorldTasksManager.schedule(new WorldTask() {
-										@Override
-										public void run() {
-											setNextGraphics(new Graphics(2242));
-										}
-									}, 1);
-									return;
-								}
-							}
-						}
-						
-						// overall
-						
-						if (p2.prayer.usingPrayer(1, 13)) { // leech defence
-							if (Misc.getRandom(10) == 0) {
-								if (p2.prayer.reachedMax(6)) {
-									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-								} else {
-									p2.prayer.increaseLeechBonus(6);
-									p2.getPackets().sendGameMessage("Your curse drains Defence from the enemy, boosting your Defence.", true);
-								}
-								p2.setNextAnimation(new Animation(12575));
-								p2.prayer.setBoostedLeech(true);
-								RegionManager.sendProjectile(p2, this, 2244, 35, 35, 20, 5, 0, 0);
-								WorldTasksManager.schedule(new WorldTask() {
-									@Override
-									public void run() {
-										setNextGraphics(new Graphics(2246));
-									}
-								}, 1);
-								return;
-							}
-						}
-						
-						if (p2.prayer.usingPrayer(1, 15)) {
-							if (Misc.getRandom(10) == 0) {
-								if (getRunEnergy() <= 0) {
-									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-								} else {
-									p2.setRunEnergy(p2.getRunEnergy() > 90 ? 100 : p2.getRunEnergy() + 10);
-									setRunEnergy(p2.getRunEnergy() > 10 ? getRunEnergy() - 10 : 0);
-								}
-								p2.setNextAnimation(new Animation(12575));
-								p2.prayer.setBoostedLeech(true);
-								RegionManager.sendProjectile(p2, this, 2256, 35, 35, 20, 5, 0, 0);
-								WorldTasksManager.schedule(new WorldTask() {
-									@Override
-									public void run() {
-										setNextGraphics(new Graphics(2258));
-									}
-								}, 1);
-								return;
-							}
-						}
-						
-						if (p2.prayer.usingPrayer(1, 16)) {
-							if (Misc.getRandom(10) == 0) {
-								if (combatDefinitions.getSpecialAttackPercentage() <= 0) {
-									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your leech curse has no effect.", true);
-								} else {
-									p2.combatDefinitions.restoreSpecialAttack();
-									combatDefinitions.decreaseSpecialEnergy(10);
-								}
-								p2.setNextAnimation(new Animation(12575));
-								p2.prayer.setBoostedLeech(true);
-								RegionManager.sendProjectile(p2, this, 2252, 35, 35, 20, 5, 0, 0);
-								WorldTasksManager.schedule(new WorldTask() {
-									@Override
-									public void run() {
-										setNextGraphics(new Graphics(2254));
-									}
-								}, 1);
-								return;
-							}
-						}
-						
-						if (p2.prayer.usingPrayer(1, 4)) { // sap spec
-							if (Misc.getRandom(10) == 0) {
-								p2.setNextAnimation(new Animation(12569));
-								p2.setNextGraphics(new Graphics(2223));
-								p2.prayer.setBoostedLeech(true);
-								if (combatDefinitions.getSpecialAttackPercentage() <= 0) {
-									p2.getPackets().sendGameMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
-								} else {
-									combatDefinitions.decreaseSpecialEnergy(10);
-								}
-								RegionManager.sendProjectile(p2, this, 2224, 35, 35, 20, 5, 0, 0);
-								WorldTasksManager.schedule(new WorldTask() {
-									@Override
-									public void run() {
-										setNextGraphics(new Graphics(2225));
-									}
-								}, 1);
-								return;
-							}
-						}
-					}
-				}
-			}
-		} else {
-			NPC n = (NPC) source;
+		if (source.isPlayer()) {
+			final Player p2 = source.toPlayer();
+			prayer.handleCurseBoosts(p2, hit);
+		} else if (source.isNPC()) {
+			NPC n = source.toNPC();
 			if (n.getId() == 13448) {
-				sendSoulSplit(hit, n);
+				prayer.sendSoulSplit(hit, n);
 			}
 		}
 	}
 	
 	@Override
-	public void setRun(boolean run) {
-		if (run != getRun()) {
-			super.setRun(run);
-			updateMovementType = true;
-			getPacketSender().sendRunButtonConfig();
+	public void setRunModeOn(boolean runModeOn) {
+		if (runModeOn != isRunModeOn()) {
+			super.setRunModeOn(runModeOn);
+			attributes.setUpdateMovementType(true);
+			getPackets().sendRunButtonConfig();
 		}
 	}
 	
@@ -1053,48 +599,13 @@ public class Player extends Actor {
 			return;
 		}
 		boolean isAtMultiArea = isForceMultiArea() || World.isMultiArea(this);
-		if (isAtMultiArea && !isAtMultiArea()) {
-			setAtMultiArea(isAtMultiArea);
+		if (isAtMultiArea && !isInMultiArea()) {
+			setInMultiArea(isAtMultiArea);
 			getPackets().sendGlobalConfig(616, 1);
-		} else if (!isAtMultiArea && isAtMultiArea()) {
-			setAtMultiArea(isAtMultiArea);
+		} else if (!isAtMultiArea && isInMultiArea()) {
+			setInMultiArea(isAtMultiArea);
 			getPackets().sendGlobalConfig(616, 0);
 		}
-	}
-	
-	public void sendSoulSplit(final Hit hit, final Actor user) {
-		final Player target = this;
-		if (hit.getDamage() > 0) {
-			RegionManager.sendProjectile(user, this, 2263, 11, 11, 20, 5, 0, 0);
-		}
-		user.heal(hit.getDamage() / 5);
-		prayer.drainPrayer(hit.getDamage() / 5);
-		WorldTasksManager.schedule(new WorldTask() {
-			@Override
-			public void run() {
-				setNextGraphics(new Graphics(2264));
-				if (hit.getDamage() > 0) {
-					RegionManager.sendProjectile(target, user, 2263, 11, 11, 20, 5, 0, 0);
-				}
-			}
-		}, 1);
-	}
-	
-	public void setRunEnergy(int runEnergy) {
-		this.runEnergy = (byte) runEnergy;
-		getPackets().sendRunEnergy();
-	}
-	
-	public boolean hasSkull() {
-		return skullDelay > 0;
-	}
-	
-	public boolean clientHasLoadedMapRegion() {
-		return clientLoadedMapRegion;
-	}
-	
-	public void setClientHasLoadedMapRegion() {
-		clientLoadedMapRegion = true;
 	}
 	
 	public void refreshHitPoints() {
@@ -1117,7 +628,7 @@ public class Player extends Actor {
 	
 	@Override
 	public String toString() {
-		return "Player{" + "displayName='" + displayName + '\'' + ", rights=" + rights + '}';
+		return "Player{" + "username='" + username + '\'' + ", rights=" + rights + '}';
 	}
 	
 	public void setRouteEvent(RouteEvent routeEvent) {
@@ -1128,13 +639,15 @@ public class Player extends Actor {
 		}
 	}
 	
-	public void init(String string, Session session) {
-		username = string;
+	public void initializeLobbySession(String username, Session session) {
+		this.username = username;
 		this.session = session;
+		this.session.setInLobby(true);
+		World.addLobbyPlayer(this);
 		if (GameFlags.debugMode) {
 			giveRight(PlayerRight.OWNER);
 		}
-		System.out.println("Inited Player: " + string + ", pass: " + password);
+		System.out.println("Initialized Player: " + username);
 	}
 	
 	/**
@@ -1147,24 +660,25 @@ public class Player extends Actor {
 		this.rights.add(right);
 	}
 	
-	public void init(String username, int displayMode, int screenWidth, int screenHeight) {
+	public void initializeGameSession(String username, int displayMode, int screenWidth, int screenHeight) {
 		// temporary deleted after reset all chars
 		this.username = username;
-		this.displayMode = displayMode;
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
-		interfaceManager = new InterfaceManager(this);
+		this.interfaceManager = new InterfaceManager(this);
+		this.interfaceManager.setDisplayMode(displayMode);
+		this.interfaceManager.setScreenWidth(screenWidth);
+		this.interfaceManager.setScreenHeight(screenHeight);
 		dialogueManager = new DialogueManager(this);
 		hintIconsManager = new HintIconsManager(this);
 		priceCheckManager = new PriceCheckManager(this);
 		localPlayerUpdate = new LocalPlayerUpdate(this);
 		localNPCUpdate = new LocalNPCUpdate(this);
-		setPacketSender(new PacketSender(this));
+		varManager = new VarManager(this);
 		actionManager = new ActionManager(this);
 		eventManager = new EventManager(this);
 		cutsceneManager = new CutsceneManager(this);
 		tradeManager = new TradeManager(this);
 		// loads player on saved instances
+		attributes.setPlayer(this);
 		appearance.setPlayer(this);
 		inventory.setPlayer(this);
 		equipment.setPlayer(this);
@@ -1178,20 +692,15 @@ public class Player extends Actor {
 		contactManager.setPlayer(this);
 		auraManager.setPlayer(this);
 		charges.setPlayer(this);
-		setDirection(Misc.getFaceDirection(0, -1));
-		switchItemCache = Collections.synchronizedList(new ArrayList<Integer>());
+		setFaceDirection(Misc.getFaceDirection(0, -1));
+		attributes.setSwitchItemCache(Collections.synchronizedList(new ArrayList<>()));
 		initEntity();
-		packetsDecoderPing = Misc.currentTimeMillis();
+		attributes.setPacketsDecoderPing(Misc.currentTimeMillis());
+		session.setInLobby(false);
 		// inited so lets add it
-		World.addPlayer(this);
+		World.addWorldPlayer(this);
 		RegionManager.updateActorRegion(this);
 		System.out.println("Player Logged in: " + username);
-	}
-	
-	public void setWildernessSkull() {
-		skullDelay = 3000; // 30minutes
-		skullId = 0;
-		appearance.generateAppearanceData();
 	}
 	
 	// now that we inited we can start showing game
@@ -1204,31 +713,9 @@ public class Player extends Actor {
 		}
 	}
 	
-	public void setClientHasntLoadedMapRegion() {
-		clientLoadedMapRegion = false;
-	}
-	
-	public void toggleRun(boolean update) {
-		super.setRun(!getRun());
-		updateMovementType = true;
-		if (update) {
-			getPacketSender().sendRunButtonConfig();
-		}
-	}
-	
 	public void setRunHidden(boolean run) {
-		super.setRun(run);
-		updateMovementType = true;
-	}
-	
-	public void restoreRunEnergy() {
-		if (getNextRunDirection() == -1 && runEnergy < 100) {
-			runEnergy++;
-			if (resting && runEnergy < 100) {
-				runEnergy++;
-			}
-			getPackets().sendRunEnergy();
-		}
+		super.setRunModeOn(run);
+		attributes.setUpdateMovementType(true);
 	}
 	
 	public void run() {
@@ -1240,15 +727,7 @@ public class Player extends Actor {
 			this.rights.add(PlayerRight.OWNER);
 		}
 		getPackets().sendGameMessage("Welcome to " + GameConstants.SERVER_NAME + ".");
-		lastIP = getSession().getIp();
 		interfaceManager.sendInterfaces();
-		getPackets().sendRunEnergy();
-		getPacketSender().refreshAllowChatEffects();
-		getPacketSender().refreshMouseButtons();
-		getPacketSender().refreshPrivateChatSetup();
-		getPacketSender().sendRunButtonConfig();
-		getEmotesManager().refreshListConfigs();
-		getPacketSender().sendDefaultPlayersOptions();
 		checkMultiArea();
 		inventory.init();
 		equipment.init();
@@ -1276,13 +755,21 @@ public class Player extends Actor {
 		getPackets().sendConfig(130, 4);
 		getPackets().sendConfig(101, 3); // Quest Points the player completed (54)
 		getPackets().sendConfig(904, 326); // Maximum Quest Points in 2011 (326)
+		getPackets().sendRunEnergy();
+		getPackets().refreshAllowChatEffects();
+		getPackets().refreshMouseButtons();
+		getPackets().refreshPrivateChatSetup();
+		getPackets().sendRunButtonConfig();
+		getPackets().sendProfanityFilterConfig();
+		getPackets().sendDefaultPlayersOptions();
+		getEmotesManager().refreshListConfigs();
 		musicsManager.init();
 		emotesManager.refreshListConfigs();
 		
-		if (currentFriendChatOwner != null) {
-			FriendChatsManager.joinChat(currentFriendChatOwner, this);
+		if (attributes.getCurrentFriendChatOwner() != null) {
+			FriendChatsManager.joinChat(attributes.getCurrentFriendChatOwner(), this);
 			if (currentFriendChat == null) {
-				currentFriendChatOwner = null;
+				attributes.setCurrentFriendChatOwner(null);
 			}
 		}
 		
@@ -1291,8 +778,9 @@ public class Player extends Actor {
 			familiar.respawnFamiliar(this);
 		}
 		
+		attributes.setLastIP(getSession().getIp());
 		running = true;
-		updateMovementType = true;
+		attributes.setUpdateMovementType(true);
 		appearance.generateAppearanceData();
 		controllerManager.login(); // checks what to do on login after welcome "Log in"
 		OwnedObjectManager.linkKeys(this);
@@ -1321,13 +809,12 @@ public class Player extends Actor {
 	}
 	
 	public void realFinish() {
-		if (hasFinished()) {
+		if (isFinished()) {
 			return;
 		}
 		stopAll();
 		cutsceneManager.logout();
-		controllerManager.logout(); // checks what to do on before logout for
-		// login
+		controllerManager.logout();
 		running = false;
 		contactManager.sendFriendsMyStatus(false);
 		if (currentFriendChat != null) {
@@ -1338,10 +825,10 @@ public class Player extends Actor {
 		}
 		setFinished(true);
 		session.setDecoder(-1);
-		SerializableFilesManager.savePlayer(this);
+		PlayerSaving.savePlayer(this);
 		RegionManager.updateActorRegion(this);
 		World.removePlayer(this);
-		System.out.println("Finished Player: " + username + ", pass: " + password);
+		System.out.println("Finished Player: " + username);
 	}
 	
 	public void stopAll() {
@@ -1381,50 +868,6 @@ public class Player extends Actor {
 		}
 	}
 	
-	public int getMessageIcon() {
-		return getDominantRight().getMessageIcon();
-	}
-	
-	/**
-	 * Gets the most dominant right. The {@link #rights} are sorted based on the position of the right in the enum
-	 * (ordinal), so the first right will be the most dominant  .
-	 *
-	 * @return A {@code Right} instance
-	 */
-	public PlayerRight getDominantRight() {
-		if (rights.size() != 0) {
-			return rights.iterator().next();
-		} else {
-			System.err.println("Unexpected situation - rights set was empty!");
-			return PlayerRight.PLAYER;
-		}
-	}
-	
-	public String getDisplayName() {
-		return Misc.formatPlayerNameForDisplay(username);
-	}
-	
-	public void setDisplayName(String displayName) {
-		if (Misc.formatPlayerNameForDisplay(username).equals(displayName)) {
-			this.displayName = null;
-		} else {
-			this.displayName = displayName;
-		}
-	}
-	
-	public boolean hasDisplayName() {
-		return displayName != null;
-	}
-	
-	public void drainRunEnergy() {
-		setRunEnergy(runEnergy - 1);
-	}
-	
-	public void setResting(boolean resting) {
-		this.resting = resting;
-		getPacketSender().sendRunButtonConfig();
-	}
-	
 	public void sendItemsOnDeath(Player killer) {
 		charges.die();
 		auraManager.removeAura();
@@ -1443,7 +886,7 @@ public class Player extends Actor {
 			return;
 		}
 		int keptAmount = 5;
-		if (hasSkull()) {
+		if (attributes.hasSkull()) {
 			keptAmount = 0;
 		}
 		if (prayer.usingPrayer(0, 10) || prayer.usingPrayer(1, 0)) {
@@ -1470,13 +913,6 @@ public class Player extends Actor {
 		for (Item item : containedItems) {
 			RegionManager.addGroundItem(item, getLastWorldTile(), killer, true, 180, true);
 		}
-	}
-	
-	public void setCanPvp(boolean canPvp) {
-		this.canPvp = canPvp;
-		appearance.generateAppearanceData();
-		getPackets().sendPlayerOption(canPvp ? "Attack" : "null", 1, true);
-		getPackets().sendPlayerUnderNPCPriority(canPvp);
 	}
 	
 	public void useStairs(int emoteId, final WorldTile dest, int useDelay, int totalDelay) {
@@ -1507,48 +943,6 @@ public class Player extends Actor {
 		}
 	}
 	
-	public void addPotDelay(long time) {
-		potDelay = time + Misc.currentTimeMillis();
-	}
-	
-	public void addFoodDelay(long time) {
-		foodDelay = time + Misc.currentTimeMillis();
-	}
-	
-	public void addBoneDelay(long time) {
-		boneDelay = time + Misc.currentTimeMillis();
-	}
-	
-	public void addPoisonImmune(long time) {
-		poisonImmune = time + Misc.currentTimeMillis();
-		getPoisonManager().reset();
-	}
-	
-	public void addFireImmune(long time) {
-		fireImmune = time + Misc.currentTimeMillis();
-	}
-	
-	public void kickPlayerFromFriendsChannel(String name) {
-		if (currentFriendChat == null) {
-			return;
-		}
-		currentFriendChat.kickPlayerFromChat(this, name);
-	}
-	
-	public void sendFriendsChannelMessage(String message) {
-		if (currentFriendChat == null) {
-			return;
-		}
-		currentFriendChat.sendMessage(this, message);
-	}
-	
-	public void sendFriendsChannelQuickMessage(QuickChatMessage message) {
-		if (currentFriendChat == null) {
-			return;
-		}
-		currentFriendChat.sendQuickMessage(this, message);
-	}
-	
 	public void sendPublicChatMessage(PublicChatMessage message) {
 		for (int regionId : getMapRegionsIds()) {
 			List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
@@ -1557,7 +951,7 @@ public class Player extends Actor {
 			}
 			for (Integer playerIndex : playersIndexes) {
 				Player p = World.getPlayers().get(playerIndex);
-				if (p == null || !p.hasStarted() || p.hasFinished() || p.getLocalPlayerUpdate().getLocalPlayers()[getIndex()] == null) {
+				if (p == null || !p.hasStarted() || p.isFinished() || p.getLocalPlayerUpdate().getLocalPlayers()[getIndex()] == null) {
 					continue;
 				}
 				p.getPackets().sendPublicMessage(this, message);
@@ -1565,49 +959,26 @@ public class Player extends Actor {
 		}
 	}
 	
+	/**
+	 * If the player has started, meaning the game session has been initialized properly
+	 */
 	public boolean hasStarted() {
 		return started;
 	}
 	
-	public boolean withinDistance(Player tile) {
-		if (cutsceneManager.hasCutscene()) {
-			return getMapRegionsIds().contains(tile.getRegionId());
-		} else {
-			if (tile.getPlane() != getPlane()) {
-				return false;
-			}
-			return Math.abs(tile.getX() - getX()) <= 14 && Math.abs(tile.getY() - getY()) <= 14;
-		}
-	}
-	
-	public long getTeleBlockDelay() {
-		return getAttribute("TeleBlocked", -1L);
-	}
-	
-	public void setTeleBlockDelay(long teleDelay) {
-		putAttribute("TeleBlocked", teleDelay + Misc.currentTimeMillis());
-	}
-	
-	public long getPrayerDelay() {
-		return getAttribute("PrayerBlocked", 0L);
-	}
-	
-	public void setPrayerDelay(long teleDelay) {
-		putAttribute("PrayerBlocked", teleDelay + Misc.currentTimeMillis());
-		prayer.closeAllPrayers();
-	}
-	
+	/**
+	 * Teleports the player to specified coordinates
+	 *
+	 * @param x
+	 * 		The x coordinate
+	 * @param y
+	 * 		The y coordinate
+	 * @param z
+	 * 		The z coordinate
+	 */
 	public void teleportPlayer(int x, int y, int z) {
 		setNextWorldTile(new WorldTile(x, y, z));
 		stopAll();
-	}
-	
-	public List<String> getOwnedObjectManagerKeys() {
-		if (ownedObjectsManagerKeys == null) // temporary
-		{
-			ownedObjectsManagerKeys = new LinkedList<>();
-		}
-		return ownedObjectsManagerKeys;
 	}
 	
 	/**
@@ -1659,8 +1030,36 @@ public class Player extends Actor {
 		return false;
 	}
 	
-	public void addPolDelay(long delay) {
-		polDelay = delay + Misc.currentTimeMillis();
+	/**
+	 * The icon the player uses for messages
+	 */
+	public int getMessageIcon() {
+		return getDominantRight().getMessageIcon();
+	}
+	
+	/**
+	 * Gets the most dominant right. The {@link #rights} are sorted based on the position of the right in the enum
+	 * (ordinal), so the first right will be the most dominant  .
+	 *
+	 * @return A {@code Right} instance
+	 */
+	public PlayerRight getDominantRight() {
+		if (rights.size() != 0) {
+			return rights.iterator().next();
+		} else {
+			System.err.println("Unexpected situation - rights set was empty!");
+			return PlayerRight.PLAYER;
+		}
+	}
+	
+	/**
+	 * The username the player uses for chatting
+	 */
+	public String getDisplayName() {
+		if (attributes.getDisplayName() != null) {
+			return attributes.getDisplayName();
+		}
+		return Misc.formatPlayerNameForDisplay(username);
 	}
 	
 }

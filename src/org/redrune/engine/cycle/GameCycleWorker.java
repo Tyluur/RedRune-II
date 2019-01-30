@@ -56,12 +56,13 @@ public final class GameCycleWorker implements Runnable {
 	/**
 	 * Handles the sleeping of the thread
 	 */
-	private void sleepThread(long currentTime) {
+	private void sleepThread(long startTime) {
 		lastCycleTime = Misc.currentTimeMillis();
-		long sleepTime = 600 + currentTime - lastCycleTime;
+		long sleepTime = (600 + (startTime - lastCycleTime));
 		if (sleepTime <= 0) {
 			return;
 		}
+		System.out.println("cycle time=" + (lastCycleTime - startTime));
 		ticksPassed++;
 		try {
 			Thread.sleep(sleepTime);

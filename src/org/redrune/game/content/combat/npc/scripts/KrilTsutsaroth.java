@@ -75,7 +75,7 @@ public class KrilTsutsaroth extends CombatScript {
 					damage = 497;
 					npc.setNextForceTalk(new ForceTalk("YARRRRRRR!"));
 					player.getPrayer().drainPrayer((Math.round(damage / 20)));
-					player.setPrayerDelay(Misc.getRandom(5) + 5);
+					player.getAttributes().setPrayerDelay(Misc.getRandom(5) + 5);
 					player.getPackets().sendGameMessage("K'ril Tsutsaroth slams through your protection prayer, leaving you feeling drained.");
 				}
 				npc.setNextAnimation(new Animation(damage <= 463 ? 14963 : 14968));

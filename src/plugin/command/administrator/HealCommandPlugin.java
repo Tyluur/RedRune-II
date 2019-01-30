@@ -20,7 +20,7 @@ public class HealCommandPlugin extends CommandPlugin {
 		player.getPrayer().refreshPrayerPoints();
 		player.heal(player.getMaxHitpoints(), (int) ((player.getSkills().getLevelForXp(SkillConstants.HITPOINTS) * 10) * 0.05));
 		player.getSkills().restoreSkills();
-		player.setRunEnergy(100);
+		player.getAttributes().setRunEnergy(100);
 	}
 	
 	@Override

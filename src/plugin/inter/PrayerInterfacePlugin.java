@@ -8,7 +8,7 @@ import org.redrune.utility.constants.PacketConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class PrayerInterfacePlugin extends InterfacePlugin {
+public class PrayerInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {

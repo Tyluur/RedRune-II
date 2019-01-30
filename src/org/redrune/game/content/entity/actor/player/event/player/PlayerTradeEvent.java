@@ -32,8 +32,8 @@ public class PlayerTradeEvent extends Event {
 				player.getPackets().sendGameMessage("Unable to find target " + target.getDisplayName());
 				return;
 			}
-			if (target.getAttribute(AttributeKey.TRADE_TARGET) == player) {
-				target.removeAttribute(AttributeKey.TRADE_TARGET);
+			if (target.getTemporaryAttribute(AttributeKey.TRADE_TARGET) == player) {
+				target.removeTemporaryAttribute(AttributeKey.TRADE_TARGET);
 				player.getTradeManager().openTrade(target);
 				target.getTradeManager().openTrade(player);
 				return;

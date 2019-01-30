@@ -9,7 +9,7 @@ import org.redrune.game.content.plugin.type.NPCPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class ThessaliaNPCPlugin extends NPCPlugin {
+public class ThessaliaNPCPlugin implements NPCPlugin {
 	
 	@Override
 	public boolean handle(Player player, NPC npc, String option) {
@@ -23,6 +23,6 @@ public class ThessaliaNPCPlugin extends NPCPlugin {
 	
 	@Override
 	public void register() {
-		register(548, "Change-clothes");
+		registerNPC(548, "Change-clothes");
 	}
 }

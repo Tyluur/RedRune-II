@@ -64,6 +64,8 @@ public interface PacketConstants {
 	
 	int PING_PACKET = 16;
 	
+	int PING_STATISTICS_PACKET = 85;
+	
 	int SCREEN_PACKET = 87;
 	
 	int CHAT_TYPE_PACKET = 23;

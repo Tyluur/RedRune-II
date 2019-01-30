@@ -56,12 +56,12 @@ public class PlayerMagicCastEvent extends Event {
 				}
 				player.resetWalkSteps();
 				if ((interfaceId == 747 && componentId == 14) || (interfaceId == 662 && componentId == 65) || (interfaceId == 662 && componentId == 74) || interfaceId == 747 && componentId == 17) {
-					if ((interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 23 || interfaceId == 747 && componentId == 17)) {
+					if (interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 17) {
 						if (player.getFamiliar().getSpecialAttack() != SpecialAttack.ENTITY) {
 							return;
 						}
 					}
-					if (!player.isCanPvp() || !target.isCanPvp()) {
+					if (!player.getAttributes().isCanPvp() || !target.getAttributes().isCanPvp()) {
 						
 						player.getPackets().sendGameMessage("You can't attack players when you're not in the Wilderness..");
 						return;
@@ -128,12 +128,12 @@ public class PlayerMagicCastEvent extends Event {
 							if (!player.getControllerManager().canAttack(target)) {
 								return;
 							}
-							if (!player.isCanPvp() || !target.isCanPvp()) {
+							if (!player.getAttributes().isCanPvp() || !target.getAttributes().isCanPvp()) {
 								player.getPackets().sendGameMessage("You can't attack players who aren't in the Wilderness.");
 								return;
 							}
 							player.setNextFaceActor(target);
-							if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
+							if (!target.isInMultiArea() || !player.isInMultiArea()) {
 								if (player.getAttackedBy() != target && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
 									player.getPackets().sendGameMessage("That " + (player.getAttackedBy() instanceof Player ? "player" : "npc") + " is already in combat.");
 									return;

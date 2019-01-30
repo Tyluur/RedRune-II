@@ -17,7 +17,7 @@ public class BarrowsD extends Dialogue {
 		} else if (stage == 0) {
 			if (componentId == 2) {
 				player.setNextWorldTile(new WorldTile(3551, 9692, 0));
-				player.getTemporaryAttributtes().put("lootedChest", Boolean.FALSE);
+				player.getTemporaryAttributes().put("lootedChest", Boolean.FALSE);
 			}
 			end();
 		}

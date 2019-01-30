@@ -39,7 +39,7 @@ public class PlayerDesign {
 	 */
 	public static void handle(Player player, int buttonId, int slot) {
 		PlayerAppearance appearance = player.getAppearance();
-		DesignState state = player.getAttribute("design_state");
+		DesignState state = player.getTemporaryAttribute("design_state");
 		if (state == null) {
 			state = new DesignState();
 			player.putAttribute("design_state", state);
@@ -54,9 +54,9 @@ public class PlayerDesign {
 			case 117:
 				player.closeInterfaces();
 				player.getPackets().sendWindowsPane(player.getInterfaceManager().hasRezizableScreen() ? 746 : 548, 0);
-				player.getAttributes().remove("SelectWearDesignD");
-				player.getAttributes().remove("ViewWearDesign");
-				player.getAttributes().remove("ViewWearDesignD");
+				player.getTemporaryAttributes().remove("SelectWearDesignD");
+				player.getTemporaryAttributes().remove("ViewWearDesign");
+				player.getTemporaryAttributes().remove("ViewWearDesignD");
 				player.getAppearance().generateAppearanceData();
 				break;
 			case 95:

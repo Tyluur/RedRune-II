@@ -128,7 +128,7 @@ public class NPCInteractionEvent extends Event {
 					return;
 				} else {
 					player.getFamiliar().drainSpecial(2);
-					player.addPoisonImmune(120);
+					player.getAttributes().addPoisonImmune(120);
 				}
 			}
 			return;

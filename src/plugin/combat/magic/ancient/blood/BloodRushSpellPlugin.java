@@ -10,7 +10,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class BloodRushSpellPlugin extends CombatSpellPlugin {
+public class BloodRushSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

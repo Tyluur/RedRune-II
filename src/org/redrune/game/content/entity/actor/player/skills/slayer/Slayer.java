@@ -8,15 +8,8 @@ import java.util.*;
 
 public class Slayer {
 	
-	/**
-	 * 0 = Hello 1 = Option
-	 *
-	 * OTHER 2 = For your first task I'm assigning you to 3 = You still have a task 4 = Great your doing great, Your new
-	 * task is
-	 */
-	
 	public static String assignTask(Player player, SlayerMaster master) {
-		org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask tasks = player.slayerTask;
+		org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask tasks = player.getAttributes().getSlayerTask();
 		List<SlayerTasks> possibleTasks = new ArrayList<SlayerTasks>();
 		for (SlayerTasks task : SlayerTasks.values()) {
 			if (task.type == master.type) {

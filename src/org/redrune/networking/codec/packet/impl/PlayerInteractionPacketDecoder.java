@@ -27,16 +27,16 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 	public void decode(Player player, InputStream stream, int packetId, int packetLength) {
 		switch (packetId) {
 			case PLAYER_OPTION_1_PACKET: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
 				@SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;
 				int playerIndex = stream.readUnsignedShort();
 				Player target = World.getPlayers().get(playerIndex);
-				if (target == null || target.isDead() || target.hasFinished() || !player.getMapRegionsIds().contains(target.getRegionId())) {
+				if (target == null || target.isDead() || target.isFinished() || !player.getMapRegionsIds().contains(target.getRegionId())) {
 					return;
 				}
-				if (player.getLocks().isInteractionLocked() || !player.getControllerManager().canEntityClick(target, FIRST) || !player.isCanPvp()) {
+				if (player.getLocks().isInteractionLocked() || !player.getControllerManager().canEntityClick(target, FIRST) || !player.getAttributes().isCanPvp()) {
 					return;
 				}
 				player.setNextFaceActor(target);
@@ -47,14 +47,14 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 				break;
 			}
 			case PLAYER_OPTION_2_PACKET: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
 				@SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;
 				int playerIndex = stream.readUnsignedShort();
 				Player target = World.getPlayers().get(playerIndex);
 				// null and online checks individually
-				if (target == null || target.isDead() || target.hasFinished() || !player.getMapRegionsIds().contains(target.getRegionId())) {
+				if (target == null || target.isDead() || target.isFinished() || !player.getMapRegionsIds().contains(target.getRegionId())) {
 					return;
 				}
 				// game verification checks
@@ -69,7 +69,7 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 				stream.readByte();
 				int playerIndex = stream.readUnsignedShort();
 				final Player target = World.getPlayers().get(playerIndex);
-				if (target == null || target.isDead() || target.hasFinished() || !player.getMapRegionsIds().contains(target.getRegionId())) {
+				if (target == null || target.isDead() || target.isFinished() || !player.getMapRegionsIds().contains(target.getRegionId())) {
 					return;
 				}
 				if (player.getLocks().isInteractionLocked()) {
@@ -79,7 +79,7 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 				break;
 			}
 			case INTERFACE_ON_PLAYER: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
 				if (player.getLocks().isInteractionLocked()) {
@@ -105,7 +105,7 @@ public class PlayerInteractionPacketDecoder implements IncomingPacketDecoder {
 					return;
 				}
 				Player p2 = World.getPlayers().get(playerIndex);
-				if (p2 == null || p2.isDead() || p2.hasFinished() || !player.getMapRegionsIds().contains(p2.getRegionId())) {
+				if (p2 == null || p2.isDead() || p2.isFinished() || !player.getMapRegionsIds().contains(p2.getRegionId())) {
 					return;
 				}
 				player.getEventManager().start(new PlayerMagicCastEvent(p2, interfaceId, componentId, slotId));

@@ -1,3 +1,31 @@
+January 29th - Agility courses, visual synchronization improvements, plugin updates, and more
+
+	Journal
+		1:  Updated incoming packet systems, gameplay is generally a lot more smooth now
+		2:  Updated banking
+			+   Added insert mode
+			+   The bank interface now saves your last selected insert/withdrawal selection
+		3:  Lots of cleaning up of bad base code done
+		4:  Updated saving
+			+   Using json now
+		5:  Added profanity filter which is toggleable (and off by default)
+		6:  Updated plugin system to allow for multiple plugins in the same plugin instance
+		7:  Added the system to stack hits while performing skillcape emotes and skillcape emotes only
+		8:  Fixed combat damage being appended after teleports
+		9:  Combat damage will be appended after agility
+		10: Added wilderness agility course
+		11: Added barbarian outpost agility course
+		12: Added gnome agility course
+		13: Added grand exchange shortcut
+
+	Media
+		https://i.imgur.com/ZbPLd1A.png
+		https://i.imgur.com/E90lDk6.gif
+		https://i.imgur.com/FJw1n64.png
+		https://i.imgur.com/OvxuSmk.gif
+
+
+
 January 25th - Combat visual improvements, interaction system, event system, and more
 
 	Journal

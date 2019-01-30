@@ -10,7 +10,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/8/2017
  */
-public class WindStrikeSpellPlugin extends CombatSpellPlugin {
+public class WindStrikeSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int spellId() {

@@ -32,7 +32,7 @@ public final class PoisonManager implements Serializable {
 		}
 		if (actor instanceof Player) {
 			Player player = ((Player) actor);
-			if (player.getPoisonImmune() > Misc.currentTimeMillis()) {
+			if (player.getAttributes().getPoisonImmune() > Misc.currentTimeMillis()) {
 				return;
 			}
 			if (poisonDamage == 0) {

@@ -10,22 +10,22 @@ import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/8/2017
  */
-public abstract class CombatSpellPlugin extends SpellPlugin {
+public interface CombatSpellPlugin extends SpellPlugin {
 	
 	/**
 	 * The delay on the spell, only used to find the next combat swing time
 	 */
-	public abstract int delay(Player player);
+	int delay(Player player);
 	
 	/**
 	 * The animation id for the spell
 	 */
-	public abstract int animationId();
+	int animationId();
 	
 	/**
 	 * The id of the graphics applied when the hit lands
 	 */
-	public abstract int hitGfx();
+	int hitGfx();
 	
 	/**
 	 * The base damage of the spell
@@ -35,20 +35,20 @@ public abstract class CombatSpellPlugin extends SpellPlugin {
 	 * @param target
 	 * 		The target of the spell
 	 */
-	public abstract int maxHit(Player player, Actor target);
+	int maxHit(Player player, Actor target);
 	
 	/**
 	 * Handles the casting of the spell
 	 */
-	public abstract void cast(Player source, Actor target, MagicCombatStyle style);
+	void cast(Player source, Actor target, MagicCombatStyle style);
 	
 	@Override
-	public final void cast(Player player, Actor target) {
+	default void cast(Player player, Actor target) {
 		throw new RuntimeException("Unable to cast a spell without the style");
 	}
 	
 	@Override
-	public void register() {
+	default void register() {
 		PluginRepository.register(this, book(), spellId());
 	}
 	
@@ -58,14 +58,14 @@ public abstract class CombatSpellPlugin extends SpellPlugin {
 	 * @param player
 	 * 		The player
 	 */
-	public int minimumHit(Player player) {
+	default int minimumHit(Player player) {
 		return -1;
 	}
 	
 	/**
 	 * The default height of the hit land gfx
 	 */
-	public int gfxHeight() {
+	default int gfxHeight() {
 		return 96;
 	}
 }

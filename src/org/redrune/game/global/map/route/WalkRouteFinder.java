@@ -13,7 +13,7 @@ public class WalkRouteFinder {
 
 	private static final int GRAPH_SIZE = 128;
 
-	private static final int QUEUE_SIZE = (GRAPH_SIZE * GRAPH_SIZE) / 4; // we do /4 because each tile can only be accessed from single direction
+	private static final int QUEUE_SIZE = (GRAPH_SIZE * GRAPH_SIZE) / 2; // we do /4 because each tile can only be accessed from single direction
 
 	private static final int ALTERNATIVE_ROUTE_MAX_DISTANCE = 100;
 

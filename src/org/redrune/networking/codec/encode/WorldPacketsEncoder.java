@@ -1,7 +1,8 @@
 package org.redrune.networking.codec.encode;
 
-import org.redrune.utility.constants.GameConstants;
-import org.redrune.game.global.WorldTile;
+import org.jboss.netty.channel.ChannelFuture;
+import org.jboss.netty.channel.ChannelFutureListener;
+import org.redrune.cache.huffman.Huffman;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
@@ -13,24 +14,26 @@ import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.item.ItemsContainer;
 import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.entity.projectile.Projectile;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.DynamicRegion;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.game.global.worldlist.WorldEntry;
 import org.redrune.game.global.worldlist.WorldList;
-import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.networking.Session;
 import org.redrune.networking.codec.Encoder;
 import org.redrune.networking.stream.OutputStream;
+import org.redrune.utility.constants.GameConstants;
+import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.cache.huffman.Huffman;
 import org.redrune.utility.game.InputEvent;
-import org.redrune.utility.game.map.HintIcon;
-import org.redrune.utility.game.map.MapArchiveKeys;
+import org.redrune.utility.game.entity.actor.player.ChatMessage;
 import org.redrune.utility.game.entity.actor.player.PublicChatMessage;
 import org.redrune.utility.game.entity.actor.player.QuickChatMessage;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
+import org.redrune.utility.game.map.HintIcon;
+import org.redrune.utility.game.map.MapArchiveKeys;
+
+import java.util.List;
 
 public class WorldPacketsEncoder extends Encoder {
 	
@@ -43,6 +46,88 @@ public class WorldPacketsEncoder extends Encoder {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public void sendRunButtonConfig() {
+		player.getPackets().sendConfig(173, player.getAttributes().isResting() ? 3 : player.isRunModeOn() ? 1 : 0);
+	}
+	
+	public void sendProfanityFilterConfig() {
+		player.getVarManager().sendVarBit(8780, player.getAttributes().isFilteringProfanity() ? 0 : 1);
+	}
+	
+	public void refreshSpawnedObjects() {
+		for (int regionId : player.getMapRegionsIds()) {
+			List<WorldObject> removedObjects = RegionManager.getRegion(regionId).getRemovedObjects();
+			if (removedObjects != null) {
+				for (WorldObject object : removedObjects) {
+					player.getPackets().sendDestroyObject(object);
+				}
+			}
+			List<WorldObject> spawnedObjects = RegionManager.getRegion(regionId).getSpawnedObjects();
+			if (spawnedObjects != null) {
+				for (WorldObject object : spawnedObjects) {
+					if (object.getPlane() == player.getPlane()) {
+						player.getPackets().sendSpawnedObject(object);
+					}
+				}
+			}
+		}
+	}
+	
+	public void refreshSpawnedItems() {
+		for (int regionId : player.getMapRegionsIds()) {
+			List<FloorItem> floorItems = RegionManager.getRegion(regionId).getFloorItems();
+			if (floorItems == null) {
+				continue;
+			}
+			for (FloorItem item : floorItems) {
+				if ((item.isInvisible() || item.isGrave()) && player != item.getOwner() || item.getTile().getPlane() != player.getPlane()) {
+					continue;
+				}
+				player.getPackets().sendRemoveGroundItem(item);
+			}
+		}
+		for (int regionId : player.getMapRegionsIds()) {
+			List<FloorItem> floorItems = RegionManager.getRegion(regionId).getFloorItems();
+			if (floorItems == null) {
+				continue;
+			}
+			for (FloorItem item : floorItems) {
+				if ((item.isInvisible() || item.isGrave()) && player != item.getOwner() || item.getTile().getPlane() != player.getPlane()) {
+					continue;
+				}
+				player.getPackets().sendGroundItem(item);
+			}
+		}
+	}
+	
+	public void switchMouseButtons() {
+		player.getAttributes().setMouseButtons(!player.getAttributes().isMouseButtons());
+		refreshMouseButtons();
+	}
+	
+	public void refreshMouseButtons() {
+		player.getPackets().sendConfig(170, player.getAttributes().isMouseButtons() ? 0 : 1);
+	}
+	
+	public void refreshPrivateChatSetup() {
+		player.getPackets().sendConfig(287, player.getAttributes().getPrivateChatSetup());
+	}
+	
+	public void sendDefaultPlayersOptions() {
+		player.getPackets().sendPlayerOption("Follow", 2, false);
+		player.getPackets().sendPlayerOption("Trade with", 3, false);
+		//		getPackets().sendPlayerOption("Req Assist", 4, false);
+	}
+	
+	public void switchAllowChatEffects() {
+		player.getAttributes().setAllowChatEffects(!player.getAttributes().isAllowChatEffects());
+		refreshAllowChatEffects();
+	}
+	
+	public void refreshAllowChatEffects() {
+		player.getPackets().sendConfig(171, player.getAttributes().isAllowChatEffects() ? 0 : 1);
 	}
 	
 	public void sendNPCMessage(int border, NPC npc, String message) {
@@ -61,11 +146,11 @@ public class WorldPacketsEncoder extends Encoder {
 		sendMessage(filter ? 109 : 0, text, null);
 	}
 	
-	private final void sendMessage(int type, String text, Player p) {
+	private void sendMessage(int type, String text, Player p) {
 		int maskData = 0;
 		if (p != null) {
 			maskData |= 0x1;
-			if (p.hasDisplayName()) {
+			if (p.getAttributes().hasDisplayName()) {
 				maskData |= 0x2;
 			}
 		}
@@ -76,7 +161,7 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writeByte(maskData);
 		if ((maskData & 0x1) != 0) {
 			stream.writeString(p.getDisplayName());
-			if (p.hasDisplayName()) {
+			if (p.getAttributes().hasDisplayName()) {
 				stream.writeString(Misc.formatPlayerNameForDisplay(p.getUsername()));
 			}
 		}
@@ -478,7 +563,7 @@ public class WorldPacketsEncoder extends Encoder {
 	public void sendRunEnergy() {
 		OutputStream stream = new OutputStream(2);
 		stream.writePacket(13);
-		stream.writeByte(player.getRunEnergy());
+		stream.writeByte(player.getAttributes().getRunEnergy());
 		session.write(stream);
 	}
 	
@@ -653,7 +738,7 @@ public class WorldPacketsEncoder extends Encoder {
 	public void sendGameBarStages() {
 		sendConfig(1054, 0); // clan on
 		sendConfig(1055, 0); // assist on
-		sendConfig(1056, player.isFilterGame() ? 1 : 0);
+		sendConfig(1056, player.getAttributes().isFilterGame() ? 1 : 0);
 		sendConfig(2159, 0); // friends chat on
 		OutputStream stream = new OutputStream(3);
 		stream.writePacket(72);
@@ -745,7 +830,7 @@ public class WorldPacketsEncoder extends Encoder {
 		session.write(stream);
 	}
 	
-	public void receiveFriendChatMessage(String name, String display, int rights, String chatName, String message) {
+	public void receiveFriendChatMessage(String name, String display, int rights, String chatName, ChatMessage message) {
 		OutputStream stream = new OutputStream();
 		stream.writePacketVarByte(40);
 		stream.writeByte(name.equals(display) ? 0 : 1);
@@ -758,7 +843,7 @@ public class WorldPacketsEncoder extends Encoder {
 			stream.writeByte(Misc.getRandom(255));
 		}
 		stream.writeByte(rights);
-		Huffman.sendEncryptMessage(stream, message);
+		Huffman.sendEncryptMessage(stream, message.getMessage(player.getAttributes().isFilteringProfanity()));
 		stream.endPacketVarByte();
 		session.write(stream);
 	}
@@ -806,7 +891,7 @@ public class WorldPacketsEncoder extends Encoder {
 		int regionY = player.getChunkY();
 		stream.writeShort(regionY);
 		stream.writeByte(player.getMapSize());
-		stream.write128Byte(player.isForceNextMapLoadRefresh() ? 1 : 0);
+		stream.write128Byte(player.getAttributes().isForceNextMapLoadRefresh() ? 1 : 0);
 		stream.write128Byte(wasAtDynamicRegion ? 5 : 3); // 5 or 3 else doesnt
 		// load.
 		stream.writeShortLE(regionX);
@@ -888,7 +973,7 @@ public class WorldPacketsEncoder extends Encoder {
 			player.getLocalPlayerUpdate().init(stream);
 		}
 		stream.writeByteC(player.getMapSize());
-		stream.writeByte(player.isForceNextMapLoadRefresh() ? 1 : 0);
+		stream.writeByte(player.getAttributes().isForceNextMapLoadRefresh() ? 1 : 0);
 		stream.writeShortLE(player.getChunkX());
 		stream.writeShort(player.getChunkY());
 		for (int regionId : player.getMapRegionsIds()) {
@@ -953,17 +1038,16 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writePacketVarByte(91);
 		stream.writeShort(p.getIndex());
 		stream.writeShort(message.getEffects());
-		stream.writeByte(p.getDominantRight().getClientRight());
+		stream.writeByte(p.getMessageIcon());
 		if (message instanceof QuickChatMessage) {
 			QuickChatMessage qcMessage = (QuickChatMessage) message;
 			stream.writeShort(qcMessage.getFileId());
-			if (qcMessage.getMessage() != null) {
-				stream.writeBytes(message.getMessage().getBytes());
-			}
+			if (qcMessage.getMessage(false) != null)
+				stream.writeBytes(message.getMessage(false).getBytes());
 		} else {
 			byte[] chatStr = new byte[250];
-			chatStr[0] = (byte) message.getMessage().length();
-			int offset = 1 + Huffman.encryptMessage(1, message.getMessage().length(), chatStr, 0, message.getMessage().getBytes());
+			chatStr[0] = (byte) message.getMessage(player.getAttributes().isFilteringProfanity()).length();
+			int offset = 1 + Huffman.encryptMessage(1, message.getMessage(player.getAttributes().isFilteringProfanity()).length(), chatStr, 0, message.getMessage(player.getAttributes().isFilteringProfanity()).getBytes());
 			stream.writeBytes(chatStr, 0, offset);
 		}
 		stream.endPacketVarByte();
@@ -1367,6 +1451,6 @@ public class WorldPacketsEncoder extends Encoder {
 	
 	public void cancelInputRequest() {
 		sendRunScript(1548, 0);
-		player.removeAttribute("input_event");
+		player.removeTemporaryAttribute("input_event");
 	}
 }

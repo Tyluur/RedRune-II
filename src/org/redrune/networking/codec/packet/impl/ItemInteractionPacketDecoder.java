@@ -40,7 +40,7 @@ public class ItemInteractionPacketDecoder implements IncomingPacketDecoder {
 				InventoryOptionsHandler.handleItemOnItem(player, stream);
 				break;
 			case ITEM_TAKE_PACKET: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead() || player.isFrozen()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead() || player.isFrozen()) {
 					return;
 				}
 				final int id = stream.readUnsignedShort128();
@@ -57,7 +57,7 @@ public class ItemInteractionPacketDecoder implements IncomingPacketDecoder {
 					return;
 				}
 				if (forceRun) {
-					player.setRun(true);
+					player.setRunModeOn(true);
 				}
 				player.stopAll(false);
 				player.setRouteEvent(new RouteEvent(item, () -> {

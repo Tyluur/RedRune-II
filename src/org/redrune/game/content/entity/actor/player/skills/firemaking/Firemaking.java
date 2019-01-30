@@ -31,7 +31,7 @@ public class Firemaking extends Action {
 		player.getPackets().sendGameMessage("You attempt to light the logs.", true);
 		player.getInventory().deleteItem(fire.getLogId(), 1);
 		RegionManager.addGroundItem(new Item(fire.getLogId(), 1), new WorldTile(player), player, false, 180, true);
-		Long time = (Long) player.getTemporaryAttributtes().remove("Fire");
+		Long time = (Long) player.getTemporaryAttributes().remove("Fire");
 		boolean quickFire = time != null && time > Misc.currentTimeMillis();
 		setActionDelay(player, quickFire ? 1 : Misc.getRandom(5) + 4);
 		if (!quickFire) {
@@ -89,7 +89,7 @@ public class Firemaking extends Action {
 				player.setNextFaceWorldTile(tile);
 			}
 		}, 1);
-		player.getTemporaryAttributtes().put("Fire", Misc.currentTimeMillis() + 1800);
+		player.getTemporaryAttributes().put("Fire", Misc.currentTimeMillis() + 1800);
 		return -1;
 	}
 	

@@ -8,7 +8,7 @@ import org.redrune.utility.constants.PacketConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class MusicInterfacePlugin extends InterfacePlugin {
+public class MusicInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {

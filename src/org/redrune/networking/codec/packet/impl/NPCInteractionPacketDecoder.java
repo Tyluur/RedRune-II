@@ -46,7 +46,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				decodeNPCStream(player, stream, EXAMINE);
 				break;
 			case ATTACK_NPC: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
 				if (player.getLocks().isInteractionLocked()) {
@@ -55,7 +55,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				@SuppressWarnings("unused") boolean unknown = stream.readByte128() == 1;
 				int npcIndex = stream.readUnsignedShort128();
 				NPC npc = World.getNPCs().get(npcIndex);
-				if (npc == null || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || !npc.getDefinitions().hasAttackOption()) {
+				if (npc == null || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || !npc.getDefinitions().hasAttackOption()) {
 					return;
 				}
 				player.setNextFaceActor(npc);
@@ -66,7 +66,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				break;
 			}
 			case INTERFACE_ON_NPC: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
 				if (player.getLocks().isInteractionLocked()) {
@@ -93,7 +93,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 					return;
 				}
 				NPC npc = World.getNPCs().get(npcIndex);
-				if (npc == null || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId())) {
+				if (npc == null || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId())) {
 					return;
 				}
 				player.getEventManager().start(new NPCMagicCastEvent(npc, interfaceId, componentId, slot));
@@ -115,11 +115,11 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 		boolean running = stream.readByte128() == 1;
 		int npcIndex = stream.readUnsignedShort128();
 		final NPC npc = World.getNPCs().get(npcIndex);
-		if (npc == null || npc.isCantInteract() || npc.isDead() || npc.hasFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
+		if (npc == null || npc.isCantInteract() || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
 			return;
 		}
 		if (running) {
-			player.setRun(true);
+			player.setRunModeOn(true);
 		}
 		switch (option) {
 			case FIRST:
@@ -129,7 +129,7 @@ public class NPCInteractionPacketDecoder implements IncomingPacketDecoder {
 				player.getEventManager().start(new NPCInteractionEvent(npc, option));
 				break;
 			case EXAMINE:
-				if (player.getAttribute("removing_npcs", false)) {
+				if (player.getTemporaryAttribute("removing_npcs", false)) {
 					NPCSpawnRepository.removeSpawn(npc);
 					npc.finish();
 					return;

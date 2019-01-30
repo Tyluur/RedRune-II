@@ -11,7 +11,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class ConfuseSpellPlugin extends CombatSpellPlugin {
+public class ConfuseSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

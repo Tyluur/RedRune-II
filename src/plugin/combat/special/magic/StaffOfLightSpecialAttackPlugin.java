@@ -29,6 +29,6 @@ public class StaffOfLightSpecialAttackPlugin extends SpecialAttackPlugin {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
 		source.setNextGraphics(GRAPHICS1);
-		source.addPolDelay(60000);
+		source.getAttributes().addPolDelay(60000);
 	}
 }

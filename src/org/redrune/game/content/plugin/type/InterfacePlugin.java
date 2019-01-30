@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.PluginRepository;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/30/2017
  */
-public abstract class InterfacePlugin extends Plugin {
+public interface InterfacePlugin extends Plugin {
 	
 	/**
 	 * Handles the interface interaction
@@ -27,7 +27,7 @@ public abstract class InterfacePlugin extends Plugin {
 	 * 		The packet id of the click, different ids are used for different options
 	 * @return {@code True} if it was handled successfully
 	 */
-	public abstract boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId);
+	boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId);
 	
 	/**
 	 * Handles the registration of an interface plugin
@@ -35,7 +35,7 @@ public abstract class InterfacePlugin extends Plugin {
 	 * @param interfaceIds
 	 * 		The id of the interfaces that will be registered
 	 */
-	protected void registerInterfacePlugin(int... interfaceIds) {
+	default void registerInterfacePlugin(int... interfaceIds) {
 		PluginRepository.register(this, interfaceIds);
 	}
 }

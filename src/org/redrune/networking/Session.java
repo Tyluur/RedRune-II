@@ -16,9 +16,13 @@ import org.redrune.networking.codec.decode.WorldPacketsDecoder;
 import org.redrune.networking.codec.encode.GrabPacketsEncoder;
 import org.redrune.networking.codec.encode.LoginPacketsEncoder;
 import org.redrune.networking.codec.encode.WorldPacketsEncoder;
+import org.redrune.networking.stream.InputStream;
 import org.redrune.networking.stream.OutputStream;
 import org.redrune.utility.functions.Misc;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -29,6 +33,12 @@ public final class Session {
 	 */
 	@Getter
 	private final Channel channel;
+	
+	/**
+	 * The queue of incoming packets to process
+	 */
+	@Getter
+	private final List<InputStream> incomingQueue;
 	
 	/**
 	 * The queue of outgoing buffers
@@ -61,14 +71,22 @@ public final class Session {
 	@Setter
 	private String macAddress = "";
 	
+	/**
+	 * If this session is in the lobby
+	 */
+	@Getter
+	@Setter
+	private boolean inLobby;
+	
 	public Session(Channel channel) {
 		this.channel = channel;
 		this.outgoingQueue = new ConcurrentLinkedQueue<>();
+		this.incomingQueue = Collections.synchronizedList(new ArrayList<>());
 		setDecoder(0);
 	}
 	
 	/**
-	 * Sets the decoder
+	 * the Sets the decoder
 	 *
 	 * @param stage
 	 * 		The stage
@@ -136,6 +154,16 @@ public final class Session {
 			return null;
 		}
 		return channel.write(ChannelBuffers.copiedBuffer(outStream.getBuffer(), 0, outStream.getOffset()));
+	}
+	
+	/**
+	 * Adds a stream to the queue of incoming streams to process
+	 *
+	 * @param stream
+	 * 		The stream
+	 */
+	public boolean addStreamToIncomingQueue(InputStream stream) {
+		return incomingQueue.add(stream);
 	}
 	
 	/**

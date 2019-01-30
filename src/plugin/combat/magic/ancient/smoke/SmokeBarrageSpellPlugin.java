@@ -10,7 +10,7 @@ import org.redrune.utility.functions.RandomFunction;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class SmokeBarrageSpellPlugin extends CombatSpellPlugin {
+public class SmokeBarrageSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

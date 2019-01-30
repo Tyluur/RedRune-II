@@ -11,7 +11,7 @@ import plugin.inter.TeleportationInterfacePlugin.TransportationLocation;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/13/2017
  */
-public class TeleportationWizardNPCPlugin extends NPCPlugin {
+public class TeleportationWizardNPCPlugin implements NPCPlugin {
 	
 	@Override
 	public boolean handle(Player player, NPC npc, String option) {
@@ -20,7 +20,7 @@ public class TeleportationWizardNPCPlugin extends NPCPlugin {
 				TeleportationInterfacePlugin.displaySelectionInterface(player, true);
 				return true;
 			case "Previous":
-				TransportationLocation last = player.getSaving().getAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION);
+				TransportationLocation last = player.getAttributes().getAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION);
 				if (last == null) {
 					return true;
 				}
@@ -32,7 +32,7 @@ public class TeleportationWizardNPCPlugin extends NPCPlugin {
 	
 	@Override
 	public void register() {
-		register(14332, "Talk-to");
-		register(14332, "Previous");
+		registerNPC(14332, "Talk-to");
+		registerNPC(14332, "Previous");
 	}
 }

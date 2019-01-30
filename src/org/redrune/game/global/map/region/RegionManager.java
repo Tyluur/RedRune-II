@@ -1,7 +1,6 @@
 package org.redrune.game.global.map.region;
 
 import org.redrune.engine.SystemManager;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
@@ -10,8 +9,10 @@ import org.redrune.game.entity.item.FloorItem;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.World;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.ItemConstants;
+import org.redrune.utility.functions.Misc;
+import org.redrune.utility.game.entity.object.ObjectRemoval;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,14 +28,14 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RegionManager {
 	
-	private static final Map<Integer, Region> regions = Collections.synchronizedMap(new HashMap<Integer, Region>());
+	private static final Map<Integer, Region> regions = Collections.synchronizedMap(new HashMap<>());
 	
 	public static Map<Integer, Region> getRegions() {
 		return regions;
 	}
 	
 	public static void updateActorRegion(Actor actor) {
-		if (actor.hasFinished()) {
+		if (actor.isFinished()) {
 			if (actor instanceof Player) {
 				getRegion(actor.getLastRegionId()).removePlayerIndex(actor.getIndex());
 			} else {
@@ -66,6 +67,7 @@ public final class RegionManager {
 		if (actor instanceof Player) {
 			Player player = (Player) actor;
 			player.getControllerManager().moved();
+			ObjectRemoval.handleRegionChange(player);
 			if (player.isRunning() && player.getControllerManager().getController() == null) {
 				World.checkControllersAtMove(player);
 			}
@@ -520,7 +522,7 @@ public final class RegionManager {
 			// visible
 			int regionId = tile.getRegionId();
 			for (Player player : World.getPlayers()) {
-				if (player == null || !player.hasStarted() || player.hasFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
+				if (player == null || !player.hasStarted() || player.isFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
 					continue;
 				}
 				player.getPackets().sendGroundItem(floorItem);
@@ -554,7 +556,7 @@ public final class RegionManager {
 		}
 		floorItem.setInvisible(false);
 		for (Player player : World.getPlayers()) {
-			if (player == null || player == realOwner || !player.hasStarted() || player.hasFinished() || player.getPlane() != floorItem.getTile().getPlane() || !player.getMapRegionsIds().contains(regionId)) {
+			if (player == null || player == realOwner || !player.hasStarted() || player.isFinished() || player.getPlane() != floorItem.getTile().getPlane() || !player.getMapRegionsIds().contains(regionId)) {
 				continue;
 			}
 			player.getPackets().sendGroundItem(floorItem);
@@ -614,7 +616,7 @@ public final class RegionManager {
 					}
 					floorItem.setInvisible(false);
 					for (Player player : World.getPlayers()) {
-						if (player == null || player == owner || !player.hasStarted() || player.hasFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
+						if (player == null || player == owner || !player.hasStarted() || player.isFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
 							continue;
 						}
 						player.getPackets().sendGroundItem(floorItem);
@@ -628,7 +630,7 @@ public final class RegionManager {
 		}
 		int regionId = tile.getRegionId();
 		for (Player player : World.getPlayers()) {
-			if (player == null || !player.hasStarted() || player.hasFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
+			if (player == null || !player.hasStarted() || player.isFinished() || player.getPlane() != tile.getPlane() || !player.getMapRegionsIds().contains(regionId)) {
 				continue;
 			}
 			player.getPackets().sendGroundItem(floorItem);
@@ -646,7 +648,7 @@ public final class RegionManager {
 				}
 				region.forceGetFloorItems().remove(floorItem);
 				for (Player player : World.getPlayers()) {
-					if (player == null || !player.hasStarted() || player.hasFinished() || player.getPlane() != floorItem.getTile().getPlane() || !player.getMapRegionsIds().contains(regionId)) {
+					if (player == null || !player.hasStarted() || player.isFinished() || player.getPlane() != floorItem.getTile().getPlane() || !player.getMapRegionsIds().contains(regionId)) {
 						continue;
 					}
 					player.getPackets().sendRemoveGroundItem(floorItem);
@@ -679,7 +681,7 @@ public final class RegionManager {
 			return true;
 		} else {
 			for (Player p2 : World.getPlayers()) {
-				if (p2 == null || !p2.hasStarted() || p2.hasFinished() || p2.getPlane() != floorItem.getTile().getPlane() || !p2.getMapRegionsIds().contains(regionId)) {
+				if (p2 == null || !p2.hasStarted() || p2.isFinished() || p2.getPlane() != floorItem.getTile().getPlane() || !p2.getMapRegionsIds().contains(regionId)) {
 					continue;
 				}
 				p2.getPackets().sendRemoveGroundItem(floorItem);
@@ -691,7 +693,7 @@ public final class RegionManager {
 	public static void sendGraphics(Actor creator, Graphics graphics, WorldTile tile) {
 		if (creator == null) {
 			for (Player player : World.getPlayers()) {
-				if (player == null || !player.hasStarted() || player.hasFinished() || !player.withinDistance(tile)) {
+				if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(tile)) {
 					continue;
 				}
 				player.getPackets().sendGraphics(graphics, tile);
@@ -704,7 +706,7 @@ public final class RegionManager {
 				}
 				for (Integer playerIndex : playersIndexes) {
 					Player player = World.getPlayers().get(playerIndex);
-					if (player == null || !player.hasStarted() || player.hasFinished() || !player.withinDistance(tile)) {
+					if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(tile)) {
 						continue;
 					}
 					player.getPackets().sendGraphics(graphics, tile);
@@ -721,7 +723,7 @@ public final class RegionManager {
 			}
 			for (Integer playerIndex : playersIndexes) {
 				Player player = World.getPlayers().get(playerIndex);
-				if (player == null || !player.hasStarted() || player.hasFinished() || (!player.withinDistance(shooter) && !player.withinDistance(receiver))) {
+				if (player == null || !player.hasStarted() || player.isFinished() || (!player.withinDistance(shooter) && !player.withinDistance(receiver))) {
 					continue;
 				}
 				player.getPackets().sendProjectile(null, startTile, receiver, gfxId, startHeight, endHeight, speed, delay, curve, startDistanceOffset, 1);
@@ -737,7 +739,7 @@ public final class RegionManager {
 			}
 			for (Integer playerIndex : playersIndexes) {
 				Player player = World.getPlayers().get(playerIndex);
-				if (player == null || !player.hasStarted() || player.hasFinished() || (!player.withinDistance(shooter) && !player.withinDistance(receiver))) {
+				if (player == null || !player.hasStarted() || player.isFinished() || (!player.withinDistance(shooter) && !player.withinDistance(receiver))) {
 					continue;
 				}
 				player.getPackets().sendProjectile(null, shooter, receiver, gfxId, startHeight, endHeight, speed, delay, curve, startDistanceOffset, shooter.getSize());
@@ -753,7 +755,7 @@ public final class RegionManager {
 			}
 			for (Integer playerIndex : playersIndexes) {
 				Player player = World.getPlayers().get(playerIndex);
-				if (player == null || !player.hasStarted() || player.hasFinished() || (!player.withinDistance(shooter) && !player.withinDistance(receiver))) {
+				if (player == null || !player.hasStarted() || player.isFinished() || (!player.withinDistance(shooter) && !player.withinDistance(receiver))) {
 					continue;
 				}
 				int size = shooter.getSize();
@@ -777,7 +779,7 @@ public final class RegionManager {
 	public static void sendObjectAnimation(Actor creator, WorldObject object, Animation animation) {
 		if (creator == null) {
 			for (Player player : World.getPlayers()) {
-				if (player == null || !player.hasStarted() || player.hasFinished() || !player.withinDistance(object)) {
+				if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(object)) {
 					continue;
 				}
 				player.getPackets().sendObjectAnimation(object, animation);
@@ -790,7 +792,7 @@ public final class RegionManager {
 				}
 				for (Integer playerIndex : playersIndexes) {
 					Player player = World.getPlayers().get(playerIndex);
-					if (player == null || !player.hasStarted() || player.hasFinished() || !player.withinDistance(object)) {
+					if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(object)) {
 						continue;
 					}
 					player.getPackets().sendObjectAnimation(object, animation);

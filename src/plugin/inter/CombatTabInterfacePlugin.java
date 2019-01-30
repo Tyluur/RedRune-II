@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class CombatTabInterfacePlugin extends InterfacePlugin {
+public class CombatTabInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {

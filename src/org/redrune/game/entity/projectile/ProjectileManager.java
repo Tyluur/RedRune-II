@@ -30,7 +30,7 @@ public class ProjectileManager {
 		}
 		for (Integer playerIndex : playersIndexes) {
 			Player player = World.getPlayers().get(playerIndex);
-			if (player == null || !player.hasStarted() || player.hasFinished() || !player.withinDistance(sourceLocation)) {
+			if (player == null || !player.hasStarted() || player.isFinished() || !player.withinDistance(sourceLocation)) {
 				continue;
 			}
 			player.getPackets().sendProjectile(projectile);

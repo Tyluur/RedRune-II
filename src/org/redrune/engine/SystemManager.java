@@ -10,6 +10,7 @@ import org.redrune.engine.factory.DecoderThreadFactory;
 import org.redrune.engine.factory.SlowThreadFactory;
 import org.redrune.engine.tick.schedule.Scheduler;
 import org.redrune.engine.tick.schedule.impl.PunishmentTask;
+import org.redrune.engine.worker.game.IncomingPacketQueueProcessor;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
@@ -20,8 +21,8 @@ import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.networking.ServerChannelHandler;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
-import org.redrune.utility.file.SerializableFilesManager;
 import org.redrune.utility.functions.Misc;
+import org.redrune.utility.game.entity.actor.player.PlayerSaving;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,6 +54,8 @@ public final class SystemManager {
 	
 	public static final Scheduler SCHEDULER = new Scheduler();
 	
+	private static final IncomingPacketQueueProcessor PACKET_QUEUE_PROCESSOR = new IncomingPacketQueueProcessor();
+	
 	public static int serverWorkersCount;
 	
 	public static volatile boolean shutdown;
@@ -70,9 +73,9 @@ public final class SystemManager {
 	}
 	
 	public static void initialize() {
-		CYCLE_WORKER.start();
 		serverWorkersCount = PROCESSOR_COUNT >= 6 ? PROCESSOR_COUNT - (PROCESSOR_COUNT >= 12 ? 7 : 5) : 1;
 		registerTasks();
+		CYCLE_WORKER.start();
 	}
 	
 	/**
@@ -88,6 +91,11 @@ public final class SystemManager {
 		addSummoningEffectTask();
 		addOwnedObjectsTask();
 		addScheduledTasks();
+		addIncomingPacketWorker();
+	}
+	
+	private static void addIncomingPacketWorker() {
+		SLOW_EXECUTOR.scheduleWithFixedDelay(PACKET_QUEUE_PROCESSOR, 1, 1, TimeUnit.MILLISECONDS);
 	}
 	
 	private static void addAccountsSavingTask() {
@@ -120,7 +128,7 @@ public final class SystemManager {
 						if (player == null || player.isDead() || !player.isRunning() || (checkAgility && player.getSkills().getLevel(SkillConstants.AGILITY) < 70)) {
 							continue;
 						}
-						player.restoreRunEnergy();
+						player.getAttributes().restoreRunEnergy();
 					}
 					checkAgility = !checkAgility;
 				} catch (Throwable e) {
@@ -142,7 +150,7 @@ public final class SystemManager {
 						player.restoreHitPoints();
 					}
 					for (NPC npc : World.getNPCs()) {
-						if (npc == null || npc.isDead() || npc.hasFinished()) {
+						if (npc == null || npc.isDead() || npc.isFinished()) {
 							continue;
 						}
 						npc.restoreHitPoints();
@@ -164,7 +172,7 @@ public final class SystemManager {
 							continue;
 						}
 						int ammountTimes = player.getPrayer().usingPrayer(0, 8) ? 2 : 1;
-						if (player.isResting()) {
+						if (player.getAttributes().isResting()) {
 							ammountTimes += 1;
 						}
 						boolean berserker = player.getPrayer().usingPrayer(1, 5);
@@ -220,7 +228,7 @@ public final class SystemManager {
 		SLOW_EXECUTOR.scheduleWithFixedDelay(() -> {
 			try {
 				for (Player player : World.getPlayers()) {
-					if (player.getFamiliar() == null || player.isDead() || !player.hasFinished()) {
+					if (player.getFamiliar() == null || player.isDead() || !player.isFinished()) {
 						continue;
 					}
 					if (player.getFamiliar().getOriginalId() == 6814) {
@@ -250,10 +258,10 @@ public final class SystemManager {
 	
 	private static void saveFiles() {
 		for (Player player : World.getPlayers()) {
-			if (player == null || !player.hasStarted() || player.hasFinished()) {
+			if (player == null || !player.hasStarted() || player.isFinished()) {
 				continue;
 			}
-			SerializableFilesManager.savePlayer(player);
+			PlayerSaving.savePlayer(player);
 		}
 	}
 	
@@ -280,7 +288,7 @@ public final class SystemManager {
 		shutdownStart = Misc.currentTimeMillis();
 		shutdownDelay = delay;
 		for (Player player : World.getPlayers()) {
-			if (player == null || !player.hasStarted() || player.hasFinished()) {
+			if (player == null || !player.hasStarted() || player.isFinished()) {
 				continue;
 			}
 			player.getPackets().sendSystemUpdate(delay);

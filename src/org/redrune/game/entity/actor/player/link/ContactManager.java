@@ -104,7 +104,7 @@ public class ContactManager implements Serializable {
 	
 	public void sendFriendsMyStatus(boolean online) {
 		for (Player p2 : World.getPlayers()) {
-			if (p2 == null || !p2.hasStarted() || p2.hasFinished()) {
+			if (p2 == null || !p2.hasStarted() || p2.isFinished()) {
 				continue;
 			}
 			p2.getContactManager().changeFriendStatus(player, online);

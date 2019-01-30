@@ -35,20 +35,22 @@ public class LeatherDragonCombat extends CombatScript {
 			npc.setNextAnimation(new Animation(12259));
 			npc.setNextGraphics(new Graphics(1, 0, 100));
 			final Player player = target instanceof Player ? (Player) target : null;
-			if (CombatAlgorithm.hasAntiDragProtection(target) || (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7)))) {
-				damage = 0;
-				player.getPackets().sendGameMessage("Your " + (CombatAlgorithm.hasAntiDragProtection(target) ? "shield" : "prayer") + " absorb's most of the dragon's breath!", true);
-			}
-			if (player != null && player.getFireImmune() > Misc.currentTimeMillis()) {
-				if (damage != 0) {
-					damage = Misc.getRandom(50);
+			if (player != null) {
+				if (CombatAlgorithm.hasAntiDragProtection(target) || (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7)))) {
+					damage = 0;
+					player.getPackets().sendGameMessage("Your " + (CombatAlgorithm.hasAntiDragProtection(target) ? "shield" : "prayer") + " absorb's most of the dragon's breath!", true);
 				}
-			} else if (damage == 0) {
-				damage = Misc.getRandom(50);
-			} else if (player != null) {
-				player.getPackets().sendGameMessage("You are hit by the dragon's fiery breath!", true);
+				if (player.getAttributes().getFireImmune() > Misc.currentTimeMillis()) {
+					if (damage != 0) {
+						damage = Misc.getRandom(50);
+					}
+				} else if (damage == 0) {
+					damage = Misc.getRandom(50);
+				} else {
+					player.getPackets().sendGameMessage("You are hit by the dragon's fiery breath!", true);
+				}
+				delayHit(npc, 1, target, getRegularHit(npc, damage));
 			}
-			delayHit(npc, 1, target, getRegularHit(npc, damage));
 		}
 		return defs.getAttackDelay();
 	}

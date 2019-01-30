@@ -11,7 +11,7 @@ import org.redrune.utility.functions.RandomFunction;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class SmokeRushSpellPlugin extends CombatSpellPlugin {
+public class SmokeRushSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

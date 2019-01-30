@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class SnareSpellPlugin extends CombatSpellPlugin {
+public class SnareSpellPlugin implements CombatSpellPlugin {
 	
 	private static final Graphics GRAPHICS = new Graphics(180);
 	

@@ -10,7 +10,7 @@ import org.redrune.utility.constants.PacketConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class InventoryInterfacePlugin extends InterfacePlugin {
+public class InventoryInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {

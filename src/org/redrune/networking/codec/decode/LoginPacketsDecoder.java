@@ -2,19 +2,19 @@ package org.redrune.networking.codec.decode;
 
 import org.redrune.cache.Cache;
 import org.redrune.engine.SystemManager;
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.GameFlags;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
 import org.redrune.game.global.punishment.PunishmentRepository;
 import org.redrune.game.global.punishment.PunishmentType;
-import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.networking.Session;
 import org.redrune.networking.codec.Decoder;
 import org.redrune.networking.stream.InputStream;
 import org.redrune.networking.stream.buffer.FixedBuffer;
+import org.redrune.utility.constants.GameConstants;
+import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.file.SerializableFilesManager;
+import org.redrune.utility.game.entity.actor.player.PlayerSaving;
 import org.redrune.utility.game.entity.actor.player.ReturnCode;
 import org.redrune.utility.game.session.AntiFlood;
 
@@ -96,7 +96,7 @@ public final class LoginPacketsDecoder extends Decoder {
 			session.getLoginPackets().sendClientPacket(3);
 			return;
 		}
-		if (World.getPlayers().size() >= GameConstants.PLAYERS_LIMIT - 10) {
+		if (World.getLobbyPlayers().size() >= GameConstants.PLAYERS_LIMIT - 10) {
 			session.getLoginPackets().sendClientPacket(7);
 			return;
 		}
@@ -111,16 +111,16 @@ public final class LoginPacketsDecoder extends Decoder {
 		
 		Player player;
 		
-		if (!SerializableFilesManager.containsPlayer(username)) {
+		if (!PlayerSaving.playerExists(username)) {
 			player = new Player(username);
 		} else {
-			player = SerializableFilesManager.loadPlayer(username);
+			player = PlayerSaving.fromFile(username);
 			if (player == null) {
 				session.getLoginPackets().sendClientPacket(20);
 				return;
 			}
 		}
-		player.init(username, session);
+		player.initializeLobbySession(username, session);
 		if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_BAN, PunishmentType.ADDRESS_BAN)) {
 			session.getLoginPackets().sendClientPacket(ReturnCode.ACCOUNT_DISABLED.getValue());
 			return;
@@ -253,10 +253,10 @@ public final class LoginPacketsDecoder extends Decoder {
 			return;
 		}
 		Player player;
-		if (!SerializableFilesManager.containsPlayer(username)) {
+		if (!PlayerSaving.playerExists(username)) {
 			player = new Player(password);
 		} else {
-			player = SerializableFilesManager.loadPlayer(username);
+			player = PlayerSaving.fromFile(username);
 			if (player == null) {
 				session.getLoginPackets().sendClientPacket(20);
 				return;
@@ -268,7 +268,7 @@ public final class LoginPacketsDecoder extends Decoder {
 			session.getLoginPackets().sendClientPacket(ReturnCode.ACCOUNT_DISABLED.getValue());
 			return;
 		}
-		player.init(username, mode, width, height);
+		player.initializeGameSession(username, mode, width, height);
 		session.getLoginPackets().sendLoginDetails(player);
 		session.setDecoder(3, player);
 		session.setEncoder(2, player);

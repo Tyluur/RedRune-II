@@ -11,7 +11,7 @@ import org.redrune.utility.constants.AttributeKey;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class ClawsOfGuthixSpellPlugin extends CombatSpellPlugin {
+public class ClawsOfGuthixSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {
@@ -30,7 +30,7 @@ public class ClawsOfGuthixSpellPlugin extends CombatSpellPlugin {
 	
 	@Override
 	public int maxHit(Player player, Actor target) {
-		if (player.getAttribute(AttributeKey.GOD_CHARGED, -1L) >= GameCycleWorker.getTicksPassed()) {
+		if (player.getTemporaryAttribute(AttributeKey.GOD_CHARGED, -1L) >= GameCycleWorker.getTicksPassed()) {
 			return 300;
 		} else {
 			return 200;

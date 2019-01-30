@@ -110,7 +110,7 @@ public class NPC extends Actor implements Serializable {
 		this.spawned = spawned;
 		combatLevel = -1;
 		setHitpoints(getMaxHitpoints());
-		setDirection(Direction.NORTH.getValue());
+		setFaceDirection(Direction.NORTH.getValue());
 		setWalkType(getDefinitions().getWalkMask());
 		bonuses = NPCCharacteristicRepository.getBonuses(id);
 		combat = new NPCCombat(this);
@@ -144,7 +144,7 @@ public class NPC extends Actor implements Serializable {
 	
 	@Override
 	public void finish() {
-		if (hasFinished()) {
+		if (isFinished()) {
 			return;
 		}
 		setFinished(true);
@@ -174,7 +174,7 @@ public class NPC extends Actor implements Serializable {
 	@Override
 	public void reset() {
 		super.reset();
-		setDirection(getRespawnDirection());
+		setFaceDirection(getRespawnDirection());
 		combat.reset();
 		bonuses = NPCCharacteristicRepository.getBonuses(id); // back to real bonuses
 		forceWalk = null;
@@ -241,7 +241,7 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	@Override
-	public void handleIngoingHit(final Hit hit) {
+	public void handleIncomingHit(final Hit hit) {
 		if (capDamage != -1 && hit.getDamage() > capDamage) {
 			hit.setDamage(capDamage);
 		}
@@ -562,7 +562,7 @@ public class NPC extends Actor implements Serializable {
 			if (playerIndexes != null) {
 				for (int npcIndex : playerIndexes) {
 					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.hasFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isInRange(getX(), getY(), getSize(), player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8) || (!forceMultiAttacked && (!isAtMultiArea() || !player.isAtMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
+					if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isInRange(getX(), getY(), getSize(), player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8) || (!forceMultiAttacked && (!isInMultiArea() || !player.isInMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
 						continue;
 					}
 					possibleTarget.add(player);
@@ -622,7 +622,7 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public void setRespawnTask() {
-		if (!hasFinished()) {
+		if (!isFinished()) {
 			reset();
 			setLocation(respawnTile);
 			finish();
@@ -665,10 +665,10 @@ public class NPC extends Actor implements Serializable {
 		if (killer == null) {
 			return;
 		}
-		if (killer.slayerTask.getTaskMonstersLeft() > 0) {
-			for (String m : killer.slayerTask.getCurrentTask().slayable) {
+		if (killer.getAttributes().getSlayerTask().getTaskMonstersLeft() > 0) {
+			for (String m : killer.getAttributes().getSlayerTask().getCurrentTask().slayable) {
 				if (getDefinitions().getName().equals(m)) {
-					killer.slayerTask.onMonsterDeath(killer, this);
+					killer.getAttributes().getSlayerTask().onMonsterDeath(killer, this);
 					break;
 				}
 			}

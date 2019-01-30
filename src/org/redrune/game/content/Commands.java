@@ -996,7 +996,7 @@ public final class Commands {
 					
 					@Override
 					public void run() {
-						if (player.hasFinished()) {
+						if (player.isFinished()) {
 							stop();
 						}
 						player.getAppearance().setLook(look, i);
@@ -1013,7 +1013,7 @@ public final class Commands {
 					
 					@Override
 					public void run() {
-						if (player.hasFinished()) {
+						if (player.isFinished()) {
 							stop();
 						}
 						player.getInterfaceManager().sendInterface(i);
@@ -1035,7 +1035,7 @@ public final class Commands {
 						if (player.getLastAnimationEnd() > System.currentTimeMillis()) {
 							player.setNextAnimation(new Animation(-1));
 						}
-						if (player.hasFinished()) {
+						if (player.isFinished()) {
 							stop();
 						}
 						player.setNextAnimation(new Animation(i));
@@ -1076,7 +1076,7 @@ public final class Commands {
 						if (i >= Misc.getGraphicDefinitionsSize()) {
 							stop();
 						}
-						if (player.hasFinished()) {
+						if (player.isFinished()) {
 							stop();
 						}
 						player.setNextGraphics(new Graphics(i));

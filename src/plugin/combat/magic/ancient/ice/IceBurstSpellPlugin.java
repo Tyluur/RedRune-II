@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/1/2017
  */
-public class IceBurstSpellPlugin extends CombatSpellPlugin {
+public class IceBurstSpellPlugin implements CombatSpellPlugin {
 	
 	@Override
 	public int delay(Player player) {

@@ -34,30 +34,30 @@ public class AncientEffigiesD extends Dialogue {
 			sendDialogue(SEND_2_TEXT_INFO, "Images from your experiences of " + AncientEffigies.getMessage(skill1), "fill your mind.");
 			stage = 0;
 		} else if (stage == 0) {
-			player.getTemporaryAttributtes().put("skill1", skill1);
-			player.getTemporaryAttributtes().put("skill2", skill2);
+			player.getTemporaryAttributes().put("skill1", skill1);
+			player.getTemporaryAttributes().put("skill2", skill2);
 			sendDialogue(SEND_2_LARGE_OPTIONS, "Choose an image.", "" + SkillConstants.SKILL_NAME[skill1], "" + SkillConstants.SKILL_NAME[skill2]);
 			stage = 1;
 		} else if (stage == 1 && componentId == 2) {
-			if (player.getSkills().getLevel((Integer) player.getTemporaryAttributtes().get("skill1")) < AncientEffigies.getRequiredLevel(itemId)) {
+			if (player.getSkills().getLevel((Integer) player.getTemporaryAttributes().get("skill1")) < AncientEffigies.getRequiredLevel(itemId)) {
 				sendDialogue(SEND_3_TEXT_INFO, "The images in your mind fade; the ancient effigy seems", "to desire knowledge of experiences you have not yet", "had.");
-				player.getPackets().sendGameMessage("You're required at least " + AncientEffigies.getRequiredLevel(itemId) + " " + SkillConstants.SKILL_NAME[(Integer) player.getTemporaryAttributtes().get("skill1")] + " to investigate this ancient effigy.");
+				player.getPackets().sendGameMessage("You're required at least " + AncientEffigies.getRequiredLevel(itemId) + " " + SkillConstants.SKILL_NAME[(Integer) player.getTemporaryAttributes().get("skill1")] + " to investigate this ancient effigy.");
 			} else {
-				player.getTemporaryAttributtes().put("skill", skill1);
+				player.getTemporaryAttributes().put("skill", skill1);
 				sendDialogue(SEND_2_TEXT_INFO, "As you focus on your memories, you can almost hear a", "voice in the back of your mind whispering to you...");
 				stage = 2;
 			}
 		} else if (stage == 1 && componentId == 3) {
-			if (player.getSkills().getLevel((Integer) player.getTemporaryAttributtes().get("skill2")) < AncientEffigies.getRequiredLevel(itemId)) {
+			if (player.getSkills().getLevel((Integer) player.getTemporaryAttributes().get("skill2")) < AncientEffigies.getRequiredLevel(itemId)) {
 				sendDialogue(SEND_3_TEXT_INFO, "The images in your mind fade; the ancient effigy seems", "to desire knowledge of experiences you have not yet", "had.");
-				player.getPackets().sendGameMessage("You're required at least " + AncientEffigies.getRequiredLevel(itemId) + " " + SkillConstants.SKILL_NAME[(Integer) player.getTemporaryAttributtes().get("skill1")] + " to investigate this ancient effigy.");
+				player.getPackets().sendGameMessage("You're required at least " + AncientEffigies.getRequiredLevel(itemId) + " " + SkillConstants.SKILL_NAME[(Integer) player.getTemporaryAttributes().get("skill1")] + " to investigate this ancient effigy.");
 			} else {
-				player.getTemporaryAttributtes().put("skill", skill2);
+				player.getTemporaryAttributes().put("skill", skill2);
 				sendDialogue(SEND_2_TEXT_INFO, "As you focus on your memories, you can almost hear a", "voice in the back of your mind whispering to you...");
 				stage = 2;
 			}
 		} else if (stage == 2) {
-			player.getPackets().sendGameMessage("You have gained " + AncientEffigies.getExp(itemId) + " " + SkillConstants.SKILL_NAME[(Integer) player.getTemporaryAttributtes().get("skill")] + " experience!");
+			player.getPackets().sendGameMessage("You have gained " + AncientEffigies.getExp(itemId) + " " + SkillConstants.SKILL_NAME[(Integer) player.getTemporaryAttributes().get("skill")] + " experience!");
 			AncientEffigies.effigyInvestigation(player, itemId);
 			sendDialogue(SEND_3_TEXT_INFO, "The ancient effigy glows briefly; it seems changed", "somehow and no longer responds to the same memories", "as before.");
 			stage = 3;

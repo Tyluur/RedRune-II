@@ -18,7 +18,7 @@ public class PlayerRestAction extends Action {
 			return false;
 		}
 		index = Misc.random(REST_DEFS.length);
-		player.setResting(true);
+		player.getAttributes().setResting(true);
 		player.setNextAnimation(new Animation(REST_DEFS[index][0]));
 		player.getAppearance().setRenderEmote(REST_DEFS[index][1]);
 		return true;
@@ -44,7 +44,7 @@ public class PlayerRestAction extends Action {
 	
 	@Override
 	public void stop(Player player) {
-		player.setResting(false);
+		player.getAttributes().setResting(false);
 		player.setNextAnimation(new Animation(REST_DEFS[index][2]));
 		player.getEmotesManager().setNextEmoteEnd();
 		player.getAppearance().setRenderEmote(-1);

@@ -145,7 +145,7 @@ public class NPCMagicCastEvent extends Event {
 									return;
 								}
 							} else if (!npc.isForceMultiAttacked()) {
-								if (!npc.isAtMultiArea() || !player.isAtMultiArea()) {
+								if (!npc.isInMultiArea() || !player.isInMultiArea()) {
 									if (player.getAttackedBy() != npc && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
 										player.getPackets().sendGameMessage("I'm already under attack.");
 										return;

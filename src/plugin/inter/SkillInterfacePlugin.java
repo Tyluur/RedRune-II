@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.type.InterfacePlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public class SkillInterfacePlugin extends InterfacePlugin {
+public class SkillInterfacePlugin implements InterfacePlugin {
 	
 	@Override
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
@@ -19,7 +19,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 			switch (componentId) {
 				case 200: // Attack
 					skillMenu = 1;
-					if (player.getTemporaryAttributtes().remove("leveledUp[0]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[0]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 1);
 					} else {
 						lvlupSkill = 0;
@@ -28,7 +28,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 11: // Strength
 					skillMenu = 2;
-					if (player.getTemporaryAttributtes().remove("leveledUp[2]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[2]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 2);
 					} else {
 						lvlupSkill = 2;
@@ -37,7 +37,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 28: // Defence
 					skillMenu = 5;
-					if (player.getTemporaryAttributtes().remove("leveledUp[1]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[1]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 5);
 					} else {
 						lvlupSkill = 1;
@@ -46,7 +46,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 52: // Ranged
 					skillMenu = 3;
-					if (player.getTemporaryAttributtes().remove("leveledUp[4]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[4]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 3);
 					} else {
 						lvlupSkill = 4;
@@ -54,7 +54,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					}
 					break;
 				case 76: // Prayer
-					if (player.getTemporaryAttributtes().remove("leveledUp[5]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[5]") != Boolean.TRUE) {
 						skillMenu = 7;
 						player.getPackets().sendConfig(965, 7);
 					} else {
@@ -63,7 +63,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					}
 					break;
 				case 93: // Magic
-					if (player.getTemporaryAttributtes().remove("leveledUp[6]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[6]") != Boolean.TRUE) {
 						skillMenu = 4;
 						player.getPackets().sendConfig(965, 4);
 					} else {
@@ -72,7 +72,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					}
 					break;
 				case 110: // Runecrafting
-					if (player.getTemporaryAttributtes().remove("leveledUp[20]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[20]") != Boolean.TRUE) {
 						skillMenu = 12;
 						player.getPackets().sendConfig(965, 12);
 					} else {
@@ -82,7 +82,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 134: // Construction
 					skillMenu = 22;
-					if (player.getTemporaryAttributtes().remove("leveledUp[21]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[21]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 22);
 					} else {
 						lvlupSkill = 21;
@@ -91,7 +91,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 193: // Hitpoints
 					skillMenu = 6;
-					if (player.getTemporaryAttributtes().remove("leveledUp[3]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[3]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 6);
 					} else {
 						lvlupSkill = 3;
@@ -100,7 +100,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 19: // Agility
 					skillMenu = 8;
-					if (player.getTemporaryAttributtes().remove("leveledUp[16]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[16]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 8);
 					} else {
 						lvlupSkill = 16;
@@ -109,7 +109,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 36: // Herblore
 					skillMenu = 9;
-					if (player.getTemporaryAttributtes().remove("leveledUp[15]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[15]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 9);
 					} else {
 						lvlupSkill = 15;
@@ -118,7 +118,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 60: // Thieving
 					skillMenu = 10;
-					if (player.getTemporaryAttributtes().remove("leveledUp[17]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[17]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 10);
 					} else {
 						lvlupSkill = 17;
@@ -127,7 +127,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 84: // Crafting
 					skillMenu = 11;
-					if (player.getTemporaryAttributtes().remove("leveledUp[12]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[12]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 11);
 					} else {
 						lvlupSkill = 12;
@@ -136,7 +136,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 101: // Fletching
 					skillMenu = 19;
-					if (player.getTemporaryAttributtes().remove("leveledUp[9]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[9]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 19);
 					} else {
 						lvlupSkill = 9;
@@ -145,7 +145,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 118: // Slayer
 					skillMenu = 20;
-					if (player.getTemporaryAttributtes().remove("leveledUp[18]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[18]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 20);
 					} else {
 						lvlupSkill = 18;
@@ -154,7 +154,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 142: // Hunter
 					skillMenu = 23;
-					if (player.getTemporaryAttributtes().remove("leveledUp[22]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[22]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 23);
 					} else {
 						lvlupSkill = 22;
@@ -163,7 +163,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 186: // Mining
 					skillMenu = 13;
-					if (player.getTemporaryAttributtes().remove("leveledUp[14]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[14]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 13);
 					} else {
 						lvlupSkill = 14;
@@ -172,7 +172,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 179: // Smithing
 					skillMenu = 14;
-					if (player.getTemporaryAttributtes().remove("leveledUp[13]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[13]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 14);
 					} else {
 						lvlupSkill = 13;
@@ -181,7 +181,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 44: // Fishing
 					skillMenu = 15;
-					if (player.getTemporaryAttributtes().remove("leveledUp[10]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[10]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 15);
 					} else {
 						lvlupSkill = 10;
@@ -190,7 +190,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 68: // Cooking
 					skillMenu = 16;
-					if (player.getTemporaryAttributtes().remove("leveledUp[7]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[7]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 16);
 					} else {
 						lvlupSkill = 7;
@@ -199,7 +199,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 172: // Firemaking
 					skillMenu = 17;
-					if (player.getTemporaryAttributtes().remove("leveledUp[11]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[11]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 17);
 					} else {
 						lvlupSkill = 11;
@@ -208,7 +208,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 165: // Woodcutting
 					skillMenu = 18;
-					if (player.getTemporaryAttributtes().remove("leveledUp[8]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[8]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 18);
 					} else {
 						lvlupSkill = 8;
@@ -217,7 +217,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 126: // Farming
 					skillMenu = 21;
-					if (player.getTemporaryAttributtes().remove("leveledUp[19]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[19]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 21);
 					} else {
 						lvlupSkill = 19;
@@ -226,7 +226,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 150: // Summoning
 					skillMenu = 24;
-					if (player.getTemporaryAttributtes().remove("leveledUp[23]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[23]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 24);
 					} else {
 						lvlupSkill = 23;
@@ -235,7 +235,7 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 					break;
 				case 158: // Dung
 					skillMenu = 25;
-					if (player.getTemporaryAttributtes().remove("leveledUp[24]") != Boolean.TRUE) {
+					if (player.getTemporaryAttributes().remove("leveledUp[24]") != Boolean.TRUE) {
 						player.getPackets().sendConfig(965, 25);
 					} else {
 						lvlupSkill = 24;
@@ -249,12 +249,12 @@ public class SkillInterfacePlugin extends InterfacePlugin {
 				LevelUp.switchFlash(player, lvlupSkill, false);
 			}
 			if (skillMenu != -1) {
-				player.getTemporaryAttributtes().put("skillMenu", skillMenu);
+				player.getTemporaryAttributes().put("skillMenu", skillMenu);
 			}
 		} else if (interfaceId == 499) {
 			int skillMenu = -1;
-			if (player.getTemporaryAttributtes().get("skillMenu") != null) {
-				skillMenu = (Integer) player.getTemporaryAttributtes().get("skillMenu");
+			if (player.getTemporaryAttributes().get("skillMenu") != null) {
+				skillMenu = (Integer) player.getTemporaryAttributes().get("skillMenu");
 			}
 			switch (componentId) {
 				case 10:

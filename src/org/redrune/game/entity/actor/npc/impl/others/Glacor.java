@@ -98,9 +98,9 @@ public final class Glacor extends NPC {
 	}
 	
 	@Override
-	public void handleIngoingHit(final Hit hit) {
+	public void handleIncomingHit(final Hit hit) {
 		int type = 0;
-		super.handleIngoingHit(hit);
+		super.handleIncomingHit(hit);
 		if (hit.getSource() instanceof Player) {// Armadyl Battlestaff
 			Player player = (Player) hit.getSource();
 		}
@@ -108,25 +108,22 @@ public final class Glacor extends NPC {
 	
 	@Override
 	public void setRespawnTask() {
-		if (!hasFinished()) {
+		if (!isFinished()) {
 			reset();
 			setLocation(getRespawnTile());
 			finish();
 		}
 		final NPC npc = this;
-		SystemManager.SLOW_EXECUTOR.schedule(new Runnable() {
-			@Override
-			public void run() {
-				setFinished(false);
-				World.addNPC(npc);
-				npc.setLastRegionId(0);
-				RegionManager.updateActorRegion(npc);
-				loadMapRegions();
-				checkMultiArea();
-				shieldTimer = 0;
-				fixedCombatType = 0;
-				fixedAmount = 0;
-			}
+		SystemManager.SLOW_EXECUTOR.schedule(() -> {
+			setFinished(false);
+			World.addNPC(npc);
+			npc.setLastRegionId(0);
+			RegionManager.updateActorRegion(npc);
+			loadMapRegions();
+			checkMultiArea();
+			shieldTimer = 0;
+			fixedCombatType = 0;
+			fixedAmount = 0;
 		}, getCombatDefinitions().getRespawnDelay() * 600, TimeUnit.MILLISECONDS);
 	} // Your re-spawn time on them.
 	

@@ -7,7 +7,7 @@ import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 7/28/2017
  */
-public class OuraniaTeleportSpell extends TeleportSpellPlugin {
+public class OuraniaTeleportSpell implements TeleportSpellPlugin {
 	
 	@Override
 	public int levelRequired() {

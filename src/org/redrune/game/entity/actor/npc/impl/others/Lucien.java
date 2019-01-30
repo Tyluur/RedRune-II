@@ -14,7 +14,7 @@ public class Lucien extends NPC {
 		setCapDamage(300);
 		setCombatLevel(59999);
 		this.setName("Zeniths #1 Boss");
-		setRun(true);
+		setRunModeOn(true);
 		setForceMultiAttacked(true);
 	}
 	
@@ -34,11 +34,11 @@ public class Lucien extends NPC {
 	}
 	
 	@Override
-	public void handleIngoingHit(Hit hit) {
+	public void handleIncomingHit(Hit hit) {
 		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
 			return;
 		}
-		super.handleIngoingHit(hit);
+		super.handleIncomingHit(hit);
 		if (hit.getSource() != null) {
 			int recoil = (int) (hit.getDamage() * 0.2);
 			if (recoil > 0) {

@@ -13,7 +13,7 @@ import org.redrune.utility.constants.AttributeKey;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/7/2017
  */
-public class ChargeSpellPlugin extends CombatSpellPlugin {
+public class ChargeSpellPlugin implements CombatSpellPlugin {
 	
 	private static final Animation ANIMATION = new Animation(811);
 	

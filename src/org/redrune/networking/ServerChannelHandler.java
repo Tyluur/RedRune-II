@@ -1,10 +1,9 @@
 package org.redrune.networking;
 
+import lombok.Getter;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.*;
-import org.jboss.netty.channel.group.ChannelGroup;
-import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.redrune.engine.SystemManager;
 import org.redrune.networking.codec.decode.WorldPacketsDecoder;
@@ -12,15 +11,23 @@ import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.constants.NetworkConstants;
 
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class ServerChannelHandler extends SimpleChannelHandler {
 	
-	private static ChannelGroup channels;
-	
+	/**
+	 * The bootstrap factory
+	 */
 	private static ServerBootstrap bootstrap;
 	
+	/**
+	 * The list of all sessions in the game
+	 */
+	@Getter
+	private static List<Session> sessionList = new CopyOnWriteArrayList<>();
+	
 	private ServerChannelHandler() {
-		channels = new DefaultChannelGroup();
 		bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(SystemManager.SERVER_BOSS_CHANNEL_EXECUTOR, SystemManager.SERVER_WORKER_CHANNEL_EXECUTOR, SystemManager.serverWorkersCount));
 		bootstrap.getPipeline().addLast("handler", this);
 		bootstrap.setOption("reuseAddress", true); // reuses adress for bind
@@ -38,6 +45,7 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 		Object sessionObject = ctx.getAttachment();
 		if (sessionObject instanceof Session) {
 			Session session = (Session) sessionObject;
+			sessionList.add(session);
 			if (session.getDecoder() == null) {
 				return;
 			}
@@ -64,7 +72,7 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 	
 	@Override
 	public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) {
-		channels.add(e.getChannel());
+	
 	}
 	
 	@Override
@@ -77,6 +85,7 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 		Object sessionObject = ctx.getAttachment();
 		if (sessionObject instanceof Session) {
 			Session session = (Session) sessionObject;
+			sessionList.remove(session);
 			if (session.getDecoder() == null) {
 				return;
 			}
@@ -88,19 +97,14 @@ public final class ServerChannelHandler extends SimpleChannelHandler {
 	
 	@Override
 	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) {
-		channels.remove(e.getChannel());
+	
 	}
 	
 	public static void init() {
 		new ServerChannelHandler();
 	}
 	
-	public static int getConnectedChannelsSize() {
-		return channels == null ? 0 : channels.size();
-	}
-	
 	public static void shutdown() {
-		channels.close().awaitUninterruptibly();
 		bootstrap.releaseExternalResources();
 	}
 	

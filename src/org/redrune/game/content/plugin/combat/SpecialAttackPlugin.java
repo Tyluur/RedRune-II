@@ -12,7 +12,7 @@ import org.redrune.utility.constants.SkillConstants;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/5/2017
  */
-public abstract class SpecialAttackPlugin extends Plugin implements SkillConstants, EquipmentConstants {
+public abstract class SpecialAttackPlugin implements Plugin, SkillConstants, EquipmentConstants {
 	
 	/**
 	 * Gets the ids of the weapons that this special attack is registered for

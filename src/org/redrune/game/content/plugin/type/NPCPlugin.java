@@ -9,7 +9,7 @@ import org.redrune.game.content.plugin.PluginRepository;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 8/31/2017
  */
-public abstract class NPCPlugin extends Plugin {
+public interface NPCPlugin extends Plugin {
 	
 	/**
 	 * Registers this plugin into the repository
@@ -19,7 +19,7 @@ public abstract class NPCPlugin extends Plugin {
 	 * @param option
 	 * 		The option that will be used
 	 */
-	public void register(int npcId, String option) {
+	default void registerNPC(int npcId, String option) {
 		PluginRepository.registerOptionPlugin(this, npcId, option);
 	}
 	
@@ -33,6 +33,6 @@ public abstract class NPCPlugin extends Plugin {
 	 * @param option
 	 * 		The option we clicked
 	 */
-	public abstract boolean handle(Player player, NPC npc, String option);
+	boolean handle(Player player, NPC npc, String option);
 	
 }

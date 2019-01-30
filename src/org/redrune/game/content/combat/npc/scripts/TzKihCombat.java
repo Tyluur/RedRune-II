@@ -27,7 +27,7 @@ public class TzKihCombat extends CombatScript {
 				for (Actor actor : npc.getPossibleTargets()) {
 					damage = getRandomMaxHit(npc, 70, NPCConstants.MAGE, target);
 					Player player = (Player) target;
-					if (player.getTemporaryAttributtes().get("drainingPrayer") != null) {
+					if (player.getTemporaryAttributes().get("drainingPrayer") != null) {
 						player.getPrayer().drainPrayer(damage);
 					} else {
 						delayHit(npc, 1, actor, getMagicHit(npc, damage));
@@ -39,7 +39,7 @@ public class TzKihCombat extends CombatScript {
 		npc.setNextAnimation(new Animation(8257));
 		damage = getRandomMaxHit(npc, 50, NPCConstants.MAGE, target);
 		Player player = (Player) target;
-		if (player.getTemporaryAttributtes().get("drainingPrayer") != null) {
+		if (player.getTemporaryAttributes().get("drainingPrayer") != null) {
 			player.getPrayer().drainPrayer(damage);
 		} else {
 			delayHit(npc, 1, target, getMagicHit(npc, damage));

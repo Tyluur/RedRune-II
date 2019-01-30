@@ -79,7 +79,7 @@ public final class LoginPacketsEncoder extends Encoder {
 		long since_log = (now - lastLogin) / 1000 / 60 / 60 / 24;
 		
 		responseBlock.writeShort((int) (since_jag - since_log)); // last logged in date
-		String lastIp = player.getLastIP();
+		String lastIp = player.getAttributes().getLastIP();
 		if (lastIp == null) {
 			lastIp = Misc.getIpAddress(player.getSession().getChannel());
 		}

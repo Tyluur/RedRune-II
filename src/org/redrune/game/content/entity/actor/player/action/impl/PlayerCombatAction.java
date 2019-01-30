@@ -87,7 +87,7 @@ public class PlayerCombatAction extends Action {
 			player.getCombatDefinitions().resetSpells(true);
 			return -1;
 		}
-		if (player.getAttribute(AttributeKey.MIASMIC_EFFECT) == Boolean.TRUE) {
+		if (player.getTemporaryAttribute(AttributeKey.MIASMIC_EFFECT) == Boolean.TRUE) {
 			multiplier = 1.5;
 		}
 		if (!style.getStyle().fireSwing(player, target)) {
@@ -137,7 +137,7 @@ public class PlayerCombatAction extends Action {
 		if (!Misc.isOnRange(player, target, CombatAlgorithm.getMinimumDistance(player, style)) || !player.clipedProjectile(target, style == CombatStyle.MELEE && !CombatAlgorithm.checkAttackPathAsRange(target))) {
 			if (!player.isMoving() || target.isMoving()) {
 				player.resetWalkSteps();
-				player.calcFollow(target, player.getRun() ? 2 : 1, true, true);
+				player.calcFollow(target, player.isRunModeOn() ? 2 : 1, true, true);
 			}
 		} else {
 			player.resetWalkSteps();
@@ -152,7 +152,7 @@ public class PlayerCombatAction extends Action {
 			return true;
 		}
 		if (!(target.isNPC() && target.toNPC().isForceMultiAttacked())) {
-			if (!target.isAtMultiArea() || !player.isAtMultiArea()) {
+			if (!target.isInMultiArea() || !player.isInMultiArea()) {
 				if (player.getAttackedBy() != target && player.getAttackedByDelay() > System.currentTimeMillis()) {
 					player.getPackets().sendGameMessage("I'm already under attack.");
 					return false;
@@ -163,8 +163,8 @@ public class PlayerCombatAction extends Action {
 				}
 			}
 		}
-		if (player.getPolDelay() >= Misc.currentTimeMillis() && !(player.getEquipment().getWeaponId() == 15486 || player.getEquipment().getWeaponId() == 22207 || player.getEquipment().getWeaponId() == 22209 || player.getEquipment().getWeaponId() == 22211 || player.getEquipment().getWeaponId() == 22213)) {
-			player.setPolDelay(0);
+		if (player.getAttributes().getPolDelay() >= Misc.currentTimeMillis() && !(player.getEquipment().getWeaponId() == 15486 || player.getEquipment().getWeaponId() == 22207 || player.getEquipment().getWeaponId() == 22209 || player.getEquipment().getWeaponId() == 22211 || player.getEquipment().getWeaponId() == 22213)) {
+			player.getAttributes().setPolDelay(0);
 		}
 		// anything else ?
 		return true;

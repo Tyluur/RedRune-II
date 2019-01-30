@@ -17,10 +17,10 @@ public class RegionLoadConfirmationPacketDecoder implements IncomingPacketDecode
 	
 	@Override
 	public void decode(Player player, InputStream stream, int packetId, int packetLength) {
-		if (!player.clientHasLoadedMapRegion()) {
-			player.setClientHasLoadedMapRegion();
+		if (!player.getAttributes().clientHasLoadedMapRegion()) {
+			player.getAttributes().setClientHasLoadedMapRegion();
 		}
-		player.getPacketSender().refreshSpawnedObjects();
-		player.getPacketSender().refreshSpawnedItems();
+		player.getPackets().refreshSpawnedObjects();
+		player.getPackets().refreshSpawnedItems();
 	}
 }

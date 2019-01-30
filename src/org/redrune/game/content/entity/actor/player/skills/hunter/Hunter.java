@@ -63,7 +63,7 @@ public class Hunter extends Action {
 			}
 		}
 		player.getInventory().deleteItem(hunt.getId(), 1);
-		player.setTrapAmount(player.getTrapAmount() + 1);
+		player.getAttributes().setTrapAmount(player.getAttributes().getTrapAmount() + 1);
 		OwnedObjectManager.addOwnedObjectManager(player, new WorldObject[] { new WorldObject(hunt.getObjectId(), 10, 0, player.getX(), player.getY(), player.getPlane()) }, 600000);
 		return -1;
 	}
@@ -78,8 +78,8 @@ public class Hunter extends Action {
 			player.getDialogueManager().startDialogue("SimpleMessage", "You need a Hunter level of " + hunt.getBaseLevel() + " to use this.");
 			return false;
 		}
-		if (player.getTrapAmount() == getTrapAmount(player)) {
-			player.getPackets().sendGameMessage("You can't setup more than " + player.getTrapAmount() + " traps.");
+		if (player.getAttributes().getTrapAmount() == getTrapAmount(player)) {
+			player.getPackets().sendGameMessage("You can't setup more than " + player.getAttributes().getTrapAmount() + " traps.");
 			return false;
 		}
 		List<WorldObject> objects = RegionManager.getRegion(player.getRegionId()).getSpawnedObjects();

@@ -7,10 +7,10 @@ import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/8/2017
  */
-public abstract class RegularSpellPlugin extends SpellPlugin {
+public interface RegularSpellPlugin extends SpellPlugin {
 	
 	@Override
-	public void register() {
+	default void register() {
 		PluginRepository.register(this, book(), spellId());
 	}
 }

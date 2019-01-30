@@ -15,16 +15,19 @@ import java.util.Optional;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/1/2017
  */
-public abstract class CommandPlugin extends Plugin {
+public abstract class CommandPlugin implements Plugin {
 	
 	/**
 	 * Handles the command
-	 *  @param player
+	 *
+	 * @param player
 	 * 		The player
 	 * @param args
 	 * 		The arguments of the command
 	 * @param console
+	 * 		If the command is a console command
 	 * @param clientCommand
+	 * 		If the command was sent via an automatic client system
 	 */
 	public abstract void handle(Player player, String[] args, boolean console, boolean clientCommand);
 	

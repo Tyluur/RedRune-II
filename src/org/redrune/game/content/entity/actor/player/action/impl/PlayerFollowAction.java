@@ -23,7 +23,7 @@ public class PlayerFollowAction extends Action {
 	}
 	
 	private boolean checkAll(Player player) {
-		if (player.isDead() || player.hasFinished() || target.isDead() || target.hasFinished()) {
+		if (player.isDead() || player.isFinished() || target.isDead() || target.isFinished()) {
 			return false;
 		}
 		int distanceX = player.getX() - target.getX();
@@ -41,7 +41,7 @@ public class PlayerFollowAction extends Action {
 			if (player.hasWalkSteps()) {
 				player.resetWalkSteps();
 			}
-			player.addWalkStepsInteract(target.getX(), target.getY(), player.getRun() ? 2 : 1, size, true);
+			player.addWalkStepsInteract(target.getX(), target.getY(), player.isRunModeOn() ? 2 : 1, size, true);
 			// }
 			return true;
 		} else {

@@ -24,7 +24,7 @@ public class RoutefinderPacketDecoder implements IncomingPacketDecoder {
 		switch (packetId) {
 			case WALKING_PACKET:
 			case MINI_WALKING_PACKET: {
-				if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					return;
 				}
 				long currentTime = Misc.currentTimeMillis();
@@ -44,7 +44,7 @@ public class RoutefinderPacketDecoder implements IncomingPacketDecoder {
 				player.stopAll();
 				// forces the new run flag
 				if (forceRun) {
-					player.setRun(true);
+					player.setRunModeOn(true);
 				}
 				// calculates the amount of steps in the path
 				int calculatedSteps = RouteFinder.findRoute(RouteFinder.WALK_ROUTEFINDER, player.getX(), player.getY(), player.getPlane(), player.getSize(), new FixedTileStrategy(destX, destY), true);

@@ -26,7 +26,7 @@ public final class EmotesManager implements Serializable {
 	private transient long nextEmoteEnd;
 	
 	public EmotesManager() {
-		unlockedEmotes = new ArrayList<Integer>();
+		unlockedEmotes = new ArrayList<>();
 		for (int emoteId = 2; emoteId < 24; emoteId++) {
 			unlockedEmotes.add(emoteId);
 		}
@@ -236,8 +236,28 @@ public final class EmotesManager implements Serializable {
 			value2 += 32768;
 		}
 		if (value2 > 0) {
-			player.getPackets().sendConfig(313, value2); // events emotes
+			player.getVarManager().sendVar(313, value2); //
 		}
+		player.getVarManager().sendVar(313, 1);
+		if (unlockedEmotes.contains(47)) {
+			player.getVarManager().sendVar(818, 1);
+		}
+		player.getVarManager().sendVar(465, 7);
+		player.getVarManager().sendVar(802, -1);
+		player.getVarManager().sendVar(1085, 249852);
+		player.getVarManager().sendVar(313, -1);
+		player.getVarManager().sendVar(2033, 1043648799);
+		player.getVarManager().sendVar(2032, 7341);
+		player.getVarManager().sendVar(1921, -893736236);
+		player.getVarManager().sendVar(1404, 123728213);
+		player.getVarManager().sendVar(2169, -1);
+		player.getVarManager().sendVar(2230, -1);
+		player.getVarManager().sendVar(1597, -1);
+		player.getVarManager().sendVar(1842, -1);
+		player.getVarManager().sendVar(2432, -1);
+		player.getVarManager().sendVar(1958, 534);
+		player.getVarManager().sendVar(2405, -1);
+		player.getVarManager().sendVar(2458, -1);
 	}
 	
 	public void useBookEmote(int id) {
@@ -250,6 +270,8 @@ public final class EmotesManager implements Serializable {
 			if (id == 41) {
 				player.getDialogueManager().startDialogue("SimpleMessage", "This emote can be acessed by unlocking 70 pieces of music.");
 			} else {
+				unlockEmote(id);
+				useBookEmote(id);
 				player.getDialogueManager().startDialogue("SimpleMessage", "You need to unlock this emote by yourself.");
 			}
 		} else {
@@ -509,42 +531,7 @@ public final class EmotesManager implements Serializable {
 						break;
 					case 19709:
 					case 19710: // Master dungeoneering cape
-					/*
-					 * WorldTasksManager.schedule(new WorldTask() { int step;
-					 * private NPC dung1, dung2, dung3, dung4;
-					 *
-					 * @Override public void run() { if (step == 1) {
-					 * player.getAppearence().transformIntoNPC(11229);
-					 * player.setNextAnimation(new Animation(14608)); dung1 =
-					 * new NPC(-1, new WorldTile(player.getX(), player.getY()
-					 * -1, player.getPlane()), -1, true);
-					 * player.setNextFaceEntity(dung1);
-					 * dung1.setLocation(dung1); dung1.setNextGraphics(new
-					 * Graphics(2777)); dung2 = new NPC(-1, new
-					 * WorldTile(player.getX()+1, player.getY()-1,
-					 * player.getPlane()), -1, true); } if (step == 2) {
-					 * player.setNextFaceEntity(null); dung1.finish();
-					 * player.getAppearence().transformIntoNPC(11228);
-					 * dung2.setLocation(dung2); player.setNextAnimation(new
-					 * Animation(14609)); player.setNextGraphics(new
-					 * Graphics(2782)); dung2.setNextGraphics(new
-					 * Graphics(2778)); dung3 = new NPC(-1, new
-					 * WorldTile(player.getX(), player.getY()-1,
-					 * player.getPlane()), -1, true); dung4 = new NPC(-1, new
-					 * WorldTile(player.getX(), player.getY()+1,
-					 * player.getPlane()), -1, true); } if (step == 3) {
-					 * dung2.finish();
-					 * player.getAppearence().transformIntoNPC(11227);
-					 * dung3.setLocation(dung3); dung4.setLocation(dung4);
-					 * dung4.setNextFaceEntity(player);
-					 * player.setNextAnimation(new Animation(14610));
-					 * dung3.setNextGraphics(new Graphics(2779));
-					 * dung4.setNextGraphics(new Graphics(2780)); } if (step >
-					 * 4) { dung4.setNextFaceEntity(null);
-					 * player.getAppearence().transformIntoNPC(-1);
-					 * dung3.finish(); dung4.finish(); stop(); } step++; } }, 0,
-					 * 1);
-					 */
+						
 						break;
 					case 20763: // Veteran cape
 						if (player.getControllerManager().getController() != null) {
@@ -673,7 +660,6 @@ public final class EmotesManager implements Serializable {
 						player.getPackets().sendGameMessage("You need to be wearing a skillcape in order to perform this emote.");
 						break;
 				}
-				return;
 			} else if (id == 40) { // Snowman Dance
 				player.setNextAnimation(new Animation(7531));
 			} else if (id == 41) { // Air Guitar
@@ -696,7 +682,9 @@ public final class EmotesManager implements Serializable {
 				
 				WorldTasksManager.schedule(new WorldTask() {
 					
-					private int step;					@Override
+					private int step;
+					
+					@Override
 					public void run() {
 						if (step == 0) {
 							player.setNextAnimation(new Animation(10994));
@@ -712,8 +700,6 @@ public final class EmotesManager implements Serializable {
 						}
 						step++;
 					}
-					
-
 					
 				}, 0, 1);
 			} else if (id == 47) { // Around the world in Eggty days.
@@ -731,11 +717,12 @@ public final class EmotesManager implements Serializable {
 				player.setNextAnimation(new Animation(15034));
 				player.setNextGraphics(new Graphics(2930));
 			} else if (id == 52) { // Seal Of Approval
-				
 				WorldTasksManager.schedule(new WorldTask() {
 					int random = (int) (Math.random() * (2 + 1));
 					
-					private int step;					@Override
+					private int step;
+					
+					@Override
 					public void run() {
 						if (step == 0) {
 							player.setNextAnimation(new Animation(15104));
@@ -754,14 +741,14 @@ public final class EmotesManager implements Serializable {
 						step++;
 					}
 					
-
-					
 				}, 0, 1);
 			} else if (id == 53) { // Invoke Spring
 				player.setNextAnimation(new Animation(15357));
 				player.setNextGraphics(new Graphics(1391));
 			}
-			setNextEmoteEnd();
+			if (id == 39) {
+				setNextEmoteEnd();
+			}
 		}
 	}
 	

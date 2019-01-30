@@ -72,7 +72,7 @@ public class ObjectHandler {
 			return;
 		}
 		if (forceRun) {
-			player.setRun(true);
+			player.setRunModeOn(true);
 		}
 		
 		WorldObject object = RegionManager.getObjectWithId(tile, id);
@@ -112,7 +112,7 @@ public class ObjectHandler {
 					player.getInventory().addItem(hunterNpc.getItem(), 1);
 					player.getInventory().addItem(hunterNpc.getEquipment().getId(), 1);
 					player.getSkills().addXp(SkillConstants.HUNTER, hunterNpc.getXp());
-					player.setTrapAmount(player.getTrapAmount() - 1);
+					player.getAttributes().setTrapAmount(player.getAttributes().getTrapAmount() - 1);
 				} else {
 					player.getPackets().sendGameMessage("This isn't your trap.");
 				}
@@ -278,22 +278,6 @@ public class ObjectHandler {
 				}, 0, 0);
 				player.setNextForceMovement(new ForceMovement(new WorldTile(x1, 9799, 0), 3, player.getX() == 2886 ? 1 : 3));
 				player.useStairs(-1, new WorldTile(x1, 9799, 0), 3, 4);
-			} else if (object.getId() == 2295) {
-				Agility.walkGnomeLog(player);
-			} else if (object.getId() == 2285) {
-				Agility.climbGnomeObstacleNet(player);
-			} else if (object.getId() == 35970) {
-				Agility.climbUpGnomeTreeBranch(player);
-			} else if (object.getId() == 2312) {
-				Agility.walkGnomeRope(player);
-			} else if (object.getId() == 4059) {
-				Agility.walkBackGnomeRope(player);
-			} else if (object.getId() == 2314) {
-				Agility.climbDownGnomeTreeBranch(player);
-			} else if (object.getId() == 2286) {
-				Agility.climbGnomeObstacleNet2(player);
-			} else if (object.getId() == 43543 || object.getId() == 43544) {
-				Agility.enterGnomePipe(player, object.getX(), object.getY());
 			} else if (Wilderness.isDitch(object.getId())) {// wild ditch
 				player.getDialogueManager().startDialogue("WildernessDitch", object);
 			} else if (object.getId() == 42611) {// Magic Portal
@@ -303,8 +287,7 @@ public class ObjectHandler {
 				player.useStairs(10584, new WorldTile(3087, 3488, 0), 2, 3, "..and are transported to Edgeville.");
 				player.addWalkSteps(1598, 4506, -1, false);
 			} else if (object.getId() == 15522) {// portal sign
-				if (player.withinDistance(new WorldTile(1598, 4504, 0), 1)) {// PORTAL
-					// 1
+				if (player.withinDistance(new WorldTile(1598, 4504, 0), 1)) {
 					player.getInterfaceManager().sendInterface(327);
 					player.getPackets().sendIComponentText(327, 13, "Edgeville");
 					player.getPackets().sendIComponentText(327, 14, "This portal will take you to edgeville. There " + "you can multi pk once past the wilderness ditch.");
@@ -617,7 +600,7 @@ public class ObjectHandler {
 	}
 	
 	private static void handleExamine(final Player player, final WorldObject object) {
-		if (player.getAttribute("removing_objects", false)) {
+		if (player.getTemporaryAttribute("removing_objects", false)) {
 			try {
 				if (object.isSpawned()) {
 					player.getPackets().sendGameMessage("Unable to remove; spawned object[" + object + "]");
@@ -833,7 +816,7 @@ public class ObjectHandler {
 	}
 	
 	public static void handleItemOnObject(final Player player, InputStream stream) {
-		if (!player.hasStarted() || !player.clientHasLoadedMapRegion() || player.isDead()) {
+		if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 			return;
 		}
 		long currentTime = Misc.currentTimeMillis();
@@ -875,7 +858,7 @@ public class ObjectHandler {
 			if (interfaceId == PlayerInventory.INVENTORY_INTERFACE) { // inventory
 				
 				if (object.getDefinitions().getName().equals("Anvil")) {
-					player.getTemporaryAttributtes().put("itemUsed", itemId);
+					player.getTemporaryAttributes().put("itemUsed", itemId);
 					ForgingBar bar = ForgingBar.forId(itemId);
 					if (bar != null) {
 						ForgingInterface.sendSmithingInterface(player);
