@@ -20,7 +20,7 @@ public class ObjectRemoval {
 	/**
 	 * The file to read from
 	 */
-	public static final String NONSPAWNING_OBJECTS_FILE = "data/repository/map/nonspawning.txt";
+	public static final String NONSPAWNING_OBJECTS_FILE = "data/repository/object/nonspawning.txt";
 	
 	/**
 	 * The list of objects that aren't spawned
@@ -101,6 +101,10 @@ public class ObjectRemoval {
 		if (!player.hasStarted()) {
 			return;
 		}
+		player.getPackets().refreshSpawnedObjects();
+/*		if (!player.hasStarted()) {
+			return;
+		}
 		OBJECTS.stream().filter(object -> object.getRegionId() == player.getRegionId()).forEach(object -> {
 			String key = "destroyed_object_" + object.getId() + "_" + object.getRegionId();
 			if (player.getTemporaryAttribute(key, false)) {
@@ -108,7 +112,7 @@ public class ObjectRemoval {
 			}
 			player.getPackets().sendDestroyObject(object);
 			player.putAttribute(key, true);
-		});
+		});*/
 	}
 	
 	

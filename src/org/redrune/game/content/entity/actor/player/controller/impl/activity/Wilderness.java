@@ -1,20 +1,16 @@
 package org.redrune.game.content.entity.actor.player.controller.impl.activity;
 
-import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.game.content.entity.actor.player.controller.Controller;
 import org.redrune.game.entity.Entity;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.mask.Animation;
-import org.redrune.game.entity.actor.mask.ForceMovement;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
+import plugin.object.WildernessDitchObjectPlugin;
 
 public class Wilderness extends Controller {
 	
@@ -215,21 +211,10 @@ public class Wilderness extends Controller {
 	public boolean canEntityClick(Entity entity, ClickOption option) {
 		WorldObject object = entity.toObject();
 		if (entity.isObject() && isDitch(object.getId())) {
-			player.getLocks().lock();
-			player.setNextAnimation(new Animation(6132));
-			final WorldTile toTile = new WorldTile(player.getX(), object.getY() - 1, object.getPlane());
-			player.setNextForceMovement(new ForceMovement(new WorldTile(player), 1, toTile, 2, 2));
-			final ObjectDefinitions objectDef = object.getDefinitions();
-			WorldTasksManager.schedule(new WorldTask() {
-				@Override
-				public void run() {
-					player.setNextWorldTile(toTile);
-					player.setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
-					removeIcon();
-					removeController();
-					player.getLocks().unlock();
-				}
-			}, 2);
+			WildernessDitchObjectPlugin.performJump(player, object, () -> {
+				removeIcon();
+				removeController();
+			});
 			return false;
 		}
 		return super.canEntityClick(entity, option);

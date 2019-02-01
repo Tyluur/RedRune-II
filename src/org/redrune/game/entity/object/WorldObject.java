@@ -90,7 +90,7 @@ public class WorldObject extends WorldTile implements Entity {
 	
 	@Override
 	public String toString() {
-		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", life=" + life + '}';
+		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", tile=" + getWorldTile() + ", life=" + life + '}';
 	}
 	
 	public void decrementObjectLife() {

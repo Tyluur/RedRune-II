@@ -1,13 +1,8 @@
 package plugin.command.owner;
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.content.plugin.type.CommandPlugin;
-import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.game.entity.object.ObjectSpawns;
+import org.redrune.game.entity.actor.player.Player;
 import plugin.command.CommandManifest;
-
-import java.io.IOException;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -18,7 +13,7 @@ public class StoreObjectSpawnCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		int id = intParam(args, 1);
+/*		int id = intParam(args, 1);
 		int type = intParamOrDefault(args, 2, 10);
 		int rotation = intParamOrDefault(args, 3, 0);
 		if (type > 22 || type < 0) {
@@ -33,7 +28,8 @@ public class StoreObjectSpawnCommandPlugin extends CommandPlugin {
 			e.printStackTrace();
 		}
 		
-		player.getPackets().sendGameMessage("Dumped Object: " + object + "", true);
+		player.getPackets().sendGameMessage("Dumped Object: " + object + "", true);*/
+		player.getPackets().sendGameMessage("Todo");
 	}
 	
 	@Override

@@ -1,3 +1,16 @@
+January 31st - Agility shortcuts, wilderness ditch, object spawning in gson, and more
+
+	Journal
+		1:  Added falador crumbling wall shortcut
+		2:  Updated object spawning to work via gson files
+			2.1:    Object addition/removal is constant regardless of region changes now
+		3:  Perfected edgeville wilderness ditch
+
+	Media
+		1:  https://i.imgur.com/9UJZBaP.gif
+		2:  https://i.imgur.com/3qvmcTO.png
+		3:  https://i.imgur.com/dOWWUeo.gif
+
 January 29th - Agility courses, visual synchronization improvements, plugin updates, and more
 
 	Journal
@@ -23,7 +36,6 @@ January 29th - Agility courses, visual synchronization improvements, plugin upda
 		https://i.imgur.com/E90lDk6.gif
 		https://i.imgur.com/FJw1n64.png
 		https://i.imgur.com/OvxuSmk.gif
-
 
 
 January 25th - Combat visual improvements, interaction system, event system, and more

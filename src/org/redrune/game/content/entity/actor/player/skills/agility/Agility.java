@@ -10,6 +10,14 @@ import org.redrune.utility.constants.SkillConstants;
  */
 public class Agility {
 	
+	/**
+	 * Checks if a player has the agility level
+	 *
+	 * @param player
+	 * 		The player
+	 * @param level
+	 * 		The level
+	 */
 	public static boolean hasLevel(Player player, int level) {
 		if (player.getSkills().getLevel(SkillConstants.AGILITY) < level) {
 			player.getPackets().sendGameMessage("You need an agility level of " + level + " to use this obstacle.", true);

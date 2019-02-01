@@ -243,15 +243,6 @@
     "direction": "WEST"
   },
   {
-    "npcId": 7891,
-    "tile": {
-      "x": 3094,
-      "y": 3513,
-      "plane": 0
-    },
-    "direction": "EAST"
-  },
-  {
     "npcId": 6537,
     "tile": {
       "x": 3091,

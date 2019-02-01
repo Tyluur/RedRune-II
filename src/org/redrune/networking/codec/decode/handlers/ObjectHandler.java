@@ -1,14 +1,13 @@
 package org.redrune.networking.codec.decode.handlers;
 
 import org.redrune.cache.loaders.ObjectDefinitions;
-import org.redrune.utility.constants.GameConstants;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
+import org.redrune.game.content.combat.CombatAlgorithm;
 import org.redrune.game.content.combat.function.Magic;
 import org.redrune.game.content.entity.actor.player.action.Action;
 import org.redrune.game.content.entity.actor.player.action.impl.WaterFillingAction;
-import org.redrune.game.content.combat.CombatAlgorithm;
-import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
-import org.redrune.game.content.entity.actor.player.skills.agility.Agility;
 import org.redrune.game.content.entity.actor.player.skills.cooking.Cooking;
 import org.redrune.game.content.entity.actor.player.skills.cooking.Cooking.Cookables;
 import org.redrune.game.content.entity.actor.player.skills.crafting.JewelrySmithing;
@@ -24,7 +23,7 @@ import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning;
 import org.redrune.game.content.entity.actor.player.skills.thieving.Thieving;
 import org.redrune.game.content.entity.actor.player.skills.woodcutting.Woodcutting;
 import org.redrune.game.content.entity.actor.player.skills.woodcutting.Woodcutting.TreeDefinitions;
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.ForceMovement;
 import org.redrune.game.entity.actor.mask.Graphics;
@@ -34,13 +33,12 @@ import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.game.entity.actor.player.link.OwnedObjectManager;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.networking.stream.InputStream;
-import org.redrune.utility.functions.Misc;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
 import org.redrune.utility.game.entity.object.ObjectRemoval;
 import plugin.command.owner.StopObjectSpawnCommandPlugin;
@@ -278,8 +276,6 @@ public class ObjectHandler {
 				}, 0, 0);
 				player.setNextForceMovement(new ForceMovement(new WorldTile(x1, 9799, 0), 3, player.getX() == 2886 ? 1 : 3));
 				player.useStairs(-1, new WorldTile(x1, 9799, 0), 3, 4);
-			} else if (Wilderness.isDitch(object.getId())) {// wild ditch
-				player.getDialogueManager().startDialogue("WildernessDitch", object);
 			} else if (object.getId() == 42611) {// Magic Portal
 				player.getDialogueManager().startDialogue("MagicPortal");
 			} else if (object.getId() == 27254) {// Edgeville portal
@@ -323,7 +319,6 @@ public class ObjectHandler {
 				player.stopAll();
 				player.setNextWorldTile(new WorldTile(2885, 4372, 0));
 				player.getControllerManager().forceStop();
-				// TODO all reqs, skills not added
 			} else if (object.getId() == 9369) {
 				player.getControllerManager().startController("FightPits");
 			} else if (object.getId() == 20602) {
@@ -429,39 +424,6 @@ public class ObjectHandler {
 							player.getActionManager().setAction(new Woodcutting(object, TreeDefinitions.CURSED_MAGIC));
 						}
 						break;
-					// Woodcutting end
-					case "gate":
-					case "large door":
-					case "metal door":
-						if (object.getId() == 21600) {
-							RegionManager.removeObject(object);
-							return;
-						}
-						
-						if (object.getType() == 0 && objectDef.containsOption(0, "Open")) {
-							handleGate(player, object);
-						}
-						break;
-					case "door":
-						if (object.getId() == 21507 || object.getId() == 21505) {
-							RegionManager.removeObject(object);
-							return;
-						}
-						
-						if (object.getType() == 0 && (objectDef.containsOption(0, "Open") || objectDef.containsOption(0, "Unlock"))) {
-							handleDoor(player, object);
-						}
-						break;
-					case "ladder":
-						if (object.getId() == 21512 || object.getId() == 21514) {
-							return;
-						}
-						
-						handleLadder(player, object, 1);
-						break;
-					case "staircase":
-						handleStaircases(player, object, 1);
-						break;
 					case "altar":
 						if (objectDef.containsOption(0, "Pray-at")) {
 							final int maxPrayer = player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10;
@@ -514,40 +476,12 @@ public class ObjectHandler {
 			} else if (object.getId() == 34384 || object.getId() == 34383 || object.getId() == 14011 || object.getId() == 7053 || object.getId() == 34387 || object.getId() == 34386 || object.getId() == 34385) {
 				Thieving.handleStalls(player, object);
 			} else {
-				switch (objectDef.getName().toLowerCase()) {
-					case "gate":
-					case "metal door":
-						if (object.getType() == 0 && objectDef.containsOption(1, "Open")) {
-							handleGate(player, object);
-						}
-						break;
-					case "door":
-						if (object.getId() == 21507) {
-							RegionManager.removeObject(object);
-							return;
-						}
-						if (object.getType() == 0 && objectDef.containsOption(1, "Open")) {
-							handleDoor(player, object);
-						}
-						break;
-					case "ladder":
-						if (object.getId() == 21512) {
-							return;
-						}
-						handleLadder(player, object, 2);
-						break;
-					case "staircase":
-						handleStaircases(player, object, 2);
-						break;
-					default:
-						if (PluginRepository.handleObject(player, object, option)) {
-							return;
-						}
-						player.getPackets().sendGameMessage("Nothing interesting happens...");
-						if (GameFlags.debugMode) {
-							System.out.println("Second clicked object [" + object + "]");
-						}
-						break;
+				if (PluginRepository.handleObject(player, object, option)) {
+					return;
+				}
+				player.getPackets().sendGameMessage("Nothing interesting happens...");
+				if (GameFlags.debugMode) {
+					System.out.println("Second clicked object [" + object + "]");
 				}
 			}
 		}));
@@ -565,36 +499,12 @@ public class ObjectHandler {
 			if (object.getDefinitions().getName().equalsIgnoreCase("bank booth")) {
 				player.getInterfaceManager().sendInterface(109);
 			}
-			switch (objectDef.getName().toLowerCase()) {
-				case "gate":
-				case "metal door":
-					if (object.getType() == 0 && objectDef.containsOption(2, "Open")) {
-						handleGate(player, object);
-					}
-					break;
-				case "door":
-					if (object.getType() == 0 && objectDef.containsOption(2, "Open")) {
-						handleDoor(player, object);
-					}
-					break;
-				case "ladder":
-					if (object.getId() == 21512) {
-						return;
-					}
-					handleLadder(player, object, 3);
-					break;
-				case "staircase":
-					handleStaircases(player, object, 3);
-					break;
-				default:
-					if (PluginRepository.handleObject(player, object, option)) {
-						return;
-					}
-					player.getPackets().sendGameMessage("Nothing interesting happens...");
-					if (GameFlags.debugMode) {
-						System.out.println("No plugin registered for option " + option + " on object " + object);
-					}
-					break;
+			if (PluginRepository.handleObject(player, object, option)) {
+				return;
+			}
+			player.getPackets().sendGameMessage("Nothing interesting happens...");
+			if (GameFlags.debugMode) {
+				System.out.println("No plugin registered for option " + option + " on object " + object);
 			}
 		}));
 	}
@@ -629,189 +539,6 @@ public class ObjectHandler {
 			player.getPackets().sendGameMessage("You slash through the web!");
 		} else {
 			player.getPackets().sendGameMessage("You fail to cut through the web.");
-		}
-	}
-	
-	public static boolean handleGate(Player player, WorldObject object) {
-		if (RegionManager.isSpawnedObject(object)) {
-			return false;
-		}
-		if (object.getRotation() == 0) {
-			
-			boolean south = true;
-			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() + 1, object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() - 1, object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-					return false;
-				}
-				south = false;
-			}
-			WorldObject openedDoor1 = new WorldObject(object.getId(), object.getType(), object.getRotation() + 1, object.getX(), object.getY(), object.getPlane());
-			WorldObject openedDoor2 = new WorldObject(otherDoor.getId(), otherDoor.getType(), otherDoor.getRotation() + 1, otherDoor.getX(), otherDoor.getY(), otherDoor.getPlane());
-			if (south) {
-				openedDoor1.moveLocation(-1, 0, 0);
-				openedDoor1.setRotation(3);
-				openedDoor2.moveLocation(-1, 0, 0);
-			} else {
-				openedDoor1.moveLocation(-1, 0, 0);
-				openedDoor2.moveLocation(-1, 0, 0);
-				openedDoor2.setRotation(3);
-			}
-			
-			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
-				player.faceObject(openedDoor1);
-				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
-				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
-				return true;
-			}
-		} else if (object.getRotation() == 2) {
-			
-			boolean south = true;
-			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() + 1, object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX(), object.getY() - 1, object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-					return false;
-				}
-				south = false;
-			}
-			WorldObject openedDoor1 = new WorldObject(object.getId(), object.getType(), object.getRotation() + 1, object.getX(), object.getY(), object.getPlane());
-			WorldObject openedDoor2 = new WorldObject(otherDoor.getId(), otherDoor.getType(), otherDoor.getRotation() + 1, otherDoor.getX(), otherDoor.getY(), otherDoor.getPlane());
-			if (south) {
-				openedDoor1.moveLocation(1, 0, 0);
-				openedDoor2.setRotation(1);
-				openedDoor2.moveLocation(1, 0, 0);
-			} else {
-				openedDoor1.moveLocation(1, 0, 0);
-				openedDoor1.setRotation(1);
-				openedDoor2.moveLocation(1, 0, 0);
-			}
-			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
-				player.faceObject(openedDoor1);
-				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
-				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
-				return true;
-			}
-		} else if (object.getRotation() == 3) {
-			
-			boolean right = true;
-			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() - 1, object.getY(), object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() + 1, object.getY(), object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-					return false;
-				}
-				right = false;
-			}
-			WorldObject openedDoor1 = new WorldObject(object.getId(), object.getType(), object.getRotation() + 1, object.getX(), object.getY(), object.getPlane());
-			WorldObject openedDoor2 = new WorldObject(otherDoor.getId(), otherDoor.getType(), otherDoor.getRotation() + 1, otherDoor.getX(), otherDoor.getY(), otherDoor.getPlane());
-			if (right) {
-				openedDoor1.moveLocation(0, -1, 0);
-				openedDoor2.setRotation(0);
-				openedDoor1.setRotation(2);
-				openedDoor2.moveLocation(0, -1, 0);
-			} else {
-				openedDoor1.moveLocation(0, -1, 0);
-				openedDoor1.setRotation(0);
-				openedDoor2.setRotation(2);
-				openedDoor2.moveLocation(0, -1, 0);
-			}
-			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
-				player.faceObject(openedDoor1);
-				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
-				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
-				return true;
-			}
-		} else if (object.getRotation() == 1) {
-			
-			boolean right = true;
-			WorldObject otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() - 1, object.getY(), object.getPlane()), object.getType());
-			if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-				otherDoor = RegionManager.getObjectWithType(new WorldTile(object.getX() + 1, object.getY(), object.getPlane()), object.getType());
-				if (otherDoor == null || otherDoor.getRotation() != object.getRotation() || otherDoor.getType() != object.getType() || !otherDoor.getDefinitions().getName().equalsIgnoreCase(object.getDefinitions().getName())) {
-					return false;
-				}
-				right = false;
-			}
-			WorldObject openedDoor1 = new WorldObject(object.getId(), object.getType(), object.getRotation() + 1, object.getX(), object.getY(), object.getPlane());
-			WorldObject openedDoor2 = new WorldObject(otherDoor.getId(), otherDoor.getType(), otherDoor.getRotation() + 1, otherDoor.getX(), otherDoor.getY(), otherDoor.getPlane());
-			if (right) {
-				openedDoor1.moveLocation(0, 1, 0);
-				openedDoor1.setRotation(0);
-				openedDoor2.moveLocation(0, 1, 0);
-			} else {
-				openedDoor1.moveLocation(0, 1, 0);
-				openedDoor2.setRotation(0);
-				openedDoor2.moveLocation(0, 1, 0);
-			}
-			if (RegionManager.removeTemporaryObject(object, 60000) && RegionManager.removeTemporaryObject(otherDoor, 60000)) {
-				player.faceObject(openedDoor1);
-				RegionManager.spawnTemporaryObject(openedDoor1, 60000);
-				RegionManager.spawnTemporaryObject(openedDoor2, 60000);
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private static void handleDoor(Player player, WorldObject object) {
-		if (RegionManager.isSpawnedObject(object)) {
-			return;
-		}
-		WorldObject openedDoor = new WorldObject(object.getId(), object.getType(), object.getRotation() + 1, object.getX(), object.getY(), object.getPlane());
-		if (object.getRotation() == 0) {
-			openedDoor.moveLocation(-1, 0, 0);
-		} else if (object.getRotation() == 1) {
-			openedDoor.moveLocation(0, 1, 0);
-		} else if (object.getRotation() == 2) {
-			openedDoor.moveLocation(1, 0, 0);
-		} else if (object.getRotation() == 3) {
-			openedDoor.moveLocation(0, -1, 0);
-		}
-		if (RegionManager.removeTemporaryObject(object, 60000)) {
-			player.faceObject(openedDoor);
-			RegionManager.spawnTemporaryObject(openedDoor, 60000);
-		}
-	}
-	
-	private static void handleLadder(Player player, WorldObject object, int optionId) {
-		String option = object.getDefinitions().getOption(optionId);
-		if (option.equalsIgnoreCase("Climb-up")) {
-			if (player.getPlane() == 3) {
-				return;
-			}
-			player.useStairs(828, new WorldTile(player.getX(), player.getY(), player.getPlane() + 1), 1, 2);
-		} else if (option.equalsIgnoreCase("Climb-down")) {
-			if (player.getPlane() == 0) {
-				return;
-			}
-			player.useStairs(828, new WorldTile(player.getX(), player.getY(), player.getPlane() - 1), 1, 2);
-		} else if (option.equalsIgnoreCase("Climb")) {
-			if (player.getPlane() == 3 || player.getPlane() == 0) {
-				return;
-			}
-			player.getDialogueManager().startDialogue("ClimbEmoteStairs", new WorldTile(player.getX(), player.getY(), player.getPlane() + 1), new WorldTile(player.getX(), player.getY(), player.getPlane() - 1), "Climb up the ladder.", "Climb down the ladder.", 828);
-		}
-	}
-	
-	private static void handleStaircases(Player player, WorldObject object, int optionId) {
-		String option = object.getDefinitions().getOption(optionId);
-		if (option.equalsIgnoreCase("Climb-up")) {
-			if (player.getPlane() == 3) {
-				return;
-			}
-			player.useStairs(-1, new WorldTile(player.getX(), player.getY(), player.getPlane() + 1), 0, 1);
-		} else if (option.equalsIgnoreCase("Climb-down")) {
-			if (player.getPlane() == 0) {
-				return;
-			}
-			player.useStairs(-1, new WorldTile(player.getX(), player.getY(), player.getPlane() - 1), 0, 1);
-		} else if (option.equalsIgnoreCase("Climb")) {
-			if (player.getPlane() == 3 || player.getPlane() == 0) {
-				return;
-			}
-			player.getDialogueManager().startDialogue("ClimbNoEmoteStairs", new WorldTile(player.getX(), player.getY(), player.getPlane() + 1), new WorldTile(player.getX(), player.getY(), player.getPlane() - 1), "Go up the stairs.", "Go down the stairs.");
 		}
 	}
 	

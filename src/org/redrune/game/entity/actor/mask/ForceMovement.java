@@ -1,5 +1,6 @@
 package org.redrune.game.entity.actor.mask;
 
+import lombok.Getter;
 import org.redrune.game.global.WorldTile;
 
 public final class ForceMovement {
@@ -12,14 +13,19 @@ public final class ForceMovement {
 	
 	public static final int WEST = 3;
 	
+	@Getter
 	private WorldTile toFirstTile;
 	
+	@Getter
 	private WorldTile toSecondTile;
 	
+	@Getter
 	private int firstTileTicketDelay;
 	
+	@Getter
 	private int secondTileTicketDelay;
 	
+	@Getter
 	private int direction;
 	
 	/*
@@ -30,11 +36,19 @@ public final class ForceMovement {
 		this(toFirstTile, firstTileTicketDelay, null, 0, direction);
 	}
 	
-	/*
-	 * USE: moves to firsttile and from first tile to second tile
-	 * firstTileTicketDelay: the delay in game tickets between your tile and
-	 * first tile secondTileTicketDelay: the delay in game tickets between first
-	 * tile and second tile the direction
+	/**
+	 * Constructs a new force movement mask
+	 *
+	 * @param toFirstTile
+	 * 		The tile we start at
+	 * @param firstTileTicketDelay
+	 * 		The delay before we arrive at the first tile
+	 * @param toSecondTile
+	 * 		The tile we arrive at
+	 * @param secondTileTicketDelay
+	 * 		The delay before arriving at this tile
+	 * @param direction
+	 * 		The direction to face after we arrive at the tile
 	 */
 	public ForceMovement(WorldTile toFirstTile, int firstTileTicketDelay, WorldTile toSecondTile, int secondTileTicketDelay, int direction) {
 		this.toFirstTile = toFirstTile;
@@ -42,26 +56,6 @@ public final class ForceMovement {
 		this.toSecondTile = toSecondTile;
 		this.secondTileTicketDelay = secondTileTicketDelay;
 		this.direction = direction;
-	}
-	
-	public WorldTile getToFirstTile() {
-		return toFirstTile;
-	}
-	
-	public WorldTile getToSecondTile() {
-		return toSecondTile;
-	}
-	
-	public int getFirstTileTicketDelay() {
-		return firstTileTicketDelay;
-	}
-	
-	public int getSecondTileTicketDelay() {
-		return secondTileTicketDelay;
-	}
-	
-	public int getDirection() {
-		return direction;
 	}
 	
 }

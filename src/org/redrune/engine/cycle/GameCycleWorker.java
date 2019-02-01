@@ -62,7 +62,6 @@ public final class GameCycleWorker implements Runnable {
 		if (sleepTime <= 0) {
 			return;
 		}
-		System.out.println("cycle time=" + (lastCycleTime - startTime));
 		ticksPassed++;
 		try {
 			Thread.sleep(sleepTime);

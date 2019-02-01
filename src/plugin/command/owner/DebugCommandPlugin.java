@@ -11,8 +11,7 @@ public class DebugCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		player.getInterfaceManager().sendInterface(1139);
-		player.getVarManager().sendVar(261, intParamOrDefault(args, 1, 0));
+	
 	}
 	
 	@Override

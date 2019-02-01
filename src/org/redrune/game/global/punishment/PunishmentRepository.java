@@ -1,7 +1,5 @@
 package org.redrune.game.global.punishment;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.file.JsonFileManager;
@@ -16,6 +14,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
+import static org.redrune.utility.functions.GsonFunctions.GSON;
+
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/13/2017
@@ -26,11 +26,6 @@ public class PunishmentRepository {
 	 * The punishments that exist in the world
 	 */
 	private static final List<Punishment> PUNISHMENTS = new ArrayList<>();
-	
-	/**
-	 * The gson instance
-	 */
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	
 	/**
 	 * The location of all item characteristics

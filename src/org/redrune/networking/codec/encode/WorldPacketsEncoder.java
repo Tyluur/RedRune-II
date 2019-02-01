@@ -659,10 +659,7 @@ public class WorldPacketsEncoder extends Encoder {
 		int offsetY = localY - ((localY >> 3) << 3);
 		OutputStream stream = new OutputStream(5);
 		stream.writePacket(28);
-		stream.writeByte((offsetX << 4) | offsetY); // the hash
-		// for
-		// coords,
-		// useless
+		stream.writeByte((offsetX << 4) | offsetY);
 		stream.writeByte((object.getType() << 2) + (object.getRotation() & 0x3));
 		stream.writeShort128(object.getId());
 		session.write(stream);
@@ -676,11 +673,9 @@ public class WorldPacketsEncoder extends Encoder {
 		int offsetY = localY - ((localY >> 3) << 3);
 		OutputStream stream = new OutputStream(3);
 		stream.writePacket(45);
-		stream.writeByteC((offsetX << 4) | offsetY); // the hash for coords,
-		// useless
+		stream.writeByteC((offsetX << 4) | offsetY);
 		stream.writeByte((object.getType() << 2) + (object.getRotation() & 0x3));
 		session.write(stream);
-		
 	}
 	
 	public void sendFriendsChatChannel() {
@@ -748,7 +743,6 @@ public class WorldPacketsEncoder extends Encoder {
 		sendPrivateGameBarStage();
 	}
 	
-	
 	public void sendPrivateGameBarStage() {
 		OutputStream stream2 = new OutputStream(2);
 		stream2.writePacket(134);
@@ -779,7 +773,6 @@ public class WorldPacketsEncoder extends Encoder {
 		stream.writeShort128(id);
 		session.write(stream);
 	}
-	
 	
 	public void receivePrivateMessage(String name, String display, int rights, String message) {
 		OutputStream stream = new OutputStream();
@@ -1042,8 +1035,9 @@ public class WorldPacketsEncoder extends Encoder {
 		if (message instanceof QuickChatMessage) {
 			QuickChatMessage qcMessage = (QuickChatMessage) message;
 			stream.writeShort(qcMessage.getFileId());
-			if (qcMessage.getMessage(false) != null)
+			if (qcMessage.getMessage(false) != null) {
 				stream.writeBytes(message.getMessage(false).getBytes());
+			}
 		} else {
 			byte[] chatStr = new byte[250];
 			chatStr[0] = (byte) message.getMessage(player.getAttributes().isFilteringProfanity()).length();

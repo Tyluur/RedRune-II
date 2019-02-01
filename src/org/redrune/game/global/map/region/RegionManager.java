@@ -63,11 +63,13 @@ public final class RegionManager {
 				getRegion(regionId).addNPCIndex(actor.getIndex());
 			}
 			actor.setLastRegionId(regionId);
+			if (actor.isPlayer()) {
+				ObjectRemoval.handleRegionChange(actor.toPlayer());
+			}
 		}
 		if (actor instanceof Player) {
 			Player player = (Player) actor;
 			player.getControllerManager().moved();
-			ObjectRemoval.handleRegionChange(player);
 			if (player.isRunning() && player.getControllerManager().getController() == null) {
 				World.checkControllersAtMove(player);
 			}
@@ -92,8 +94,8 @@ public final class RegionManager {
 	}
 	
 	/*
-		 * checks clip
-		 */
+	 * checks clip
+	 */
 	public static boolean canMoveNPC(int plane, int x, int y, int size) {
 		for (int tileX = x; tileX < x + size; tileX++) {
 			for (int tileY = y; tileY < y + size; tileY++) {
@@ -486,10 +488,10 @@ public final class RegionManager {
 	}
 	
 	/*
-		* type 0 - gold if not tradeable
-		* type 1 - gold if destroyable
-		* type 2 - no gold
-		*/
+	 * type 0 - gold if not tradeable
+	 * type 1 - gold if destroyable
+	 * type 2 - no gold
+	 */
 	public static final FloorItem addGroundItem(final Item item, final WorldTile tile, final Player owner, boolean invisible, long hiddenTime, int type, final int publicTime) {
 		if (type != 2) {
 			// TODO convert items dropped to bm value

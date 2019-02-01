@@ -12,6 +12,7 @@ import org.redrune.game.content.entity.actor.npc.FishingSpotsHandler;
 import org.redrune.game.content.entity.actor.player.controller.ControllerHandler;
 import org.redrune.game.content.entity.actor.player.dialogue.DialogueHandler;
 import org.redrune.game.content.entity.actor.player.market.ShopRepository;
+import org.redrune.utility.game.entity.object.ObjectSpawning;
 import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder;
 import org.redrune.game.entity.actor.player.link.FriendChatsManager;
@@ -25,7 +26,6 @@ import org.redrune.utility.functions.OutLogger;
 import org.redrune.utility.game.entity.actor.npc.NPCWalkingFlag;
 import org.redrune.utility.game.entity.actor.player.Censor;
 import org.redrune.utility.game.entity.object.ObjectRemoval;
-import org.redrune.utility.game.entity.object.ObjectSpawns;
 import org.redrune.utility.game.map.MapArchiveKeys;
 
 import java.util.concurrent.TimeUnit;
@@ -76,7 +76,6 @@ public final class Bootstrap {
 				System.out.println("Initializing region builidng");
 				RegionBuilder.initialize();
 				MapArchiveKeys.initialize();
-				ObjectSpawns.initialize();
 				IncomingPacketRepository.initialize();
 				Censor.initialize();
 			} catch (Exception e) {
@@ -85,6 +84,7 @@ public final class Bootstrap {
 		}, () -> {
 			NPCWalkingFlag.registerFlags();
 			NPCExtensionHolder.initialize();
+			ObjectSpawning.initialize();
 		}, () -> {
 			WorldList.initialize();
 			PluginRepository.registerAll();

@@ -5,16 +5,16 @@ import org.redrune.cache.loaders.ClientScriptMap;
 import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.engine.SystemManager;
 import org.redrune.game.GameFlags;
-import org.redrune.game.global.WorldTile;
+import org.redrune.utility.game.entity.object.ObjectSpawning;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.FloorItem;
 import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.game.map.MapArchiveKeys;
 import org.redrune.utility.game.entity.object.ObjectRemoval;
-import org.redrune.utility.game.entity.object.ObjectSpawns;
+import org.redrune.utility.game.map.MapArchiveKeys;
 import org.redrune.utility.game.repository.npc.spawn.NPCSpawnRepository;
 
 import java.util.ArrayList;
@@ -756,7 +756,7 @@ public class Region {
 	}
 	
 	private void loadObjectSpawns() {
-		ObjectSpawns.loadObjectSpawns(regionId);
+		ObjectSpawning.loadObjectSpawns(regionId);
 	}
 	
 	public boolean isLoadedNPCSpawns() {
@@ -1123,7 +1123,6 @@ public class Region {
 				p2.getPackets().sendDestroyObject(object);
 			}
 		}
-		
 	}
 	
 	public WorldObject getStandardObject(int plane, int x, int y) {
