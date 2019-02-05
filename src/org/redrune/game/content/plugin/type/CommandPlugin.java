@@ -100,6 +100,9 @@ public abstract class CommandPlugin implements Plugin {
 	 * 		The slot
 	 */
 	protected int intParam(String[] args, int slot) {
+		if (slot >= args.length || slot < 0) {
+			return -1;
+		}
 		return Integer.parseInt(args[slot]);
 	}
 	
@@ -132,6 +135,9 @@ public abstract class CommandPlugin implements Plugin {
 	 * 		The slot
 	 */
 	protected Boolean boolParam(String[] args, int slot) {
+		if (slot >= args.length || slot < 0) {
+			return false;
+		}
 		return Boolean.parseBoolean(args[slot]);
 	}
 	
@@ -153,6 +159,22 @@ public abstract class CommandPlugin implements Plugin {
 			e.printStackTrace();
 			return defaultType;
 		}
+	}
+	
+	
+	/**
+	 * Gets a string from the parameters
+	 *
+	 * @param args
+	 * 		The parameters
+	 * @param slot
+	 * 		The slot
+	 */
+	protected String stringParam(String[] args, int slot) {
+		if (slot >= args.length || slot < 0) {
+			return null;
+		}
+		return args[slot];
 	}
 	
 	/**

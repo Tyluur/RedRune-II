@@ -39,7 +39,7 @@ public enum PunishmentType {
 		public boolean add(Player player, Punishment punishment) {
 			PunishmentType type = punishment.getType();
 			if (type == PunishmentType.ADDRESS_MUTE || type == PunishmentType.ADDRESS_BAN) {
-				punishment.putParameter("ip", player.getSession().getIp());
+				punishment.putParameter("ip", player.getSession().getIPAddress());
 				punishment.putParameter("mac", player.getSession().getMacAddress());
 			}
 			return PunishmentRepository.addToQueue(punishment);
@@ -55,7 +55,7 @@ public enum PunishmentType {
 		public boolean add(Player player, Punishment punishment) {
 			PunishmentType type = punishment.getType();
 			if (type == PunishmentType.ADDRESS_MUTE || type == PunishmentType.ADDRESS_BAN) {
-				punishment.putParameter("ip", player.getSession().getIp());
+				punishment.putParameter("ip", player.getSession().getIPAddress());
 				punishment.putParameter("mac", player.getSession().getMacAddress());
 			}
 			boolean addToQueue = PunishmentRepository.addToQueue(punishment);
@@ -65,7 +65,7 @@ public enum PunishmentType {
 						if (p == null) {
 							continue;
 						}
-						if (p.getSession().getIp().equals(player.getSession().getIp())) {
+						if (p.getSession().getIPAddress().equals(player.getSession().getIPAddress())) {
 							p.forceOffline();
 						}
 						if (p.getSession().getMacAddress().equals(player.getSession().getMacAddress())) {

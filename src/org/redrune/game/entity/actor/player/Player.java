@@ -31,8 +31,8 @@ import org.redrune.game.entity.item.Item;
 import org.redrune.game.global.World;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.networking.Session;
-import org.redrune.networking.codec.encode.WorldPacketsEncoder;
+import org.redrune.networking.NetworkSession;
+import org.redrune.networking.packet.PacketSender;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.functions.Misc;
@@ -160,11 +160,16 @@ public class Player extends Actor {
 	private transient String username;
 	
 	/**
-	 * The session object used for the player
+	 * The network session used for the player
 	 */
 	@Getter
 	@Setter
-	private transient Session session;
+	private transient NetworkSession session;
+	
+	/**
+	 * The instance of the packet sender
+	 */
+	private transient PacketSender packetSender;
 	
 	/**
 	 * The container and handler for interfaces
@@ -391,6 +396,7 @@ public class Player extends Actor {
 	
 	@Override
 	public void processEntity() {
+		session.processContextQueue();
 		cutsceneManager.process();
 		super.processEntity();
 		if (musicsManager.musicEnded()) {
@@ -612,8 +618,8 @@ public class Player extends Actor {
 		getPackets().sendConfigByFile(7198, getHitpoints());
 	}
 	
-	public WorldPacketsEncoder getPackets() {
-		return session.getWorldPackets();
+	public PacketSender getPackets() {
+		return packetSender;
 	}
 	
 	@Override
@@ -639,10 +645,11 @@ public class Player extends Actor {
 		}
 	}
 	
-	public void initializeLobbySession(String username, Session session) {
+	public void initializeLobby(String username, NetworkSession networkSession) {
 		this.username = username;
-		this.session = session;
+		this.session = networkSession;
 		this.session.setInLobby(true);
+		this.session.setPlayer(this);
 		World.addLobbyPlayer(this);
 		if (GameFlags.debugMode) {
 			giveRight(PlayerRight.OWNER);
@@ -660,9 +667,13 @@ public class Player extends Actor {
 		this.rights.add(right);
 	}
 	
-	public void initializeGameSession(String username, int displayMode, int screenWidth, int screenHeight) {
+	public void initializeGameSession(String username, NetworkSession session, int displayMode, int screenWidth, int screenHeight) {
 		// temporary deleted after reset all chars
 		this.username = username;
+		this.session = session;
+		session.setInLobby(false);
+		session.setPlayer(this);
+		this.packetSender = new PacketSender(this);
 		this.interfaceManager = new InterfaceManager(this);
 		this.interfaceManager.setDisplayMode(displayMode);
 		this.interfaceManager.setScreenWidth(screenWidth);
@@ -696,11 +707,12 @@ public class Player extends Actor {
 		attributes.setSwitchItemCache(Collections.synchronizedList(new ArrayList<>()));
 		initEntity();
 		attributes.setPacketsDecoderPing(Misc.currentTimeMillis());
-		session.setInLobby(false);
+		this.session.setInLobby(false);
 		// inited so lets add it
 		World.addWorldPlayer(this);
 		RegionManager.updateActorRegion(this);
 		System.out.println("Player Logged in: " + username);
+		System.out.println(World.getPlayers());
 	}
 	
 	// now that we inited we can start showing game
@@ -778,7 +790,7 @@ public class Player extends Actor {
 			familiar.respawnFamiliar(this);
 		}
 		
-		attributes.setLastIP(getSession().getIp());
+		attributes.setLastIP(getSession().getIPAddress());
 		running = true;
 		attributes.setUpdateMovementType(true);
 		appearance.generateAppearanceData();
@@ -808,6 +820,10 @@ public class Player extends Actor {
 		getPackets().sendLogout(false);
 	}
 	
+	public void finishLobby() {
+		World.removePlayer(this, true);
+	}
+	
 	public void realFinish() {
 		if (isFinished()) {
 			return;
@@ -824,10 +840,9 @@ public class Player extends Actor {
 			familiar.dissmissFamiliar(true);
 		}
 		setFinished(true);
-		session.setDecoder(-1);
 		PlayerSaving.savePlayer(this);
 		RegionManager.updateActorRegion(this);
-		World.removePlayer(this);
+		World.removePlayer(this, false);
 		System.out.println("Finished Player: " + username);
 	}
 	

@@ -124,12 +124,12 @@ public class PunishmentRepository {
 					}
 					break;
 				case ADDRESS_MUTE:
-					if (punishment.getIp().orElse("n/a").equals(player.getSession().getIp()) || punishment.getMac().orElse("n/a").equals(player.getSession().getMacAddress())) {
+					if (punishment.getIp().orElse("n/a").equals(player.getSession().getIPAddress()) || punishment.getMac().orElse("n/a").equals(player.getSession().getMacAddress())) {
 						return true;
 					}
 					break;
 				case ADDRESS_BAN:
-					if (punishment.getIp().orElse("n/a").equals(player.getSession().getIp()) || punishment.getMac().orElse("n/a").equals(player.getSession().getMacAddress())) {
+					if (punishment.getIp().orElse("n/a").equals(player.getSession().getIPAddress()) || punishment.getMac().orElse("n/a").equals(player.getSession().getMacAddress())) {
 						return true;
 					}
 					break;
@@ -162,7 +162,7 @@ public class PunishmentRepository {
 					}
 					break;
 				case ADDRESS_MUTE:
-					if (target != null && (target.getSession().getIp().equals(punishment.getIp().orElse("n/a")) || target.getSession().getMacAddress().equals(punishment.getMac().orElse("n/a")))) {
+					if (target != null && (target.getSession().getIPAddress().equals(punishment.getIp().orElse("n/a")) || target.getSession().getMacAddress().equals(punishment.getMac().orElse("n/a")))) {
 						punishments.add(punishment);
 					}
 					break;

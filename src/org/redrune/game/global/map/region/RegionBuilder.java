@@ -59,7 +59,7 @@ public final class RegionBuilder {
 	}
 	
 	/*
-	 * do not use this out builder
+	 * do not use this out bldr
 	 */
 	public static void noclipCircle(int x, int y, int plane, int ratio) throws InterruptedException {
 		for (int xn = x - ratio; xn < x + ratio; xn++) {

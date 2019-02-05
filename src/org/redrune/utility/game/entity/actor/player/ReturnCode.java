@@ -61,7 +61,7 @@ public enum ReturnCode {
 	LOGIN_LIMIT_EXCEEDED(9),
 	
 	/**
-	 * The networkSession key was invalid.
+	 * The session key was invalid.
 	 */
 	BAD_SESSION_ID(10),
 	

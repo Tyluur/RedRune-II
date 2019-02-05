@@ -1,8 +1,9 @@
 package org.redrune.cache.huffman;
 
+import com.alex.io.InputStream;
+import com.alex.io.OutputStream;
 import org.redrune.cache.Cache;
-import org.redrune.networking.stream.InputStream;
-import org.redrune.networking.stream.OutputStream;
+import org.redrune.networking.packet.PacketBuilder;
 import org.redrune.utility.functions.Misc;
 
 public final class Huffman {
@@ -83,8 +84,10 @@ public final class Huffman {
 		}
 	}
 	
-	public static int sendEncryptMessage(OutputStream stream, String message) {
+	public static int sendEncryptMessage(PacketBuilder bldr, String message) {
 		try {
+			OutputStream stream = new OutputStream(bldr.getBuffer().array());
+			
 			int startOffset = stream.getOffset();
 			byte[] messageData = Misc.getFormatedMessage(message);
 			stream.writeSmart(messageData.length);
@@ -96,7 +99,7 @@ public final class Huffman {
 		}
 	}
 	
-	public static final int encryptMessage(int streamOffset, int messageDataLength, byte[] streamBuffer, int messageDataOffset, byte[] messageData) {
+	public static int encryptMessage(int streamOffset, int messageDataLength, byte[] streamBuffer, int messageDataOffset, byte[] messageData) {
 		int i = 0;
 		messageDataLength += messageDataOffset;
 		int i_19_ = streamOffset << 309760323;

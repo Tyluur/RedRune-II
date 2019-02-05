@@ -4,15 +4,19 @@ import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.utility.functions.Misc;
 
+import java.util.HashMap;
 import java.util.List;
-
-import static org.redrune.game.content.combat.CombatRepository.CACHED_COMBAT_SCRIPTS;
 
 /**
  * @author Matrix Team
  * @author Tyluur <itstyluur@gmail.com>
  */
 public final class CombatScriptsHandler {
+	
+	/**
+	 * The map of cached combat scripts
+	 */
+	public static final HashMap<Object, CombatScript> CACHED_COMBAT_SCRIPTS = new HashMap<>();
 	
 	/**
 	 * The default combat script

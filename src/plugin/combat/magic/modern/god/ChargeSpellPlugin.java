@@ -7,7 +7,7 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.utility.constants.AttributeKey;
+import org.redrune.utility.constants.key.AttributeKey;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

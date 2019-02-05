@@ -10,7 +10,6 @@ import org.redrune.engine.factory.DecoderThreadFactory;
 import org.redrune.engine.factory.SlowThreadFactory;
 import org.redrune.engine.tick.schedule.Scheduler;
 import org.redrune.engine.tick.schedule.impl.PunishmentTask;
-import org.redrune.engine.worker.game.IncomingPacketQueueProcessor;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
@@ -18,7 +17,6 @@ import org.redrune.game.entity.actor.player.link.OwnedObjectManager;
 import org.redrune.game.global.World;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.networking.ServerChannelHandler;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.functions.Misc;
@@ -53,8 +51,6 @@ public final class SystemManager {
 	public static final ExecutorService SERVER_BOSS_CHANNEL_EXECUTOR = Executors.newSingleThreadExecutor(new DecoderThreadFactory());
 	
 	public static final Scheduler SCHEDULER = new Scheduler();
-	
-	private static final IncomingPacketQueueProcessor PACKET_QUEUE_PROCESSOR = new IncomingPacketQueueProcessor();
 	
 	public static int serverWorkersCount;
 	
@@ -91,11 +87,6 @@ public final class SystemManager {
 		addSummoningEffectTask();
 		addOwnedObjectsTask();
 		addScheduledTasks();
-		addIncomingPacketWorker();
-	}
-	
-	private static void addIncomingPacketWorker() {
-		SLOW_EXECUTOR.scheduleWithFixedDelay(PACKET_QUEUE_PROCESSOR, 1, 1, TimeUnit.MILLISECONDS);
 	}
 	
 	private static void addAccountsSavingTask() {
@@ -309,7 +300,6 @@ public final class SystemManager {
 	}
 	
 	private static void closeServices() {
-		ServerChannelHandler.shutdown();
 		shutdown();
 	}
 	

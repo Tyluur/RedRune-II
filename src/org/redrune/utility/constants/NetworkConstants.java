@@ -1,5 +1,9 @@
 package org.redrune.utility.constants;
 
+import com.google.common.collect.ImmutableList;
+import io.netty.util.AttributeKey;
+import org.redrune.networking.NetworkSession;
+
 import java.math.BigInteger;
 
 /**
@@ -31,6 +35,16 @@ public interface NetworkConstants {
 	int PACKET_SIZE_LIMIT = 7500;
 	
 	/**
+	 * The js5-request opcode.
+	 */
+	int JS5_REQUEST = 15;
+	
+	/**
+	 * The login request opcode.
+	 */
+	int LOGIN_REQUEST = 14;
+	
+	/**
 	 * The time that makes a player inactive for logic packets
 	 */
 	long MAX_PACKETS_DECODER_PING_DELAY = 30000;
@@ -51,7 +65,23 @@ public interface NetworkConstants {
 	BigInteger LOGIN_MODULUS = new BigInteger("123733137684565391382986985515878973634831964473007354491671126289247096002904505166425503816809330286277302494636833012609314653193945563916110405049937997195310625096132297106334199144922705176219016362504626538048084031862798816953255666088269887586583538984815994152019844370040268440057091407812614894353");
 	
 	/**
+	 * The attribute that contains the key for a session.
+	 */
+	AttributeKey<NetworkSession> SESSION_KEY = AttributeKey.valueOf("session.key");
+	
+	/**
+	 * The list of exceptions that are ignored
+	 */
+	ImmutableList<String> IGNORED_EXCEPTIONS = ImmutableList.of("An existing connection was forcibly closed by the remote host", "An established connection was aborted by the software in your host machine");
+	
+	/**
 	 * The map sizes
 	 */
 	int[] MAP_SIZES = { 104, 120, 136, 168 };
+	
+	/**
+	 * The length of a timeout
+	 */
+	Integer TIMEOUT_RATE = 30_000; // 1minute;
+	
 }

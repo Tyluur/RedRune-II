@@ -1,10 +1,10 @@
 package org.redrune.cache.loaders;
 
-import org.redrune.cache.Cache;
-import org.redrune.networking.stream.InputStream;
-import org.redrune.utility.game.entity.actor.npc.NPCWalkingFlag;
+import com.alex.io.InputStream;
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.Cache;
+import org.redrune.utility.game.entity.actor.npc.NPCWalkingFlag;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;

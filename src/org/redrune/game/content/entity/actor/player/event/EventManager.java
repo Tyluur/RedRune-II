@@ -1,5 +1,6 @@
 package org.redrune.game.content.entity.actor.player.event;
 
+import org.redrune.game.content.entity.actor.player.event.Event.EventState;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
@@ -51,7 +52,22 @@ public class EventManager {
 	 */
 	public void start(Event event) {
 		this.event = event;
-		process();
+		fire();
+	}
+	
+	/**
+	 * This method fires an event for the player
+	 */
+	private void fire() {
+		if (event == null) {
+			return;
+		}
+		if (event.getState() != EventState.CREATED) {
+			return;
+		}
+		event.firePolicy(player);
+		event.run(player);
+		event.setState(Event.EventState.STARTED);
 	}
 	
 }

@@ -1,11 +1,12 @@
 package org.redrune.game.entity.actor.player.render;
 
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
+import org.redrune.networking.packet.PacketBuilder;
+import org.redrune.networking.packet.PacketType;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.NetworkConstants;
-import org.redrune.networking.stream.OutputStream;
 import org.redrune.utility.functions.Misc;
 
 import java.security.MessageDigest;
@@ -50,8 +51,8 @@ public final class LocalPlayerUpdate {
 		return cachedAppearencesHashes[index] == null || !MessageDigest.isEqual(cachedAppearencesHashes[index], hash);
 	}
 	
-	public void init(OutputStream stream) {
-		stream.initBitAccess();
+	public void init(PacketBuilder stream) {
+		stream.startBitAccess();
 		stream.writeBits(30, player.get30BitsLocationHash());
 		localPlayers[player.getIndex()] = player;
 		localPlayersIndexes[localPlayersIndexesCount++] = player.getIndex();
@@ -87,7 +88,7 @@ public final class LocalPlayerUpdate {
 		return p != null && !p.isFinished() && withinDistance(p);
 	}
 	
-	private void updateRegionHash(OutputStream stream, int oldHash, int newHash) {
+	private void updateRegionHash(PacketBuilder stream, int oldHash, int newHash) {
 		int oldX = (oldHash & 0xff72) >> 8;
 		int oldY = 0xff & oldHash;
 		int oldPlane = oldHash >> 16;
@@ -129,8 +130,8 @@ public final class LocalPlayerUpdate {
 		}
 	}
 	
-	private void processOutsidePlayers(OutputStream stream, OutputStream updateBlockData) {
-		stream.initBitAccess();
+	private void processOutsidePlayers(PacketBuilder stream, PacketBuilder updateBlockData) {
+		stream.startBitAccess();
 		int skip = 0;
 		for (int i = 0; i < outPlayersIndexesCount; i++) {
 			int playerIndex = outPlayersIndexes[i];
@@ -179,8 +180,8 @@ public final class LocalPlayerUpdate {
 		stream.finishBitAccess();
 	}
 	
-	private void processLocalPlayers(OutputStream stream, OutputStream updateBlockData) {
-		stream.initBitAccess();
+	private void processLocalPlayers(PacketBuilder stream, PacketBuilder updateBlockData) {
+		stream.startBitAccess();
 		int skip = 0;
 		for (int i = 0; i < localPlayersIndexesCount; i++) {
 			int playerIndex = localPlayersIndexes[i];
@@ -289,14 +290,14 @@ public final class LocalPlayerUpdate {
 		stream.finishBitAccess();
 	}
 	
-	private void skipPlayers(OutputStream stream, int amount) {
+	private void skipPlayers(PacketBuilder stream, int amount) {
 		stream.writeBits(2, amount == 0 ? 0 : amount > 255 ? 3 : (amount > 31 ? 2 : 1));
 		if (amount > 0) {
 			stream.writeBits(amount > 255 ? 11 : (amount > 31 ? 8 : 5), amount);
 		}
 	}
 	
-	private void appendUpdateBlock(Player p, OutputStream data, boolean needAppearenceUpdate, boolean added) {
+	private void appendUpdateBlock(Player p, PacketBuilder data, boolean needAppearenceUpdate, boolean added) {
 		int maskData = 0;
 		if (p.getNextAnimation() != null) {
 			maskData |= 0x40;
@@ -391,11 +392,11 @@ public final class LocalPlayerUpdate {
 		}
 	}
 	
-	private void applyForceTalkMask(Player p, OutputStream data) {
+	private void applyForceTalkMask(Player p, PacketBuilder data) {
 		data.writeString(p.getNextForceTalk().getText());
 	}
 	
-	private void applyHitsMask(Player p, OutputStream data) {
+	private void applyHitsMask(Player p, PacketBuilder data) {
 		int count = p.getNextHits().size();
 		data.writeByte(count);
 		if (count > 0) {
@@ -427,54 +428,54 @@ public final class LocalPlayerUpdate {
 		}
 	}
 	
-	private void applyFaceEntityMask(Player p, OutputStream data) {
+	private void applyFaceEntityMask(Player p, PacketBuilder data) {
 		data.writeShort128(p.getNextFaceEntity() == -2 ? p.getLastFaceEntity() : p.getNextFaceEntity());
 	}
 	
-	private void applyFaceDirectionMask(Player p, OutputStream data) {
+	private void applyFaceDirectionMask(Player p, PacketBuilder data) {
 		data.writeShort(p.getFaceDirection());
 	}
 	
-	private void applyMoveTypeMask(Player p, OutputStream data) {
+	private void applyMoveTypeMask(Player p, PacketBuilder data) {
 		data.write128Byte(p.isRunModeOn() ? 2 : 1);
 	}
 	
-	private void applyTemporaryMoveTypeMask(Player p, OutputStream data) {
+	private void applyTemporaryMoveTypeMask(Player p, PacketBuilder data) {
 		data.writeByteC(p.getAttributes().getTemporaryMovementType());
 	}
 	
-	private void applyGraphicsMask1(Player p, OutputStream data) {
+	private void applyGraphicsMask1(Player p, PacketBuilder data) {
 		data.writeShort(p.getNextGraphics1().getId());
 		data.writeIntLE(p.getNextGraphics1().getSettingsHash());
 		data.writeByte128(p.getNextGraphics1().getSettings2Hash());
 	}
 	
-	private void applyGraphicsMask2(Player p, OutputStream data) {
+	private void applyGraphicsMask2(Player p, PacketBuilder data) {
 		data.writeShortLE128(p.getNextGraphics2().getId());
 		data.writeIntV2(p.getNextGraphics2().getSettingsHash());
 		data.writeByteC(p.getNextGraphics2().getSettings2Hash());
 	}
 	
-	private void applyGraphicsMask3(Player p, OutputStream data) {
+	private void applyGraphicsMask3(Player p, PacketBuilder data) {
 		data.writeShortLE128(p.getNextGraphics3().getId());
 		data.writeIntV2(p.getNextGraphics3().getSettingsHash());
 		data.writeByteC(p.getNextGraphics3().getSettings2Hash());
 	}
 	
-	private void applyGraphicsMask4(Player p, OutputStream data) {
+	private void applyGraphicsMask4(Player p, PacketBuilder data) {
 		data.writeShortLE(p.getNextGraphics4().getId());
 		data.writeIntV2(p.getNextGraphics4().getSettingsHash());
 		data.writeByteC(p.getNextGraphics4().getSettings2Hash());
 	}
 	
-	private void applyAnimationMask(Player p, OutputStream data) {
+	private void applyAnimationMask(Player p, PacketBuilder data) {
 		for (int id : p.getNextAnimation().getIds()) {
 			data.writeShortLE(id);
 		}
 		data.writeByte128(p.getNextAnimation().getSpeed());
 	}
 	
-	private void applyAppearanceMask(Player p, OutputStream data) {
+	private void applyAppearanceMask(Player p, PacketBuilder data) {
 		byte[] renderData = p.getAppearance().getAppearanceData();
 		totalRenderDataSentLength += renderData.length;
 		cachedAppearencesHashes[p.getIndex()] = p.getAppearance().getMd5Hash();
@@ -483,7 +484,7 @@ public final class LocalPlayerUpdate {
 		
 	}
 	
-	private void applyForceMovementMask(Player p, OutputStream data) {
+	private void applyForceMovementMask(Player p, PacketBuilder data) {
 		data.write128Byte(p.getNextForceMovement().getToFirstTile().getX() - p.getX());
 		data.writeByte(p.getNextForceMovement().getToFirstTile().getY() - p.getY());
 		data.writeByte128(p.getNextForceMovement().getToSecondTile() == null ? 0 : p.getNextForceMovement().getToSecondTile().getX() - p.getX());
@@ -493,14 +494,12 @@ public final class LocalPlayerUpdate {
 		data.writeByte128(p.getNextForceMovement().getDirection());
 	}
 	
-	public OutputStream createPacketAndProcess() {
-		OutputStream stream = new OutputStream();
-		OutputStream updateBlockData = new OutputStream();
-		stream.writePacketVarShort(69);
+	public PacketBuilder createPacketAndProcess() {
+		PacketBuilder stream = new PacketBuilder(69, PacketType.VAR_SHORT);
+		PacketBuilder updateBlockData = new PacketBuilder();
 		processLocalPlayers(stream, updateBlockData);
 		processOutsidePlayers(stream, updateBlockData);
-		stream.writeBytes(updateBlockData.getBuffer(), 0, updateBlockData.getOffset());
-		stream.endPacketVarShort();
+		stream.writeBytes(updateBlockData.getBuffer());
 		totalRenderDataSentLength = 0;
 		localPlayersIndexesCount = 0;
 		outPlayersIndexesCount = 0;

@@ -1,8 +1,8 @@
 package org.redrune.game.entity.actor.player.link;
 
+import com.alex.io.OutputStream;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
-import org.redrune.networking.stream.OutputStream;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.entity.actor.player.ChatMessage;

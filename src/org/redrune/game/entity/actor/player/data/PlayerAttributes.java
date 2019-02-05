@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.constants.AttributeKey;
+import org.redrune.utility.constants.key.AttributeKey;
 import org.redrune.utility.functions.Misc;
 
 import java.io.Serializable;

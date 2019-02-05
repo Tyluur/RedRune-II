@@ -45,7 +45,7 @@ public final class GameCycleWorker implements Runnable {
 		while (!SystemManager.shutdown) {
 			long currentTime = Misc.currentTimeMillis();
 			try {
-				updateSequence.fire(World.getPlayers(), World.getNPCs());
+				updateSequence.fire(World.getLobbyPlayers(), World.getPlayers(), World.getNPCs());
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}

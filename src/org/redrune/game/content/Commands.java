@@ -1169,7 +1169,7 @@ public final class Commands {
 					return true;
 				}
 				target.getSession().getChannel().close();
-				World.removePlayer(target);
+				World.removePlayer(target, false);
 				World.sendWorldMessage("[<col=F20505>Kick</col>] <col=F20505>" + player.getDisplayName() + "</col> kicked <col=F20505>" + target.getDisplayName() + "'s</col> account.", true);
 				return true;
 			}
@@ -1244,7 +1244,7 @@ public final class Commands {
 			Player target = World.getPlayerByDisplayName(name);
 			if (target != null) {
 				target.getSession().getChannel().close();
-				World.removePlayer(target);
+				World.removePlayer(target, false);
 				World.sendWorldMessage("[<col=F20505>Ban</col>] <col=F20505>" + player.getDisplayName() + "</col> has kicked gircat", true);
 			}
 		}

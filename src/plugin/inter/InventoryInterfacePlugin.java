@@ -3,7 +3,7 @@ package plugin.inter;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.content.plugin.type.InterfacePlugin;
-import org.redrune.networking.codec.decode.handlers.InventoryOptionsHandler;
+import org.redrune.networking.packet.handler.InventoryOptionsHandler;
 import org.redrune.utility.constants.PacketConstants;
 
 /**

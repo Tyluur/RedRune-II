@@ -93,7 +93,7 @@ public final class World {
 	 */
 	public static void addWorldPlayer(Player player) {
 		players.add(player);
-		AntiFlood.add(player.getSession().getIp());
+		AntiFlood.add(player.getSession().getIPAddress());
 	}
 	
 	/**
@@ -109,13 +109,9 @@ public final class World {
 	/**
 	 * Removes a player from the world
 	 */
-	public static void removePlayer(Player player) {
-		if (player.getSession().isInLobby()) {
-			lobbyPlayers.remove(player);
-		} else {
-			players.remove(player);
-			AntiFlood.remove(player.getSession().getIp());
-		}
+	public static void removePlayer(Player player, boolean lobby) {
+		(lobby ? lobbyPlayers : players).remove(player);
+		AntiFlood.remove(player.getSession().getIPAddress());
 	}
 	
 	/**
@@ -200,8 +196,8 @@ public final class World {
 	/**
 	 * Checks if the world contains a player with a certain username
 	 */
-	public static boolean containsPlayer(String username) {
-		for (Player p2 : players) {
+	public static boolean containsPlayer(String username, boolean lobby) {
+		for (Player p2 : (lobby ? lobbyPlayers : players)) {
 			if (p2 == null) {
 				continue;
 			}

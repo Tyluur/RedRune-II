@@ -6,7 +6,7 @@ import org.redrune.game.content.combat.player.CombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.AttributeKey;
+import org.redrune.utility.constants.key.AttributeKey;
 import lombok.Getter;
 
 /**

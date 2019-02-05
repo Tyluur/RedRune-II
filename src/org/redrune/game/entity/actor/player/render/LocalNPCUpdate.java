@@ -1,13 +1,13 @@
 package org.redrune.game.entity.actor.player.render;
 
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.constants.NetworkConstants;
-import org.redrune.networking.stream.OutputStream;
+import org.redrune.networking.packet.PacketBuilder;
+import org.redrune.networking.packet.PacketType;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.functions.Misc;
 
 import java.util.Iterator;
@@ -29,27 +29,25 @@ public final class LocalNPCUpdate {
 		localNPCs.clear();
 	}
 	
-	public OutputStream createPacketAndProcess() {
-		OutputStream stream = new OutputStream();
-		OutputStream updateBlockData = new OutputStream();
-		stream.writePacketVarShort(6);
+	public PacketBuilder createPacketAndProcess() {
+		PacketBuilder stream = new PacketBuilder(6, PacketType.VAR_SHORT);
+		PacketBuilder updateBlockData = new PacketBuilder();
 		processLocalNPCsInform(stream, updateBlockData);
-		stream.writeBytes(updateBlockData.getBuffer(), 0, updateBlockData.getOffset());
-		stream.endPacketVarShort();
+		stream.writeBytes(updateBlockData.getBuffer());
 		return stream;
 	}
 	
-	private void processLocalNPCsInform(OutputStream stream, OutputStream updateBlockData) {
-		stream.initBitAccess();
+	private void processLocalNPCsInform(PacketBuilder stream, PacketBuilder updateBlockData) {
+		stream.startBitAccess();
 		processInScreenNPCs(stream, updateBlockData);
 		addInScreenNPCs(stream, updateBlockData);
-		if (updateBlockData.getOffset() > 0) {
+		if (updateBlockData.position() > 0) {
 			stream.writeBits(15, 32767);
 		}
 		stream.finishBitAccess();
 	}
 	
-	private void processInScreenNPCs(OutputStream stream, OutputStream updateBlockData) {
+	private void processInScreenNPCs(PacketBuilder stream, PacketBuilder updateBlockData) {
 		stream.writeBits(8, localNPCs.size());
 		// for (NPC n : localNPCs.toArray(new NPC[localNPCs.size()])) {
 		for (Iterator<NPC> it = localNPCs.iterator(); it.hasNext(); ) {
@@ -60,7 +58,7 @@ public final class LocalNPCUpdate {
 				it.remove();
 				continue;
 			}
-			boolean needUpdate = (updateBlockData.getOffset() + stream.getOffset() < (NetworkConstants.PACKET_SIZE_LIMIT - 500)) && n.needMasksUpdate();
+			boolean needUpdate = n.needMasksUpdate();
 			boolean walkUpdate = n.getNextWalkDirection() != -1;
 			stream.writeBits(1, (needUpdate || walkUpdate) ? 1 : 0);
 			if (walkUpdate) {
@@ -82,14 +80,14 @@ public final class LocalNPCUpdate {
 		}
 	}
 	
-	private void addInScreenNPCs(OutputStream stream, OutputStream updateBlockData) {
+	private void addInScreenNPCs(PacketBuilder stream, PacketBuilder updateBlockData) {
 		for (int regionId : player.getMapRegionsIds()) {
 			List<Integer> indexes = RegionManager.getRegion(regionId).getNPCsIndexes();
 			if (indexes == null) {
 				continue;
 			}
 			for (int npcIndex : indexes) {
-				if (localNPCs.size() == GameConstants.LOCAL_NPCS_LIMIT || (updateBlockData.getOffset() + stream.getOffset() > (NetworkConstants.PACKET_SIZE_LIMIT - 500))) {
+				if (localNPCs.size() >= GameConstants.LOCAL_NPCS_LIMIT/* || (updateBlockData.getOffset() + stream.getOffset() > (NetworkConstants.PACKET_SIZE_LIMIT - 500))*/) {
 					break;
 				}
 				NPC n = World.getNPCs().get(npcIndex);
@@ -121,7 +119,7 @@ public final class LocalNPCUpdate {
 		}
 	}
 	
-	private void appendUpdateBlock(NPC n, OutputStream data, boolean added) {
+	private void appendUpdateBlock(NPC n, PacketBuilder data, boolean added) {
 		int maskData = 0;
 		if (n.getNextGraphics3() != null) {
 			maskData |= 0x100000;
@@ -132,6 +130,17 @@ public final class LocalNPCUpdate {
 		if (n.getNextGraphics4() != null) {
 			maskData |= 0x20000;
 		}
+		/*
+		[Player.java:714#initializeGameSession][02.04.2019 07:28:34.775]  Player Logged in: tyluur
+		[Player.java:841#realFinish][02.04.2019 07:29:05.012]  Finished Player: tyluur
+		
+		[RS2PacketEncoder.java:60#encode][02.04.2019 07:29:05.082]  Wrote Packet{opcode=2, type=VAR_BYTE, length=20}
+		[RS2PacketEncoder.java:60#encode][02.04.2019 07:29:35.044]  Wrote Packet{opcode=6, type=VAR_SHORT, length=5}
+
+		[NetworkSession.java:77#onRegistration][02.04.2019 07:31:26.805]  Session registered
+		[NetworkSession.java:90#onDeregistration][02.04.2019 07:32:00.344]  Session deregistered
+
+		 */
 		if (!n.getNextHits().isEmpty()) {
 			maskData |= 0x40;
 		}
@@ -216,23 +225,23 @@ public final class LocalNPCUpdate {
 		}
 	}
 	
-	private void applyChangeLevelMask(NPC n, OutputStream data) {
+	private void applyChangeLevelMask(NPC n, PacketBuilder data) {
 		data.writeShortLE(n.getCombatLevel());
 	}
 	
-	private void applyNameChangeMask(NPC npc, OutputStream data) {
+	private void applyNameChangeMask(NPC npc, PacketBuilder data) {
 		data.writeString(npc.getName());
 	}
 	
-	private void applyTransformationMask(NPC n, OutputStream data) {
+	private void applyTransformationMask(NPC n, PacketBuilder data) {
 		data.writeShortLE(n.getNextTransformation().getToNPCId());
 	}
 	
-	private void applyForceTalkMask(NPC n, OutputStream data) {
+	private void applyForceTalkMask(NPC n, PacketBuilder data) {
 		data.writeString(n.getNextForceTalk().getText());
 	}
 	
-	private void applyForceMovementMask(NPC n, OutputStream data) {
+	private void applyForceMovementMask(NPC n, PacketBuilder data) {
 		data.write128Byte(n.getNextForceMovement().getToFirstTile().getX() - n.getX());
 		data.write128Byte(n.getNextForceMovement().getToFirstTile().getY() - n.getY());
 		data.writeByteC(n.getNextForceMovement().getToSecondTile() == null ? 0 : n.getNextForceMovement().getToSecondTile().getX() - n.getX());
@@ -242,12 +251,12 @@ public final class LocalNPCUpdate {
 		data.write128Byte(n.getNextForceMovement().getDirection());
 	}
 	
-	private void applyFaceWorldTileMask(NPC n, OutputStream data) {
+	private void applyFaceWorldTileMask(NPC n, PacketBuilder data) {
 		data.writeShortLE(n.getNextFaceWorldTile().getX() * 2 + 1);
 		data.writeShortLE(n.getNextFaceWorldTile().getY() * 2 + 1);
 	}
 	
-	private void applyHitMask(NPC n, OutputStream data) {
+	private void applyHitMask(NPC n, PacketBuilder data) {
 		int count = n.getNextHits().size();
 		data.writeByteC(count);
 		if (count > 0) {
@@ -279,36 +288,36 @@ public final class LocalNPCUpdate {
 		}
 	}
 	
-	private void applyFaceEntityMask(NPC n, OutputStream data) {
+	private void applyFaceEntityMask(NPC n, PacketBuilder data) {
 		data.writeShortLE(n.getNextFaceEntity() == -2 ? n.getLastFaceEntity() : n.getNextFaceEntity());
 	}
 	
-	private void applyAnimationMask(NPC n, OutputStream data) {
+	private void applyAnimationMask(NPC n, PacketBuilder data) {
 		for (int id : n.getNextAnimation().getIds()) {
 			data.writeShort(id);
 		}
 		data.writeByte(n.getNextAnimation().getSpeed());
 	}
 	
-	private void applyGraphicsMask4(NPC n, OutputStream data) {
+	private void applyGraphicsMask4(NPC n, PacketBuilder data) {
 		data.writeShort(n.getNextGraphics4().getId());
 		data.writeInt(n.getNextGraphics4().getSettingsHash());
 		data.writeByte(n.getNextGraphics4().getSettings2Hash());
 	}
 	
-	private void applyGraphicsMask3(NPC n, OutputStream data) {
+	private void applyGraphicsMask3(NPC n, PacketBuilder data) {
 		data.writeShort(n.getNextGraphics3().getId());
 		data.writeInt(n.getNextGraphics3().getSettingsHash());
 		data.writeByte128(n.getNextGraphics3().getSettings2Hash());
 	}
 	
-	private void applyGraphicsMask2(NPC n, OutputStream data) {
+	private void applyGraphicsMask2(NPC n, PacketBuilder data) {
 		data.writeShort128(n.getNextGraphics2().getId());
 		data.writeInt(n.getNextGraphics2().getSettingsHash());
 		data.writeByte(n.getNextGraphics2().getSettings2Hash());
 	}
 	
-	private void applyGraphicsMask1(NPC n, OutputStream data) {
+	private void applyGraphicsMask1(NPC n, PacketBuilder data) {
 		data.writeShortLE(n.getNextGraphics1().getId());
 		data.writeIntV2(n.getNextGraphics1().getSettingsHash());
 		data.writeByteC(n.getNextGraphics1().getSettings2Hash());

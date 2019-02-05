@@ -1,7 +1,7 @@
 package org.redrune.cache.loaders;
 
+import com.alex.io.InputStream;
 import org.redrune.cache.Cache;
-import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.functions.Misc;
 
 import java.io.IOException;

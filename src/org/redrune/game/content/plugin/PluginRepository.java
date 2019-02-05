@@ -340,6 +340,7 @@ public class PluginRepository {
 		try {
 			command.handle(player, args, console, clientCommand);
 		} catch (Throwable e) {
+			player.getPackets().sendGameMessage("There was an error processing that command, try again...");
 			e.printStackTrace();
 		}
 	}

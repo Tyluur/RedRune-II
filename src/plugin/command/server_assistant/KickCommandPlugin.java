@@ -20,7 +20,7 @@ public class KickCommandPlugin extends CommandPlugin {
 			return;
 		}
 		target.getSession().getChannel().close();
-		World.removePlayer(target);
+		World.removePlayer(target, false);
 	}
 	
 	@Override

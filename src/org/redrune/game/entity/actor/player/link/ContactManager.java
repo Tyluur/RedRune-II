@@ -133,7 +133,7 @@ public class ContactManager implements Serializable {
 			player.getPackets().sendGameMessage("You are muted.");
 			return;
 		}
-		if (privateStatus == 2) {// off
+		if (privateStatus == 2) {
 			privateStatus = 0;
 			sendFriendsMyStatus(true);
 			player.getPackets().sendPrivateGameBarStage();

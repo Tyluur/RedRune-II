@@ -27,9 +27,6 @@ public class WildernessDitchObjectPlugin implements ObjectPlugin {
 		for (int i = 1440; i <= 1444; i++) {
 			registerSpecifiedOption(ClickOption.FIRST, i);
 		}
-		for (int i = 65076; i <= 65087; i++) {
-			registerSpecifiedOption(ClickOption.FIRST, i);
-		}
 	}
 	
 	public static void performJump(Player player, WorldObject object, final Runnable onJump) {

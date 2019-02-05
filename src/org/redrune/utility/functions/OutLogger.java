@@ -9,7 +9,7 @@ import java.util.Date;
  * This class modifies previous {@link System#out} logging and prints them with information. We need to know which class
  * printed data and at what time at all times.
  *
- * @author Tyluur<itstyluur@gmail.com>
+ * @author Tyluur<itstyluur @ gmail.com>
  * @since Apr 9, 2015
  */
 public class OutLogger extends PrintStream {
@@ -65,7 +65,7 @@ public class OutLogger extends PrintStream {
 	 * @param elements
 	 * 		The elements
 	 */
-	private StackTraceElement getProperElement(StackTraceElement[] elements) {
+	public static StackTraceElement getProperElement(StackTraceElement[] elements) {
 		for (int i = 0; i < elements.length; i++) {
 			StackTraceElement element = elements[i];
 			if (element.toString().contains("java.io.PrintStream")) {

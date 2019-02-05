@@ -1,10 +1,10 @@
 package org.redrune.game.global.map.region;
 
+import com.alex.io.InputStream;
 import org.redrune.cache.Cache;
 import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.game.GameFlags;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.networking.stream.InputStream;
 import org.redrune.utility.game.map.MapArchiveKeys;
 
 import java.util.ArrayList;

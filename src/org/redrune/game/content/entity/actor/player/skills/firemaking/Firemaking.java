@@ -11,7 +11,7 @@ import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.networking.codec.decode.handlers.InventoryOptionsHandler;
+import org.redrune.networking.packet.handler.InventoryOptionsHandler;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
 

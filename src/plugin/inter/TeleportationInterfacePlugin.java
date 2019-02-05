@@ -10,7 +10,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.utility.constants.AttributeKey;
+import org.redrune.utility.constants.key.AttributeKey;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.ColorConstants;
 import org.redrune.utility.constants.MagicConstants;

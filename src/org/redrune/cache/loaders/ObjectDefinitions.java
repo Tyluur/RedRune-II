@@ -1,9 +1,9 @@
 package org.redrune.cache.loaders;
 
-import org.redrune.cache.Cache;
-import org.redrune.networking.stream.InputStream;
+import com.alex.io.InputStream;
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.Cache;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -267,7 +267,7 @@ public class ObjectDefinitions {
 			def.setId(id);
 			byte[] data = Cache.STORE.getIndexes()[16].getFile(getArchiveId(id), id & 0xff);
 			if (data == null) {
-				throw new IllegalStateException();
+				System.err.println("Unable to get definitions for object " + id);
 			} else {
 				def.readValueLoop(new InputStream(data));
 			}
@@ -291,8 +291,8 @@ public class ObjectDefinitions {
 		return def;
 	}
 	
-	private static int getArchiveId(int i_0_) {
-		return i_0_ >>> -1135990488;
+	private static int getArchiveId(int id) {
+		return id >>> 8;
 	}
 	
 	private void readValueLoop(InputStream stream) {

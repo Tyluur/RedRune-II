@@ -3,7 +3,7 @@ package org.redrune.game.content.entity.actor.player.event.player;
 import org.redrune.game.content.entity.actor.player.event.Event;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.RouteEvent;
-import org.redrune.utility.constants.AttributeKey;
+import org.redrune.utility.constants.key.AttributeKey;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

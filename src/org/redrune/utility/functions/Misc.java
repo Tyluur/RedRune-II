@@ -114,6 +114,21 @@ public final class Misc {
 	}
 	
 	/**
+	 * Gets the ip address of a channel
+	 *
+	 * @param channel
+	 * 		The channel
+	 */
+	public static String getIpAddress(io.netty.channel.Channel channel) {
+		SocketAddress socketAddress = channel.remoteAddress();
+		if (socketAddress == null) {
+			return "127.0.0.1";
+		} else {
+			return formatIp(socketAddress.toString());
+		}
+	}
+	
+	/**
 	 * Formats the IP-Address.
 	 *
 	 * @param unformatted
