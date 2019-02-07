@@ -22,6 +22,7 @@ import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.game.global.worldlist.WorldEntry;
 import org.redrune.game.global.worldlist.WorldList;
 import org.redrune.networking.NetworkSession;
+import org.redrune.networking.packet.outgoing.impl.MessagePacketBuilder;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.functions.Misc;
@@ -153,25 +154,7 @@ public class PacketSender {
 	}
 	
 	private void sendMessage(int type, String text, Player p) {
-		int maskData = 0;
-		if (p != null) {
-			maskData |= 0x1;
-			if (p.getAttributes().hasDisplayName()) {
-				maskData |= 0x2;
-			}
-		}
-		PacketBuilder stream = new PacketBuilder(102, PacketType.VAR_BYTE);
-		stream.writeSmart(type);
-		stream.writeInt(0); // junk, not used by client
-		stream.writeByte(maskData);
-		if ((maskData & 0x1) != 0) {
-			stream.writeString(p.getDisplayName());
-			if (p.getAttributes().hasDisplayName()) {
-				stream.writeString(Misc.formatPlayerNameForDisplay(p.getUsername()));
-			}
-		}
-		stream.writeString(text);
-		session.write(stream);
+		session.write(new MessagePacketBuilder(p, text, type));
 	}
 	
 	public void sendItems(int key, ItemsContainer<Item> items) {
@@ -550,12 +533,10 @@ public class PacketSender {
 	}
 	
 	public void sendIComponentAnimation(int emoteId, int interfaceId, int componentId) {
-		
 		PacketBuilder stream = new PacketBuilder(23);
 		stream.writeShortLE128(emoteId);
 		stream.writeIntV1(interfaceId << 16 | componentId);
 		session.write(stream);
-		
 	}
 	
 	public void sendItemOnIComponent(int interfaceid, int componentId, int id, int amount) {
@@ -1175,7 +1156,7 @@ public class PacketSender {
 	}
 	
 	public void sendMusic(int id, int delay, int volume) {
-		PacketBuilder stream = new PacketBuilder(131);
+		PacketBuilder stream = new PacketBuilder(31);
 		stream.write128Byte(delay);
 		stream.writeShortLE(id);
 		stream.writeByteC(volume);

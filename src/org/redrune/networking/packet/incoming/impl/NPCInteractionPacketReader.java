@@ -1,7 +1,7 @@
 package org.redrune.networking.packet.incoming.impl;
 
 import org.redrune.game.content.entity.actor.player.event.npc.NPCAttackEvent;
-import org.redrune.game.content.entity.actor.player.event.npc.NPCMagicCastEvent;
+import org.redrune.game.content.entity.actor.player.event.npc.NPCInterfaceInteractionEvent;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
@@ -97,7 +97,7 @@ public class NPCInteractionPacketReader implements IncomingPacketReader {
 				return new PacketContext() {
 					@Override
 					public void handle(Player player) {
-						player.getEventManager().start(new NPCMagicCastEvent(npc, interfaceId, finalComponentId, slot));
+						player.getEventManager().start(new NPCInterfaceInteractionEvent(npc, interfaceId, finalComponentId, slot));
 					}
 				};
 			}

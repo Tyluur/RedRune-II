@@ -9,6 +9,7 @@ import org.redrune.networking.NetworkSession;
 import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.PacketType;
 import org.redrune.utility.constants.NetworkConstants;
+import org.redrune.utility.functions.DebugFunctions;
 
 /**
  * This encodes a packet going to the rs client. All packets have a specific header and data is encoded differently
@@ -42,6 +43,7 @@ public final class RS2PacketEncoder extends MessageToByteEncoder<Packet> {
 				if (opcode >= 128) {
 					response.writeByte((opcode >> 8) + 128);
 				}
+				DebugFunctions.writeLogText("Encoded packet [" + opcode + ", " + type + "]");
 				response.writeByte(opcode);
 				if (type == PacketType.VAR_BYTE) {
 					if (length > 255) { // Stack overflow.

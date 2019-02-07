@@ -1,10 +1,12 @@
 package plugin.inter;
 
+import org.redrune.game.content.entity.actor.player.event.item.ItemInteractionEvent;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.networking.packet.handler.InventoryOptionsHandler;
-import org.redrune.utility.constants.PacketConstants;
+
+import static org.redrune.utility.constants.PacketConstants.*;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -22,20 +24,19 @@ public class InventoryInterfacePlugin implements InterfacePlugin {
 			if (item == null || item.getId() != itemId) {
 				return true;
 			}
-			if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
-				InventoryOptionsHandler.handleItemOption1(player, slotId, itemId, item);
-			} else if (packetId == PacketConstants.ACTION_BUTTON2_PACKET) {
-				InventoryOptionsHandler.handleItemOption2(player, slotId, itemId, item);
-			} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
-				InventoryOptionsHandler.handleItemOption3(player, slotId, itemId, item);
-			} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
-				InventoryOptionsHandler.handleItemOption4(player, slotId, itemId, item);
-			} else if (packetId == PacketConstants.ACTION_BUTTON5_PACKET) {
-				InventoryOptionsHandler.handleItemOption5(player, slotId, itemId, item);
-			} else if (packetId == PacketConstants.ACTION_BUTTON6_PACKET) {
-				InventoryOptionsHandler.handleItemOption6(player, slotId, itemId, item);
-			} else if (packetId == PacketConstants.ACTION_BUTTON7_PACKET) {
-				InventoryOptionsHandler.handleItemOption7(player, slotId, itemId, item);
+			switch(packetId) {
+				case ACTION_BUTTON1_PACKET:
+				case ACTION_BUTTON2_PACKET:
+				case ACTION_BUTTON3_PACKET:
+				case ACTION_BUTTON4_PACKET:
+				case ACTION_BUTTON5_PACKET:
+				case ACTION_BUTTON6_PACKET:
+				case ACTION_BUTTON7_PACKET:
+					player.getEventManager().start(new ItemInteractionEvent(item, slotId, packetId));
+					break;
+				case ACTION_BUTTON8_PACKET:
+					InventoryOptionsHandler.handleItemOption8(player, slotId, itemId, item);
+					break;
 			}
 		}
 		return true;

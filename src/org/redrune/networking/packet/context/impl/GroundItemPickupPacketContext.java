@@ -1,10 +1,9 @@
 package org.redrune.networking.packet.context.impl;
 
+import org.redrune.game.content.entity.actor.player.event.item.ItemFloorPickupEvent;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.game.entity.item.FloorItem;
 import org.redrune.game.global.WorldTile;
-import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.networking.packet.context.PacketContext;
 
 /**
@@ -30,17 +29,6 @@ public class GroundItemPickupPacketContext extends PacketContext {
 	
 	@Override
 	public void handle(Player player) {
-		if (forceRun) {
-			player.setRunModeOn(true);
-		}
-		player.stopAll(false);
-		player.setRouteEvent(new RouteEvent(item, () -> {
-			final FloorItem item1 = RegionManager.getRegion(regionId).getGroundItem(item.getId(), tile, player);
-			if (item1 == null) {
-				return;
-			}
-			player.setNextFaceWorldTile(tile);
-			RegionManager.removeGroundItem(player, item1);
-		}, true));
+		player.getEventManager().start(new ItemFloorPickupEvent(regionId, forceRun, item, tile));
 	}
 }

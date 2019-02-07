@@ -25,7 +25,7 @@ public abstract class OutgoingPacketBuilder {
 	/**
 	 * Constructs the outgoing packet bldr
 	 */
-	protected OutgoingPacketBuilder(PacketBuilder packetBuilder) {
+	public OutgoingPacketBuilder(PacketBuilder packetBuilder) {
 		this.bldr = packetBuilder;
 	}
 }

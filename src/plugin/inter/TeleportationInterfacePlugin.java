@@ -187,7 +187,7 @@ public class TeleportationInterfacePlugin implements InterfacePlugin {
 				
 				@Override
 				public void start() {
-					npc(1263, HAPPY, "This destination is in the wilderness.", "Are you sure you wish to travel here?");
+					npc(1263, NORMAL, "This destination is in the wilderness.", "Are you sure you wish to travel here?");
 				}
 				
 				@Override

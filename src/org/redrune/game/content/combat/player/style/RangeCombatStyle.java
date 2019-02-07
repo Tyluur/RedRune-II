@@ -7,15 +7,15 @@ import org.redrune.game.content.combat.CombatRoll;
 import org.redrune.game.content.combat.CombatSwingDetail;
 import org.redrune.game.content.combat.player.AbstractCombatStyle;
 import org.redrune.game.content.combat.player.calc.RangeCombatCalculator;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.data.CombatDefinitions;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
-import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 
 import java.util.Optional;
 
@@ -50,7 +50,7 @@ public class RangeCombatStyle extends AbstractCombatStyle {
 			source.getCombatDefinitions().switchUsingSpecialAttack();
 			if (source.getCombatDefinitions().getSpecialAttackPercentage() < energy) {
 				source.getPackets().sendGameMessage("You don't have enough power left.");
-				return false;
+				return fireSwing(source, target);
 			}
 			SpecialAttackPlugin plugin = optional.get();
 			plugin.fire(source, target, this);
@@ -132,16 +132,16 @@ public class RangeCombatStyle extends AbstractCombatStyle {
 	public CombatSwingDetail sendHit(Player source, Actor target, int maxHit, int damage, int delay) {
 		final Hit hit = new Hit(source, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit);
 		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
-		SystemManager.SCHEDULER.schedule(new ScheduledTask(delay - 1) {
+		
+		SystemManager.SCHEDULER.schedule(new ScheduledTask(1, delay) {
 			@Override
 			public void run() {
-				target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
-			}
-		});
-		SystemManager.SCHEDULER.schedule(new ScheduledTask(delay) {
-			@Override
-			public void run() {
-				target.applyHit(hit);
+				if (getTicksPassed() == getGoalTicks() - 1) {
+					target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
+				} else if (getTicksPassed() == getGoalTicks()) {
+					target.applyHit(hit);
+					stop();
+				}
 			}
 		});
 		return new CombatSwingDetail(source, target, hit);

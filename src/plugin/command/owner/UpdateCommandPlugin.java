@@ -9,7 +9,7 @@ import plugin.command.CommandManifest;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/1/2017
  */
-@CommandManifest(description = "Updates the server after x seconds", types = { Integer.class})
+@CommandManifest(description = "Updates the server after x seconds", types = { Integer.class })
 public class UpdateCommandPlugin extends CommandPlugin {
 	
 	@Override

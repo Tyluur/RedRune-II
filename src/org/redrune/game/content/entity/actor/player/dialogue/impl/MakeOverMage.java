@@ -34,19 +34,19 @@ public class MakeOverMage extends Dialogue {
 		} else if (stage == 1) {
 			switch (componentId) {
 				case FIRST:
-					player(CALM, "I would like a makeover.");
+					player(NORMAL, "I would like a makeover.");
 					stage = 22;
 					break;
 				case SECOND:
-					player(CALM, "I would like a haircut.");
+					player(NORMAL, "I would like a haircut.");
 					stage = 23;
 					break;
 				case THIRD:
-					player(CALM, "I would like a clothing change.");
+					player(NORMAL, "I would like a clothing change.");
 					stage = 24;
 					break;
 				case FOURTH:
-					player(CALM, "No thanks.");
+					player(NORMAL, "No thanks.");
 					stage = -2;
 					break;
 			}

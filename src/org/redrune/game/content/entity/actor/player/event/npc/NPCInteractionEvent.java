@@ -1,6 +1,7 @@
 package org.redrune.game.content.entity.actor.player.event.npc;
 
 import org.redrune.game.GameFlags;
+import org.redrune.game.content.entity.actor.player.dialogue.impl.Banker;
 import org.redrune.game.content.entity.actor.player.event.Event;
 import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing;
 import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots;
@@ -84,7 +85,7 @@ public class NPCInteractionEvent extends Event {
 			return;
 		}
 		if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
-			player.getBank().openBank();
+			player.getDialogueManager().startDialogue(Banker.class, npc.getId());
 		} else {
 			player.getPackets().sendGameMessage("Nothing interesting happens...");
 			if (GameFlags.debugMode) {

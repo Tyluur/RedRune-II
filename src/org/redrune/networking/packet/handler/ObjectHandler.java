@@ -44,7 +44,6 @@ public class ObjectHandler {
 	public static void handleOption1(final Player player, final WorldObject object) {
 		final String option = object.getDefinitions().getOption(1);
 		final ObjectDefinitions objectDef = object.getDefinitions();
-		player.stopAll();
 		player.setRouteEvent(new RouteEvent(object, () -> {
 			player.setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
 			if (!player.getControllerManager().canEntityClick(object, FIRST)) {
@@ -407,9 +406,7 @@ public class ObjectHandler {
 	public static void handleOption2(final Player player, final WorldObject object) {
 		final String option = object.getDefinitions().getOption(2);
 		final ObjectDefinitions objectDef = object.getDefinitions();
-		player.stopAll();
 		player.setRouteEvent(new RouteEvent(object, () -> {
-			player.stopAll();
 			player.setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
 			if (!player.getControllerManager().canEntityClick(object, SECOND)) {
 				return;

@@ -1,17 +1,17 @@
 package org.redrune.game.content.entity.actor.player.dialogue;
 
+import lombok.Getter;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.utility.constants.ChatAnimations;
 import org.redrune.utility.constants.ColorConstants;
-import org.redrune.utility.game.Expressions;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Dialogue implements Expressions, ColorConstants {
+public abstract class Dialogue implements ChatAnimations, ColorConstants {
 	
 	public static final int FIRST = 1, SECOND = 2, THIRD = 3, FOURTH = 4, FIFTH = 5, YES = 1, NO = 2;
 	
@@ -80,6 +80,32 @@ public abstract class Dialogue implements Expressions, ColorConstants {
 	
 	public Dialogue() {
 	
+	}
+	
+	public void sendNPCDialogue(int npcId, int animation, String... message) {
+		sendEntityDialogue(true, npcId, animation, message);
+	}
+	
+	public void sendPlayerDialogue(int animation, String... message) {
+		sendEntityDialogue(false, player.getIndex(), animation, message);
+	}
+	
+	public void sendItemDialogue(int itemId, String... messages) {
+		int l = messages.length;
+		short interfaceId = (l == 1 ? SEND_1_TEXT_CHAT : l == 2 ? SEND_2_TEXT_CHAT : l == 3 ? SEND_3_TEXT_CHAT : SEND_4_TEXT_CHAT);
+		List<String> text = new ArrayList<String>();
+		text.add("");
+		for (String m : messages) {
+			text.add(m);
+		}
+		String[] message = text.toArray(new String[text.size()]);
+		sendEntityDialogue(interfaceId, message, IS_ITEM, (Integer) parameters[0], 1);
+	}
+	
+	public void sendDialogue(String... text) {
+		int l = text.length;
+		short interfaceId = (l == 4 ? SEND_4_TEXT_INFO : l == 3 ? SEND_3_TEXT_INFO : l == 2 ? SEND_2_TEXT_INFO : SEND_1_TEXT_INFO);
+		sendDialogue(interfaceId, text);
 	}
 	
 	public static boolean sendNPCDialogueNoContinue(Player player, int npcId, int animationId, String... text) {
@@ -398,6 +424,17 @@ public abstract class Dialogue implements Expressions, ColorConstants {
 	
 	public void npc(int npcId, int animationId, String... message) {
 		sendEntityDialogue(true, npcId, animationId, message);
+	}
+	
+	public void sendOptions(String... text) {
+		int l = text.length;
+		int interfaceId = (l == 6 ? 238 : l == 5 ? 237 : l == 4 ? 458 : 236);
+		
+		String[] messages = new String[text.length + 1];
+		for (int i = 0; i < text.length; i++) {
+			messages[i] = text[i];
+		}
+		sendDialogue((short) interfaceId, messages);
 	}
 	
 	public void item(int itemId, int itemAmount, String... messages) {

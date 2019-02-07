@@ -1,21 +1,21 @@
 package org.redrune.game.content.combat.player.style;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.engine.SystemManager;
-import org.redrune.engine.tick.schedule.ScheduledTask;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.combat.CombatAlgorithm;
 import org.redrune.game.content.combat.CombatRoll;
 import org.redrune.game.content.combat.CombatSwingDetail;
 import org.redrune.game.content.combat.player.AbstractCombatStyle;
 import org.redrune.game.content.combat.player.calc.MeleeCombatCalculator;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.data.CombatDefinitions;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 
 import java.util.Optional;
 
@@ -44,7 +44,7 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 			source.getCombatDefinitions().switchUsingSpecialAttack();
 			if (source.getCombatDefinitions().getSpecialAttackPercentage() < energy) {
 				source.getPackets().sendGameMessage("You don't have enough power left.");
-				return false;
+				return fireSwing(source, target);
 			}
 			SpecialAttackPlugin plugin = optional.get();
 			plugin.fire(source, target, this);
@@ -129,12 +129,13 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 		final Hit hit = new Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
 		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
 		target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
-		SystemManager.SCHEDULER.schedule(new ScheduledTask(delay) {
+		
+		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {
 				target.applyHit(hit);
 			}
-		});
+		}, delay);
 		return new CombatSwingDetail(source, target, hit);
 	}
 }

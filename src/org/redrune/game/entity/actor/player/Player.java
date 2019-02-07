@@ -9,7 +9,7 @@ import org.redrune.game.GameFlags;
 import org.redrune.game.content.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
-import org.redrune.game.content.entity.actor.player.dialogue.DialogueManager;
+import org.redrune.game.entity.actor.player.link.DialogueManager;
 import org.redrune.game.content.entity.actor.player.event.EventManager;
 import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;

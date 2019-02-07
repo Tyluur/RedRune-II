@@ -16,7 +16,7 @@ import org.redrune.utility.functions.Misc;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 2019-01-25
  */
-public class NPCMagicCastEvent extends Event {
+public class NPCInterfaceInteractionEvent extends Event {
 	
 	/**
 	 * The npc we are casting the spell on
@@ -28,7 +28,7 @@ public class NPCMagicCastEvent extends Event {
 	 */
 	private final int interfaceId, componentId, slot;
 	
-	public NPCMagicCastEvent(NPC npc, int interfaceId, int componentId, int slot) {
+	public NPCInterfaceInteractionEvent(NPC npc, int interfaceId, int componentId, int slot) {
 		this.npc = npc;
 		this.interfaceId = interfaceId;
 		this.componentId = componentId;

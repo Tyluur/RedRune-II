@@ -23,7 +23,6 @@ import org.redrune.game.entity.object.WorldObject;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.Misc.Direction;
-import org.redrune.utility.game.session.AntiFlood;
 
 import java.util.List;
 import java.util.Optional;
@@ -93,7 +92,6 @@ public final class World {
 	 */
 	public static void addWorldPlayer(Player player) {
 		players.add(player);
-		AntiFlood.add(player.getSession().getIPAddress());
 	}
 	
 	/**
@@ -111,7 +109,6 @@ public final class World {
 	 */
 	public static void removePlayer(Player player, boolean lobby) {
 		(lobby ? lobbyPlayers : players).remove(player);
-		AntiFlood.remove(player.getSession().getIPAddress());
 	}
 	
 	/**

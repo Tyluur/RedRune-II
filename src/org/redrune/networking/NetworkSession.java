@@ -74,7 +74,7 @@ public class NetworkSession {
 	 * This method is invoked when the session is registered
 	 */
 	public void onRegistration() {
-		System.out.println("Session registered");
+		System.out.println("Session registered! [" + toString() + "]");
 	}
 	
 	@Override

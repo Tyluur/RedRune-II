@@ -17,13 +17,12 @@ import org.redrune.networking.codec.RS2PacketDecoder;
 import org.redrune.networking.packet.outgoing.impl.LobbyConfigurationPacketBuilder;
 import org.redrune.networking.packet.outgoing.impl.LoginConfigurationPacketBuilder;
 import org.redrune.networking.packet.outgoing.impl.LoginResponseCodePacketBuilder;
-import org.redrune.utility.game.stream.buffer.FixedBuffer;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.entity.actor.player.PlayerSaving;
-import org.redrune.utility.game.session.AntiFlood;
 import org.redrune.utility.game.session.ISAACCipher;
+import org.redrune.utility.game.stream.buffer.FixedBuffer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -143,10 +142,6 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		}
 		if (World.containsPlayer(username, false)) {
 			session.write(new LoginResponseCodePacketBuilder(ALREADY_ONLINE)).addListener(ChannelFutureListener.CLOSE);
-			return;
-		}
-		if (AntiFlood.getSessionsIP(session.getIPAddress()) > 3) {
-			session.write(new LoginResponseCodePacketBuilder(LOGIN_LIMIT_EXCEEDED)).addListener(ChannelFutureListener.CLOSE);
 			return;
 		}
 		

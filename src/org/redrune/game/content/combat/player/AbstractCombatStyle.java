@@ -25,10 +25,9 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 	
 	/**
 	 * Gets the random damage, based on the calculated maximum values
-	 *  @param source
+	 *
+	 * @param source
 	 * 		The source
-	 * @param target
-	 * @param multiplier
 	 */
 	public abstract int getRandomDamage(Player source, Actor target, double multiplier);
 	

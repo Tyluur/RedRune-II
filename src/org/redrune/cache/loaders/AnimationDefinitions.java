@@ -13,13 +13,13 @@ public class AnimationDefinitions {
 	
 	public int anInt2137;
 	
-	public int[] anIntArray2139;
+	public int[] frames;
 	
 	public int anInt2140;
 	
 	public boolean aBoolean2141 = false;
 	
-	public int anInt2142;
+	public int priority;
 	
 	public int emoteItem;
 	
@@ -33,7 +33,7 @@ public class AnimationDefinitions {
 	
 	public boolean aBoolean2152;
 	
-	public int[] anIntArray2153;
+	public int[] frameDurations;
 	
 	public int anInt2155;
 	
@@ -59,7 +59,7 @@ public class AnimationDefinitions {
 		emoteItem = -1;
 		anInt2140 = -1;
 		aBoolean2152 = false;
-		anInt2142 = 5;
+		priority = 5;
 		aBoolean2159 = false;
 		anInt2163 = -1;
 		anInt2155 = 2;
@@ -67,7 +67,7 @@ public class AnimationDefinitions {
 		anInt2162 = -1;
 	}
 	
-	public static final AnimationDefinitions getAnimationDefinitions(int emoteId) {
+	public static AnimationDefinitions getAnimationDefinitions(int emoteId) {
 		AnimationDefinitions defs = animDefs.get(emoteId);
 		if (defs != null) {
 			return defs;
@@ -110,118 +110,116 @@ public class AnimationDefinitions {
 	}
 	
 	private void readValues(InputStream stream, int opcode) {
-		if ((opcode ^ 0xffffffff) == -2) {
-			int i = stream.readUnsignedShort();
-			anIntArray2153 = new int[i];
-			for (int i_16_ = 0; (i ^ 0xffffffff) < (i_16_ ^ 0xffffffff); i_16_++) {
-				anIntArray2153[i_16_] = stream.readUnsignedShort();
+		if ((~opcode) == -2) {
+			int frameCount  = stream.readUnsignedShort();
+			frameDurations = new int[frameCount ];
+			for (int i_16_ = 0; (frameCount  ^ 0xffffffff) < (i_16_ ^ 0xffffffff); i_16_++) {
+				frameDurations[i_16_] = stream.readUnsignedShort();
 			}
-			anIntArray2139 = new int[i];
-			for (int i_17_ = 0; (i_17_ ^ 0xffffffff) > (i ^ 0xffffffff); i_17_++) {
-				anIntArray2139[i_17_] = stream.readUnsignedShort();
+			frames = new int[frameCount ];
+			for (int i_17_ = 0; (i_17_ ^ 0xffffffff) > (frameCount  ^ 0xffffffff); i_17_++) {
+				frames[i_17_] = stream.readUnsignedShort();
 			}
-			for (int i_18_ = 0; i_18_ < i; i_18_++) {
-				anIntArray2139[i_18_] = ((stream.readUnsignedShort() << 16) + anIntArray2139[i_18_]);
+			for (int i_18_ = 0; i_18_ < frameCount ; i_18_++) {
+				frames[i_18_] = ((stream.readUnsignedShort() << 16) + frames[i_18_]);
 			}
-		} else if ((opcode ^ 0xffffffff) != -3) {
-			if ((opcode ^ 0xffffffff) != -4) {
-				if ((opcode ^ 0xffffffff) == -5) {
-					aBoolean2152 = true;
-				} else if (opcode == 5) {
-					anInt2142 = stream.readUnsignedByte();
-				} else if (opcode != 6) {
-					if ((opcode ^ 0xffffffff) == -8) {
-						emoteItem = stream.readUnsignedShort();
-					} else if ((opcode ^ 0xffffffff) != -9) {
-						if (opcode != 9) {
-							if ((opcode ^ 0xffffffff) != -11) {
-								if ((opcode ^ 0xffffffff) == -12) {
-									anInt2155 = stream.readUnsignedByte();
-								} else if (opcode == 12) {
-									int i = stream.readUnsignedByte();
-									anIntArray2151 = new int[i];
-									for (int i_19_ = 0; ((i_19_ ^ 0xffffffff) > (i ^ 0xffffffff)); i_19_++) {
-										anIntArray2151[i_19_] = stream.readUnsignedShort();
-									}
-									for (int i_20_ = 0; i > i_20_; i_20_++) {
-										anIntArray2151[i_20_] = ((stream.readUnsignedShort() << 16) + anIntArray2151[i_20_]);
-									}
-								} else if ((opcode ^ 0xffffffff) != -14) {
-									if (opcode != 14) {
-										if (opcode != 15) {
-											if (opcode == 16) {
-												aBoolean2158 = true;
-											}
+		} else if ((opcode ^ 0xffffffff) == -3) {
+			anInt2163 = stream.readUnsignedShort();
+		} else if ((opcode ^ 0xffffffff) != -4) {
+			if ((opcode ^ 0xffffffff) == -5) {
+				aBoolean2152 = true;
+			} else if (opcode == 5) {
+				priority = stream.readUnsignedByte();
+			} else if (opcode != 6) {
+				if ((opcode ^ 0xffffffff) == -8) {
+					emoteItem = stream.readUnsignedShort();
+				} else if ((opcode ^ 0xffffffff) != -9) {
+					if (opcode != 9) {
+						if ((opcode ^ 0xffffffff) != -11) {
+							if ((opcode ^ 0xffffffff) == -12) {
+								anInt2155 = stream.readUnsignedByte();
+							} else if (opcode == 12) {
+								int i = stream.readUnsignedByte();
+								anIntArray2151 = new int[i];
+								for (int i_19_ = 0; ((i_19_ ^ 0xffffffff) > (i ^ 0xffffffff)); i_19_++) {
+									anIntArray2151[i_19_] = stream.readUnsignedShort();
+								}
+								for (int i_20_ = 0; i > i_20_; i_20_++) {
+									anIntArray2151[i_20_] = ((stream.readUnsignedShort() << 16) + anIntArray2151[i_20_]);
+								}
+							} else if ((opcode ^ 0xffffffff) != -14) {
+								if (opcode != 14) {
+									if (opcode != 15) {
+										if (opcode == 16) {
+											aBoolean2158 = true;
+										}
+										// added opcode
+										else if (opcode == 17) {
+											@SuppressWarnings("unused") int anInt2145 = stream.readUnsignedByte();
 											// added opcode
-											else if (opcode == 17) {
-												@SuppressWarnings("unused") int anInt2145 = stream.readUnsignedByte();
-												// added opcode
-											} else if (opcode == 18) {
-												effect2Sound = true;
-											} else if (opcode == 19) {
-												if (anIntArray1362 == null) {
-													anIntArray1362 = new int[handledSounds.length];
-													for (int index = 0; index < handledSounds.length; index++) {
-														anIntArray1362[index] = 255;
-													}
+										} else if (opcode == 18) {
+											effect2Sound = true;
+										} else if (opcode == 19) {
+											if (anIntArray1362 == null) {
+												anIntArray1362 = new int[handledSounds.length];
+												for (int index = 0; index < handledSounds.length; index++) {
+													anIntArray1362[index] = 255;
 												}
-												anIntArray1362[stream.readUnsignedByte()] = stream.readUnsignedByte();
-												// added opcode
-											} else if (opcode == 20) {
-												if ((soundMaxDelay == null) || (soundMinDelay == null)) {
-													soundMaxDelay = (new int[handledSounds.length]);
-													soundMinDelay = (new int[handledSounds.length]);
-													for (int i_34_ = 0; (i_34_ < handledSounds.length); i_34_++) {
-														soundMaxDelay[i_34_] = 256;
-														soundMinDelay[i_34_] = 256;
-													}
-												}
-												int index = stream.readUnsignedByte();
-												soundMaxDelay[index] = stream.readUnsignedShort();
-												soundMinDelay[index] = stream.readUnsignedShort();
 											}
-										} else {
-											aBoolean2159 = true;
+											anIntArray1362[stream.readUnsignedByte()] = stream.readUnsignedByte();
+											// added opcode
+										} else if (opcode == 20) {
+											if ((soundMaxDelay == null) || (soundMinDelay == null)) {
+												soundMaxDelay = (new int[handledSounds.length]);
+												soundMinDelay = (new int[handledSounds.length]);
+												for (int i_34_ = 0; (i_34_ < handledSounds.length); i_34_++) {
+													soundMaxDelay[i_34_] = 256;
+													soundMinDelay[i_34_] = 256;
+												}
+											}
+											int index = stream.readUnsignedByte();
+											soundMaxDelay[index] = stream.readUnsignedShort();
+											soundMinDelay[index] = stream.readUnsignedShort();
 										}
 									} else {
-										aBoolean2141 = true;
+										aBoolean2159 = true;
 									}
 								} else {
-									// opcode 13
-									int i = stream.readUnsignedShort();
-									handledSounds = new int[i][];
-									for (int i_21_ = 0; i_21_ < i; i_21_++) {
-										int i_22_ = stream.readUnsignedByte();
-										if ((i_22_ ^ 0xffffffff) < -1) {
-											handledSounds[i_21_] = new int[i_22_];
-											handledSounds[i_21_][0] = stream.read24BitInt();
-											for (int i_23_ = 1; ((i_22_ ^ 0xffffffff) < (i_23_ ^ 0xffffffff)); i_23_++) {
-												handledSounds[i_21_][i_23_] = stream.readUnsignedShort();
-											}
+									aBoolean2141 = true;
+								}
+							} else {
+								// opcode 13
+								int i = stream.readUnsignedShort();
+								handledSounds = new int[i][];
+								for (int i_21_ = 0; i_21_ < i; i_21_++) {
+									int i_22_ = stream.readUnsignedByte();
+									if ((i_22_ ^ 0xffffffff) < -1) {
+										handledSounds[i_21_] = new int[i_22_];
+										handledSounds[i_21_][0] = stream.read24BitInt();
+										for (int i_23_ = 1; ((i_22_ ^ 0xffffffff) < (i_23_ ^ 0xffffffff)); i_23_++) {
+											handledSounds[i_21_][i_23_] = stream.readUnsignedShort();
 										}
 									}
 								}
-							} else {
-								anInt2162 = stream.readUnsignedByte();
 							}
 						} else {
-							anInt2140 = stream.readUnsignedByte();
+							anInt2162 = stream.readUnsignedByte();
 						}
 					} else {
-						anInt2136 = stream.readUnsignedByte();
+						anInt2140 = stream.readUnsignedByte();
 					}
 				} else {
-					anInt2144 = stream.readUnsignedShort();
+					anInt2136 = stream.readUnsignedByte();
 				}
 			} else {
-				aBooleanArray2149 = new boolean[256];
-				int i = stream.readUnsignedByte();
-				for (int i_24_ = 0; (i ^ 0xffffffff) < (i_24_ ^ 0xffffffff); i_24_++) {
-					aBooleanArray2149[stream.readUnsignedByte()] = true;
-				}
+				anInt2144 = stream.readUnsignedShort();
 			}
 		} else {
-			anInt2163 = stream.readUnsignedShort();
+			aBooleanArray2149 = new boolean[256];
+			int i = stream.readUnsignedByte();
+			for (int i_24_ = 0; (i ^ 0xffffffff) < (i_24_ ^ 0xffffffff); i_24_++) {
+				aBooleanArray2149[stream.readUnsignedByte()] = true;
+			}
 		}
 	}
 	
@@ -230,11 +228,11 @@ public class AnimationDefinitions {
 	}
 	
 	public int getEmoteTime() {
-		if (anIntArray2153 == null) {
+		if (frameDurations == null) {
 			return 0;
 		}
 		int ms = 0;
-		for (int i : anIntArray2153) {
+		for (int i : frameDurations) {
 			ms += i;
 		}
 		return ms * 30;

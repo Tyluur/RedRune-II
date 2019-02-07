@@ -1,5 +1,7 @@
-package org.redrune.game.content.entity.actor.player.dialogue;
+package org.redrune.game.entity.actor.player.link;
 
+import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
+import org.redrune.game.content.entity.actor.player.dialogue.DialogueHandler;
 import org.redrune.game.entity.actor.player.Player;
 
 public class DialogueManager {
@@ -10,6 +12,10 @@ public class DialogueManager {
 	
 	public DialogueManager(Player player) {
 		this.player = player;
+	}
+	
+	public void startDialogue(Class<?> clazz, Object... parameters) {
+		startDialogue(clazz.getSimpleName(), parameters);
 	}
 	
 	public void startDialogue(Object key, Object... parameters) {

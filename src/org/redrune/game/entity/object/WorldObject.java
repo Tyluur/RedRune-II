@@ -93,6 +93,10 @@ public class WorldObject extends WorldTile implements Entity {
 		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", tile=" + getWorldTile() + ", life=" + life + '}';
 	}
 	
+	public WorldTile getCentreLocation() {
+		return new WorldTile(getX() + (getDefinitions().getSizeX() / 2), getY() + (getDefinitions().getSizeY() / 2), getPlane());
+	}
+	
 	public void decrementObjectLife() {
 		this.life--;
 	}

@@ -918,7 +918,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	
 	private void processHit(Hit hit) {
 		if (isDead()) {
-			return;
+			hit.setDamage(0);
 		}
 		removeHitpoints(hit);
 		nextHits.add(hit);
