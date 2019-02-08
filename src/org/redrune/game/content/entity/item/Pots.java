@@ -1,5 +1,6 @@
 package org.redrune.game.content.entity.item;
 
+import lombok.Getter;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
@@ -38,8 +39,8 @@ public final class Pots {
 		if (index != -1) {
 			dosesLeft = Integer.parseInt(name.substring(index).replace("(", "").replace(")", "")) - 1;
 		}
-		int toPot = pot.id.length - dosesLeft;
-		player.getInventory().getItems().set(slot, new Item(dosesLeft > 0 && toPot < pot.id.length ? pot.id[toPot] : 229, 1));
+		int toPot = pot.ids.length - dosesLeft;
+		player.getInventory().getItems().set(slot, new Item(dosesLeft > 0 && toPot < pot.ids.length ? pot.ids[toPot] : 229, 1));
 		player.getInventory().refresh(slot);
 		for (int skillId : pot.effect.affectedSkills) {
 			player.getSkills().set(skillId, pot.effect.getAffectedSkill(player, skillId, player.getSkills().getLevel(skillId), player.getSkills().getLevelForXp(skillId)));
@@ -55,7 +56,7 @@ public final class Pots {
 	
 	private static Pot getPot(int id) {
 		for (Pot pot : Pot.values()) {
-			for (int potionId : pot.id) {
+			for (int potionId : pot.ids) {
 				if (id == potionId) {
 					return pot;
 				}
@@ -68,16 +69,16 @@ public final class Pots {
 		/*
 		 * Item itemUsed = player.getInventory().getItem(usedSlot); Item
 		 * usedWith = player.getInventory().getItem(withSlot); Pot first =
-		 * getPot(itemUsed.getId()); Pot second = getPot(usedWith.getId());
+		 * getPot(itemUsed.getIds()); Pot second = getPot(usedWith.getIds());
 		 * String name = usedWith.getDefinitions().getName(); if (first == null
 		 * || second == null) return false; if (first.effect != second.effect)
 		 * return false; else if (name.contains("4")) {
 		 * player.getPackets().sendGameMessage("That potion is full."); return
-		 * false; } else if (itemUsed.getId() == 229)// empty vial return false;
-		 * int index = 0; int currentId = itemUsed.getId();
+		 * false; } else if (itemUsed.getIds() == 229)// empty vial return false;
+		 * int index = 0; int currentId = itemUsed.getIds();
 		 * player.getInventory().getItems().set(withSlot, new Item(currentId));
 		 * player.getInventory().getItems() .set(usedSlot, new
-		 * Item(second.id[index])); player.getInventory().init();
+		 * Item(second.ids[index])); player.getInventory().init();
 		 */
 		return true;
 	}
@@ -227,12 +228,13 @@ public final class Pots {
 		
 		SUMMONING_POTION(new int[] { 12140, 12142, 12144, 12146 }, Effects.SUMMONING_POT);
 		
-		private int[] id;
+		@Getter
+		private int[] ids;
 		
 		private Effects effect;
 		
-		Pot(int[] id, Effects effect) {
-			this.id = id;
+		Pot(int[] ids, Effects effect) {
+			this.ids = ids;
 			this.effect = effect;
 		}
 	}

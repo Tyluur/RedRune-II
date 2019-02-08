@@ -1,5 +1,6 @@
 package org.redrune.networking.packet.incoming.impl;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.event.npc.NPCAttackEvent;
 import org.redrune.game.content.entity.actor.player.event.npc.NPCInterfaceInteractionEvent;
 import org.redrune.game.entity.actor.npc.NPC;
@@ -11,6 +12,8 @@ import org.redrune.networking.packet.context.impl.NPCInteractionPacketContext;
 import org.redrune.networking.packet.incoming.IncomingPacketReader;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
+import org.redrune.utility.game.repository.npc.characteristic.NPCCharacteristicRepository;
+import org.redrune.utility.game.repository.npc.spawn.NPCSpawnRepository;
 
 import static org.redrune.utility.game.ClickOption.*;
 
@@ -37,7 +40,8 @@ public class NPCInteractionPacketReader implements IncomingPacketReader {
 			case NPC_CLICK4_PACKET:
 				return decodeNPCStream(player, packet, FOURTH);
 			case NPC_EXAMINE_PACKET:
-				return decodeNPCStream(player, packet, EXAMINE);
+				decodeNPCExamine(player, packet);
+				break;
 			case ATTACK_NPC: {
 				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
 					break;
@@ -124,4 +128,31 @@ public class NPCInteractionPacketReader implements IncomingPacketReader {
 		}
 		return new NPCInteractionPacketContext(npc, option, running);
 	}
+	
+	/**
+	 * Decodes the examine packet
+	 *
+	 * @param player
+	 * 		The player
+	 * @param stream
+	 * 		The stream
+	 */
+	private static void decodeNPCExamine(Player player, Packet stream) {
+		boolean running = stream.readByte128() == 1;
+		int npcIndex = stream.readUnsignedShort128();
+		final NPC npc = World.getNPCs().get(npcIndex);
+		if (npc == null || npc.isCantInteract() || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
+			return;
+		}
+		if (player.getTemporaryAttribute("removing_npcs", false)) {
+			NPCSpawnRepository.removeSpawn(npc);
+			npc.finish();
+			return;
+		}
+		player.getPackets().sendNPCMessage(0, npc, NPCCharacteristicRepository.getExamine(npc.getId()));
+		if (GameFlags.debugMode) {
+			System.out.println("Examined npc [" + npc + "]");
+		}
+	}
+	
 }

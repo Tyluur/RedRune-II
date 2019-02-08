@@ -4,6 +4,7 @@ import org.redrune.game.content.entity.actor.player.event.Event;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.networking.packet.handler.InventoryOptionsHandler;
+import org.redrune.utility.functions.Misc;
 
 import static org.redrune.utility.constants.PacketConstants.*;
 
@@ -36,10 +37,12 @@ public class ItemInteractionEvent extends Event {
 	
 	@Override
 	public void run(Player player) {
+		long time = Misc.currentTimeMillis();
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= time) {
+			return;
+		}
 		int itemId = item.getId();
-		if (packetId == ACTION_BUTTON8_PACKET) {
-			InventoryOptionsHandler.handleItemOption8(player, slotId, itemId, item);
-		} else if (packetId == ACTION_BUTTON1_PACKET) {
+		if (packetId == ACTION_BUTTON1_PACKET) {
 			InventoryOptionsHandler.handleItemOption1(player, slotId, itemId, item);
 		} else if (packetId == ACTION_BUTTON2_PACKET) {
 			InventoryOptionsHandler.handleItemOption2(player, slotId, itemId, item);
@@ -53,6 +56,8 @@ public class ItemInteractionEvent extends Event {
 			InventoryOptionsHandler.handleItemOption6(player, slotId, itemId, item);
 		} else if (packetId == ACTION_BUTTON7_PACKET) {
 			InventoryOptionsHandler.handleItemOption7(player, slotId, itemId, item);
+		} else if (packetId == ACTION_BUTTON8_PACKET) {
+			InventoryOptionsHandler.handleItemOption8(player, slotId, itemId, item);
 		}
 	}
 	

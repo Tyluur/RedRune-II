@@ -20,7 +20,6 @@ import org.redrune.game.global.punishment.PunishmentRepository;
 import org.redrune.game.global.worldlist.WorldList;
 import org.redrune.networking.NetworkBinder;
 import org.redrune.networking.packet.incoming.IncomingPacketRepository;
-import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.constants.PacketConstants;
 import org.redrune.utility.functions.OutLogger;
 import org.redrune.utility.game.entity.actor.npc.NPCWalkingFlag;
@@ -50,9 +49,7 @@ public final class Bootstrap {
 		// parsing the arguments
 		parseArgs(args);
 		// startup work
-		registerStartupRequirements();
-		
-		System.out.println("Server successfully bound game server to port: " + NetworkConstants.PORT_ID + " in " + BootHandler.getSTOPWATCH().elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + "]");
+		initialize();
 	}
 	
 	/**
@@ -62,7 +59,7 @@ public final class Bootstrap {
 	 *
 	 * This is a blocking method due to {@link BootHandler#await()}
 	 */
-	private static void registerStartupRequirements() {
+	private static void initialize() {
 		BootHandler.addWork(() -> {
 			try {
 				System.out.println("Initializing cache");
@@ -102,6 +99,7 @@ public final class Bootstrap {
 		});
 		BootHandler.await();
 		try {
+			System.out.println("Startup took " + BootHandler.getSTOPWATCH().elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + "]");
 			NetworkBinder.bind();
 		} catch (Throwable e) {
 			e.printStackTrace();

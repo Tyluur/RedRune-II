@@ -1,3 +1,21 @@
+2/7/19 - Item Plugins, Teleport Tablets, & bone burial {
+
+Journal
+	+   Introduced Item Plugins
+		-   Actions for items can be created via a plugin class, and any option's action to perform is registered and handled in the class.
+		-   Multiple items per class are supported
+		-   Transferred all matrix item interactions to the plugin sy stem
+	+   Added teleport tablets for watch tower and teleport home
+	+   Fixed a bug with dragon bones in which you could drop the bone after burial
+
+
+Media
+
+[IMG]https://i.imgur.com/5BPVsNT.png[/IMG]
+[IMG]https://i.imgur.com/Qnasly7.png[/IMG]
+
+}
+
 2/6/19 - Networking, Combat visual improvements, and dialogues code improvements {
 
 	+   Fixed some networking mishaps during the conversion

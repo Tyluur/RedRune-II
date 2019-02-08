@@ -1,5 +1,6 @@
 package org.redrune.networking.packet.incoming;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.context.PacketContext;
@@ -60,7 +61,9 @@ public class IncomingPacketRepository {
 			}
 			PacketContext context = reader.read(player, packet);
 			if (context == null) {
-				System.err.println("Unable to get packet context for incoming packet " + packet + "!");
+				if (GameFlags.debugMode) {
+					System.out.println("Unable to get packet context for incoming packet " + packet + " with [reader=" + reader.getClass().getSimpleName() + "]!");
+				}
 				return;
 			}
 			player.getSession().addContext(context);

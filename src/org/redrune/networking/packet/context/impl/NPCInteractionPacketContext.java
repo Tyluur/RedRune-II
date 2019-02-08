@@ -39,17 +39,6 @@ public class NPCInteractionPacketContext extends PacketContext {
 			case FOURTH:
 				player.getEventManager().start(new NPCInteractionEvent(npc, option));
 				break;
-			case EXAMINE:
-				if (player.getTemporaryAttribute("removing_npcs", false)) {
-					NPCSpawnRepository.removeSpawn(npc);
-					npc.finish();
-					return;
-				}
-				player.getPackets().sendNPCMessage(0, npc, NPCCharacteristicRepository.getExamine(npc.getId()));
-				if (GameFlags.debugMode) {
-					System.out.println("Examined npc [" + npc + "]");
-				}
-				break;
 		}
 		
 	}

@@ -1126,4 +1126,11 @@ public final class ItemDefinitions {
 		return false;
 	}
 	
+	public String getInventoryOption(int option) {
+		if (getInventoryOptions() == null || getInventoryOptions().length < option || option == 0) {
+			return "";
+		}
+		return getInventoryOptions()[option - 1];
+	}
+	
 }

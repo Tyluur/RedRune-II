@@ -106,7 +106,7 @@ public class ObjectRemoval {
 			return;
 		}
 		OBJECTS.stream().filter(object -> object.getRegionId() == player.getRegionId()).forEach(object -> {
-			String key = "destroyed_object_" + object.getId() + "_" + object.getRegionId();
+			String key = "destroyed_object_" + object.getIds() + "_" + object.getRegionId();
 			if (player.getTemporaryAttribute(key, false)) {
 				return;
 			}

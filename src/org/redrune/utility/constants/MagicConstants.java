@@ -54,7 +54,7 @@ public interface MagicConstants {
 	
 	int BANANA = 1963;
 	
-	WorldTile[] TABS = { new WorldTile(3217, 3426, 0), new WorldTile(3222, 3218, 0), new WorldTile(2965, 3379, 0), new WorldTile(2758, 3478, 0), new WorldTile(2660, 3306, 0) };
+	WorldTile[] TABS = { new WorldTile(3217, 3426, 0), new WorldTile(3222, 3218, 0), new WorldTile(2965, 3379, 0), new WorldTile(2758, 3478, 0), new WorldTile(2660, 3306, 0), new WorldTile(2547, 3113, 2), GameConstants.START_PLAYER_LOCATION };
 	
 	int MAGIC_TELEPORT = 0;
 	

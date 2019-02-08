@@ -23,7 +23,7 @@ public class StoreObjectSpawnCommandPlugin extends CommandPlugin {
 		RegionManager.spawnObject(object);
 		
 		try {
-			ObjectSpawns.dumpObjectSpawn(object.getId(), type, rotation, player);
+			ObjectSpawns.dumpObjectSpawn(object.getIds(), type, rotation, player);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

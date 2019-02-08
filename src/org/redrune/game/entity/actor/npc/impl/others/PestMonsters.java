@@ -49,22 +49,22 @@ public class PestMonsters extends NPC {
 	 * @param n The npc TODO other monsters
 	 */
 	/*
-	 * private void deathEffects(NPC n) { if (n.getId() == 6142) { for (Player
+	 * private void deathEffects(NPC n) { if (n.getIds() == 6142) { for (Player
 	 * players : PestControl.playersInGame) {
 	 * players.getPackets().sendIComponentText(408, 13, "DEAD");
 	 * players.getPackets
 	 * ().sendGameMessage("The west portal has been destroyed."); }
-	 * PestControl.setPortals(0, true); } if (n.getId() == 6144) { for (Player
+	 * PestControl.setPortals(0, true); } if (n.getIds() == 6144) { for (Player
 	 * players : PestControl.playersInGame) {
 	 * players.getPackets().sendIComponentText(408, 15, "DEAD");
 	 * players.getPackets
 	 * ().sendGameMessage("The south-east portal has been destroyed."); }
-	 * PestControl.setPortals(1, true); } if (n.getId() == 6145) { for (Player
+	 * PestControl.setPortals(1, true); } if (n.getIds() == 6145) { for (Player
 	 * players : PestControl.playersInGame) {
 	 * players.getPackets().sendIComponentText(408, 16, "DEAD");
 	 * players.getPackets
 	 * ().sendGameMessage("The south-west portal has been destroyed."); }
-	 * PestControl.setPortals(2, true); } if (n.getId() == 6143) { for (Player
+	 * PestControl.setPortals(2, true); } if (n.getIds() == 6143) { for (Player
 	 * players : PestControl.playersInGame) {
 	 * players.getPackets().sendIComponentText(408, 14, "DEAD");
 	 * players.getPackets

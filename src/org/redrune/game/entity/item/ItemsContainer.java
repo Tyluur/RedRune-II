@@ -241,7 +241,7 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 					amt -= toRemove;
 					toRemove = 0;
 					// data[preferredSlot] = new
-					// Item(data[preferredSlot].getDefinition().getId(), amt);
+					// Item(data[preferredSlot].getDefinition().getIds(), amt);
 					set2(preferredSlot, new Item(data[preferredSlot].getId(), amt));
 					return removed;
 				} else {
@@ -260,7 +260,7 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 						removed += toRemove;
 						amt -= toRemove;
 						toRemove = 0;
-						// data[i] = new Item(data[i].getDefinition().getId(),
+						// data[i] = new Item(data[i].getDefinition().getIds(),
 						// amt);
 						set2(i, new Item(data[i].getId(), amt));
 						return removed;

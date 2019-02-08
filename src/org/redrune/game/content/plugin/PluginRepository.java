@@ -1,18 +1,16 @@
 package org.redrune.game.content.plugin;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
 import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
-import org.redrune.game.content.plugin.type.CommandPlugin;
-import org.redrune.game.content.plugin.type.InterfacePlugin;
-import org.redrune.game.content.plugin.type.NPCPlugin;
-import org.redrune.game.content.plugin.type.ObjectPlugin;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.content.plugin.type.*;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.item.Item;
+import org.redrune.game.entity.object.WorldObject;
 import org.redrune.utility.constants.MagicConstants.MagicBook;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
 import plugin.command.CommandManifest;
 
@@ -48,6 +46,11 @@ public class PluginRepository {
 	private static final Map<String, CommandPlugin> COMMAND_PLUGINS = new HashMap<>();
 	
 	/**
+	 * The map of item plugins
+	 */
+	private static final Map<Integer, Map<String, ItemPlugin>> ITEM_PLUGINS = new HashMap<>();
+	
+	/**
 	 * The map of special attack plugins
 	 */
 	private static final Map<Integer, SpecialAttackPlugin> SPECIAL_PLUGINS = new HashMap<>();
@@ -81,7 +84,7 @@ public class PluginRepository {
 	 */
 	public static void registerAll() {
 		Misc.getClasses("plugin").stream().filter(Plugin.class::isInstance).forEach(clazz -> ((Plugin) clazz).register());
-		System.out.println("Registered " + SPECIAL_PLUGINS.size() + " special plugins, " + RANGE_PLUGINS.size() + " range plugins, " + getSpellCount() + " spell plugins, " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, and " + OBJECT_PLUGINS.size() + " object plugins.");
+		System.out.println("Registered " + SPECIAL_PLUGINS.size() + " special plugins, " + RANGE_PLUGINS.size() + " range plugins, " + getSpellCount() + " spell plugins, " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, " + OBJECT_PLUGINS.size() + " object plugins, and " + ITEM_PLUGINS.size() + " item plugins");
 	}
 	
 	/**
@@ -187,6 +190,17 @@ public class PluginRepository {
 				pluginMap.put(option, (ObjectPlugin) plugin);
 			}
 			OBJECT_PLUGINS.put(key, pluginMap);
+		} else if (plugin instanceof ItemPlugin) {
+			Map<String, ItemPlugin> pluginMap;
+			if (ITEM_PLUGINS.containsKey(key)) {
+				pluginMap = ITEM_PLUGINS.get(key);
+			} else {
+				pluginMap = new HashMap<>();
+			}
+			for (String option : options) {
+				pluginMap.put(option, (ItemPlugin) plugin);
+			}
+			ITEM_PLUGINS.put(key, pluginMap);
 		}
 	}
 	
@@ -297,6 +311,30 @@ public class PluginRepository {
 			return false;
 		}
 		return plugin.handle(player, object, option);
+	}
+	
+	/**
+	 * Handles the item interaction with the right plugin
+	 *
+	 * @param player
+	 * 		The player
+	 * @param item
+	 * 		The item clicked
+	 * @param slotId
+	 * 		The slot the item came from
+	 * @param option
+	 * 		The option clicked as a string
+	 */
+	public static boolean handleItem(Player player, Item item, int slotId, String option) {
+		Map<String, ItemPlugin> pluginMap = ITEM_PLUGINS.get(item.getId());
+		if (pluginMap == null) {
+			return false;
+		}
+		ItemPlugin plugin = pluginMap.get(option);
+		if (plugin == null) {
+			return false;
+		}
+		return plugin.handle(player, item, slotId, option);
 	}
 	
 	/**

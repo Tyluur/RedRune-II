@@ -4,8 +4,8 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.NPCPlugin;
 import org.redrune.utility.constants.key.AttributeKey;
-import plugin.inter.TeleportationInterfacePlugin;
-import plugin.inter.TeleportationInterfacePlugin.TransportationLocation;
+import plugin.rsinterface.TeleportationInterfacePlugin;
+import plugin.rsinterface.TeleportationInterfacePlugin.TransportationLocation;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

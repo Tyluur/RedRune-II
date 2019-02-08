@@ -9,6 +9,7 @@ import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.context.PacketContext;
 import org.redrune.networking.packet.context.impl.ObjectClickInteractionPacketContext;
 import org.redrune.networking.packet.context.impl.ObjectItemInteractionPacketContext;
+import org.redrune.networking.packet.handler.ObjectHandler;
 import org.redrune.networking.packet.incoming.IncomingPacketReader;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
@@ -50,7 +51,13 @@ public class ObjectInteractionPacketReader implements IncomingPacketReader {
 				if (object == null || object.getId() != id) {
 					return null;
 				}
-				return new ObjectClickInteractionPacketContext(object, getClickOptionById(stream.getOpcode()));
+				ClickOption clickOption = getClickOptionById(stream.getOpcode());
+				if (clickOption == ClickOption.EXAMINE) {
+					ObjectHandler.handleExamine(player, object);
+					break;
+				} else {
+					return new ObjectClickInteractionPacketContext(object, clickOption);
+				}
 			}
 			case ITEM_ON_OBJECT_PACKET:
 				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {

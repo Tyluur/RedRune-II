@@ -28,12 +28,14 @@ public class Burying {
 		player.getPackets().sendSound(2738, 0, 1);
 		player.setNextAnimation(new Animation(827));
 		player.getPackets().sendGameMessage("You dig a hole in the ground...");
+		player.getLocks().lockInteractions(3);
 		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {
 				player.getPackets().sendGameMessage("You bury the " + itemDef.getName().toLowerCase());
 				player.getInventory().deleteItem(item.getId(), 1);
 				player.getSkills().addXp(SkillConstants.PRAYER, bone.getExperience());
+				player.getLocks().unlockInteraction();
 				stop();
 			}
 			

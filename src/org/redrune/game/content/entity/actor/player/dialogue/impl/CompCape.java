@@ -9,23 +9,24 @@ import org.redrune.game.global.WorldTile;
  */
 public class CompCape extends Dialogue {
 	
+	int itemId;
+	
 	@Override
 	public void start() {
-		sendDialogue(SEND_2_TEXT_INFO, "Congratulations on your Completionist cape.", "What would you like to do?");
+		itemId = (Integer) parameters[0];
+		sendItemDialogue(itemId, "Congratulations on your cape.", "What would you like to do?");
 	}
 	
 	public void run(int interfaceId, int componentId) {
 		if (stage == -1) {
 			stage = 0;
-			sendDialogue(SEND_4_OPTIONS, DEFAULT_OPTION, "Open my bank.", "Home teleport.", "Change Display Name(?)", "Close features.");
+			sendOptions(DEFAULT_OPTION, "Open my bank.", "Home teleport.", "Change Display Name(?)", "Close features.");
 		} else if (stage == 0) {
 			if (componentId == 1) {
 				player.getBank().openBank();
-			}
-			if (componentId == 2) {
+			} else if (componentId == 2) {
 				Magic.sendNormalTeleportSpell(player, 0, 0, new WorldTile(2965, 3383, 0));
-			}
-			if (componentId == 3) {
+			} else if (componentId == 3) {
 				player.getPackets().sendGameMessage("Name changing is disabled at the moment.");
 			}
 			end();

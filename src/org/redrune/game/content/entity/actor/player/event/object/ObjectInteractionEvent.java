@@ -39,9 +39,6 @@ public class ObjectInteractionEvent extends Event {
 			case THIRD:
 				ObjectHandler.handleOption3(player, object);
 				break;
-			case EXAMINE:
-				ObjectHandler.handleExamine(player, object);
-				break;
 		}
 	}
 	

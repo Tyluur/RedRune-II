@@ -7,14 +7,11 @@ import org.redrune.game.entity.item.Item;
 
 public class Transportation extends Dialogue {
 	
-	// Ring of duelling
-	// Combat bracelet
-	
 	public static int EMOTE = 9603, GFX = 1684;
 	
 	@Override
 	public void start() {
-		sendDialogue(SEND_5_OPTIONS, "Where would you like to teleport to", (String) parameters[0], (String) parameters[2], (String) parameters[4], (String) parameters[6], "Nowhere");
+		sendOptions("Where would you like to go?", (String) parameters[0], (String) parameters[2], (String) parameters[4], (String) parameters[6], "Nowhere");
 	}
 	
 	@Override

@@ -27,20 +27,25 @@ public class EventManager {
 	 * Processes the event
 	 */
 	public void process() {
-		if (event != null) {
-			switch (event.getState()) {
-				case CREATED:
-					event.firePolicy(player);
-					event.run(player);
-					event.setState(Event.EventState.STARTED);
-					break;
-				case STARTED:
-					event.setState(Event.EventState.FINISHED);
-					break;
-				case FINISHED:
-					event = null;
-					break;
+		try {
+			if (event != null) {
+				switch (event.getState()) {
+					case CREATED:
+						event.firePolicy(player);
+						event.run(player);
+						event.setState(EventState.STARTED);
+						break;
+					case STARTED:
+						event.setState(EventState.FINISHED);
+						break;
+					case FINISHED:
+						event = null;
+						break;
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			event = null;
 		}
 	}
 	
