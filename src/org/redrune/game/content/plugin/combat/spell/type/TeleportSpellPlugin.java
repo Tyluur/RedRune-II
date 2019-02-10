@@ -7,7 +7,7 @@ import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
 import org.redrune.utility.constants.MagicConstants;
 
-import static org.redrune.game.content.combat.function.Magic.sendTeleportSpell;
+import static org.redrune.game.content.entity.actor.combat.function.Magic.sendTeleportSpell;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

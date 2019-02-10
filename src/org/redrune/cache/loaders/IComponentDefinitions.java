@@ -4,330 +4,335 @@ import com.alex.io.InputStream;
 import org.redrune.cache.Cache;
 import org.redrune.utility.functions.Misc;
 
+import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Objects;
+import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class IComponentDefinitions {
-
+	
 	private static IComponentDefinitions[][] icomponentsdefs = new IComponentDefinitions[Misc.getInterfaceDefinitionsSize()][];
-
+	
 	private static IComponentSettings GLOBAL_SETTINGS = new IComponentSettings(0, -1);
-
+	
 	public Object[] anObjectArray4758;
-
+	
 	public String aString4765;
-
+	
 	public String aString4779;
-
-	public String aString4790;
-
+	
+	public String text;
+	
 	@SuppressWarnings("rawtypes")
 	public Hashtable aHashTable4823;
-
+	
 	public int type;
-
+	
+	public int componentIndex;
+	
+	public int parentId;
+	
 	protected int anInt4679;
-
+	
 	protected Object[] anObjectArray4680;
-
+	
 	protected int anInt4681;
-
+	
 	protected int anInt4682;
-
+	
 	protected int anInt4683;
-
+	
 	protected String[] aStringArray4686;
-
-	protected int anInt4687;
-
+	
 	protected Object[] anObjectArray4688;
-
+	
 	protected boolean hidden;
-
+	
 	protected int anInt4691;
-
-	protected int parentId;
-
+	
 	protected int anInt4693;
-
+	
 	protected int anInt4694 = -1;
-
+	
 	protected int anInt4695;
-
+	
 	protected int anInt4697;
-
+	
 	protected int anInt4698;
-
+	
 	protected int anInt4700;
-
+	
 	protected Object[] anObjectArray4701;
-
+	
 	protected int anInt4703;
-
+	
 	protected int[] anIntArray4705;
-
+	
 	protected Object[] anObjectArray4706;
-
+	
 	protected boolean aBoolean4707;
-
+	
 	protected int anInt4708;
-
+	
 	protected int anInt4709 = 0;
-
+	
 	protected boolean aBoolean4710;
-
+	
 	protected Object[] anObjectArray4711;
-
+	
 	protected Object[] anObjectArray4712;
-
+	
 	protected int anInt4714;
-
+	
 	protected int anInt4718;
-
+	
 	protected int anInt4719;
-
+	
 	protected byte aByte4720;
-
+	
 	protected boolean aBoolean4721;
-
+	
 	protected int anInt4722;
-
+	
 	protected boolean aBoolean4723;
-
+	
 	protected int anInt4724;
-
+	
 	// protected EntityNode_Sub4 anEntityNode_Sub4_4726;
 	protected boolean aBoolean4727;
-
+	
 	protected int anInt4728;
-
+	
 	protected boolean aBoolean4730;
-
+	
 	protected boolean aBoolean4732;
-
+	
 	protected byte[] aByteArray4733;
-
+	
 	protected int anInt4734;
-
+	
 	protected int anInt4735;
-
+	
 	protected boolean aBoolean4738;
-
+	
 	protected Object[] anObjectArray4740;
-
+	
 	protected byte aByte4741;
-
+	
 	protected Object[] anObjectArray4742;
-
+	
 	protected boolean aBoolean4743;
-
+	
 	protected int anInt4744;
-
+	
 	protected Object[] anObjectArray4745;
-
+	
 	protected int anInt4746;
-
+	
 	protected int anInt4747;
-
+	
 	protected int anInt4748;
-
+	
 	protected byte aByte4750;
-
+	
 	protected Object[] anObjectArray4751;
-
+	
 	protected int anInt4752;
-
+	
 	protected Object[] anObjectArray4753;
-
+	
 	protected int anInt4754;
-
+	
 	// protected Animator anAnimator4755;
 	protected Object[] anObjectArray4756;
-
+	
 	protected int anInt4757;
-
+	
 	protected int anInt4759;
-
+	
 	protected int anInt4760;
-
+	
 	protected int anInt4761;
-
+	
 	protected int anInt4762;
-
+	
 	protected int anInt4764;
-
+	
 	protected int anInt4767;
-
+	
 	protected Object[] anObjectArray4768;
-
+	
 	protected boolean aBoolean4769;
-
+	
 	protected Object[] anObjectArray4770;
-
+	
 	protected Object[] anObjectArray4771;
-
+	
 	protected int[] anIntArray4772;
-
+	
 	protected int anInt4773;
-
+	
 	protected Object[] anObjectArray4774;
-
+	
 	protected Object[] anObjectArray4775;
-
+	
 	protected Object[] anObjectArray4777;
-
+	
 	protected Object[] anObjectArray4778;
-
+	
 	protected int anInt4780;
-
+	
 	protected boolean aBoolean4782;
-
+	
 	protected int anInt4783;
-
+	
 	protected String aString4784;
-
+	
 	protected String aString4786;
-
+	
 	protected int anInt4787;
-
+	
 	protected Object[] anObjectArray4788;
-
+	
 	protected int[] anIntArray4789;
-
+	
 	protected int anInt4792;
-
+	
 	protected IComponentDefinitions[] aWidgetArray4793;
-
+	
 	protected int anInt4794;
-
+	
 	protected int anInt4795;
-
+	
 	protected int anInt4796;
-
+	
 	protected int anInt4797;
-
+	
 	protected Object[] anObjectArray4798;
-
+	
 	protected Object[] anObjectArray4799;
-
+	
 	protected int anInt4800;
-
+	
 	protected int anInt4801;
-
+	
 	protected boolean aBoolean4802;
-
+	
 	protected Object[] anObjectArray4803;
-
+	
 	protected IComponentDefinitions[] aWidgetArray4804;
-
+	
 	protected int[] anIntArray4805;
-
+	
 	protected byte[] aByteArray4806;
-
+	
 	protected Object[] anObjectArray4807;
-
+	
 	protected boolean hasScripts;
-
+	
 	protected int anInt4809;
-
+	
 	protected int anInt4810;
-
+	
 	protected int anInt4811;
-
+	
 	protected int[] anIntArray4812;
-
+	
 	protected int anInt4813;
-
+	
 	protected int anInt4814;
-
+	
 	protected int anInt4815;
-
+	
 	protected int anInt4816;
-
+	
 	protected int anInt4817;
-
+	
 	protected Object[] anObjectArray4818;
-
+	
 	protected boolean aBoolean4819;
-
+	
 	protected int anInt4820;
-
+	
 	protected int anInt4821;
-
+	
 	protected int ihash;
-
+	
 	protected int anInt4824;
-
+	
 	protected int anInt4825;
-
+	
 	protected int anInt4826;
-
+	
 	protected Object[] anObjectArray4828;
-
+	
 	protected int[] anIntArray4829;
-
+	
 	protected int anInt4831;
-
+	
 	protected boolean aBoolean4832;
-
+	
 	protected int[] anIntArray4833;
-
+	
 	protected Object[] anObjectArray4834;
-
+	
 	protected int anInt4835;
-
+	
 	protected IComponentDefinitions aWidget4836;
-
+	
 	protected int[] anIntArray4838;
-
+	
 	protected int anInt4839;
-
+	
 	protected IComponentSettings aNode_Sub35_4840;
-
+	
 	protected int anInt4842;
-
+	
 	protected int modelType;
-
+	
 	protected Object[] anObjectArray4846;
-
+	
 	protected int anInt4848;
-
+	
 	protected int anInt4849;
-
+	
 	protected int anInt4850;
-
+	
 	protected byte aByte4851;
-
+	
 	protected Object[] anObjectArray4852;
-
+	
 	protected Object[] anObjectArray4854;
-
+	
 	protected Object[] anObjectArray4856;
-
+	
 	protected Object[] anObjectArray4857;
-
+	
 	protected boolean aBoolean4858;
-
+	
 	protected int anInt4860;
-
+	
 	protected boolean aBoolean4861;
-
+	
 	protected Object[] anObjectArray4862;
-
+	
 	protected int[] anIntArray4863;
-
+	
 	protected int anInt4864;
-
+	
 	protected boolean aBoolean4865;
-
+	
+	private int interfaceId;
+	
 	private short[] aShortArray4690;
-
+	
 	private short[] aShortArray4717;
-
+	
 	private short[] aShortArray4785;
-
+	
 	private short[] aShortArray4837;
-
+	
 	public IComponentDefinitions() {
 		anInt4698 = -1;
 		aBoolean4730 = false;
@@ -350,7 +355,7 @@ public class IComponentDefinitions {
 		aBoolean4782 = true;
 		anInt4757 = 0;
 		anInt4754 = 0;
-		anInt4687 = -1;
+		componentIndex = -1;
 		anInt4783 = -1;
 		anInt4773 = -1;
 		anInt4795 = 0;
@@ -381,7 +386,7 @@ public class IComponentDefinitions {
 		anInt4825 = 0;
 		anInt4719 = 0;
 		anInt4734 = 0;
-		aString4790 = "";
+		text = "";
 		aBoolean4832 = true;
 		anInt4762 = 0;
 		anInt4792 = 1;
@@ -418,7 +423,7 @@ public class IComponentDefinitions {
 		anInt4842 = 0;
 		anInt4839 = -1;
 	}
-
+	
 	public static IComponentDefinitions getInterfaceComponent(int id, int component) {
 		IComponentDefinitions[] inter = getInterface(id);
 		if (inter == null || component >= inter.length) {
@@ -426,9 +431,9 @@ public class IComponentDefinitions {
 		}
 		return inter[component];
 	}
-
+	
 	public static IComponentDefinitions[] getInterface(int id) {
-		if (id >= icomponentsdefs.length) {
+		if (id < 0 || id >= icomponentsdefs.length) {
 			return null;
 		}
 		if (icomponentsdefs[id] == null) {
@@ -437,6 +442,7 @@ public class IComponentDefinitions {
 				byte[] data = Cache.STORE.getIndexes()[3].getFile(id, i);
 				if (data != null) {
 					IComponentDefinitions defs = icomponentsdefs[id][i] = new IComponentDefinitions();
+					defs.interfaceId = id;
 					defs.ihash = i + (id << 16);
 					if (data[0] != -1) {
 						throw new IllegalStateException("if1");
@@ -447,7 +453,7 @@ public class IComponentDefinitions {
 		}
 		return icomponentsdefs[id];
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	final void decode(InputStream stream) {
 		int newInt = stream.readUnsignedByte();
@@ -560,7 +566,7 @@ public class IComponentDefinitions {
 			if ((newInt ^ 0xffffffff) <= -3) {
 				aBoolean4832 = (stream.readUnsignedByte() ^ 0xffffffff) == -2;
 			}
-			aString4790 = stream.readString();
+			text = stream.readString();
 			anInt4697 = stream.readUnsignedByte();
 			anInt4835 = stream.readUnsignedByte();
 			anInt4825 = stream.readUnsignedByte();
@@ -699,11 +705,11 @@ public class IComponentDefinitions {
 		anIntArray4829 = method4150(stream);
 		anIntArray4805 = method4150(stream);
 	}
-
+	
 	static final int method925(int i) {
 		return (i & 0x3fda8) >> 11;
 	}
-
+	
 	private final Object[] decodeScript(InputStream buffer) {
 		int i = buffer.readUnsignedByte();
 		if ((i ^ 0xffffffff) == -1) {
@@ -721,7 +727,7 @@ public class IComponentDefinitions {
 		hasScripts = true;
 		return objects;
 	}
-
+	
 	private final int[] method4150(InputStream buffer) {
 		int i = buffer.readUnsignedByte();
 		if (i == 0) {
@@ -733,5 +739,17 @@ public class IComponentDefinitions {
 		}
 		return is;
 	}
-
+	
+	public static Optional<IComponentDefinitions> getComponentByText(int interfaceId, String text) {
+		IComponentDefinitions[] iFace = getInterface(interfaceId);
+		if (iFace == null) {
+			return Optional.empty();
+		}
+		return Arrays.stream(iFace).filter(Objects::nonNull).filter(subIFace -> subIFace.text.equalsIgnoreCase(text)).findFirst();
+	}
+	
+	public int getWidgetId() {
+		return ihash - (interfaceId << 16);
+	}
+	
 }

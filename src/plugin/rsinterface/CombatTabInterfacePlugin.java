@@ -1,7 +1,7 @@
 package plugin.rsinterface;
 
 import org.redrune.engine.SystemManager;
-import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.InterfacePlugin;
 

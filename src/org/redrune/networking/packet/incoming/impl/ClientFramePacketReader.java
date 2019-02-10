@@ -1,5 +1,6 @@
 package org.redrune.networking.packet.incoming.impl;
 
+import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.context.PacketContext;
@@ -24,12 +25,65 @@ public class ClientFramePacketReader implements IncomingPacketReader {
 			case MOVE_MOUSE_PACKET:
 				// nothing
 				break;
-			case KEY_TYPED_PACKET:
-				break;
+			case KEY_TYPED_PACKET: {
+				int keyCode = packet.readByte();
+				//				int unknown = packet.readByte();
+				//				int unknown2 = packet.readUnsignedShort();
+				
+				switch (keyCode) {
+					case 16: { // 1
+						IComponentDefinitions optionComponent = player.getInterfaceManager().getDialogueInterfaceDefinitions("option1");
+						if (optionComponent == null) {
+							break;
+						}
+						player.getDialogueManager().continueDialogue(player.getInterfaceManager().getChatboxInterface(), optionComponent.getWidgetId());
+						break;
+					}
+					case 17: { // 2
+						IComponentDefinitions optionComponent = player.getInterfaceManager().getDialogueInterfaceDefinitions("option2");
+						if (optionComponent == null) {
+							break;
+						}
+						player.getDialogueManager().continueDialogue(player.getInterfaceManager().getChatboxInterface(), optionComponent.getWidgetId());
+						break;
+					}
+					case 18: {// 3
+						IComponentDefinitions optionComponent = player.getInterfaceManager().getDialogueInterfaceDefinitions("option3");
+						if (optionComponent == null) {
+							break;
+						}
+						player.getDialogueManager().continueDialogue(player.getInterfaceManager().getChatboxInterface(), optionComponent.getWidgetId());
+						break;
+					}
+					case 19: {// 4
+						IComponentDefinitions optionComponent = player.getInterfaceManager().getDialogueInterfaceDefinitions("option4");
+						if (optionComponent == null) {
+							break;
+						}
+						player.getDialogueManager().continueDialogue(player.getInterfaceManager().getChatboxInterface(), optionComponent.getWidgetId());
+						break;
+					}
+					case 20: {// 5
+						IComponentDefinitions optionComponent = player.getInterfaceManager().getDialogueInterfaceDefinitions("option5");
+						if (optionComponent == null) {
+							break;
+						}
+						player.getDialogueManager().continueDialogue(player.getInterfaceManager().getChatboxInterface(), optionComponent.getWidgetId());
+						break;
+					}
+					case 13: // esc
+						player.closeInterfaces();
+						break;
+					case 83: // space
+						IComponentDefinitions continueComponent = player.getInterfaceManager().getDialogueInterfaceDefinitions("Click here to continue");
+						if (continueComponent == null) {
+							break;
+						}
+						player.getDialogueManager().continueDialogue(player.getInterfaceManager().getChatboxInterface(), continueComponent.getWidgetId());
+						break;
+				}
+			}
 			case MOVE_CAMERA_PACKET:
-				// not using it atm
-				packet.readUnsignedShort();
-				packet.readUnsignedShort();
 				break;
 			case CLICK_PACKET: {
 				int mouseHash = packet.readShortLE128();

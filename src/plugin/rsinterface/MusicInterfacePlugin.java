@@ -14,20 +14,20 @@ public class MusicInterfacePlugin implements InterfacePlugin {
 	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
 		if (componentId == 1) {
 			if (packetId == PacketConstants.ACTION_BUTTON1_PACKET) {
-				player.getMusicsManager().playAnotherMusic(slotId / 2);
+				player.getMusicManager().playAnotherMusic(slotId / 2);
 			} else if (packetId == PacketConstants.ACTION_BUTTON3_PACKET) {
-				player.getMusicsManager().addToPlayList(slotId / 2);
+				player.getMusicManager().addToPlayList(slotId / 2);
 			} else if (packetId == PacketConstants.ACTION_BUTTON4_PACKET) {
-				player.getMusicsManager().removeFromPlayList(slotId / 2);
+				player.getMusicManager().removeFromPlayList(slotId / 2);
 			}
 		} else if (componentId == 4) {
-			player.getMusicsManager().addPlayingMusicToPlayList();
+			player.getMusicManager().addPlayingMusicToPlayList();
 		} else if (componentId == 10) {
-			player.getMusicsManager().switchPlayListOn();
+			player.getMusicManager().switchPlayListOn();
 		} else if (componentId == 11) {
-			player.getMusicsManager().clearPlayList();
+			player.getMusicManager().clearPlayList();
 		} else if (componentId == 13) {
-			player.getMusicsManager().switchShuffleOn();
+			player.getMusicManager().switchShuffleOn();
 		}
 		return true;
 	}

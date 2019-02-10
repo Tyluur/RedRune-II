@@ -1,13 +1,16 @@
 package org.redrune.game.content.entity.actor.player.event.npc;
 
-import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.content.entity.actor.player.action.impl.PlayerCombatAction;
 import org.redrune.game.content.entity.actor.player.event.Event;
+import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
+import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.global.WorldTile;
 import org.redrune.utility.functions.Misc;
@@ -37,10 +40,6 @@ public class NPCInterfaceInteractionEvent extends Event {
 	
 	@Override
 	public void run(Player player) {
-		if (!npc.getDefinitions().hasAttackOption()) {
-			player.getPackets().sendGameMessage("You can't attack this npc.");
-			return;
-		}
 		switch (interfaceId) {
 			case PlayerInventory.INVENTORY_INTERFACE:
 				Item item = player.getInventory().getItem(slot);
@@ -50,10 +49,22 @@ public class NPCInterfaceInteractionEvent extends Event {
 				if (!player.getInventory().containsItem(item.getId(), item.getAmount())) {
 					return;
 				}
-				if (!player.getControllerManager().processItemOnNPC(npc, item)) {
-					return;
-				}
-				// InventoryOptionsHandler.handleItemOnNPC(npc, item);
+				player.setNextFaceActor(npc);
+				player.setRouteEvent(new RouteEvent(npc, () -> {
+					npc.resetWalkSteps();
+					FishingSpots spot = FishingSpots.forId(npc.getId() | 1 << 24);
+					if (spot != null) {
+						return;
+					}
+					player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
+					if (!player.getControllerManager().processItemOnNPC(npc, item)) {
+						return;
+					}
+					if (PluginRepository.handleItemOnNPC(player, item, npc)) {
+						return;
+					}
+					player.getPackets().sendGameMessage("Nothing interesting happens.");
+				}));
 				break;
 			case 662:
 			case 747:

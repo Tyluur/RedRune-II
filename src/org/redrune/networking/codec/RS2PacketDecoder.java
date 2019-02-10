@@ -64,8 +64,10 @@ public class RS2PacketDecoder extends ReplayingDecoder<GameState> {
 				try {
 					byte[] payload = new byte[length];
 					in.readBytes(payload, 0, length);
+					in.markReaderIndex();
 					out.add(new Packet(opcode, PacketType.STANDARD, Unpooled.copiedBuffer(payload)));
 				} catch (Exception e) {
+					System.out.println("Packet[" + opcode + ", " + length + "]");
 					ctx.fireExceptionCaught(e);
 				}
 				checkpoint(GameState.VERSION);

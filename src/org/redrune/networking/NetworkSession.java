@@ -104,8 +104,8 @@ public class NetworkSession {
 	 */
 	public synchronized ChannelFuture write(OutgoingPacketBuilder bldr) {
 		Packet build = bldr.build();
-//		System.out.println("Wrote packet " + build);
-		return channel.writeAndFlush(build);
+		//		System.out.println("Wrote packet " + build);
+		return channel.write(build);
 	}
 	
 	/**
@@ -116,8 +116,16 @@ public class NetworkSession {
 	 */
 	public synchronized ChannelFuture write(PacketBuilder bldr) {
 		Packet msg = bldr.toPacket();
-//		System.out.println("Wrote packet " + msg);
-		return channel.writeAndFlush(msg);
+		//		System.out.println("Wrote packet " + msg);
+		return channel.write(msg);
+	}
+	
+	/**
+	 * Flushes all the outgoing buffers
+	 * @return
+	 */
+	public synchronized Channel flush() {
+		return channel.flush();
 	}
 	
 	/**

@@ -6,8 +6,8 @@ import org.redrune.cache.loaders.ItemEquipIds;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.worker.boot.BootHandler;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.combat.npc.CombatScriptsHandler;
-import org.redrune.game.content.cutscene.CutscenesHandler;
+import org.redrune.game.content.entity.actor.combat.npc.CombatScriptsHandler;
+import org.redrune.game.content.entity.actor.player.cutscene.CutscenesHandler;
 import org.redrune.game.content.entity.actor.npc.FishingSpotsHandler;
 import org.redrune.game.content.entity.actor.player.controller.ControllerHandler;
 import org.redrune.game.content.entity.actor.player.dialogue.DialogueHandler;
@@ -91,7 +91,7 @@ public final class Bootstrap {
 		}, () -> {
 			FishingSpotsHandler.initialize();
 			CombatScriptsHandler.registerAll();
-			DialogueHandler.init();
+			DialogueHandler.initialize();
 			ControllerHandler.registerAll();
 			CutscenesHandler.init();
 			ObjectRemoval.initialize();

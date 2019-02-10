@@ -4,7 +4,7 @@ import org.redrune.game.content.entity.actor.player.event.item.ItemInteractionEv
 import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.networking.packet.handler.InventoryOptionsHandler;
+import org.redrune.game.content.entity.item.InventoryOptionsHandler;
 
 import static org.redrune.utility.constants.PacketConstants.*;
 

@@ -122,25 +122,6 @@ public interface EquipmentConstants {
 		return false;
 	}
 	
-	static boolean hideArms(Item item) {
-		String name = item.getName().toLowerCase();
-		if
-			//temp old graphics fix, but bugs alil new ones
-				(name.contains("d'hide body") || name.contains("dragonhide body") || name.equals("stripy pirate shirt") || (name.contains("chainbody") && (name.contains("iron") || name.contains("bronze") || name.contains("steel") || name.contains("black") || name.contains("mithril") || name.contains("adamant") || name.contains("rune") || name.contains("white"))) || name.equals("leather body") || name.equals("hardleather body") || name.contains("studded body")) {
-			return false;
-		}
-		return item.getDefinitions().getEquipType() == 6;
-	}
-	
-	static boolean showBear(Item item) {
-		String name = item.getName().toLowerCase();
-		return !hideHair(item) || name.contains("horns") || name.contains("hat") || name.contains("afro") || name.contains("cowl") || name.contains("tattoo") || name.contains("headdress") || name.contains("hood") || (name.contains("mask") && !name.contains("h'ween")) || (name.contains("helm") && !name.contains("full"));
-	}
-	
-	static boolean hideHair(Item item) {
-		return item.getDefinitions().getEquipType() == 8;
-	}
-	
 	static void sendRemove(Player player, int slotId) {
 		if (player.getLocks().isEquipmentLocked() || slotId >= 15) {
 			return;

@@ -1,6 +1,6 @@
 package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
-import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
 import org.redrune.game.global.WorldTile;
 
@@ -14,7 +14,7 @@ public class CompCape extends Dialogue {
 	@Override
 	public void start() {
 		itemId = (Integer) parameters[0];
-		sendItemDialogue(itemId, "Congratulations on your cape.", "What would you like to do?");
+		sendItemDialogue(itemId, 1, "Congratulations on your cape.", "What would you like to do?");
 	}
 	
 	public void run(int interfaceId, int componentId) {

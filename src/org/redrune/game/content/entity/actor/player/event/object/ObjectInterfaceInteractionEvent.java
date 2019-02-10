@@ -2,7 +2,7 @@ package org.redrune.game.content.entity.actor.player.event.object;
 
 import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.content.entity.actor.player.action.impl.WaterFillingAction;
 import org.redrune.game.content.entity.actor.player.event.Event;
 import org.redrune.game.content.entity.actor.player.skills.cooking.Cooking;
@@ -11,6 +11,7 @@ import org.redrune.game.content.entity.actor.player.skills.crafting.JewelrySmith
 import org.redrune.game.content.entity.actor.player.skills.runecrafting.Runecrafting;
 import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing.ForgingBar;
 import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing.ForgingInterface;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
@@ -19,7 +20,7 @@ import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.WorldTile;
-import org.redrune.networking.packet.handler.ObjectHandler;
+import org.redrune.game.content.entity.object.ObjectHandler;
 import org.redrune.utility.constants.SkillConstants;
 
 /**
@@ -54,12 +55,13 @@ public class ObjectInterfaceInteractionEvent extends Event {
 	
 	@Override
 	public void run(Player player) {
-		final WorldTile tile = object.getWorldTile();
 		final ObjectDefinitions objectDef = object.getDefinitions();
-		player.setRouteEvent(new RouteEvent(tile, () -> {
+		player.setRouteEvent(new RouteEvent(object, () -> {
 			player.setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
 			if (interfaceId == PlayerInventory.INVENTORY_INTERFACE) {
-				if (object.getDefinitions().getName().equals("Anvil")) {
+				if (PluginRepository.handleItemOnObject(player, item, object)) {
+					return;
+				} else if (object.getDefinitions().getName().equals("Anvil")) {
 					player.getTemporaryAttributes().put("itemUsed", itemId);
 					ForgingBar bar = ForgingBar.forId(itemId);
 					if (bar != null) {
@@ -128,7 +130,7 @@ public class ObjectInterfaceInteractionEvent extends Event {
 						player.getDialogueManager().startDialogue("CookingD", cook, object);
 					}
 				} else {
-					player.getPackets().sendGameMessage("Nothing interesting happens...");
+					player.getPackets().sendGameMessage("Nothing interesting happens.");
 					if (GameFlags.debugMode) {
 						System.out.println("item on object: " + object.getId());
 					}

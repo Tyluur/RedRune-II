@@ -15,12 +15,15 @@ public interface ItemPlugin extends Plugin {
 	
 	/**
 	 * Handles the interaction with the item
-	 *  @param player
+	 *
+	 * @param player
 	 * 		The player
 	 * @param item
 	 * 		The object
 	 * @param slotId
+	 * 		The slot the item is in
 	 * @param option
+	 * 		The option [string] clicked
 	 */
 	boolean handle(Player player, Item item, int slotId, String option);
 	

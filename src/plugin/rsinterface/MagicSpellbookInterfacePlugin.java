@@ -1,6 +1,6 @@
 package plugin.rsinterface;
 
-import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.InterfacePlugin;
 

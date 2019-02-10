@@ -6,7 +6,7 @@ import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.cutscene.CutsceneManager;
+import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
 import org.redrune.game.entity.actor.player.link.DialogueManager;
@@ -119,7 +119,7 @@ public class Player extends Actor {
 	 * The handler for music
 	 */
 	@Getter
-	private MusicsManager musicsManager;
+	private MusicManager musicManager;
 	
 	/**
 	 * The handler for emotes
@@ -202,7 +202,7 @@ public class Player extends Actor {
 	private transient EventManager eventManager;
 	
 	/**
-	 * The handler for {@link org.redrune.game.content.cutscene.Cutscene}s
+	 * The handler for {@link org.redrune.game.content.entity.actor.player.cutscene.Cutscene}s
 	 */
 	@Getter
 	private transient CutsceneManager cutsceneManager;
@@ -285,7 +285,7 @@ public class Player extends Actor {
 		prayer = new PlayerPrayer();
 		bank = new PlayerBank();
 		controllerManager = new ControllerManager();
-		musicsManager = new MusicsManager();
+		musicManager = new MusicManager();
 		emotesManager = new EmotesManager();
 		contactManager = new ContactManager();
 		charges = new ChargesManager();
@@ -399,8 +399,8 @@ public class Player extends Actor {
 		session.processContextQueue();
 		cutsceneManager.process();
 		super.processEntity();
-		if (musicsManager.musicEnded()) {
-			musicsManager.replayMusic();
+		if (musicManager.musicEnded()) {
+			musicManager.replayMusic();
 		}
 		if (attributes.hasSkull()) {
 			attributes.setSkullDelay(attributes.getSkullDelay() - 1);
@@ -698,7 +698,7 @@ public class Player extends Actor {
 		prayer.setPlayer(this);
 		bank.setPlayer(this);
 		controllerManager.setPlayer(this);
-		musicsManager.setPlayer(this);
+		musicManager.setPlayer(this);
 		emotesManager.setPlayer(this);
 		contactManager.setPlayer(this);
 		auraManager.setPlayer(this);
@@ -775,7 +775,7 @@ public class Player extends Actor {
 		getPackets().sendProfanityFilterConfig();
 		getPackets().sendDefaultPlayersOptions();
 		getEmotesManager().refreshListConfigs();
-		musicsManager.init();
+		musicManager.init();
 		emotesManager.refreshListConfigs();
 		
 		if (attributes.getCurrentFriendChatOwner() != null) {

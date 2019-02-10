@@ -1,7 +1,7 @@
 package org.redrune.game.entity.actor.npc.data.combat;
 
-import org.redrune.game.content.combat.CombatAlgorithm;
-import org.redrune.game.content.combat.npc.CombatScriptsHandler;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.npc.CombatScriptsHandler;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.npc.NPC;

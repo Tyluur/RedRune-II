@@ -19,13 +19,13 @@ public class ChristmasCrackerD extends Dialogue {
 	@Override
 	public void start() {
 		usedOn = (Player) parameters[0];
-		sendDialogue(SEND_3_OPTIONS, DEFAULT_OPTION, "If you pull the cracker, it will be destroyed.", "That's okay, I might get a party hat!", "Stop. I want to keep my cracker.");
+		sendOptions("If you pull the cracker<br>it will be destroyed.", "That's okay, I might get a party hat!", "Stop. I want to keep my cracker.");
 	}
 	
 	@Override
-	public void run(int interfaceId, int componentId) {
+	public void run(int interfcaceId, int componentId) {
 		switch (componentId) {
-			case OPTION_1:
+			case 1:
 				player.getPackets().sendGameMessage("You pull a Christmas cracker...");
 				player.getInventory().deleteItem(962, 1);
 				usedOn.faceActor(player);

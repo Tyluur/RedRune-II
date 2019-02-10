@@ -1,6 +1,6 @@
 package org.redrune.game.content.plugin.combat;
 
-import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.Plugin;

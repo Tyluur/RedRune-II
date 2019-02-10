@@ -1,3 +1,38 @@
+2/9/19 - Dialogue improvement, keybinds, plugins {
+
+Journal
+	+   Updated dialogue system to dynamically load dialogues by reflection
+	+   Updated dialogues with dynamic support for component ids [first, second, ..., options]
+	+   Added keybinds for dialogues
+		-   Space for next, keys [1-5] for options in dialogues
+	+   Added keybinds for interfaces
+		-   Esc for closing current interface
+	+   Added item on npc plugin support
+	+   Added item on player plugin support
+
+Media
+[IMG]https://i.imgur.com/rrbFFdE.gif[/IMG]
+[IMG]https://i.imgur.com/w9Z418f.gif[/IMG]
+}
+
+2/8/19 {
+
+Journal - Object spawning, item on object support & plugins, item on item handling
+	+   Updated object spawning system lightly, objects that were removed/spawned will always do as expected
+	+   Added item on item plugin system
+		-   Updated all previous item on item actions to the new system
+	+   Added item on object plugin system
+	+   Added godsword modification
+		-   Dismantle action
+		-   Godsword shard + anvil = godsword blade
+		-   Godsword blade + godsword hilt = godsword
+	+   Fixed an issue with the item on object packet
+
+Media
+[IMG]https://i.imgur.com/Qs1c3Nj.png[/IMG]
+[IMG]https://i.imgur.com/qz2UN4Z.gif[/IMG]
+}
+
 2/7/19 - Item Plugins, Teleport Tablets, & bone burial {
 
 Journal

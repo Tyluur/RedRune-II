@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.redrune.cache.loaders.AnimationDefinitions;
 import org.redrune.cache.loaders.ObjectDefinitions;
-import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.entity.Entity;
 import org.redrune.game.entity.actor.link.InteractionManager;
 import org.redrune.game.entity.actor.link.PoisonManager;

@@ -1,5 +1,6 @@
 package org.redrune.networking.packet.incoming.impl;
 
+import org.redrune.game.content.entity.object.ObjectHandler;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
@@ -9,7 +10,6 @@ import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.context.PacketContext;
 import org.redrune.networking.packet.context.impl.ObjectClickInteractionPacketContext;
 import org.redrune.networking.packet.context.impl.ObjectItemInteractionPacketContext;
-import org.redrune.networking.packet.handler.ObjectHandler;
 import org.redrune.networking.packet.incoming.IncomingPacketReader;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
@@ -27,6 +27,13 @@ public class ObjectInteractionPacketReader implements IncomingPacketReader {
 	
 	@Override
 	public PacketContext read(Player player, Packet stream) {
+		if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
+			return null;
+		}
+		long currentTime = Misc.currentTimeMillis();
+		if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= currentTime) {
+			return null;
+		}
 		switch (stream.getOpcode()) {
 			case OBJECT_CLICK1_PACKET:
 			case OBJECT_CLICK2_PACKET:
@@ -44,9 +51,6 @@ public class ObjectInteractionPacketReader implements IncomingPacketReader {
 				if (!player.getMapRegionsIds().contains(regionId)) {
 					return null;
 				}
-				if (player.getLocks().isInteractionLocked()) {
-					return null;
-				}
 				WorldObject object = RegionManager.getObjectWithId(tile, id);
 				if (object == null || object.getId() != id) {
 					return null;
@@ -60,21 +64,14 @@ public class ObjectInteractionPacketReader implements IncomingPacketReader {
 				}
 			}
 			case ITEM_ON_OBJECT_PACKET:
-				if (!player.hasStarted() || !player.getAttributes().clientHasLoadedMapRegion() || player.isDead()) {
-					break;
-				}
-				long currentTime = Misc.currentTimeMillis();
-				if (player.getLocks().isInteractionLocked() || player.getEmotesManager().getNextEmoteEnd() >= currentTime) {
-					break;
-				}
-				@SuppressWarnings("unused") final int unknown = stream.readUnsignedByteC();
+				stream.readUnsignedByteC();
 				final int y = stream.readUnsignedShortLE();
 				final int itemSlot = stream.readUnsignedShortLE();
 				final int interfaceHash = stream.readIntLE();
 				final int interfaceId = interfaceHash >> 16;
 				final int itemId = stream.readUnsignedShortLE128();
 				final int x = stream.readUnsignedShortLE();
-				final int id = stream.readInt();
+				final int id = stream.readShort128();
 				final WorldTile tile = new WorldTile(x, y, player.getPlane());
 				int regionId = tile.getRegionId();
 				if (!player.getMapRegionsIds().contains(regionId)) {

@@ -15,6 +15,7 @@ public class ReloadPluginsCommandPlugin extends CommandPlugin {
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
 		PluginRepository.reload();
+		player.getPackets().sendGameMessage("All plugins have been reloaded.");
 	}
 	
 	@Override

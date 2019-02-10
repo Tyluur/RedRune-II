@@ -32,7 +32,7 @@ public class UpdateSequence {
 	public void fire(ActorList<Player> lobbyPlayers, ActorList<Player> gamePlayers, ActorList<NPC> npcs) {
 		start(lobbyPlayers, gamePlayers, npcs);
 		run(gamePlayers);
-		finish(gamePlayers, npcs);
+		finish(lobbyPlayers, gamePlayers, npcs);
 	}
 	
 	/**
@@ -93,7 +93,7 @@ public class UpdateSequence {
 	/**
 	 * Finishes the update sequence
 	 */
-	public void finish(ActorList<Player> players, ActorList<NPC> npcs) {
+	public void finish(ActorList<Player> lobbyPlayers, ActorList<Player> players, ActorList<NPC> npcs) {
 		for (Player player : players) {
 			if (player == null || !player.hasStarted() || player.isFinished()) {
 				continue;
@@ -105,6 +105,18 @@ public class UpdateSequence {
 				continue;
 			}
 			npc.resetMasks();
+		}
+		for (Player player : lobbyPlayers) {
+			if (player == null) {
+				continue;
+			}
+			player.getSession().flush();
+		}
+		for (Player player : players) {
+			if (player == null || !player.hasStarted() || player.isFinished()) {
+				continue;
+			}
+			player.getSession().flush();
 		}
 	}
 	

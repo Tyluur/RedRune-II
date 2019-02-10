@@ -1,7 +1,7 @@
 package plugin.interaction.combat.range;
 
-import org.redrune.game.content.combat.CombatAlgorithm;
-import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;

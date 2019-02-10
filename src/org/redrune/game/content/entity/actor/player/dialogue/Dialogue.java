@@ -1,17 +1,20 @@
 package org.redrune.game.content.entity.actor.player.dialogue;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.ChatAnimations;
 import org.redrune.utility.constants.ColorConstants;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public abstract class Dialogue implements ChatAnimations, ColorConstants {
+	
+	@Setter
+	protected int first, second, third, fourth, fifth;
 	
 	public static final int FIRST = 1, SECOND = 2, THIRD = 3, FOURTH = 4, FIFTH = 5, YES = 1, NO = 2;
 	
@@ -90,16 +93,14 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 		sendEntityDialogue(false, player.getIndex(), animation, message);
 	}
 	
-	public void sendItemDialogue(int itemId, String... messages) {
+	public void sendItemDialogue(int itemId, int itemAmount, String... messages) {
 		int l = messages.length;
 		short interfaceId = (l == 1 ? SEND_1_TEXT_CHAT : l == 2 ? SEND_2_TEXT_CHAT : l == 3 ? SEND_3_TEXT_CHAT : SEND_4_TEXT_CHAT);
-		List<String> text = new ArrayList<String>();
+		List<String> text = new ArrayList<>();
 		text.add("");
-		for (String m : messages) {
-			text.add(m);
-		}
+		Collections.addAll(text, messages);
 		String[] message = text.toArray(new String[text.size()]);
-		sendEntityDialogue(interfaceId, message, IS_ITEM, (Integer) parameters[0], 1);
+		sendEntityDialogue(interfaceId, message, IS_ITEM, itemId, itemAmount);
 	}
 	
 	public void sendDialogue(String... text) {
@@ -170,7 +171,9 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 		if (componentOptions == null) {
 			return false;
 		}
-		if (player == null) { return false; }
+		if (player == null) {
+			return false;
+		}
 		player.getInterfaceManager().sendChatBoxInterface(interId);
 		int properLength = (interId > 213 ? talkDefinitons.length - 1 : talkDefinitons.length);
 		if (properLength != componentOptions.length) {
@@ -428,8 +431,7 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 	
 	public void sendOptions(String... text) {
 		int l = text.length;
-		int interfaceId = (l == 6 ? 238 : l == 5 ? 237 : l == 4 ? 458 : 236);
-		
+		int interfaceId = (l == 6 ? 238 : l == 5 ? 237 : l == 4 ? 230 : 236);
 		String[] messages = new String[text.length + 1];
 		for (int i = 0; i < text.length; i++) {
 			messages[i] = text[i];
@@ -471,6 +473,35 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 	@SuppressWarnings("unchecked")
 	protected <K> K getParam(int indexId) {
 		return (K) parameters[indexId];
+	}
+	
+	public void updateComponents(int interfaceId) {
+		IComponentDefinitions[] defs = IComponentDefinitions.getInterface(interfaceId);
+		if (defs == null) {
+			return;
+		}
+		for (IComponentDefinitions def : defs) {
+			if (def == null) {
+				continue;
+			}
+			switch(def.text) {
+				case "option1":
+					first = def.getWidgetId();
+					break;
+				case "option2":
+					second = def.getWidgetId();
+					break;
+				case "option3":
+					third = def.getWidgetId();
+					break;
+				case "option4":
+					fourth = def.getWidgetId();
+					break;
+				case "option5":
+					fifth = def.getWidgetId();
+					break;
+			}
+		}
 	}
 	
 }

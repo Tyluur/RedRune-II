@@ -10,7 +10,7 @@ public class Banker extends Dialogue {
 	@Override
 	public void start() {
 		npcId = (Integer) parameters[0];
-		sendNPCDialogue(npcId, NORMAL, "Good day, how many I help you?");
+		sendNPCDialogue(npcId, NORMAL, "Good day, how may I help you?");
 	}
 	
 	@Override
@@ -19,15 +19,15 @@ public class Banker extends Dialogue {
 			stage = 0;
 			sendOptions("What would you like to say?", "I'd like to access my bank account, please.", "I'd like to check my PIN settings.", "I'd like to see my collection box.", "What is this place?");
 		} else if (stage == 0) {
-			if (componentId == 1) {
+			if (componentId == first) {
 				player.getBank().openBank();
 				end();
-			} else if (componentId == 2) {
+			} else if (componentId == second) {
 				player.getBank().openSetPin();
 				end();
-			} else if (componentId == 3) {
+			} else if (componentId == third) {
 				end();
-			} else if (componentId == 4) {
+			} else if (componentId == fourth) {
 				stage = 1;
 				player(9827, "What is this place?");
 			} else {
@@ -38,7 +38,7 @@ public class Banker extends Dialogue {
 			sendNPCDialogue(npcId, NORMAL, "This is a branch of the Bank of " + GameConstants.SERVER_NAME + ". We have", "branches in many towns.");
 		} else if (stage == 2) {
 			stage = 3;
-			sendDialogue("What would you like to say?", "And what do you do?", "Didn't you used to be called the Bank of Varrock?");
+			sendOptions("What would you like to say?", "And what do you do?", "Didn't you used to be called the Bank of Varrock?");
 		} else if (stage == 3) {
 			if (componentId == 1) {
 				sendPlayerDialogue(NORMAL, "And what do you do?");

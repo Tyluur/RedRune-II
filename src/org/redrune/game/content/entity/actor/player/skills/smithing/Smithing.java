@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class Smithing extends Action {
 	
-	private static int HAMMER = 2347;
+	public static int HAMMER = 2347;
 	
 	private static int SMITHING_INTERFACE = 300;
 	

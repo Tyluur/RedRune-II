@@ -228,10 +228,8 @@ public final class ItemDefinitions {
 	
 	private int unknownInt25;
 	
-	@Getter
 	private int equipSlot;
 	
-	@Getter
 	private int equipType;
 	
 	private int unknownValue1;
@@ -321,8 +319,6 @@ public final class ItemDefinitions {
 		unknownInt13 = 0;
 		unknownInt17 = 0;
 		unknownInt12 = 0;
-		equipSlot = -1;
-		equipType = -1;
 	}
 	
 	private void setDefaultOptions() {
@@ -399,8 +395,6 @@ public final class ItemDefinitions {
 		setFemaleEquip1(realItem.getFemaleEquip1());
 		setFemaleEquip2(realItem.getFemaleEquip2());
 		setClientScriptData(realItem.getClientScriptData());
-		equipSlot = realItem.equipSlot;
-		equipType = realItem.equipType;
 		setLended(true);
 	}
 	
@@ -427,8 +421,6 @@ public final class ItemDefinitions {
 		setFemaleEquip1(realItem.getFemaleEquip1());
 		setFemaleEquip2(realItem.getFemaleEquip2());
 		setClientScriptData(realItem.getClientScriptData());
-		equipSlot = realItem.equipSlot;
-		equipType = realItem.equipType;
 		setLended(true);
 	}
 	
@@ -457,10 +449,6 @@ public final class ItemDefinitions {
 			setStackable(1);
 		} else if (opcode == 12) {
 			setValue(stream.readInt());
-		} else if (opcode == 13) {
-			equipSlot = stream.readUnsignedByte();
-		} else if (opcode == 14) {
-			equipType = stream.readUnsignedByte();
 		} else if (opcode == 15) {
 			setTradeable(stream.readUnsignedByte() == 1);
 		} else if (opcode == 17) {
@@ -659,7 +647,7 @@ public final class ItemDefinitions {
 				continue;
 			}
 			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
-				return equipSlot != -1;
+				return true;
 			}
 		}
 		return false;
@@ -677,9 +665,6 @@ public final class ItemDefinitions {
 				continue;
 			}
 			if (option.equalsIgnoreCase("wield") || option.equalsIgnoreCase("wear") || option.equalsIgnoreCase("equip")) {
-				if (equipSlot != -1) {
-					return true;
-				}
 				return true;
 			}
 		}
@@ -704,7 +689,7 @@ public final class ItemDefinitions {
 		}
 		return false;
 	}
-
+	
 	/*
 	 * public HashMap<Integer, Integer> getWearingSkillRequiriments() { if
 	 * (clientScriptData == null) return null; HashMap<Integer, Integer> skills

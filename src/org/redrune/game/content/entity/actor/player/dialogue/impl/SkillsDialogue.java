@@ -7,10 +7,6 @@ public final class SkillsDialogue {
 	
 	public static final int MAKE = 0, MAKE_SETS = 1, COOK = 2, ROAST = 3, OFFER = 4, SELL = 5, BAKE = 6, CUT = 7, DEPOSIT = 8, MAKE_NO_ALL_NO_CUSTOM = 9, TELEPORT = 10, SELECT = 11, TAKE = 13;
 	
-	private SkillsDialogue() {
-	
-	}
-	
 	public static void sendSkillsDialogue(Player player, int option, String explanation, int maxQuantity, int[] items, ItemNameFilter filter) {
 		player.getInterfaceManager().sendChatBoxInterface(905);
 		player.getPackets().sendInterface(true, 905, 4, 916);

@@ -1,6 +1,6 @@
 package plugin.rsinterface;
 
-import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.entity.actor.player.action.impl.PlayerRestAction;
 import org.redrune.game.content.entity.actor.player.dialogue.impl.Transportation;

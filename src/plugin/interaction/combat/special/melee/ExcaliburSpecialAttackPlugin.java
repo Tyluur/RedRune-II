@@ -1,7 +1,7 @@
 package plugin.interaction.combat.special.melee;
 
 import org.redrune.utility.constants.GameConstants;
-import org.redrune.game.content.combat.player.AbstractCombatStyle;
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.ForceTalk;

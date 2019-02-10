@@ -5,7 +5,7 @@
 package org.redrune.game.entity.actor.npc.impl.jad;
 
 import org.redrune.engine.SystemManager;
-import org.redrune.game.content.combat.function.Magic;
+import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;

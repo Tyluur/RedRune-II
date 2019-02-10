@@ -2,9 +2,11 @@ package org.redrune.game.entity.actor.player.link;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InterfaceManager {
@@ -53,6 +55,7 @@ public class InterfaceManager {
 	
 	public void sendChatBoxInterface(int interfaceId) {
 		player.getPackets().sendInterface(true, 752, CHAT_BOX_TAB, interfaceId);
+		player.getDialogueManager().updateComponents(interfaceId);
 	}
 	
 	public void closeChatBoxInterface() {
@@ -92,7 +95,7 @@ public class InterfaceManager {
 			sendFixedInterfaces();
 		}
 		player.getCombatDefinitions().sendUnlockAttackStylesButtons();
-		player.getMusicsManager().unlockMusicPlayer();
+		player.getMusicManager().unlockMusicPlayer();
 		player.getInventory().unlockInventoryOptions();
 		player.getPrayer().unlockPrayerBookButtons();
 		if (player.getFamiliar() != null && player.isRunning()) {
@@ -497,6 +500,29 @@ public class InterfaceManager {
 	public int openGameTab(int tabId) {
 		player.getPackets().sendGlobalConfig(168, tabId);
 		return 4;
+	}
+	
+	public int getChatboxInterface() {
+		int[] ids = openedinterfaces.get(CHAT_BOX_TAB);
+		if (ids == null) {
+			return -1;
+		}
+		for (int id : ids) {
+			if (id == 752) {
+				continue;
+			}
+			return id;
+		}
+		return -1;
+	}
+	
+	public IComponentDefinitions getDialogueInterfaceDefinitions(String text) {
+		final int chatboxInterface = player.getInterfaceManager().getChatboxInterface();
+		if (chatboxInterface == -1) {
+			return null;
+		}
+		Optional<IComponentDefinitions> optional = IComponentDefinitions.getComponentByText(chatboxInterface, text);
+		return optional.orElse(null);
 	}
 	
 }

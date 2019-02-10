@@ -16,6 +16,7 @@ import plugin.command.CommandManifest;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,21 +62,40 @@ public class PluginRepository {
 	private static final Map<String, RangeWeaponPlugin> RANGE_PLUGINS = new HashMap<>();
 	
 	/**
+	 * The map of item on item  plugins
+	 */
+	private static final Map<Integer, Map<Integer, ItemOnItemPlugin>> ITEM_ON_ITEM_PLUGINS = new HashMap<>();
+	
+	/**
+	 * The map of item on object plugins
+	 */
+	private static final Map<Integer, Map<Integer, ItemOnObjectPlugin>> ITEM_ON_OBJECT_PLUGINS = new HashMap<>();
+	
+	/**
+	 * The map of item on object plugins
+	 */
+	private static final Map<Integer, Map<Integer, ItemOnNPCPlugin>> ITEM_ON_NPC_PLUGINS = new HashMap<>();
+	
+	/**
+	 * The map of item on object plugins
+	 */
+	private static final Map<Integer, ItemOnPlayerPlugin> ITEM_ON_PLAYER_PLUGINS = new HashMap<>();
+	
+	/**
 	 * The map of spell plugins
 	 */
 	private static final Map<MagicBook, Map<Integer, SpellPlugin>> SPELL_PLUGINS = new HashMap<>();
 	
 	/**
+	 * The list of all plugins
+	 */
+	private static final AtomicInteger PLUGIN_COUNT = new AtomicInteger();
+	
+	/**
 	 * Reloads all plugins
 	 */
 	public static void reload() {
-		SPECIAL_PLUGINS.clear();
-		RANGE_PLUGINS.clear();
-		SPELL_PLUGINS.clear();
-		COMMAND_PLUGINS.clear();
-		INTERFACE_PLUGINS.clear();
-		NPC_PLUGINS.clear();
-		OBJECT_PLUGINS.clear();
+		PLUGIN_COUNT.set(0);
 		registerAll();
 	}
 	
@@ -83,8 +103,12 @@ public class PluginRepository {
 	 * Registers all the plugins
 	 */
 	public static void registerAll() {
-		Misc.getClasses("plugin").stream().filter(Plugin.class::isInstance).forEach(clazz -> ((Plugin) clazz).register());
-		System.out.println("Registered " + SPECIAL_PLUGINS.size() + " special plugins, " + RANGE_PLUGINS.size() + " range plugins, " + getSpellCount() + " spell plugins, " + COMMAND_PLUGINS.size() + " command plugins, " + INTERFACE_PLUGINS.size() + " interface plugins, " + NPC_PLUGINS.size() + " npc plugins, " + OBJECT_PLUGINS.size() + " object plugins, and " + ITEM_PLUGINS.size() + " item plugins");
+		Misc.getClasses("plugin").stream().filter(Plugin.class::isInstance).forEach(clazz -> {
+			Plugin plugin = (Plugin) clazz;
+			plugin.register();
+			PLUGIN_COUNT.incrementAndGet();
+		});
+		System.out.println("Registered " + PLUGIN_COUNT.intValue() + " plugins");
 	}
 	
 	/**
@@ -118,7 +142,8 @@ public class PluginRepository {
 				pluginList.add((InterfacePlugin) plugin);
 				INTERFACE_PLUGINS.put(key, pluginList);
 			}
-		} else if (plugin instanceof SpecialAttackPlugin) {
+		}
+		if (plugin instanceof SpecialAttackPlugin) {
 			for (int key : keys) {
 				SPECIAL_PLUGINS.put(key, (SpecialAttackPlugin) plugin);
 			}
@@ -138,7 +163,8 @@ public class PluginRepository {
 			for (String key : keys) {
 				COMMAND_PLUGINS.put(key, (CommandPlugin) plugin);
 			}
-		} else if (plugin instanceof RangeWeaponPlugin) {
+		}
+		if (plugin instanceof RangeWeaponPlugin) {
 			for (String key : keys) {
 				RANGE_PLUGINS.put(key, (RangeWeaponPlugin) plugin);
 			}
@@ -179,7 +205,8 @@ public class PluginRepository {
 				pluginMap.put(option, (NPCPlugin) plugin);
 			}
 			NPC_PLUGINS.put(key, pluginMap);
-		} else if (plugin instanceof ObjectPlugin) {
+		}
+		if (plugin instanceof ObjectPlugin) {
 			Map<String, ObjectPlugin> pluginMap;
 			if (OBJECT_PLUGINS.containsKey(key)) {
 				pluginMap = OBJECT_PLUGINS.get(key);
@@ -190,7 +217,8 @@ public class PluginRepository {
 				pluginMap.put(option, (ObjectPlugin) plugin);
 			}
 			OBJECT_PLUGINS.put(key, pluginMap);
-		} else if (plugin instanceof ItemPlugin) {
+		}
+		if (plugin instanceof ItemPlugin) {
 			Map<String, ItemPlugin> pluginMap;
 			if (ITEM_PLUGINS.containsKey(key)) {
 				pluginMap = ITEM_PLUGINS.get(key);
@@ -201,6 +229,52 @@ public class PluginRepository {
 				pluginMap.put(option, (ItemPlugin) plugin);
 			}
 			ITEM_PLUGINS.put(key, pluginMap);
+		}
+	}
+	
+	/**
+	 * Registers an entity plugin that is used on another entity of the same type
+	 *
+	 * @param plugin
+	 * 		The plugin instance
+	 * @param key
+	 * 		The key of the plugin
+	 * @param withs
+	 * 		The with ids
+	 */
+	public static void registerEntityOnPlugin(Plugin plugin, int key, int... withs) {
+		if (plugin instanceof ItemOnItemPlugin) {
+			Map<Integer, ItemOnItemPlugin> plugins = ITEM_ON_ITEM_PLUGINS.get(key);
+			if (plugins == null) {
+				plugins = new HashMap<>();
+			}
+			for (int with : withs) {
+				plugins.put(with, (ItemOnItemPlugin) plugin);
+			}
+			ITEM_ON_ITEM_PLUGINS.put(key, plugins);
+		}
+		if (plugin instanceof ItemOnObjectPlugin) {
+			Map<Integer, ItemOnObjectPlugin> plugins = ITEM_ON_OBJECT_PLUGINS.get(key);
+			if (plugins == null) {
+				plugins = new HashMap<>();
+			}
+			for (int with : withs) {
+				plugins.put(with, (ItemOnObjectPlugin) plugin);
+			}
+			ITEM_ON_OBJECT_PLUGINS.put(key, plugins);
+		}
+		if (plugin instanceof ItemOnNPCPlugin) {
+			Map<Integer, ItemOnNPCPlugin> plugins = ITEM_ON_NPC_PLUGINS.get(key);
+			if (plugins == null) {
+				plugins = new HashMap<>();
+			}
+			for (int with : withs) {
+				plugins.put(with, (ItemOnNPCPlugin) plugin);
+			}
+			ITEM_ON_NPC_PLUGINS.put(key, plugins);
+		}
+		if (plugin instanceof ItemOnPlayerPlugin) {
+			ITEM_ON_PLAYER_PLUGINS.put(key, (ItemOnPlayerPlugin) plugin);
 		}
 	}
 	
@@ -335,6 +409,95 @@ public class PluginRepository {
 			return false;
 		}
 		return plugin.handle(player, item, slotId, option);
+	}
+	
+	/**
+	 * Handles the item on item logic
+	 *
+	 * @param player
+	 * 		The player
+	 * @param used
+	 * 		The item used
+	 * @param with
+	 * 		The item used with
+	 */
+	public static boolean handleItemOnItem(Player player, Item used, Item with) {
+		Map<Integer, ItemOnItemPlugin> itemOnPluginMap = ITEM_ON_ITEM_PLUGINS.get(used.getId());
+		if (itemOnPluginMap == null) {
+			itemOnPluginMap = ITEM_ON_ITEM_PLUGINS.get(with.getId());
+		}
+		if (itemOnPluginMap == null) {
+			return false;
+		}
+		ItemOnItemPlugin plugin = itemOnPluginMap.get(used.getId());
+		if (plugin == null) {
+			plugin = itemOnPluginMap.get(with.getId());
+		}
+		if (plugin == null) {
+			return false;
+		}
+		return plugin.handleItemOnItem(player, used, with);
+	}
+	
+	/**
+	 * Handles the usage of a plugin for an item on an object interaction
+	 *
+	 * @param player
+	 * 		The player
+	 * @param item
+	 * 		The item used
+	 * @param object
+	 * 		The object the item was used on
+	 */
+	public static boolean handleItemOnObject(Player player, Item item, WorldObject object) {
+		Map<Integer, ItemOnObjectPlugin> itemOnPluginMap = ITEM_ON_OBJECT_PLUGINS.get(item.getId());
+		if (itemOnPluginMap == null) {
+			return false;
+		}
+		ItemOnObjectPlugin plugin = itemOnPluginMap.get(object.getId());
+		if (plugin == null) {
+			return false;
+		}
+		return plugin.handle(player, item, object);
+	}
+	
+	/**
+	 * Handles the usage of a plugin for an item on an npc interaction
+	 *
+	 * @param player
+	 * 		The player
+	 * @param item
+	 * 		The item used
+	 * @param npc
+	 * 		The npc the item was used on
+	 */
+	public static boolean handleItemOnNPC(Player player, Item item, NPC npc) {
+		Map<Integer, ItemOnNPCPlugin> itemOnPluginMap = ITEM_ON_NPC_PLUGINS.get(item.getId());
+		if (itemOnPluginMap == null) {
+			return false;
+		}
+		ItemOnNPCPlugin plugin = itemOnPluginMap.get(npc.getId());
+		if (plugin == null) {
+			return false;
+		}
+		return plugin.handle(player, item, npc);
+	}
+	/**
+	 * Handles the usage of a plugin for an item on an npc interaction
+	 *
+	 * @param player
+	 * 		The player
+	 * @param item
+	 * 		The item used
+	 * @param partner
+	 * 		The player the item was used on
+	 */
+	public static boolean handleItemOnPlayer(Player player, Item item, Player partner) {
+		ItemOnPlayerPlugin plugin = ITEM_ON_PLAYER_PLUGINS.get(item.getId());
+		if (plugin == null) {
+			return false;
+		}
+		return plugin.handle(player, item, partner);
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 package plugin.interaction.combat.magic.modern.strike;
 
-import org.redrune.game.content.combat.player.style.MagicCombatStyle;
+import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;

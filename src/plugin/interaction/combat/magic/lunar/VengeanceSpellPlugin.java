@@ -1,6 +1,6 @@
 package plugin.interaction.combat.magic.lunar;
 
-import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;

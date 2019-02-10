@@ -170,7 +170,7 @@ public interface PacketConstants {
 		PACKET_SIZES[17] = -1;
 		PACKET_SIZES[44] = -1;
 		PACKET_SIZES[88] = -1;
-		PACKET_SIZES[42] = 17;
+		PACKET_SIZES[42] = 15;
 		PACKET_SIZES[49] = 3;
 		PACKET_SIZES[21] = 15;
 		PACKET_SIZES[59] = -1;

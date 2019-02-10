@@ -1,8 +1,8 @@
 package org.redrune.game.content.entity.actor.player.action.impl;
 
 import org.redrune.game.content.entity.actor.player.action.Action;
-import org.redrune.game.content.combat.CombatAlgorithm;
-import org.redrune.game.content.combat.player.CombatStyle;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.player.CombatStyle;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.functions.Misc;

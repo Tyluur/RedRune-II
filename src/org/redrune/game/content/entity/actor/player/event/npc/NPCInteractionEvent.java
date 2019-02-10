@@ -87,7 +87,7 @@ public class NPCInteractionEvent extends Event {
 		if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
 			player.getDialogueManager().startDialogue(Banker.class, npc.getId());
 		} else {
-			player.getPackets().sendGameMessage("Nothing interesting happens...");
+			player.getPackets().sendGameMessage("Nothing interesting happens.");
 			if (GameFlags.debugMode) {
 				System.out.println("No plugin registered for option " + option + " on npc " + npc);
 			}
@@ -143,7 +143,7 @@ public class NPCInteractionEvent extends Event {
 		if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker") || npc.getId() == 13455) {
 			player.getBank().openBank();
 		} else {
-			player.getPackets().sendGameMessage("Nothing interesting happens...");
+			player.getPackets().sendGameMessage("Nothing interesting happens.");
 			if (GameFlags.debugMode) {
 				System.out.println("No plugin registered for option " + option + " on npc " + npc);
 			}
@@ -168,7 +168,7 @@ public class NPCInteractionEvent extends Event {
 		if (PluginRepository.handleNPC(player, npc, option)) {
 			return;
 		}
-		player.getPackets().sendGameMessage("Nothing interesting happens...");
+		player.getPackets().sendGameMessage("Nothing interesting happens.");
 		if (GameFlags.debugMode) {
 			System.out.println("No plugin registered for option " + option + " on npc " + npc);
 		}
@@ -192,7 +192,7 @@ public class NPCInteractionEvent extends Event {
 		if (PluginRepository.handleNPC(player, npc, option)) {
 			return;
 		}
-		player.getPackets().sendGameMessage("Nothing interesting happens...");
+		player.getPackets().sendGameMessage("Nothing interesting happens.");
 		if (GameFlags.debugMode) {
 			System.out.println("No plugin registered for option " + option + " on npc " + npc);
 		}

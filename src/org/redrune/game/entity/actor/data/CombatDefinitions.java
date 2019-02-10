@@ -1,7 +1,7 @@
 package org.redrune.game.entity.actor.data;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.content.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;

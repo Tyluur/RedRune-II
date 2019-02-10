@@ -323,4 +323,12 @@ public class Packet {
 	public int readUnsignedShortLE() {
 		return readUnsignedByte() + (readUnsignedByte() << 8);
 	}
+	
+	public int readShort128() {
+		int i = (readUnsignedByte() << 8) + (readByte() - 128 & 0xff);
+		if (i > 32767) {
+			i -= 0x10000;
+		}
+		return i;
+	}
 }

@@ -56,4 +56,11 @@ public class DialogueManager {
 		}
 	}
 	
+	public void updateComponents(int interfaceId) {
+		if (lastDialogue == null) {
+			return;
+		}
+		lastDialogue.updateComponents(interfaceId);
+	}
+	
 }

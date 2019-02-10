@@ -54,7 +54,7 @@ public final class RegionManager {
 				Player player = (Player) actor;
 				int musicId = region.getMusicId();
 				if (musicId != -1) {
-					player.getMusicsManager().checkMusic(musicId);
+					player.getMusicManager().checkMusic(musicId);
 				}
 			} else {
 				if (actor.getLastRegionId() > 0) {

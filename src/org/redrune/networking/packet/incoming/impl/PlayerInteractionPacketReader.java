@@ -2,7 +2,7 @@ package org.redrune.networking.packet.incoming.impl;
 
 import org.redrune.game.content.entity.actor.player.event.player.PlayerAttackEvent;
 import org.redrune.game.content.entity.actor.player.event.player.PlayerFollowEvent;
-import org.redrune.game.content.entity.actor.player.event.player.PlayerMagicCastEvent;
+import org.redrune.game.content.entity.actor.player.event.player.PlayerInterfaceInteractionEvent;
 import org.redrune.game.content.entity.actor.player.event.player.PlayerTradeEvent;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
@@ -101,9 +101,9 @@ public class PlayerInteractionPacketReader implements IncomingPacketReader {
 				}
 				int playerIndex = stream.readUnsignedShortLE();
 				int interfaceHash = stream.readIntLE();
-				final int slotId = stream.readUnsignedShort();
+				final int junk1 = stream.readUnsignedShort();
 				@SuppressWarnings("unused") boolean unknown = stream.read128Byte() == 1;
-				@SuppressWarnings("unused") int junk2 = stream.readUnsignedShortLE128();
+				@SuppressWarnings("unused") int slotId = stream.readUnsignedShortLE128();
 				final int interfaceId = interfaceHash >> 16;
 				int componentId = interfaceHash - (interfaceId << 16);
 				if (Misc.getInterfaceDefinitionsSize() <= interfaceId) {
@@ -126,7 +126,7 @@ public class PlayerInteractionPacketReader implements IncomingPacketReader {
 				return new PacketContext() {
 					@Override
 					public void handle(Player player) {
-						player.getEventManager().start(new PlayerMagicCastEvent(p2, interfaceId, finalComponentId, slotId));
+						player.getEventManager().start(new PlayerInterfaceInteractionEvent(p2, interfaceId, finalComponentId, slotId));
 					}
 				};
 			}
