@@ -1,3 +1,30 @@
+2/20/19 - Doors & npc data {
+
+Journal
+	+   Added a large collection of doors to the world map, most doors now world [open/close]
+	+   Added a large collection of gates/fences to the world map, most of them work now [open/close]
+	+   Went through main cities in RedRune and added all missing door configuration
+		-   Varrock, Lumbridge, Falador, Draynor Village, Entrana, Port Sarim, Edgeville
+	+   Updated npc data slightly, nowhere close to done yet...
+	+   Transfered server dependencies to gradle
+
+Media
+[IMG]https://imgur.com/BF9zqzu.gif[/IMG]
+[IMG]https://i.imgur.com/BPomO1I.png[/IMG]
+[IMG]https://i.imgur.com/AZ2gEaX.gif[/IMG]
+}
+
+2/19/19 - NPC Data Collection {
+
+Journal
+	+   Updated npc data mapping slightly
+	+   Collected large data dump from Arios and converted to RedRune format
+
+Media
+[IMG]https://i.imgur.com/rnzEYeZ.png[/IMG]
+
+}
+
 2/9/19 - Dialogue improvement, keybinds, plugins {
 
 Journal
@@ -15,9 +42,9 @@ Media
 [IMG]https://i.imgur.com/w9Z418f.gif[/IMG]
 }
 
-2/8/19 {
+2/8/19 - Object spawning, item on object support & plugins, item on item handling {
 
-Journal - Object spawning, item on object support & plugins, item on item handling
+Journal
 	+   Updated object spawning system lightly, objects that were removed/spawned will always do as expected
 	+   Added item on item plugin system
 		-   Updated all previous item on item actions to the new system

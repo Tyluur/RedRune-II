@@ -1,0 +1,71 @@
+package plugin.command.player;
+
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.item.Item;
+import org.redrune.game.content.plugin.type.CommandPlugin;
+import org.redrune.game.global.World;
+import org.redrune.utility.constants.SkillConstants;
+import plugin.command.CommandManifest;
+
+import java.util.HashMap;
+
+/**
+ * @author Tyluur <itstyluur@gmail.com>
+ * @since 9/1/2017
+ */
+@CommandManifest(description = "Copies another player", types = { String.class })
+public class CopyCommandPlugin extends CommandPlugin {
+	
+	@Override
+	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
+		String username = getCompleted(args, 1);
+		Player p2 = World.getPlayerByDisplayName(username);
+		if (p2 == null) {
+			player.getPackets().sendMessage("Couldn't find player " + username + ".");
+			return;
+		}
+		if (!player.getEquipment().isWearingArmour()) {
+			player.getPackets().sendMessage("Please remove your armour first.");
+			return;
+		}
+		Item[] items = p2.getEquipment().getItems().getItemsCopy();
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] == null) {
+				continue;
+			}
+			HashMap<Integer, Integer> skillRequirements = items[i].getDefinitions().getWearingSkillRequirements();
+			boolean hasRequirements = true;
+			if (skillRequirements != null) {
+				for (int skillId : skillRequirements.keySet()) {
+					if (skillId > 24 || skillId < 0) {
+						continue;
+					}
+					int level = skillRequirements.get(skillId);
+					if (level < 0 || level > 120) {
+						continue;
+					}
+					if (player.getSkills().getLevelForXp(skillId) < level) {
+						if (hasRequirements) {
+							player.getPackets().sendMessage("You are not high enough level to use this item.");
+						}
+						hasRequirements = false;
+						String name = SkillConstants.SKILL_NAME[skillId].toLowerCase();
+						player.getPackets().sendMessage("You need to have a" + (name.startsWith("a") ? "n" : "") + " " + name + " level of " + level + ".");
+					}
+					
+				}
+			}
+			if (!hasRequirements) {
+				return;
+			}
+			player.getEquipment().getItems().set(i, items[i]);
+			player.getEquipment().refresh(i);
+		}
+		player.getAppearance().generateAppearanceData();
+	}
+	
+	@Override
+	public String[] identifiers() {
+		return arguments("copy");
+	}
+}

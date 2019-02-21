@@ -8,6 +8,7 @@
 # class files
 *.class
 /bin
+/out
 
 # virtual machine crash logs
 hs_err_pid*
@@ -17,6 +18,8 @@ hs_err_pid*
 *.iml
 *.project
 *.classpath
+.idea/*
+.gradle/*
 
 # player saves
 /data/saves/characters/*
