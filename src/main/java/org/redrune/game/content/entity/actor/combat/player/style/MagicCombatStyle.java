@@ -149,6 +149,10 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 			player.setNextAnimation(new Animation(plugin.animationId()));
 		}
 		
+		if (plugin.castSoundId() != -1) {
+			playSingleSound(player, plugin.castSoundId());
+		}
+		
 		// sends the task that is executed when the spell is used successfully
 		if (damage > 0 && spellCastTask != null) {
 			spellCastTask.run();
@@ -168,6 +172,9 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 					} else {
 						if (plugin.hitGfx() != -1) {
 							target.setNextGraphics(new Graphics(plugin.hitGfx(), 0, plugin.gfxHeight()));
+						}
+						if (plugin.impactSoundId() != -1) {
+							playAreaSound(player, plugin.impactSoundId());
 						}
 						if (damage > 0 && hitLandTask != null) {
 							hitLandTask.run();

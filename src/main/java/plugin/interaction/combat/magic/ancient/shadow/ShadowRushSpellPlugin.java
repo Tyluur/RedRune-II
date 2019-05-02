@@ -57,4 +57,14 @@ public class ShadowRushSpellPlugin implements CombatSpellPlugin {
 	public MagicBook book() {
 		return MagicBook.ANCIENTS;
 	}
+	
+	@Override
+	public int castSoundId() {
+		return 175;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return 176;
+	}
 }

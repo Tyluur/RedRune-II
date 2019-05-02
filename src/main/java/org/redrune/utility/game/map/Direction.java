@@ -5,6 +5,7 @@ import org.redrune.game.global.map.region.RegionManager;
 
 /**
  * Represents a direction.
+ *
  * @author Emperor
  */
 public enum Direction {
@@ -71,10 +72,15 @@ public enum Direction {
 	
 	/**
 	 * Constructs a new {@code Direction} {@code Object}.
-	 * @param stepX The x-offset to move a step.
-	 * @param stepY The y-offset to move a step.
-	 * @param value The direction value.
-	 * @param traversal The traversal flags.
+	 *
+	 * @param stepX
+	 * 		The x-offset to move a step.
+	 * @param stepY
+	 * 		The y-offset to move a step.
+	 * @param value
+	 * 		The direction value.
+	 * @param traversal
+	 * 		The traversal flags.
 	 */
 	private Direction(int stepX, int stepY, int value, int... traversal) {
 		this.stepX = stepX;
@@ -85,7 +91,9 @@ public enum Direction {
 	
 	/**
 	 * Gets the direction.
-	 * @param rotation The int value.
+	 *
+	 * @param rotation
+	 * 		The int value.
 	 * @return The direction.
 	 */
 	public static Direction get(int rotation) {
@@ -98,9 +106,10 @@ public enum Direction {
 	}
 	
 	/**
-	 * Gets the walk point for a direction. <br> The point will be the offset to
-	 * the location the node is facing.
-	 * @param direction The direction.
+	 * Gets the walk point for a direction. <br> The point will be the offset to the location the node is facing.
+	 *
+	 * @param direction
+	 * 		The direction.
 	 * @return The point.
 	 */
 	public static Point getWalkPoint(Direction direction) {
@@ -109,8 +118,11 @@ public enum Direction {
 	
 	/**
 	 * Gets the direction.
-	 * @param location The start location.
-	 * @param l The end location.
+	 *
+	 * @param location
+	 * 		The start location.
+	 * @param l
+	 * 		The end location.
 	 * @return The direction.
 	 */
 	public static Direction getDirection(WorldTile location, WorldTile l) {
@@ -119,8 +131,11 @@ public enum Direction {
 	
 	/**
 	 * Gets the direction for movement.
-	 * @param diffX The difference between 2 x-coordinates.
-	 * @param diffY The difference between 2 y-coordinates.
+	 *
+	 * @param diffX
+	 * 		The difference between 2 x-coordinates.
+	 * @param diffY
+	 * 		The difference between 2 y-coordinates.
 	 * @return The direction.
 	 */
 	public static Direction getDirection(int diffX, int diffY) {
@@ -147,8 +162,11 @@ public enum Direction {
 	
 	/**
 	 * Gets the direction for the given walking flag.
-	 * @param walkingFlag The walking flag.
-	 * @param rotation The rotation.
+	 *
+	 * @param walkingFlag
+	 * 		The walking flag.
+	 * @param rotation
+	 * 		The rotation.
 	 * @return The direction, or null if the walk flag was 0.
 	 */
 	public static Direction forWalkFlag(int walkingFlag, int rotation) {
@@ -174,6 +192,7 @@ public enum Direction {
 	
 	/**
 	 * Gets the opposite dir.
+	 *
 	 * @return the direction.
 	 */
 	public Direction getOpposite() {
@@ -182,8 +201,11 @@ public enum Direction {
 	
 	/**
 	 * Gets the most logical direction.
-	 * @param location The start location.
-	 * @param l The end location.
+	 *
+	 * @param location
+	 * 		The start location.
+	 * @param l
+	 * 		The end location.
 	 * @return The most logical direction.
 	 */
 	public static Direction getLogicalDirection(WorldTile location, WorldTile l) {
@@ -203,7 +225,9 @@ public enum Direction {
 	
 	/**
 	 * Method used to go to clue the anme.
-	 * @param direction the direction.
+	 *
+	 * @param direction
+	 * 		the direction.
 	 * @return the name.
 	 */
 	public String toName(Direction direction) {
@@ -212,6 +236,7 @@ public enum Direction {
 	
 	/**
 	 * Method used to get the direction to an integer.
+	 *
 	 * @return the integer.
 	 */
 	public int toInteger() {
@@ -220,6 +245,7 @@ public enum Direction {
 	
 	/**
 	 * Gets the stepX.
+	 *
 	 * @return The stepX.
 	 */
 	public int getStepX() {
@@ -228,6 +254,7 @@ public enum Direction {
 	
 	/**
 	 * Gets the stepY.
+	 *
 	 * @return The stepY.
 	 */
 	public int getStepY() {
@@ -236,11 +263,13 @@ public enum Direction {
 	
 	/**
 	 * Checks if traversal is permitted for this direction.
-	 * @param l The location.
+	 *
+	 * @param l
+	 * 		The location.
 	 * @return {@code True} if so.
 	 */
 	public boolean canMove(WorldTile l) {
-		int flag = RegionManager.getRegion(l.getRegionId()).getMask(l.getPlane(), l.getX(), l.getY());
+		int flag = RegionManager.getMask(l.getPlane(), l.getX(), l.getY());
 		for (int f : traversal) {
 			if ((flag & f) != 0) {
 				return false;
@@ -251,6 +280,7 @@ public enum Direction {
 	
 	/**
 	 * Gets the traversal.
+	 *
 	 * @return The traversal.
 	 */
 	public int[] getTraversal() {
@@ -259,9 +289,10 @@ public enum Direction {
 	
 	/**
 	 * Sets the traversal.
-	 * @param traversal The traversal to set.
+	 *
+	 * @param traversal
+	 * 		The traversal to set.
 	 */
 	public void setTraversal(int[] traversal) {
 		this.traversal = traversal;
-	}
-}
+	}}

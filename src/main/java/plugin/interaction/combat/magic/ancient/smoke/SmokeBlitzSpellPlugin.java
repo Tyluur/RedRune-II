@@ -61,4 +61,13 @@ public class SmokeBlitzSpellPlugin implements CombatSpellPlugin {
 		return MagicBook.ANCIENTS;
 	}
 	
+	@Override
+	public int castSoundId() {
+		return 183;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return 184;
+	}
 }

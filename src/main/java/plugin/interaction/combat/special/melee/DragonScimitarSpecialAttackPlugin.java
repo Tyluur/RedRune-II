@@ -44,6 +44,6 @@ public class DragonScimitarSpecialAttackPlugin extends SpecialAttackPlugin {
 			}
 		}
 		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), damage, 0);
-		style.playSound(2540, source, target);
+		style.playAreaSound(source, 2540);
 	}
 }

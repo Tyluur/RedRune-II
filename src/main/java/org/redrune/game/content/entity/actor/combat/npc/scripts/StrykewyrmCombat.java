@@ -75,7 +75,6 @@ public class StrykewyrmCombat extends CombatScript {
 				@Override
 				public void run() {
 					if (count == 0) {
-
 						npc.transformIntoNPC(id - 1);
 						npc.setForceWalk(tile);
 						count++;

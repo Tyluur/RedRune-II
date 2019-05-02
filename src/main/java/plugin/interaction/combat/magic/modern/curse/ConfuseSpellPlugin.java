@@ -59,4 +59,13 @@ public class ConfuseSpellPlugin implements CombatSpellPlugin {
 		return MagicBook.REGULAR;
 	}
 	
+	@Override
+	public int castSoundId() {
+		return 99;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return castSoundId() - 1;
+	}
 }

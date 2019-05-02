@@ -11,6 +11,7 @@ import org.redrune.game.global.World;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.game.repository.npc.spawn.NPCSpawn;
 
 import java.io.*;
 import java.net.SocketAddress;
@@ -204,11 +205,14 @@ public final class Misc {
 	
 	@SuppressWarnings("rawtypes")
 	private static List<Class> findClasses(File directory, String packageName) {
-		List<Class> classes = new ArrayList<Class>();
+		List<Class> classes = new ArrayList<>();
 		if (!directory.exists()) {
 			return classes;
 		}
 		File[] files = directory.listFiles();
+		if (files == null) {
+			return classes;
+		}
 		for (File file : files) {
 			if (file.getName().contains("$")) {
 				continue;
@@ -1184,7 +1188,7 @@ public final class Misc {
 	 */
 	public static List<Object> getClassesInDirectory(String directory) {
 		List<Object> classes = new ArrayList<>();
-		String format = String.format("./out/production/classes/%s", directory.replace(".", "/"));
+		String format = String.format("./classes/java/main/%s", directory.replace(".", "/"));
 		final File[] files = new File(format).listFiles();
 		if (files == null) {
 			return classes;

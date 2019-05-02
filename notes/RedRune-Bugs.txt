@@ -1,0 +1,2 @@
+[Combat]
+	+   Special attack goes off after switching weapons with auto fire [gmaul]

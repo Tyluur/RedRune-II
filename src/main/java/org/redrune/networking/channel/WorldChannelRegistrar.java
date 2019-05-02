@@ -15,21 +15,29 @@ public class WorldChannelRegistrar extends ChannelInboundHandlerAdapter {
 	
 	@Override
 	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-		NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
-		if (session == null) {
-			System.out.println("Channel disconnected with no session");
-			return;
+		try {
+			NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
+			if (session == null) {
+				System.out.println("Channel disconnected with no session");
+				return;
+			}
+			session.onRegistration();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		session.onRegistration();
 	}
 	
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
-		if (session == null) {
-			System.out.println("Channel disconnected with no session");
-			return;
+		try {
+			NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
+			if (session == null) {
+				System.out.println("Channel disconnected with no session");
+				return;
+			}
+			session.onDeregistration();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		session.onDeregistration();
 	}
 }

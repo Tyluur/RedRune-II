@@ -908,7 +908,6 @@ public abstract class Actor extends WorldTile implements Entity {
 			return -1;
 		}
 		return step[0];
-		
 	}
 	
 	@Override

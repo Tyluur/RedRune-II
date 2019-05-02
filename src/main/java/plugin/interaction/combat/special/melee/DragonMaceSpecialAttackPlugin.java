@@ -27,6 +27,6 @@ public class DragonMaceSpecialAttackPlugin extends SpecialAttackPlugin {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
 		style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.5), style.getRandomDamage(source, target, 1.5), 0);
-		style.playSound(2541, source, target);
+		style.playAreaSound(source, 2541);
 	}
 }

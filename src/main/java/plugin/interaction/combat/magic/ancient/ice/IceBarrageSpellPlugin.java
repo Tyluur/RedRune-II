@@ -74,4 +74,13 @@ public class IceBarrageSpellPlugin implements CombatSpellPlugin {
 		return MagicBook.ANCIENTS;
 	}
 	
+	@Override
+	public int castSoundId() {
+		return 171;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return 168;
+	}
 }

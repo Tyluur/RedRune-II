@@ -2663,5 +2663,15 @@
     "id": 2514,
     "replaceId": 11625,
     "autoWalk": true
+  },
+  {
+    "id": 1600,
+    "replaceId": 1600,
+    "autoWalk": true
+  },
+  {
+    "id": 1601,
+    "replaceId": 1601,
+    "autoWalk": true
   }
 ]

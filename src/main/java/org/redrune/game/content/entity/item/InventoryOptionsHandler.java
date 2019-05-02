@@ -28,6 +28,7 @@ public class InventoryOptionsHandler {
 			}
 			player.stopAll(false);
 			PlayerEquipment.equipMultipleSlots(player, new int[] { slotId });
+			player.getCombatDefinitions().setUsingSpecialAttack(false);
 			return;
 		} else if (PluginRepository.handleItem(player, item, slotId, item.getDefinitions().getInventoryOption(2))) {
 			return;

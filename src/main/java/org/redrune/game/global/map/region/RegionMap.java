@@ -1,5 +1,7 @@
 package org.redrune.game.global.map.region;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.game.global.WorldTile;
 
 /*
@@ -8,14 +10,25 @@ import org.redrune.game.global.WorldTile;
 public class RegionMap {
 	
 	private int regionX;
+	
 	private int regionY;
+	
 	private int masks[][][];
+	
 	private boolean clipedOnly;
+	
+	/**
+	 * The landscape data.
+	 */
+	@Getter
+	@Setter
+	private boolean[][] landscape;
 	
 	public RegionMap(int regionId, boolean clipedOnly) {
 		regionX = (regionId >> 8) * 64;
 		regionY = (regionId & 0xff) * 64;
 		masks = new int[4][64][64];
+		landscape = new boolean[64][64];
 		this.clipedOnly = clipedOnly;
 	}
 	
@@ -45,24 +58,32 @@ public class RegionMap {
 	
 	public void addObject(int plane, int x, int y, int sizeX, int sizeY, boolean solid, boolean notAlternative) {
 		int mask = 256;
-		if (solid)
+		if (solid) {
 			mask |= 131072;
-		if (notAlternative)
+		}
+		if (notAlternative) {
 			mask |= 1073741824;
-		for (int tileX = x; tileX < x + sizeX; tileX++)
-			for (int tileY = y; tileY < y + sizeY; tileY++)
+		}
+		for (int tileX = x; tileX < x + sizeX; tileX++) {
+			for (int tileY = y; tileY < y + sizeY; tileY++) {
 				addMask(plane, tileX, tileY, mask);
+			}
+		}
 	}
 	
 	public void removeObject(int plane, int x, int y, int sizeX, int sizeY, boolean solid, boolean notAlternative) {
 		int mask = 256;
-		if (solid)
+		if (solid) {
 			mask |= 131072;
-		if (notAlternative)
+		}
+		if (notAlternative) {
 			mask |= 1073741824;
-		for (int tileX = x; tileX < x + sizeX; tileX++)
-			for (int tileY = y; tileY < y + sizeY; tileY++)
+		}
+		for (int tileX = x; tileX < x + sizeX; tileX++) {
+			for (int tileY = y; tileY < y + sizeY; tileY++) {
 				removeMask(plane, tileX, tileY, mask);
+			}
+		}
 		
 	}
 	
@@ -434,10 +455,11 @@ public class RegionMap {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			if (clipedOnly)
+			if (clipedOnly) {
 				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
-			else
+			} else {
 				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMap().setMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			}
 			return;
 		}
 		masks[plane][x][y] = mask;
@@ -449,10 +471,11 @@ public class RegionMap {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			if (clipedOnly)
+			if (clipedOnly) {
 				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
-			else
+			} else {
 				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMap().addMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			}
 			return;
 		}
 		masks[plane][x][y] = masks[plane][x][y] | mask;
@@ -464,10 +487,11 @@ public class RegionMap {
 			int regionId = tile.getRegionId();
 			int newRegionX = (regionId >> 8) * 64;
 			int newRegionY = (regionId & 0xff) * 64;
-			if (clipedOnly)
+			if (clipedOnly) {
 				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMapClipedOnly().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
-			else
+			} else {
 				RegionManager.getRegion(tile.getRegionId()).forceGetRegionMap().removeMask(plane, tile.getX() - newRegionX, tile.getY() - newRegionY, mask);
+			}
 			return;
 		}
 		masks[plane][x][y] &= (~mask);

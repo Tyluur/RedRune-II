@@ -1,0 +1,11 @@
+5/1/2019 {
+	+   Added all magic combat sounds (cast & impact sounds for 90% of moderns spells, 100% of ancient spells]
+	+   Added korasi special attack
+	+   Added staff of light special attack
+	+   Started working on shop editor gui tool
+
+	Media
+	https://i.imgur.com/1NUynDh.png
+	https://i.imgur.com/eROygd5.png
+
+}

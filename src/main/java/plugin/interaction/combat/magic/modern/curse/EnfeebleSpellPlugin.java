@@ -61,4 +61,14 @@ public class EnfeebleSpellPlugin implements CombatSpellPlugin {
 	public MagicBook book() {
 		return MagicBook.REGULAR;
 	}
+	
+	@Override
+	public int castSoundId() {
+		return 120;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return castSoundId() - 1;
+	}
 }

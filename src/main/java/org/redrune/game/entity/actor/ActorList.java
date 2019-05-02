@@ -13,7 +13,7 @@ public class ActorList<T extends Actor> extends AbstractCollection<T> {
 	
 	public Object[] entities;
 	
-	public Set<Integer> indicies = new HashSet<Integer>();
+	public Set<Integer> indicies = new HashSet<>();
 	
 	public int curIndex = MIN_VALUE;
 	

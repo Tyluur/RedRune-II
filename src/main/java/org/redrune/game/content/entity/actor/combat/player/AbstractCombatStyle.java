@@ -4,6 +4,8 @@ import org.redrune.game.content.entity.actor.combat.CombatSwingDetail;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.map.region.Region;
+import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.SkillConstants;
 import lombok.Getter;
 
@@ -50,16 +52,31 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 	}
 	
 	/**
-	 * Plays a sound to the player and the target
+	 * Plays a sound to a single player
 	 */
-	public void playSound(int soundId, Player player, Actor target) {
+	public void playSingleSound(Player player, int soundId) {
 		if (soundId == -1) {
 			return;
 		}
 		player.getPackets().sendSound(soundId, 0, 1);
-		if (target.isPlayer()) {
-			Player toPlayer = target.toPlayer();
-			toPlayer.getPackets().sendSound(soundId, 0, 1);
+	}
+	
+	/**
+	 * Plays a sound to all players in the source's area, within a 5 tile radius
+	 */
+	public void playAreaSound(Player player, int soundId) {
+		if (soundId == -1) {
+			return;
+		}
+		Region region = RegionManager.getRegion(player.getRegionId());
+		if (region == null) {
+			return;
+		}
+		for (Player p : region.getPlayersWithinDistance(player, 5)) {
+			if (p == null) {
+				continue;
+			}
+			p.getPackets().sendSound(soundId, 0, 1);
 		}
 	}
 }

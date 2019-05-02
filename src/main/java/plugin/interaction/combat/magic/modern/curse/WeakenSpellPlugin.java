@@ -62,4 +62,13 @@ public class WeakenSpellPlugin implements CombatSpellPlugin {
 		return MagicBook.REGULAR;
 	}
 	
+	@Override
+	public int castSoundId() {
+		return 100;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return castSoundId() - 1;
+	}
 }

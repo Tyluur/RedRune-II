@@ -23,17 +23,21 @@ public class WorldChannelReader extends SimpleChannelInboundHandler<Packet> {
 	
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception {
-		NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
-		// makes sure we have a session
-		Preconditions.checkArgument(session != null, "No session set for channel.");
-		// the player of the session
-		final Player player = session.getPlayer();
-		// make sure we have a player
-		if (player == null) {
-			return;
+		try {
+			NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
+			// makes sure we have a session
+			Preconditions.checkArgument(session != null, "No session set for channel.");
+			// the player of the session
+			final Player player = session.getPlayer();
+			// make sure we have a player
+			if (player == null) {
+				return;
+			}
+			player.getAttributes().setPacketsDecoderPing(Misc.currentTimeMillis());
+			IncomingPacketRepository.handlePacket(player, packet);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		player.getAttributes().setPacketsDecoderPing(Misc.currentTimeMillis());
-		IncomingPacketRepository.handlePacket(player, packet);
 	}
 	
 	@Override

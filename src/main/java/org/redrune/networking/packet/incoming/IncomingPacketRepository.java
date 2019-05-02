@@ -24,7 +24,7 @@ public class IncomingPacketRepository {
 	 * Initializes all decoders
 	 */
 	public static void initialize() {
-		Misc.getClassesInDirectory(IncomingPacketRepository.class.getPackage().getName() + ".impl").stream().filter(IncomingPacketReader.class::isInstance).forEach((clazz) -> include((IncomingPacketReader) clazz));
+		Misc.getClasses(IncomingPacketRepository.class.getPackage().getName() + ".impl").stream().filter(IncomingPacketReader.class::isInstance).forEach((clazz) -> include((IncomingPacketReader) clazz));
 		System.out.println("Initialized " + PACKET_MAP.size() + " incoming packet decoders");
 	}
 	

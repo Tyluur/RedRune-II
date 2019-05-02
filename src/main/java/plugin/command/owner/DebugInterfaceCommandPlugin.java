@@ -20,7 +20,7 @@ public class DebugInterfaceCommandPlugin extends CommandPlugin  {
 		if (args.length == 3) {
 			sendInterface = Boolean.parseBoolean(args[2]);
 		}
-		for (int i = 0; i <= componentLength; i++) {
+		for (int i = 0; i < componentLength; i++) {
 			player.getPackets().sendIComponentText(interfaceId, i, "" + i);
 		}
 		for (int i = 0; i <= 354; i++) {

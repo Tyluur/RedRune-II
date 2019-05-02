@@ -104,7 +104,7 @@ public class WorldObject extends WorldTile implements Entity {
 	
 	@Override
 	public String toString() {
-		return "WorldObject{" + "id=" + id + ", type=" + type + ", rotation=" + rotation + ", tile=" + getWorldTile() + ", life=" + life + '}';
+		return "WorldObject{id=" + id + ", name=" + getDefinitions().getName() + ", type=" + type + ", rotation=" + rotation + ", tile=" + getWorldTile() + "}";
 	}
 	
 	public WorldTile getCentreLocation() {

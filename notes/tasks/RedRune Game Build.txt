@@ -1,0 +1,200 @@
+RedRune Game Build
+------------------
+
+
+Content [
+
+	Skilling [
+		+	Crafting
+		+	Mining
+		+	Smithing
+		+	Fishing
+		+	Cooking
+		+	Firemaking
+		+	Woodcutting
+		+	Agility
+				-	Gnome Stronghold
+				-	Barbarian Outpost
+				-	Wilderness Agility
+				-	Shortcuts
+					>	Edgeville-grand exchange underground pass
+					>	Falador to Buthrope dungeon broken wall
+		+	Herblore
+		+	Thieving
+		+	Fletching
+		+	Slayer
+		+	Farming
+		+	Construction
+		+	Hunter
+	]	
+	
+	Minigames [
+		-	
+	]
+	
+	Miniquests [
+		-	
+	]
+	
+	
+	NPCs [
+		Interactions {
+			+	Dialogues
+			+	Shops
+		}
+		
+		Definitions {
+			+	Combat Data
+				-	Health
+				-	Bonuses
+				-	Animations
+				-	Poison
+			+	Information
+				-	Examine
+				-	Location
+				-	Slayer Task
+		}		
+	]
+	
+	PvM [
+		+	OSRS Wildernes Bosses	
+			-	
+		+	GodWars
+			-	Nex
+		
+	]
+	
+	OSRS Content [
+		Items {
+			Cosmetics
+				+	Black gold-trimmed wizard robes
+				+	Black h'ween mask
+				+	Black demon mask
+				+	Black partyhat
+				+	3rd age axe
+				+	3rd age bow
+				+	3rd age cloak
+				+	3rd age longsword
+				+	3rd age pickaxe
+				+	3rd age wand
+				+	Ardougne max cape
+				+	Ardougne max hood
+				+	Abyssal dagger
+				+	Achievement diary cape
+				+	Achievement diary hood
+			
+			Combat
+				+	Amulet of torture
+					-	+ (or) as well
+				+	Light Ballista
+				+	Heavy Ballista
+				
+			Skilling
+				+	Amethyst
+				+	Amethyst arrow
+				+	Amethyst arrowtips
+				+	Amethyst bolt tips
+				+	Amethyst javelin heads
+				+	Amethyst broad bolts
+				+	Amethyst fire arrows
+				+	Amethyst javelin
+				+	Amethyst javelin heads
+				+	Ancestral robe bottom
+				+	Ancestral robe top
+				+	Ancestral robes
+				
+			Consumable
+				+	
+				
+			Expensive
+		}
+		
+		NPCs {
+			+	Abyssal Sire
+				Resultant New Items [
+					-	Bludgeon claw
+					-	Bludgeon spine
+					-	Bludgeon axon
+					-	Abyssal dagger
+					-	Jar of miasma
+					-	Abyssal head
+					-	Abyssal orphan
+				]
+			+	Chambers of Xeric [
+					-	Tekton
+					-	Vespula
+					-	Vanguard
+					-	Ice Demon
+					-	Muttadiles
+					-	Vasa Nistirio
+					-	Great Olm (final boss)
+				]
+							
+		}
+		
+		Maps {
+			Boss-Related
+				+	Abyssal Nexus [https://oldschoolrunescape.fandom.com/wiki/Abyssal_Nexus]
+				+	Chambers of Xeric
+							
+		}
+		
+		Drop Table Items {
+			Chambers of Xeric [
+				+	Dexterous prayer scroll
+				+	Arcane prayer scroll
+				+	Twisted buckler
+				+	Dragon hunter crossbow
+				+	Dinh's bulwark
+				+	Ancestral hat
+				+	Ancestral robe top
+				+	Ancestral robe bottom
+				+	Dragon claws
+				+	Elder maul
+				+	Kodai insignia
+				+	Twisted bow
+				+	Water-filled gourd vial
+				+	Tekton's journal
+				+	Elder potion 
+					-	Doses (1), (2), (3), (4)
+					-	Stinkhorn mushroom
+					-	Golpar
+				+	Twisted_potion
+					-	Doses (1), (2), (3), (4)
+					-	Cicely
+				+	Kodai_potion
+					-	Doses (1), (2), (3), (4)
+					-	Endarkened juice
+				+	Revitalisation_potion
+					-	Doses (1), (2), (3), (4)
+					-	Buchu leaf
+				+	Prayer_enhance
+					-	Doses (1), (2), (3), (4)
+				+	Xeric's_aid
+					-	Doses (1), (2), (3), (4)
+				+	Noxifier 
+					-	Grimy noxifier as well
+					-	Noxifier seed
+				+	Overload (Chambers of Xeric)
+					-	Doses (1), (2), (3), (4)
+				+	Vanguard judgement	
+			]
+		}		
+	]
+
+
+	Transportation [
+		Home Wizard 
+			+	Locations available to teleport
+			
+	]
+
+
+	Money Sinks [
+		
+		
+	]
+		
+		
+]
+	

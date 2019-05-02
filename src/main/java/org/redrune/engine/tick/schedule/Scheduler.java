@@ -36,8 +36,14 @@ public final class Scheduler {
 				// the task from the list
 				final ScheduledTask task = iterator.next();
 				
-				// pulsing the task
-				task.pulse();
+				
+				try {
+					// pulsing the task
+					task.pulse();
+				} catch (Exception e) {
+					e.printStackTrace();
+					iterator.remove();
+				}
 				
 				// so if we've reached the amount of ticks to stop
 				// or if the task was forced to stop

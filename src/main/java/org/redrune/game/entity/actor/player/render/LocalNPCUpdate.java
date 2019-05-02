@@ -92,6 +92,7 @@ public final class LocalNPCUpdate {
 				}
 				NPC n = World.getNPCs().get(npcIndex);
 				if (n == null || n.isFinished() || localNPCs.contains(n) || !player.withinDistance(n) || n.isDead()) {
+//					System.out.println((n == null) + ", " + (n.isFinished()) + ", " + (localNPCs.contains(n)) + ", " + (!player.withinDistance(n)) + ", " + (n.isDead()));
 					continue;
 				}
 				stream.writeBits(15, n.getIndex());
@@ -130,17 +131,6 @@ public final class LocalNPCUpdate {
 		if (n.getNextGraphics4() != null) {
 			maskData |= 0x20000;
 		}
-		/*
-		[Player.java:714#initializeGameSession][02.04.2019 07:28:34.775]  Player Logged in: tyluur
-		[Player.java:841#realFinish][02.04.2019 07:29:05.012]  Finished Player: tyluur
-		
-		[RS2PacketEncoder.java:60#encode][02.04.2019 07:29:05.082]  Wrote Packet{opcode=2, type=VAR_BYTE, length=20}
-		[RS2PacketEncoder.java:60#encode][02.04.2019 07:29:35.044]  Wrote Packet{opcode=6, type=VAR_SHORT, length=5}
-
-		[NetworkSession.java:77#onRegistration][02.04.2019 07:31:26.805]  Session registered
-		[NetworkSession.java:90#onDeregistration][02.04.2019 07:32:00.344]  Session deregistered
-
-		 */
 		if (!n.getNextHits().isEmpty()) {
 			maskData |= 0x40;
 		}

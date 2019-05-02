@@ -49,6 +49,16 @@ public class IceRushSpellPlugin implements CombatSpellPlugin {
 	}
 	
 	@Override
+	public int castSoundId() {
+		return 171;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return 173;
+	}
+	
+	@Override
 	public int spellId() {
 		return 20;
 	}

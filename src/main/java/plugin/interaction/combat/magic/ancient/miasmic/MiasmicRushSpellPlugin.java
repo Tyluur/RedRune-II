@@ -73,4 +73,9 @@ public class MiasmicRushSpellPlugin implements CombatSpellPlugin {
 	public MagicBook book() {
 		return MagicBook.ANCIENTS;
 	}
+	
+	@Override
+	public int impactSoundId() {
+		return 173;
+	}
 }

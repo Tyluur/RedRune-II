@@ -500,6 +500,10 @@ public final class RegionManager {
 		return getRegion(tile.getRegionId()).getStandardObject(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion());
 	}
 	
+	public static WorldObject getStandardObjectWithLoad(WorldTile tile) {
+		return getRegion(tile.getRegionId(), true).getStandardObject(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion());
+	}
+	
 	public static boolean containsObjectWithId(int id, WorldTile tile) {
 		return getRegion(tile.getRegionId()).containsObjectWithId(tile.getPlane(), tile.getXInRegion(), tile.getYInRegion(), id);
 	}

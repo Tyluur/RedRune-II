@@ -68,4 +68,18 @@ public interface CombatSpellPlugin extends SpellPlugin {
 	default int gfxHeight() {
 		return 96;
 	}
+	
+	/**
+	 * The id of the sound played when the spell is cast
+	 */
+	default int castSoundId() {
+		return -1;
+	}
+	
+	/**
+	 * The id of the sound played when the spell impact lands
+	 */
+	default int impactSoundId() {
+		return -1;
+	}
 }

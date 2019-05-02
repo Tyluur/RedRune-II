@@ -61,4 +61,14 @@ public class StunSpellPlugin implements CombatSpellPlugin {
 	public MagicBook book() {
 		return MagicBook.REGULAR;
 	}
+	
+	@Override
+	public int castSoundId() {
+		return 121;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return castSoundId() - 1;
+	}
 }

@@ -27,6 +27,7 @@ import org.redrune.utility.game.entity.actor.player.Censor;
 import org.redrune.utility.game.entity.object.ObjectRemoval;
 import org.redrune.utility.game.entity.object.ObjectSpawning;
 import org.redrune.utility.game.map.MapArchiveKeys;
+import org.redrune.utility.game.repository.object.climbable.ClimbableObjectRepository;
 import org.redrune.utility.game.repository.object.door.DoorRepository;
 
 import java.util.concurrent.TimeUnit;
@@ -55,7 +56,7 @@ public final class Bootstrap {
 	
 	/**
 	 * This method uses {@link BootHandler} to prepare all requirements for the game to start efficiently. All tasks
-	 * that require each other are are performed in the same parallel instance, other ones can be performed
+	 * that require each other are performed in the same parallel instance, other ones can be performed
 	 * individually.
 	 *
 	 * This is a blocking method due to {@link BootHandler#await()}
@@ -72,7 +73,7 @@ public final class Bootstrap {
 				ItemEquipIds.initialize();
 				System.out.println("Initializing huffman algorithm");
 				Huffman.initialize();
-				System.out.println("Initializing region builidng");
+				System.out.println("Initializing region building");
 				RegionBuilder.initialize();
 				MapArchiveKeys.initialize();
 				IncomingPacketRepository.initialize();
@@ -89,6 +90,7 @@ public final class Bootstrap {
 			WorldList.initialize();
 			// door ids loaded before plugins bc of referencing
 			DoorRepository.initialize();
+			ClimbableObjectRepository.initialize();
 			PluginRepository.registerAll();
 			PunishmentRepository.loadAll();
 		}, () -> {
@@ -109,5 +111,4 @@ public final class Bootstrap {
 			System.exit(1);
 		}
 	}
-	
 }

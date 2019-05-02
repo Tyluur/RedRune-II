@@ -60,7 +60,7 @@ public class PlayerSaving {
 			File file = new File(getFileLocation(name));
 			// The file is too big; its nulled. Instead of dedicating resources we will return a null player
 			// which will stop the login
-			if (file.length() > 1_000_000) {
+			if (file.length() <= 0 || file.length() > 1_000_000) {
 				System.err.println("Error reading file: " + file.getAbsolutePath());
 				return null;
 			}

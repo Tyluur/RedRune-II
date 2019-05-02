@@ -1,6 +1,6 @@
 package plugin.npc;
 
-import org.redrune.game.content.PlayerLook;
+import org.redrune.game.content.entity.actor.player.PlayerLook;
 import org.redrune.game.content.plugin.type.NPCPlugin;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;

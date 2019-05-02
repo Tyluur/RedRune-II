@@ -75,6 +75,7 @@ public class HomeTeleportAction extends Action {
 	
 	@Override
 	public void stop(Player player) {
+	
 	}
 	
 }

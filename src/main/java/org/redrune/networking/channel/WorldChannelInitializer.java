@@ -21,7 +21,7 @@ public class WorldChannelInitializer extends ChannelInitializer<SocketChannel> {
 	private static final WorldChannelRegistrar REGISTRAR = new WorldChannelRegistrar();
 	
 	@Override
-	protected void initChannel(SocketChannel channel) throws Exception {
+	protected void initChannel(SocketChannel channel) {
 		final ChannelPipeline pipeline = channel.pipeline();
 		pipeline.addLast("encoder", new RS2PacketEncoder());
 		pipeline.addLast("decoder", new HandshakeDecoder());

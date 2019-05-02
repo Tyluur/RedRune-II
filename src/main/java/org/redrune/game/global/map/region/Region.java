@@ -122,13 +122,21 @@ public class Region {
 							if (value == 0) {
 								break;
 							} else if (value == 1) {
-								mapStream.readByte();
+								// Overlay data
+								int val = mapStream.readUnsignedByte();
+								if (val != 42 && val > 0) {
+									forceGetRegionMap().getLandscape()[x][y] = true;
+								}
 								break;
 							} else if (value <= 49) {
 								mapStream.readByte();
-								
 							} else if (value <= 81) {
 								mapSettings[plane][x][y] = (byte) (value - 49);
+							} else {
+								int val = (byte) (value - 81) & 0xFF; // Underlay data
+								if (val != 42 && val > 0) {
+									forceGetRegionMap().getLandscape()[x][y] = true;
+								}
 							}
 						}
 					}
@@ -475,7 +483,10 @@ public class Region {
 	}
 	
 	public WorldObject getObject(int plane, int x, int y) {
+		System.out.println("plane = [" + plane + "], x = [" + x + "], y = [" + y + "]");
 		WorldObject[] objects = getObjects(plane, x, y);
+		System.out.println("plane = [" + plane + "], x = [" + x + "], y = [" + y + "]");
+		System.out.println("objects=" + objects);
 		if (objects == null) {
 			return null;
 		}
@@ -782,6 +793,80 @@ public class Region {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Gets the clipping flag
+	 *
+	 * @param tile
+	 * 		the Location
+	 * @return the clipping flag
+	 */
+	public boolean isTeleportPermitted(WorldTile tile) {
+		return isTeleportPermitted(tile.getPlane(), tile.getX(), tile.getY());
+	}
+	
+	/**
+	 * Gets the clipping flag.
+	 *
+	 * @param z
+	 * 		The plane.
+	 * @param x
+	 * 		The absolute x-coordinate.
+	 * @param y
+	 * 		The absolute y-coordinate.
+	 * @return The clipping flags.
+	 */
+	public boolean isTeleportPermitted(int z, int x, int y) {
+		if (!isLandscape(z, x, y)) {
+			return false;
+		}
+		int flag = RegionManager.getMask(z, x, y);
+		return (flag & 0x12c0102) == 0 || (flag & 0x12c0108) == 0 || (flag & 0x12c0120) == 0 || (flag & 0x12c0180) == 0;
+	}
+	
+	/**
+	 * Checks if the tile is part of the landscape.
+	 *
+	 * @param z
+	 * 		The plane.
+	 * @param x
+	 * 		The absolute x-coordinate.
+	 * @param y
+	 * 		The absolute y-coordinate.
+	 * @return {@code True} if so.
+	 */
+	public boolean isLandscape(int z, int x, int y) {
+		if (RegionManager.getMask(z, x, y) == -1) {
+			return false;
+		}
+		x -= (x >> 6) << 6;
+		y -= (y >> 6) << 6;
+		return forceGetRegionMap().getLandscape()[x][y];
+	}
+	
+	/**
+	 * Gets the players in this region that are within a specified distance from the base tile
+	 *
+	 * @param base
+	 * 		The base tile
+	 * @param distance
+	 * 		The distance
+	 */
+	public List<Player> getPlayersWithinDistance(WorldTile base, int distance) {
+		List<Player> players = new ArrayList<>();
+		List<Integer> indexes = getPlayerIndexes();
+		if (indexes == null) {
+			return players;
+		}
+		for (int playerIndex : indexes) {
+			Player p2 = World.getPlayers().get(playerIndex);
+			if (p2 == null || p2.isDead() || !p2.hasStarted() || p2.isFinished() || !p2.withinDistance(base, distance)) {
+				continue;
+			}
+			players.add(p2);
+		}
+		return players;
 	}
 	
 }

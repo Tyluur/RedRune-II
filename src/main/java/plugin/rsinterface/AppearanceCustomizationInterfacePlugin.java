@@ -1,7 +1,7 @@
 package plugin.rsinterface;
 
 import org.redrune.game.content.entity.actor.player.design.PlayerDesign;
-import org.redrune.game.content.PlayerLook;
+import org.redrune.game.content.entity.actor.player.PlayerLook;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.InterfacePlugin;
 

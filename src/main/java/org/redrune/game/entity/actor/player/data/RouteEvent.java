@@ -1,6 +1,5 @@
 package org.redrune.game.entity.actor.player.data;
 
-import org.redrune.engine.SystemManager;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.FloorItem;
@@ -12,8 +11,6 @@ import org.redrune.game.global.map.route.strategy.ActorStrategy;
 import org.redrune.game.global.map.route.strategy.FixedTileStrategy;
 import org.redrune.game.global.map.route.strategy.FloorItemStrategy;
 import org.redrune.game.global.map.route.strategy.ObjectStrategy;
-
-import java.util.concurrent.TimeUnit;
 
 public class RouteEvent {
 	
@@ -162,7 +159,7 @@ public class RouteEvent {
 			((Actor) destination).faceActor(player);
 			player.setNextFaceActor((Actor) destination);
 		}
-		SystemManager.SLOW_EXECUTOR.schedule(() -> event.run(), 100, TimeUnit.MILLISECONDS);
+		event.run();
 		return true;
 	}
 	

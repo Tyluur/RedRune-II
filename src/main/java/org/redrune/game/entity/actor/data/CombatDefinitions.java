@@ -597,7 +597,7 @@ public final class CombatDefinitions implements Serializable {
 	
 	public void setUsingSpecialAttack(boolean usingSpecialAttack) {
 		this.usingSpecialAttack = usingSpecialAttack;
-		refreshUsingSpecialAttack();;
+		refreshUsingSpecialAttack();
 	}
 	
 	public boolean hasRingOfVigour() {

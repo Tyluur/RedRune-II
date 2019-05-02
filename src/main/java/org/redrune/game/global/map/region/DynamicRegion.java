@@ -94,13 +94,21 @@ public class DynamicRegion extends Region {
 										if (value == 0) {
 											break;
 										} else if (value == 1) {
-											mapStream.readByte();
+											// Overlay data
+											int val = mapStream.readUnsignedByte();
+											if (val != 42 && val > 0) {
+												forceGetRegionMap().getLandscape()[x][y] = true;
+											}
 											break;
 										} else if (value <= 49) {
 											mapStream.readByte();
-											
 										} else if (value <= 81) {
 											mapSettings[plane][x][y] = (byte) (value - 49);
+										} else {
+											int val = (byte) (value - 81) & 0xFF; // Underlay data
+											if (val != 42 && val > 0) {
+												forceGetRegionMap().getLandscape()[x][y] = true;
+											}
 										}
 									}
 								}

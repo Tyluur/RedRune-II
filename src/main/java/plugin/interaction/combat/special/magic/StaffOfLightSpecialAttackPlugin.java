@@ -31,4 +31,14 @@ public class StaffOfLightSpecialAttackPlugin extends SpecialAttackPlugin {
 		source.setNextGraphics(GRAPHICS1);
 		source.getAttributes().addPolDelay(60000);
 	}
+	
+	@Override
+	public boolean isInstant() {
+		return true;
+	}
+	
+	@Override
+	public boolean requiresFight() {
+		return false;
+	}
 }

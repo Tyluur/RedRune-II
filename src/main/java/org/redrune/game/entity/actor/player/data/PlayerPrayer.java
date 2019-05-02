@@ -900,7 +900,6 @@ public class PlayerPrayer implements Serializable {
 	}
 	
 	public void handleCurseBoosts(Player p2, Hit hit) {
-		
 		if (p2.getPrayer().hasPrayersOn()) {
 			if (p2.getPrayer().usingPrayer(0, 24)) { // smite
 				int drain = hit.getDamage() / 4;

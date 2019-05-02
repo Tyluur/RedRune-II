@@ -62,4 +62,14 @@ public class IceBlitzSpellPlugin implements CombatSpellPlugin {
 			target.freeze(source, TimeUnit.SECONDS.toMillis(15), "You have been frozen!");
 		}, null);
 	}
+	
+	@Override
+	public int castSoundId() {
+		return 171;
+	}
+	
+	@Override
+	public int impactSoundId() {
+		return 169;
+	}
 }

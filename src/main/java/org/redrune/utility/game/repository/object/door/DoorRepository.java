@@ -42,7 +42,6 @@ public class DoorRepository {
 			throw new IllegalStateException("Unable to parse doors from file {" + CONFIGURATION_FILE + "}, recheck running directory!");
 		}
 		saveDoors(doors);
-		
 	}
 	
 	/**

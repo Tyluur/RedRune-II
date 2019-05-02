@@ -1,12 +1,13 @@
 package org.redrune.utility.game.repository.npc.spawn;
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.utility.functions.Misc.FaceDirection;
 import lombok.Getter;
+import org.redrune.game.global.WorldTile;
+import org.redrune.utility.functions.Misc;
+import org.redrune.utility.functions.Misc.FaceDirection;
 
 /**
- * @author Tyluur<itstyluur@gmail.com>
- * @since May 15, 2015
+ * @author Tyluur
+ * @since 2019-04-29
  */
 public class NPCSpawn {
 	
@@ -17,7 +18,7 @@ public class NPCSpawn {
 	private final int npcId;
 	
 	/**
-	 * The tile of the spawn
+	 * The location of the spawn
 	 */
 	@Getter
 	private final WorldTile tile;
@@ -26,7 +27,7 @@ public class NPCSpawn {
 	 * The direction the spawn is facing
 	 */
 	@Getter
-	private final FaceDirection direction;
+	private final Misc.FaceDirection direction;
 	
 	/**
 	 * Constructs a new npc spawn
@@ -34,28 +35,12 @@ public class NPCSpawn {
 	 * @param npcId
 	 * 		The id of the spawn
 	 * @param tile
-	 * 		The tile of the spawn
+	 * 		The location of the spawn
 	 * @param direction
 	 * 		The direction of the spawn
 	 */
 	public NPCSpawn(int npcId, WorldTile tile, FaceDirection direction) {
-		this.npcId = npcId;
-		this.tile = tile;
-		this.direction = direction;
-	}
-	
-	/**
-	 * Constructs a new npc spawn facing north
-	 *
-	 * @param npcId
-	 * 		The id of the spawn
-	 * @param tile
-	 * 		The tile of the spawn
-	 */
-	public NPCSpawn(int npcId, WorldTile tile) {
-		this.npcId = npcId;
-		this.tile = tile;
-		this.direction = FaceDirection.NORTH;
+		this(npcId, tile.getX(), tile.getY(), tile.getPlane(), direction);
 	}
 	
 	/**
@@ -83,6 +68,18 @@ public class NPCSpawn {
 	 *
 	 * @param npcId
 	 * 		The id of the spawn
+	 * @param tile
+	 * 		The location of the spawn
+	 */
+	public NPCSpawn(int npcId, WorldTile tile) {
+		this(npcId, tile.getX(), tile.getY(), tile.getPlane(), FaceDirection.NORTH);
+	}
+	
+	/**
+	 * Constructs a new npc spawn facing north
+	 *
+	 * @param npcId
+	 * 		The id of the spawn
 	 * @param x
 	 * 		The x coordinate of the tile of the spawn
 	 * @param y
@@ -96,5 +93,9 @@ public class NPCSpawn {
 		this.direction = FaceDirection.NORTH;
 	}
 	
+	@Override
+	public String toString() {
+		return "[npcId=" + npcId + ", tile=" + tile + ", direction=" + direction + "]";
+	}
 	
 }

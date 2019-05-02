@@ -1,3 +1,17 @@
+2/21/19 - WorldWide Ladders/Stairs {
+
+Journal
+	+   Added a huge array of stairs/ladders (any objects with climb[up/down]) and tested their functionality.
+		-   Support for objects with just a "Climb" option, this is done as a dialogue [like on RS]
+
+Media
+[IMG]https://i.imgur.com/UFei8lC.gif[/IMG]
+[IMG]https://i.imgur.com/8VwST8S.gif[/IMG]
+[IMG]https://imgur.com/HzHh6A7.gif[/IMG]
+
+
+}
+
 2/20/19 - Doors & npc data {
 
 Journal

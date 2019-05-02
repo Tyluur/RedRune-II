@@ -73,4 +73,8 @@ public class MiasmicBurstSpellPlugin implements CombatSpellPlugin {
 		return MagicBook.ANCIENTS;
 	}
 	
+	@Override
+	public int impactSoundId() {
+		return 170;
+	}
 }

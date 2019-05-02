@@ -32,6 +32,6 @@ public class DragonDaggerSpecialAttackPlugin extends SpecialAttackPlugin {
 		} else {
 			style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1.15), style.getRandomDamage(source, target, 1.15), 1);
 		}
-		style.playSound(2537, source, target);
+		style.playAreaSound(source, 2537);
 	}
 }

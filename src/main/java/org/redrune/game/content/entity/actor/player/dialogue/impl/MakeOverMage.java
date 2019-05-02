@@ -1,7 +1,7 @@
 package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.cache.loaders.NPCDefinitions;
-import org.redrune.game.content.PlayerLook;
+import org.redrune.game.content.entity.actor.player.PlayerLook;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
 
 public class MakeOverMage extends Dialogue {

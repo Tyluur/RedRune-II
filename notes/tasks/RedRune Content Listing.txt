@@ -1,0 +1,268 @@
+RedRune Game Build
+------------------
+
+Systems [
+
+	+   Route Events
+		-   Figure out how to make interactions start when walking is finished client sided
+	+   Quest System
+		-   Unique stages per quest
+	+   Achievement system
+		-   Integer incrementation per achievement
+	+   Cache Editors
+		-   Definition editing
+			1:  Objects
+			2:  NPCs
+			3:  Items
+	+   Forum Integration
+		-   Account registration for accounts that don't exist (popup on login)
+		-   Rank pulling, visible right based on enum position
+	+
+
+]
+
+Interfaces [
+
+	+   Teleport Interface
+	+
+]
+
+Content [
+
+	Achievements
+	Quests
+		+   Miniquests
+
+
+	Skilling [
+		+	Crafting
+		+	Mining
+		+	Smithing
+		+	Fishing
+		+	Cooking
+		+	Firemaking
+		+	Woodcutting
+		+	Agility
+				-	Gnome Stronghold
+				-	Barbarian Outpost
+				-	Wilderness Agility
+				-	Shortcuts
+					>	Edgeville-grand exchange underground pass
+					>	Falador to Buthrope dungeon broken wall
+		+	Herblore
+		+	Slayer
+		+	Construction
+			-   Implement from corruptionx leak
+		+	Hunter
+		+   Prayer
+			-   Perfect projectiles for saps & leeches
+	]
+	
+	Minigames [
+		-	
+	]
+	
+	Miniquests [
+		-	
+	]
+
+	NPCs [
+		Interactions {
+			+	Dialogues
+			+	Shops
+		}
+		
+		Definitions {
+			+	Combat Data
+				-	Health
+				-	Bonuses
+				-	Animations
+				-	Poison
+			+	Information
+				-	Examine
+				-	Location
+				-	Slayer Task
+		}
+	]
+	
+	PvM [
+		+	OSRS Wilderness Bosses
+			-	
+		+	GodWars
+			-	Nex
+		
+	]
+	
+	OSRS Content [
+		Items {
+			Cosmetics
+				+	Black skirt (g)
+				+	Black skirt (t)
+				+	Black wizard hat (g)
+				+	Black wizard hat (t)
+				+	Black wizard robe (g)
+				+	Black wizard robe (t)
+				+	Black h'ween mask
+				+	Black demon mask
+				+	Black partyhat
+				+	3rd age axe
+				+	3rd age bow
+				+	3rd age cloak
+				+	3rd age longsword
+				+	3rd age pickaxe
+				+	3rd age wand
+				+	Ardougne max cape
+				+	Ardougne max hood
+				+	Achievement diary cape
+				+	Achievement diary hood
+				+	Hood of darkness
+				+	Robe top of darkness
+				+	Robe bottom of darkness
+				+	Gloves of darkness
+				+	Boots of darkness
+			
+			Combat
+				+	Amulet of torture
+					-	+ (or) as well
+				+	Abyssal dagger
+				+	Light Ballista
+				+	Heavy Ballista
+				+	Amulet of the damned
+				+	Ancestral robe bottom
+				+	Ancestral robe top
+				+	Ancestral robes
+				+	Blue d'hide body (g)
+				+	Blue d'hide chaps (g)	
+				+	Abyssal bludgeon
+				+	Champion's cape			
+				+	Corrupted helm
+				+	Corrupted platebody
+				+	Corrupted platelegs
+				+	Corrupted plateskirt
+				+	Corrupted kiteshield
+				+	Dark infinity bottoms
+				+	Dark infinity colour kit
+				+	Dark infinity hat
+				+	Dark infinity top					
+									
+			Skilling
+				+	Amethyst
+				+	Amethyst arrow
+				+	Amethyst arrowtips
+				+	Amethyst bolt tips
+				+	Amethyst javelin heads
+				+	Amethyst broad bolts
+				+	Amethyst fire arrows
+				+	Amethyst javelin
+				+	Amethyst javelin heads
+				+	Angler boots
+				+	Angler hat
+				+	Angler top
+				+	Angler waders
+				
+			Consumable
+				+	Dark crab
+				+	Anglerfish
+				
+			Expensive
+			
+			Misc
+				+	Ape atoll teleport
+				+	Blood money
+					-	Including small incremental versions of it for the item to work properly
+				+	Cemetery teleport
+		}	
+		
+		NPCs {
+			+	Abysssal Nexus [
+				-	Abyssal Sire
+						Resultant New Items [
+							-	Bludgeon claw
+							-	Bludgeon spine
+							-	Bludgeon axon
+							-	Abyssal dagger
+							-	Jar of miasma
+							-	Abyssal head
+							-	Abyssal orphan
+						]
+				-	The Overseer
+			+	Chambers of Xeric [
+					-	Tekton
+					-	Vespula
+					-	Vanguard
+					-	Ice Demon
+					-	Muttadiles
+					-	Vasa Nistirio
+					-	Great Olm (final boss)
+				]
+							
+		}
+		
+		Maps {
+			Boss-Related [
+				+	Abyssal Nexus [https://oldschoolrunescape.fandom.com/wiki/Abyssal_Nexus]
+				+	Chambers of Xeric
+			]				
+		}
+		
+		Drop Table Items {
+			Chambers of Xeric [
+				+	Dexterous prayer scroll
+				+	Arcane prayer scroll
+				+	Twisted buckler
+				+	Dragon hunter crossbow
+				+	Dinh's bulwark
+				+	Ancestral hat
+				+	Ancestral robe top
+				+	Ancestral robe bottom
+				+	Dragon claws
+				+	Elder maul
+				+	Kodai insignia
+				+	Twisted bow
+				+	Water-filled gourd vial
+				+	Tekton's journal
+				+	Elder potion 
+					-	Doses (1), (2), (3), (4)
+					-	Stinkhorn mushroom
+					-	Golpar
+				+	Twisted_potion
+					-	Doses (1), (2), (3), (4)
+					-	Cicely
+				+	Kodai_potion
+					-	Doses (1), (2), (3), (4)
+					-	Endarkened juice
+				+	Revitalisation_potion
+					-	Doses (1), (2), (3), (4)
+					-	Buchu leaf
+				+	Prayer_enhance
+					-	Doses (1), (2), (3), (4)
+				+	Xeric's_aid
+					-	Doses (1), (2), (3), (4)
+				+	Noxifier 
+					-	Grimy noxifier as well
+					-	Noxifier seed
+				+	Overload (Chambers of Xeric)
+					-	Doses (1), (2), (3), (4)
+				+	Vanguard judgement	
+				+	Houndmaster's diary
+				+	Nistirio's manifesto
+			]
+		}
+	]
+
+
+	Transportation [
+		Home Wizard 
+			+	Locations available to teleport
+			
+	]
+
+
+	Money Sinks [
+		
+		
+	]
+		
+		
+]
+	

@@ -88,13 +88,18 @@ public class NPCSpawnRepository {
 	 */
 	public static void loadSpawns(int regionId) {
 		if (!regionSpawnsExist(regionId)) {
+			System.out.println("region spawn " + regionId + " does not exist");
 			return;
 		}
 		List<NPCSpawn> spawns = loadFromFile(regionId);
 		if (spawns == null) {
+			System.out.println("region spawn " + regionId + " does not exist");
 			return;
 		}
-		spawns.forEach(spawn -> World.spawnNPC(spawn.getNpcId(), spawn.getTile(), -1, true, spawn.getDirection()));
+		spawns.forEach(spawn -> {
+			System.out.println("spawning npc " + spawn);
+			World.spawnNPC(spawn.getNpcId(), spawn.getTile(), -1, true, spawn.getDirection());
+		});
 	}
 	
 	/**
