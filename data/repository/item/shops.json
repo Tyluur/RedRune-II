@@ -1,1 +1,54 @@
-[]
+[
+  {
+    "identifier": 1,
+    "name": "Blood Money Shop",
+    "items": [
+      {
+        "id": 11694,
+        "amount": 5
+      },
+      {
+        "id": 14484,
+        "amount": 1
+      },
+      {
+        "id": 6585,
+        "amount": 1
+      },
+      {
+        "id": 11732,
+        "amount": 1
+      },
+      {
+        "id": 15273,
+        "amount": 10
+      }
+    ],
+    "currencyName": "BloodMoney",
+    "generalStore": false
+  },
+  {
+    "identifier": 2,
+    "name": "Gold Ticket Shop",
+    "items": [
+      {
+        "id": 11732,
+        "amount": 1
+      },
+      {
+        "id": 11694,
+        "amount": 1
+      },
+      {
+        "id": 14484,
+        "amount": 1
+      },
+      {
+        "id": 6585,
+        "amount": 1
+      }
+    ],
+    "currencyName": "GoldTicket",
+    "generalStore": false
+  }
+]

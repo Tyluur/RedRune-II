@@ -45,13 +45,15 @@ public class JsonFileManager {
 	 * 		The location to save to
 	 */
 	@SuppressWarnings("hiding")
-	public static <T> void save(T data, String location) {
+	public static <T> boolean save(T data, String location) {
 		try (Writer writer = new FileWriter(location)) {
 			GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.STATIC);
 			Gson gson = builder.create();
 			gson.toJson(data, writer);
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

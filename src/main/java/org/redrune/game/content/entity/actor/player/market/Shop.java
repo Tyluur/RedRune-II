@@ -37,7 +37,8 @@ public final class Shop {
 	 * The name of the shop, this is not the identifier because we have multiple shops by one name.
 	 */
 	@Getter
-	private final String name;
+	@Setter
+	private String name;
 	
 	/**
 	 * The list of items in the shop
@@ -49,7 +50,8 @@ public final class Shop {
 	 * The name of the currency this shop uses. This is used only to find the {@link #currency} object for this class
 	 */
 	@Getter
-	private final String currencyName;
+	@Setter
+	private String currencyName;
 	
 	/**
 	 * If this shop is a general store. If this is true, you can sell all items to it

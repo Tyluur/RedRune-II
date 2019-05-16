@@ -1,15 +1,16 @@
 package org.redrune.game.content.entity.actor.player.market;
 
+import com.google.gson.reflect.TypeToken;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.item.Item;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.file.JsonFileManager;
+import org.redrune.utility.functions.Misc;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.redrune.utility.functions.GsonFunctions.GSON;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -36,15 +37,11 @@ public final class ShopRepository {
 	 * All data from external sources in relevance to shops is loaded in this method.
 	 */
 	public static void registerAll() {
-		List<Shop> shops = JsonFileManager.loadJsonData(new File(SHOP_FILE_LOCATION));
+		List<Shop> shops = loadShops();
 		if (shops == null) {
 			System.out.println("Unable to load shops from " + SHOP_FILE_LOCATION + "!");
 			return;
 		}
-		// quick example testing instead of gson parsing
-		shops.add(new Shop(1, "Blood Money Shop", Arrays.asList(new Item(11694), new Item(14484), new Item(6585), new Item(11732), new Item(15273, 10)), "BloodMoney"));
-		shops.add(new Shop(2, "Gold Ticket Shop", Arrays.asList(new Item(11694), new Item(14484), new Item(6585), new Item(11732)), "GoldTicket"));
-		
 		Misc.getClasses(ShopRepository.class.getPackage().getName() + ".currency").stream().filter(ShopCurrency.class::isInstance).forEach(clazz -> {
 			ShopCurrency currency = (ShopCurrency) clazz;
 			SHOP_CURRENCIES.put(currency.getClass().getSimpleName(), currency);
@@ -96,5 +93,25 @@ public final class ShopRepository {
 	 */
 	public static Map<Integer, Shop> getShops() {
 		return SHOPS;
+	}
+	
+	/**
+	 * This method saves a collection of shops to the file
+	 */
+	public static boolean saveShops(List<Shop> shopList) {
+		return JsonFileManager.save(shopList, SHOP_FILE_LOCATION);
+	}
+	
+	/**
+	 * Gets the characteristic instance from a file
+	 */
+	private static List<Shop> loadShops() {
+		File file = new File(SHOP_FILE_LOCATION);
+		if (!file.exists()) {
+			return null;
+		}
+		String text = Misc.getText(SHOP_FILE_LOCATION);
+		return GSON.fromJson(text, new TypeToken<List<Shop>>() {
+		}.getType());
 	}
 }
