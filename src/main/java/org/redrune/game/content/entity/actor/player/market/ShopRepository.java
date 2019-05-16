@@ -91,4 +91,10 @@ public final class ShopRepository {
 		shop.open(player);
 	}
 	
+	/**
+	 * Gets the collection of shops loaded into a map
+	 */
+	public static Map<Integer, Shop> getShops() {
+		return SHOPS;
+	}
 }
