@@ -1245,6 +1245,16 @@ public final class Misc {
 		return numbers;
 	}
 	
+	public static int get32BitValue(boolean[] array, boolean trueCondition) {
+		int value = 0;
+		for (int index = 1; index < array.length + 1; index++) {
+			if (array[index - 1] == trueCondition) {
+				value += 1 << index;
+			}
+		}
+		return value;
+	}
+	
 	public enum FaceDirection {
 		
 		NORTH(0),

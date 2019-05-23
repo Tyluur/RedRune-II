@@ -9,7 +9,8 @@ import org.redrune.engine.cycle.GameCycleWorker;
 import org.redrune.engine.factory.DecoderThreadFactory;
 import org.redrune.engine.factory.SlowThreadFactory;
 import org.redrune.engine.tick.schedule.Scheduler;
-import org.redrune.engine.tick.schedule.impl.PunishmentTask;
+import org.redrune.engine.tick.schedule.impl.InformationTabTick;
+import org.redrune.engine.tick.schedule.impl.PunishmentProcessorTick;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
@@ -244,7 +245,8 @@ public final class SystemManager {
 	}
 	
 	private static void addScheduledTasks() {
-		SCHEDULER.schedule(new PunishmentTask());
+		SCHEDULER.schedule(new PunishmentProcessorTick());
+		SCHEDULER.schedule(new InformationTabTick());
 	}
 	
 	private static void saveFiles() {

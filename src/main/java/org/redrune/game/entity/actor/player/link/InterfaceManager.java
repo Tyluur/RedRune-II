@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
+import org.redrune.utility.constants.ColorConstants;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -142,8 +143,8 @@ public class InterfaceManager {
 		// Combat Interface
 		sendTab(204, 884);
 		
-		// Tasks Interface
-		sendTab(205, 930);
+		sendTaskSystem();
+		
 		// Skills Interface
 		sendTab(206, 320);
 		
@@ -217,8 +218,7 @@ public class InterfaceManager {
 		// Combat Interface
 		sendTab(90, 884);
 		
-		// Tasks Interface
-		sendTab(91, 930);
+		sendTaskSystem();
 		
 		// Skills Interface
 		sendTab(92, 320);
@@ -268,7 +268,14 @@ public class InterfaceManager {
 	}
 	
 	public void sendTaskSystem() {
-		sendTab(resizableScreen ? 112 : 205, 930);
+		int interfaceId = 930;
+		sendTab(resizableScreen ? 91 : 205, interfaceId);
+		player.getPackets().sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
+		player.getPackets().sendIComponentText(interfaceId, 16, "");
+		//		player.getPackets().sendHideIComponent(930, 12, true); //scroll bar
+		for (byte i = 17; i < 25; i++) {
+			player.getPackets().sendHideIComponent(930, i, true);
+		}
 	}
 	
 	public void sendEmotes() {

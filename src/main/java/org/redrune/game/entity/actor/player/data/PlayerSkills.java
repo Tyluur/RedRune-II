@@ -2,10 +2,11 @@ package org.redrune.game.entity.actor.player.data;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 import java.io.Serializable;
 
-public final class PlayerSkills implements Serializable,SkillConstants {
+public final class PlayerSkills implements Serializable, SkillConstants {
 	
 	private static final long serialVersionUID = -7086829989489745985L;
 	
@@ -14,6 +15,12 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 	private double xp[];
 	
 	private double xpCounter;
+	
+	private boolean[] enabledSkillsTargets;
+	
+	private boolean[] skillsTargetsUsingLevelMode;
+	
+	private int[] skillsTargetsValues;
 	
 	private transient Player player;
 	
@@ -28,6 +35,9 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 		xp[3] = 1184;
 		level[HERBLORE] = 3;
 		xp[HERBLORE] = 250;
+		enabledSkillsTargets = new boolean[25];
+		skillsTargetsUsingLevelMode = new boolean[25];
+		skillsTargetsValues = new int[25];
 	}
 	
 	public void passLevels(Player p) {
@@ -164,6 +174,9 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 		for (int skill = 0; skill < level.length; skill++) {
 			refresh(skill);
 		}
+		refreshEnabledSkillsTargets();
+		refreshUsingLevelTargets();
+		refreshSkillsTargetsValues();
 		refreshXpCounter();
 	}
 	
@@ -252,5 +265,157 @@ public final class PlayerSkills implements Serializable,SkillConstants {
 	public void setXp(int skill, double exp) {
 		xp[skill] = exp;
 		refresh(skill);
+	}
+	
+	public int getTargetIdByComponentId(int componentId) {
+		switch (componentId) {
+			case 200: // Attack
+				return 0;
+			case 11: // Strength
+				return 1;
+			case 52: // Range
+				return 2;
+			case 93: // Magic
+				return 3;
+			case 28: // Defence
+				return 4;
+			case 193: // Constitution
+				return 5;
+			case 76: // Prayer
+				return 6;
+			case 19: // Agility
+				return 7;
+			case 36: // Herblore
+				return 8;
+			case 60: // Theiving
+				return 9;
+			case 84: // Crafting
+				return 10;
+			case 110: // Runecrafting
+				return 11;
+			case 186: // Mining
+				return 12;
+			case 179: // Smithing
+				return 13;
+			case 44: // Fishing
+				return 14;
+			case 68: // Cooking
+				return 15;
+			case 172: // Firemaking
+				return 16;
+			case 165: // Woodcutting
+				return 17;
+			case 101: // Fletching
+				return 18;
+			case 118: // Slayer
+				return 19;
+			case 126: // Farming
+				return 20;
+			case 134: // Construction
+				return 21;
+			case 142: // Hunter
+				return 22;
+			case 150: // Summoning
+				return 23;
+			case 158: // Dungeoneering
+				return 24;
+			default:
+				return -1;
+		}
+	}
+	
+	public int getSkillIdByTargetId(int targetId) {
+		switch (targetId) {
+			case 0: // Attack
+				return ATTACK;
+			case 1: // Strength
+				return STRENGTH;
+			case 2: // Range
+				return RANGE;
+			case 3: // Magic
+				return MAGIC;
+			case 4: // Defence
+				return DEFENCE;
+			case 5: // Constitution
+				return HITPOINTS;
+			case 6: // Prayer
+				return PRAYER;
+			case 7: // Agility
+				return AGILITY;
+			case 8: // Herblore
+				return HERBLORE;
+			case 9: // Thieving
+				return THIEVING;
+			case 10: // Crafting
+				return CRAFTING;
+			case 11: // Runecrafting
+				return RUNECRAFTING;
+			case 12: // Mining
+				return MINING;
+			case 13: // Smithing
+				return SMITHING;
+			case 14: // Fishing
+				return FISHING;
+			case 15: // Cooking
+				return COOKING;
+			case 16: // Firemaking
+				return FIREMAKING;
+			case 17: // Woodcutting
+				return WOODCUTTING;
+			case 18: // Fletching
+				return FLETCHING;
+			case 19: // Slayer
+				return SLAYER;
+			case 20: // Farming
+				return FARMING;
+			case 21: // Construction
+				return CONSTRUCTION;
+			case 22: // Hunter
+				return HUNTER;
+			case 23: // Summoning
+				return SUMMONING;
+			case 24: // Dungeoneering
+				return DUNGEONEERING;
+			default:
+				return -1;
+		}
+	}
+	
+	public void refreshEnabledSkillsTargets() {
+		int value = Misc.get32BitValue(enabledSkillsTargets, true);
+		player.getPackets().sendConfig(1966, value);
+	}
+	
+	public void refreshUsingLevelTargets() {
+		int value = Misc.get32BitValue(skillsTargetsUsingLevelMode, true);
+		player.getPackets().sendConfig(1968, value);
+	}
+	
+	public void refreshSkillsTargetsValues() {
+		for (int i = 0; i < 25; i++) {
+			player.getPackets().sendConfig(1969 + i, skillsTargetsValues[i]);
+		}
+	}
+	
+	public void setSkillTargetEnabled(int id, boolean enabled) {
+		enabledSkillsTargets[id] = enabled;
+		refreshEnabledSkillsTargets();
+	}
+	
+	public void setSkillTargetUsingLevelMode(int id, boolean using) {
+		skillsTargetsUsingLevelMode[id] = using;
+		refreshUsingLevelTargets();
+	}
+	
+	public void setSkillTargetValue(int skillId, int value) {
+		skillsTargetsValues[skillId] = value;
+		refreshSkillsTargetsValues();
+	}
+	
+	public void setSkillTarget(boolean usingLevel, int skillId, int target) {
+		setSkillTargetEnabled(skillId, true);
+		setSkillTargetUsingLevelMode(skillId, usingLevel);
+		setSkillTargetValue(skillId, target);
+		
 	}
 }
