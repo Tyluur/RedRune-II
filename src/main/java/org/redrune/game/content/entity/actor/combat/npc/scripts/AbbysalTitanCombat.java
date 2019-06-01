@@ -7,7 +7,7 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 public class AbbysalTitanCombat extends CombatScript {
 
@@ -20,7 +20,7 @@ public class AbbysalTitanCombat extends CombatScript {
 	public int attack(NPC npc, Actor target) {
 		final NPCCombatDefinitions defs = npc.getCombatDefinitions();
 		int damage = 0;
-		damage = getRandomMaxHit(npc, 140, NPCConstants.MELEE, target);
+		damage = getRandomMaxHit(npc, 140, BonusConstants.SLASH_ATTACK, target);
 		npc.setNextAnimation(new Animation(7980));
 		npc.setNextGraphics(new Graphics(1490));
 

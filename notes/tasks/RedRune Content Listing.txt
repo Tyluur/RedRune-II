@@ -88,7 +88,7 @@ Content [
 	]
 	
 	Miniquests [
-		-	Stronghold of Security
+		-	Stronghold of Security"
 		-   Recipe for Disaster
 		-   Desert Treasure
 		-   Mage Arena II

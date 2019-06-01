@@ -31,7 +31,7 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 	 * @param source
 	 * 		The source
 	 */
-	public abstract int getRandomDamage(Player source, Actor target, double multiplier);
+	public abstract int getRandomDamage(Actor source, Actor target, double multiplier);
 	
 	/**
 	 * Sends the hit to the target

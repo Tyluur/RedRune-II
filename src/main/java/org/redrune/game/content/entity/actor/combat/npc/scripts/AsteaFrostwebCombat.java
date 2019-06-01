@@ -10,8 +10,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class AsteaFrostwebCombat extends CombatScript {
 		// boss.spawnSpider();
 		// }
 		if (Misc.getRandom(10) == 0) { // spikes
-			ArrayList<Actor> possibleTargets = npc.getPossibleTargets();
+			ArrayList<Actor> possibleTargets = npc.getPossibleTargets(true, true);
 			npc.setNextAnimation(new Animation(defs.getAttackAnim()));
 			for (Actor t : possibleTargets) {
 				delayHit(npc, 1, t, new Hit(npc, Misc.getRandom(defs.getMaxHit()), HitSplat.REGULAR_DAMAGE));
@@ -43,15 +43,15 @@ public class AsteaFrostwebCombat extends CombatScript {
 					attackStyle = 0; // set mage
 				} else { // melee
 					npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-					delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+					delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 					return defs.getAttackDelay();
 				}
 			}
 			if (attackStyle == 0) { // mage
 				npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-				ArrayList<Actor> possibleTargets = npc.getPossibleTargets();
+				ArrayList<Actor> possibleTargets = npc.getPossibleTargets(true, true);
 				
-				int d = getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, target);
+				int d = getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, target);
 				delayHit(npc, 1, target, getMagicHit(npc, d));
 				if (d != 0) {
 					WorldTasksManager.schedule(new WorldTask() {
@@ -67,7 +67,7 @@ public class AsteaFrostwebCombat extends CombatScript {
 					}, 1);
 					for (final Actor t : possibleTargets) {
 						if (t != target && t.withinDistance(target, 2)) {
-							int damage = getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, t);
+							int damage = getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, t);
 							delayHit(npc, 1, t, getMagicHit(npc, damage));
 							if (damage != 0) {
 								WorldTasksManager.schedule(new WorldTask() {

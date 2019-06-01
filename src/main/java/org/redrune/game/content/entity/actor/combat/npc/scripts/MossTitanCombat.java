@@ -8,8 +8,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class MossTitanCombat extends CombatScript {
 
@@ -27,8 +27,8 @@ public class MossTitanCombat extends CombatScript {
 		if (usingSpecial) {// priority over regular attack
 			npc.setNextAnimation(new Animation(8223));
 			npc.setNextGraphics(new Graphics(1460));
-			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 160, NPCConstants.MAGE, target)));
-			for (Actor targets : npc.getPossibleTargets()) {
+			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 160, BonusConstants.MAGIC_ATTACK, target)));
+			for (Actor targets : npc.getPossibleTargets(true, true)) {
 				RegionManager.sendProjectile(npc, targets, 1462, 34, 16, 30, 35, 16, 0);
 				if (Misc.getRandom(3) == 0)// 1/3 chance of being poisioned
 				{
@@ -36,7 +36,7 @@ public class MossTitanCombat extends CombatScript {
 				}
 			}
 		} else {
-			damage = getRandomMaxHit(npc, 160, NPCConstants.MELEE, target);
+			damage = getRandomMaxHit(npc, 160, BonusConstants.SLASH_ATTACK, target);
 			npc.setNextAnimation(new Animation(8222));
 			delayHit(npc, 1, target, getMeleeHit(npc, damage));
 		}

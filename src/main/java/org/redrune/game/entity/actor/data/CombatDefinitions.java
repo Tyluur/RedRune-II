@@ -1,5 +1,7 @@
 package org.redrune.game.entity.actor.data;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.entity.actor.Actor;
@@ -31,7 +33,9 @@ public final class CombatDefinitions implements Serializable {
 	
 	private byte specialAttackPercentage;
 	
-	private boolean autoRelatie;
+	@Getter
+	@Setter
+	private boolean autoRetaliate;
 	
 	// saving stuff
 	
@@ -61,7 +65,7 @@ public final class CombatDefinitions implements Serializable {
 	
 	public CombatDefinitions() {
 		specialAttackPercentage = 100;
-		autoRelatie = true;
+		autoRetaliate = true;
 		showCombatSpells = true;
 		showSkillSpells = true;
 		showMiscallaneousSpells = true;
@@ -467,7 +471,7 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public void refreshAutoRelatie() {
-		player.getPackets().sendConfig(172, autoRelatie ? 0 : 1);
+		player.getPackets().sendConfig(172, autoRetaliate ? 0 : 1);
 	}
 	
 	public void refreshAttackStyle() {
@@ -609,7 +613,7 @@ public final class CombatDefinitions implements Serializable {
 	}
 	
 	public void switchAutoRelatie() {
-		autoRelatie = !autoRelatie;
+		autoRetaliate = !autoRetaliate;
 		refreshAutoRelatie();
 	}
 	
@@ -641,14 +645,6 @@ public final class CombatDefinitions implements Serializable {
 		} else if (autoCastSpell > 1) {
 			resetSpells(true);
 		}
-	}
-	
-	public boolean isAutoRelatie() {
-		return autoRelatie;
-	}
-	
-	public void setAutoRelatie(boolean autoRelatie) {
-		this.autoRelatie = autoRelatie;
 	}
 	
 	public boolean isDungeonneringSpellBook() {

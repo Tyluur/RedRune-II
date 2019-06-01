@@ -1,5 +1,6 @@
 package org.redrune.game.content.entity.actor.combat.npc;
 
+import org.redrune.game.content.entity.actor.combat.player.CombatStyle;
 import org.redrune.game.content.entity.actor.player.action.impl.PlayerCombatAction;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.data.CombatDefinitions;
@@ -11,8 +12,8 @@ import org.redrune.game.entity.actor.npc.impl.familiar.Steeltitan;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 import org.redrune.utility.constants.SkillConstants;
 
 public abstract class CombatScript {
@@ -45,12 +46,12 @@ public abstract class CombatScript {
 					}
 					if (target instanceof Player) {
 						Player p2 = (Player) target;
-						if (p2.getCombatDefinitions().isAutoRelatie() && !p2.getActionManager().hasSkillWorking() && !p2.hasWalkSteps()) {
+						if (p2.getCombatDefinitions().isAutoRetaliate() && !p2.getActionManager().hasSkillWorking() && !p2.hasWalkSteps()) {
 							WorldTasksManager.schedule(new WorldTask() {
 								
 								@Override
 								public void run() {
-									if (p2.getCombatDefinitions().isAutoRelatie() && !p2.getActionManager().hasSkillWorking() && !p2.hasWalkSteps()) {
+									if (p2.getCombatDefinitions().isAutoRetaliate() && !p2.getActionManager().hasSkillWorking() && !p2.hasWalkSteps()) {
 										p2.closeInterfaces();
 										p2.getActionManager().setAction(new PlayerCombatAction(npc));
 									}
@@ -87,21 +88,31 @@ public abstract class CombatScript {
 	}
 	
 	public static int getRandomMaxHit(NPC npc, int maxHit, int attackStyle, Actor target) {
+		switch (attackStyle) {
+			case BonusConstants.SLASH_ATTACK:
+			case BonusConstants.STAB_ATTACK:
+			case BonusConstants.CRUSH_ATTACK:
+				return CombatStyle.MELEE.getStyle().getRandomDamage(npc, target, 1.0);
+			case BonusConstants.RANGE_ATTACK:
+				break;
+			case BonusConstants.MAGIC_ATTACK:
+				break;
+		}
 		int[] bonuses = npc.getBonuses();
-		double att = bonuses == null ? 0 : attackStyle == NPCConstants.RANGE ? bonuses[CombatDefinitions.RANGE_ATTACK] : attackStyle == NPCConstants.MAGE ? bonuses[CombatDefinitions.MAGIC_ATTACK] : bonuses[CombatDefinitions.STAB_ATTACK];
+		double att = bonuses == null ? 0 : attackStyle == BonusConstants.RANGE_ATTACK ? bonuses[CombatDefinitions.RANGE_ATTACK] : attackStyle == BonusConstants.MAGIC_ATTACK ? bonuses[CombatDefinitions.MAGIC_ATTACK] : bonuses[CombatDefinitions.STAB_ATTACK];
 		double def;
 		if (target instanceof Player) {
 			Player p2 = (Player) target;
-			def = p2.getSkills().getLevel(SkillConstants.DEFENCE) + (attackStyle == NPCConstants.RANGE ? 1.25 : attackStyle == NPCConstants.MAGE ? 2.0 : 1.0) * p2.getCombatDefinitions().getBonuses()[attackStyle == NPCConstants.RANGE ? CombatDefinitions.RANGE_DEF : attackStyle == NPCConstants.MAGE ? CombatDefinitions.MAGIC_DEF : CombatDefinitions.STAB_DEF];
+			def = p2.getSkills().getLevel(SkillConstants.DEFENCE) + (attackStyle == BonusConstants.RANGE_ATTACK ? 1.25 : attackStyle == BonusConstants.MAGIC_ATTACK ? 2.0 : 1.0) * p2.getCombatDefinitions().getBonuses()[attackStyle == BonusConstants.RANGE_ATTACK ? CombatDefinitions.RANGE_DEF : attackStyle == BonusConstants.MAGIC_ATTACK ? CombatDefinitions.MAGIC_DEF : CombatDefinitions.STAB_DEF];
 			def *= p2.getPrayer().getDefenceMultiplier();
-			if (attackStyle == NPCConstants.MELEE) {
+			if (attackStyle == BonusConstants.SLASH_ATTACK) {
 				if (p2.getFamiliar() instanceof Steeltitan) {
 					def *= 1.15;
 				}
 			}
 		} else {
 			NPC n = (NPC) target;
-			def = n.getBonuses() == null ? 0 : n.getBonuses()[attackStyle == NPCConstants.RANGE ? CombatDefinitions.RANGE_DEF : attackStyle == NPCConstants.MAGE ? CombatDefinitions.MAGIC_DEF : CombatDefinitions.STAB_DEF];
+			def = n.getBonuses() == null ? 0 : n.getBonuses()[attackStyle == BonusConstants.RANGE_ATTACK ? CombatDefinitions.RANGE_DEF : attackStyle == BonusConstants.MAGIC_ATTACK ? CombatDefinitions.MAGIC_DEF : CombatDefinitions.STAB_DEF];
 		}
 		double prob = att / def;
 		if (prob > 0.90) // max, 90% prob hit so even lvl 138 can miss at lvl 3

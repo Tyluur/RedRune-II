@@ -13,7 +13,7 @@ public class InformationTabTick extends ScheduledTask {
 	/**
 	 * The id of the interface used for this information
 	 */
-	private static final int INTERFACE_ID = 930;
+	private static final int INTERFACE_ID = 1149;
 	
 	public InformationTabTick() {
 		super(10, -1);

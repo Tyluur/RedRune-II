@@ -29,7 +29,7 @@ public class CorporealBeast extends NPC {
 			return;
 		}
 		int maxhp = getMaxHitpoints();
-		if (maxhp > getHitpoints() && getPossibleTargets().isEmpty()) {
+		if (maxhp > getHitpoints() && getPossibleTargets(true, true).isEmpty()) {
 			setHitpoints(maxhp);
 		}
 	}

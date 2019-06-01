@@ -12,8 +12,8 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 import org.redrune.utility.constants.SkillConstants;
 
 import java.util.ArrayList;
@@ -33,14 +33,14 @@ public class CorporealBeastCombat extends CombatScript {
 			beast.spawnDarkEnergyCore();
 		}
 		int size = npc.getSize();
-		final ArrayList<Actor> possibleTargets = npc.getPossibleTargets();
+		final ArrayList<Actor> possibleTargets = npc.getPossibleTargets(true, true);
 		boolean stomp = false;
 		for (Actor t : possibleTargets) {
 			int distanceX = t.getX() - npc.getX();
 			int distanceY = t.getY() - npc.getY();
 			if (distanceX < size && distanceX > -1 && distanceY < size && distanceY > -1) {
 				stomp = true;
-				delayHit(npc, 0, t, getRegularHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, t)));
+				delayHit(npc, 0, t, getRegularHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, t)));
 			}
 		}
 		if (stomp) {
@@ -56,17 +56,17 @@ public class CorporealBeastCombat extends CombatScript {
 				attackStyle = 2 + Misc.getRandom(2); // set mage
 			} else {
 				npc.setNextAnimation(new Animation(attackStyle == 0 ? defs.getAttackAnim() : 10058));
-				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 				return defs.getAttackDelay();
 			}
 		}
 		if (attackStyle == 2) { // powerfull mage spiky ball
 			npc.setNextAnimation(new Animation(10410));
-			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 650, NPCConstants.MAGE, target)));
+			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 650, BonusConstants.MAGIC_ATTACK, target)));
 			RegionManager.sendProjectile(npc, target, 1825, 41, 16, 41, 0, 16, 0);
 		} else if (attackStyle == 3) { // translucent ball of energy
 			npc.setNextAnimation(new Animation(10410));
-			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 550, NPCConstants.MAGE, target)));
+			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 550, BonusConstants.MAGIC_ATTACK, target)));
 			if (target instanceof Player) {
 				WorldTasksManager.schedule(new WorldTask() {
 					@Override
@@ -104,7 +104,7 @@ public class CorporealBeastCombat extends CombatScript {
 							if (Misc.getDistance(newTile.getX(), newTile.getY(), t.getX(), t.getY()) > 1 || !t.clipedProjectile(newTile, false)) {
 								continue;
 							}
-							delayHit(npc, 0, t, getMagicHit(npc, getRandomMaxHit(npc, 350, NPCConstants.MAGE, t)));
+							delayHit(npc, 0, t, getMagicHit(npc, getRandomMaxHit(npc, 350, BonusConstants.MAGIC_ATTACK, t)));
 						}
 						WorldTasksManager.schedule(new WorldTask() {
 							@Override

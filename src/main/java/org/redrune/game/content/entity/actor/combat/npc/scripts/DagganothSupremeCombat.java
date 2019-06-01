@@ -7,7 +7,7 @@ import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 /**
  * @author Tyluur<itstyluur@gmail.com>
@@ -26,21 +26,21 @@ public class DagganothSupremeCombat extends CombatScript {
 		int damage;
 		switch (npc.getId()) {
 			case 2881: // supreme (range)
-				damage = getRandomMaxHit(npc, 300, NPCConstants.RANGE, target);
+				damage = getRandomMaxHit(npc, 300, BonusConstants.RANGE_ATTACK, target);
 				npc.setNextAnimation(new Animation(defs.getAttackAnim()));
 				npc.setNextGraphics(new Graphics(defs.getAttackGfx()));
 				delayHit(npc, 2, target, getRangeHit(npc, damage));
 				RegionManager.sendProjectile(npc, target, 475, 41, 16, 41, 35, 16, 0);
 				break;
 			case 2882: // prime (mage)
-				damage = getRandomMaxHit(npc, 300, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 300, BonusConstants.MAGIC_ATTACK, target);
 				npc.setNextAnimation(new Animation(defs.getAttackAnim()));
 				npc.setNextGraphics(new Graphics(defs.getAttackGfx()));
 				delayHit(npc, 2, target, getMagicHit(npc, damage));
 				RegionManager.sendProjectile(npc, target, 2707, 41, 16, 41, 35, 16, 0);
 				break;
 			case 2883: // rex (melee)
-				damage = getRandomMaxHit(npc, 300, NPCConstants.MELEE, target);
+				damage = getRandomMaxHit(npc, 300, BonusConstants.SLASH_ATTACK, target);
 				npc.setNextAnimation(new Animation(defs.getAttackAnim()));
 				delayHit(npc, 0, target, getMeleeHit(npc, damage));
 				break;

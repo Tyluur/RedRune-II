@@ -8,7 +8,7 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 public class MinotaurCombat extends CombatScript {
 
@@ -29,7 +29,7 @@ public class MinotaurCombat extends CombatScript {
 			RegionManager.sendProjectile(npc, target, 1333, 34, 16, 30, 35, 16, 0);
 		} else {
 			npc.setNextAnimation(new Animation(6829));
-			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 40, NPCConstants.MAGE, target)));
+			delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 40, BonusConstants.MAGIC_ATTACK, target)));
 		}
 		return defs.getAttackDelay();
 	}

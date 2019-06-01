@@ -13,8 +13,8 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class StrykewyrmCombat extends CombatScript {
 
@@ -35,13 +35,13 @@ public class StrykewyrmCombat extends CombatScript {
 				// nothing
 			} else {
 				npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, target)));
+				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, target)));
 				return defs.getAttackDelay();
 			}
 		}
 		if (attackStyle <= 9) { // mage
 			npc.setNextAnimation(new Animation(12794));
-			final Hit hit = getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, target));
+			final Hit hit = getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, target));
 			delayHit(npc, 1, target, hit);
 			RegionManager.sendProjectile(npc, target, defs.getAttackProjectile(), 41, 16, 41, 30, 16, 0);
 			if (npc.getId() == 9463) {

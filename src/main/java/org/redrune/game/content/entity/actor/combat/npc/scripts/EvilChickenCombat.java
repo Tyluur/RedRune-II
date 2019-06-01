@@ -8,8 +8,8 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class EvilChickenCombat extends CombatScript {
 	
@@ -51,7 +51,7 @@ public class EvilChickenCombat extends CombatScript {
 				break;
 		}
 		target.setNextGraphics(new Graphics(337));
-		delayHit(npc, 0, target, getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, target)));
+		delayHit(npc, 0, target, getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, target)));
 		return defs.getAttackDelay();
 	}
 }

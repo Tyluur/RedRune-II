@@ -7,7 +7,7 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 public class TzKihCombat extends CombatScript {
 
@@ -24,8 +24,8 @@ public class TzKihCombat extends CombatScript {
 		int damage = 0;
 		if (npc instanceof Familiar) {// TODO get anim and gfx
 			if (usingSpecial) {
-				for (Actor actor : npc.getPossibleTargets()) {
-					damage = getRandomMaxHit(npc, 70, NPCConstants.MAGE, target);
+				for (Actor actor : npc.getPossibleTargets(true, true)) {
+					damage = getRandomMaxHit(npc, 70, BonusConstants.MAGIC_ATTACK, target);
 					Player player = (Player) target;
 					if (player.getTemporaryAttributes().get("drainingPrayer") != null) {
 						player.getPrayer().drainPrayer(damage);
@@ -37,7 +37,7 @@ public class TzKihCombat extends CombatScript {
 			return defs.getAttackDelay();
 		}
 		npc.setNextAnimation(new Animation(8257));
-		damage = getRandomMaxHit(npc, 50, NPCConstants.MAGE, target);
+		damage = getRandomMaxHit(npc, 50, BonusConstants.MAGIC_ATTACK, target);
 		Player player = (Player) target;
 		if (player.getTemporaryAttributes().get("drainingPrayer") != null) {
 			player.getPrayer().drainPrayer(damage);

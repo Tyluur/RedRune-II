@@ -27,7 +27,7 @@ public class KalphiteQueen extends NPC {
 	}
 	
 	@Override
-	public ArrayList<Actor> getPossibleTargets() {
+	public ArrayList<Actor> getPossibleTargets(boolean checkNPCs, boolean checkPlayers) {
 		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
 		for (int regionId : getMapRegionsIds()) {
 			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();

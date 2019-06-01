@@ -8,8 +8,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.others.TormentedDemon;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class TormentedDemonCombat extends CombatScript {
 
@@ -30,21 +30,21 @@ public class TormentedDemonCombat extends CombatScript {
 		switch (attackStyle) {
 			case 0:
 				if (npc.withinDistance(target, 3)) {
-					hit = getRandomMaxHit(npc, 189, NPCConstants.MELEE, target);
+					hit = getRandomMaxHit(npc, 189, BonusConstants.SLASH_ATTACK, target);
 					npc.setNextAnimation(new Animation(10922));
 					npc.setNextGraphics(new Graphics(1886));
 					delayHit(npc, 1, target, getMeleeHit(npc, hit));
 				}
 				return defs.getAttackDelay();
 			case 1:
-				hit = getRandomMaxHit(npc, 270, NPCConstants.MAGE, target);
+				hit = getRandomMaxHit(npc, 270, BonusConstants.MAGIC_ATTACK, target);
 				npc.setNextAnimation(new Animation(10918));
 				npc.setNextGraphics(new Graphics(1883, 0, 96 << 16));
 				RegionManager.sendProjectile(npc, target, 1884, 34, 16, 30, 35, 16, 0);
 				delayHit(npc, 1, target, getMagicHit(npc, hit));
 				break;
 			case 2:
-				hit = getRandomMaxHit(npc, 270, NPCConstants.RANGE, target);
+				hit = getRandomMaxHit(npc, 270, BonusConstants.RANGE_ATTACK, target);
 				npc.setNextAnimation(new Animation(10919));
 				npc.setNextGraphics(new Graphics(1888));
 				RegionManager.sendProjectile(npc, target, 1887, 34, 16, 30, 35, 16, 0);

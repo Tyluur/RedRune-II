@@ -9,8 +9,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class KrilTsutsaroth extends CombatScript {
 	
@@ -59,8 +59,8 @@ public class KrilTsutsaroth extends CombatScript {
 			case 0:// magic flame attack
 				npc.setNextAnimation(new Animation(14962));
 				npc.setNextGraphics(new Graphics(1210));
-				for (Actor t : npc.getPossibleTargets()) {
-					delayHit(npc, 1, t, getMagicHit(npc, getRandomMaxHit(npc, 300, NPCConstants.MAGE, t)));
+				for (Actor t : npc.getPossibleTargets(true, true)) {
+					delayHit(npc, 1, t, getMagicHit(npc, getRandomMaxHit(npc, 300, BonusConstants.MAGIC_ATTACK, t)));
 					RegionManager.sendProjectile(npc, t, 1211, 41, 16, 41, 35, 16, 0);
 					if (Misc.getRandom(4) == 0) {
 						t.getPoisonManager().makePoisoned(168);
@@ -79,7 +79,7 @@ public class KrilTsutsaroth extends CombatScript {
 					player.getPackets().sendMessage("K'ril Tsutsaroth slams through your protection prayer, leaving you feeling drained.");
 				}
 				npc.setNextAnimation(new Animation(damage <= 463 ? 14963 : 14968));
-				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, damage, NPCConstants.MELEE, target)));
+				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, damage, BonusConstants.SLASH_ATTACK, target)));
 				break;
 		}
 		return defs.getAttackDelay();

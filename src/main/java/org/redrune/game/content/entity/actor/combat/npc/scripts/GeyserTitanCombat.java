@@ -8,8 +8,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class GeyserTitanCombat extends CombatScript {
 
@@ -36,23 +36,23 @@ public class GeyserTitanCombat extends CombatScript {
 			npc.setNextGraphics(new Graphics(1373));
 			if (distant) {// range hit
 				if (Misc.getRandom(2) == 0) {
-					delayHit(npc, 1, target, getRangeHit(npc, getRandomMaxHit(npc, 300, NPCConstants.RANGE, target)));
+					delayHit(npc, 1, target, getRangeHit(npc, getRandomMaxHit(npc, 300, BonusConstants.RANGE_ATTACK, target)));
 				} else {
-					delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 300, NPCConstants.MAGE, target)));
+					delayHit(npc, 1, target, getMagicHit(npc, getRandomMaxHit(npc, 300, BonusConstants.MAGIC_ATTACK, target)));
 				}
 			} else {// melee hit
-				delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 300, NPCConstants.MELEE, target)));
+				delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 300, BonusConstants.SLASH_ATTACK, target)));
 			}
 			RegionManager.sendProjectile(npc, target, 1376, 34, 16, 30, 35, 16, 0);
 		} else {
 			if (distant) {// range
-				damage = getRandomMaxHit(npc, 244, NPCConstants.RANGE, target);
+				damage = getRandomMaxHit(npc, 244, BonusConstants.RANGE_ATTACK, target);
 				npc.setNextAnimation(new Animation(7883));
 				npc.setNextGraphics(new Graphics(1375));
 				RegionManager.sendProjectile(npc, target, 1374, 34, 16, 30, 35, 16, 0);
 				delayHit(npc, 2, target, getRangeHit(npc, damage));
 			} else {// melee
-				damage = getRandomMaxHit(npc, 244, NPCConstants.MELEE, target);
+				damage = getRandomMaxHit(npc, 244, BonusConstants.SLASH_ATTACK, target);
 				npc.setNextAnimation(new Animation(7879));
 				delayHit(npc, 1, target, getMeleeHit(npc, damage));
 			}

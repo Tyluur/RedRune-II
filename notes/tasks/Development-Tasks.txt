@@ -26,6 +26,18 @@
 		-   Need to add alchemy spells
 +   'You can't reach that' [stops interaction through walls]
 
+[NPC]
++   Hitpoints (0%)
+	-   Loaded hitpoints from alotic
++   Skill Levels (0%)
+	-   Loaded skill levels from alotic
++   Bonuses (0%)
++   Examines (100% - beastiary data)
++   Animations (0%)
++   Drop Tables (0%)
++   Remove max hit, attack graphics and projectiles (check which npcs have these stored)
+	-   Repack
+
 [Data]
 +	NPC examines
 +	Object examines

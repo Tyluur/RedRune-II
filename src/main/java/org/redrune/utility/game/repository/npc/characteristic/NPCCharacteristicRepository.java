@@ -12,10 +12,12 @@ import org.redrune.cache.loaders.AnimationDefinitions;
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.game.entity.actor.npc.Drop;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +40,7 @@ public class NPCCharacteristicRepository {
 	/**
 	 * The default npc definition
 	 */
-	private final static NPCCombatDefinitions DEFAULT_DEFINITION = new NPCCombatDefinitions(1, -1, -1, -1, 5, 1, 33, 0, NPCConstants.MELEE, -1, -1, NPCConstants.PASSIVE);
+	private final static NPCCombatDefinitions DEFAULT_DEFINITION = new NPCCombatDefinitions(1, -1, -1, -1, 5, 1, 33, 0, BonusConstants.SLASH_ATTACK, -1, -1, 0);
 	
 	/**
 	 * The gson instance
@@ -52,7 +54,7 @@ public class NPCCharacteristicRepository {
 	
 	public static void main(String[] args) throws IOException {
 		Cache.initialize();
-		dumpBestiaryDefinitions();
+		convertAloticDefinitions();
 	}
 	
 	private static void dumpBestiaryDefinitions() {
@@ -243,6 +245,225 @@ public class NPCCharacteristicRepository {
 		System.out.println("Finished");
 	}
 	
+	private static void convertAloticDefinitions() {
+		try {
+			final String[] LOAD_IDENTIFIERS = { "id", "maxHp", "maxDamage", "maxDistance", "aggressiveLevel", "style", "type", "attackTicks", "deathTicks", "respawnTicks", "attackAnimation", "defendAnimation", "deathAnimation", "meleeAttDef", "magicAttDef", "rangedAttDef", "weakness", "legion", "slayerRequest", "charms", "clueType" };
+			BufferedReader br = new BufferedReader(new FileReader("D:\\Tyler\\Google Drive\\Me\\3. RSPS\\1. Servers\\#600-699\\Alotic\\world_server\\data\\npcs\\combat.txt"));
+			String line, identifier;
+			byte identifierIndex = 0;
+			short lastSuccessfulLoad = -1;
+			boolean loadFail = false;
+			/**
+			 * Definition values
+			 */
+			short[] ids = null;
+			int maxHp = 0, maxDamage = 0;
+			byte maxDistance = 1;
+			int attackTicks = 5, deathTicks = 5, respawnTicks = 50;
+			short aggressiveLevel = 0;
+			Style style = null;
+			Object type = null;
+			short attackAnimation = -1, defendAnimation = -1, deathAnimation = -1;
+			short effectiveAttack = 0, effectiveDefence = 0, effectiveMagic = 0, effectiveRanged = 0;
+			Object legion = null;
+			byte slayerRequest = 0;
+			Object[] customDrops = null;
+			Object[] weakness = null;
+			byte weaknessModifier = 100; // NOTE: THIS IS REDUCED *TO*, NOT REDUCED *BY*
+			/**
+			 * Parsing
+			 */
+			while ((line = br.readLine()) != null) {
+				if (line.equals("") || line.isEmpty() || line.startsWith("#")) {
+					continue;
+				}
+				identifier = LOAD_IDENTIFIERS[identifierIndex++];
+				if (!line.startsWith(identifier)) {
+					if (identifier.equals("weaknessModifier")) {
+						weaknessModifier = 75;
+						identifier = LOAD_IDENTIFIERS[identifierIndex++];
+					} else { // maybe add elseifs here for default values? cant add new identifiers at the end of the array or it will cause problems.
+						// not elegant but i don't see a better solution besides re-editing the whole combat.txt file
+						loadFail = true;
+					}
+				}
+				if (line.startsWith(identifier)) {
+					try {
+						switch (identifier) {
+							case "id":
+								String lineSplit = line.split("id=")[1];
+								if (lineSplit.contains(",")) {
+									String[] idSplit = lineSplit.split(",");
+									ids = new short[idSplit.length];
+									for (byte i = 0; i < idSplit.length; i++) {
+										ids[i] = Short.parseShort(idSplit[i]);
+									}
+								} else {
+									ids = new short[] { Short.parseShort(lineSplit) };
+								}
+								System.out.println("starting to convert " + Arrays.toString(ids) + " (" + NPCDefinitions.getNPCDefinitions(ids[0]).getName() + ")");
+								break;
+							case "maxHp":
+								maxHp = Integer.parseInt(line.split("maxHp=")[1]);
+								break;
+							case "maxDamage":
+								maxDamage = Integer.parseInt(line.split("maxDamage=")[1]);
+								break;
+							case "maxDistance":
+								maxDistance = Byte.parseByte(line.split("maxDistance=")[1]);
+								break;
+							case "aggressiveLevel":
+								aggressiveLevel = Short.parseShort(line.split("aggressiveLevel=")[1]);
+								break;
+							case "attackTicks":
+								attackTicks = Integer.parseInt(line.split("attackTicks=")[1]);
+								break;
+							case "deathTicks":
+								deathTicks = Integer.parseInt(line.split("deathTicks=")[1]);
+								break;
+							case "respawnTicks":
+								respawnTicks = Integer.parseInt(line.split("respawnTicks=")[1]);
+								break;
+							case "attackAnimation":
+								attackAnimation = Short.parseShort(line.split("attackAnimation=")[1]);
+								break;
+							case "defendAnimation":
+								defendAnimation = Short.parseShort(line.split("defendAnimation=")[1]);
+								break;
+							case "deathAnimation":
+								deathAnimation = Short.parseShort(line.split("deathAnimation=")[1]);
+								break;
+							case "effectiveAttack":
+								effectiveAttack = Short.parseShort(line.split("effectiveAttack=")[1]);
+								break;
+							case "effectiveDefence":
+								effectiveDefence = Short.parseShort(line.split("effectiveDefence=")[1]);
+								break;
+							case "effectiveMagic":
+								effectiveMagic = Short.parseShort(line.split("effectiveMagic=")[1]);
+								break;
+							case "effectiveRanged":
+								effectiveRanged = Short.parseShort(line.split("effectiveRanged=")[1]);
+								break;
+							case "weaknessModifier":
+								weaknessModifier = Byte.parseByte(line.split("weaknessModifier=")[1]);
+								break;
+							case "style": {
+								String splitLine = line.split("style=")[1];
+								if (splitLine.equals("null")) {
+									style = null;
+								} else {
+									style = Style.valueOf(splitLine);
+								}
+								break;
+							}
+						}
+						if (identifierIndex == LOAD_IDENTIFIERS.length) {
+							for (short id : ids) {
+								
+								NPCCharacteristic characteristic = getCharacteristicsNonNull(id);
+								if (characteristic == null) {
+									System.out.println("Unable to get characteristics for " + id + ", skipping (" + NPCDefinitions.getNPCDefinitions(id).getName() + ")...");
+									continue;
+								}
+								NPCCombatDefinitions definitions = characteristic.getCombatDefinitions(id);
+								if (definitions == null) {
+									System.out.println("Unable to find stored definitions for " + id + ", generating new...");
+									definitions = new NPCCombatDefinitions();
+								}
+								definitions.setHitpoints(maxHp);
+								definitions.setAttackAnim(attackAnimation);
+								definitions.setDefenceAnim(defendAnimation);
+								definitions.setDeathAnim(deathAnimation);
+								definitions.setAttackDelay(attackTicks);
+								definitions.setRespawnDelay(respawnTicks);
+								definitions.setDeathDelay(deathTicks);
+								if (style != null) {
+									definitions.setAttackStyle(style.getAttackStyle());
+								}
+								saveCharacteristics(id, characteristic);
+								System.out.println("Saved animations for npc " + id + " [" + NPCDefinitions.getNPCDefinitions(id).getName() + "]");
+								
+								identifierIndex = 0;
+								lastSuccessfulLoad = id;
+							}
+							ids = null;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						loadFail = true;
+					}
+				}
+				if (loadFail) {
+					if (ids == null) {
+						System.err.println("Error loading npc combat definitions!");
+						if (lastSuccessfulLoad != -1) {
+							System.err.println("Last successful combat definition loaded: " + lastSuccessfulLoad);
+						}
+					} else {
+						System.err.println("Error loading combat definition for npc " + ids[0] + "!");
+					}
+					System.err.println("Next expected definition identifier: " + identifier + "=value, got: " + line.split("=")[0]);
+					break;
+				}
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Created by yak.
+	 */
+	public enum Style {
+		
+		STAB,
+		SLASH,
+		CRUSH,
+		RANGED,
+		DECENT_OF_DRAGONS,
+		DECENT_OF_DARKNESS,
+		DOWN_TO_EARTH,
+		CLEAR_MIND,
+		LIFE_LEECH,
+		KORASI_SPEC,
+		MAGIC,
+		DRAGON_FIRE,
+		SARADOMIN_LIGHTNING,
+		OTHER;
+		
+		public boolean isMelee() {
+			return this == STAB || this == SLASH || this == CRUSH;
+		}
+		
+		public boolean isRanged() {
+			return this == RANGED || this == DECENT_OF_DRAGONS || this == DECENT_OF_DARKNESS || this == DOWN_TO_EARTH || this == CLEAR_MIND || this == LIFE_LEECH;
+		}
+		
+		public boolean isMagic() {
+			return this == MAGIC;
+		}
+		
+		public int getAttackStyle() {
+			switch (this) {
+				case STAB:
+					return BonusConstants.STAB_ATTACK;
+				case SLASH:
+					return BonusConstants.SLASH_ATTACK;
+				case CRUSH:
+					return BonusConstants.CRUSH_ATTACK;
+				case MAGIC:
+					return BonusConstants.MAGIC_ATTACK;
+				case RANGED:
+					return BonusConstants.RANGE_ATTACK;
+				default:
+					throw new IllegalStateException("Unable to parse attack style");
+			}
+		}
+		
+	}
+	
 	/**
 	 * Gets the {@code NPCCharacteristic} instance from the file
 	 *
@@ -428,6 +649,9 @@ public class NPCCharacteristicRepository {
 		}
 	}
 	
+	/**
+	 * Returns an instance of the npc's characteristics unless the npc does not exist in the cache
+	 */
 	private static NPCCharacteristic getCharacteristicsNonNull(int npcId) {
 		NPCDefinitions definitions = NPCDefinitions.getNPCDefinitions(npcId);
 		if (definitions == null) {
@@ -442,8 +666,11 @@ public class NPCCharacteristicRepository {
 	/**
 	 * Gets the combat definitions of an npc by its id
 	 */
-	public static NPCCombatDefinitions getCombatDefinitions(int npcId) {
+	public static NPCCombatDefinitions getCombatDefinitions(int npcId, boolean nullable) {
 		NPCCharacteristic characteristic = getCharacteristics(npcId);
+		if (nullable && characteristic == null) {
+			return null;
+		}
 		if (characteristic == null) {
 			return DEFAULT_DEFINITION;
 		}

@@ -40,7 +40,7 @@ public class DarkEnergyCore extends NPC {
 		}
 		if (changeTarget > 0) {
 			if (changeTarget == 1) {
-				ArrayList<Actor> possibleTarget = beast.getPossibleTargets();
+				ArrayList<Actor> possibleTarget = beast.getPossibleTargets(true, true);
 				if (possibleTarget.isEmpty()) {
 					finish();
 					beast.removeDarkEnergyCore();
