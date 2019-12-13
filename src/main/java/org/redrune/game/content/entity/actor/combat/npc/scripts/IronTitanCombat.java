@@ -8,7 +8,7 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 public class IronTitanCombat extends CombatScript {
 
@@ -34,18 +34,18 @@ public class IronTitanCombat extends CombatScript {
 			npc.setNextAnimation(new Animation(7954));
 			npc.setNextGraphics(new Graphics(1450));
 			if (distant) {// range hit
-				delayHit(npc, 2, target, getMagicHit(npc, getRandomMaxHit(npc, 220, NPCConstants.MAGE, target)), getMagicHit(npc, getRandomMaxHit(npc, 220, NPCConstants.MAGE, target)), getMagicHit(npc, getRandomMaxHit(npc, 220, NPCConstants.MAGE, target)));
+				delayHit(npc, 2, target, getMagicHit(npc, getRandomMaxHit(npc, 220, BonusConstants.MAGIC_ATTACK, target)), getMagicHit(npc, getRandomMaxHit(npc, 220, BonusConstants.MAGIC_ATTACK, target)), getMagicHit(npc, getRandomMaxHit(npc, 220, BonusConstants.MAGIC_ATTACK, target)));
 			} else {// melee hit
-				delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 230, NPCConstants.MELEE, target)), getMeleeHit(npc, getRandomMaxHit(npc, 230, NPCConstants.MELEE, target)), getMeleeHit(npc, getRandomMaxHit(npc, 230, NPCConstants.MELEE, target)));
+				delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 230, BonusConstants.SLASH_ATTACK, target)), getMeleeHit(npc, getRandomMaxHit(npc, 230, BonusConstants.SLASH_ATTACK, target)), getMeleeHit(npc, getRandomMaxHit(npc, 230, BonusConstants.SLASH_ATTACK, target)));
 			}
 		} else {
 			if (distant) {
-				damage = getRandomMaxHit(npc, 255, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 255, BonusConstants.MAGIC_ATTACK, target);
 				npc.setNextAnimation(new Animation(7694));
 				RegionManager.sendProjectile(npc, target, 1452, 34, 16, 30, 35, 16, 0);
 				delayHit(npc, 2, target, getMagicHit(npc, damage));
 			} else {// melee
-				damage = getRandomMaxHit(npc, 244, NPCConstants.MELEE, target);
+				damage = getRandomMaxHit(npc, 244, BonusConstants.SLASH_ATTACK, target);
 				npc.setNextAnimation(new Animation(7946));
 				npc.setNextGraphics(new Graphics(1447));
 				delayHit(npc, 1, target, getMeleeHit(npc, damage));

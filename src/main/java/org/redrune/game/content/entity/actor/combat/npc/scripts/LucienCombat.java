@@ -13,8 +13,8 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class LucienCombat extends CombatScript {
 		int attackStyle = Misc.getRandom(5);
 
 		if (Misc.getRandom(10) == 0) {
-			ArrayList<Actor> possibleTargets = npc.getPossibleTargets();
+			ArrayList<Actor> possibleTargets = npc.getPossibleTargets(true, true);
 			final HashMap<String, int[]> tiles = new HashMap<String, int[]>();
 			for (Actor t : possibleTargets) {
 				if (t instanceof Player) {
@@ -54,7 +54,7 @@ public class LucienCombat extends CombatScript {
 			WorldTasksManager.schedule(new WorldTask() {
 				@Override
 				public void run() {
-					ArrayList<Actor> possibleTargets = npc.getPossibleTargets();
+					ArrayList<Actor> possibleTargets = npc.getPossibleTargets(true, true);
 					for (int[] tile : tiles.values()) {
 
 						RegionManager.sendGraphics(null, new Graphics(1896), new WorldTile(tile[0], tile[1], 0));
@@ -74,11 +74,11 @@ public class LucienCombat extends CombatScript {
 		}
 		if (attackStyle == 0) { // normal mage move
 			npc.setNextAnimation(new Animation(11338));
-			delayHit(npc, 2, target, getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, target)));
+			delayHit(npc, 2, target, getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, target)));
 			RegionManager.sendProjectile(npc, target, 2963, 34, 16, 40, 35, 16, 0);
 		} else if (attackStyle == 1) { // normal mage move
 			npc.setNextAnimation(new Animation(11338));
-			delayHit(npc, 2, target, getRangeHit(npc, getRandomMaxHit(npc, 900, NPCConstants.RANGE, target)));
+			delayHit(npc, 2, target, getRangeHit(npc, getRandomMaxHit(npc, 900, BonusConstants.RANGE_ATTACK, target)));
 			RegionManager.sendProjectile(npc, target, 1904, 34, 16, 30, 35, 16, 0);
 
 			WorldTasksManager.schedule(new WorldTask() {
@@ -94,7 +94,7 @@ public class LucienCombat extends CombatScript {
 			npc.setNextAnimation(new Animation(11318));
 			npc.setNextGraphics(new Graphics(1901));
 			RegionManager.sendProjectile(npc, target, 1899, 34, 16, 30, 95, 16, 0);
-			delayHit(npc, 4, target, getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, target)));
+			delayHit(npc, 4, target, getMagicHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, target)));
 		} else if (attackStyle == 3) {
 			npc.setNextAnimation(new Animation(11373));
 			npc.setNextGraphics(new Graphics(1898));
@@ -113,7 +113,7 @@ public class LucienCombat extends CombatScript {
 
 				@Override
 				public void run() {
-					for (Actor t : npc.getPossibleTargets()) {
+					for (Actor t : npc.getPossibleTargets(true, true)) {
 						t.applyHit(new Hit(npc, (int) (t.getHitpoints() * Math.random()), HitSplat.REGULAR_DAMAGE, 0));
 					}
 					npc.getCombat().addCombatDelay(3);

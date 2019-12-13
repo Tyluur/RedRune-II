@@ -8,8 +8,8 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class LeatherDragonCombat extends CombatScript {
 
@@ -29,7 +29,7 @@ public class LeatherDragonCombat extends CombatScript {
 		}
 		if (Misc.getRandom(3) != 0) {
 			npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 		} else {
 			int damage = Misc.getRandom(650);
 			npc.setNextAnimation(new Animation(12259));

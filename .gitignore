@@ -26,3 +26,6 @@ hs_err_pid*
 
 # maps
 *.os
+
+# archives
+*.rar

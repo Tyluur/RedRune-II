@@ -10,7 +10,7 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
-import org.redrune.game.entity.actor.npc.data.combat.NPCCombat;
+import org.redrune.game.content.entity.actor.combat.npc.NPCCombat;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtension;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
@@ -24,7 +24,6 @@ import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.Misc.FaceDirection;
 import org.redrune.utility.constants.BonusConstants;
-import org.redrune.utility.constants.NPCConstants;
 import org.redrune.utility.game.repository.npc.characteristic.NPCCharacteristicRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -130,7 +129,7 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public NPCCombatDefinitions getCombatDefinitions() {
-		return NPCCharacteristicRepository.getCombatDefinitions(id);
+		return NPCCharacteristicRepository.getCombatDefinitions(id, false);
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -464,6 +463,7 @@ public class NPC extends Actor implements Serializable {
 	@Override
 	public void setAttackedBy(Actor target) {
 		super.setAttackedBy(target);
+		System.out.println("we was attacked by " + target);
 		if (target == combat.getTarget() && !(combat.getTarget() instanceof Familiar)) {
 			lastAttackedByTarget = Misc.currentTimeMillis();
 		}
@@ -527,16 +527,13 @@ public class NPC extends Actor implements Serializable {
 	}
 	
 	public boolean checkAgressivity() {
-		// if(!(Wilderness.isAtWild(this) &&
-		// getDefinitions().hasAttackOption())) {
 		if (!forceAgressive) {
 			NPCCombatDefinitions defs = getCombatDefinitions();
-			if (defs.getAggressivenessType() == NPCConstants.PASSIVE) {
+			if (defs.getAggressivenessType() == 0) {
 				return false;
 			}
 		}
-		// }
-		ArrayList<Actor> possibleTarget = getPossibleTargets();
+		ArrayList<Actor> possibleTarget = getPossibleTargets(false, true);
 		if (!possibleTarget.isEmpty()) {
 			Actor target = possibleTarget.get(Misc.getRandom(possibleTarget.size() - 1));
 			setTarget(target);
@@ -555,17 +552,34 @@ public class NPC extends Actor implements Serializable {
 		setForceWalk(respawnTile);
 	}
 	
-	public ArrayList<Actor> getPossibleTargets() {
+	public ArrayList<Actor> getPossibleTargets(boolean checkNPCs, boolean checkPlayers) {
+		int size = getSize();
+		int style = getCombatDefinitions().getAttackStyle();
+		int agroRatio = style == BonusConstants.RANGE_ATTACK || style == BonusConstants.MAGIC_ATTACK ? 8 : 1;
 		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
 		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
-			if (playerIndexes != null) {
-				for (int npcIndex : playerIndexes) {
-					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isInRange(getX(), getY(), getSize(), player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : getCombatDefinitions().getAttackStyle() == NPCConstants.SPECIAL ? 64 : 8) || (!forceMultiAttacked && (!isInMultiArea() || !player.isInMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
-						continue;
+			if (checkPlayers) {
+				List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
+				if (playerIndexes != null) {
+					for (int playerIndex : playerIndexes) {
+						Player player = World.getPlayers().get(playerIndex);
+						if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || player.getAppearance().isHidden() || !Misc.isOnRange(getX(), getY(), size, player.getX(), player.getY(), player.getSize(), forceTargetDistance > 0 ? forceTargetDistance : agroRatio) || (!forceMultiAttacked && (!isInMultiArea() || !player.isInMultiArea()) && (player.getAttackedBy() != this && (player.getAttackedByDelay() > Misc.currentTimeMillis() || player.getFindTargetDelay() > Misc.currentTimeMillis()))) || !clipedProjectile(player, false) || (!forceAgressive && !Wilderness.isAtWild(this) && player.getSkills().getCombatLevelWithSummoning() >= getCombatLevel() * 2)) {
+							continue;
+						}
+						possibleTarget.add(player);
 					}
-					possibleTarget.add(player);
+				}
+			}
+			if (checkNPCs) {
+				List<Integer> npcsIndexes = RegionManager.getRegion(regionId).getNPCsIndexes();
+				if (npcsIndexes != null) {
+					for (int npcIndex : npcsIndexes) {
+						NPC npc = World.getNPCs().get(npcIndex);
+						if (npc == null || npc == this || npc.isDead() || npc.isFinished() || !Misc.isOnRange(getX(), getY(), size, npc.getX(), npc.getY(), npc.getSize(), forceTargetDistance > 0 ? forceTargetDistance : agroRatio) || !npc.getDefinitions().hasAttackOption() || ((!isInMultiArea() || !npc.isInMultiArea()) && npc.getAttackedBy() != this && npc.getAttackedByDelay() > Misc.currentTimeMillis()) || !clipedProjectile(npc, false)) {
+							continue;
+						}
+						possibleTarget.add(npc);
+					}
 				}
 			}
 		}

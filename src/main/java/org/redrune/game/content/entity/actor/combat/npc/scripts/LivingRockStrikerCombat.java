@@ -10,7 +10,7 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 /**
  * @author Owner
@@ -27,13 +27,13 @@ public class LivingRockStrikerCombat extends CombatScript {
 		final NPCCombatDefinitions defs = npc.getCombatDefinitions();
 		if (npc.withinDistance(target, 10)) { // range magical attack
 			npc.setNextAnimation(new Animation(1296));
-			for (Actor t : npc.getPossibleTargets()) {
-				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 140, NPCConstants.RANGE, t)));
+			for (Actor t : npc.getPossibleTargets(true, true)) {
+				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 140, BonusConstants.RANGE_ATTACK, t)));
 				RegionManager.sendProjectile(npc, t, 1197, 41, 16, 41, 35, 16, 0);
 			}
 		} else { // melee attack
 			npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 		}
 		return defs.getAttackDelay();
 	}

@@ -2,7 +2,7 @@ package org.redrune.game.entity.actor.npc.data.combat;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -207,7 +207,7 @@ public class NPCCombatDefinitions {
 	}
 	
 	public NPCCombatDefinitions() {
-		this(100, 0, 0, 0, 0, 0, new int[18], -1, -1, -1, 3, 6, 50, 1, NPCConstants.MELEE, -1, -1, 0);
+		this(100, 0, 0, 0, 0, 0, new int[18], -1, -1, -1, 3, 6, 50, 1, BonusConstants.SLASH_ATTACK, -1, -1, 0);
 	}
 	
 	@Override

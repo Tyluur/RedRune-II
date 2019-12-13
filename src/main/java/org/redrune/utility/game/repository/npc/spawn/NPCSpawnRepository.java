@@ -96,10 +96,7 @@ public class NPCSpawnRepository {
 			System.out.println("region spawn " + regionId + " does not exist");
 			return;
 		}
-		spawns.forEach(spawn -> {
-			System.out.println("spawning npc " + spawn);
-			World.spawnNPC(spawn.getNpcId(), spawn.getTile(), -1, true, spawn.getDirection());
-		});
+		spawns.forEach(spawn -> World.spawnNPC(spawn.getNpcId(), spawn.getTile(), -1, true, spawn.getDirection()));
 	}
 	
 	/**

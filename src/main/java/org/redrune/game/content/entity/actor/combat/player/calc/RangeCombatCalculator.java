@@ -14,30 +14,32 @@ import org.redrune.utility.constants.BonusConstants;
 public class RangeCombatCalculator extends AbstractCombatCalculator {
 	
 	@Override
-	public double getAttackBonus(Player player) {
-		final int attackStyle = player.getCombatDefinitions().getAttackStyle();
-		final boolean specialAttack = player.getCombatDefinitions().isUsingSpecialAttack();
-		final int weaponId = player.getEquipment().getWeaponId();
-		int baseLevel = player.getSkills().getLevelForXp(RANGE);
-		int weaponRequirement = player.getEquipment().getWeaponRequirement(RANGE);
+	public double getAttackBonus(Actor actor) {
+		final int weaponId = actor.isPlayer() ? actor.toPlayer().getEquipment().getWeaponId() : 0;
+		final int attackStyle = actor.isPlayer() ? actor.toPlayer().getCombatDefinitions().getAttackStyle() : actor.toNPC().getCombatDefinitions().getAttackStyle();
+		final boolean specialAttack = actor.isPlayer() && actor.toPlayer().getCombatDefinitions().isUsingSpecialAttack();
+		
+		int baseLevel = actor.isPlayer() ? actor.toPlayer().getSkills().getLevelForXp(RANGE) : actor.toNPC().getCombatDefinitions().getRangeLevel();
+		int weaponRequirement = actor.isPlayer() ? actor.toPlayer().getEquipment().getWeaponRequirement(RANGE) : 0;
 		double weaponBonus = 0.0;
 		if (baseLevel > weaponRequirement) {
 			weaponBonus = (baseLevel - weaponRequirement) * .3;
 		}
-		int level = player.getSkills().getLevel(RANGE);
-		double prayer = player.getPrayer().getRangeMultiplier();
+		final int level = actor.isPlayer() ? actor.toPlayer().getSkills().getLevel(RANGE) : actor.toNPC().getCombatDefinitions().getRangeLevel();
+		final double prayer = actor.isPlayer() ? actor.toPlayer().getPrayer().getRangeMultiplier() : 1.0;
 		double additional = 1.0; // Slayer helmet/salve/...
-		if (specialAttack) {
-			additional += CombatAlgorithm.getSpecialAccuracyModifier(weaponId == -1 ? player.getEquipment().getIdInSlot(SLOT_ARROWS) : weaponId);
+		if (actor.isPlayer() && specialAttack) {
+			additional += CombatAlgorithm.getSpecialAccuracyModifier(weaponId == -1 ? actor.toPlayer().getEquipment().getIdInSlot(SLOT_ARROWS) : weaponId);
 		}
 		int styleBonus = 0;
 		if (attackStyle == 0) {
 			styleBonus = 3;
 		}
 		double effective = Math.floor(((level * prayer) * additional) + styleBonus + weaponBonus);
-		int bonus = player.getCombatDefinitions().getBonus(BonusConstants.RANGE_ATTACK);
+		
+		int bonus = actor.isPlayer() ? actor.toPlayer().getCombatDefinitions().getBonus(BonusConstants.RANGE_ATTACK) : actor.toNPC().getBonus(BonusConstants.RANGE_ATTACK);
 		double voidAccuracy = 1.0;
-		if (CombatAlgorithm.fullVoidEquipped(player, 11664, 11675)) {
+		if (actor.isPlayer() && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11664, 11675)) {
 			voidAccuracy = 1.1;
 		}
 		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10) * voidAccuracy;
@@ -65,20 +67,20 @@ public class RangeCombatCalculator extends AbstractCombatCalculator {
 	}
 	
 	@Override
-	public int getMaximumHit(Player player, double multiplier) {
-		final int attackStyle = player.getCombatDefinitions().getAttackStyle();
-		final boolean voidEquipped = CombatAlgorithm.fullVoidEquipped(player, 11664, 11675);
-		final boolean pernixEquipped = CombatAlgorithm.armourSetEquipped(player, new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS }, "pernix", "pernix", "pernix");
+	public int getMaximumHit(Actor actor, double multiplier) {
+		final int attackStyle = actor.isPlayer() ? actor.toPlayer().getCombatDefinitions().getAttackStyle() : actor.toNPC().getCombatDefinitions().getAttackStyle();
+		final boolean voidEquipped = actor.isPlayer() && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11664, 11675);
+		final boolean pernixEquipped = actor.isPlayer() && CombatAlgorithm.armourSetEquipped(actor.toPlayer(), new int[] { SLOT_HAT, SLOT_CHEST, SLOT_LEGS }, "pernix", "pernix", "pernix");
 		
-		int level = player.getSkills().getLevel(RANGE);
-		int bonus = player.getCombatDefinitions().getBonus(RANGED_STRENGTH_BONUS);
-		double prayer = player.getPrayer().getRangeMultiplier();
+		double level = actor.isPlayer() ? actor.toPlayer().getSkills().getLevel(RANGE) : actor.toNPC().getCombatDefinitions().getRangeLevel();
+		int bonus = actor.isPlayer() ? actor.toPlayer().getCombatDefinitions().getBonus(RANGED_STRENGTH_BONUS) : actor.toNPC().getBonus(RANGED_STRENGTH_BONUS);
+		double prayer = actor.isPlayer() ? actor.toPlayer().getPrayer().getRangeMultiplier() : 1.0D;
 		
 		double cumulativeStr = Math.floor(level * prayer);
 		double styleBonus = attackStyle == 0 ? 3 : attackStyle == 1 ? 0 : 1;
 		cumulativeStr += (8 + styleBonus);
 		if (voidEquipped) {
-			cumulativeStr *= CombatAlgorithm.fullVoidEquipped(player, 11675) ? 1.125 : 1.1;
+			cumulativeStr *= actor.isPlayer() && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11675) ? 1.125 : 1.1;
 		}
 		if (pernixEquipped) {
 			cumulativeStr += 150;

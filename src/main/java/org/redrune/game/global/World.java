@@ -26,6 +26,7 @@ import org.redrune.utility.functions.Misc.FaceDirection;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.redrune.game.global.map.region.RegionManager.getRegion;
 
@@ -288,6 +289,26 @@ public final class World {
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * Converts the {@link #players} {@code EntityList} to a {@code Stream} of players. These are the players that match
+	 * these requirements: {@link Player#hasStarted()} and !{@link Player#isFinished()}
+	 *
+	 * @return A {@code Stream}
+	 */
+	public static Stream<Player> playerStream() {
+		return players.stream().filter(p -> p != null && p.hasStarted() && !p.isFinished());
+	}
+	
+	/**
+	 * Streams all of the npcs that are live and not finished
+	 *
+	 * @return A {@code Stream}
+	 */
+	public static Stream<NPC> npcStream() {
+		return npcs.stream().filter(npc -> npc != null && !npc.isFinished());
 	}
 	
 	/**

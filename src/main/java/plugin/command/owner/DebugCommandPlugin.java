@@ -11,7 +11,8 @@ public class DebugCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-	
+		int componentId = intParam(args, 1);
+		player.getPackets().sendIComponentText(1149, componentId, "" + componentId);
 	}
 	
 	@Override

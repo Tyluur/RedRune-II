@@ -7,8 +7,8 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class GeneralGraardorCombat extends CombatScript {
 
@@ -67,13 +67,13 @@ public class GeneralGraardorCombat extends CombatScript {
 		}
 		if (Misc.getRandom(2) == 0) { // range magical attack
 			npc.setNextAnimation(new Animation(7063));
-			for (Actor t : npc.getPossibleTargets()) {
-				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 355, NPCConstants.RANGE, t)));
+			for (Actor t : npc.getPossibleTargets(true, true)) {
+				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 355, BonusConstants.RANGE_ATTACK, t)));
 				RegionManager.sendProjectile(npc, t, 1200, 41, 16, 41, 35, 16, 0);
 			}
 		} else { // melee attack
 			npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 		}
 		return defs.getAttackDelay();
 	}

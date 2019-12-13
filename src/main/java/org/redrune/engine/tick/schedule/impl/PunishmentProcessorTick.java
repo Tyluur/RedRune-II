@@ -11,9 +11,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/13/2017
  */
-public class PunishmentTask extends ScheduledTask {
+public class PunishmentProcessorTick extends ScheduledTask {
 	
-	public PunishmentTask() {
+	public PunishmentProcessorTick() {
 		super(5, -1);
 	}
 	

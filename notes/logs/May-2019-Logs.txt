@@ -1,3 +1,21 @@
+5/22/19 {
+	+   Added targets for skills (level target, experience targets)
+	+   Removed all custom spawns from home, redesign to come shortly
+	+   Renamed tabs in preparations for new interfaces coming
+	+
+
+	https://i.imgur.com/AzenB2s.png
+}
+
+5/15/19 {
+	+   Wrapped up 90% of the shop editor GUI
+		-   Adding, delete functionality on the table
+		-   Add shop functionality on the listing
+		-   Dragging to reorganized shop item listing
+
+	https://i.imgur.com/koMfJC4.png
+}
+
 5/1/2019 {
 	+   Added all magic combat sounds (cast & impact sounds for 90% of moderns spells, 100% of ancient spells]
 	+   Added korasi special attack

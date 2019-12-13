@@ -8,8 +8,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class KingBlackDragonCombat extends CombatScript {
 	
@@ -30,7 +30,7 @@ public class KingBlackDragonCombat extends CombatScript {
 			if (distanceX > size || distanceX < -1 || distanceY > size || distanceY < -1) {
 				attackStyle = Misc.getRandom(4) + 1;
 			} else {
-				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+				delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 				npc.setNextAnimation(new Animation(defs.getAttackAnim()));
 				return defs.getAttackDelay();
 			}
@@ -57,12 +57,12 @@ public class KingBlackDragonCombat extends CombatScript {
 			int damage;
 			final Player player = target instanceof Player ? (Player) target : null;
 			if (CombatAlgorithm.hasAntiDragProtection(target)) {
-				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 164, BonusConstants.MAGIC_ATTACK, target);
 				if (player != null) {
 					player.getPackets().sendMessage("Your shield absorbs most of the dragon's poisonous breath!", true);
 				}
 			} else if (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7))) {
-				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 164, BonusConstants.MAGIC_ATTACK, target);
 				player.getPackets().sendMessage("Your prayer absorbs most of the dragon's poisonous breath!", true);
 			} else {
 				damage = Misc.getRandom(650);
@@ -80,12 +80,12 @@ public class KingBlackDragonCombat extends CombatScript {
 			int damage;
 			final Player player = target instanceof Player ? (Player) target : null;
 			if (CombatAlgorithm.hasAntiDragProtection(target)) {
-				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 164, BonusConstants.MAGIC_ATTACK, target);
 				if (player != null) {
 					player.getPackets().sendMessage("Your shield absorbs most of the dragon's freezing breath!", true);
 				}
 			} else if (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7))) {
-				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 164, BonusConstants.MAGIC_ATTACK, target);
 				player.getPackets().sendMessage("Your prayer absorbs most of the dragon's freezing breath!", true);
 			} else {
 				damage = Misc.getRandom(650);
@@ -103,12 +103,12 @@ public class KingBlackDragonCombat extends CombatScript {
 			int damage;
 			final Player player = target instanceof Player ? (Player) target : null;
 			if (CombatAlgorithm.hasAntiDragProtection(target)) {
-				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 164, BonusConstants.MAGIC_ATTACK, target);
 				if (player != null) {
 					player.getPackets().sendMessage("Your shield absorbs most of the dragon's shocking breath!", true);
 				}
 			} else if (player != null && (player.getPrayer().usingPrayer(0, 17) || player.getPrayer().usingPrayer(1, 7))) {
-				damage = getRandomMaxHit(npc, 164, NPCConstants.MAGE, target);
+				damage = getRandomMaxHit(npc, 164, BonusConstants.MAGIC_ATTACK, target);
 				player.getPackets().sendMessage("Your prayer absorbs most of the dragon's shocking breath!", true);
 			} else {
 				damage = Misc.getRandom(650);

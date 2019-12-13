@@ -52,7 +52,7 @@ public class FindNPCByNameCommandPlugin extends CommandPlugin {
 			if (!added) {
 				continue;
 			}
-			found.add("[<col=FF0000>" + npcId + "</col>] <col=" + ColorConstants.LIGHT_BLUE + ">" + definition.getName() + "</col> options=" + Arrays.toString(definition.getOptions()));
+			found.add("[<col=FF0000>" + npcId + "</col>] <col=" + ColorConstants.LIGHT_BLUE + ">" + definition.getName() + "</col> size=" + definition.getSize() + ", options=" + Arrays.toString(definition.getOptions()));
 		}
 		// shows the entries found
 		found.forEach(entry -> player.getPackets().sendConsoleMessage(entry));
@@ -62,6 +62,6 @@ public class FindNPCByNameCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("nn");
+		return arguments("npcn", "nn");
 	}
 }

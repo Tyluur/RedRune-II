@@ -8,8 +8,8 @@ import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class LavaTitanCombat extends CombatScript {
 
@@ -27,13 +27,13 @@ public class LavaTitanCombat extends CombatScript {
 		if (usingSpecial) {// priority over regular attack
 			npc.setNextAnimation(new Animation(7883));
 			npc.setNextGraphics(new Graphics(1491));
-			delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 140, NPCConstants.MELEE, target)));
+			delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 140, BonusConstants.SLASH_ATTACK, target)));
 			if (damage <= 4 && target instanceof Player) {
 				Player player = (Player) target;
 				player.getCombatDefinitions().decreaseSpecialEnergy((player.getCombatDefinitions().getSpecialAttackPercentage() / 10));
 			}
 		} else {
-			damage = getRandomMaxHit(npc, 140, NPCConstants.MELEE, target);
+			damage = getRandomMaxHit(npc, 140, BonusConstants.SLASH_ATTACK, target);
 			npc.setNextAnimation(new Animation(7980));
 			npc.setNextGraphics(new Graphics(1490));
 			delayHit(npc, 1, target, getMeleeHit(npc, damage));

@@ -17,7 +17,6 @@ Systems [
 	+   Forum Integration
 		-   Account registration for accounts that don't exist (popup on login)
 		-   Rank pulling, visible right based on enum position
-	+
 
 ]
 
@@ -29,19 +28,18 @@ Interfaces [
 
 Content [
 
-	Achievements
-	Quests
-		+   Miniquests
-
-
 	Skilling [
 		+	Crafting
 		+	Mining
 		+	Smithing
 		+	Fishing
+			-   Spots moving around
 		+	Cooking
+			-   Stoves
 		+	Firemaking
+			-   Right pathfinding
 		+	Woodcutting
+			-   Correct stumps per tree
 		+	Agility
 				-	Gnome Stronghold
 				-	Barbarian Outpost
@@ -57,13 +55,54 @@ Content [
 		+   Prayer
 			-   Perfect projectiles for saps & leeches
 	]
+
+	Distractions & Diversions [
+		Treasure Trails
+			-   Emote Clues
+			-   Coordinate Clues
+			-   Puzzle boxes
+			-   Simple clues
+
+		Sequential Events
+			+   Daily
+				-   Evil Tree
+				-   Shooting Star
+			+   Daily Tasks
+				-   Point-based system [untradeable currency] for task completion on a daily basis
+				-   Skilling tasks
+				-   Walking tasks
+				-   PvM Tasks
+				-   PvP Tasks
+
+		Achievements
+			+   Static achievements of all sorts of content that give rewards upon completion
+			+   City based achievements
+	]
 	
 	Minigames [
-		-	
+		-	Clan Wars
+		-   Castle Wars
+		-   Soul Wars
+		-   Duel Arena
+		-   Barrows
 	]
 	
 	Miniquests [
-		-	
+		-	Stronghold of Security"
+		-   Recipe for Disaster
+		-   Desert Treasure
+		-   Mage Arena II
+		-   Lunar Diplomacy
+		-   Temple at Senntisten
+		-   Animal Magnetism
+		-   Horror from the Deep
+	]
+
+	Quests [
+		-   Nomad's Requiem
+		-   Dwarf Cannon
+		-   Druidic Ritual
+		-
 	]
 
 	NPCs [
@@ -83,14 +122,28 @@ Content [
 				-	Location
 				-	Slayer Task
 		}
+
+		Pets
+			+   Pet insurance (
+			+   Pets from bosses
+			+
 	]
 	
 	PvM [
 		+	OSRS Wilderness Bosses
 			-	
-		+	GodWars
+		+   Bosses
+			-	GodWars
 			-	Nex
-		
+			-   King Black Dragon
+			-   Dagannoth Rex
+			-   Dagannoth Prime
+			-   Dagannoth Supreme
+			-   Kalphite Queen
+			-   Chaos Elemental
+			-   Skeletal Horror
+			-   Corporeal Beast
+			-   B
 	]
 	
 	OSRS Content [

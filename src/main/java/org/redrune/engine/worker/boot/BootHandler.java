@@ -139,7 +139,7 @@ public class BootHandler {
 		StringBuilder details = new StringBuilder();
 		List<Integer> numbersLeft = workerNumbersLeft();
 		for (int i = 0; i < numbersLeft.size(); i++) {
-			details.append("").append(numbersLeft.get(i)).append("").append(i == numbersLeft.size() - 1 ? "" : ", ");
+			details.append(numbersLeft.get(i)).append(i == numbersLeft.size() - 1 ? "" : ", ");
 		}
 		return details.toString();
 	}

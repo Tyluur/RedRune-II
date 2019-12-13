@@ -7,7 +7,7 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
-import org.redrune.utility.constants.NPCConstants;
+import org.redrune.utility.constants.BonusConstants;
 
 public class SpiritKalphiteCombat extends CombatScript {
 
@@ -25,11 +25,11 @@ public class SpiritKalphiteCombat extends CombatScript {
 		if (usingSpecial) {// TODO find special
 			npc.setNextAnimation(new Animation(8519));
 			npc.setNextGraphics(new Graphics(8519));
-			damage = getRandomMaxHit(npc, 20, NPCConstants.MELEE, target);
+			damage = getRandomMaxHit(npc, 20, BonusConstants.SLASH_ATTACK, target);
 			delayHit(npc, 1, target, getMeleeHit(npc, damage));
 		} else {
 			npc.setNextAnimation(new Animation(8519));
-			damage = getRandomMaxHit(npc, 50, NPCConstants.MELEE, target);
+			damage = getRandomMaxHit(npc, 50, BonusConstants.SLASH_ATTACK, target);
 			delayHit(npc, 1, target, getMeleeHit(npc, damage));
 		}
 		return defs.getAttackDelay();

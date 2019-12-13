@@ -7,8 +7,8 @@ import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class CommanderZilyanaCombat extends CombatScript {
 
@@ -66,11 +66,11 @@ public class CommanderZilyanaCombat extends CombatScript {
 		}
 		if (Misc.getRandom(1) == 0) { // mage magical attack
 			npc.setNextAnimation(new Animation(6967));
-			for (Actor t : npc.getPossibleTargets()) {
+			for (Actor t : npc.getPossibleTargets(true, true)) {
 				if (!t.withinDistance(npc, 3)) {
 					continue;
 				}
-				int damage = getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MAGE, t);
+				int damage = getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.MAGIC_ATTACK, t);
 				if (damage > 0) {
 					delayHit(npc, 1, t, getMagicHit(npc, damage));
 					t.setNextGraphics(new Graphics(1194));
@@ -79,7 +79,7 @@ public class CommanderZilyanaCombat extends CombatScript {
 
 		} else { // melee attack
 			npc.setNextAnimation(new Animation(defs.getAttackAnim()));
-			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), NPCConstants.MELEE, target)));
+			delayHit(npc, 0, target, getMeleeHit(npc, getRandomMaxHit(npc, defs.getMaxHit(), BonusConstants.SLASH_ATTACK, target)));
 		}
 		return defs.getAttackDelay();
 	}

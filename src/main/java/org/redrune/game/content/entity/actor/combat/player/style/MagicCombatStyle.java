@@ -85,7 +85,7 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 	}
 	
 	@Override
-	public int getRandomDamage(Player source, Actor target, double multiplier) {
+	public int getRandomDamage(Actor source, Actor target, double multiplier) {
 		return 0;
 	}
 	

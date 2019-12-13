@@ -1,13 +1,13 @@
-package org.redrune.game.entity.actor.npc.data.combat;
+package org.redrune.game.content.entity.actor.combat.npc;
 
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
-import org.redrune.game.content.entity.actor.combat.npc.CombatScriptsHandler;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public final class NPCCombat {
 	
@@ -115,7 +115,7 @@ public final class NPCCombat {
 				return true;
 			}
 			int attackStyle = npc.getCombatDefinitions().getAttackStyle();
-			maxDistance = npc.isForceFollowClose() ? 0 : (attackStyle == NPCConstants.MELEE || attackStyle == NPCConstants.SPECIAL2) ? 0 : 7;
+			maxDistance = npc.isForceFollowClose() ? 0 : (attackStyle == BonusConstants.STAB_ATTACK || attackStyle == BonusConstants.SLASH_ATTACK || attackStyle == BonusConstants.CRUSH_ATTACK) ? 0 : 7;
 			// is far from target, moves to it till can attack
 			if ((!npc.clipedProjectile(target, maxDistance == 0)) || distanceX > size + maxDistance || distanceX < -1 - maxDistance || distanceY > size + maxDistance || distanceY < -1 - maxDistance) {
 				npc.resetWalkSteps();
@@ -150,7 +150,7 @@ public final class NPCCombat {
 		// this gameticket
 		NPCCombatDefinitions defs = npc.getCombatDefinitions();
 		int attackStyle = defs.getAttackStyle();
-		int maxDistance = attackStyle == NPCConstants.MELEE || attackStyle == NPCConstants.SPECIAL2 ? 0 : 7;
+		int maxDistance = attackStyle == BonusConstants.STAB_ATTACK || attackStyle == BonusConstants.SLASH_ATTACK || attackStyle == BonusConstants.CRUSH_ATTACK ? 0 : 7;
 		if (!npc.clipedProjectile(target, maxDistance == 0)) {
 			return 0;
 		}

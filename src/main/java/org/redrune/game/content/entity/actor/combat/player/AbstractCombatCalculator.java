@@ -1,7 +1,6 @@
 package org.redrune.game.content.entity.actor.combat.player;
 
 import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.SkillConstants;
@@ -13,9 +12,10 @@ import org.redrune.utility.constants.SkillConstants;
 public abstract class AbstractCombatCalculator implements SkillConstants, EquipmentConstants, BonusConstants {
 	
 	/**
-	 * Gets the attack bonus of a player
+	 * Gets the attack bonus of an actor
+	 * @param actor
 	 */
-	public abstract double getAttackBonus(Player player);
+	public abstract double getAttackBonus(Actor actor);
 	
 	/**
 	 * Gets the defence bonus of an actor
@@ -23,7 +23,7 @@ public abstract class AbstractCombatCalculator implements SkillConstants, Equipm
 	public abstract double getDefenceBonus(Actor actor, int weaponId, int attackStyle);
 	
 	/**
-	 * Gets the maximum hit of a player
+	 * Gets the maximum hit of an
 	 */
-	public abstract int getMaximumHit(Player player, double multiplier);
+	public abstract int getMaximumHit(Actor actor, double multiplier);
 }

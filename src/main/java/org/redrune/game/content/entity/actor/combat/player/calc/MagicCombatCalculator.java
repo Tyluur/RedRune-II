@@ -13,17 +13,17 @@ import org.redrune.game.entity.actor.player.Player;
 public class MagicCombatCalculator extends AbstractCombatCalculator {
 	
 	@Override
-	public double getAttackBonus(Player player) {
+	public double getAttackBonus(Actor actor) {
 		// the prayer level bonus
-		final int level = player.getSkills().getLevel(MAGIC);
+		final int level = actor.isPlayer() ? actor.toPlayer().getSkills().getLevel(MAGIC) : actor.toNPC().getCombatDefinitions().getMagicLevel();
 		// the prayer bonus
-		final double prayer = player.getPrayer().getMageMultiplier();
+		final double prayer = actor.isPlayer() ? actor.toPlayer().getPrayer().getMageMultiplier() : 1.0D;
 		// the calculated boost
 		double effective = Math.floor(level * prayer);
 		// the bonus from your equipment
-		int bonus = player.getCombatDefinitions().getBonus(MAGIC_ATTACK);
+		int bonus = actor.isPlayer() ? actor.toPlayer().getCombatDefinitions().getBonus(MAGIC_ATTACK) : actor.toNPC().getBonus(MAGIC_ATTACK);
 		double voidAccuracy = 1.0;
-		if (CombatAlgorithm.fullVoidEquipped(player, 11663, 11674)) {
+		if (actor.isPlayer() && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11663, 11674)) {
 			voidAccuracy = 1.45;
 		}
 		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10) * voidAccuracy;
@@ -61,7 +61,7 @@ public class MagicCombatCalculator extends AbstractCombatCalculator {
 	}
 	
 	@Override
-	public int getMaximumHit(Player player, double multiplier) {
+	public int getMaximumHit(Actor actor, double multiplier) {
 		return -1;
 	}
 }

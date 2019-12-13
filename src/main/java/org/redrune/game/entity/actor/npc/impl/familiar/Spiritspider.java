@@ -34,7 +34,7 @@ public class Spiritspider extends Familiar {
 			if (RegionManager.canMoveNPC(this.getPlane(), tile.getX(), tile.getY(), player.getSize())) {
 				return true;
 			}
-			for (Actor actor : this.getPossibleTargets()) {
+			for (Actor actor : this.getPossibleTargets(true, true)) {
 				if (actor instanceof Player) {
 					Player players = (Player) actor;
 					players.getPackets().sendGraphics(new Graphics(1342), tile);

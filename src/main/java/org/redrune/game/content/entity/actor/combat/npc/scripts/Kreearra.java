@@ -8,8 +8,8 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.global.map.region.RegionManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.constants.NPCConstants;
 
 public class Kreearra extends CombatScript {
 
@@ -23,15 +23,15 @@ public class Kreearra extends CombatScript {
 		final NPCCombatDefinitions defs = npc.getCombatDefinitions();
 		if (!npc.isUnderCombat()) {
 			npc.setNextAnimation(new Animation(6997));
-			delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 260, NPCConstants.MELEE, target)));
+			delayHit(npc, 1, target, getMeleeHit(npc, getRandomMaxHit(npc, 260, BonusConstants.SLASH_ATTACK, target)));
 			return defs.getAttackDelay();
 		}
 		npc.setNextAnimation(new Animation(6976));
-		for (Actor t : npc.getPossibleTargets()) {
+		for (Actor t : npc.getPossibleTargets(true, true)) {
 			if (Misc.getRandom(2) == 0) {
 				sendMagicAttack(npc, t);
 			} else {
-				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 720, NPCConstants.RANGE, t)));
+				delayHit(npc, 1, t, getRangeHit(npc, getRandomMaxHit(npc, 720, BonusConstants.RANGE_ATTACK, t)));
 				RegionManager.sendProjectile(npc, t, 1197, 41, 16, 41, 35, 16, 0);
 				WorldTile teleTile = t;
 				for (int trycount = 0; trycount < 10; trycount++) {
@@ -48,8 +48,8 @@ public class Kreearra extends CombatScript {
 
 	private void sendMagicAttack(NPC npc, Actor target) {
 		npc.setNextAnimation(new Animation(6976));
-		for (Actor t : npc.getPossibleTargets()) {
-			delayHit(npc, 1, t, getMagicHit(npc, getRandomMaxHit(npc, 210, NPCConstants.MAGE, t)));
+		for (Actor t : npc.getPossibleTargets(true, true)) {
+			delayHit(npc, 1, t, getMagicHit(npc, getRandomMaxHit(npc, 210, BonusConstants.MAGIC_ATTACK, t)));
 			RegionManager.sendProjectile(npc, t, 1198, 41, 16, 41, 35, 16, 0);
 			target.setNextGraphics(new Graphics(1196));
 		}
