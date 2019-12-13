@@ -83,7 +83,6 @@ public final class LocalPlayerUpdate {
 		}
 	}
 	
-	
 	private boolean needsAdd(Player p) {
 		return p != null && !p.isFinished() && withinDistance(p);
 	}
@@ -189,13 +188,13 @@ public final class LocalPlayerUpdate {
 				skip--;
 				continue;
 			}
-			Player p = localPlayers[playerIndex];
-			if (needsRemove(p)) {
+			Player o = localPlayers[playerIndex];
+			if (needsRemove(o)) {
 				stream.writeBits(1, 1); // needs update
 				stream.writeBits(1, 0); // no masks update needeed
 				stream.writeBits(2, 0); // request remove
-				regionHashes[playerIndex] = p.getLastWorldTile() == null ? p.get18BitsLocationHash() : p.getLastWorldTile().get18BitsLocationHash();
-				int hash = p.get18BitsLocationHash();
+				regionHashes[playerIndex] = o.getLastWorldTile() == null ? o.get18BitsLocationHash() : o.getLastWorldTile().get18BitsLocationHash();
+				int hash = o.get18BitsLocationHash();
 				if (hash == regionHashes[playerIndex]) {
 					stream.writeBits(1, 0);
 				} else {
@@ -205,27 +204,22 @@ public final class LocalPlayerUpdate {
 				}
 				localPlayers[playerIndex] = null;
 			} else {
-				boolean needAppearenceUpdate = needAppearenceUpdate(p.getIndex(), p.getAppearance().getMd5Hash());
-				boolean needUpdate = p.needMasksUpdate() || needAppearenceUpdate;
+				boolean needAppearanceUpdate = needAppearenceUpdate(o.getIndex(), o.getAppearance().getMd5Hash());
+				boolean needUpdate = o.needMasksUpdate() || needAppearanceUpdate;
 				if (needUpdate) {
-					appendUpdateBlock(p, updateBlockData, needAppearenceUpdate, false);
+					appendUpdateBlock(o, updateBlockData, needAppearanceUpdate, false);
 				}
-				if (p.hasTeleported()) {
+				if (o.hasTeleported()) {
 					stream.writeBits(1, 1); // needs update
 					stream.writeBits(1, needUpdate ? 1 : 0);
 					stream.writeBits(2, 3);
-					int xOffset = p.getX() - p.getLastWorldTile().getX();
-					int yOffset = p.getY() - p.getLastWorldTile().getY();
-					int planeOffset = p.getPlane() - p.getLastWorldTile().getPlane();
-					if (Math.abs(p.getX() - p.getLastWorldTile().getX()) <= 14 // 14
-							    // for
-							    // safe
-							    && Math.abs(p.getY() - p.getLastWorldTile().getY()) <= 14) { // 14
-						// for
-						// safe
+					int xOffset = o.getX() - o.getLastWorldTile().getX();
+					int yOffset = o.getY() - o.getLastWorldTile().getY();
+					int planeOffset = o.getPlane() - o.getLastWorldTile().getPlane();
+					// 14 for safe (?)
+					if (Math.abs(o.getX() - o.getLastWorldTile().getX()) <= 14 && Math.abs(o.getY() - o.getLastWorldTile().getY()) <= 14) {
 						stream.writeBits(1, 0);
-						if (xOffset < 0) // viewport used to be 15 now 16
-						{
+						if (xOffset < 0) {
 							xOffset += 32;
 						}
 						if (yOffset < 0) {
@@ -236,14 +230,14 @@ public final class LocalPlayerUpdate {
 						stream.writeBits(1, 1);
 						stream.writeBits(30, (yOffset & 0x3fff) + ((xOffset & 0x3fff) << 14) + ((planeOffset & 0x3) << 28));
 					}
-				} else if (p.getNextWalkDirection() != -1) {
-					int dx = Misc.DIRECTION_DELTA_X[p.getNextWalkDirection()];
-					int dy = Misc.DIRECTION_DELTA_Y[p.getNextWalkDirection()];
+				} else if (o.getNextWalkDirection() != -1) {
+					int dx = Misc.DIRECTION_DELTA_X[o.getNextWalkDirection()];
+					int dy = Misc.DIRECTION_DELTA_Y[o.getNextWalkDirection()];
 					boolean running;
 					int opcode;
-					if (p.getNextRunDirection() != -1) {
-						dx += Misc.DIRECTION_DELTA_X[p.getNextRunDirection()];
-						dy += Misc.DIRECTION_DELTA_Y[p.getNextRunDirection()];
+					if (o.getNextRunDirection() != -1) {
+						dx += Misc.DIRECTION_DELTA_X[o.getNextRunDirection()];
+						dy += Misc.DIRECTION_DELTA_Y[o.getNextRunDirection()];
 						opcode = Misc.getPlayerRunningDirection(dx, dy);
 						if (opcode == -1) {
 							running = false;
@@ -259,9 +253,9 @@ public final class LocalPlayerUpdate {
 					if ((dx == 0 && dy == 0)) {
 						stream.writeBits(1, 1); // quick fix
 						stream.writeBits(2, 0);
-						if (!needUpdate) // hasnt been sent yet
-						{
-							appendUpdateBlock(p, updateBlockData, needAppearenceUpdate, false);
+						// hasn't been sent yet
+						if (!needUpdate) {
+							appendUpdateBlock(o, updateBlockData, needAppearanceUpdate, false);
 						}
 					} else {
 						stream.writeBits(1, needUpdate ? 1 : 0);

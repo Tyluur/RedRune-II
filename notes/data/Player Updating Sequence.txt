@@ -1,0 +1,32 @@
+player updating sequence
+	[1] process local players
+		while looping through all players visible to you
+			[1]	remove local player that need to be removed (disconnected/not within veiwport distance)
+				+	viewport distance includes cutscenes (i.e. while you're in a cutscene you can see people around you and vice versa)
+			[2]	pre-update block encoding (only in the case that there is an apperance update that will be coming)
+			[3] appearance update encoding [teleported, movement, appearance update, skip]
+				only one of these can be done at at time
+				+	teleport block
+					-	encode offset from last location 
+				+	movement block
+					-	encode walk/run direction, running flag, 
+				+	appearance block
+					-	encode data that represents an update is required for this player
+				+	skip block (the player hasn't done anything that requires an update)
+	[2] process outside players
+		while looping through all players visible to you
+			DECISION [
+				[1]	if the player needs to be added
+					DECISION [
+						-	if the player hasn't moved, placeholder data is encoded to indicate that
+						-	if the player has moved, other, data is encoded to indicate that and the region has of the player as well
+					]
+					-	appearance update is sent, this is where the player is added to be viewable
+						note: appeareance is only changed if there is a flag to indicate so						
+				[2]	the player has already been added
+					DECISION ON REGION CHANGE [
+						-	[T]=update region hash
+						-	[F]=skip
+					]
+					
+			]
