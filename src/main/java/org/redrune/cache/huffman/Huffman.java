@@ -19,7 +19,9 @@ public final class Huffman {
 	}
 	
 	public static final void initialize() {
-		byte[] huffmanFile = Cache.STORE.getIndexes()[10].getFile(Cache.STORE.getIndexes()[10].getArchiveId("huffman"));
+		int archiveId = Cache.STORE.getIndexes()[10].getArchiveId("huffman");
+		
+		byte[] huffmanFile = Cache.STORE.getIndexes()[10].getFile(archiveId);
 		int fileLength = huffmanFile.length;
 		huffmanAlgorithm2 = huffmanFile;
 		huffmanAlgorithm1 = new int[fileLength];
