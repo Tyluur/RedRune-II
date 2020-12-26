@@ -13,7 +13,7 @@ public class ArgumentParser {
 	 * Parses the arguments from the jvm
 	 */
 	public static void parseArgs(String[] args) {
-		Options options = new Options();
+/*		Options options = new Options();
 		Option hostOption = new Option("hostMode", "input", true, "game host mode");
 		hostOption.setRequired(true);
 		Option debugOption = new Option("debugMode", "input", true, "debug server mode");
@@ -33,6 +33,6 @@ public class ArgumentParser {
 			return;
 		}
 		GameFlags.hostMode = Boolean.parseBoolean(cmd.getOptionValue("hostMode"));
-		GameFlags.debugMode = Boolean.parseBoolean(cmd.getOptionValue("debugMode"));
+		GameFlags.debugMode = Boolean.parseBoolean(cmd.getOptionValue("debugMode"));*/
 	}
 }
