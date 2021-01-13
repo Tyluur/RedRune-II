@@ -22,11 +22,11 @@ public class InformationTabTick extends ScheduledTask {
 	@Override
 	public void run() {
 		World.playerStream().forEach(player -> {
-			StringBuilder bldr = new StringBuilder();
-			bldr.append("<col=FF0000>" + GameConstants.SERVER_NAME + " <br><br>");
+			//StringBuilder bldr = new StringBuilder();
+			//bldr.append("<col=FF0000>" + GameConstants.SERVER_NAME + " <br><br>");
 			
 			// sends all the text in the stringbuilder
-			player.getPackets().sendIComponentText(INTERFACE_ID, 16, bldr.toString());
+			//player.getPackets().sendIComponentText(INTERFACE_ID, 16, bldr.toString());
 		});
 	}
 }

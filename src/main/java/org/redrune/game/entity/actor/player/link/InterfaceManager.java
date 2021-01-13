@@ -268,8 +268,7 @@ public class InterfaceManager {
 	}
 	
 	public void sendTaskSystem() {
-		sendTab(resizableScreen ? 91 : 205, 1149);
-		player.getPackets().sendIComponentText(1149, 3, GameConstants.SERVER_NAME);
+		sendTab(resizableScreen ? 91 : 205, 1056);
 	}
 	
 	public void sendEmotes() {
@@ -281,7 +280,7 @@ public class InterfaceManager {
 	}
 	
 	public void sendQuestTab() {
-		sendTab(resizableScreen ? 93 : 207, 1155);
+		sendTab(resizableScreen ? 93 : 207, 190);
 	}
 	
 	public void sendFriendsChat() {
