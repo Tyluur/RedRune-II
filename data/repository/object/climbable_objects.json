@@ -1,0 +1,182 @@
+[
+  {
+    "id": 2782,
+    "type": 10,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3109,
+    "y": 3497,
+    "plane": 0
+  },
+  {
+    "id": 61353,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3097,
+    "y": 3505,
+    "plane": 0
+  },
+  {
+    "id": 1814,
+    "type": 4,
+    "rotation": 1,
+    "life": 1,
+    "spawned": false,
+    "x": 3095,
+    "y": 3506,
+    "plane": 0
+  },
+  {
+    "id": 36711,
+    "type": 10,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3082,
+    "y": 3493,
+    "plane": 0
+  },
+  {
+    "id": 36711,
+    "type": 10,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3082,
+    "y": 3495,
+    "plane": 0
+  },
+  {
+    "id": 54639,
+    "type": 10,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3083,
+    "y": 3500,
+    "plane": 0
+  },
+  {
+    "id": 30141,
+    "type": 0,
+    "rotation": 1,
+    "life": 1,
+    "spawned": false,
+    "x": 3092,
+    "y": 3506,
+    "plane": 0
+  },
+  {
+    "id": 30141,
+    "type": 0,
+    "rotation": 1,
+    "life": 1,
+    "spawned": false,
+    "x": 3093,
+    "y": 3506,
+    "plane": 0
+  },
+  {
+    "id": 30141,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3092,
+    "y": 3514,
+    "plane": 0
+  },
+  {
+    "id": 30141,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3093,
+    "y": 3514,
+    "plane": 0
+  },
+  {
+    "id": 54020,
+    "type": 5,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3512,
+    "plane": 0
+  },
+  {
+    "id": 54019,
+    "type": 5,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3511,
+    "plane": 0
+  },
+  {
+    "id": 40074,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3507,
+    "plane": 0
+  },
+  {
+    "id": 40074,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 59434,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3384,
+    "y": 3614,
+    "plane": 0
+  },
+  {
+    "id": 59434,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3384,
+    "y": 3615,
+    "plane": 0
+  },
+  {
+    "id": 14503,
+    "type": 10,
+    "rotation": 1,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3509,
+    "plane": 0
+  },
+  {
+    "id": 14503,
+    "type": 10,
+    "rotation": 1,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3511,
+    "plane": 0
+  }
+]
