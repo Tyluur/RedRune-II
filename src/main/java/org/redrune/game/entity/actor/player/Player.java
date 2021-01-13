@@ -242,7 +242,7 @@ public class Player extends Actor {
 	 * The npc update handler
 	 */
 	@Getter
-	private transient LoclNPCUpdate localNPCUpdate;
+	private transient LocalNPCUpdate localNPCUpdate;
 	
 	/**
 	 * The var manager
