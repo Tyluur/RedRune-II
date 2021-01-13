@@ -1,17 +1,15 @@
 package org.redrune.game.content.entity.actor.player.controller;
 
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.content.entity.item.Foods.Food;
 import org.redrune.game.content.entity.item.Pots.Pot;
 import org.redrune.game.entity.Entity;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
+import org.redrune.game.global.WorldTile;
+import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.game.ClickOption;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -19,18 +17,12 @@ public final class ControllerManager implements Serializable {
 	
 	private static final long serialVersionUID = 2084691334731830796L;
 	
-	@Getter
-	@Setter
 	private Object[] lastControllerArguments;
 	
-	@Getter
-	@Setter
 	private String lastController;
 	
-	@Setter
 	private transient Player player;
 	
-	@Getter
 	private transient Controller controller;
 	
 	private transient boolean inited;
@@ -290,5 +282,28 @@ public final class ControllerManager implements Serializable {
 		}
 		return true;
 	}
-	
+
+    public Object[] getLastControllerArguments() {
+        return this.lastControllerArguments;
+    }
+
+    public String getLastController() {
+        return this.lastController;
+    }
+
+    public Controller getController() {
+        return this.controller;
+    }
+
+    public void setLastControllerArguments(Object[] lastControllerArguments) {
+        this.lastControllerArguments = lastControllerArguments;
+    }
+
+    public void setLastController(String lastController) {
+        this.lastController = lastController;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

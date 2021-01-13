@@ -1,7 +1,5 @@
 package org.redrune.game.global.map.region;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.game.global.WorldTile;
 
 /*
@@ -20,8 +18,6 @@ public class RegionMap {
 	/**
 	 * The landscape data.
 	 */
-	@Getter
-	@Setter
 	private boolean[][] landscape;
 	
 	public RegionMap(int regionId, boolean clipedOnly) {
@@ -496,5 +492,12 @@ public class RegionMap {
 		}
 		masks[plane][x][y] &= (~mask);
 	}
-	
+
+    public boolean[][] getLandscape() {
+        return this.landscape;
+    }
+
+    public void setLandscape(boolean[][] landscape) {
+        this.landscape = landscape;
+    }
 }

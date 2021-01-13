@@ -7,7 +7,6 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.SkillConstants;
-import lombok.Getter;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -41,7 +40,6 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 	/**
 	 * The combat style calculator
 	 */
-	@Getter
 	protected final AbstractCombatCalculator calculator;
 	
 	/**
@@ -79,4 +77,8 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 			p.getPackets().sendSound(soundId, 0, 1);
 		}
 	}
+
+    public AbstractCombatCalculator getCalculator() {
+        return this.calculator;
+    }
 }

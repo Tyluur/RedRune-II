@@ -2,8 +2,6 @@ package org.redrune.game.global.punishment;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 
@@ -16,44 +14,36 @@ public final class Punishment {
 	/**
 	 * The name of the player carried out the punishment
 	 */
-	@Getter
 	private final String punisher;
 	
 	/**
 	 * The name of the player who was punished
 	 */
-	@Getter
 	private final String punished;
 	
 	/**
 	 * The type of punishment this was
 	 */
-	@Getter
 	private final PunishmentType type;
 	
 	/**
 	 * The time the punishment will be over at
 	 */
-	@Getter
 	private final long time;
 	
 	/**
 	 * The time the punishment was created, in simple date format
 	 */
-	@Getter
 	private final String punishedAt;
 	
 	/**
 	 * The time the punishment was created, in simple date format
 	 */
-	@Getter
 	private final String overAt;
 	
 	/**
 	 * The event executed when the punishment is added
 	 */
-	@Getter
-	@Setter
 	private transient Runnable additionEvent;
 	
 	/**
@@ -128,4 +118,36 @@ public final class Punishment {
 	public void putParameter(String key, String value) {
 		parameters.put(key, value);
 	}
+
+    public String getPunisher() {
+        return this.punisher;
+    }
+
+    public String getPunished() {
+        return this.punished;
+    }
+
+    public PunishmentType getType() {
+        return this.type;
+    }
+
+    public long getTime() {
+        return this.time;
+    }
+
+    public String getPunishedAt() {
+        return this.punishedAt;
+    }
+
+    public String getOverAt() {
+        return this.overAt;
+    }
+
+    public Runnable getAdditionEvent() {
+        return this.additionEvent;
+    }
+
+    public void setAdditionEvent(Runnable additionEvent) {
+        this.additionEvent = additionEvent;
+    }
 }

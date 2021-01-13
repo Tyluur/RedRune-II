@@ -2,7 +2,6 @@ package org.redrune.engine.tick.schedule.impl;
 
 import org.redrune.engine.tick.schedule.ScheduledTask;
 import org.redrune.game.global.World;
-import org.redrune.utility.constants.GameConstants;
 
 /**
  * @author Tyluur

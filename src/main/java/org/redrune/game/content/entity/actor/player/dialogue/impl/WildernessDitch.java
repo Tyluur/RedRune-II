@@ -1,13 +1,13 @@
 package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.cache.loaders.ObjectDefinitions;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.ForceMovement;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.game.global.WorldTile;
 
 public class WildernessDitch extends Dialogue {
 	

@@ -1,9 +1,7 @@
 package org.redrune.game.entity.projectile;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
-import lombok.Getter;
-import lombok.Setter;
+import org.redrune.game.global.WorldTile;
 
 /**
  * Represents a projectile to send.
@@ -17,85 +15,61 @@ public class Projectile {
 	/**
 	 * The source node.
 	 */
-	@Getter
-	@Setter
 	private Actor source;
 	
 	/**
 	 * The source's centered location.
 	 */
-	@Getter
-	@Setter
 	private WorldTile sourceTile;
 	
 	/**
 	 * The victim.
 	 */
-	@Getter
-	@Setter
 	private Actor victim;
 	
 	/**
 	 * The projectile's gfx id.
 	 */
-	@Getter
-	@Setter
 	private int projectileId;
 	
 	/**
 	 * The start height.
 	 */
-	@Getter
-	@Setter
 	private int startHeight;
 	
 	/**
 	 * The ending height.
 	 */
-	@Getter
-	@Setter
 	private int endHeight;
 	
 	/**
 	 * The delay.
 	 */
-	@Getter
-	@Setter
 	private int delay;
 	
 	/**
 	 * The speed.
 	 */
-	@Getter
-	@Setter
 	private int speed;
 	
 	/**
 	 * The angle.
 	 */
-	@Getter
-	@Setter
 	private int angle;
 	
 	/**
 	 * The size of the creator
 	 */
-	@Getter
-	@Setter
 	private int creatorSize = 1;
 	
 	/**
 	 * The distance to start.
 	 */
-	@Getter
-	@Setter
 	private int startDistanceOffset;
 	
 	/**
 	 * The end location (used for location based projectiles).
 	 */
-	@Getter
-	@Setter
 	private WorldTile endLocation;
 	
 	/**
@@ -166,4 +140,100 @@ public class Projectile {
 	public boolean isLocationBased() {
 		return endLocation != null;
 	}
+
+    public Actor getSource() {
+        return this.source;
+    }
+
+    public WorldTile getSourceTile() {
+        return this.sourceTile;
+    }
+
+    public Actor getVictim() {
+        return this.victim;
+    }
+
+    public int getProjectileId() {
+        return this.projectileId;
+    }
+
+    public int getStartHeight() {
+        return this.startHeight;
+    }
+
+    public int getEndHeight() {
+        return this.endHeight;
+    }
+
+    public int getDelay() {
+        return this.delay;
+    }
+
+    public int getSpeed() {
+        return this.speed;
+    }
+
+    public int getAngle() {
+        return this.angle;
+    }
+
+    public int getCreatorSize() {
+        return this.creatorSize;
+    }
+
+    public int getStartDistanceOffset() {
+        return this.startDistanceOffset;
+    }
+
+    public WorldTile getEndLocation() {
+        return this.endLocation;
+    }
+
+    public void setSource(Actor source) {
+        this.source = source;
+    }
+
+    public void setSourceTile(WorldTile sourceTile) {
+        this.sourceTile = sourceTile;
+    }
+
+    public void setVictim(Actor victim) {
+        this.victim = victim;
+    }
+
+    public void setProjectileId(int projectileId) {
+        this.projectileId = projectileId;
+    }
+
+    public void setStartHeight(int startHeight) {
+        this.startHeight = startHeight;
+    }
+
+    public void setEndHeight(int endHeight) {
+        this.endHeight = endHeight;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+    public void setCreatorSize(int creatorSize) {
+        this.creatorSize = creatorSize;
+    }
+
+    public void setStartDistanceOffset(int startDistanceOffset) {
+        this.startDistanceOffset = startDistanceOffset;
+    }
+
+    public void setEndLocation(WorldTile endLocation) {
+        this.endLocation = endLocation;
+    }
 }

@@ -1,10 +1,10 @@
 package org.redrune.game.content.entity.actor.player.skills.runecrafting;
 
 import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.SkillConstants;
 
 public final class Runecrafting {

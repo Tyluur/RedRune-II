@@ -1,13 +1,12 @@
 package org.redrune.game.content.entity.actor.player.action.impl;
 
-import org.redrune.game.content.entity.actor.player.action.Action;
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.content.entity.actor.combat.player.CombatStyle;
+import org.redrune.game.content.entity.actor.player.action.Action;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.key.AttributeKey;
-import lombok.Getter;
+import org.redrune.utility.functions.Misc;
 
 /**
  * This class handles the player combat action.
@@ -20,7 +19,6 @@ public class PlayerCombatAction extends Action {
 	/**
 	 * The target of our combat action
 	 */
-	@Getter
 	private Actor target;
 	
 	/**
@@ -181,4 +179,8 @@ public class PlayerCombatAction extends Action {
 		// if the special attack was toggled on and is queued.
 		CombatAlgorithm.checkSpecialToggle(player, 0);
 	}
+
+    public Actor getTarget() {
+        return this.target;
+    }
 }

@@ -3,19 +3,17 @@ package org.redrune.game.content.entity.actor.player.controller;
 import org.redrune.game.content.entity.item.Foods.Food;
 import org.redrune.game.content.entity.item.Pots.Pot;
 import org.redrune.game.entity.Entity;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.game.ClickOption;
-import lombok.Setter;
 
 public abstract class Controller {
 	
 	public abstract void start();
 	
-	@Setter
 	protected Player player;
 	
 	public final Object[] getArguments() {
@@ -245,5 +243,8 @@ public abstract class Controller {
 	public boolean canEntityClick(Entity entity, ClickOption option) {
 		return true;
 	}
-	
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

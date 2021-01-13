@@ -2,8 +2,6 @@ package org.redrune.game.entity.item;
 
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.entity.Entity;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -20,15 +18,11 @@ public class Item implements Serializable, Entity {
 	/**
 	 * The id of the item
 	 */
-	@Getter
-	@Setter
 	private int id;
 	
 	/**
 	 * The amount of the item
 	 */
-	@Getter
-	@Setter
 	protected int amount;
 	
 	public Item(int id) {
@@ -73,5 +67,21 @@ public class Item implements Serializable, Entity {
 	@Override
 	public String toString() {
 		return "Item{" + "id=" + id + ", amount=" + amount + '}';
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public int getAmount() {
+		return this.amount;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 }

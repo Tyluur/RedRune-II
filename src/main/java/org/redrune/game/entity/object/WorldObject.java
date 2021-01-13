@@ -1,7 +1,5 @@
 package org.redrune.game.entity.object;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.game.entity.Entity;
 import org.redrune.game.global.WorldTile;
@@ -20,43 +18,31 @@ public class WorldObject extends WorldTile implements Entity {
 	/**
 	 * The id of the object
 	 */
-	@Getter
-	@Setter
 	private int id;
 	
 	/**
 	 * The type of the object
 	 */
-	@Getter
-	@Setter
 	private int type;
 	
 	/**
 	 * The rotation of the object
 	 */
-	@Getter
-	@Setter
 	private int rotation;
 	
 	/**
 	 * The life of the object, only used for trees/ore
 	 */
-	@Getter
-	@Setter
 	private int life;
 	
 	/**
 	 * If the object is spawned
 	 */
-	@Getter
-	@Setter
 	private boolean spawned;
 	
 	/**
 	 * The object that this object replaced when spawned
 	 */
-	@Getter
-	@Setter
 	private WorldObject replaced;
 	
 	/**
@@ -216,5 +202,53 @@ public class WorldObject extends WorldTile implements Entity {
 			return defaultValue;
 		}
 		return value;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public int getType() {
+		return this.type;
+	}
+
+	public int getRotation() {
+		return this.rotation;
+	}
+
+	public int getLife() {
+		return this.life;
+	}
+
+	public boolean isSpawned() {
+		return this.spawned;
+	}
+
+	public WorldObject getReplaced() {
+		return this.replaced;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
+	public void setSpawned(boolean spawned) {
+		this.spawned = spawned;
+	}
+
+	public void setReplaced(WorldObject replaced) {
+		this.replaced = replaced;
 	}
 }

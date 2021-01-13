@@ -1,7 +1,5 @@
 package org.redrune.game.content.entity.actor.player.dialogue;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.cache.loaders.NPCDefinitions;
@@ -9,11 +7,12 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.ChatAnimations;
 import org.redrune.utility.constants.ColorConstants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class Dialogue implements ChatAnimations, ColorConstants {
 	
-	@Setter
 	protected int first, second, third, fourth, fifth;
 	
 	public static final int FIRST = 1, SECOND = 2, THIRD = 3, FOURTH = 4, FIFTH = 5, YES = 1, NO = 2;
@@ -78,7 +77,6 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 	
 	protected Player player;
 	
-	@Getter
 	protected byte stage = -1;
 	
 	public Dialogue() {
@@ -503,5 +501,28 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 			}
 		}
 	}
-	
+
+	public byte getStage() {
+		return this.stage;
+	}
+
+	public void setFirst(int first) {
+		this.first = first;
+	}
+
+	public void setSecond(int second) {
+		this.second = second;
+	}
+
+	public void setThird(int third) {
+		this.third = third;
+	}
+
+	public void setFourth(int fourth) {
+		this.fourth = fourth;
+	}
+
+	public void setFifth(int fifth) {
+		this.fifth = fifth;
+	}
 }

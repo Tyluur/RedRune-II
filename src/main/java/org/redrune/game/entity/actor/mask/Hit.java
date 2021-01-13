@@ -2,44 +2,32 @@ package org.redrune.game.entity.actor.mask;
 
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
-import lombok.Getter;
-import lombok.Setter;
 
 public final class Hit {
 	
 	/**
 	 * The source of the damage
 	 */
-	@Getter
-	@Setter
 	private Actor source;
 	
 	/**
 	 * The hit splat of the damage
 	 */
-	@Getter
-	@Setter
 	private HitSplat splat;
 	
 	/**
 	 * The amount of damage
 	 */
-	@Getter
-	@Setter
 	private int damage;
 	
 	/**
 	 * The soaking damage
 	 */
-	@Getter
-	@Setter
 	private Hit soaking;
 	
 	/**
 	 * The delay (used only in the mask aspect) of the hit
 	 */
-	@Getter
-	@Setter
 	private int delay;
 	
 	/**
@@ -50,7 +38,6 @@ public final class Hit {
 	/**
 	 * The task to execute once the hit lands
 	 */
-	@Setter
 	private Runnable landTask;
 	
 	public Hit(Actor source, int damage, HitSplat splat) {
@@ -133,5 +120,48 @@ public final class Hit {
 		}
 		landTask.run();
 	}
-	
+
+    public Actor getSource() {
+        return this.source;
+    }
+
+    public HitSplat getSplat() {
+        return this.splat;
+    }
+
+    public int getDamage() {
+        return this.damage;
+    }
+
+    public Hit getSoaking() {
+        return this.soaking;
+    }
+
+    public int getDelay() {
+        return this.delay;
+    }
+
+    public void setSource(Actor source) {
+        this.source = source;
+    }
+
+    public void setSplat(HitSplat splat) {
+        this.splat = splat;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setSoaking(Hit soaking) {
+        this.soaking = soaking;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public void setLandTask(Runnable landTask) {
+        this.landTask = landTask;
+    }
 }

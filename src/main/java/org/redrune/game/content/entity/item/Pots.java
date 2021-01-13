@@ -1,16 +1,15 @@
 package org.redrune.game.content.entity.item;
 
-import lombok.Getter;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 public final class Pots {
 	
@@ -228,7 +227,6 @@ public final class Pots {
 		
 		SUMMONING_POTION(new int[] { 12140, 12142, 12144, 12146 }, Effects.SUMMONING_POT);
 		
-		@Getter
 		private int[] ids;
 		
 		private Effects effect;
@@ -237,7 +235,11 @@ public final class Pots {
 			this.ids = ids;
 			this.effect = effect;
 		}
-	}
+
+        public int[] getIds() {
+            return this.ids;
+        }
+    }
 	
 	private enum Effects {
 		ATTACK_POTION(SkillConstants.ATTACK) {

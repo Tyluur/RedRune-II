@@ -1,9 +1,9 @@
 package org.redrune.game.content.plugin.type;
 
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.Plugin;
 import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.entity.actor.player.Player;
 
 /**
  * @author Tyluur <itstyluur@gmail.com>

@@ -5,9 +5,8 @@ import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.global.World;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.EquipmentConstants;
-import lombok.Setter;
+import org.redrune.utility.functions.Misc;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ public class AuraManager implements Serializable {
 	
 	private HashMap<Integer, Long> cooldowns;
 	
-	@Setter
 	private transient Player player;
 	
 	public AuraManager() {
@@ -392,5 +390,9 @@ public class AuraManager implements Serializable {
 		}
 		int aura = player.getEquipment().getAuraId();
 		return aura == 22302;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

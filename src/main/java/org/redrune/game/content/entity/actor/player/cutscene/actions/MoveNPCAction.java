@@ -1,9 +1,9 @@
 package org.redrune.game.content.entity.actor.player.cutscene.actions;
 
 import org.redrune.game.content.entity.actor.player.cutscene.Cutscene;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.MagicConstants;
 
 public class MoveNPCAction extends CutsceneAction {

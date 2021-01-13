@@ -1,17 +1,17 @@
 package org.redrune.game.content.entity.actor.combat.function;
 
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.entity.actor.mask.Animation;
-import org.redrune.game.entity.actor.mask.Graphics;
-import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
 import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.entity.actor.mask.Animation;
+import org.redrune.game.entity.actor.mask.Graphics;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.utility.constants.MagicConstants;
 import org.redrune.utility.constants.MagicConstants.MagicBook;
 import org.redrune.utility.constants.SkillConstants;

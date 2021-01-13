@@ -1,8 +1,6 @@
 package org.redrune.cache.loaders;
 
 import com.alex.io.InputStream;
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.Cache;
 
 import java.util.HashMap;
@@ -101,56 +99,30 @@ public class ObjectDefinitions {
 	
 	private int secondInt;
 	
-	@Getter
-	@Setter
 	private String name;
 	
-	@Getter
-	@Setter
 	private int id;
 	
-	@Getter
-	@Setter
 	private String[] options;
 	
-	@Getter
-	@Setter
 	private int[][] modelIds;
 	
-	@Getter
-	@Setter
 	private int sizeX;
 	
-	@Getter
-	@Setter
 	private int sizeY;
 	
-	@Getter
-	@Setter
 	private int configFileId;
 	
-	@Getter
-	@Setter
 	private boolean projectileClipped;
 	
-	@Getter
-	@Setter
 	private boolean ignoreClipOnAlternativeRoute;
 	
-	@Getter
-	@Setter
 	private int clipType;
 	
-	@Getter
-	@Setter
 	private int configId;
 	
-	@Getter
-	@Setter
 	private short[] originalColors;
 	
-	@Getter
-	@Setter
 	private int[] toObjectIds;
 	
 	private int anInt3834;
@@ -167,8 +139,6 @@ public class ObjectDefinitions {
 	
 	private byte[] aByteArray3858;
 	
-	@Getter
-	@Setter
 	private short[] modifiedColors;
 	
 	private int[] anIntArray3869;
@@ -630,4 +600,116 @@ public class ObjectDefinitions {
 	public int getAccessBlockFlag() {
 		return cflag;
 	}
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String[] getOptions() {
+        return this.options;
+    }
+
+    public int[][] getModelIds() {
+        return this.modelIds;
+    }
+
+    public int getSizeX() {
+        return this.sizeX;
+    }
+
+    public int getSizeY() {
+        return this.sizeY;
+    }
+
+    public int getConfigFileId() {
+        return this.configFileId;
+    }
+
+    public boolean isProjectileClipped() {
+        return this.projectileClipped;
+    }
+
+    public boolean isIgnoreClipOnAlternativeRoute() {
+        return this.ignoreClipOnAlternativeRoute;
+    }
+
+    public int getClipType() {
+        return this.clipType;
+    }
+
+    public int getConfigId() {
+        return this.configId;
+    }
+
+    public short[] getOriginalColors() {
+        return this.originalColors;
+    }
+
+    public int[] getToObjectIds() {
+        return this.toObjectIds;
+    }
+
+    public short[] getModifiedColors() {
+        return this.modifiedColors;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setOptions(String[] options) {
+        this.options = options;
+    }
+
+    public void setModelIds(int[][] modelIds) {
+        this.modelIds = modelIds;
+    }
+
+    public void setSizeX(int sizeX) {
+        this.sizeX = sizeX;
+    }
+
+    public void setSizeY(int sizeY) {
+        this.sizeY = sizeY;
+    }
+
+    public void setConfigFileId(int configFileId) {
+        this.configFileId = configFileId;
+    }
+
+    public void setProjectileClipped(boolean projectileClipped) {
+        this.projectileClipped = projectileClipped;
+    }
+
+    public void setIgnoreClipOnAlternativeRoute(boolean ignoreClipOnAlternativeRoute) {
+        this.ignoreClipOnAlternativeRoute = ignoreClipOnAlternativeRoute;
+    }
+
+    public void setClipType(int clipType) {
+        this.clipType = clipType;
+    }
+
+    public void setConfigId(int configId) {
+        this.configId = configId;
+    }
+
+    public void setOriginalColors(short[] originalColors) {
+        this.originalColors = originalColors;
+    }
+
+    public void setToObjectIds(int[] toObjectIds) {
+        this.toObjectIds = toObjectIds;
+    }
+
+    public void setModifiedColors(short[] modifiedColors) {
+        this.modifiedColors = modifiedColors;
+    }
 }

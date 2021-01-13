@@ -1,8 +1,8 @@
 package org.redrune.game.content.plugin.combat.spell;
 
+import org.redrune.game.content.plugin.Plugin;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.Plugin;
 import org.redrune.utility.constants.MagicConstants;
 import org.redrune.utility.constants.SkillConstants;
 

@@ -1,12 +1,12 @@
 package org.redrune.game.entity.actor.npc.impl.others;
 
-import org.redrune.game.global.WorldTile;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.game.global.WorldTile;
 
 @SuppressWarnings("serial")
 public class PestMonsters extends NPC {

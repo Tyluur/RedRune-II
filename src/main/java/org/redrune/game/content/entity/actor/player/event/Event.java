@@ -1,7 +1,5 @@
 package org.redrune.game.content.entity.actor.player.event;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
@@ -28,8 +26,6 @@ public abstract class Event {
 	/**
 	 * If the event has started
 	 */
-	@Getter
-	@Setter
 	protected EventState state = EventState.CREATED;
 	
 	/**
@@ -60,8 +56,16 @@ public abstract class Event {
 			}
 		}
 	}
-	
-	/**
+
+    public EventState getState() {
+        return this.state;
+    }
+
+    public void setState(EventState state) {
+        this.state = state;
+    }
+
+    /**
 	 * @author Tyluur <itstyluur@gmail.com>
 	 * @since 2019-01-25
 	 */

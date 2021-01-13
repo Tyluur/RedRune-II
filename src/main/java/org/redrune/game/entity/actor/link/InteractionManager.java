@@ -1,6 +1,5 @@
 package org.redrune.game.entity.actor.link;
 
-import lombok.Getter;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
 
@@ -22,7 +21,6 @@ public class InteractionManager {
 	/**
 	 * The actor being interacted with
 	 */
-	@Getter
 	private final Set<Actor> interactorList = new LinkedHashSet<>();
 	
 	public InteractionManager(Actor owner) {
@@ -148,5 +146,8 @@ public class InteractionManager {
 			interactingWith.getInteractionManager().startInteraction(owner);
 		}
 	}
-	
+
+	public Set<Actor> getInteractorList() {
+		return this.interactorList;
+	}
 }

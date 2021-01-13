@@ -1,7 +1,5 @@
 package org.redrune.game.entity.actor.player.data;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.key.AttributeKey;
@@ -28,145 +26,106 @@ public class PlayerAttributes implements Serializable {
 	/**
 	 * The owner of the current friend chat we're in
 	 */
-	@Getter
-	@Setter
 	private String currentFriendChatOwner;
 	
 	/**
 	 * The display name of the player
 	 */
-	@Getter
 	private String displayName;
 	
 	/**
 	 * The last ip address of the player
 	 */
-	@Getter
-	@Setter
 	private String lastIP;
 	
 	/**
 	 * The last mac address of the player
 	 */
-	@Getter
-	@Setter
 	private String lastMac;
 	
 	/**
 	 * The current slayer task
 	 */
-	@Getter
-	@Setter
 	private SlayerTask slayerTask;
 	
 	/**
 	 * The run energy we have left
 	 */
-	@Getter
 	private byte runEnergy;
 	
 	/**
 	 * If the player is filtering profanity
 	 */
-	@Getter
-	@Setter
 	private boolean filteringProfanity;
 	
 	/**
 	 * If we should allow chat effects in the game
 	 */
-	@Getter
-	@Setter
 	private boolean allowChatEffects;
 	
 	/**
 	 * The amount of mouse buttons we should use, as a flag
 	 */
-	@Getter
-	@Setter
 	private boolean mouseButtons;
 	
 	/**
 	 * The private chat setup option
 	 */
-	@Getter
-	@Setter
 	private int privateChatSetup;
 	
 	/**
 	 * The time until our skull disappears
 	 */
-	@Getter
-	@Setter
 	private int skullDelay;
 	
 	/**
 	 * The id of our skull
 	 */
-	@Getter
-	@Setter
 	private int skullId;
 	
 	/**
 	 * If the next map should force load, used for encoding regions
 	 */
-	@Getter
-	@Setter
 	private boolean forceNextMapLoadRefresh;
 	
 	/**
 	 * How long the player is immune to poison for
 	 */
-	@Getter
-	@Setter
 	private long poisonImmune;
 	
 	/**
 	 * How long the player is immune to fire for
 	 */
-	@Getter
-	@Setter
 	private long fireImmune;
 	
 	/**
 	 * The pouch data, used for runecrafting
 	 */
-	@Getter
 	private int[] pouches;
 	
 	/**
 	 * If we are filtering the game
 	 */
-	@Getter
-	@Setter
 	private boolean filterGame;
 	
 	/**
 	 * The customization information of the max cape
 	 */
-	@Getter
-	@Setter
 	private int[] maxedCapeCustomized;
 	
 	/**
 	 * The customization information of the completionist cape
 	 */
-	@Getter
-	@Setter
 	private int[] completionistCapeCustomized;
 	
 	/**
 	 * The delay until we can use an overload potion again
 	 */
-	@Getter
-	@Setter
 	private int overloadDelay;
 	
 	/**
 	 * The option we're using for the summoning orb
 	 */
-	@Getter
-	@Setter
 	private int summoningLeftClickOption;
 	
 	/**
@@ -177,103 +136,76 @@ public class PlayerAttributes implements Serializable {
 	/**
 	 * If our experience is locked
 	 */
-	@Getter
-	@Setter
 	private boolean experienceLocked;
 	
 	/**
 	 * The temporary movement type flag for teleporting or walking types
 	 */
-	@Getter
-	@Setter
 	private int temporaryMovementType;
 	
 	/**
 	 * The update movement ftype flag
 	 */
-	@Getter
-	@Setter
 	private boolean updateMovementType;
 	
 	/**
 	 * The player whose attributes this is an instance for
 	 */
-	@Setter
 	private transient Player player;
 	
 	/**
 	 * The cache of items to switch
 	 */
-	@Getter
-	@Setter
 	private transient List<Integer> switchItemCache;
 	
 	/**
 	 * The maximum amount of traps
 	 */
-	@Getter
-	@Setter
 	private transient int trapAmount;
 	
 	/**
 	 * The last time we received a ping
 	 */
-	@Getter
-	@Setter
 	private transient long packetsDecoderPing;
 	
 	/**
 	 * If the player is resting
 	 */
-	@Getter
 	private transient boolean resting;
 	
 	/**
 	 * If the player can pvp in their area
 	 */
-	@Getter
 	private transient boolean canPvp;
 	
 	/**
 	 * The delay until the player can eat again
 	 */
-	@Getter
-	@Setter
 	private transient long foodDelay;
 	
 	/**
 	 * The delay until the player can pot again
 	 */
-	@Getter
-	@Setter
 	private transient long potDelay;
 	
 	/**
 	 * The delay until the player can bury a bone again
 	 */
-	@Getter
-	@Setter
 	private transient long boneDelay;
 	
 	/**
 	 * The last time a player sent a public message
 	 */
-	@Getter
-	@Setter
 	private transient long lastPublicMessage;
 	
 	/**
 	 * The delay until the power of light is reset
 	 */
-	@Getter
-	@Setter
 	private transient long polDelay;
 	
 	/**
 	 * If equipping items is disabled
 	 */
-	@Getter
-	@Setter
 	private transient boolean equipDisabled;
 	
 	/**
@@ -614,5 +546,268 @@ public class PlayerAttributes implements Serializable {
 		player.putTemporaryAttribute("PrayerBlocked", teleDelay + Misc.currentTimeMillis());
 		player.getPrayer().closeAllPrayers();
 	}
-	
+
+	public String getCurrentFriendChatOwner() {
+		return this.currentFriendChatOwner;
+	}
+
+	public String getDisplayName() {
+		return this.displayName;
+	}
+
+	public String getLastIP() {
+		return this.lastIP;
+	}
+
+	public String getLastMac() {
+		return this.lastMac;
+	}
+
+	public SlayerTask getSlayerTask() {
+		return this.slayerTask;
+	}
+
+	public byte getRunEnergy() {
+		return this.runEnergy;
+	}
+
+	public boolean isFilteringProfanity() {
+		return this.filteringProfanity;
+	}
+
+	public boolean isAllowChatEffects() {
+		return this.allowChatEffects;
+	}
+
+	public boolean isMouseButtons() {
+		return this.mouseButtons;
+	}
+
+	public int getPrivateChatSetup() {
+		return this.privateChatSetup;
+	}
+
+	public int getSkullDelay() {
+		return this.skullDelay;
+	}
+
+	public int getSkullId() {
+		return this.skullId;
+	}
+
+	public boolean isForceNextMapLoadRefresh() {
+		return this.forceNextMapLoadRefresh;
+	}
+
+	public long getPoisonImmune() {
+		return this.poisonImmune;
+	}
+
+	public long getFireImmune() {
+		return this.fireImmune;
+	}
+
+	public int[] getPouches() {
+		return this.pouches;
+	}
+
+	public boolean isFilterGame() {
+		return this.filterGame;
+	}
+
+	public int[] getMaxedCapeCustomized() {
+		return this.maxedCapeCustomized;
+	}
+
+	public int[] getCompletionistCapeCustomized() {
+		return this.completionistCapeCustomized;
+	}
+
+	public int getOverloadDelay() {
+		return this.overloadDelay;
+	}
+
+	public int getSummoningLeftClickOption() {
+		return this.summoningLeftClickOption;
+	}
+
+	public boolean isExperienceLocked() {
+		return this.experienceLocked;
+	}
+
+	public int getTemporaryMovementType() {
+		return this.temporaryMovementType;
+	}
+
+	public boolean isUpdateMovementType() {
+		return this.updateMovementType;
+	}
+
+	public List<Integer> getSwitchItemCache() {
+		return this.switchItemCache;
+	}
+
+	public int getTrapAmount() {
+		return this.trapAmount;
+	}
+
+	public long getPacketsDecoderPing() {
+		return this.packetsDecoderPing;
+	}
+
+	public boolean isResting() {
+		return this.resting;
+	}
+
+	public boolean isCanPvp() {
+		return this.canPvp;
+	}
+
+	public long getFoodDelay() {
+		return this.foodDelay;
+	}
+
+	public long getPotDelay() {
+		return this.potDelay;
+	}
+
+	public long getBoneDelay() {
+		return this.boneDelay;
+	}
+
+	public long getLastPublicMessage() {
+		return this.lastPublicMessage;
+	}
+
+	public long getPolDelay() {
+		return this.polDelay;
+	}
+
+	public boolean isEquipDisabled() {
+		return this.equipDisabled;
+	}
+
+	public void setCurrentFriendChatOwner(String currentFriendChatOwner) {
+		this.currentFriendChatOwner = currentFriendChatOwner;
+	}
+
+	public void setLastIP(String lastIP) {
+		this.lastIP = lastIP;
+	}
+
+	public void setLastMac(String lastMac) {
+		this.lastMac = lastMac;
+	}
+
+	public void setSlayerTask(SlayerTask slayerTask) {
+		this.slayerTask = slayerTask;
+	}
+
+	public void setFilteringProfanity(boolean filteringProfanity) {
+		this.filteringProfanity = filteringProfanity;
+	}
+
+	public void setAllowChatEffects(boolean allowChatEffects) {
+		this.allowChatEffects = allowChatEffects;
+	}
+
+	public void setMouseButtons(boolean mouseButtons) {
+		this.mouseButtons = mouseButtons;
+	}
+
+	public void setPrivateChatSetup(int privateChatSetup) {
+		this.privateChatSetup = privateChatSetup;
+	}
+
+	public void setSkullDelay(int skullDelay) {
+		this.skullDelay = skullDelay;
+	}
+
+	public void setSkullId(int skullId) {
+		this.skullId = skullId;
+	}
+
+	public void setForceNextMapLoadRefresh(boolean forceNextMapLoadRefresh) {
+		this.forceNextMapLoadRefresh = forceNextMapLoadRefresh;
+	}
+
+	public void setPoisonImmune(long poisonImmune) {
+		this.poisonImmune = poisonImmune;
+	}
+
+	public void setFireImmune(long fireImmune) {
+		this.fireImmune = fireImmune;
+	}
+
+	public void setFilterGame(boolean filterGame) {
+		this.filterGame = filterGame;
+	}
+
+	public void setMaxedCapeCustomized(int[] maxedCapeCustomized) {
+		this.maxedCapeCustomized = maxedCapeCustomized;
+	}
+
+	public void setCompletionistCapeCustomized(int[] completionistCapeCustomized) {
+		this.completionistCapeCustomized = completionistCapeCustomized;
+	}
+
+	public void setOverloadDelay(int overloadDelay) {
+		this.overloadDelay = overloadDelay;
+	}
+
+	public void setSummoningLeftClickOption(int summoningLeftClickOption) {
+		this.summoningLeftClickOption = summoningLeftClickOption;
+	}
+
+	public void setExperienceLocked(boolean experienceLocked) {
+		this.experienceLocked = experienceLocked;
+	}
+
+	public void setTemporaryMovementType(int temporaryMovementType) {
+		this.temporaryMovementType = temporaryMovementType;
+	}
+
+	public void setUpdateMovementType(boolean updateMovementType) {
+		this.updateMovementType = updateMovementType;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public void setSwitchItemCache(List<Integer> switchItemCache) {
+		this.switchItemCache = switchItemCache;
+	}
+
+	public void setTrapAmount(int trapAmount) {
+		this.trapAmount = trapAmount;
+	}
+
+	public void setPacketsDecoderPing(long packetsDecoderPing) {
+		this.packetsDecoderPing = packetsDecoderPing;
+	}
+
+	public void setFoodDelay(long foodDelay) {
+		this.foodDelay = foodDelay;
+	}
+
+	public void setPotDelay(long potDelay) {
+		this.potDelay = potDelay;
+	}
+
+	public void setBoneDelay(long boneDelay) {
+		this.boneDelay = boneDelay;
+	}
+
+	public void setLastPublicMessage(long lastPublicMessage) {
+		this.lastPublicMessage = lastPublicMessage;
+	}
+
+	public void setPolDelay(long polDelay) {
+		this.polDelay = polDelay;
+	}
+
+	public void setEquipDisabled(boolean equipDisabled) {
+		this.equipDisabled = equipDisabled;
+	}
 }

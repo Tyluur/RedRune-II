@@ -1,15 +1,12 @@
 package org.redrune.game.entity.actor.player;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
-import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
-import org.redrune.game.entity.actor.player.link.DialogueManager;
+import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.event.EventManager;
 import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;
@@ -50,120 +47,96 @@ public class Player extends Actor {
 	/**
 	 * The attributes the player has
 	 */
-	@Getter
 	private PlayerAttributes attributes;
 	
 	/**
 	 * The set of the rights the player has
 	 */
-	@Getter
 	private Set<PlayerRight> rights;
 	
 	/**
 	 * The password for logging in
 	 */
-	@Getter
-	@Setter
 	private String password;
 	
 	/**
 	 * The appearance handler and container
 	 */
-	@Getter
 	private PlayerAppearance appearance;
 	
 	/**
 	 * The inventory container and handler
 	 */
-	@Getter
 	private PlayerInventory inventory;
 	
 	/**
 	 * The equipment container and handler
 	 */
-	@Getter
 	private PlayerEquipment equipment;
 	
 	/**
 	 * The skill handler and container
 	 */
-	@Getter
 	private PlayerSkills skills;
 	
 	/**
 	 * The bank handler and container
 	 */
-	@Getter
 	private PlayerBank bank;
 	
 	/**
 	 * The prayer handler
 	 */
-	@Getter
 	private PlayerPrayer prayer;
 	
 	/**
 	 * The definitions used for combat events
 	 */
-	@Getter
 	private CombatDefinitions combatDefinitions;
 	
 	/**
 	 * The manager for {@code Controller}s
 	 */
-	@Getter
-	@Setter
 	private ControllerManager controllerManager;
 	
 	/**
 	 * The handler for music
 	 */
-	@Getter
 	private MusicManager musicManager;
 	
 	/**
 	 * The handler for emotes
 	 */
-	@Getter
 	private EmotesManager emotesManager;
 	
 	/**
 	 * The handler for all social interaction
 	 */
-	@Getter
 	private ContactManager contactManager;
 	
 	/**
 	 * The handler for auras
 	 */
-	@Getter
 	private AuraManager auraManager;
 	
 	/**
 	 * The instance of the familiar the player owns
 	 */
-	@Getter
-	@Setter
 	private Familiar familiar;
 	
 	/**
 	 * The handler for items with charges, meaning degradable items
 	 */
-	@Getter
 	private ChargesManager charges;
 	
 	/**
 	 * The username, saved as a transient because it changes every time the player logs in
 	 */
-	@Getter
-	@Setter
 	private transient String username;
 	
 	/**
 	 * The network session used for the player
 	 */
-	@Getter
-	@Setter
 	private transient NetworkSession session;
 	
 	/**
@@ -174,43 +147,36 @@ public class Player extends Actor {
 	/**
 	 * The container and handler for interfaces
 	 */
-	@Getter
 	private transient InterfaceManager interfaceManager;
 	
 	/**
 	 * The handler for dialogues
 	 */
-	@Getter
 	private transient DialogueManager dialogueManager;
 	
 	/**
 	 * The handler and container for hint icons
 	 */
-	@Getter
 	private transient HintIconsManager hintIconsManager;
 	
 	/**
 	 * The handler for all game {@link org.redrune.game.content.entity.actor.player.action.Action}s
 	 */
-	@Getter
 	private transient ActionManager actionManager;
 	
 	/**
 	 * The handler for all game {@link org.redrune.game.content.entity.actor.player.event.Event}s
 	 */
-	@Getter
 	private transient EventManager eventManager;
 	
 	/**
 	 * The handler for {@link org.redrune.game.content.entity.actor.player.cutscene.Cutscene}s
 	 */
-	@Getter
 	private transient CutsceneManager cutsceneManager;
 	
 	/**
 	 * The handler for the price checking interface
 	 */
-	@Getter
 	private transient PriceCheckManager priceCheckManager;
 	
 	/**
@@ -222,38 +188,31 @@ public class Player extends Actor {
 	/**
 	 * The event to perform when the interfaces we have open are closed
 	 */
-	@Setter
 	private transient Runnable closeInterfacesEvent;
 	
 	/**
 	 * The handler and container for friends chats
 	 */
-	@Getter
-	@Setter
 	private transient FriendChatsManager currentFriendChat;
 	
 	/**
 	 * The player updating handler
 	 */
-	@Getter
 	private transient LocalPlayerUpdate localPlayerUpdate;
 	
 	/**
 	 * The npc update handler
 	 */
-	@Getter
 	private transient LocalNPCUpdate localNPCUpdate;
 	
 	/**
 	 * The var manager
 	 */
-	@Getter
 	private transient VarManager varManager;
 	
 	/**
 	 * The container and handler for trades
 	 */
-	@Getter
 	private transient TradeManager tradeManager;
 	
 	/**
@@ -264,7 +223,6 @@ public class Player extends Actor {
 	/**
 	 * if the player's game session is properly running, this is  flagged after {@link #run()} is called
 	 */
-	@Getter
 	private transient boolean running;
 	
 	/**
@@ -1076,5 +1034,160 @@ public class Player extends Actor {
 		}
 		return Misc.formatPlayerNameForDisplay(username);
 	}
-	
+
+	public PlayerAttributes getAttributes() {
+		return this.attributes;
+	}
+
+	public Set<PlayerRight> getRights() {
+		return this.rights;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public PlayerAppearance getAppearance() {
+		return this.appearance;
+	}
+
+	public PlayerInventory getInventory() {
+		return this.inventory;
+	}
+
+	public PlayerEquipment getEquipment() {
+		return this.equipment;
+	}
+
+	public PlayerSkills getSkills() {
+		return this.skills;
+	}
+
+	public PlayerBank getBank() {
+		return this.bank;
+	}
+
+	public PlayerPrayer getPrayer() {
+		return this.prayer;
+	}
+
+	public CombatDefinitions getCombatDefinitions() {
+		return this.combatDefinitions;
+	}
+
+	public ControllerManager getControllerManager() {
+		return this.controllerManager;
+	}
+
+	public MusicManager getMusicManager() {
+		return this.musicManager;
+	}
+
+	public EmotesManager getEmotesManager() {
+		return this.emotesManager;
+	}
+
+	public ContactManager getContactManager() {
+		return this.contactManager;
+	}
+
+	public AuraManager getAuraManager() {
+		return this.auraManager;
+	}
+
+	public Familiar getFamiliar() {
+		return this.familiar;
+	}
+
+	public ChargesManager getCharges() {
+		return this.charges;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public NetworkSession getSession() {
+		return this.session;
+	}
+
+	public InterfaceManager getInterfaceManager() {
+		return this.interfaceManager;
+	}
+
+	public DialogueManager getDialogueManager() {
+		return this.dialogueManager;
+	}
+
+	public HintIconsManager getHintIconsManager() {
+		return this.hintIconsManager;
+	}
+
+	public ActionManager getActionManager() {
+		return this.actionManager;
+	}
+
+	public EventManager getEventManager() {
+		return this.eventManager;
+	}
+
+	public CutsceneManager getCutsceneManager() {
+		return this.cutsceneManager;
+	}
+
+	public PriceCheckManager getPriceCheckManager() {
+		return this.priceCheckManager;
+	}
+
+	public FriendChatsManager getCurrentFriendChat() {
+		return this.currentFriendChat;
+	}
+
+	public LocalPlayerUpdate getLocalPlayerUpdate() {
+		return this.localPlayerUpdate;
+	}
+
+	public LocalNPCUpdate getLocalNPCUpdate() {
+		return this.localNPCUpdate;
+	}
+
+	public VarManager getVarManager() {
+		return this.varManager;
+	}
+
+	public TradeManager getTradeManager() {
+		return this.tradeManager;
+	}
+
+	public boolean isRunning() {
+		return this.running;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setControllerManager(ControllerManager controllerManager) {
+		this.controllerManager = controllerManager;
+	}
+
+	public void setFamiliar(Familiar familiar) {
+		this.familiar = familiar;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setSession(NetworkSession session) {
+		this.session = session;
+	}
+
+	public void setCloseInterfacesEvent(Runnable closeInterfacesEvent) {
+		this.closeInterfacesEvent = closeInterfacesEvent;
+	}
+
+	public void setCurrentFriendChat(FriendChatsManager currentFriendChat) {
+		this.currentFriendChat = currentFriendChat;
+	}
 }

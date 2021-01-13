@@ -1,12 +1,12 @@
 package org.redrune.game.entity.actor.npc.impl.others;
 
 import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterNPC;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.link.OwnedObjectManager;
 import org.redrune.game.entity.actor.player.link.OwnedObjectManager.ConvertEvent;
 import org.redrune.game.entity.object.WorldObject;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.SkillConstants;
 

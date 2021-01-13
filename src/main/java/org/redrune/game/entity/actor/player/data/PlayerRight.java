@@ -2,7 +2,6 @@ package org.redrune.game.entity.actor.player.data;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.functions.Misc;
-import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -90,13 +89,11 @@ public enum PlayerRight {
 	/**
 	 * The rights the player has in the client
 	 */
-	@Getter
 	private final byte clientRight;
 	
 	/**
 	 * The member group id of the right
 	 */
-	@Getter
 	private final byte memberGroupId;
 	
 	/**
@@ -193,5 +190,12 @@ public enum PlayerRight {
 		}
 		return false;
 	}
-	
+
+	public byte getClientRight() {
+		return this.clientRight;
+	}
+
+	public byte getMemberGroupId() {
+		return this.memberGroupId;
+	}
 }

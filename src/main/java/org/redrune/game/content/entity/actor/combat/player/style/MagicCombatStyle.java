@@ -7,15 +7,15 @@ import org.redrune.game.content.entity.actor.combat.CombatRoll;
 import org.redrune.game.content.entity.actor.combat.CombatSwingDetail;
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
 import org.redrune.game.content.entity.actor.combat.player.calc.MagicCombatCalculator;
+import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 
 import java.util.ArrayList;

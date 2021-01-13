@@ -1,10 +1,10 @@
 package org.redrune.game.content.plugin.combat;
 
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.Plugin;
 import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.SkillConstants;
 

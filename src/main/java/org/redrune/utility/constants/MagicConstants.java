@@ -77,7 +77,6 @@ public interface MagicConstants {
 		/**
 		 * The id of the interface
 		 */
-		@Getter
 		private final int interfaceId;
 		
 		MagicBook(int interfaceId) {
@@ -90,5 +89,9 @@ public interface MagicConstants {
 		public static Optional<MagicBook> getMagicBook(int interfaceId) {
 			return Arrays.stream(values()).filter(book -> book.getInterfaceId() == interfaceId).findFirst();
 		}
-	}
+
+        public int getInterfaceId() {
+            return this.interfaceId;
+        }
+    }
 }

@@ -1,9 +1,9 @@
 package org.redrune.game.content.entity.actor.player.event.object;
 
 import org.redrune.game.content.entity.actor.player.event.Event;
+import org.redrune.game.content.entity.object.ObjectHandler;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.object.WorldObject;
-import org.redrune.game.content.entity.object.ObjectHandler;
 import org.redrune.utility.game.ClickOption;
 
 /**

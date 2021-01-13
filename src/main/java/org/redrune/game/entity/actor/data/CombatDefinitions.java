@@ -1,7 +1,5 @@
 package org.redrune.game.entity.actor.data;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.entity.actor.Actor;
@@ -33,8 +31,6 @@ public final class CombatDefinitions implements Serializable {
 	
 	private byte specialAttackPercentage;
 	
-	@Getter
-	@Setter
 	private boolean autoRetaliate;
 	
 	// saving stuff
@@ -660,5 +656,13 @@ public final class CombatDefinitions implements Serializable {
 	
 	public boolean isAutocasting() {
 		return player.getTemporaryAttribute("tempCastSpell", -1) == -1 && autoCastSpell != 0;
+	}
+
+	public boolean isAutoRetaliate() {
+		return this.autoRetaliate;
+	}
+
+	public void setAutoRetaliate(boolean autoRetaliate) {
+		this.autoRetaliate = autoRetaliate;
 	}
 }

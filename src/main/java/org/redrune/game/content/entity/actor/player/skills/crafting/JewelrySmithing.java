@@ -4,8 +4,8 @@ import org.redrune.game.content.entity.actor.player.action.Action;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 /**
  * @author Gircat <gircat101@gmail.com> Created on Jul 28, 2014 at 12:51:21 PM.

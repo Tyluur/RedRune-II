@@ -1,10 +1,10 @@
 package org.redrune.game.content.plugin.type;
 
 import org.redrune.cache.loaders.ObjectDefinitions;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.content.plugin.Plugin;
 import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.object.WorldObject;
 import org.redrune.utility.game.ClickOption;
 
 /**

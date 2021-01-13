@@ -3,14 +3,15 @@ package org.redrune.game.entity.actor.npc;
 import org.redrune.cache.Cache;
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.engine.SystemManager;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.game.content.entity.actor.combat.npc.NPCCombat;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
-import org.redrune.game.content.entity.actor.combat.npc.NPCCombat;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtension;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
@@ -18,15 +19,12 @@ import org.redrune.game.entity.actor.npc.mask.Transformation;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.Misc.FaceDirection;
-import org.redrune.utility.constants.BonusConstants;
 import org.redrune.utility.game.repository.npc.characteristic.NPCCharacteristicRepository;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -78,8 +76,6 @@ public class NPC extends Actor implements Serializable {
 	
 	private boolean forceMultiAttacked;
 	
-	@Getter
-	@Setter
 	private int walkType;
 	
 	private List<NPCExtension> extensions = new ArrayList<>();
@@ -870,5 +866,13 @@ public class NPC extends Actor implements Serializable {
 	 */
 	public void addExtension(NPCExtension extension) {
 		extensions.add(extension);
+	}
+
+	public int getWalkType() {
+		return this.walkType;
+	}
+
+	public void setWalkType(int walkType) {
+		this.walkType = walkType;
 	}
 }

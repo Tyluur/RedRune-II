@@ -1,19 +1,13 @@
 package org.redrune.engine.tick.task;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public abstract class WorldTask implements Runnable {
 	
-	@Getter
-	@Setter
 	protected int ticksPassed;
 	
 	/**
 	 * If the task needs to be removed
 	 */
-	@Getter
-	boolean needRemove;
+    boolean needRemove;
 	
 	@Override
 	public String toString() {
@@ -26,4 +20,16 @@ public abstract class WorldTask implements Runnable {
 	public void stop() {
 		needRemove = true;
 	}
+
+    public int getTicksPassed() {
+        return this.ticksPassed;
+    }
+
+    public boolean isNeedRemove() {
+        return this.needRemove;
+    }
+
+    public void setTicksPassed(int ticksPassed) {
+        this.ticksPassed = ticksPassed;
+    }
 }

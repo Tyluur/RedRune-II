@@ -1,8 +1,8 @@
 package org.redrune.game.content.entity.actor.player.skills.slayer;
 
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 import java.util.*;
 

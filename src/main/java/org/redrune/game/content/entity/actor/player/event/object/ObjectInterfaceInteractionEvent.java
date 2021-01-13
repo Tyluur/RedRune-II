@@ -11,6 +11,7 @@ import org.redrune.game.content.entity.actor.player.skills.crafting.JewelrySmith
 import org.redrune.game.content.entity.actor.player.skills.runecrafting.Runecrafting;
 import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing.ForgingBar;
 import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing.ForgingInterface;
+import org.redrune.game.content.entity.object.ObjectHandler;
 import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
@@ -20,7 +21,6 @@ import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.WorldTile;
-import org.redrune.game.content.entity.object.ObjectHandler;
 import org.redrune.utility.constants.SkillConstants;
 
 /**

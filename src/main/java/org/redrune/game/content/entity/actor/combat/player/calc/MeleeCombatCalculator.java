@@ -1,7 +1,7 @@
 package org.redrune.game.content.entity.actor.combat.player.calc;
 
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator;
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;

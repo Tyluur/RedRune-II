@@ -2,8 +2,8 @@ package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.cache.loaders.NPCDefinitions;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
-import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerMaster;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;
+import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerMaster;
 
 public class Turael extends Dialogue {
 	

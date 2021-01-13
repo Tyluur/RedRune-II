@@ -2,10 +2,8 @@ package org.redrune.game.content.entity.actor.player.market;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.ItemConstants;
-import lombok.Getter;
-import lombok.Setter;
+import org.redrune.utility.functions.Misc;
 
 import java.util.List;
 
@@ -30,41 +28,31 @@ public final class Shop {
 	/**
 	 * The identifier of the shop
 	 */
-	@Getter
 	private final int identifier;
 	
 	/**
 	 * The name of the shop, this is not the identifier because we have multiple shops by one name.
 	 */
-	@Getter
-	@Setter
 	private String name;
 	
 	/**
 	 * The list of items in the shop
 	 */
-	@Getter
 	private final List<Item> items;
 	
 	/**
 	 * The name of the currency this shop uses. This is used only to find the {@link #currency} object for this class
 	 */
-	@Getter
-	@Setter
 	private String currencyName;
 	
 	/**
 	 * If this shop is a general store. If this is true, you can sell all items to it
 	 */
-	@Getter
-	@Setter
 	private boolean generalStore;
 	
 	/**
 	 * The currency this shop uses
 	 */
-	@Getter
-	@Setter
 	private transient ShopCurrency currency;
 	
 	public Shop(int identifier, String name, List<Item> items, String currencyName) {
@@ -372,5 +360,44 @@ public final class Shop {
 		}
 		player.getPackets().sendItems(4, shipped);
 	}
-	
+
+    public int getIdentifier() {
+        return this.identifier;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public List<Item> getItems() {
+        return this.items;
+    }
+
+    public String getCurrencyName() {
+        return this.currencyName;
+    }
+
+    public boolean isGeneralStore() {
+        return this.generalStore;
+    }
+
+    public ShopCurrency getCurrency() {
+        return this.currency;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
+    }
+
+    public void setGeneralStore(boolean generalStore) {
+        this.generalStore = generalStore;
+    }
+
+    public void setCurrency(ShopCurrency currency) {
+        this.currency = currency;
+    }
 }

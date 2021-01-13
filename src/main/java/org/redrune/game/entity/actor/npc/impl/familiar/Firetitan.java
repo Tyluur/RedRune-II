@@ -1,10 +1,10 @@
 package org.redrune.game.entity.actor.npc.impl.familiar;
 
 import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning.Pouches;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.SkillConstants;
 
 public class Firetitan extends Familiar {

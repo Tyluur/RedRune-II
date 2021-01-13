@@ -1,9 +1,9 @@
 package org.redrune.game.entity.projectile;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
 

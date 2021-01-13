@@ -1,7 +1,6 @@
 package org.redrune.engine.tick.schedule;
 
 import com.google.common.base.Preconditions;
-import lombok.Getter;
 
 /**
  * A game-related task that is scheduled to run in the future.
@@ -15,7 +14,6 @@ public abstract class ScheduledTask {
 	/**
 	 * The maximum amount of ticks that can be ran on this task
 	 */
-	@Getter
 	private final int goalTicks;
 	
 	/**
@@ -26,20 +24,17 @@ public abstract class ScheduledTask {
 	/**
 	 * The number of ticks remaining until the task is next executed.
 	 */
-	@Getter
 	private int ticks;
 	
 	/**
 	 * The amount of times this task has been pulsed
 	 */
-	@Getter
 	private int ticksPassed = 0;
 	
 	/**
 	 * The delayed tick count, this is incremented each time the task is pulsed. The task is pulsed based on the delay
 	 * set in the constructor.
 	 */
-	@Getter
 	private int delayedTickCount = 0;
 	
 	/**
@@ -133,4 +128,20 @@ public abstract class ScheduledTask {
 	 * Runs the task
 	 */
 	public abstract void run();
+
+    public int getGoalTicks() {
+        return this.goalTicks;
+    }
+
+    public int getTicks() {
+        return this.ticks;
+    }
+
+    public int getTicksPassed() {
+        return this.ticksPassed;
+    }
+
+    public int getDelayedTickCount() {
+        return this.delayedTickCount;
+    }
 }

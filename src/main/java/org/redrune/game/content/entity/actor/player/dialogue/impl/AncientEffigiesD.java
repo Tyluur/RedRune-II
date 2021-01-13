@@ -2,8 +2,8 @@ package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
 import org.redrune.game.content.entity.item.AncientEffigies;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 /**
  * Ancient effifies dialogue handling.

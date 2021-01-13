@@ -2,7 +2,6 @@ package org.redrune.game.content.entity.actor.combat;
 
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Hit;
-import lombok.Getter;
 
 import java.util.function.Consumer;
 
@@ -15,19 +14,16 @@ public class CombatSwingDetail {
 	/**
 	 * The source of the swing
 	 */
-	@Getter
 	private final Actor source;
 	
 	/**
 	 * The target of the swing
 	 */
-	@Getter
 	private final Actor target;
 	
 	/**
 	 * The hit of the swing
 	 */
-	@Getter
 	private final Hit hit;
 	
 	public CombatSwingDetail(Actor source, Actor target, Hit hit) {
@@ -46,4 +42,16 @@ public class CombatSwingDetail {
 		consumer.accept(this);
 		return this;
 	}
+
+    public Actor getSource() {
+        return this.source;
+    }
+
+    public Actor getTarget() {
+        return this.target;
+    }
+
+    public Hit getHit() {
+        return this.hit;
+    }
 }

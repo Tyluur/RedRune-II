@@ -1,10 +1,10 @@
 package org.redrune.game.global.map.region;
 
 import org.redrune.cache.Cache;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 
 import java.util.ArrayList;
 import java.util.List;

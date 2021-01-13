@@ -2,12 +2,12 @@ package org.redrune.game.content.plugin.combat;
 
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.content.plugin.Plugin;
+import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.game.content.plugin.Plugin;
-import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.functions.Misc;
 

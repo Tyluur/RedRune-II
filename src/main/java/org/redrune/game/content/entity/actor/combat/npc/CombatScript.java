@@ -1,5 +1,7 @@
 package org.redrune.game.content.entity.actor.combat.npc;
 
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.combat.player.CombatStyle;
 import org.redrune.game.content.entity.actor.player.action.impl.PlayerCombatAction;
 import org.redrune.game.entity.actor.Actor;
@@ -10,11 +12,9 @@ import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.impl.familiar.Steeltitan;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.utility.constants.BonusConstants;
-import org.redrune.utility.functions.Misc;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 public abstract class CombatScript {
 	

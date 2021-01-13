@@ -1,7 +1,7 @@
 package org.redrune.game.content.entity.actor.npc;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.global.WorldTile;
 
 import java.util.HashMap;
 

@@ -1,7 +1,5 @@
 package org.redrune.game.entity.actor;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.loaders.AnimationDefinitions;
 import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.game.content.entity.actor.combat.function.Magic;
@@ -59,49 +57,36 @@ public abstract class Actor extends WorldTile implements Entity {
 	/**
 	 * The hitpoints of the actor
 	 */
-	@Getter
-	@Setter
 	private int hitpoints;
 	
 	/**
 	 * The size of the map of the actor
 	 */
-	@Getter
-	@Setter
 	private int mapSize;
 	
 	/**
 	 * The handler and container of poison
 	 */
-	@Getter
 	private PoisonManager poisonManager;
 	
 	/**
 	 * If run mode is on, this is used for processing movement in a 2-tile-per-step fashion
 	 */
-	@Getter
-	@Setter
 	private boolean runModeOn;
 	
 	/**
 	 * The index of the actor
 	 */
-	@Getter
-	@Setter
 	private transient int index;
 	
 	/**
 	 * The faceDirection to face
 	 */
-	@Getter
-	@Setter
 	private transient int faceDirection;
 	
 	/**
 	 * The id of the last region the actor was in
 	 */
-	@Getter
-	@Setter
 	private transient int lastRegionId;
 	
 	/**
@@ -122,21 +107,16 @@ public abstract class Actor extends WorldTile implements Entity {
 	/**
 	 * The next world tile this actor will be at, in regards to teleporting
 	 */
-	@Setter
 	private transient WorldTile nextWorldTile;
 	
 	/**
 	 * The next direction in the walk block for the walk step
 	 */
-	@Getter
-	@Setter
 	private transient int nextWalkDirection;
 	
 	/**
 	 * The next direction in the walk block for the run step
 	 */
-	@Getter
-	@Setter
 	private transient int nextRunDirection;
 	
 	/**
@@ -152,26 +132,21 @@ public abstract class Actor extends WorldTile implements Entity {
 	/**
 	 * The temporary attributes of this actor
 	 */
-	@Getter
 	private transient ConcurrentHashMap<Object, Object> temporaryAttributes;
 	
 	/**
 	 * The manager for all actor-actor interactions
 	 */
-	@Getter
-	@Setter
 	private transient InteractionManager interactionManager;
 	
 	/**
 	 * The action locks.
 	 */
-	@Getter
 	private transient ActionLocks locks;
 	
 	/**
 	 * The steps to walk to, these are called by more than 1 thread so they must be concurrently modifiable
 	 */
-	@Getter
 	private transient ConcurrentLinkedQueue<int[]> walkSteps;
 	
 	/**
@@ -187,20 +162,16 @@ public abstract class Actor extends WorldTile implements Entity {
 	/**
 	 * If this actor has been finished, in regards to their existence in the game world
 	 */
-	@Getter
-	@Setter
 	private transient boolean finished;
 	
 	/**
 	 * The next animation we should perform
 	 */
-	@Getter
 	private transient Animation nextAnimation;
 	
 	/**
 	 * One of the four next graphics to perform
 	 */
-	@Getter
 	private transient Graphics nextGraphics1, nextGraphics2, nextGraphics3, nextGraphics4;
 	
 	/**
@@ -212,91 +183,67 @@ public abstract class Actor extends WorldTile implements Entity {
 	/**
 	 * The next force movement mask
 	 */
-	@Getter
-	@Setter
 	private transient ForceMovement nextForceMovement;
 	
 	/**
 	 * The force talk mask
 	 */
-	@Getter
-	@Setter
 	private transient ForceTalk nextForceTalk;
 	
 	/**
 	 * The actor this actor should face next, -2 and -1 mean none
 	 */
-	@Getter
 	private transient int nextFaceEntity;
 	
 	/**
 	 * The actor this actor faced last
 	 */
-	@Getter
-	@Setter
 	private transient int lastFaceEntity;
 	
 	/**
 	 * The actor who last attacked us
 	 */
-	@Getter
-	@Setter
 	private transient Actor attackedBy;
 	
 	/**
 	 * The last time we were attacked is stored here, this is used to calculate when actions can next be done
 	 */
-	@Getter
-	@Setter
 	private transient long attackedByDelay;
 	
 	/**
 	 * If this actor is in a multi area
 	 */
-	@Getter
-	@Setter
 	private transient boolean inMultiArea;
 	
 	/**
 	 * If this actor is at a dynamic region
 	 */
-	@Getter
-	@Setter
 	private transient boolean atDynamicRegion;
 	
 	/**
 	 * The time the last animation we performed should've ended at
 	 */
-	@Getter
-	@Setter
 	private transient long lastAnimationEnd;
 	
 	/**
 	 * If we should force the current area we are at to appear as a multi area for us only
 	 */
-	@Getter
 	private transient boolean forceMultiArea;
 	
 	/**
 	 * How long the actor is frozen for
 	 */
-	@Getter
-	@Setter
 	private transient long freezeDelay;
 	
 	/**
 	 * The time that we are not allowed to be frozen again, tihs is a gap between being frozen and the next time we can
 	 * be frozen
 	 */
-	@Getter
-	@Setter
 	private transient long frozenBlocked;
 	
 	/**
 	 * The delay until the actor [npc only] can find its next target
 	 */
-	@Getter
-	@Setter
 	private transient long findTargetDelay;
 	
 	// creates Entity and saved classes
@@ -1292,5 +1239,221 @@ public abstract class Actor extends WorldTile implements Entity {
 	public WorldTile getCenterLocation() {
 		int offset = getSize() >> 1;
 		return getWorldTile().transform(offset, offset, 0);
+	}
+
+	public int getHitpoints() {
+		return this.hitpoints;
+	}
+
+	public int getMapSize() {
+		return this.mapSize;
+	}
+
+	public PoisonManager getPoisonManager() {
+		return this.poisonManager;
+	}
+
+	public boolean isRunModeOn() {
+		return this.runModeOn;
+	}
+
+	public int getIndex() {
+		return this.index;
+	}
+
+	public int getFaceDirection() {
+		return this.faceDirection;
+	}
+
+	public int getLastRegionId() {
+		return this.lastRegionId;
+	}
+
+	public int getNextWalkDirection() {
+		return this.nextWalkDirection;
+	}
+
+	public int getNextRunDirection() {
+		return this.nextRunDirection;
+	}
+
+	public ConcurrentHashMap<Object, Object> getTemporaryAttributes() {
+		return this.temporaryAttributes;
+	}
+
+	public InteractionManager getInteractionManager() {
+		return this.interactionManager;
+	}
+
+	public ActionLocks getLocks() {
+		return this.locks;
+	}
+
+	public ConcurrentLinkedQueue<int[]> getWalkSteps() {
+		return this.walkSteps;
+	}
+
+	public boolean isFinished() {
+		return this.finished;
+	}
+
+	public Animation getNextAnimation() {
+		return this.nextAnimation;
+	}
+
+	public Graphics getNextGraphics1() {
+		return this.nextGraphics1;
+	}
+
+	public Graphics getNextGraphics2() {
+		return this.nextGraphics2;
+	}
+
+	public Graphics getNextGraphics3() {
+		return this.nextGraphics3;
+	}
+
+	public Graphics getNextGraphics4() {
+		return this.nextGraphics4;
+	}
+
+	public ForceMovement getNextForceMovement() {
+		return this.nextForceMovement;
+	}
+
+	public ForceTalk getNextForceTalk() {
+		return this.nextForceTalk;
+	}
+
+	public int getNextFaceEntity() {
+		return this.nextFaceEntity;
+	}
+
+	public int getLastFaceEntity() {
+		return this.lastFaceEntity;
+	}
+
+	public Actor getAttackedBy() {
+		return this.attackedBy;
+	}
+
+	public long getAttackedByDelay() {
+		return this.attackedByDelay;
+	}
+
+	public boolean isInMultiArea() {
+		return this.inMultiArea;
+	}
+
+	public boolean isAtDynamicRegion() {
+		return this.atDynamicRegion;
+	}
+
+	public long getLastAnimationEnd() {
+		return this.lastAnimationEnd;
+	}
+
+	public boolean isForceMultiArea() {
+		return this.forceMultiArea;
+	}
+
+	public long getFreezeDelay() {
+		return this.freezeDelay;
+	}
+
+	public long getFrozenBlocked() {
+		return this.frozenBlocked;
+	}
+
+	public long getFindTargetDelay() {
+		return this.findTargetDelay;
+	}
+
+	public void setHitpoints(int hitpoints) {
+		this.hitpoints = hitpoints;
+	}
+
+	public void setMapSize(int mapSize) {
+		this.mapSize = mapSize;
+	}
+
+	public void setRunModeOn(boolean runModeOn) {
+		this.runModeOn = runModeOn;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public void setFaceDirection(int faceDirection) {
+		this.faceDirection = faceDirection;
+	}
+
+	public void setLastRegionId(int lastRegionId) {
+		this.lastRegionId = lastRegionId;
+	}
+
+	public void setNextWorldTile(WorldTile nextWorldTile) {
+		this.nextWorldTile = nextWorldTile;
+	}
+
+	public void setNextWalkDirection(int nextWalkDirection) {
+		this.nextWalkDirection = nextWalkDirection;
+	}
+
+	public void setNextRunDirection(int nextRunDirection) {
+		this.nextRunDirection = nextRunDirection;
+	}
+
+	public void setInteractionManager(InteractionManager interactionManager) {
+		this.interactionManager = interactionManager;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+
+	public void setNextForceMovement(ForceMovement nextForceMovement) {
+		this.nextForceMovement = nextForceMovement;
+	}
+
+	public void setNextForceTalk(ForceTalk nextForceTalk) {
+		this.nextForceTalk = nextForceTalk;
+	}
+
+	public void setLastFaceEntity(int lastFaceEntity) {
+		this.lastFaceEntity = lastFaceEntity;
+	}
+
+	public void setAttackedBy(Actor attackedBy) {
+		this.attackedBy = attackedBy;
+	}
+
+	public void setAttackedByDelay(long attackedByDelay) {
+		this.attackedByDelay = attackedByDelay;
+	}
+
+	public void setInMultiArea(boolean inMultiArea) {
+		this.inMultiArea = inMultiArea;
+	}
+
+	public void setAtDynamicRegion(boolean atDynamicRegion) {
+		this.atDynamicRegion = atDynamicRegion;
+	}
+
+	public void setLastAnimationEnd(long lastAnimationEnd) {
+		this.lastAnimationEnd = lastAnimationEnd;
+	}
+
+	public void setFreezeDelay(long freezeDelay) {
+		this.freezeDelay = freezeDelay;
+	}
+
+	public void setFrozenBlocked(long frozenBlocked) {
+		this.frozenBlocked = frozenBlocked;
+	}
+
+	public void setFindTargetDelay(long findTargetDelay) {
+		this.findTargetDelay = findTargetDelay;
 	}
 }

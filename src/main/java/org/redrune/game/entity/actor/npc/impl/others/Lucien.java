@@ -1,9 +1,9 @@
 package org.redrune.game.entity.actor.npc.impl.others;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.global.WorldTile;
 
 @SuppressWarnings("serial")
 public class Lucien extends NPC {

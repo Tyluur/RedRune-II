@@ -1,9 +1,7 @@
 package org.redrune.game.entity.item;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.player.Player;
-import lombok.Getter;
-import lombok.Setter;
+import org.redrune.game.global.WorldTile;
 
 /**
  * This class represents an item that exists on the floor
@@ -17,26 +15,21 @@ public class FloorItem extends Item {
 	/**
 	 * The tile of the item
 	 */
-	@Getter
 	private WorldTile tile;
 	
 	/**
 	 * The owner of the item
 	 */
-	@Getter
 	private Player owner;
 	
 	/**
 	 * If the item is invisible
 	 */
-	@Getter
-	@Setter
 	private boolean invisible;
 	
 	/**
 	 * If the item is a grave
 	 */
-	@Getter
 	private boolean grave;
 	
 	public FloorItem(int id) {
@@ -61,5 +54,24 @@ public class FloorItem extends Item {
 	public boolean hasOwner() {
 		return owner != null;
 	}
-	
+
+    public WorldTile getTile() {
+        return this.tile;
+    }
+
+    public Player getOwner() {
+        return this.owner;
+    }
+
+    public boolean isInvisible() {
+        return this.invisible;
+    }
+
+    public boolean isGrave() {
+        return this.grave;
+    }
+
+    public void setInvisible(boolean invisible) {
+        this.invisible = invisible;
+    }
 }

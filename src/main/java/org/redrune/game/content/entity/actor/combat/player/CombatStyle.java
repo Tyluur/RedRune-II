@@ -4,11 +4,10 @@ import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle;
 import org.redrune.game.content.entity.actor.combat.player.style.MeleeCombatStyle;
 import org.redrune.game.content.entity.actor.combat.player.style.RangeCombatStyle;
-import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
-import lombok.Getter;
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
+import org.redrune.game.entity.actor.player.Player;
 
 import java.util.Optional;
 
@@ -119,7 +118,6 @@ public enum CombatStyle {
 	/**
 	 * The style
 	 */
-	@Getter
 	private final AbstractCombatStyle style;
 	
 	/**
@@ -130,4 +128,8 @@ public enum CombatStyle {
 	CombatStyle(AbstractCombatStyle style) {
 		this.style = style;
 	}
+
+    public AbstractCombatStyle getStyle() {
+        return this.style;
+    }
 }

@@ -1,7 +1,7 @@
 package org.redrune.game.entity.actor.npc.impl.dragons;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.global.WorldTile;
 
 @SuppressWarnings("serial")
 public class KingBlackDragon extends NPC {

@@ -8,8 +8,6 @@ import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.item.ItemsContainer;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -22,11 +20,8 @@ public final class PlayerEquipment implements Serializable {
 	
 	private ItemsContainer<Item> items;
 	
-	@Setter
 	private transient Player player;
 	
-	@Getter
-	@Setter
 	private transient int equipmentHpIncrease;
 	
 	public PlayerEquipment() {
@@ -443,5 +438,8 @@ public final class PlayerEquipment implements Serializable {
 		}
 		return 1;
 	}
-	
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }

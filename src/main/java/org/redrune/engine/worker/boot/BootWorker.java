@@ -64,4 +64,8 @@ public class BootWorker extends Thread {
 	int getWorkLoadSize() {
 		return workLoad.size();
 	}
+
+    public CopyOnWriteArrayList<BootTask> getWorkLoad() {
+        return this.workLoad;
+    }
 }

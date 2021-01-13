@@ -1,7 +1,5 @@
 package org.redrune.game.entity.actor.mask;
 
-import lombok.Getter;
-
 /**
  * @author Tyluur <itstyluur@gmail.com>
  * @since 9/5/2017
@@ -20,10 +18,13 @@ public enum HitSplat {
 	HEALED_DAMAGE(9),
 	CANNON_DAMAGE(13);
 	
-	@Getter
 	private final int mark;
 	
 	HitSplat(int mark) {
 		this.mark = mark;
+	}
+
+	public int getMark() {
+		return this.mark;
 	}
 }

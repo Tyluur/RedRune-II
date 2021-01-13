@@ -1,8 +1,6 @@
 package org.redrune.cache.loaders;
 
 import com.alex.io.InputStream;
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.utility.game.repository.npc.NPCWalkingFlag;
 
@@ -24,8 +22,6 @@ public final class NPCDefinitions {
 	
 	public int anInt884;
 	
-	@Getter
-	@Setter
 	private boolean aBoolean3190;
 	
 	private HashMap<Integer, Object> aClass180_832;
@@ -36,8 +32,6 @@ public final class NPCDefinitions {
 	
 	private int anInt837;
 	
-	@Getter
-	@Setter
 	private byte respawnDirection;
 	
 	private int[][] anIntArrayArray840;
@@ -74,7 +68,6 @@ public final class NPCDefinitions {
 	
 	private int anInt864;
 	
-	@Getter
 	private String name;
 	
 	private short[] aShortArray866;
@@ -111,40 +104,22 @@ public final class NPCDefinitions {
 	
 	private int anInt901;
 	
-	@Getter
-	@Setter
 	private int id;
 	
-	@Getter
-	@Setter
 	private int size = 1;
 	
-	@Getter
-	@Setter
 	private int renderEmote;
 	
-	@Getter
-	@Setter
 	private int combatLevel;
 	
-	@Getter
-	@Setter
 	private byte walkMask;
 	
-	@Getter
-	@Setter
 	private int[] modelIds;
 	
-	@Getter
-	@Setter
 	private int headIcons;
 	
-	@Getter
-	@Setter
 	private boolean isVisibleOnMap;
 	
-	@Getter
-	@Setter
 	private String[] options;
 	
 	public NPCDefinitions(int id) {
@@ -512,5 +487,96 @@ public final class NPCDefinitions {
 		}
 		return getOptions()[option - 1];
 	}
-	
+
+    public boolean isABoolean3190() {
+        return this.aBoolean3190;
+    }
+
+    public byte getRespawnDirection() {
+        return this.respawnDirection;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public int getRenderEmote() {
+        return this.renderEmote;
+    }
+
+    public int getCombatLevel() {
+        return this.combatLevel;
+    }
+
+    public byte getWalkMask() {
+        return this.walkMask;
+    }
+
+    public int[] getModelIds() {
+        return this.modelIds;
+    }
+
+    public int getHeadIcons() {
+        return this.headIcons;
+    }
+
+    public boolean isVisibleOnMap() {
+        return this.isVisibleOnMap;
+    }
+
+    public String[] getOptions() {
+        return this.options;
+    }
+
+    public void setABoolean3190(boolean aBoolean3190) {
+        this.aBoolean3190 = aBoolean3190;
+    }
+
+    public void setRespawnDirection(byte respawnDirection) {
+        this.respawnDirection = respawnDirection;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public void setRenderEmote(int renderEmote) {
+        this.renderEmote = renderEmote;
+    }
+
+    public void setCombatLevel(int combatLevel) {
+        this.combatLevel = combatLevel;
+    }
+
+    public void setWalkMask(byte walkMask) {
+        this.walkMask = walkMask;
+    }
+
+    public void setModelIds(int[] modelIds) {
+        this.modelIds = modelIds;
+    }
+
+    public void setHeadIcons(int headIcons) {
+        this.headIcons = headIcons;
+    }
+
+    public void setVisibleOnMap(boolean isVisibleOnMap) {
+        this.isVisibleOnMap = isVisibleOnMap;
+    }
+
+    public void setOptions(String[] options) {
+        this.options = options;
+    }
 }

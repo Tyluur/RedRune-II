@@ -1,11 +1,11 @@
 package org.redrune.game.content.entity.actor.combat.npc.scripts;
 
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
+import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.content.entity.actor.combat.npc.CombatScript;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.BonusConstants;

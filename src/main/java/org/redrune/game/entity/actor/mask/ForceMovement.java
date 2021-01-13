@@ -1,6 +1,5 @@
 package org.redrune.game.entity.actor.mask;
 
-import lombok.Getter;
 import org.redrune.game.global.WorldTile;
 
 public final class ForceMovement {
@@ -13,19 +12,14 @@ public final class ForceMovement {
 	
 	public static final int WEST = 3;
 	
-	@Getter
 	private WorldTile toFirstTile;
 	
-	@Getter
 	private WorldTile toSecondTile;
 	
-	@Getter
 	private int firstTileTicketDelay;
 	
-	@Getter
 	private int secondTileTicketDelay;
 	
-	@Getter
 	private int direction;
 	
 	/*
@@ -57,5 +51,24 @@ public final class ForceMovement {
 		this.secondTileTicketDelay = secondTileTicketDelay;
 		this.direction = direction;
 	}
-	
+
+    public WorldTile getToFirstTile() {
+        return this.toFirstTile;
+    }
+
+    public WorldTile getToSecondTile() {
+        return this.toSecondTile;
+    }
+
+    public int getFirstTileTicketDelay() {
+        return this.firstTileTicketDelay;
+    }
+
+    public int getSecondTileTicketDelay() {
+        return this.secondTileTicketDelay;
+    }
+
+    public int getDirection() {
+        return this.direction;
+    }
 }

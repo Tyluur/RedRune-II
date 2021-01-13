@@ -4,8 +4,8 @@ import org.redrune.game.content.entity.actor.player.cutscene.Cutscene;
 import org.redrune.game.content.entity.actor.player.cutscene.actions.CutsceneAction;
 import org.redrune.game.content.entity.actor.player.cutscene.actions.LookCameraAction;
 import org.redrune.game.content.entity.actor.player.cutscene.actions.PosCameraAction;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 
 import java.util.ArrayList;
 

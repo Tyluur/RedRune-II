@@ -1,6 +1,5 @@
 package org.redrune.engine.cycle;
 
-import lombok.Getter;
 import org.redrune.engine.SystemManager;
 import org.redrune.game.global.World;
 import org.redrune.utility.functions.Misc;
@@ -18,7 +17,6 @@ public final class GameCycleWorker implements Runnable {
 	/**
 	 * The amount of ticks that have passed since the game started
 	 */
-	@Getter
 	private static int ticksPassed = 0;
 	
 	/**
@@ -39,8 +37,12 @@ public final class GameCycleWorker implements Runnable {
 	public GameCycleWorker() {
 	
 	}
-	
-	@Override
+
+    public static int getTicksPassed() {
+        return GameCycleWorker.ticksPassed;
+    }
+
+    @Override
 	public final void run() {
 		while (!SystemManager.shutdown) {
 			long currentTime = Misc.currentTimeMillis();

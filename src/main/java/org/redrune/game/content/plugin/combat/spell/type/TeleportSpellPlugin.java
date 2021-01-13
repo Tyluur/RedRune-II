@@ -1,10 +1,10 @@
 package org.redrune.game.content.plugin.combat.spell.type;
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
+import org.redrune.game.entity.actor.Actor;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.MagicConstants;
 
 import static org.redrune.game.content.entity.actor.combat.function.Magic.sendTeleportSpell;

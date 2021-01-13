@@ -1,11 +1,11 @@
 package org.redrune.game.entity.actor.npc.impl.corp;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.functions.Misc;
 

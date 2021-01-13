@@ -1,8 +1,6 @@
 package org.redrune.game.global.map.region;
 
 import com.alex.io.InputStream;
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.cache.loaders.ObjectDefinitions;
 import org.redrune.engine.SystemManager;
@@ -55,16 +53,12 @@ public class Region {
 	
 	private volatile int loadMapStage;
 	
-	@Getter
 	private boolean loadedNPCSpawns;
 	
-	@Getter
 	private boolean loadedObjectSpawns;
 	
-	@Getter
 	private boolean loadedItemSpawns;
 	
-	@Setter
 	private int[] musicIds;
 	
 	public Region(int regionId) {
@@ -868,5 +862,20 @@ public class Region {
 		}
 		return players;
 	}
-	
+
+	public boolean isLoadedNPCSpawns() {
+		return this.loadedNPCSpawns;
+	}
+
+	public boolean isLoadedObjectSpawns() {
+		return this.loadedObjectSpawns;
+	}
+
+	public boolean isLoadedItemSpawns() {
+		return this.loadedItemSpawns;
+	}
+
+	public void setMusicIds(int[] musicIds) {
+		this.musicIds = musicIds;
+	}
 }

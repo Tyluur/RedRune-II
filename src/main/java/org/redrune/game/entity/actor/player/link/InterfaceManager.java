@@ -1,11 +1,8 @@
 package org.redrune.game.entity.actor.player.link;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
-import org.redrune.utility.constants.GameConstants;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,20 +31,12 @@ public class InterfaceManager {
 	
 	private boolean resizableScreen;
 	
-	@Getter
-	@Setter
 	private int windowsPane;
 	
-	@Getter
-	@Setter
 	private transient int displayMode;
 	
-	@Getter
-	@Setter
 	private transient int screenHeight;
 	
-	@Getter
-	@Setter
 	private transient int screenWidth;
 	
 	public InterfaceManager(Player player) {
@@ -524,5 +513,36 @@ public class InterfaceManager {
 		Optional<IComponentDefinitions> optional = IComponentDefinitions.getComponentByText(chatboxInterface, text);
 		return optional.orElse(null);
 	}
-	
+
+	public int getWindowsPane() {
+		return this.windowsPane;
+	}
+
+	public int getDisplayMode() {
+		return this.displayMode;
+	}
+
+	public int getScreenHeight() {
+		return this.screenHeight;
+	}
+
+	public int getScreenWidth() {
+		return this.screenWidth;
+	}
+
+	public void setWindowsPane(int windowsPane) {
+		this.windowsPane = windowsPane;
+	}
+
+	public void setDisplayMode(int displayMode) {
+		this.displayMode = displayMode;
+	}
+
+	public void setScreenHeight(int screenHeight) {
+		this.screenHeight = screenHeight;
+	}
+
+	public void setScreenWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
 }

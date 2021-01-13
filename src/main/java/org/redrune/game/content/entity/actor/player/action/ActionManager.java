@@ -1,13 +1,11 @@
 package org.redrune.game.content.entity.actor.player.action;
 
 import org.redrune.game.entity.actor.player.Player;
-import lombok.Getter;
 
 public final class ActionManager {
 	
 	private Player player;
 	
-	@Getter
 	private Action action;
 	
 	private int actionDelay;
@@ -71,5 +69,8 @@ public final class ActionManager {
 	public boolean hasSkillWorking() {
 		return action != null;
 	}
-	
+
+    public Action getAction() {
+        return this.action;
+    }
 }

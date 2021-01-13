@@ -1,8 +1,8 @@
 package org.redrune.game.entity.actor.npc.impl.corp;
 
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.npc.NPC;
+import org.redrune.game.global.WorldTile;
 
 @SuppressWarnings("serial")
 public class CorporealBeast extends NPC {

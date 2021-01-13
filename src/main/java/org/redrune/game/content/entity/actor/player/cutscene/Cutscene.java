@@ -1,15 +1,15 @@
 package org.redrune.game.content.entity.actor.player.cutscene;
 
 import org.redrune.engine.SystemManager;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.cutscene.actions.CutsceneAction;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.link.InterfaceManager;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionBuilder;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 
 public abstract class Cutscene {
 	

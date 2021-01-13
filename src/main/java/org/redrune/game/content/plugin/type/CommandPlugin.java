@@ -1,12 +1,10 @@
 package org.redrune.game.content.plugin.type;
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.actor.player.data.PlayerRight;
 import org.redrune.game.content.plugin.Plugin;
 import org.redrune.game.content.plugin.PluginRepository;
+import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.actor.player.data.PlayerRight;
 import org.redrune.utility.functions.Misc;
-import lombok.Getter;
-import lombok.Setter;
 import plugin.command.CommandManifest;
 
 import java.util.Optional;
@@ -34,15 +32,11 @@ public abstract class CommandPlugin implements Plugin {
 	/**
 	 * The right the player must have to use this command
 	 */
-	@Getter
-	@Setter
 	private PlayerRight rightRequired;
 	
 	/**
 	 * The manifest of the command
 	 */
-	@Getter
-	@Setter
 	private CommandManifest manifest;
 	
 	@Override
@@ -222,4 +216,20 @@ public abstract class CommandPlugin implements Plugin {
 	protected String formattedUsername(String unformattedUsername) {
 		return unformattedUsername.replaceAll("_", " ");
 	}
+
+    public PlayerRight getRightRequired() {
+        return this.rightRequired;
+    }
+
+    public CommandManifest getManifest() {
+        return this.manifest;
+    }
+
+    public void setRightRequired(PlayerRight rightRequired) {
+        this.rightRequired = rightRequired;
+    }
+
+    public void setManifest(CommandManifest manifest) {
+        this.manifest = manifest;
+    }
 }

@@ -2,8 +2,6 @@ package org.redrune.cache.loaders;
 
 import com.alex.io.InputStream;
 import com.alex.utils.Constants;
-import lombok.Getter;
-import lombok.Setter;
 import org.redrune.cache.Cache;
 import org.redrune.game.entity.item.Item;
 import org.redrune.utility.constants.EquipmentConstants;
@@ -23,179 +21,92 @@ public final class ItemDefinitions {
 		itemsDefinitions = new ItemDefinitions[Misc.getItemDefinitionsSize()];
 	}
 	
-	@Getter
-	@Setter
 	private int id;
 	
-	@Getter
-	@Setter
 	private int modelId;
 	
-	@Getter
-	@Setter
 	private String name;
 	
-	@Getter
-	@Setter
 	private String[] inventoryOptions;
 	
-	@Getter
-	@Setter
 	private int[] originalModelColors;
 	
-	@Getter
-	@Setter
 	private int[] modifiedModelColors;
 	
-	@Getter
-	@Setter
 	private short[] originalTextureColors;
 	
-	@Getter
-	@Setter
 	private boolean loaded;
 	
-	@Getter
-	@Setter
 	private int modelZoom;
 	
-	@Getter
-	@Setter
 	private int modelRotation1;
 	
-	@Getter
-	@Setter
 	private int modelRotation2;
 	
-	@Getter
-	@Setter
 	private int modelOffset1;
 	
-	@Getter
-	@Setter
 	private int modelOffset2;
 	
-	@Getter
-	@Setter
 	private int stackable;
 	
-	@Setter
 	private int value;
 	
-	@Getter
-	@Setter
 	private boolean membersOnly;
 	
-	@Getter
-	@Setter
 	private int maleEquip1;
 	
-	@Getter
-	@Setter
 	private int femaleEquip1;
 	
-	@Getter
-	@Setter
 	private int maleEquip2;
 	
-	@Getter
-	@Setter
 	private int femaleEquip2;
 	
-	@Getter
-	@Setter
 	private String[] groundOptions;
 	
-	@Getter
-	@Setter
 	private short[] modifiedTextureColors;
 	
-	@Getter
-	@Setter
 	private byte[] recolourPallete;
 	
-	@Getter
-	@Setter
 	private int[] unknownArray2;
 	
-	@Getter
-	@Setter
 	private int maleEquipModelId3;
 	
-	@Getter
-	@Setter
 	private int femaleEquipModelId3;
 	
-	@Getter
-	@Setter
 	private int certId;
 	
-	@Getter
-	@Setter
 	private int certTemplateId;
 	
-	@Getter
-	@Setter
 	private int[] stackIds;
 	
-	@Getter
-	@Setter
 	private int[] stackAmounts;
 	
-	@Getter
-	@Setter
 	private int modelShadowing;
 	
-	@Getter
-	@Setter
 	private int teamId;
 	
-	@Getter
-	@Setter
 	private int lendId;
 	
-	@Getter
-	@Setter
 	private int lendTemplateId;
 	
-	@Getter
-	@Setter
 	private int maleDialogueModel;
 	
-	@Getter
-	@Setter
 	private int femaleDialogueModel;
 	
-	@Getter
-	@Setter
 	private int maleDialogueHat;
 	
-	@Getter
-	@Setter
 	private int femaleDialogueHat;
 	
-	@Getter
-	@Setter
 	private int rotationZoom;
 	
-	@Getter
-	@Setter
 	private int dummyItem;
 	
-	@Getter
-	@Setter
 	private int modelVerticesX;
 	
-	@Getter
-	@Setter
 	private int modelVerticesY;
 	
-	@Getter
-	@Setter
 	private int modelVerticesZ;
 	
-	@Getter
-	@Setter
 	private int modelLighting;
 	
 	private int unknownInt11;
@@ -238,28 +149,16 @@ public final class ItemDefinitions {
 	
 	private int unknownValue3;
 	
-	@Getter
-	@Setter
 	private boolean noted;
 	
-	@Getter
-	@Setter
 	private boolean lended;
 	
-	@Getter
-	@Setter
 	private boolean isTradeable;
 	
-	@Getter
-	@Setter
 	private boolean isExchangeable;
 	
-	@Getter
-	@Setter
 	private HashMap<Integer, Object> clientScriptData;
 	
-	@Getter
-	@Setter
 	private HashMap<Integer, Integer> itemRequirements;
 	
 	public ItemDefinitions(int id) {
@@ -1117,5 +1016,400 @@ public final class ItemDefinitions {
 		}
 		return getInventoryOptions()[option - 1];
 	}
-	
+
+    public int getId() {
+        return this.id;
+    }
+
+    public int getModelId() {
+        return this.modelId;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String[] getInventoryOptions() {
+        return this.inventoryOptions;
+    }
+
+    public int[] getOriginalModelColors() {
+        return this.originalModelColors;
+    }
+
+    public int[] getModifiedModelColors() {
+        return this.modifiedModelColors;
+    }
+
+    public short[] getOriginalTextureColors() {
+        return this.originalTextureColors;
+    }
+
+    public boolean isLoaded() {
+        return this.loaded;
+    }
+
+    public int getModelZoom() {
+        return this.modelZoom;
+    }
+
+    public int getModelRotation1() {
+        return this.modelRotation1;
+    }
+
+    public int getModelRotation2() {
+        return this.modelRotation2;
+    }
+
+    public int getModelOffset1() {
+        return this.modelOffset1;
+    }
+
+    public int getModelOffset2() {
+        return this.modelOffset2;
+    }
+
+    public int getStackable() {
+        return this.stackable;
+    }
+
+    public boolean isMembersOnly() {
+        return this.membersOnly;
+    }
+
+    public int getMaleEquip1() {
+        return this.maleEquip1;
+    }
+
+    public int getFemaleEquip1() {
+        return this.femaleEquip1;
+    }
+
+    public int getMaleEquip2() {
+        return this.maleEquip2;
+    }
+
+    public int getFemaleEquip2() {
+        return this.femaleEquip2;
+    }
+
+    public String[] getGroundOptions() {
+        return this.groundOptions;
+    }
+
+    public short[] getModifiedTextureColors() {
+        return this.modifiedTextureColors;
+    }
+
+    public byte[] getRecolourPallete() {
+        return this.recolourPallete;
+    }
+
+    public int[] getUnknownArray2() {
+        return this.unknownArray2;
+    }
+
+    public int getMaleEquipModelId3() {
+        return this.maleEquipModelId3;
+    }
+
+    public int getFemaleEquipModelId3() {
+        return this.femaleEquipModelId3;
+    }
+
+    public int getCertId() {
+        return this.certId;
+    }
+
+    public int getCertTemplateId() {
+        return this.certTemplateId;
+    }
+
+    public int[] getStackIds() {
+        return this.stackIds;
+    }
+
+    public int[] getStackAmounts() {
+        return this.stackAmounts;
+    }
+
+    public int getModelShadowing() {
+        return this.modelShadowing;
+    }
+
+    public int getTeamId() {
+        return this.teamId;
+    }
+
+    public int getLendId() {
+        return this.lendId;
+    }
+
+    public int getLendTemplateId() {
+        return this.lendTemplateId;
+    }
+
+    public int getMaleDialogueModel() {
+        return this.maleDialogueModel;
+    }
+
+    public int getFemaleDialogueModel() {
+        return this.femaleDialogueModel;
+    }
+
+    public int getMaleDialogueHat() {
+        return this.maleDialogueHat;
+    }
+
+    public int getFemaleDialogueHat() {
+        return this.femaleDialogueHat;
+    }
+
+    public int getRotationZoom() {
+        return this.rotationZoom;
+    }
+
+    public int getDummyItem() {
+        return this.dummyItem;
+    }
+
+    public int getModelVerticesX() {
+        return this.modelVerticesX;
+    }
+
+    public int getModelVerticesY() {
+        return this.modelVerticesY;
+    }
+
+    public int getModelVerticesZ() {
+        return this.modelVerticesZ;
+    }
+
+    public int getModelLighting() {
+        return this.modelLighting;
+    }
+
+    public boolean isNoted() {
+        return this.noted;
+    }
+
+    public boolean isLended() {
+        return this.lended;
+    }
+
+    public boolean isTradeable() {
+        return this.isTradeable;
+    }
+
+    public boolean isExchangeable() {
+        return this.isExchangeable;
+    }
+
+    public HashMap<Integer, Object> getClientScriptData() {
+        return this.clientScriptData;
+    }
+
+    public HashMap<Integer, Integer> getItemRequirements() {
+        return this.itemRequirements;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setInventoryOptions(String[] inventoryOptions) {
+        this.inventoryOptions = inventoryOptions;
+    }
+
+    public void setOriginalModelColors(int[] originalModelColors) {
+        this.originalModelColors = originalModelColors;
+    }
+
+    public void setModifiedModelColors(int[] modifiedModelColors) {
+        this.modifiedModelColors = modifiedModelColors;
+    }
+
+    public void setOriginalTextureColors(short[] originalTextureColors) {
+        this.originalTextureColors = originalTextureColors;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public void setModelZoom(int modelZoom) {
+        this.modelZoom = modelZoom;
+    }
+
+    public void setModelRotation1(int modelRotation1) {
+        this.modelRotation1 = modelRotation1;
+    }
+
+    public void setModelRotation2(int modelRotation2) {
+        this.modelRotation2 = modelRotation2;
+    }
+
+    public void setModelOffset1(int modelOffset1) {
+        this.modelOffset1 = modelOffset1;
+    }
+
+    public void setModelOffset2(int modelOffset2) {
+        this.modelOffset2 = modelOffset2;
+    }
+
+    public void setStackable(int stackable) {
+        this.stackable = stackable;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setMembersOnly(boolean membersOnly) {
+        this.membersOnly = membersOnly;
+    }
+
+    public void setMaleEquip1(int maleEquip1) {
+        this.maleEquip1 = maleEquip1;
+    }
+
+    public void setFemaleEquip1(int femaleEquip1) {
+        this.femaleEquip1 = femaleEquip1;
+    }
+
+    public void setMaleEquip2(int maleEquip2) {
+        this.maleEquip2 = maleEquip2;
+    }
+
+    public void setFemaleEquip2(int femaleEquip2) {
+        this.femaleEquip2 = femaleEquip2;
+    }
+
+    public void setGroundOptions(String[] groundOptions) {
+        this.groundOptions = groundOptions;
+    }
+
+    public void setModifiedTextureColors(short[] modifiedTextureColors) {
+        this.modifiedTextureColors = modifiedTextureColors;
+    }
+
+    public void setRecolourPallete(byte[] recolourPallete) {
+        this.recolourPallete = recolourPallete;
+    }
+
+    public void setUnknownArray2(int[] unknownArray2) {
+        this.unknownArray2 = unknownArray2;
+    }
+
+    public void setMaleEquipModelId3(int maleEquipModelId3) {
+        this.maleEquipModelId3 = maleEquipModelId3;
+    }
+
+    public void setFemaleEquipModelId3(int femaleEquipModelId3) {
+        this.femaleEquipModelId3 = femaleEquipModelId3;
+    }
+
+    public void setCertId(int certId) {
+        this.certId = certId;
+    }
+
+    public void setCertTemplateId(int certTemplateId) {
+        this.certTemplateId = certTemplateId;
+    }
+
+    public void setStackIds(int[] stackIds) {
+        this.stackIds = stackIds;
+    }
+
+    public void setStackAmounts(int[] stackAmounts) {
+        this.stackAmounts = stackAmounts;
+    }
+
+    public void setModelShadowing(int modelShadowing) {
+        this.modelShadowing = modelShadowing;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
+    }
+
+    public void setLendId(int lendId) {
+        this.lendId = lendId;
+    }
+
+    public void setLendTemplateId(int lendTemplateId) {
+        this.lendTemplateId = lendTemplateId;
+    }
+
+    public void setMaleDialogueModel(int maleDialogueModel) {
+        this.maleDialogueModel = maleDialogueModel;
+    }
+
+    public void setFemaleDialogueModel(int femaleDialogueModel) {
+        this.femaleDialogueModel = femaleDialogueModel;
+    }
+
+    public void setMaleDialogueHat(int maleDialogueHat) {
+        this.maleDialogueHat = maleDialogueHat;
+    }
+
+    public void setFemaleDialogueHat(int femaleDialogueHat) {
+        this.femaleDialogueHat = femaleDialogueHat;
+    }
+
+    public void setRotationZoom(int rotationZoom) {
+        this.rotationZoom = rotationZoom;
+    }
+
+    public void setDummyItem(int dummyItem) {
+        this.dummyItem = dummyItem;
+    }
+
+    public void setModelVerticesX(int modelVerticesX) {
+        this.modelVerticesX = modelVerticesX;
+    }
+
+    public void setModelVerticesY(int modelVerticesY) {
+        this.modelVerticesY = modelVerticesY;
+    }
+
+    public void setModelVerticesZ(int modelVerticesZ) {
+        this.modelVerticesZ = modelVerticesZ;
+    }
+
+    public void setModelLighting(int modelLighting) {
+        this.modelLighting = modelLighting;
+    }
+
+    public void setNoted(boolean noted) {
+        this.noted = noted;
+    }
+
+    public void setLended(boolean lended) {
+        this.lended = lended;
+    }
+
+    public void setTradeable(boolean isTradeable) {
+        this.isTradeable = isTradeable;
+    }
+
+    public void setExchangeable(boolean isExchangeable) {
+        this.isExchangeable = isExchangeable;
+    }
+
+    public void setClientScriptData(HashMap<Integer, Object> clientScriptData) {
+        this.clientScriptData = clientScriptData;
+    }
+
+    public void setItemRequirements(HashMap<Integer, Integer> itemRequirements) {
+        this.itemRequirements = itemRequirements;
+    }
 }

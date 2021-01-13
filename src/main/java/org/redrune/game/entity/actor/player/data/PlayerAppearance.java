@@ -1,7 +1,6 @@
 package org.redrune.game.entity.actor.player.data;
 
 import com.alex.io.OutputStream;
-import lombok.Getter;
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.cache.loaders.ItemEquipIds;
 import org.redrune.cache.loaders.NPCDefinitions;
@@ -24,17 +23,14 @@ public class PlayerAppearance implements Serializable {
 	
 	private byte[] colors;
 	
-	@Getter
 	private boolean male;
 	
 	private transient int renderEmote;
 	
 	private transient boolean glowRed;
 	
-	@Getter
 	private transient byte[] appearanceData;
 	
-	@Getter
 	private transient byte[] md5Hash;
 	
 	private transient short transformedNpcId;
@@ -406,5 +402,16 @@ public class PlayerAppearance implements Serializable {
 		colors = new byte[10];
 		male();
 	}
-	
+
+	public boolean isMale() {
+		return this.male;
+	}
+
+	public byte[] getAppearanceData() {
+		return this.appearanceData;
+	}
+
+	public byte[] getMd5Hash() {
+		return this.md5Hash;
+	}
 }

@@ -5,17 +5,17 @@
 package org.redrune.game.entity.actor.npc.impl.jad;
 
 import org.redrune.engine.SystemManager;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.combat.function.Magic;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.npc.data.combat.NPCCombatDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.World;
+import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
 
 import java.util.ArrayList;
 import java.util.List;

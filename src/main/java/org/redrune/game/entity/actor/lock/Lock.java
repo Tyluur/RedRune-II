@@ -1,8 +1,6 @@
 package org.redrune.game.entity.actor.lock;
 
 import org.redrune.engine.cycle.GameCycleWorker;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Represents a lock.
@@ -21,15 +19,11 @@ public class Lock {
 	/**
 	 * The custom lock elapse.
 	 */
-	@Getter
-	@Setter
 	private LockElapse elapse;
 	
 	/**
 	 * The message to be sent when the lock is called upon.
 	 */
-	@Getter
-	@Setter
 	private String message;
 	
 	/**
@@ -83,5 +77,20 @@ public class Lock {
 	boolean isLocked() {
 		return expiration > GameCycleWorker.getTicksPassed();
 	}
-	
+
+    public LockElapse getElapse() {
+        return this.elapse;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setElapse(LockElapse elapse) {
+        this.elapse = elapse;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

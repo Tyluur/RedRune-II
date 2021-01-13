@@ -1,10 +1,10 @@
 package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.cache.loaders.NPCDefinitions;
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.Master;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.SlayerTask;
+import org.redrune.utility.constants.GameConstants;
 
 public class EnchantedGemDialouge extends Dialogue {
 	

@@ -3,8 +3,6 @@ package org.redrune.game.content.entity.actor.player.skills.slayer;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.SkillConstants;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -25,8 +23,6 @@ public class SlayerTask implements Serializable {
 	/**
 	 * The players current assigned task
 	 */
-	@Getter
-	@Setter
 	private SlayerTasks currentTask;
 	
 	/**
@@ -64,5 +60,12 @@ public class SlayerTask implements Serializable {
 			player.getPackets().sendMessage("You have finished your slayer task, talk to a slayer master for a new one.");
 		}
 	}
-	
+
+    public SlayerTasks getCurrentTask() {
+        return this.currentTask;
+    }
+
+    public void setCurrentTask(SlayerTasks currentTask) {
+        this.currentTask = currentTask;
+    }
 }

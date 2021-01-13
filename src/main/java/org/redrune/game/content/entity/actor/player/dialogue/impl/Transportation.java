@@ -2,8 +2,8 @@ package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
-import org.redrune.game.global.WorldTile;
 import org.redrune.game.entity.item.Item;
+import org.redrune.game.global.WorldTile;
 
 public class Transportation extends Dialogue {
 	
