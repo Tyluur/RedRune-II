@@ -30,7 +30,7 @@ import java.util.List;
 import static org.redrune.utility.game.entity.actor.player.LoginReturnCode.*;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 public class RS2LoginDecoder extends ByteToMessageDecoder {

@@ -3,7 +3,7 @@ package org.redrune.utility.game;
 /**
  * This class represents all possible options that can be clicked on entities
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public enum ClickOption {

@@ -11,7 +11,7 @@ import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/6/2017
  */
 public class HandCannonSpecialAttackPlugin extends SpecialAttackPlugin {

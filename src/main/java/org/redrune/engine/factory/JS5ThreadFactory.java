@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author 'Mystic Flow <Steven@rune-server.org>
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public class JS5ThreadFactory implements ThreadFactory {
 	

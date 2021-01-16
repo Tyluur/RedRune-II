@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.utility.constants.key.AttributeKey;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/7/2017
  */
 public class SaradominStrikeSpellPlugin implements CombatSpellPlugin {

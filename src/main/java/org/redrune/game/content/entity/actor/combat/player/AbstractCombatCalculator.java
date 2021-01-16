@@ -6,7 +6,7 @@ import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.SkillConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public abstract class AbstractCombatCalculator implements SkillConstants, EquipmentConstants, BonusConstants {

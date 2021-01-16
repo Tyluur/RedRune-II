@@ -6,7 +6,7 @@ import org.redrune.utility.functions.RandomFunction;
  * This class handles the roll of combat hits (finding out the damage to apply, and whether or not the swing should be a
  * miss)
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public final class CombatRoll {

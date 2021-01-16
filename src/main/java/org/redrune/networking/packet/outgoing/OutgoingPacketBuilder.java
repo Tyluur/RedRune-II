@@ -5,7 +5,7 @@ import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.PacketBuilder;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 public abstract class OutgoingPacketBuilder {

@@ -10,7 +10,7 @@ import org.redrune.utility.constants.MagicConstants;
 import static org.redrune.game.content.entity.actor.combat.function.Magic.sendTeleportSpell;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/8/2017
  */
 public interface TeleportSpellPlugin extends SpellPlugin {

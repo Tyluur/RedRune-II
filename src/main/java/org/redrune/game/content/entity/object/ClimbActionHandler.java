@@ -15,7 +15,7 @@ import org.redrune.utility.game.map.Direction;
  * Handles a ladder climbing action.
  *
  * @author Emperor
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-21
  */
 public class ClimbActionHandler {

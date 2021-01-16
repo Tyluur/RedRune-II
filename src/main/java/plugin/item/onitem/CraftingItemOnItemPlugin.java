@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static org.redrune.game.content.entity.item.InventoryOptionsHandler.contains;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-08
  */
 public class CraftingItemOnItemPlugin implements ItemOnItemPlugin {

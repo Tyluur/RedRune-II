@@ -5,7 +5,7 @@ import com.alex.store.Store;
 import java.io.IOException;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 1/4/2017
  */
 public class MapReplacer {

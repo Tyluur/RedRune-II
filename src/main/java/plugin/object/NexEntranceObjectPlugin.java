@@ -5,7 +5,7 @@ import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.content.plugin.type.ObjectPlugin;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 public class NexEntranceObjectPlugin implements ObjectPlugin {

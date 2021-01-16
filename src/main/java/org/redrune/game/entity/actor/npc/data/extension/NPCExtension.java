@@ -3,7 +3,7 @@ package org.redrune.game.entity.actor.npc.data.extension;
 import org.redrune.game.entity.actor.npc.NPC;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 public abstract class NPCExtension {

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This class represents an object that exists in the rs2 game world
  *
  * @author Matrix Team
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 @SuppressWarnings("serial")
 public class WorldObject extends WorldTile implements Entity {

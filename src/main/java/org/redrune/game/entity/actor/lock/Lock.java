@@ -7,7 +7,7 @@ import org.redrune.engine.cycle.GameCycleWorker;
  *
  * @author Emperor
  * @author Aero
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public class Lock {
 	

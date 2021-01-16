@@ -8,7 +8,7 @@ import org.redrune.game.entity.item.Item;
 import org.redrune.utility.game.ClickOption;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-07
  */
 public interface ItemPlugin extends Plugin {

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import static org.redrune.game.global.worldlist.WorldListConstants.*;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 public class WorldList {

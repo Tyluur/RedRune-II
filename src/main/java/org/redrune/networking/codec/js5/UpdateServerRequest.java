@@ -3,7 +3,7 @@ package org.redrune.networking.codec.js5;
 
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 public class UpdateServerRequest {

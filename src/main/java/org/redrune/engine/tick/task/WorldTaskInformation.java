@@ -1,7 +1,7 @@
 package org.redrune.engine.tick.task;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/6/2017
  */
 final class WorldTaskInformation {

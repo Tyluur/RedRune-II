@@ -1,7 +1,7 @@
 package org.redrune.game.content.entity.actor.player.design;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 public class DefaultDesign {

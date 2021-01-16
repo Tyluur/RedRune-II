@@ -5,7 +5,7 @@ import org.redrune.game.content.plugin.type.CommandPlugin;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-08
  */
 public class ReloadDialoguesCommandPlugin extends CommandPlugin {

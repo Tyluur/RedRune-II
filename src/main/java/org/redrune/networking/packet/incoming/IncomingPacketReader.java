@@ -7,7 +7,7 @@ import org.redrune.utility.constants.PacketConstants;
 import org.redrune.utility.functions.Misc;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public interface IncomingPacketReader extends PacketConstants {

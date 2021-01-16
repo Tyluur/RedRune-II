@@ -8,7 +8,7 @@ import org.redrune.game.entity.item.Item;
 import java.util.HashMap;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public interface EquipmentConstants {

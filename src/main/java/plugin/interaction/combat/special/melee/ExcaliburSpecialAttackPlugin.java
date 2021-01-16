@@ -14,7 +14,7 @@ import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.utility.constants.SkillConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 public class ExcaliburSpecialAttackPlugin extends SpecialAttackPlugin {

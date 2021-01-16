@@ -22,7 +22,7 @@ import java.util.Optional;
  * This class contains all references for magic spells
  *
  * @author Matrix Team
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public class Magic {
 	

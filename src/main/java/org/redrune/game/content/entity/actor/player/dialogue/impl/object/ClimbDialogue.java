@@ -7,7 +7,7 @@ import org.redrune.game.content.entity.object.ClimbActionHandler;
 import org.redrune.game.entity.object.WorldObject;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-21
  */
 public class ClimbDialogue extends Dialogue {

@@ -4,7 +4,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.InterfacePlugin;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public class OptionsInterfacePlugin implements InterfacePlugin {

@@ -1,7 +1,7 @@
 package org.redrune.game.global.worldlist;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 public interface WorldListConstants {

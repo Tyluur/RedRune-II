@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/23/2017
  */
 public class WaterStrikeSpellPlugin implements CombatSpellPlugin {

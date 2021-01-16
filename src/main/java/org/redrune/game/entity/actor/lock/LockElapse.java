@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.Actor;
  * Called after the expiration of a custom action lock.
  *
  * @author Aero
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public interface LockElapse {
 	
