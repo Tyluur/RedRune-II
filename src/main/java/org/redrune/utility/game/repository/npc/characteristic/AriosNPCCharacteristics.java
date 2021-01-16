@@ -1,6 +1,6 @@
 package org.redrune.utility.game.repository.npc.characteristic;
 
-import lombok.Getter;
+
 
 /**
  * @author Tyluur <itstyluur@gmail.com>
@@ -8,22 +8,22 @@ import lombok.Getter;
  */
 public class AriosNPCCharacteristics {
 	
-	@Getter
+
 	private final int id;
 	
-	@Getter
+
 	private final String examine;
 	
-	@Getter
+
 	private final String name;
 	
-	@Getter
+
 	private final int lifePoints, attackLevel, strengthLevel, defenceLevel, rangeLevel, magicLevel;
 	
-	@Getter
+
 	private final int[] bonuses;
 	
-	@Getter
+
 	private final int respawnDelay, attackSpeed, meleeAnimation, defenceAnimation, deathAnimation, spawnAnimation, magicAnimation, rangeAnimation, attackGfx, attackProjectile, endGfx, combatStyle, aggressive;
 	
 	public AriosNPCCharacteristics(int id, String examine, String name, int lifePoints, int attackLevel, int strengthLevel, int defenceLevel, int rangeLevel, int magicLevel, int[] bonuses, int respawnDelay, int attackSpeed, int meleeAnimation, int defenceAnimation, int deathAnimation, int spawnAnimation, int magicAnimation, int rangeAnimation, int attackGfx, int attackProjectile, int endGfx, int combatStyle, int aggressive) {
@@ -50,5 +50,37 @@ public class AriosNPCCharacteristics {
 		this.endGfx = endGfx;
 		this.combatStyle = combatStyle;
 		this.aggressive = aggressive;
+	}
+
+	public int getAttackLevel() {
+		return attackLevel;
+	}
+
+	public int getLifePoints() {
+		return lifePoints;
+	}
+
+	public int getStrengthLevel() {
+		return strengthLevel;
+	}
+
+	public int getDefenceLevel() {
+		return defenceLevel;
+	}
+
+	public int getRangeLevel() {
+		return rangeLevel;
+	}
+
+	public int getMagicLevel() {
+		return magicLevel;
+	}
+
+	public int[] getBonuses() {
+		return bonuses;
+	}
+
+	public int getAttackGfx() {
+		return attackGfx;
 	}
 }

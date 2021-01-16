@@ -1,7 +1,6 @@
 package org.redrune.engine.worker.boot;
 
 import com.google.common.base.Stopwatch;
-import lombok.Getter;
 import org.redrune.engine.SystemManager;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class BootHandler {
 	/**
 	 * The instance of the stopwatch
 	 */
-	@Getter
+
 	private static final Stopwatch STOPWATCH = Stopwatch.createUnstarted();
 	
 	/**
@@ -150,5 +149,8 @@ public class BootHandler {
 	static CountDownLatch getCountDownLatch() {
 		return countDownLatch;
 	}
-	
+
+	public static Stopwatch getSTOPWATCH() {
+		return STOPWATCH;
+	}
 }

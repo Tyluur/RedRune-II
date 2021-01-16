@@ -1,6 +1,6 @@
 package org.redrune.networking.packet.outgoing;
 
-import lombok.Getter;
+
 import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.PacketBuilder;
 
@@ -21,7 +21,7 @@ public abstract class OutgoingPacketBuilder {
 	/**
 	 * The packet builder instance
 	 */
-	@Getter
+
 	protected final PacketBuilder bldr;
 	
 	/**

@@ -1,6 +1,6 @@
 package org.redrune.networking.packet;
 
-import lombok.Getter;
+
 
 /**
  * @author 'Mystic Flow
@@ -11,7 +11,7 @@ public enum PacketType {
 	VAR_BYTE(1),
 	VAR_SHORT(2);
 	
-	@Getter
+
 	private final int size;
 	
 	PacketType(int size) {

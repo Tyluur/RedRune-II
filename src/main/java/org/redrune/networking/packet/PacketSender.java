@@ -2,7 +2,7 @@ package org.redrune.networking.packet;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import lombok.Getter;
+
 import org.redrune.cache.huffman.Huffman;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
@@ -42,7 +42,7 @@ import java.util.List;
  */
 public class PacketSender {
 	
-	@Getter
+
 	private final Player player;
 	
 	/**

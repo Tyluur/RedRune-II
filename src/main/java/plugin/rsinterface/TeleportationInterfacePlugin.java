@@ -1,21 +1,20 @@
 package plugin.rsinterface;
 
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
-import org.redrune.game.global.WorldTile;
+import org.redrune.game.content.plugin.type.InterfacePlugin;
 import org.redrune.game.entity.actor.mask.ForceTalk;
 import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.type.InterfacePlugin;
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.utility.constants.key.AttributeKey;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.global.WorldTile;
 import org.redrune.utility.constants.ColorConstants;
 import org.redrune.utility.constants.MagicConstants;
+import org.redrune.utility.constants.key.AttributeKey;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.map.Coordinates;
-import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -346,7 +345,7 @@ public class TeleportationInterfacePlugin implements InterfacePlugin {
 		/**
 		 * The title of the teleport
 		 */
-		@Getter
+
 		private final String title;
 		
 		TravelLocations(String title) {
@@ -385,26 +384,41 @@ public class TeleportationInterfacePlugin implements InterfacePlugin {
 		public void handlePostTeleportation(Player player, int index) {
 		
 		}
-		
+
+		public String getTitle() {
+			return title;
+		}
 	}
 	
 	public static final class TransportationLocation implements Serializable {
 		
 		private static final long serialVersionUID = 2836199090952003422L;
 		
-		@Getter
+
 		private final WorldTile destination;
 		
-		@Getter
+
 		private final TravelLocations locations;
 		
-		@Getter
+
 		private final int optionIndex;
 		
 		public TransportationLocation(WorldTile destination, TravelLocations locations, int optionIndex) {
 			this.destination = destination;
 			this.locations = locations;
 			this.optionIndex = optionIndex;
+		}
+
+		public WorldTile getDestination() {
+			return destination;
+		}
+
+		public TravelLocations getLocations() {
+			return locations;
+		}
+
+		public int getOptionIndex() {
+			return optionIndex;
 		}
 	}
 	

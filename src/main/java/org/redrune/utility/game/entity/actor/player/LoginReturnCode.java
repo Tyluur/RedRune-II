@@ -1,6 +1,6 @@
 package org.redrune.utility.game.entity.actor.player;
 
-import lombok.Getter;
+
 
 /**
  * Holds the return codes that can be sent to the client when attempting to login.
@@ -138,7 +138,7 @@ public enum LoginReturnCode {
 	/**
 	 * The value.
 	 */
-	@Getter
+
 	private final byte value;
 	
 	/**
@@ -150,5 +150,8 @@ public enum LoginReturnCode {
 	LoginReturnCode(int value) {
 		this.value = (byte) value;
 	}
-	
+
+	public byte getValue() {
+		return value;
+	}
 }

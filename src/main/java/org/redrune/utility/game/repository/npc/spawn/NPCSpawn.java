@@ -1,6 +1,6 @@
 package org.redrune.utility.game.repository.npc.spawn;
 
-import lombok.Getter;
+
 import org.redrune.game.global.WorldTile;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.Misc.FaceDirection;
@@ -14,19 +14,19 @@ public class NPCSpawn {
 	/**
 	 * The id of the npc of this spawn
 	 */
-	@Getter
+
 	private final int npcId;
 	
 	/**
 	 * The location of the spawn
 	 */
-	@Getter
+
 	private final WorldTile tile;
 	
 	/**
 	 * The direction the spawn is facing
 	 */
-	@Getter
+
 	private final Misc.FaceDirection direction;
 	
 	/**
@@ -97,5 +97,16 @@ public class NPCSpawn {
 	public String toString() {
 		return "[npcId=" + npcId + ", tile=" + tile + ", direction=" + direction + "]";
 	}
-	
+
+	public int getNpcId() {
+		return npcId;
+	}
+
+	public WorldTile getTile() {
+		return tile;
+	}
+
+	public FaceDirection getDirection() {
+		return direction;
+	}
 }

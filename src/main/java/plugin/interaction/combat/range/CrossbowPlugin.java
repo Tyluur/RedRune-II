@@ -5,15 +5,14 @@ import org.redrune.engine.cycle.GameCycleWorker;
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.content.entity.actor.combat.CombatSwingDetail;
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
+import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 import org.redrune.utility.functions.RandomFunction;
-import lombok.Getter;
 
 import java.util.Optional;
 
@@ -127,19 +126,19 @@ public class CrossbowPlugin extends RangeWeaponPlugin {
 		/**
 		 * The id of the bolt used for this special
 		 */
-		@Getter
+
 		private final int boltId;
 		
 		/**
 		 * The id of the graphics
 		 */
-		@Getter
+
 		private final int graphicsId;
 		
 		/**
 		 * The height of the graphics
 		 */
-		@Getter
+
 		private final int graphicsHeight;
 		
 		BoltSpecial(int boltId, int graphicsId) {
@@ -188,6 +187,18 @@ public class CrossbowPlugin extends RangeWeaponPlugin {
 				}
 			}
 			return Optional.empty();
+		}
+
+		public int getBoltId() {
+			return boltId;
+		}
+
+		public int getGraphicsHeight() {
+			return graphicsHeight;
+		}
+
+		public int getGraphicsId() {
+			return graphicsId;
 		}
 	}
 }

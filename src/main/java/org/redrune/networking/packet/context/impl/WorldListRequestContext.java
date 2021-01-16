@@ -1,6 +1,6 @@
 package org.redrune.networking.packet.context.impl;
 
-import lombok.Getter;
+
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.networking.packet.context.PacketContext;
 import org.redrune.networking.packet.outgoing.impl.WorldListPacketBuilder;
@@ -14,7 +14,7 @@ public class WorldListRequestContext extends PacketContext {
 	/**
 	 * The type of update that is being requested
 	 */
-	@Getter
+
 	private final int updateType;
 	
 	public WorldListRequestContext(int updateType) {

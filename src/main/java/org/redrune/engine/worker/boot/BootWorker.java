@@ -1,6 +1,6 @@
 package org.redrune.engine.worker.boot;
 
-import lombok.Getter;
+
 
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,7 +14,7 @@ public class BootWorker extends Thread {
 	/**
 	 * The load of work we must complete
 	 */
-	@Getter
+
 	private final CopyOnWriteArrayList<BootTask> workLoad = new CopyOnWriteArrayList<>();
 	
 	/**
