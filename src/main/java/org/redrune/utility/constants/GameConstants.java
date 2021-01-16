@@ -10,7 +10,7 @@ public interface GameConstants {
 	/**
 	 * The name of the server
 	 */
-	String SERVER_NAME = "RedRune";
+	String SERVER_NAME = "Dusk";
 	
 	/**
 	 * The path that the cache is at
