@@ -16,7 +16,7 @@ import java.util.List;
  * Decodes a received packet.
  *
  * @author Cjay0091
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-05
  */
 public class RS2PacketDecoder extends ReplayingDecoder<GameState> {

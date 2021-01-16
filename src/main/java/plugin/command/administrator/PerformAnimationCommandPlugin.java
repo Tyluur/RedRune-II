@@ -6,7 +6,7 @@ import org.redrune.game.content.plugin.type.CommandPlugin;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 @CommandManifest(description = "Performs an animation", types = { Integer.class })

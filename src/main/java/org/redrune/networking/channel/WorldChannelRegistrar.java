@@ -7,7 +7,7 @@ import org.redrune.networking.NetworkSession;
 import org.redrune.utility.constants.NetworkConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/19/2017
  */
 @Sharable

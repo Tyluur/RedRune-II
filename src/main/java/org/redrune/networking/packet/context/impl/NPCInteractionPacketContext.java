@@ -10,7 +10,7 @@ import org.redrune.utility.game.repository.npc.characteristic.NPCCharacteristicR
 import org.redrune.utility.game.repository.npc.spawn.NPCSpawnRepository;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class NPCInteractionPacketContext extends PacketContext {

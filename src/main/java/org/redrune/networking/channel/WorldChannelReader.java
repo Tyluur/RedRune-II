@@ -15,7 +15,7 @@ import org.redrune.utility.functions.Misc;
 import static org.redrune.utility.constants.NetworkConstants.IGNORED_EXCEPTIONS;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/19/2017
  */
 @Sharable

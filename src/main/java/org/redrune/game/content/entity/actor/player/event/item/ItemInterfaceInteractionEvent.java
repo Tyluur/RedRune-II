@@ -12,7 +12,7 @@ import org.redrune.game.entity.item.ItemOnItemHandler;
 import org.redrune.game.entity.item.ItemOnItemHandler.ItemOnItem;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-06
  */
 public class ItemInterfaceInteractionEvent extends Event {

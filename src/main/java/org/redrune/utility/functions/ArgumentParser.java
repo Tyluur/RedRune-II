@@ -4,7 +4,7 @@ import org.apache.commons.cli.*;
 import org.redrune.game.GameFlags;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 public class ArgumentParser {

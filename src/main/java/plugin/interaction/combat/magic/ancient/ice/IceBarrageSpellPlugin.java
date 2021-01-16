@@ -9,7 +9,7 @@ import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/28/2017
  */
 public class IceBarrageSpellPlugin implements CombatSpellPlugin {

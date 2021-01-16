@@ -37,7 +37,7 @@ import org.redrune.utility.game.map.MapArchiveKeys;
 import java.util.List;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class PacketSender {

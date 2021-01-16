@@ -12,7 +12,7 @@ import java.io.Writer;
 import java.lang.reflect.Modifier;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 public class JsonFileManager {

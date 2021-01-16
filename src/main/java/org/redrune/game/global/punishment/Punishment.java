@@ -6,7 +6,7 @@ import org.redrune.game.global.World;
 import java.util.*;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/17/2017
  */
 public final class Punishment {

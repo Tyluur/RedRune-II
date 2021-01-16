@@ -6,7 +6,7 @@ package org.redrune.utility.game.entity.actor.player;
  * Holds the return codes that can be sent to the client when attempting to login.
  *
  * @author Emperor
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public enum ReturnCode {
 	

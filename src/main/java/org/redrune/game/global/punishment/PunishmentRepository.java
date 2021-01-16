@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static org.redrune.utility.functions.GsonFunctions.GSON;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 public class PunishmentRepository {

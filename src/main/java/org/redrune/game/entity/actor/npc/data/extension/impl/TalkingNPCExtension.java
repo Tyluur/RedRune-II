@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.npc.data.extension.NPCExtension;
 import org.redrune.utility.functions.Misc;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 public class TalkingNPCExtension extends NPCExtension {

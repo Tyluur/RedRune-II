@@ -15,7 +15,7 @@ import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 public class MorriganJavelinSpecialAttackPlugin extends SpecialAttackPlugin {

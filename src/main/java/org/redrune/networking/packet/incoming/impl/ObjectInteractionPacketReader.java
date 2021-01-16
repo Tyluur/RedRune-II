@@ -15,7 +15,7 @@ import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class ObjectInteractionPacketReader implements IncomingPacketReader {

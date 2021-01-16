@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class represents a single update cycle in the game
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 public class UpdateSequence {

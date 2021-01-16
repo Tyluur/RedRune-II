@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.mask.Hit;
 import java.util.function.Consumer;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/1/2017
  */
 public class CombatSwingDetail {

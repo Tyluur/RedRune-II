@@ -14,7 +14,7 @@ import org.redrune.utility.functions.Misc;
 import static org.redrune.utility.constants.SkillConstants.FIREMAKING;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/6/2017
  */
 public class HandCannonPlugin extends RangeWeaponPlugin {

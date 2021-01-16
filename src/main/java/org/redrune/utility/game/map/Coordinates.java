@@ -3,7 +3,7 @@ package org.redrune.utility.game.map;
 import org.redrune.game.global.WorldTile;
 
 /**
- * @author Tyluur<itstyluur@gmail.com>
+ * @author Tyluur<itstyluur@icloud.com>
  * @since Apr 20, 2015
  */
 public interface Coordinates {

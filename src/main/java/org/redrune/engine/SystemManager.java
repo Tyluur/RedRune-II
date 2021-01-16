@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Manages all system operations.
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/21/2017
  */
 public final class SystemManager {

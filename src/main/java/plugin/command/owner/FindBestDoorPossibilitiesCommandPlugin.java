@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.player.Player;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-20
  */
 @CommandManifest(description = "Toggles door finding ")

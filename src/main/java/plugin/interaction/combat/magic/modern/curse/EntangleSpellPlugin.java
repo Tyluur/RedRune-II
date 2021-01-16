@@ -10,7 +10,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/7/2017
  */
 public class EntangleSpellPlugin implements CombatSpellPlugin {

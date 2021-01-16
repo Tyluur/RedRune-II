@@ -8,7 +8,7 @@ import org.redrune.game.entity.object.WorldObject;
 import org.redrune.utility.game.ClickOption;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 public interface ObjectPlugin extends Plugin {

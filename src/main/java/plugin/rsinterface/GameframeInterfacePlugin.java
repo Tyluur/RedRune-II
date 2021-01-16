@@ -14,7 +14,7 @@ import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.PacketConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public class GameframeInterfacePlugin implements InterfacePlugin {

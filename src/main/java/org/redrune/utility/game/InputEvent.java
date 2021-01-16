@@ -1,7 +1,7 @@
 package org.redrune.utility.game;
 
 /**
- * @author Tyluur<itstyluur@gmail.com>
+ * @author Tyluur<itstyluur@icloud.com>
  * @since May 3, 2015
  */
 public abstract class InputEvent {

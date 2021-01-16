@@ -6,7 +6,7 @@ import org.redrune.utility.constants.SkillConstants;
 /**
  * This class handles all agility preconditions
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public class Agility {
 	

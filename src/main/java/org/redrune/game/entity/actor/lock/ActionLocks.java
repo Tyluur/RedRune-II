@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author Emperor
  * @author Aero
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public final class ActionLocks {
 	

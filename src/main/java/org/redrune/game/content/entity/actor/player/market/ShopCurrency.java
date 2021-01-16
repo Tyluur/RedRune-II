@@ -4,7 +4,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.ItemConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/15/2017
  */
 public interface ShopCurrency extends ItemConstants {

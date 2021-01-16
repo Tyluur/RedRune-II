@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tyluur<itstyluur@gmail.com>
+ * @author Tyluur<itstyluur@icloud.com>
  * @since Apr 25, 2015
  */
 public class SimpleItemMessage extends Dialogue {

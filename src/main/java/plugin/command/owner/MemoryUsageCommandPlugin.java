@@ -6,7 +6,7 @@ import org.redrune.utility.functions.Misc;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Shows how much memory is used.")

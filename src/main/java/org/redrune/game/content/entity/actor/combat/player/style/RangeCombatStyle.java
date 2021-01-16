@@ -20,7 +20,7 @@ import org.redrune.game.entity.actor.player.Player;
 import java.util.Optional;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 public class RangeCombatStyle extends AbstractCombatStyle {

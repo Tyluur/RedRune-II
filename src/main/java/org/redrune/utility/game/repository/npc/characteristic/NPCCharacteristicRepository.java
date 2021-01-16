@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public class NPCCharacteristicRepository {

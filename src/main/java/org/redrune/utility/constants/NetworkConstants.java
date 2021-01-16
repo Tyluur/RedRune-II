@@ -9,7 +9,7 @@ import java.math.BigInteger;
 /**
  * This class contains constant values for networking
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 public interface NetworkConstants {

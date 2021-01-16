@@ -9,7 +9,7 @@ import plugin.command.CommandManifest;
 import java.util.List;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-21
  */
 @CommandManifest(description = "Lists all objects in your region")

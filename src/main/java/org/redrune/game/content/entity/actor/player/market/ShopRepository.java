@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.redrune.utility.functions.GsonFunctions.GSON;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/15/2017
  */
 public final class ShopRepository {

@@ -15,7 +15,7 @@ import org.redrune.utility.functions.DebugFunctions;
  * This encodes a packet going to the rs client. All packets have a specific header and data is encoded differently
  * based on the type of packet being encoded. This class handles all said operations.
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/18/2017
  */
 @Sharable

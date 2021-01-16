@@ -7,7 +7,7 @@ import org.redrune.game.global.WorldTile;
  * This class represents an item that exists on the floor
  *
  * @author Matrix Team
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 @SuppressWarnings("serial")
 public class FloorItem extends Item {

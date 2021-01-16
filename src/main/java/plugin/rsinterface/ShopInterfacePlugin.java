@@ -11,7 +11,7 @@ import static org.redrune.game.content.entity.actor.player.market.Shop.INTERFACE
 import static org.redrune.game.content.entity.actor.player.market.Shop.INVENTORY_INTERFACE_ID;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public class ShopInterfacePlugin implements InterfacePlugin {

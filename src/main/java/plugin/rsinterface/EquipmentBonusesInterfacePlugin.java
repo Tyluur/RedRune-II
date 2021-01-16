@@ -9,7 +9,7 @@ import org.redrune.utility.constants.PacketConstants;
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 public class EquipmentBonusesInterfacePlugin implements InterfacePlugin {

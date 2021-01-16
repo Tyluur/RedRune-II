@@ -12,7 +12,7 @@ import org.redrune.game.entity.actor.player.Player;
 import java.util.Optional;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public enum CombatStyle {

@@ -5,7 +5,7 @@ import org.redrune.utility.functions.Misc;
 import java.util.HashMap;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @author Matrix Team
  * @since 2/9/19
  */

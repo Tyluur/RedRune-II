@@ -9,7 +9,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
 import org.redrune.utility.constants.SkillConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/7/2017
  */
 public class VulernabilitySpellPlugin implements CombatSpellPlugin {

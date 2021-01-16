@@ -8,7 +8,7 @@ import org.redrune.game.entity.object.WorldObject;
 import static org.redrune.utility.game.ClickOption.FIRST;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-29
  */
 public class BarbarianAgilityCoursePlugin implements ObjectPlugin {

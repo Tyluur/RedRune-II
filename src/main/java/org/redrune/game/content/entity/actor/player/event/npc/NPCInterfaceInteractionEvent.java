@@ -16,7 +16,7 @@ import org.redrune.game.global.WorldTile;
 import org.redrune.utility.functions.Misc;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 public class NPCInterfaceInteractionEvent extends Event {

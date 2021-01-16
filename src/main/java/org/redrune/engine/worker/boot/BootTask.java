@@ -1,7 +1,7 @@
 package org.redrune.engine.worker.boot;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 3/25/2016
  */
 class BootTask {

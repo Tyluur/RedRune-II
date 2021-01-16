@@ -8,7 +8,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.BonusConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public class MeleeCombatCalculator extends AbstractCombatCalculator {

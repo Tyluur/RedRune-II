@@ -10,7 +10,7 @@ import org.redrune.game.entity.projectile.ProjectileManager;
 import org.redrune.utility.constants.key.AttributeKey;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/7/2017
  */
 public class MiasmicBlitzSpellPlugin implements CombatSpellPlugin {

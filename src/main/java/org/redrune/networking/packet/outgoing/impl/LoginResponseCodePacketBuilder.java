@@ -6,7 +6,7 @@ import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.game.entity.actor.player.LoginReturnCode;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 public class LoginResponseCodePacketBuilder extends OutgoingPacketBuilder {

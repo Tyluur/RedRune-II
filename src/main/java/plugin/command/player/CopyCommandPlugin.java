@@ -10,7 +10,7 @@ import plugin.command.CommandManifest;
 import java.util.HashMap;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Copies another player", types = { String.class })

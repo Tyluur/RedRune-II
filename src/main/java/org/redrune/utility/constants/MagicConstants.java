@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/8/2017
  */
 public interface MagicConstants {

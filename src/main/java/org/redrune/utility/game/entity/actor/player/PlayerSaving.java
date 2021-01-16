@@ -13,7 +13,7 @@ import java.io.Writer;
 import java.lang.reflect.Modifier;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-29
  */
 public class PlayerSaving {

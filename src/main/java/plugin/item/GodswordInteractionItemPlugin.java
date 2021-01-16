@@ -18,7 +18,7 @@ import plugin.item.GodswordInteractionItemPlugin.GodswordComponents.Constants;
 import java.util.Arrays;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-08
  */
 public class GodswordInteractionItemPlugin implements ItemPlugin, ItemOnItemPlugin, ItemOnObjectPlugin {

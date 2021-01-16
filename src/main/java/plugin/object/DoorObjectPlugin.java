@@ -7,7 +7,7 @@ import org.redrune.game.content.entity.object.DoorFunctionality;
 import org.redrune.utility.game.repository.object.door.DoorRepository;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-31
  */
 public class DoorObjectPlugin implements ObjectPlugin {

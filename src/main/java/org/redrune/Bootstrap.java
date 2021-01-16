@@ -37,7 +37,7 @@ import static org.redrune.utility.functions.ArgumentParser.parseArgs;
 /**
  * This class runs the server
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since January 25th, 2019
  */
 public final class Bootstrap {

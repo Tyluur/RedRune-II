@@ -6,7 +6,7 @@ import org.redrune.utility.functions.Misc;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-01
  */
 @CommandManifest(description = "Sends all the components of an interface", types = { Integer.class})

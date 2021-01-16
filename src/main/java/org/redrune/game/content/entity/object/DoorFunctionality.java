@@ -16,7 +16,7 @@ import org.redrune.utility.game.repository.object.door.DoorRepository;
  * Handles door actions.
  *
  * @author Emperor
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-20
  */
 public class DoorFunctionality {

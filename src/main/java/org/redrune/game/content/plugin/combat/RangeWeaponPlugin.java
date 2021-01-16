@@ -12,7 +12,7 @@ import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.functions.Misc;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 public abstract class RangeWeaponPlugin implements Plugin {

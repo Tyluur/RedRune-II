@@ -11,7 +11,7 @@ import java.io.Writer;
 /**
  * Classes that are readable by gson will implement this class, this is due to the non-generic loading of gson objects.
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/16/2017
  */
 public interface JsonReadable<K> {

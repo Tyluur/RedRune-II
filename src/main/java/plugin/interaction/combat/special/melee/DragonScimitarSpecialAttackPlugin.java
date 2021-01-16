@@ -9,7 +9,7 @@ import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 import org.redrune.utility.functions.Misc;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 public class DragonScimitarSpecialAttackPlugin extends SpecialAttackPlugin {

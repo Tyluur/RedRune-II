@@ -7,7 +7,7 @@ import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
 import org.redrune.game.entity.projectile.ProjectileManager;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/6/2017
  */
 public class CrystalBowPlugin extends RangeWeaponPlugin {

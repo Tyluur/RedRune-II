@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This class is used to hold the data of all shops
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/15/2017
  */
 public final class Shop {

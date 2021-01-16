@@ -7,7 +7,7 @@ import org.redrune.networking.packet.context.impl.RegionLoadPacketContext;
 import org.redrune.networking.packet.incoming.IncomingPacketReader;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class RegionLoadPacketReader implements IncomingPacketReader {

@@ -7,7 +7,7 @@ import org.redrune.utility.functions.BufferUtils;
  * Contains all the data inside of a packet. Netty 4 usage only.
  *
  * @author 'Mystic Flow
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/19/2017
  */
 public class Packet {

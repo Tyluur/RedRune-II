@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.redrune.utility.functions.GsonFunctions.GSON;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-31
  */
 public class ObjectSpawning {

@@ -18,7 +18,7 @@ import org.redrune.utility.game.repository.npc.spawn.NPCSpawnRepository;
 import static org.redrune.utility.game.ClickOption.*;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class NPCInteractionPacketReader implements IncomingPacketReader {

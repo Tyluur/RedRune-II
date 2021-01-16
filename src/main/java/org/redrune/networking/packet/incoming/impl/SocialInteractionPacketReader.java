@@ -16,7 +16,7 @@ import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.entity.actor.player.QuickChatMessage;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class SocialInteractionPacketReader implements IncomingPacketReader {

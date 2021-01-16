@@ -9,7 +9,7 @@ import org.redrune.utility.game.entity.actor.player.ChatMessage;
 import org.redrune.utility.game.entity.actor.player.PublicChatMessage;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class ChatPacketContext extends PacketContext {

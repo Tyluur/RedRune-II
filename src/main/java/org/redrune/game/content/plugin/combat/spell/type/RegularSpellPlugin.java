@@ -4,7 +4,7 @@ import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/8/2017
  */
 public interface RegularSpellPlugin extends SpellPlugin {

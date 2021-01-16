@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author Matrix Team
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public final class CombatScriptsHandler {
 	

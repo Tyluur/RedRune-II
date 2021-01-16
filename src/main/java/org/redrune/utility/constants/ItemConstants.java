@@ -4,7 +4,7 @@ import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.entity.item.Item;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/15/2017
  */
 public interface ItemConstants {

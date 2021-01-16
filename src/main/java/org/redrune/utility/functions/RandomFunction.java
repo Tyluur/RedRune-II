@@ -6,7 +6,7 @@ import java.util.Random;
  * Represents a class used for random methods.
  *
  * @author Vexia
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  */
 public class RandomFunction {
 	

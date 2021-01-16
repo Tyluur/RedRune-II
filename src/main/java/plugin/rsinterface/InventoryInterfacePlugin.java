@@ -9,7 +9,7 @@ import org.redrune.game.content.entity.item.InventoryOptionsHandler;
 import static org.redrune.utility.constants.PacketConstants.*;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public class InventoryInterfacePlugin implements InterfacePlugin {

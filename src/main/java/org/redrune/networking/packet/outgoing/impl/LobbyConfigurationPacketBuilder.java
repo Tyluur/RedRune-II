@@ -8,7 +8,7 @@ import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder;
 import org.redrune.utility.functions.Misc;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 public class LobbyConfigurationPacketBuilder extends OutgoingPacketBuilder {

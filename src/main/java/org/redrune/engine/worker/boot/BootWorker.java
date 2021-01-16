@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * @author Tyluur<itstyluur@gmail.com>
+ * @author Tyluur<itstyluur@icloud.com>
  * @since 10/24/2015
  */
 public class BootWorker extends Thread {

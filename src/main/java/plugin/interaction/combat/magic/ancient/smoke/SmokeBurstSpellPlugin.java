@@ -7,7 +7,7 @@ import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
 import org.redrune.utility.functions.RandomFunction;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/1/2017
  */
 public class SmokeBurstSpellPlugin implements CombatSpellPlugin {

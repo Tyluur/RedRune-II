@@ -8,7 +8,7 @@ import org.redrune.game.content.plugin.type.InterfacePlugin;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public class CombatTabInterfacePlugin implements InterfacePlugin {

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class handles all management operations on regions
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public final class RegionManager {

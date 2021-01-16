@@ -11,7 +11,7 @@ import org.redrune.utility.functions.Misc;
 /**
  * This class handles the player combat action.
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/17
  */
 public class PlayerCombatAction extends Action {

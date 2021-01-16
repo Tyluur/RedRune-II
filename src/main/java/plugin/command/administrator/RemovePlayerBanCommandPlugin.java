@@ -7,7 +7,7 @@ import org.redrune.game.global.punishment.PunishmentType;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 @CommandManifest(description = "Unbans a player by their username", types = { String.class })

@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class handles all the functions/algorithms that remain static throughout player combat.
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public final class CombatAlgorithm implements BonusConstants, EquipmentConstants, MagicConstants {

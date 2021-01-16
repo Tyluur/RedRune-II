@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions;
  * A game-related task that is scheduled to run in the future.
  *
  * @author Graham
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/26/2017
  */
 public abstract class ScheduledTask {

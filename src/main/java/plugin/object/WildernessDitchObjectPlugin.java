@@ -11,7 +11,7 @@ import org.redrune.game.global.WorldTile;
 import org.redrune.utility.game.ClickOption;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-31
  */
 public class WildernessDitchObjectPlugin implements ObjectPlugin {

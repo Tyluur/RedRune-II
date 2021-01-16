@@ -1,7 +1,7 @@
 package org.redrune.utility.constants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 public interface BonusConstants {

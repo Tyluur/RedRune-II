@@ -15,7 +15,7 @@ import org.redrune.utility.constants.NetworkConstants;
 /**
  * This is the network binder for the main game protocol. This initializes the main game server and the update server.
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/18/2017
  */
 @Sharable

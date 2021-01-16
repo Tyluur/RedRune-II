@@ -7,7 +7,7 @@ import org.redrune.game.global.map.region.RegionManager;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 @CommandManifest(description = "Spawns an object on your position", types = { Integer.class })

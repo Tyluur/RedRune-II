@@ -7,7 +7,7 @@ import org.redrune.game.global.WorldTile;
  * Represents a projectile to send.
  *
  * @author Emperor
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/16/2017
  */
 public class Projectile {

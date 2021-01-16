@@ -3,7 +3,7 @@ package org.redrune.networking.packet.context;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public abstract class PacketContext {

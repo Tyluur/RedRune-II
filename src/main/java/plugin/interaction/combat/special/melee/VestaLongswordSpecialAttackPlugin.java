@@ -7,7 +7,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 public class VestaLongswordSpecialAttackPlugin extends SpecialAttackPlugin {

@@ -4,7 +4,7 @@ import org.redrune.game.content.entity.actor.player.market.ShopCurrency;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/15/2017
  */
 public class GoldTicketCurrency implements ShopCurrency {

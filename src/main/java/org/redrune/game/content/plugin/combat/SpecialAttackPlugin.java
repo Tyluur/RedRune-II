@@ -9,7 +9,7 @@ import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.SkillConstants;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 public abstract class SpecialAttackPlugin implements Plugin, SkillConstants, EquipmentConstants {

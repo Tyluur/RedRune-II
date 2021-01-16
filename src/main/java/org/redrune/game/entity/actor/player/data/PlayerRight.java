@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * The rights the player can have
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/18/2017
  */
 public enum PlayerRight {

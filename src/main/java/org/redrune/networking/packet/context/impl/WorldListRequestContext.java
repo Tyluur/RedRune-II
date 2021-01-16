@@ -6,7 +6,7 @@ import org.redrune.networking.packet.context.PacketContext;
 import org.redrune.networking.packet.outgoing.impl.WorldListPacketBuilder;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 public class WorldListRequestContext extends PacketContext {

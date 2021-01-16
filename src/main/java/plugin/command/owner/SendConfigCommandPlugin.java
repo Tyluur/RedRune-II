@@ -5,7 +5,7 @@ import org.redrune.game.content.plugin.type.CommandPlugin;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-24
  */
 @CommandManifest(types = { Integer.class, Integer.class})

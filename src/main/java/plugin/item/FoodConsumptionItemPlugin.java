@@ -9,7 +9,7 @@ import org.redrune.game.entity.item.Item;
 import java.util.Arrays;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-07
  */
 public class FoodConsumptionItemPlugin implements ItemPlugin {

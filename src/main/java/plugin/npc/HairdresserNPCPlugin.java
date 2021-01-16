@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 public class HairdresserNPCPlugin implements NPCPlugin {

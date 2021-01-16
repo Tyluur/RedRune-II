@@ -6,7 +6,7 @@ import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 public interface Entity {

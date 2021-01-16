@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.player.Player;
 /**
  * This class provides the structure for any event performed by the player
  *
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 public abstract class Event {
@@ -66,7 +66,7 @@ public abstract class Event {
     }
 
     /**
-	 * @author Tyluur <itstyluur@gmail.com>
+	 * @author Tyluur <itstyluur@icloud.com>
 	 * @since 2019-01-25
 	 */
 	public enum EventState {

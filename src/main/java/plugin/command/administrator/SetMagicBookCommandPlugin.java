@@ -5,7 +5,7 @@ import org.redrune.game.content.plugin.type.CommandPlugin;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/8/2017
  */
 @CommandManifest(description = "Sets your magic book [1-3]", types = { Integer.class })

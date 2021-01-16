@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-09
  */
 public class ChristmasCrackedItemOnPlayerPlugin implements ItemOnPlayerPlugin {

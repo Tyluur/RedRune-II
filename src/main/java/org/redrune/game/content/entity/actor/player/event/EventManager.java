@@ -4,7 +4,7 @@ import org.redrune.game.content.entity.actor.player.event.Event.EventState;
 import org.redrune.game.entity.actor.player.Player;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 public class EventManager {

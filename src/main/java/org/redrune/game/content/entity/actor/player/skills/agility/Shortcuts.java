@@ -9,7 +9,7 @@ import org.redrune.game.entity.object.WorldObject;
 import org.redrune.game.global.WorldTile;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 3/31/2016
  */
 public class Shortcuts {

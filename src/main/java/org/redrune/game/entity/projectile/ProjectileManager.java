@@ -10,7 +10,7 @@ import org.redrune.game.global.map.region.RegionManager;
 import java.util.List;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/6/2017
  */
 public class ProjectileManager {

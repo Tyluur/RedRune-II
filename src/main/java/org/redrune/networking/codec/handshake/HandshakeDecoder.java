@@ -15,7 +15,7 @@ import static org.redrune.utility.constants.NetworkConstants.JS5_REQUEST;
 import static org.redrune.utility.constants.NetworkConstants.LOGIN_REQUEST;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 public class HandshakeDecoder extends ByteToMessageDecoder {

@@ -9,7 +9,7 @@ import org.redrune.utility.game.InputEvent.InputEventType;
 import plugin.command.CommandManifest;
 
 /**
- * @author Tyluur <itstyluur@gmail.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 @CommandManifest(description = "Bans a players address", types = { String.class })
