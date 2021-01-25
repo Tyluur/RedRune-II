@@ -9,6 +9,7 @@ import org.redrune.game.entity.actor.npc.NPC;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 import org.redrune.game.entity.object.WorldObject;
+import org.redrune.utility.ReflectionUtils;
 import org.redrune.utility.constants.MagicConstants.MagicBook;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.game.ClickOption;

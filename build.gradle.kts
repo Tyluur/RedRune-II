@@ -36,10 +36,15 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
 
-    // Reflection
+    // Kotlin
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
+
+    // Dependency Injection
     implementation("org.koin", "koin-core", koinVersion)
     implementation("org.koin", "koin-logger-slf4j", koinVersion)
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
+
+    // Reflection
+    implementation("io.github.classgraph", "classgraph", "4.8.78")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:1.2.3")
