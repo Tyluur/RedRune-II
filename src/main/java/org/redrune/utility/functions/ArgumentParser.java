@@ -1,18 +1,15 @@
 package org.redrune.utility.functions;
 
-import org.apache.commons.cli.*;
-import org.redrune.game.GameFlags;
-
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 public class ArgumentParser {
-	
-	/**
-	 * Parses the arguments from the jvm
-	 */
-	public static void parseArgs(String[] args) {
+
+    /**
+     * Parses the arguments from the jvm
+     */
+    public static void parseArgs(String[] args) {
 /*		Options options = new Options();
 		Option hostOption = new Option("hostMode", "input", true, "game host mode");
 		hostOption.setRequired(true);
@@ -34,5 +31,5 @@ public class ArgumentParser {
 		}
 		GameFlags.hostMode = Boolean.parseBoolean(cmd.getOptionValue("hostMode"));
 		GameFlags.debugMode = Boolean.parseBoolean(cmd.getOptionValue("debugMode"));*/
-	}
+    }
 }
