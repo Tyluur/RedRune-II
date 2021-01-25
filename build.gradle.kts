@@ -32,23 +32,22 @@ application {
 }
 
 dependencies {
+    // Java
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("io.netty:netty-all:4.1.44.Final")
-    implementation(group = "com.displee", name = "rs-cache-library", version = "6.7")
-    implementation(group = "org.yaml", name = "snakeyaml", version = "1.26")
-    implementation(
-        group = "com.michael-bull.kotlin-inline-logger",
-        name = "kotlin-inline-logger-jvm",
-        version = "1.0.2"
-    )
-    implementation(group = "org.koin", name = "koin-core", version = koinVersion)
-    implementation(group = "org.koin", name = "koin-logger-slf4j", version = koinVersion)
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.4.2")
 
-    //Logging
-    implementation("org.slf4j:slf4j-api:1.7.30")
+    // Reflection
+    implementation("org.koin", "koin-core", koinVersion)
+    implementation("org.koin", "koin-logger-slf4j", koinVersion)
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
+
+    // Logging
     implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("com.michael-bull.kotlin-inline-logger", "kotlin-inline-logger-jvm", "1.0.2")
+
+    // RuneScape API
+    implementation("com.displee", "rs-cache-library", "6.7")
+    implementation("com.github.michaelbull", "rs-api", "1.1.1")
 
     //Utilities
     implementation("com.google.guava:guava:29.0-jre")
@@ -60,8 +59,11 @@ dependencies {
     implementation("org.postgresql:postgresql:42.2.12")
     implementation("com.zaxxer:HikariCP:3.4.5")
     implementation("it.unimi.dsi:fastutil:8.3.1")
-    implementation("com.github.michaelbull", "rs-api", "1.1.1")
     implementation("com.zaxxer", "HikariCP", "2.3.2")
+    implementation("org.yaml", "snakeyaml", "1.26")
+
+    // Network
+    implementation("io.netty:netty-all:4.1.44.Final")
 
     //Testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
