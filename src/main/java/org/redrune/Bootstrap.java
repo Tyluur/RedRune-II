@@ -33,8 +33,6 @@ import org.redrune.utility.game.repository.object.door.DoorRepository;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static org.redrune.utility.functions.ArgumentParser.parseArgs;
-
 /**
  * This class runs the server
  *
@@ -49,8 +47,6 @@ public final class Bootstrap {
 	public static void main(String[] args) {
 		// making sure the RedRune logger is used before anything is printed
 		System.setOut(new OutLogger(System.out));
-		// parsing the arguments
-		parseArgs(args);
 		// startup work
 		initialize();
 	}
