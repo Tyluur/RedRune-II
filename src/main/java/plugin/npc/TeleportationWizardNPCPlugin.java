@@ -32,7 +32,6 @@ public class TeleportationWizardNPCPlugin implements NPCPlugin {
 	
 	@Override
 	public void register() {
-		registerNPC(14332, "Talk-to");
-		registerNPC(14332, "Previous");
+		registerNPC(9434, "Talk-to");
 	}
 }

@@ -232,5 +232,14 @@
       "plane": 0
     },
     "direction": "EAST"
+  },
+  {
+    "npcId": 9434,
+    "tile": {
+      "x": 3084,
+      "y": 3506,
+      "plane": 0
+    },
+    "direction": "SOUTH"
   }
 ]
