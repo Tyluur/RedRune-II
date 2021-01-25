@@ -30,6 +30,7 @@ import org.redrune.utility.game.map.MapArchiveKeys;
 import org.redrune.utility.game.repository.object.climbable.ClimbableObjectRepository;
 import org.redrune.utility.game.repository.object.door.DoorRepository;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static org.redrune.utility.functions.ArgumentParser.parseArgs;
@@ -62,10 +63,13 @@ public final class Bootstrap {
 	 * This is a blocking method due to {@link BootHandler#await()}
 	 */
 	private static void initialize() {
+		try {
+			Cache.initialize();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		BootHandler.addWork(() -> {
 			try {
-				System.out.println("Initializing cache");
-				Cache.initialize();
 				System.out.println("Initializing system");
 				SystemManager.initialize();
 				ShopRepository.registerAll();
