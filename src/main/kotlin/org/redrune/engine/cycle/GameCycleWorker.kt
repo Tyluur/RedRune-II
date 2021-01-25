@@ -1,86 +1,84 @@
-package org.redrune.engine.cycle;
+package org.redrune.engine.cycle
 
-import org.redrune.engine.SystemManager;
-import org.redrune.game.global.World;
-import org.redrune.utility.functions.Misc;
+import com.github.michaelbull.logging.InlineLogger
+import org.redrune.engine.SystemManager
+import org.redrune.game.global.World
+import org.redrune.utility.functions.Misc
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+class GameCycleWorker : Runnable {
 
-public final class GameCycleWorker implements Runnable {
-	
-	/**
-	 * The timestamp of the end of the last cycle
-	 */
-	public static long lastCycleTime;
-	
-	/**
-	 * The amount of ticks that have passed since the game started
-	 */
-	private static int ticksPassed = 0;
-	
-	/**
-	 * The instance of the update sequence
-	 */
-	private final UpdateSequence updateSequence = new UpdateSequence();
-	
-	/**
-	 * The executor.
-	 */
-	private final Executor EXECUTOR = Executors.newSingleThreadExecutor();
-	
-	/**
-	 * If the major update worker has started.
-	 */
-	private boolean started;
-	
-	public GameCycleWorker() {
-	
-	}
+    /**
+     * The instance of the update sequence
+     */
+    private val updateSequence = UpdateSequence()
 
-    public static int getTicksPassed() {
-        return GameCycleWorker.ticksPassed;
+    /**
+     * The executor.
+     */
+    private val executor: Executor = Executors.newSingleThreadExecutor()
+
+    /**
+     * If the major update worker has started.
+     */
+    private var started = false
+
+    override fun run() {
+        while (!SystemManager.shutdown) {
+            val currentTime = Misc.currentTimeMillis()
+            try {
+                updateSequence.fire(World.getLobbyPlayers(), World.getPlayers(), World.getNPCs())
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+            sleepThread(currentTime)
+        }
     }
 
-    @Override
-	public final void run() {
-		while (!SystemManager.shutdown) {
-			long currentTime = Misc.currentTimeMillis();
-			try {
-				updateSequence.fire(World.getLobbyPlayers(), World.getPlayers(), World.getNPCs());
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-			sleepThread(currentTime);
-		}
-	}
-	
-	/**
-	 * Handles the sleeping of the thread
-	 */
-	private void sleepThread(long startTime) {
-		lastCycleTime = Misc.currentTimeMillis();
-		long sleepTime = (600 + (startTime - lastCycleTime));
-		if (sleepTime <= 0) {
-			return;
-		}
-		ticksPassed++;
-		try {
-			Thread.sleep(sleepTime);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Starts the worker
-	 */
-	public void start() {
-		if (started) {
-			return;
-		}
-		started = true;
-		EXECUTOR.execute(GameCycleWorker.this);
-		System.out.println("Main game cycle worker started.");
-	}
+    /**
+     * Handles the sleeping of the thread
+     */
+    private fun sleepThread(startTime: Long) {
+        lastCycleTime = Misc.currentTimeMillis()
+        val sleepTime = 600 + (startTime - lastCycleTime)
+        if (sleepTime <= 0) {
+            return
+        }
+        ticksPassed++
+        try {
+            Thread.sleep(sleepTime)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Starts the worker
+     */
+    fun start() {
+        if (started) {
+            return
+        }
+        started = true
+        executor.execute(this@GameCycleWorker)
+        logger.info { "Main game cycle worker started." }
+    }
+
+    companion object {
+
+        private val logger = InlineLogger()
+
+        /**
+         * The timestamp of the end of the last cycle
+         */
+        var lastCycleTime: Long = 0
+
+        /**
+         * The amount of ticks that have passed since the game started
+         */
+        @JvmStatic
+        var ticksPassed = 0
+            private set
+    }
 }

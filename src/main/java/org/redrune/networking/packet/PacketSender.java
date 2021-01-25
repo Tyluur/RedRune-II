@@ -19,8 +19,8 @@ import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.DynamicRegion;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.game.global.worldlist.WorldEntry;
-import org.redrune.game.global.worldlist.WorldList;
+import org.redrune.global.wordlist.WorldEntry;
+import org.redrune.global.wordlist.WorldList;
 import org.redrune.networking.NetworkSession;
 import org.redrune.networking.packet.outgoing.impl.MessagePacketBuilder;
 import org.redrune.utility.constants.GameConstants;
@@ -1297,26 +1297,26 @@ public class PacketSender {
 		packet.writeByte(1);// This was 0
 		packet.writeByte(2);
 		packet.writeByte(full ? 1 : 0);
-		int size = WorldList.getWorlds().size();
+		int size = WorldList.INSTANCE.getWorlds().size();
 		if (full) {
 			packet.writeSmart(size);
-			for (WorldEntry world : WorldList.getWorlds().values()) {
+			for (WorldEntry world : WorldList.INSTANCE.getWorlds().values()) {
 				packet.writeSmart(world.getCountryId());
 				packet.writeString(world.getCountryName());
 			}
 			packet.writeSmart(0);
 			packet.writeSmart(size + 1);
 			packet.writeSmart(size);
-			for (int world = 1; world <= WorldList.getWorlds().size(); world++) {
+			for (int world = 1; world <= WorldList.INSTANCE.getWorlds().size(); world++) {
 				packet.writeSmart(world); // wid
 				packet.writeByte(0); // loc (idx in list) ^ KEEP THIS 0
-				packet.writeInt(WorldList.getWorlds().get(world).getFlag());
-				packet.writeString(WorldList.getWorlds().get(world).getActivity()); // activity
-				packet.writeString(WorldList.getWorlds().get(world).getIp()); // ip
+				packet.writeInt(WorldList.INSTANCE.getWorlds().get(world).getFlag());
+				packet.writeString(WorldList.INSTANCE.getWorlds().get(world).getActivity()); // activity
+				packet.writeString(WorldList.INSTANCE.getWorlds().get(world).getIp()); // ip
 			}
 			packet.writeInt(0x94DA4A87);
 		}
-		for (int world = 1; world <= WorldList.getWorlds().size(); world++) {
+		for (int world = 1; world <= WorldList.INSTANCE.getWorlds().size(); world++) {
 			packet.writeSmart(world); // wid
 			packet.writeShort(1337/*WorldList.getWorlds().get(world)*/);
 		}

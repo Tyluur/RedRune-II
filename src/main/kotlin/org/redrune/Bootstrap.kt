@@ -18,11 +18,10 @@ import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder
 import org.redrune.game.entity.actor.player.link.FriendChatsManager
 import org.redrune.game.global.map.region.RegionBuilder
 import org.redrune.game.global.punishment.PunishmentRepository
-import org.redrune.game.global.worldlist.WorldList
+import org.redrune.global.wordlist.WorldList
 import org.redrune.networking.NetworkBinder
 import org.redrune.networking.packet.incoming.IncomingPacketRepository
 import org.redrune.utility.constants.PacketConstants
-import org.redrune.utility.functions.OutLogger
 import org.redrune.utility.game.entity.`object`.ObjectRemoval
 import org.redrune.utility.game.entity.`object`.ObjectSpawning
 import org.redrune.utility.game.entity.actor.player.Censor

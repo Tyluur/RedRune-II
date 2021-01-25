@@ -1,7 +1,7 @@
 package org.redrune.networking.packet.outgoing.impl;
 
-import org.redrune.game.global.worldlist.WorldEntry;
-import org.redrune.game.global.worldlist.WorldList;
+import org.redrune.global.wordlist.WorldEntry;
+import org.redrune.global.wordlist.WorldList;
 import org.redrune.networking.packet.Packet;
 import org.redrune.networking.packet.PacketBuilder;
 import org.redrune.networking.packet.PacketType;
@@ -28,28 +28,28 @@ public class WorldListPacketBuilder extends OutgoingPacketBuilder {
 		bldr.writeByte(1);// This was 0
 		bldr.writeByte(2);
 		bldr.writeByte(full ? 1 : 0);
-		int size = WorldList.getWorlds().size();
+		int size = WorldList.INSTANCE.getWorlds().size();
 		if (full) {
 			bldr.writeSmart(size);
-			for (WorldEntry world : WorldList.getWorlds().values()) {
+			for (WorldEntry world : WorldList.INSTANCE.getWorlds().values()) {
 				bldr.writeSmart(world.getCountryId());
 				bldr.writeGJString(world.getCountryName());
 			}
 			bldr.writeSmart(0);
 			bldr.writeSmart(size + 1);
 			bldr.writeSmart(size);
-			for (int world = 1; world <= WorldList.getWorlds().size(); world++) {
+			for (int world = 1; world <= WorldList.INSTANCE.getWorlds().size(); world++) {
 				bldr.writeSmart(world); // wid
 				bldr.writeByte(0); // loc (idx in list) ^ KEEP THIS 0
-				bldr.writeInt(WorldList.getWorlds().get(world).getFlag());
-				bldr.writeGJString(WorldList.getWorlds().get(world).getActivity()); // activity
-				bldr.writeGJString(WorldList.getWorlds().get(world).getIp()); // ip
+				bldr.writeInt(WorldList.INSTANCE.getWorlds().get(world).getFlag());
+				bldr.writeGJString(WorldList.INSTANCE.getWorlds().get(world).getActivity()); // activity
+				bldr.writeGJString(WorldList.INSTANCE.getWorlds().get(world).getIp()); // ip
 			}
 			bldr.writeInt(0x94DA4A87);
 		}
-		for (int world = 1; world <= WorldList.getWorlds().size(); world++) {
+		for (int world = 1; world <= WorldList.INSTANCE.getWorlds().size(); world++) {
 			bldr.writeSmart(world); // wid
-			bldr.writeShort(1337/*WorldList.getWorlds().get(world)*/);
+			bldr.writeShort(1337/*WorldList.INSTANCE.getWorlds().get(world)*/);
 		}
 		return bldr.toPacket();
 	}

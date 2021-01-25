@@ -1,34 +1,41 @@
-package org.redrune.game.global.worldlist;
+package org.redrune.global.wordlist
 
-import java.util.HashMap;
-
-import static org.redrune.game.global.worldlist.WorldListConstants.*;
+import com.github.michaelbull.logging.InlineLogger
+import java.util.*
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 8/30/2017
  */
-public class WorldList {
-	
-	/**
-	 * The map of world entries
-	 */
-	private static final HashMap<Integer, WorldEntry> WORLDS = new HashMap<>();
-	
-	/**
-	 * Registers all worlds
-	 */
-	public static void initialize() {
-		WORLDS.put(1, new WorldEntry("Game Server", "127.0.0.1", 38, FLAG_MEMBERS | FLAG_LOOTSHARE | FLAG_HIGHLIGHT, "Canada", true));
-		WORLDS.put(2, new WorldEntry("PvP World", "127.0.0.1", 38, FLAG_MEMBERS | FLAG_LOOTSHARE | FLAG_HIGH_RISK, "Canada", true));
-		System.out.println("Loaded " + WORLDS.size() + " worlds");
-	}
-	
-	/**
-	 * Gets all the worlds
-	 */
-	public static HashMap<Integer, WorldEntry> getWorlds() {
-		return WORLDS;
-	}
-	
+object WorldList {
+    /**
+     * The map of world entries
+     */
+    val worlds = HashMap<Int, WorldEntry>()
+
+    /**
+     * Registers all worlds
+     */
+    fun initialize() {
+        worlds[1] = WorldEntry(
+            "Game Server",
+            "127.0.0.1",
+            38,
+            WorldListConstants.FLAG_MEMBERS or WorldListConstants.FLAG_LOOTSHARE or WorldListConstants.FLAG_HIGHLIGHT,
+            "Canada",
+            true
+        )
+        worlds[2] = WorldEntry(
+            "PvP World",
+            "127.0.0.1",
+            38,
+            WorldListConstants.FLAG_MEMBERS or WorldListConstants.FLAG_LOOTSHARE or WorldListConstants.FLAG_HIGH_RISK,
+            "Canada",
+            true
+        )
+        logger.info { "Loaded " + worlds.size + " worlds" }
+    }
+
+    private val logger = InlineLogger()
+
 }
