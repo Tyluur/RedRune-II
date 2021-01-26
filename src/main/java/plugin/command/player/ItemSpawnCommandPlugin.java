@@ -1,4 +1,4 @@
-package plugin.command.administrator;
+package plugin.command.player;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.CommandPlugin;
@@ -6,19 +6,20 @@ import plugin.command.CommandManifest;
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
- * @since 9/8/2017
+ * @since 9/1/2017
  */
-@CommandManifest(description = "Sets your prayer book [1/2]", types = { Integer.class })
-public class SetPrayerBookCommandPlugin extends CommandPlugin {
+@CommandManifest(description = "Spawns an item", types = { Integer.class })
+public class ItemSpawnCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		int bookId = intParam(args, 1);
-		player.getPrayer().setPrayerBook(bookId == 2);
+		int itemId = intParam(args, 1);
+		int amount = intParamOrDefault(args, 2, 1);
+		player.getInventory().addItem(itemId, amount);
 	}
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("setprayerbook");
+		return arguments("item", "pickup");
 	}
 }

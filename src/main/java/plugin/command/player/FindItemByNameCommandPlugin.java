@@ -1,4 +1,4 @@
-package plugin.command.administrator;
+package plugin.command.player;
 
 import org.redrune.cache.loaders.ItemDefinitions;
 import org.redrune.game.entity.actor.player.Player;

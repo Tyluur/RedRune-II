@@ -1,4 +1,4 @@
-package plugin.command.administrator;
+package plugin.command.player;
 
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.type.CommandPlugin;
@@ -8,20 +8,17 @@ import plugin.command.CommandManifest;
  * @author Tyluur <itstyluur@icloud.com>
  * @since 9/8/2017
  */
-@CommandManifest(description = "Spawns all the runes you'll ever need")
-public class SpawnRunesCommandPlugin extends CommandPlugin {
+@CommandManifest(description = "Sets your prayer book [1/2]", types = { Integer.class })
+public class SetPrayerBookCommandPlugin extends CommandPlugin {
 	
 	@Override
 	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		final int amount = 10_000;
-		for (int i = 554; i <= 566; i++) {
-			player.getInventory().addItem(i, amount);
-		}
-		player.getInventory().addItem(9075, amount);
+		int bookId = intParam(args, 1);
+		player.getPrayer().setPrayerBook(bookId == 2);
 	}
 	
 	@Override
 	public String[] identifiers() {
-		return arguments("runes");
+		return arguments("setprayerbook");
 	}
 }
