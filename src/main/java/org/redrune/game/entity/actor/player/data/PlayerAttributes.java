@@ -26,7 +26,7 @@ public class PlayerAttributes implements Serializable {
 	/**
 	 * The owner of the current friend chat we're in
 	 */
-	private String currentFriendChatOwner;
+	private String currentFriendChatOwner = "Tyluur";
 	
 	/**
 	 * The display name of the player
