@@ -250,5 +250,14 @@
       "plane": 0
     },
     "direction": "WEST"
+  },
+  {
+    "npcId": 599,
+    "tile": {
+      "x": 3083,
+      "y": 3494,
+      "plane": 0
+    },
+    "direction": "NORTH"
   }
 ]
