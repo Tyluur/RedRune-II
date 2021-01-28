@@ -158,7 +158,7 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 		final Hit hit = new Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
 		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
 		target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
-		
+		handleEffects(source, target, hit);
 		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {
