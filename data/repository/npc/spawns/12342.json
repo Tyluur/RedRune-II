@@ -207,33 +207,6 @@
     "direction": "NORTH"
   },
   {
-    "npcId": 549,
-    "tile": {
-      "x": 3105,
-      "y": 3501,
-      "plane": 0
-    },
-    "direction": "WEST"
-  },
-  {
-    "npcId": 6537,
-    "tile": {
-      "x": 3091,
-      "y": 3510,
-      "plane": 0
-    },
-    "direction": "EAST"
-  },
-  {
-    "npcId": 6539,
-    "tile": {
-      "x": 3091,
-      "y": 3495,
-      "plane": 0
-    },
-    "direction": "EAST"
-  },
-  {
     "npcId": 9434,
     "tile": {
       "x": 3084,
@@ -259,5 +232,14 @@
       "plane": 0
     },
     "direction": "NORTH"
+  },
+  {
+    "npcId": 6537,
+    "tile": {
+      "x": 3091,
+      "y": 3495,
+      "plane": 0
+    },
+    "direction": "EAST"
   }
 ]
