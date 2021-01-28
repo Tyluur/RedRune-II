@@ -15,7 +15,7 @@ public abstract class InputEvent {
 	 * Handles the input of data over the dialogue box
 	 */
 	public abstract void handleInput();
-	
+
 	/**
 	 * Gets the type of input event this is
 	 *
