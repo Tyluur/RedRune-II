@@ -359,20 +359,23 @@ public final class CombatDefinitions implements Serializable {
 	
 	public void handleSoaking(Actor source, Hit hit) {
 		if (hit.getSplat() == HitSplat.MELEE_DAMAGE) {
-			int reducedDamage = hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] / 100;
-			if (reducedDamage > 0) {
+			int reducedDamage = (hit.getDamage() - 200)
+					* hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] / 100;
+			if (reducedDamage > 0 && hit.getDamage() - reducedDamage > 200) {
 				hit.setDamage(hit.getDamage() - reducedDamage);
 				hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 			}
 		} else if (hit.getSplat() == HitSplat.RANGE_DAMAGE) {
-			int reducedDamage = hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] / 100;
-			if (reducedDamage > 0) {
+			int reducedDamage = (hit.getDamage() - 200)
+					* getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] / 100;
+			if (reducedDamage > 0 && hit.getDamage() - reducedDamage > 200) {
 				hit.setDamage(hit.getDamage() - reducedDamage);
 				hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 			}
 		} else if (hit.getSplat() == HitSplat.MAGIC_DAMAGE) {
-			int reducedDamage = hit.getDamage() * getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] / 100;
-			if (reducedDamage > 0) {
+			int reducedDamage = (hit.getDamage() - 200)
+					* getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] / 100;
+			if (reducedDamage > 0 && hit.getDamage() - reducedDamage > 200) {
 				hit.setDamage(hit.getDamage() - reducedDamage);
 				hit.setSoaking(new Hit(source, reducedDamage, HitSplat.ABSORB_DAMAGE));
 			}

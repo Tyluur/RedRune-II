@@ -16,6 +16,7 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.utility.functions.Misc;
 
 import java.util.Optional;
 
@@ -122,6 +123,34 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 		int weaponId = source.isPlayer() ? source.toPlayer().getEquipment().getWeaponId() : 0;
 		int combatStyle = source.isPlayer() ? source.toPlayer().getCombatDefinitions().getAttackStyle() : source.toNPC().getCombatDefinitions().getAttackStyle();
 		return CombatRoll.randomizeHit(calculator.getMaximumHit(source, multiplier), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
+	}
+
+	@Override
+	public void handleEffects(Player source, Actor target, Hit hit) {
+		if (target instanceof Player) {
+			Player p2 = (Player) target;
+			int shieldId = p2.getEquipment().getShieldId();
+			if (shieldId == 13740) {//divine
+				int drain = (int) (Math.ceil(hit.getDamage() * 0.3) / 2);
+				if (p2.getPrayer().getPrayerpoints() >= drain) {
+					hit.setDamage((int) (hit.getDamage() * 0.70));
+					p2.getPrayer().drainPrayer(drain);
+				}
+			}
+			if (Misc.getRandom(100) <= 70) {//elysian
+				hit.setDamage((int) (hit.getDamage() * 0.75));
+			}
+			if (p2.getPrayer().hasPrayersOn() && hit.getDamage() != 0) {
+				p2.getPrayer().handleCombatDeflection(source, hit);
+			}
+			if (hit.getDamage() >= 200) {
+				p2.getCombatDefinitions().handleSoaking(source, hit);
+			}
+			if (p2.getAttributes().getPolDelay() > Misc.currentTimeMillis()) {
+				hit.setDamage((int) (hit.getDamage() * 0.5));
+			}
+			p2.getPrayer().handleCurseBoosts(source, hit);
+		}
 	}
 	
 	@Override

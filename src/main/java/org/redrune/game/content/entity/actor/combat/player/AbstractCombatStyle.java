@@ -78,6 +78,12 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 		}
 	}
 
+	/**
+	 * Handles effects like protection prayers, soulsplit, spirit shields etc.
+	 */
+
+	public abstract void handleEffects(Player source, Actor target, Hit hit);
+
     public AbstractCombatCalculator getCalculator() {
         return this.calculator;
     }
