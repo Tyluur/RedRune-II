@@ -1,5 +1,8 @@
 package org.redrune.utility.game.map;
 
+import org.redrune.game.global.WorldTile;
+import org.redrune.utility.functions.Misc;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel.MapMode;
@@ -11,22 +14,41 @@ import java.util.Map;
  * @since 8/30/2017
  */
 public class MapArchiveKeys {
-	
+
 	/**
 	 * The path to packed xteas
 	 */
 	private static final String PACKED_FILE_PATH = "data/repository/map/packedKeys.bin";
-	
+
 	/**
 	 * The path to unpacked exteas
 	 */
 	private static final String UNPACKED_FILE_PATH = "data/repository/map/containersXteas/workingkeys/";
-	
+
 	/**
 	 * MapKeys.
 	 */
 	private static Map<Integer, int[]> mapKeys = new HashMap<>();
-	
+
+	public static final boolean isAtArea(String areaName, WorldTile tile) {
+		return isAtArea(Misc.getNameHash(areaName), tile);
+	}
+
+	public static final boolean isAtArea(int areaNameHash, WorldTile tile) {
+		int[] coordsList = mapKeys.get(areaNameHash);
+		if (coordsList == null)
+			return false;
+		int index = 0;
+		while (index < coordsList.length) {
+			if (tile.getPlane() == coordsList[index] && tile.getX() >= coordsList[index + 1]
+					&& tile.getX() <= coordsList[index + 2] && tile.getY() >= coordsList[index + 3]
+					&& tile.getY() <= coordsList[index + 4])
+				return true;
+			index += 5;
+		}
+		return false;
+	}
+
 	/**
 	 * Initiating void.
 	 */
@@ -41,7 +63,7 @@ public class MapArchiveKeys {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Loads xteas from the packed file
 	 *
@@ -67,7 +89,7 @@ public class MapArchiveKeys {
 		raf.close();
 		return true;
 	}
-	
+
 	/**
 	 * Loads xteas from the unpacked file location and packs them into the file {@link #PACKED_FILE_PATH}
 	 */
@@ -103,7 +125,7 @@ public class MapArchiveKeys {
 		}
 		output.close();
 	}
-	
+
 	/**
 	 * Gets the keys of a regionId
 	 *
@@ -113,5 +135,5 @@ public class MapArchiveKeys {
 	public static int[] getKey(int regionId) {
 		return mapKeys.get(regionId);
 	}
-	
+
 }
