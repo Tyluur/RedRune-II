@@ -42,6 +42,8 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
                 source.getPackets().sendMessage("This weapon has no special attack registered; please report this on forums.");
                 return false;
             }
+            if (source.getCombatDefinitions().hasRingOfVigour())
+                energy *= 0.9;
             source.getCombatDefinitions().switchUsingSpecialAttack();
             if (source.getCombatDefinitions().getSpecialAttackPercentage() < energy) {
                 source.getPackets().sendMessage("You don't have enough power left.");

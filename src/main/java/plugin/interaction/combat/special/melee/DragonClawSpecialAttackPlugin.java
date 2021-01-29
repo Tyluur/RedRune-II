@@ -6,6 +6,7 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
+import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.RandomFunction;
 
 /**
@@ -13,38 +14,43 @@ import org.redrune.utility.functions.RandomFunction;
  * @since 9/5/2017
  */
 public class DragonClawSpecialAttackPlugin extends SpecialAttackPlugin {
-	
+
 	private static final Animation ANIMATION = new Animation(10961);
-	
+
 	private static final Graphics GRAPHICS = new Graphics(1950);
-	
+
 	@Override
 	public int[] getWeaponIds() {
 		return arguments(14484, 23695);
 	}
-	
+
 	@Override
 	public void fire(Player source, Actor target, AbstractCombatStyle style) {
 		source.setNextAnimation(ANIMATION);
 		source.setNextGraphics(GRAPHICS);
-		int[] hits;
+		int[] hits = new int[]{0, 1};
 		int hit = style.getRandomDamage(source, target, 1);
-		if (hit > 0) {
+		for (int i = 20; i <= 80; i += 20)// all 4 d claw specs in right timing
+			source.getPackets().sendSound(7464, i, 1);
+		if (hit > 100) {
 			hits = new int[] { hit, hit / 2, (hit / 2) / 2, (hit / 2) - ((hit / 2) / 2) };
 		} else {
 			hit = style.getRandomDamage(source, target, 1);
-			if (hit > 0) {
+			if (hit > 100) {
 				hits = new int[] { 0, hit, hit / 2, hit - (hit / 2) };
 			} else {
 				hit = style.getRandomDamage(source, target, 1);
-				if (hit > 0) {
+				if (hit > 100) {
 					hits = new int[] { 0, 0, hit / 2, (hit / 2) + 10 };
 				} else {
 					hit = style.getRandomDamage(source, target, 1);
-					if (hit > 0) {
-						hits = new int[] { 0, 0, 0, (int) (hit * 1.5) };
+					if (hit > 100) {
+						hits = new int[] { 0, 0, 0, (int) (hit) };
 					} else {
-						hits = new int[] { 0, 0, 0, RandomFunction.getRandom(7) };
+						int[] miss = {Misc.random(10), Misc.random(10)};
+						for (int i = 0; i < miss.length; i++) {
+							style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), miss[i], 0);
+						}
 					}
 				}
 			}
