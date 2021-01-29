@@ -1061,6 +1061,26 @@ public abstract class Actor extends WorldTile implements Entity {
 			}
 		}
 	}
+
+	private transient long teleblockDelay;
+	private transient long teleblockImmunity;
+
+	public boolean isTeleblocked() {
+		return teleblockDelay >= Misc.currentTimeMillis();
+	}
+
+	public boolean hasTeleblockImmunity() {
+		return teleblockImmunity >= Misc.currentTimeMillis();
+	}
+
+	public void teleblock(Entity teleblocker, long time) {
+		teleblockDelay = time + Misc.currentTimeMillis();
+		teleblockImmunity = time + TimeUnit.SECONDS.toMillis(15);
+		if (this.isPlayer()) {
+			Player p2 = (Player) this;
+			p2.getPackets().sendMessage("You have been teleblocked.");
+		}
+	}
 	
 	public boolean freezeDelayed() {
 		return frozenBlocked >= Misc.currentTimeMillis();
