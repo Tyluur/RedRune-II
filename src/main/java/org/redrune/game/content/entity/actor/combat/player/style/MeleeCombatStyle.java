@@ -16,6 +16,7 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
+import org.redrune.utility.functions.Misc;
 
 import java.util.Optional;
 
@@ -123,13 +124,12 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 		int combatStyle = source.isPlayer() ? source.toPlayer().getCombatDefinitions().getAttackStyle() : source.toNPC().getCombatDefinitions().getAttackStyle();
 		return CombatRoll.randomizeHit(calculator.getMaximumHit(source, multiplier), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
 	}
-	
+
 	@Override
 	public CombatSwingDetail sendHit(Player source, Actor target, int maxHit, int damage, int delay) {
 		final Hit hit = new Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit);
 		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
 		target.setNextAnimationNoPriority(new Animation(CombatAlgorithm.getDefenceEmote(target)));
-		
 		WorldTasksManager.schedule(new WorldTask() {
 			@Override
 			public void run() {

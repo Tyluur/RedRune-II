@@ -511,36 +511,12 @@ public class Player extends Actor {
 		if (source == null) {
 			return;
 		}
-		int shieldId = equipment.getShieldId();
-		if (shieldId == 13742) { // elsyian
-			if (Misc.getRandom(100) <= 70) {
-				hit.setDamage((int) (hit.getDamage() * 0.75));
-			}
-		} else if (shieldId == 13740) { // divine
-			int drain = (int) (Math.ceil(hit.getDamage() * 0.3) / 2);
-			if (prayer.getPrayerpoints() >= drain) {
-				hit.setDamage((int) (hit.getDamage() * 0.70));
-				prayer.drainPrayer(drain);
-			}
-		}
-		if (attributes.getPolDelay() > Misc.currentTimeMillis()) {
-			hit.setDamage((int) (hit.getDamage() * 0.5));
-		}
-		if (prayer.hasPrayersOn() && hit.getDamage() != 0) {
-			prayer.handleCombatDeflection(source, hit);
-		}
-		if (hit.getDamage() >= 200) {
-			getCombatDefinitions().handleSoaking(source, hit);
-		}
 		if (getTemporaryAttribute("cast_veng", false) && hit.getDamage() >= 4) {
 			removeTemporaryAttribute("cast_veng");
 			setNextForceTalk(new ForceTalk("Taste vengeance!"));
 			source.applyHit(new Hit(this, (int) (hit.getDamage() * 0.75), HitSplat.REGULAR_DAMAGE));
 		}
-		if (source.isPlayer()) {
-			final Player p2 = source.toPlayer();
-			prayer.handleCurseBoosts(p2, hit);
-		} else if (source.isNPC()) {
+		if (source.isNPC()) {
 			NPC n = source.toNPC();
 			if (n.getId() == 13448) {
 				prayer.sendSoulSplit(hit, n);
