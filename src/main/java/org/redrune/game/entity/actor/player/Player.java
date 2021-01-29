@@ -1,5 +1,6 @@
 package org.redrune.game.entity.actor.player;
 
+import kotlin.jvm.Transient;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
@@ -41,196 +42,197 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class Player extends Actor {
-	
+
 	private static final long serialVersionUID = 2011932556974180375L;
-	
+
 	/**
 	 * The attributes the player has
 	 */
 	private PlayerAttributes attributes;
-	
+
 	/**
 	 * The set of the rights the player has
 	 */
 	private Set<PlayerRight> rights;
-	
+
 	/**
 	 * The password for logging in
 	 */
 	private String password;
-	
+
 	/**
 	 * The appearance handler and container
 	 */
 	private PlayerAppearance appearance;
-	
+
 	/**
 	 * The inventory container and handler
 	 */
 	private PlayerInventory inventory;
-	
+
 	/**
 	 * The equipment container and handler
 	 */
 	private PlayerEquipment equipment;
-	
+
 	/**
 	 * The skill handler and container
 	 */
 	private PlayerSkills skills;
-	
+
 	/**
 	 * The bank handler and container
 	 */
 	private PlayerBank bank;
-	
+
 	/**
 	 * The prayer handler
 	 */
 	private PlayerPrayer prayer;
-	
+
 	/**
 	 * The definitions used for combat events
 	 */
 	private CombatDefinitions combatDefinitions;
-	
+
 	/**
 	 * The manager for {@code Controller}s
 	 */
 	private ControllerManager controllerManager;
-	
+
 	/**
 	 * The handler for music
 	 */
 	private MusicManager musicManager;
-	
+
 	/**
 	 * The handler for emotes
 	 */
 	private EmotesManager emotesManager;
-	
+
 	/**
 	 * The handler for all social interaction
 	 */
 	private ContactManager contactManager;
-	
+
 	/**
 	 * The handler for auras
 	 */
 	private AuraManager auraManager;
-	
+
 	/**
 	 * The instance of the familiar the player owns
 	 */
+	@Transient
 	private Familiar familiar;
-	
+
 	/**
 	 * The handler for items with charges, meaning degradable items
 	 */
 	private ChargesManager charges;
-	
+
 	/**
 	 * The username, saved as a transient because it changes every time the player logs in
 	 */
 	private transient String username;
-	
+
 	/**
 	 * The network session used for the player
 	 */
 	private transient NetworkSession session;
-	
+
 	/**
 	 * The instance of the packet sender
 	 */
 	private transient PacketSender packetSender;
-	
+
 	/**
 	 * The container and handler for interfaces
 	 */
 	private transient InterfaceManager interfaceManager;
-	
+
 	/**
 	 * The handler for dialogues
 	 */
 	private transient DialogueManager dialogueManager;
-	
+
 	/**
 	 * The handler and container for hint icons
 	 */
 	private transient HintIconsManager hintIconsManager;
-	
+
 	/**
 	 * The handler for all game {@link org.redrune.game.content.entity.actor.player.action.Action}s
 	 */
 	private transient ActionManager actionManager;
-	
+
 	/**
 	 * The handler for all game {@link org.redrune.game.content.entity.actor.player.event.Event}s
 	 */
 	private transient EventManager eventManager;
-	
+
 	/**
 	 * The handler for {@link org.redrune.game.content.entity.actor.player.cutscene.Cutscene}s
 	 */
 	private transient CutsceneManager cutsceneManager;
-	
+
 	/**
 	 * The handler for the price checking interface
 	 */
 	private transient PriceCheckManager priceCheckManager;
-	
+
 	/**
 	 * The route event the player is engaged in, contains the task to perform once the destination has been properly
 	 * arrived at as well
 	 */
 	private transient RouteEvent routeEvent;
-	
+
 	/**
 	 * The event to perform when the interfaces we have open are closed
 	 */
 	private transient Runnable closeInterfacesEvent;
-	
+
 	/**
 	 * The handler and container for friends chats
 	 */
 	private transient FriendChatsManager currentFriendChat;
-	
+
 	/**
 	 * The player updating handler
 	 */
 	private transient LocalPlayerUpdate localPlayerUpdate;
-	
+
 	/**
 	 * The npc update handler
 	 */
 	private transient LocalNPCUpdate localNPCUpdate;
-	
+
 	/**
 	 * The var manager
 	 */
 	private transient VarManager varManager;
-	
+
 	/**
 	 * The container and handler for trades
 	 */
 	private transient TradeManager tradeManager;
-	
+
 	/**
 	 * If the player's game session has properly started, this is flagged before {@link #run()} is called
 	 */
 	private transient boolean started;
-	
+
 	/**
 	 * if the player's game session is properly running, this is  flagged after {@link #run()} is called
 	 */
 	private transient boolean running;
-	
+
 	/**
 	 * If the player's game session is finishing, used for x-log prevention, this is flagged during the {@link
 	 * #finish()} process
 	 */
 	private transient boolean finishing;
-	
+
 	public Player(String password) {
 		super(GameConstants.START_PLAYER_LOCATION);
 		setHitpoints(100);
@@ -252,7 +254,7 @@ public class Player extends Actor {
 		rights = new LinkedHashSet<>(Collections.singletonList(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER));
 		SkillCapeCustomizer.resetSkillCapes(this);
 	}
-	
+
 	@Override
 	public void finish() {
 		if (finishing || isFinished()) {
@@ -274,22 +276,22 @@ public class Player extends Actor {
 		}
 		realFinish();
 	}
-	
+
 	@Override
 	public double getMagePrayerMultiplier() {
 		return 0.6;
 	}
-	
+
 	@Override
 	public double getRangePrayerMultiplier() {
 		return 0.6;
 	}
-	
+
 	@Override
 	public double getMeleePrayerMultiplier() {
 		return 0.6;
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -308,17 +310,17 @@ public class Player extends Actor {
 		attributes.setRunEnergy(100);
 		appearance.generateAppearanceData();
 	}
-	
+
 	@Override
 	public int getMaxHitpoints() {
 		return skills.getLevel(SkillConstants.HITPOINTS) * 10 + equipment.getEquipmentHpIncrease();
 	}
-	
+
 	@Override
 	public int getSize() {
 		return appearance.getSize();
 	}
-	
+
 	@Override
 	public boolean restoreHitPoints() {
 		boolean update = super.restoreHitPoints();
@@ -333,25 +335,25 @@ public class Player extends Actor {
 		}
 		return update;
 	}
-	
+
 	@Override
 	public boolean needMasksUpdate() {
 		return super.needMasksUpdate() || attributes.getTemporaryMovementType() != 0 || attributes.isUpdateMovementType();
 	}
-	
+
 	@Override
 	public void resetMasks() {
 		super.resetMasks();
 		attributes.setTemporaryMovementType(0);
 		attributes.setUpdateMovementType(false);
-		
+
 		if (!attributes.clientHasLoadedMapRegion()) {
 			attributes.setClientHasLoadedMapRegion();
 			getPackets().refreshSpawnedObjects();
 			getPackets().refreshSpawnedItems();
 		}
 	}
-	
+
 	@Override
 	public void processEntity() {
 		session.processContextQueue();
@@ -393,7 +395,7 @@ public class Player extends Actor {
 		prayer.processPrayer();
 		controllerManager.process();
 	}
-	
+
 	@Override
 	public void processReceivedHits() {
 		if (getLocks().isTeleportLocked()) {
@@ -401,7 +403,7 @@ public class Player extends Actor {
 		}
 		super.processReceivedHits();
 	}
-	
+
 	@Override
 	public void loadMapRegions() {
 		boolean wasAtDynamicRegion = isAtDynamicRegion();
@@ -426,13 +428,13 @@ public class Player extends Actor {
 		}
 		attributes.setForceNextMapLoadRefresh(false);
 	}
-	
+
 	@Override
 	public void removeHitpoints(Hit hit) {
 		super.removeHitpoints(hit);
 		refreshHitPoints();
 	}
-	
+
 	@Override
 	public void sendDeath(final Actor source) {
 		if (prayer.hasPrayersOn() && getTemporaryAttributes().get("startedDuel") != Boolean.TRUE) {
@@ -454,7 +456,7 @@ public class Player extends Actor {
 		final Player thisPlayer = this;
 		WorldTasksManager.schedule(new WorldTask() {
 			int loop;
-			
+
 			@Override
 			public void run() {
 				if (loop == 0) {
@@ -480,13 +482,13 @@ public class Player extends Actor {
 			}
 		}, 0, 1);
 	}
-	
+
 	@Override
 	public void heal(int ammount, int extra) {
 		super.heal(ammount, extra);
 		refreshHitPoints();
 	}
-	
+
 	@Override
 	public void handleIncomingHit(final Hit hit) {
 		if (hit.getSplat() != HitSplat.MELEE_DAMAGE && hit.getSplat() != HitSplat.RANGE_DAMAGE && hit.getSplat() != HitSplat.MAGIC_DAMAGE) {
@@ -523,7 +525,7 @@ public class Player extends Actor {
 			}
 		}
 	}
-	
+
 	@Override
 	public void setRunModeOn(boolean runModeOn) {
 		if (runModeOn != isRunModeOn()) {
@@ -532,7 +534,7 @@ public class Player extends Actor {
 			getPackets().sendRunButtonConfig();
 		}
 	}
-	
+
 	@Override
 	public void checkMultiArea() {
 		if (!started) {
@@ -547,30 +549,30 @@ public class Player extends Actor {
 			getPackets().sendGlobalConfig(616, 0);
 		}
 	}
-	
+
 	public void refreshHitPoints() {
 		getPackets().sendConfigByFile(7198, getHitpoints());
 	}
-	
+
 	public PacketSender getPackets() {
 		return packetSender;
 	}
-	
+
 	@Override
 	public Player toPlayer() {
 		return this;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		return o instanceof Player && ((Player) o).getUsername().equals(username);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Player{" + "username='" + username + '\'' + ", rights=" + rights + '}';
 	}
-	
+
 	public void setRouteEvent(RouteEvent routeEvent) {
 		this.routeEvent = routeEvent;
 		// so when a route event is set it auto-processes it
@@ -578,7 +580,7 @@ public class Player extends Actor {
 			setRouteEvent(null);
 		}
 	}
-	
+
 	public void initializeLobby(String username, NetworkSession networkSession) {
 		this.username = username;
 		this.session = networkSession;
@@ -590,7 +592,7 @@ public class Player extends Actor {
 		}
 		System.out.println("Initialized Player: " + username);
 	}
-	
+
 	/**
 	 * Gives the player the right
 	 *
@@ -600,7 +602,7 @@ public class Player extends Actor {
 	public void giveRight(PlayerRight right) {
 		this.rights.add(right);
 	}
-	
+
 	public void initializeGameSession(String username, NetworkSession session, int displayMode, int screenWidth, int screenHeight) {
 		// temporary deleted after reset all chars
 		this.username = username;
@@ -648,7 +650,7 @@ public class Player extends Actor {
 		System.out.println("Player Logged in: " + username);
 		System.out.println(World.getPlayers());
 	}
-	
+
 	// now that we inited we can start showing game
 	public void start() {
 		loadMapRegions();
@@ -658,12 +660,12 @@ public class Player extends Actor {
 			sendDeath(null);
 		}
 	}
-	
+
 	public void setRunHidden(boolean run) {
 		super.setRunModeOn(run);
 		attributes.setUpdateMovementType(true);
 	}
-	
+
 	public void run() {
 		if (SystemManager.shutdownStart != 0) {
 			int delayPassed = (int) ((Misc.currentTimeMillis() - SystemManager.shutdownStart) / 1000);
@@ -711,19 +713,19 @@ public class Player extends Actor {
 		getEmotesManager().refreshListConfigs();
 		musicManager.init();
 		emotesManager.refreshListConfigs();
-		
+
 		if (attributes.getCurrentFriendChatOwner() != null) {
 			FriendChatsManager.joinChat(attributes.getCurrentFriendChatOwner(), this);
 			if (currentFriendChat == null) {
 				attributes.setCurrentFriendChatOwner(null);
 			}
 		}
-		
+
 		// Checks for familiars.
 		if (familiar != null) {
 			familiar.respawnFamiliar(this);
 		}
-		
+
 		attributes.setLastIP(getSession().getIPAddress());
 		running = true;
 		attributes.setUpdateMovementType(true);
@@ -731,7 +733,7 @@ public class Player extends Actor {
 		controllerManager.login(); // checks what to do on login after welcome "Log in"
 		OwnedObjectManager.linkKeys(this);
 	}
-	
+
 	public void logout(boolean lobby) {
 		if (!running) {
 			return;
@@ -748,16 +750,16 @@ public class Player extends Actor {
 		getPackets().sendLogout(lobby);
 		running = false;
 	}
-	
+
 	public void forceOffline() {
 		realFinish();
 		getPackets().sendLogout(false);
 	}
-	
+
 	public void finishLobby() {
 		World.removePlayer(this, true);
 	}
-	
+
 	public void realFinish() {
 		if (isFinished()) {
 			return;
@@ -779,15 +781,15 @@ public class Player extends Actor {
 		World.removePlayer(this, false);
 		System.out.println("Finished Player: " + username);
 	}
-	
+
 	public void stopAll() {
 		stopAll(true);
 	}
-	
+
 	public void stopAll(boolean stopWalk) {
 		stopAll(stopWalk, true);
 	}
-	
+
 	// as walk done clientsided
 	public void stopAll(boolean stopWalk, boolean stopInterfaces) {
 		routeEvent = null;
@@ -802,7 +804,7 @@ public class Player extends Actor {
 		getInteractionManager().cancelActorInteraction();
 		setNextFaceActor(null);
 	}
-	
+
 	public void closeInterfaces() {
 		if (interfaceManager.containsScreenInter()) {
 			interfaceManager.closeScreenInterface();
@@ -816,7 +818,7 @@ public class Player extends Actor {
 			closeInterfacesEvent = null;
 		}
 	}
-	
+
 	public void sendItemsOnDeath(Player killer) {
 		charges.die();
 		auraManager.removeAura();
@@ -863,11 +865,11 @@ public class Player extends Actor {
 			RegionManager.addGroundItem(item, getLastWorldTile(), killer, true, 180, true);
 		}
 	}
-	
+
 	public void useStairs(int emoteId, final WorldTile dest, int useDelay, int totalDelay) {
 		useStairs(emoteId, dest, useDelay, totalDelay, null);
 	}
-	
+
 	public void useStairs(int emoteId, final WorldTile dest, int useDelay, int totalDelay, final String message) {
 		stopAll();
 		getLocks().lock((int) (long) totalDelay);
@@ -891,7 +893,7 @@ public class Player extends Actor {
 			}, useDelay - 1);
 		}
 	}
-	
+
 	public void sendPublicChatMessage(PublicChatMessage message) {
 		for (int regionId : getMapRegionsIds()) {
 			List<Integer> playersIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
@@ -907,14 +909,14 @@ public class Player extends Actor {
 			}
 		}
 	}
-	
+
 	/**
 	 * If the player has started, meaning the game session has been initialized properly
 	 */
 	public boolean hasStarted() {
 		return started;
 	}
-	
+
 	/**
 	 * Teleports the player to specified coordinates
 	 *
@@ -929,14 +931,14 @@ public class Player extends Actor {
 		setNextWorldTile(new WorldTile(x, y, z));
 		stopAll();
 	}
-	
+
 	/**
 	 * If there are donator rights in the {@link #rights} set
 	 */
 	public boolean isDonator() {
 		return rights.contains(PlayerRight.PREMIUM_DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
 	}
-	
+
 	/**
 	 * If the {@link #rights} set has any of these parameters, this is true
 	 *
@@ -954,7 +956,7 @@ public class Player extends Actor {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Stores a new list of rights
 	 *
@@ -965,7 +967,7 @@ public class Player extends Actor {
 		this.rights.clear();
 		this.rights.addAll(rights);
 	}
-	
+
 	/**
 	 * If this right is a staff right
 	 */
@@ -978,14 +980,14 @@ public class Player extends Actor {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * The icon the player uses for messages
 	 */
 	public int getMessageIcon() {
 		return getDominantRight().getMessageIcon();
 	}
-	
+
 	/**
 	 * Gets the most dominant right. The {@link #rights} are sorted based on the position of the right in the enum
 	 * (ordinal), so the first right will be the most dominant  .
@@ -1000,7 +1002,7 @@ public class Player extends Actor {
 			return PlayerRight.PLAYER;
 		}
 	}
-	
+
 	/**
 	 * The username the player uses for chatting
 	 */
