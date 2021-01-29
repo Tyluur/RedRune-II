@@ -99,7 +99,7 @@ public abstract class AbstractCombatStyle implements SkillConstants {
                 p2.getPrayer().handleCombatDeflection(source, hit);
             }
             if (hit.getDamage() >= 200) {
-                p2.getCombatDefinitions().handleSoaking(source, hit);
+                source.getCombatDefinitions().handleSoaking(source, target, hit);
             }
             if (p2.getAttributes().getPolDelay() > Misc.currentTimeMillis()) {
                 hit.setDamage((int) (hit.getDamage() * 0.5));

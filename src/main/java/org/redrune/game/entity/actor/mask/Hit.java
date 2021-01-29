@@ -121,6 +121,18 @@ public final class Hit {
 		landTask.run();
 	}
 
+	public boolean isMagicHit() {
+		return getSplat() == HitSplat.MAGIC_DAMAGE;
+	}
+
+	public boolean isMeleeHit() {
+		return getSplat() == HitSplat.MELEE_DAMAGE;
+	}
+
+	public boolean isRangeHit() {
+		return getSplat() == HitSplat.RANGE_DAMAGE;
+	}
+
     public Actor getSource() {
         return this.source;
     }
