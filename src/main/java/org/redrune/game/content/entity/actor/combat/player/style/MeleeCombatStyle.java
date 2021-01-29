@@ -149,7 +149,7 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
 			if (p2.getAttributes().getPolDelay() > Misc.currentTimeMillis()) {
 				hit.setDamage((int) (hit.getDamage() * 0.5));
 			}
-			p2.getPrayer().handleCurseBoosts(source, hit);
+			player.getPrayer().handleCurseBoosts(target, hit);
 		}
 	}
 	
