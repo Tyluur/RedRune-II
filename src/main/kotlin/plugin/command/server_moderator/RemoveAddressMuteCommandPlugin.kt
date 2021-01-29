@@ -1,26 +1,24 @@
-package plugin.command.server_moderator;
+package plugin.command.server_moderator
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.type.CommandPlugin;
-import org.redrune.game.global.punishment.PunishmentHandler;
-import org.redrune.game.global.punishment.PunishmentType;
-import plugin.command.CommandManifest;
+import plugin.command.CommandManifest
+import org.redrune.game.content.plugin.type.CommandPlugin
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.game.InputEvent.InputEventType
+import org.redrune.game.global.punishment.PunishmentHandler
+import org.redrune.game.global.punishment.PunishmentType
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/13/2017
  */
-@CommandManifest(description = "Removes an address mute for a player", types = { String.class })
-public class RemoveAddressMuteCommandPlugin extends CommandPlugin {
-	
-	@Override
-	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		String name = getCompleted(args, 1);
-		PunishmentHandler.removePunishment(player, name, PunishmentType.ADDRESS_MUTE);
-	}
-	
-	@Override
-	public String[] identifiers() {
-		return arguments("unipmute");
-	}
+@CommandManifest(description = "Removes an address mute for a player", types = [String::class])
+class RemoveAddressMuteCommandPlugin : CommandPlugin() {
+    override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
+        val name = getCompleted(args, 1)
+        PunishmentHandler.removePunishment(player, name, PunishmentType.ADDRESS_MUTE)
+    }
+
+    override fun identifiers(): Array<String> {
+        return arguments("unipmute")
+    }
 }

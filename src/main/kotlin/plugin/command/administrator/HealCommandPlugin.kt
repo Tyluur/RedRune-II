@@ -1,30 +1,27 @@
-package plugin.command.administrator;
+package plugin.command.administrator
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.type.CommandPlugin;
-import org.redrune.utility.constants.SkillConstants;
-import plugin.command.CommandManifest;
+import org.redrune.game.content.plugin.type.CommandPlugin
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.constants.SkillConstants
+import plugin.command.CommandManifest
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/5/2017
  */
 @CommandManifest(description = "Heals you to maximum health")
-public class HealCommandPlugin extends CommandPlugin {
-	
-	@Override
-	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		player.getCombatDefinitions().setSpecialAttack(100);
-		player.getPoisonManager().reset();
-		player.getPrayer().setPrayerpoints((int) ((player.getSkills().getLevelForXp(SkillConstants.PRAYER) * 10) * 1.15));
-		player.getPrayer().refreshPrayerPoints();
-		player.heal(player.getMaxHitpoints(), (int) ((player.getSkills().getLevelForXp(SkillConstants.HITPOINTS) * 10) * 0.05));
-		player.getSkills().restoreSkills();
-		player.getAttributes().setRunEnergy(100);
-	}
-	
-	@Override
-	public String[] identifiers() {
-		return arguments("heal");
-	}
+class HealCommandPlugin : CommandPlugin() {
+    override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
+        player.combatDefinitions.setSpecialAttack(100)
+        player.poisonManager.reset()
+        player.prayer.prayerpoints = (player.skills.getLevelForXp(SkillConstants.PRAYER) * 10 * 1.15).toInt()
+        player.prayer.refreshPrayerPoints()
+        player.heal(player.maxHitpoints, (player.skills.getLevelForXp(SkillConstants.HITPOINTS) * 10 * 0.05).toInt())
+        player.skills.restoreSkills()
+        player.attributes.setRunEnergy(100)
+    }
+
+    override fun identifiers(): Array<String> {
+        return arguments("heal")
+    }
 }

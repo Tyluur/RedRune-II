@@ -1,25 +1,29 @@
-package plugin.command.player;
+package plugin.command.player
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.type.CommandPlugin;
-import plugin.command.CommandManifest;
+import plugin.command.CommandManifest
+import org.redrune.game.content.plugin.type.CommandPlugin
+import org.redrune.game.global.World
+import org.redrune.utility.constants.SkillConstants
+import plugin.command.player.YellCommandPlugin
+import org.redrune.utility.functions.Misc
+import org.redrune.game.entity.actor.player.data.PlayerRight
+import org.redrune.utility.constants.InterfaceConstants
+import org.redrune.cache.loaders.ItemDefinitions
+import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/1/2017
  */
-@CommandManifest(description = "Spawns an item", types = { Integer.class })
-public class ItemSpawnCommandPlugin extends CommandPlugin {
-	
-	@Override
-	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		int itemId = intParam(args, 1);
-		int amount = intParamOrDefault(args, 2, 1);
-		player.getInventory().addItem(itemId, amount);
-	}
-	
-	@Override
-	public String[] identifiers() {
-		return arguments("item", "pickup");
-	}
+@CommandManifest(description = "Spawns an item", types = [Int::class])
+class ItemSpawnCommandPlugin : CommandPlugin() {
+    override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
+        val itemId = intParam(args, 1)
+        val amount = intParamOrDefault(args, 2, 1)
+        player.inventory.addItem(itemId, amount)
+    }
+
+    override fun identifiers(): Array<String> {
+        return arguments("item", "pickup")
+    }
 }

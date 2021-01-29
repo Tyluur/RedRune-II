@@ -1,25 +1,22 @@
-package plugin.command.owner;
+package plugin.command.owner
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.type.CommandPlugin;
-import plugin.command.CommandManifest;
+import org.redrune.game.content.plugin.type.CommandPlugin
+import plugin.command.CommandManifest
+import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 2019-01-24
  */
-@CommandManifest(types = { Integer.class, Integer.class})
-public class SendConfigCommandPlugin extends CommandPlugin {
-	
-	@Override
-	public void handle(Player player, String[] args, boolean console, boolean clientCommand) {
-		int configId = intParam(args, 1);
-		int configValue = intParam(args, 2);
-		player.getPackets().sendConfig(configId, configValue);
-	}
-	
-	@Override
-	public String[] identifiers() {
-		return arguments("sendconfig");
-	}
+@CommandManifest(types = [Int::class, Int::class])
+class SendConfigCommandPlugin : CommandPlugin() {
+    override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
+        val configId = intParam(args, 1)
+        val configValue = intParam(args, 2)
+        player.packets.sendConfig(configId, configValue)
+    }
+
+    override fun identifiers(): Array<String> {
+        return arguments("sendconfig")
+    }
 }
