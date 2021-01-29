@@ -864,7 +864,7 @@ public class PlayerPrayer implements Serializable {
             } else if (usingPrayer(1, 7)) {
                 int deflectedDamage = (int) (hit.getDamage() * 0.1);
                 hit.setDamage((int) (hit.getDamage() * source.getMagePrayerMultiplier()));
-                if (deflectedDamage > 0) {
+                if (deflectedDamage > 0 && Misc.random(1, 2) == 1) {
                     source.applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
                     player.setNextGraphics(new Graphics(2228));
                     player.setNextAnimation(new Animation(12573));
@@ -876,7 +876,7 @@ public class PlayerPrayer implements Serializable {
             } else if (usingPrayer(1, 8)) {
                 int deflectedDamage = (int) (hit.getDamage() * 0.1);
                 hit.setDamage((int) (hit.getDamage() * source.getRangePrayerMultiplier()));
-                if (deflectedDamage > 0) {
+                if (deflectedDamage > 0 && Misc.random(1, 2) == 1) {
                     source.applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
                     player.setNextGraphics(new Graphics(2229));
                     player.setNextAnimation(new Animation(12573));
@@ -888,7 +888,7 @@ public class PlayerPrayer implements Serializable {
             } else if (usingPrayer(1, 9)) {
                 int deflectedDamage = (int) (hit.getDamage() * 0.1);
                 hit.setDamage((int) (hit.getDamage() * source.getMeleePrayerMultiplier()));
-                if (deflectedDamage > 0) {
+                if (deflectedDamage > 0 && Misc.random(1, 2) == 1) {
                     source.applyHit(new Hit(player, deflectedDamage, HitSplat.REFLECTED_DAMAGE));
                     player.setNextGraphics(new Graphics(2230));
                     player.setNextAnimation(new Animation(12573));

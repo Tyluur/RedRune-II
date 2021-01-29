@@ -146,4 +146,9 @@ public class RangeCombatStyle extends AbstractCombatStyle {
 		});
 		return new CombatSwingDetail(source, target, hit);
 	}
+
+	@Override
+	public void handleEffects(Player source, Actor target, Hit hit) {
+		// TODO: implement this for range
+	}
 }

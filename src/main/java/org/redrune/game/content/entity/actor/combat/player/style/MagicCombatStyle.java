@@ -93,7 +93,12 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 	public CombatSwingDetail sendHit(Player source, Actor target, int maxHit, int damage, int delay) {
 		return null;
 	}
-	
+
+	@Override
+	public void handleEffects(Player source, Actor target, Hit hit) {
+		// TODO: implement this for magic
+	}
+
 	/**
 	 * Sends the spell to the target
 	 *

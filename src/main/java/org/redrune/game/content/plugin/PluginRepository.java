@@ -516,21 +516,6 @@ public class PluginRepository {
 		}
 		// verifying parameters
 		final CommandManifest manifest = command.getManifest();
-		
-		if (manifest != null && manifest.types().length > 0) {
-			final Class[] types = manifest.types();
-			
-			for (int i = 0; i < types.length; i++) {
-				String argumentEntry = Misc.getArrayEntry(args, i + 1);
-				Class typeExpected = types[i];
-				Class typeEntered = argumentEntry == null ? null : Misc.getClassType(argumentEntry);
-				
-				if (!Objects.equals(typeExpected, typeEntered)) {
-					sendUnexpectedType(player, name, manifest, console);
-					return;
-				}
-			}
-		}
 		if (command.clientCommandOnly() && !clientCommand) {
 			CommandPlugin.sendResponse(player, "Unexpected command entry type, please report this on forums.", false);
 			return;
@@ -569,7 +554,7 @@ public class PluginRepository {
 		} else {
 			List<String> messages = new ArrayList<>();
 			messages.add("Invalid command parameters...");
-			StringBuilder usageLine = new StringBuilder("---->Expected Usage: " + name + " ");
+			StringBuilder usageLine = new StringBuilder("----> Expected Usage: " + name + " ");
 			for (Class clazz : manifest.types()) {
 				usageLine.append(Misc.getSimplifiedType(clazz.getSimpleName())).append(" ");
 			}
