@@ -17,6 +17,8 @@ import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.projectile.ProjectileManager;
+import org.redrune.utility.constants.BonusConstants;
+import org.redrune.utility.constants.SkillConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +130,13 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 		int damage;
 		int maxHit = plugin.maxHit(player, target);
 		int minimum = plugin.minimumHit(player);
+		double boost = 1
+				+ ((player.getSkills().getLevel(SkillConstants.MAGIC) - player.getSkills().getLevelForXp(SkillConstants.MAGIC)) * 0.03);
+		if (boost > 1)
+			maxHit *= boost;
+		double magicPerc = player.getCombatDefinitions().getBonuses()[BonusConstants.MAGIC_DAMAGE_BONUS];
+		boost = (magicPerc / 100) + 1;
+		maxHit *= boost;
 		if (minimum != -1) {
 			damage = CombatRoll.randomizeHit(minimum, maxHit, calculator.getAttackBonus(player), calculator.getDefenceBonus(target, 0, 0), false);
 		} else {
