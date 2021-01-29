@@ -7,6 +7,7 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.global.map.region.Region;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.SkillConstants;
+import org.redrune.utility.functions.Misc;
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -80,8 +81,32 @@ public abstract class AbstractCombatStyle implements SkillConstants {
 	/**
 	 * Handles effects like protection prayers, soulsplit, spirit shields etc.
 	 */
-
-	public abstract void handleEffects(Player source, Actor target, Hit hit);
+    public void handleEffects(Player source, Actor target, Hit hit) {
+        if (target.isPlayer()) {
+            Player p2 = (Player) target;
+            int shieldId = p2.getEquipment().getShieldId();
+            if (shieldId == 13740) {//divine
+                int drain = (int) (Math.ceil(hit.getDamage() * 0.3) / 2);
+                if (p2.getPrayer().getPrayerpoints() >= drain) {
+                    hit.setDamage((int) (hit.getDamage() * 0.70));
+                    p2.getPrayer().drainPrayer(drain);
+                }
+            }
+            if (Misc.getRandom(100) <= 70) {//elysian
+                hit.setDamage((int) (hit.getDamage() * 0.75));
+            }
+            if (p2.getPrayer().hasPrayersOn() && hit.getDamage() != 0) {
+                p2.getPrayer().handleCombatDeflection(source, hit);
+            }
+            if (hit.getDamage() >= 200) {
+                p2.getCombatDefinitions().handleSoaking(source, hit);
+            }
+            if (p2.getAttributes().getPolDelay() > Misc.currentTimeMillis()) {
+                hit.setDamage((int) (hit.getDamage() * 0.5));
+            }
+        }
+        source.getPrayer().handleCurseBoosts(target, hit);
+    }
 
     public AbstractCombatCalculator getCalculator() {
         return this.calculator;

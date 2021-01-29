@@ -132,7 +132,8 @@ public class RangeCombatStyle extends AbstractCombatStyle {
 	public CombatSwingDetail sendHit(Player source, Actor target, int maxHit, int damage, int delay) {
 		final Hit hit = new Hit(source, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit);
 		addExperience(source, target, hit, source.getCombatDefinitions().getAttackStyle(), source.getEquipment().getWeaponId());
-		
+		handleEffects(source, target, hit);
+
 		SystemManager.SCHEDULER.schedule(new ScheduledTask(1, delay) {
 			@Override
 			public void run() {
@@ -147,8 +148,4 @@ public class RangeCombatStyle extends AbstractCombatStyle {
 		return new CombatSwingDetail(source, target, hit);
 	}
 
-	@Override
-	public void handleEffects(Player source, Actor target, Hit hit) {
-		// TODO: implement this for range
-	}
 }

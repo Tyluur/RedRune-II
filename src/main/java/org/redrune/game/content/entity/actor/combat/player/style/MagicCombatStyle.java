@@ -94,11 +94,6 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 		return null;
 	}
 
-	@Override
-	public void handleEffects(Player source, Actor target, Hit hit) {
-		// TODO: implement this for magic
-	}
-
 	/**
 	 * Sends the spell to the target
 	 *
@@ -162,6 +157,7 @@ public class MagicCombatStyle extends AbstractCombatStyle {
 		if (damage > 0 && spellCastTask != null) {
 			spellCastTask.run();
 		}
+		handleEffects(player, target, hit);
 		
 		SystemManager.SCHEDULER.schedule(new ScheduledTask(1, delay) {
 			
