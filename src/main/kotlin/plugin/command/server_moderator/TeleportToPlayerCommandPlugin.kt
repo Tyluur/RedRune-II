@@ -6,7 +6,7 @@ import org.redrune.game.global.World
 import plugin.command.CommandManifest
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since January 28, 2021
  */
 @CommandManifest(description = "Teleports you to a player", types = [String::class])
