@@ -14,19 +14,19 @@ import org.redrune.game.global.punishment.PunishmentHandler
 import org.redrune.game.global.punishment.PunishmentType
 import org.redrune.utility.game.InputEvent
 
-@CommandManifest(description = "Saves a new preset", types = [String::class])
-class SavePresetCommandPlugin : CommandPlugin() {
+@CommandManifest(description = "Loads a preset of yours", types = [String::class])
+class LoadPresetCommandPlugin : CommandPlugin() {
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         val name = getCompleted(args, 1)
         player.packets.requestClientInput(object :
-            InputEvent("Enter name of new preset:", InputEventType.LONG_TEXT) {
+            InputEvent("Enter presetname:", InputEventType.LONG_TEXT) {
             override fun handleInput() {
-                player.presetManager.savePreset(name);
+                player.presetManager.loadPreset(name, player);
             }
         })
     }
 
     override fun identifiers(): Array<String> {
-        return arguments("save")
+        return arguments("load")
     }
 }
