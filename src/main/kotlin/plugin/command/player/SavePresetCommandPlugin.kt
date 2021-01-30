@@ -21,7 +21,7 @@ class SavePresetCommandPlugin : CommandPlugin() {
         player.packets.requestClientInput(object :
             InputEvent("Enter name of new preset:", InputEventType.LONG_TEXT) {
             override fun handleInput() {
-                player.presetManager.savePreset(name);
+                player.presetManager.savePreset(getInput());
             }
         })
     }

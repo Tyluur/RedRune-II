@@ -21,7 +21,7 @@ class LoadPresetCommandPlugin : CommandPlugin() {
         player.packets.requestClientInput(object :
             InputEvent("Enter presetname:", InputEventType.LONG_TEXT) {
             override fun handleInput() {
-                player.presetManager.loadPreset(name, player);
+                player.presetManager.loadPreset(getInput(), player);
             }
         })
     }
