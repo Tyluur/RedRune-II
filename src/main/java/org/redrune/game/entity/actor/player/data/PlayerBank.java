@@ -514,7 +514,8 @@ public class PlayerBank implements Serializable {
         addItem(item, refresh);
     }
 
-    private void addItem(Item item, boolean refresh) {
+
+    void addItem(Item item, boolean refresh) {
         addItem(item.getId(), item.getAmount(), refresh);
     }
 
@@ -566,6 +567,40 @@ public class PlayerBank implements Serializable {
             refreshItems();
         }
     }
+
+    public boolean removeItem2(int fakeSlot, int quantity, boolean refresh, boolean forceDestroy) {
+        return removeItem2(getRealSlot(fakeSlot), quantity, refresh, forceDestroy);
+    }
+
+    public boolean removeItem2(int[] slot, int quantity, boolean refresh, boolean forceDestroy) {
+        if (slot == null) {
+            player.getPackets().sendMessage("slot is null.");
+            return false;
+        }
+        Item item = bankTabs[slot[0]][slot[1]];
+        boolean destroyed = false;
+        if (quantity >= item.getAmount()) {
+            if (bankTabs[slot[0]].length == 1 && (forceDestroy || bankTabs.length != 1)) {
+                destroyTab(slot[0]);
+                if (refresh)
+                    refreshTabs();
+                destroyed = true;
+            } else {
+                Item[] tab = new Item[bankTabs[slot[0]].length - 1];
+                System.arraycopy(bankTabs[slot[0]], 0, tab, 0, slot[1]);
+                System.arraycopy(bankTabs[slot[0]], slot[1] + 1, tab, slot[1], bankTabs[slot[0]].length - slot[1] - 1);
+                bankTabs[slot[0]] = tab;
+                if (refresh)
+                    refreshTab(slot[0]);
+            }
+        } else {
+            bankTabs[slot[0]][slot[1]] = new Item(item.getId(), item.getAmount() - quantity);
+        }
+        if (refresh)
+            refreshItems();
+        return destroyed;
+    }
+
 
     public boolean removeItem(int fakeSlot, int quantity, boolean refresh, boolean forceDestroy) {
         return removeItem(getRealSlot(fakeSlot), quantity, refresh, forceDestroy);

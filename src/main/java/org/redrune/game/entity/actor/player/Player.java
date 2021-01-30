@@ -111,6 +111,21 @@ public class Player extends Actor {
 	private EmotesManager emotesManager;
 
 	/**
+	 * @Presets
+	 */
+	private PresetManager presetManager;
+
+
+	public PresetManager getPresetManager() {
+		return presetManager;
+	}
+
+	public void setPresetManager(PresetManager presetManager) {
+		this.presetManager = presetManager;
+	}
+
+
+	/**
 	 * The handler for all social interaction
 	 */
 	private ContactManager contactManager;
@@ -614,6 +629,8 @@ public class Player extends Actor {
 		this.interfaceManager.setDisplayMode(displayMode);
 		this.interfaceManager.setScreenWidth(screenWidth);
 		this.interfaceManager.setScreenHeight(screenHeight);
+		if (getPresetManager() == null)
+			setPresetManager(new PresetManager());
 		dialogueManager = new DialogueManager(this);
 		hintIconsManager = new HintIconsManager(this);
 		priceCheckManager = new PriceCheckManager(this);
@@ -630,6 +647,7 @@ public class Player extends Actor {
 		inventory.setPlayer(this);
 		equipment.setPlayer(this);
 		skills.setPlayer(this);
+		presetManager.setPlayer(this);
 		combatDefinitions.setPlayer(this);
 		prayer.setPlayer(this);
 		bank.setPlayer(this);

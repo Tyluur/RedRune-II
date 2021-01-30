@@ -23,6 +23,10 @@ public final class PlayerSkills implements Serializable, SkillConstants {
 	private int[] skillsTargetsValues;
 	
 	private transient Player player;
+
+	public double[] getXp() {
+		return xp;
+	}
 	
 	public PlayerSkills() {
 		level = new short[25];
