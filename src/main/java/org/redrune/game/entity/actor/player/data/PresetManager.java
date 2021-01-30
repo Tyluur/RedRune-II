@@ -162,10 +162,9 @@ public final class PresetManager implements Serializable {
 						}
 					}
 				}
-				if ((halfEco
-						&& set.getEquipment()[i].getDefinitions().getValue() >= priceLimit)
+				if ((halfEco && set.getEquipment()[i].getDefinitions().getValue() >= priceLimit)
 						|| eco
-						|| (!item.getDefinitions().isTradeable() && spawn)) {
+						|| (!item.getDefinitions().isTradeable() && (halfEco || eco))) {
 					if (player.getBank().getItem(set.getEquipment()[i].getId()) != null && player.getBank()
 							.getItem(set.getEquipment()[i].getId()).getAmount() >= item.getAmount()) {
 						int[] slot = player.getBank().getItemSlot(set.getEquipment()[i].getId());
