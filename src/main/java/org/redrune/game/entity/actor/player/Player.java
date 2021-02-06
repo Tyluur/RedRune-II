@@ -690,7 +690,7 @@ public class Player extends Actor {
         if (GameFlags.debugMode) {
             this.rights.add(PlayerRight.OWNER);
         }
-        getPackets().sendMessage("Welcome to " + GameConstants.SERVER_NAME + ".");
+        getPackets().sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::commands for a good time ;).");
         interfaceManager.sendInterfaces();
         checkMultiArea();
         inventory.init();
