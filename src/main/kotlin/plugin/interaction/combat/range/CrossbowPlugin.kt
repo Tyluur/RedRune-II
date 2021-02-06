@@ -64,7 +64,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
         )
     }
 
-    private enum class BoltSpecial @JvmOverloads constructor(
+    private enum class BoltSpecial(
         /**
          * The id of the bolt used for this special
          */
