@@ -1,29 +1,27 @@
-package plugin.item.onplayer;
+package plugin.item.onplayer
 
-import org.redrune.game.content.entity.actor.player.dialogue.impl.ChristmasCrackerD;
-import org.redrune.game.content.plugin.type.ItemOnPlayerPlugin;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.item.Item;
+import org.redrune.game.content.entity.actor.player.dialogue.impl.ChristmasCrackerD
+import org.redrune.game.content.plugin.type.ItemOnPlayerPlugin
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.item.Item
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-09
  */
-public class ChristmasCrackedItemOnPlayerPlugin implements ItemOnPlayerPlugin {
-	
-	@Override
-	public boolean handle(Player player, Item item, Player partner) {
-		if (player.getInventory().getFreeSlots() < 3 || partner.getInventory().getFreeSlots() < 3) {
-			String message = (player.getInventory().getFreeSlots() < 3 ? "You do" : "The other player does") + " not have enough inventory space to open this cracker.";
-			player.getPackets().sendMessage(message);
-			return true;
-		}
-		player.getDialogueManager().startDialogue(ChristmasCrackerD.class, partner, item.getId());
-		return true;
-	}
-	
-	@Override
-	public void register() {
-		registerItemOnPlayerPlugin(962);
-	}
+class ChristmasCrackedItemOnPlayerPlugin : ItemOnPlayerPlugin {
+    override fun handle(player: Player, item: Item, partner: Player): Boolean {
+        if (player.inventory.freeSlots < 3 || partner.inventory.freeSlots < 3) {
+            val message =
+                (if (player.inventory.freeSlots < 3) "You do" else "The other player does") + " not have enough inventory space to open this cracker."
+            player.packets.sendMessage(message)
+            return true
+        }
+        player.dialogueManager.startDialogue(ChristmasCrackerD::class.java, partner, item.id)
+        return true
+    }
+
+    override fun register() {
+        registerItemOnPlayerPlugin(962)
+    }
 }

@@ -1,27 +1,27 @@
-package plugin.item;
+package plugin.item
 
-import org.redrune.game.content.entity.item.Pots;
-import org.redrune.game.content.entity.item.Pots.Pot;
-import org.redrune.game.content.plugin.type.ItemPlugin;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.item.Item;
-
-import java.util.Arrays;
+import org.redrune.game.content.entity.item.Pots
+import org.redrune.game.content.plugin.type.ItemPlugin
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.item.Item
+import java.util.*
+import java.util.function.Consumer
+import java.util.function.IntConsumer
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-08
  */
-public class PotionConsumptionItemPlugin implements ItemPlugin {
-	
-	@Override
-	public boolean handle(Player player, Item item, int slotId, String option) {
-		Pots.pot(player, item, slotId);
-		return true;
-	}
-	
-	@Override
-	public void register() {
-		Arrays.stream(Pot.values()).forEach(pot -> Arrays.stream(pot.getIds()).forEach(id -> registerItem(id, "Drink")));
-	}
+class PotionConsumptionItemPlugin : ItemPlugin {
+    override fun handle(player: Player, item: Item, slotId: Int, option: String): Boolean {
+        Pots.pot(player, item, slotId)
+        return true
+    }
+
+    override fun register() {
+        Arrays.stream(Pots.Pot.values()).forEach(Consumer<Pots.Pot> { pot: Pots.Pot ->
+            Arrays.stream(pot.getIds()).forEach(
+                IntConsumer { id: Int -> registerItem(id, "Drink") })
+        })
+    }
 }
