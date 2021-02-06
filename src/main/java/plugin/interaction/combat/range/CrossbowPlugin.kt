@@ -1,204 +1,210 @@
-package plugin.interaction.combat.range;
+package plugin.interaction.combat.range
 
-import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.engine.cycle.GameCycleWorker;
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
-import org.redrune.game.content.entity.actor.combat.CombatSwingDetail;
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.mask.Graphics;
-import org.redrune.game.entity.actor.mask.Hit;
-import org.redrune.game.entity.actor.mask.HitSplat;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.projectile.ProjectileManager;
-import org.redrune.utility.functions.RandomFunction;
-
-import java.util.Optional;
+import org.redrune.cache.loaders.ItemDefinitions
+import org.redrune.engine.cycle.GameCycleWorker.Companion.ticksPassed
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
+import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
+import org.redrune.game.content.plugin.combat.RangeWeaponPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.mask.Graphics
+import org.redrune.game.entity.actor.mask.Hit
+import org.redrune.game.entity.actor.mask.HitSplat
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.projectile.ProjectileManager
+import org.redrune.utility.functions.RandomFunction
+import java.util.*
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/6/2017
  */
-public class CrossbowPlugin extends RangeWeaponPlugin {
-	
-	@Override
-	public String[] getWeaponNames() {
-		return arguments("* crossbow");
-	}
-	
-	@Override
-	public void fire(Player source, Actor target, AbstractCombatStyle style) {
-		int weaponId = source.getEquipment().getWeaponId();
-		int ammoId = source.getEquipment().getAmmoId();
-		String name = ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
-		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(source, target, 27, 38, 36, 41, 5, 0));
-		Optional<BoltSpecial> optional = BoltSpecial.getBoltSpecial(ammoId);
-		// found a possible bolt
-		if (optional.isPresent()) {
-			BoltSpecial special = optional.get();
-			// the bolt was fired so we don't need to send another hit
-			if (special.canFire(source, target)) {
-				special.fire(source, target, style, weaponId);
-				return;
-			}
-		}
-		if (!name.contains("karil's crossbow")) {
-			dropAmmo(source, target, 1);
-		} else {
-			source.getEquipment().removeAmmo(ammoId, 1);
-		}
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), style.getRandomDamage(source, target, 1), ProjectileManager.getProjectileDelay(source, target));
-	}
-	
-	private enum BoltSpecial {
-		
-		JADE_BOLT(9237, 755) {
-			@Override
-			public double getDamageModifier() {
-				return 1;
-			}
-			
-			@Override
-			public CombatSwingDetail fire(Player source, Actor target, AbstractCombatStyle style, int weaponId) {
-				if (target.isNPC()) {
-					target.toNPC().getCombat().setTarget(null);
-				} else {
-					target.toPlayer().stopAll();
-				}
-				return super.fire(source, target, style, weaponId);
-			}
-		},
-		
-		RUBY_BOLT(9242, 754) {
-			@Override
-			public double getDamageModifier() {
-				return 1;
-			}
-			
-			@Override
-			public CombatSwingDetail fire(Player source, Actor target, AbstractCombatStyle style, int weaponId) {
-				target.setNextGraphics(new Graphics(getGraphicsId(), getGraphicsHeight(), 0));
-				source.applyHit(new Hit(target, source.getHitpoints() > 20 ? (int) (source.getHitpoints() * 0.10) : 1, HitSplat.REFLECTED_DAMAGE));
-				return style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1), (int) (target.getHitpoints() * 0.20), ProjectileManager.getProjectileDelay(source, target));
-			}
-		},
-		
-		DIAMOND_BOLT(9243, 758) {
-			@Override
-			public double getDamageModifier() {
-				return 1.05;
-			}
-		},
-		
-		DRAGON_BOLT(9244, 756) {
-			@Override
-			public double getDamageModifier() {
-				return 1.45;
-			}
-			
-			@Override
-			public boolean canFire(Player source, Actor target) {
-				return !CombatAlgorithm.hasAntiDragProtection(target) && super.canFire(source, target);
-			}
-		},
-		
-		ONYX_BOLT(9245, 753) {
-			@Override
-			public double getDamageModifier() {
-				return 1.25;
-			}
-			
-			@Override
-			public boolean canFire(Player source, Actor target) {
-				return source.getTemporaryAttribute("onyx-effect", 0L) <= GameCycleWorker.getTicksPassed() && super.canFire(source, target);
-			}
-			
-			@Override
-			public CombatSwingDetail fire(Player source, Actor target, AbstractCombatStyle style, int weaponId) {
-				return super.fire(source, target, style, weaponId).consume(detail -> {
-					source.putTemporaryAttribute("onyx-effect", GameCycleWorker.getTicksPassed() + 12);
-					source.heal((int) (detail.getHit().getDamage() * 0.25));
-				});
-			}
-		},;
-		
-		/**
-		 * The id of the bolt used for this special
-		 */
+class CrossbowPlugin : RangeWeaponPlugin() {
+    override fun getWeaponNames(): Array<String> {
+        return arguments("* crossbow")
+    }
 
-		private final int boltId;
-		
-		/**
-		 * The id of the graphics
-		 */
+    override fun fire(source: Player, target: Actor, style: AbstractCombatStyle) {
+        val weaponId = source.equipment.weaponId
+        val ammoId = source.equipment.ammoId
+        val name = ItemDefinitions.getItemDefinitions(weaponId).name.toLowerCase()
+        ProjectileManager.sendProjectile(
+            ProjectileManager.createSpeedDefinedProjectile(
+                source,
+                target,
+                27,
+                38,
+                36,
+                41,
+                5,
+                0
+            )
+        )
+        val optional = BoltSpecial.getBoltSpecial(ammoId)
+        // found a possible bolt
+        if (optional.isPresent) {
+            val special = optional.get()
+            // the bolt was fired so we don't need to send another hit
+            if (special.canFire(source, target)) {
+                special.fire(source, target, style, weaponId)
+                return
+            }
+        }
+        if (!name.contains("karil's crossbow")) {
+            dropAmmo(source, target, 1)
+        } else {
+            source.equipment.removeAmmo(ammoId, 1)
+        }
+        style.sendHit(
+            source,
+            target,
+            style.calculator.getMaximumHit(source, 1.0),
+            style.getRandomDamage(source, target, 1.0),
+            ProjectileManager.getProjectileDelay(source, target)
+        )
+    }
 
-		private final int graphicsId;
-		
-		/**
-		 * The height of the graphics
-		 */
+    private enum class BoltSpecial @JvmOverloads constructor(
+        /**
+         * The id of the bolt used for this special
+         */
+        val boltId: Int,
+        /**
+         * The id of the graphics
+         */
+        val graphicsId: Int,
+        /**
+         * The height of the graphics
+         */
+        val graphicsHeight: Int = 0
+    ) {
+        JADE_BOLT(9237, 755) {
+            override fun getDamageModifier(): Double {
+                return 1.0
+            }
 
-		private final int graphicsHeight;
-		
-		BoltSpecial(int boltId, int graphicsId) {
-			this(boltId, graphicsId, 0);
-		}
-		
-		BoltSpecial(int boltId, int graphicsId, int graphicsHeight) {
-			this.boltId = boltId;
-			this.graphicsId = graphicsId;
-			this.graphicsHeight = graphicsHeight;
-		}
-		
-		/**
-		 * The damage modifier of the bolt special
-		 */
-		public abstract double getDamageModifier();
-		
-		/**
-		 * Checks if the bolt special can be fired
-		 *
-		 * @param source
-		 * 		The source of the special
-		 */
-		public boolean canFire(Player source, Actor target) {
-			return RandomFunction.random(13) == 5;
-		}
-		
-		/**
-		 * When the style is fired
-		 */
-		public CombatSwingDetail fire(Player source, Actor target, AbstractCombatStyle style, int weaponId) {
-			target.setNextGraphics(new Graphics(graphicsId, graphicsHeight, 0));
-			return style.sendHit(source, target, style.getCalculator().getMaximumHit(source, 1), style.getRandomDamage(source, target, 1), ProjectileManager.getProjectileDelay(source, target));
-		}
-		
-		/**
-		 * Gets the bolt special by the id of the bolt we're using
-		 *
-		 * @param boltId
-		 * 		The id of the bolt
-		 */
-		public static Optional<BoltSpecial> getBoltSpecial(int boltId) {
-			for (BoltSpecial special : values()) {
-				if (special.getBoltId() == boltId) {
-					return Optional.of(special);
-				}
-			}
-			return Optional.empty();
-		}
+            override fun fire(
+                source: Player,
+                target: Actor,
+                style: AbstractCombatStyle,
+                weaponId: Int
+            ): CombatSwingDetail {
+                if (target.isNPC) {
+                    target.toNPC().combat.target = null
+                } else {
+                    target.toPlayer().stopAll()
+                }
+                return super.fire(source, target, style, weaponId)
+            }
+        },
+        RUBY_BOLT(9242, 754) {
+            override fun getDamageModifier(): Double {
+                return 1.0
+            }
 
-		public int getBoltId() {
-			return boltId;
-		}
+            override fun fire(
+                source: Player,
+                target: Actor,
+                style: AbstractCombatStyle,
+                weaponId: Int
+            ): CombatSwingDetail {
+                target.setNextGraphics(Graphics(graphicsId, graphicsHeight, 0))
+                source.applyHit(
+                    Hit(
+                        target,
+                        if (source.hitpoints > 20) (source.hitpoints * 0.10).toInt() else 1,
+                        HitSplat.REFLECTED_DAMAGE
+                    )
+                )
+                return style.sendHit(
+                    source,
+                    target,
+                    style.calculator.getMaximumHit(source, 1.0),
+                    (target.hitpoints * 0.20).toInt(),
+                    ProjectileManager.getProjectileDelay(source, target)
+                )
+            }
+        },
+        DIAMOND_BOLT(9243, 758) {
+            override fun getDamageModifier(): Double {
+                return 1.05
+            }
+        },
+        DRAGON_BOLT(9244, 756) {
+            override fun getDamageModifier(): Double {
+                return 1.45
+            }
 
-		public int getGraphicsHeight() {
-			return graphicsHeight;
-		}
+            override fun canFire(source: Player, target: Actor?): Boolean {
+                return !CombatAlgorithm.hasAntiDragProtection(target) && super.canFire(source, target)
+            }
+        },
+        ONYX_BOLT(9245, 753) {
+            override fun getDamageModifier(): Double {
+                return 1.25
+            }
 
-		public int getGraphicsId() {
-			return graphicsId;
-		}
-	}
+            override fun canFire(source: Player, target: Actor?): Boolean {
+                return source.getTemporaryAttribute("onyx-effect", 0L) <= ticksPassed && super.canFire(source, target)
+            }
+
+            override fun fire(
+                source: Player,
+                target: Actor,
+                style: AbstractCombatStyle,
+                weaponId: Int
+            ): CombatSwingDetail {
+                return super.fire(source, target, style, weaponId).consume { detail: CombatSwingDetail ->
+                    source.putTemporaryAttribute("onyx-effect", ticksPassed + 12)
+                    source.heal((detail.hit.damage * 0.25).toInt())
+                }
+            }
+        };
+
+        /**
+         * The damage modifier of the bolt special
+         */
+        abstract fun getDamageModifier(): Double
+
+        /**
+         * Checks if the bolt special can be fired
+         *
+         * @param source
+         * The source of the special
+         */
+        open fun canFire(source: Player, target: Actor?): Boolean {
+            return RandomFunction.random(13) == 5
+        }
+
+        /**
+         * When the style is fired
+         */
+        open fun fire(source: Player, target: Actor, style: AbstractCombatStyle, weaponId: Int): CombatSwingDetail {
+            target.setNextGraphics(Graphics(graphicsId, graphicsHeight, 0))
+            return style.sendHit(
+                source,
+                target,
+                style.calculator.getMaximumHit(source, 1.0),
+                style.getRandomDamage(source, target, 1.0),
+                ProjectileManager.getProjectileDelay(source, target)
+            )
+        }
+
+        companion object {
+            /**
+             * Gets the bolt special by the id of the bolt we're using
+             *
+             * @param boltId
+             * The id of the bolt
+             */
+            fun getBoltSpecial(boltId: Int): Optional<BoltSpecial> {
+                for (special in values()) {
+                    if (special.boltId == boltId) {
+                        return Optional.of(special)
+                    }
+                }
+                return Optional.empty()
+            }
+        }
+    }
 }
