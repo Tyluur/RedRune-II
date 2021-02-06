@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.redrune.utility.game.entity.actor.player.LoginReturnCode.*;
-import static org.redrune.utility.game.entity.actor.player.ReturnCode.INVALID_LOGIN_SERVER;
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -55,14 +54,14 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		if (opcode != 16 && opcode != 18 && opcode != 19) {
 			System.out.println("Received unexpected world login opcode: " + opcode);
 			setSession(ctx.channel());
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		int revision = in.readInt();
 		if (revision != NetworkConstants.PROTOCOL_NUMBER) {
 			System.out.println("Received unexpected protocol number: " + revision);
 			setSession(ctx.channel());
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		setSession(ctx.channel());
@@ -96,14 +95,14 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 	private void decodeLobbyLogin(ChannelHandlerContext ctx, FixedBuffer buffer, List<Object> out) {
 		int rsaSize = buffer.readUnsignedShort();
 		if (rsaSize > buffer.getRemaining()) {
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		byte[] rsaData = new byte[rsaSize];
 		buffer.read(rsaData);
 		FixedBuffer rsaBuffer = new FixedBuffer(Utils.cryptRSA(rsaData, NetworkConstants.LOGIN_EXPONENT, NetworkConstants.LOGIN_MODULUS));
 		if (rsaBuffer.readUnsignedByte() != 10) {
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		int[] isaacSeed = new int[4];
@@ -111,7 +110,7 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 			isaacSeed[i] = rsaBuffer.readInt();
 		}
 		if (rsaBuffer.readLong() != 0) {
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		String password = rsaBuffer.readString();
@@ -134,15 +133,15 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 			}
 		}
 		if (Misc.invalidAccountName(username)) {
-			session.write(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS).build().getBuffer());
 			return;
 		}
 		if (World.getLobbyPlayers().size() >= GameConstants.PLAYERS_LIMIT - 10) {
-			session.write(new LoginResponseCodePacketBuilder(FULL_WORLD)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(FULL_WORLD).build().getBuffer());
 			return;
 		}
 		if (World.containsPlayer(username, false)) {
-			session.write(new LoginResponseCodePacketBuilder(ALREADY_ONLINE)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(ALREADY_ONLINE).build().getBuffer());
 			return;
 		}
 		
@@ -168,7 +167,7 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		
 		player.initializeLobby(username, session);
 		if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_BAN, PunishmentType.ADDRESS_BAN)) {
-			session.write(new LoginResponseCodePacketBuilder(ACCOUNT_DISABLED)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(ACCOUNT_DISABLED).build().getBuffer());
 			return;
 		}
 		// send the player to the lobby
@@ -193,14 +192,14 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		boolean reconnecting = buffer.readBoolean();
 		int rsaSize = buffer.readUnsignedShort();
 		if (rsaSize > buffer.getRemaining()) {
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		byte[] rsaData = new byte[rsaSize];
 		buffer.read(rsaData);
 		FixedBuffer rsaBuffer = new FixedBuffer(Utils.cryptRSA(rsaData, NetworkConstants.LOGIN_EXPONENT, NetworkConstants.LOGIN_MODULUS));
 		if (rsaBuffer.readUnsignedByte() != 10) {
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		int[] isaacSeed = new int[4];
@@ -208,7 +207,7 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 			isaacSeed[i] = rsaBuffer.readInt();
 		}
 		if (rsaBuffer.readLong() != 0) {
-			session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(BAD_SESSION_ID).build().getBuffer());
 			return;
 		}
 		String password = rsaBuffer.readString();
@@ -237,7 +236,7 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		// hardware block
 		int hwMagic = buffer.readByte();
 		if (hwMagic != 5) {
-			session.write(new LoginResponseCodePacketBuilder(MALFORMED_LOGIN_PACKET)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(MALFORMED_LOGIN_PACKET).build().getBuffer());
 			return;
 		}
 		
@@ -281,16 +280,16 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 			int crc = Cache.STORE.getIndexes()[index] == null ? 0 : Cache.STORE.getIndexes()[index].getCRC();
 			int receivedCrc = buffer.readInt();
 			if (crc != receivedCrc && index < 32) {
-				session.write(new LoginResponseCodePacketBuilder(UPDATED)).addListener(ChannelFutureListener.CLOSE);
+				session.write(new LoginResponseCodePacketBuilder(BAD_SESSION_ID)).addListener(ChannelFutureListener.CLOSE);
 				return;
 			}
 		}
 		if (Misc.invalidAccountName(username)) {
-			session.write(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS).build().getBuffer());
 			return;
 		}
 		if (password.length() >= 30) {
-			session.write(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS).build().getBuffer());
 			return;
 		}
 		// build the isaac ciphers
