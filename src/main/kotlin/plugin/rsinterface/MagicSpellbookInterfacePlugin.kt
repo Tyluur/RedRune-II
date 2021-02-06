@@ -1,65 +1,69 @@
-package plugin.rsinterface;
+package plugin.rsinterface
 
-import org.redrune.game.content.entity.actor.combat.function.Magic;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.type.InterfacePlugin;
+import org.redrune.game.content.entity.actor.combat.function.Magic
+import org.redrune.game.content.plugin.type.InterfacePlugin
+import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 8/31/2017
  */
-public class MagicSpellbookInterfacePlugin implements InterfacePlugin {
-	
-	@Override
-	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		if (interfaceId == 192) {
-			if (componentId == 2) {
-				player.getCombatDefinitions().switchDefensiveCasting();
-			} else if (componentId == 7) {
-				player.getCombatDefinitions().switchShowCombatSpells();
-			} else if (componentId == 9) {
-				player.getCombatDefinitions().switchShowTeleportSkillSpells();
-			} else if (componentId == 11) {
-				player.getCombatDefinitions().switchShowMiscallaneousSpells();
-			} else if (componentId == 13) {
-				player.getCombatDefinitions().switchShowSkillSpells();
-			} else if (componentId >= 15 & componentId <= 17) {
-				player.getCombatDefinitions().setSortSpellBook(componentId - 15);
-			} else {
-				Magic.processNormalSpell(player, componentId);
-			}
-		} else if (interfaceId == 193) {
-			if (componentId == 5) {
-				player.getCombatDefinitions().switchShowCombatSpells();
-			} else if (componentId == 7) {
-				player.getCombatDefinitions().switchShowTeleportSkillSpells();
-			} else if (componentId >= 9 && componentId <= 11) {
-				player.getCombatDefinitions().setSortSpellBook(componentId - 9);
-			} else if (componentId == 18) {
-				player.getCombatDefinitions().switchDefensiveCasting();
-			} else {
-				Magic.processAncientSpell(player, componentId);
-			}
-		} else if (interfaceId == 430) {
-			if (componentId == 5) {
-				player.getCombatDefinitions().switchShowCombatSpells();
-			} else if (componentId == 7) {
-				player.getCombatDefinitions().switchShowTeleportSkillSpells();
-			} else if (componentId == 9) {
-				player.getCombatDefinitions().switchShowMiscallaneousSpells();
-			} else if (componentId >= 11 & componentId <= 13) {
-				player.getCombatDefinitions().setSortSpellBook(componentId - 11);
-			} else if (componentId == 20) {
-				player.getCombatDefinitions().switchDefensiveCasting();
-			} else {
-				Magic.processLunarSpell(player, componentId);
-			}
-		}
-		return true;
-	}
-	
-	@Override
-	public void register() {
-		registerInterfacePlugin(192, 193, 430);
-	}
+class MagicSpellbookInterfacePlugin : InterfacePlugin {
+    override fun handle(
+        player: Player,
+        interfaceId: Int,
+        componentId: Int,
+        itemId: Int,
+        slotId: Int,
+        packetId: Int
+    ): Boolean {
+        if (interfaceId == 192) {
+            if (componentId == 2) {
+                player.combatDefinitions.switchDefensiveCasting()
+            } else if (componentId == 7) {
+                player.combatDefinitions.switchShowCombatSpells()
+            } else if (componentId == 9) {
+                player.combatDefinitions.switchShowTeleportSkillSpells()
+            } else if (componentId == 11) {
+                player.combatDefinitions.switchShowMiscallaneousSpells()
+            } else if (componentId == 13) {
+                player.combatDefinitions.switchShowSkillSpells()
+            } else if (componentId in 15..17) {
+                player.combatDefinitions.setSortSpellBook(componentId - 15)
+            } else {
+                Magic.processNormalSpell(player, componentId)
+            }
+        } else if (interfaceId == 193) {
+            if (componentId == 5) {
+                player.combatDefinitions.switchShowCombatSpells()
+            } else if (componentId == 7) {
+                player.combatDefinitions.switchShowTeleportSkillSpells()
+            } else if (componentId >= 9 && componentId <= 11) {
+                player.combatDefinitions.setSortSpellBook(componentId - 9)
+            } else if (componentId == 18) {
+                player.combatDefinitions.switchDefensiveCasting()
+            } else {
+                Magic.processAncientSpell(player, componentId)
+            }
+        } else if (interfaceId == 430) {
+            if (componentId == 5) {
+                player.combatDefinitions.switchShowCombatSpells()
+            } else if (componentId == 7) {
+                player.combatDefinitions.switchShowTeleportSkillSpells()
+            } else if (componentId == 9) {
+                player.combatDefinitions.switchShowMiscallaneousSpells()
+            } else if (componentId in 11..13) {
+                player.combatDefinitions.setSortSpellBook(componentId - 11)
+            } else if (componentId == 20) {
+                player.combatDefinitions.switchDefensiveCasting()
+            } else {
+                Magic.processLunarSpell(player, componentId)
+            }
+        }
+        return true
+    }
+
+    override fun register() {
+        registerInterfacePlugin(192, 193, 430)
+    }
 }
