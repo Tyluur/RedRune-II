@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.redrune.utility.game.entity.actor.player.LoginReturnCode.*;
+import static org.redrune.utility.game.entity.actor.player.ReturnCode.INVALID_LOGIN_SERVER;
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -148,11 +149,11 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		Player player;
 		
 		if (!PlayerSaving.playerExists(username)) {
-			player = new Player(username);
+			player = new Player(password);
 		} else {
 			player = PlayerSaving.fromFile(username);
 			if (player == null) {
-				session.write(new LoginResponseCodePacketBuilder(INVALID_LOGIN_SERVER)).addListener(ChannelFutureListener.CLOSE);
+				ctx.writeAndFlush(new LoginResponseCodePacketBuilder(LOGIN_SERVER_OFFLINE).build().getBuffer());
 				return;
 			}
 		}
@@ -301,11 +302,11 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		Player player;
 		
 		if (!PlayerSaving.playerExists(username)) {
-			player = new Player(username);
+			player = new Player(password);
 		} else {
 			player = PlayerSaving.fromFile(username);
 			if (player == null) {
-				session.write(new LoginResponseCodePacketBuilder(INVALID_LOGIN_SERVER)).addListener(ChannelFutureListener.CLOSE);
+				ctx.writeAndFlush(new LoginResponseCodePacketBuilder(LOGIN_SERVER_OFFLINE).build().getBuffer());
 				return;
 			}
 		}
@@ -315,10 +316,15 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 		
 		player.setUsername(username);
 		if (PunishmentRepository.isPunished(player, PunishmentType.PLAYER_BAN, PunishmentType.ADDRESS_BAN)) {
-			session.write(new LoginResponseCodePacketBuilder(ACCOUNT_DISABLED)).addListener(ChannelFutureListener.CLOSE);
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS).build().getBuffer());
 			return;
 		}
-		
+
+		if (!password.equals(player.getPassword())) {
+			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS).build().getBuffer());
+			return;
+		}
+
 		// start game session
 		player.initializeGameSession(username, session, mode, width, height);
 		session.write(new LoginConfigurationPacketBuilder(player));

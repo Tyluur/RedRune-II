@@ -108,8 +108,7 @@ public enum LoginReturnCode {
 	/**
 	 * The login server connected to is invalid.
 	 */
-	INVALID_LOGIN_SERVER(20),
-	
+
 	/**
 	 * The username logged out recently
 	 */

@@ -14,6 +14,8 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.utility.game.ClickOption;
 
+import java.util.Arrays;
+
 import static org.redrune.utility.game.ClickOption.*;
 
 /**
@@ -102,6 +104,7 @@ public class NPCInteractionEvent extends Event {
 	 */
 	private void handleSecondOption(Player player) {
 		String option = npc.getDefinitions().getOption(2);
+		System.out.println(Arrays.toString(npc.getDefinitions().getOptions()));
 		if (option == null) {
 			throw new IllegalStateException("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
 		}

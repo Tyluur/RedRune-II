@@ -41,6 +41,7 @@ public final class NetworkBinder {
 			bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
 			bootstrap.childOption(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 32 * 1024);
 			bootstrap.childOption(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 8 * 1024);
+
 			bootstrap.childHandler(new WorldChannelInitializer());
 			
 			// Bind and start to accept incoming connections.

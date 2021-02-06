@@ -118,8 +118,6 @@ public class NetworkSession {
 
     /**
      * Flushes all the outgoing buffers
-     *
-     * @return
      */
     public synchronized Channel flush() {
         return channel.flush();
