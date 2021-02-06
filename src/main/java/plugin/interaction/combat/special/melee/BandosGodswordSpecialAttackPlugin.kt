@@ -1,49 +1,47 @@
-package plugin.interaction.combat.special.melee;
+package plugin.interaction.combat.special.melee
 
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.mask.Animation;
-import org.redrune.game.entity.actor.mask.Graphics;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.combat.SpecialAttackPlugin;
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
+import org.redrune.game.content.plugin.combat.SpecialAttackPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.mask.Animation
+import org.redrune.game.entity.actor.mask.Graphics
+import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/5/2017
  */
-public class BandosGodswordSpecialAttackPlugin extends SpecialAttackPlugin {
-	
-	private static final Graphics GRAPHICS = new Graphics(2114);
-	
-	private static final Animation ANIMATION = new Animation(11991);
-	
-	@Override
-	public int[] getWeaponIds() {
-		return arguments(11696, 23680);
-	}
-	
-	@Override
-	public void fire(Player source, Actor target, AbstractCombatStyle style) {
-		source.setNextAnimation(ANIMATION);
-		source.setNextGraphics(GRAPHICS);
-		int damage = style.getRandomDamage(source, target, 1.21);
-		style.sendHit(source, target, style.getCalculator().getMaximumHit(source,1.21), damage, 0);
-		if (target.isPlayer()) {
-			Player targetPlayer = target.toPlayer();
-			int amountLeft;
-			if ((amountLeft = targetPlayer.getSkills().drainLevel(DEFENCE, damage / 10)) > 0) {
-				if ((amountLeft = targetPlayer.getSkills().drainLevel(STRENGTH, amountLeft)) > 0) {
-					if ((amountLeft = targetPlayer.getSkills().drainLevel(PRAYER, amountLeft)) > 0) {
-						if ((amountLeft = targetPlayer.getSkills().drainLevel(ATTACK, amountLeft)) > 0) {
-							if ((amountLeft = targetPlayer.getSkills().drainLevel(MAGIC, amountLeft)) > 0) {
-								if (targetPlayer.getSkills().drainLevel(RANGE, amountLeft) > 0) {
-									return;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+class BandosGodswordSpecialAttackPlugin : SpecialAttackPlugin() {
+    override fun getWeaponIds(): IntArray {
+        return arguments(11696, 23680)
+    }
+
+    override fun fire(source: Player, target: Actor, style: AbstractCombatStyle) {
+        source.nextAnimation = ANIMATION
+        source.setNextGraphics(GRAPHICS)
+        val damage = style.getRandomDamage(source, target, 1.21)
+        style.sendHit(source, target, style.calculator.getMaximumHit(source, 1.21), damage, 0)
+        if (target.isPlayer) {
+            val targetPlayer = target.toPlayer()
+            var amountLeft: Int
+            if (targetPlayer.skills.drainLevel(DEFENCE, damage / 10).also { amountLeft = it } > 0) {
+                if (targetPlayer.skills.drainLevel(STRENGTH, amountLeft).also { amountLeft = it } > 0) {
+                    if (targetPlayer.skills.drainLevel(PRAYER, amountLeft).also { amountLeft = it } > 0) {
+                        if (targetPlayer.skills.drainLevel(ATTACK, amountLeft).also { amountLeft = it } > 0) {
+                            if (targetPlayer.skills.drainLevel(MAGIC, amountLeft).also { amountLeft = it } > 0) {
+                                if (targetPlayer.skills.drainLevel(RANGE, amountLeft) > 0) {
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val GRAPHICS = Graphics(2114)
+        private val ANIMATION = Animation(11991)
+    }
 }
