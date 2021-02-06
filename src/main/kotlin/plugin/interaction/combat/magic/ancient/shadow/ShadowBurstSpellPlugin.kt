@@ -1,70 +1,62 @@
-package plugin.interaction.combat.magic.ancient.shadow;
+package plugin.interaction.combat.magic.ancient.shadow
 
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.utility.constants.SkillConstants;
+import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
+import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.constants.MagicConstants.MagicBook
+import org.redrune.utility.constants.SkillConstants
+import java.util.function.Consumer
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 8/1/2017
  */
-public class ShadowBurstSpellPlugin implements CombatSpellPlugin {
-	
-	@Override
-	public int delay(Player player) {
-		return 4;
-	}
-	
-	@Override
-	public int animationId() {
-		return 1979;
-	}
-	
-	@Override
-	public int hitGfx() {
-		return 382;
-	}
-	
-	@Override
-	public int maxHit(Player player, Actor target) {
-		return 200;
-	}
-	
-	@Override
-	public void cast(Player source, Actor target, MagicCombatStyle style) {
-		style.sendMultiSpell(source, target, this, null, null).forEach(spellDetail -> {
-			if (spellDetail.getHit().getDamage() != 0) {
-				if (spellDetail.getTarget().isPlayer()) {
-					spellDetail.getTarget().toPlayer().getSkills().drainLevel(SkillConstants.ATTACK, 0.05, 0.10);
-				}
-			}
-		});
-	}
-	
-	@Override
-	public int spellId() {
-		return 34;
-	}
-	
-	@Override
-	public double exp() {
-		return 37;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.ANCIENTS;
-	}
-	
-	@Override
-	public int castSoundId() {
-		return 177;
-	}
-	
-	@Override
-	public int impactSoundId() {
-		return 178;
-	}
+class ShadowBurstSpellPlugin : CombatSpellPlugin {
+    override fun delay(player: Player): Int {
+        return 4
+    }
+
+    override fun animationId(): Int {
+        return 1979
+    }
+
+    override fun hitGfx(): Int {
+        return 382
+    }
+
+    override fun maxHit(player: Player, target: Actor): Int {
+        return 200
+    }
+
+    override fun cast(source: Player, target: Actor, style: MagicCombatStyle) {
+        style.sendMultiSpell(source, target, this, null, null).forEach(Consumer { spellDetail: CombatSwingDetail ->
+            if (spellDetail.hit.damage != 0) {
+                if (spellDetail.target.isPlayer) {
+                    spellDetail.target.toPlayer().skills.drainLevel(SkillConstants.ATTACK, 0.05, 0.10)
+                }
+            }
+        })
+    }
+
+    override fun spellId(): Int {
+        return 34
+    }
+
+    override fun exp(): Double {
+        return 37.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.ANCIENTS
+    }
+
+    override fun castSoundId(): Int {
+        return 177
+    }
+
+    override fun impactSoundId(): Int {
+        return 178
+    }
 }

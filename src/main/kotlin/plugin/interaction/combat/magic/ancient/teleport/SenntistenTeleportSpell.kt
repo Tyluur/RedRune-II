@@ -1,41 +1,36 @@
-package plugin.interaction.combat.magic.ancient.teleport;
+package plugin.interaction.combat.magic.ancient.teleport
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.MagicConstants
+import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 7/27/2017
  */
-public class SenntistenTeleportSpell implements TeleportSpellPlugin {
-	
-	@Override
-	public int levelRequired() {
-		return 60;
-	}
-	
-	@Override
-	public int[] runesRequired() {
-		return arguments(LAW_RUNE, 2, SOUL_RUNE, 1);
-	}
-	
-	@Override
-	public WorldTile destination() {
-		return new WorldTile(3360, 3387, 0);
-	}
-	
-	@Override
-	public int spellId() {
-		return 41;
-	}
-	
-	@Override
-	public double exp() {
-		return 70;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.ANCIENTS;
-	}
+class SenntistenTeleportSpell : TeleportSpellPlugin {
+    override fun levelRequired(): Int {
+        return 60
+    }
+
+    override fun runesRequired(): IntArray {
+        return arguments(MagicConstants.LAW_RUNE, 2, MagicConstants.SOUL_RUNE, 1)
+    }
+
+    override fun destination(): WorldTile {
+        return WorldTile(3360, 3387, 0)
+    }
+
+    override fun spellId(): Int {
+        return 41
+    }
+
+    override fun exp(): Double {
+        return 70.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.ANCIENTS
+    }
 }

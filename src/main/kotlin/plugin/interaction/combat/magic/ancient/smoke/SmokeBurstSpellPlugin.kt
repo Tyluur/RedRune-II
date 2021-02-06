@@ -1,71 +1,63 @@
-package plugin.interaction.combat.magic.ancient.smoke;
+package plugin.interaction.combat.magic.ancient.smoke
 
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.utility.functions.RandomFunction;
+import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
+import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.constants.MagicConstants.MagicBook
+import org.redrune.utility.functions.RandomFunction
+import java.util.function.Consumer
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 8/1/2017
  */
-public class SmokeBurstSpellPlugin implements CombatSpellPlugin {
-	
-	@Override
-	public int delay(Player player) {
-		return 4;
-	}
-	
-	@Override
-	public int animationId() {
-		return 1979;
-	}
-	
-	@Override
-	public int hitGfx() {
-		return 389;
-	}
-	
-	@Override
-	public int maxHit(Player player, Actor target) {
-		return 190;
-	}
-	
-	@Override
-	public void cast(Player source, Actor target, MagicCombatStyle style) {
-		style.sendMultiSpell(source, target, this, null, null).forEach(spellContext -> {
-			if (spellContext.getHit().getDamage() != 0 && RandomFunction.percentageChance(10)) {
-				Actor spellTarget = spellContext.getTarget();
-				if (!spellTarget.getPoisonManager().isPoisoned()) {
-					spellTarget.getPoisonManager().makePoisoned(20);
-				}
-			}
-		});
-	}
-	
-	@Override
-	public int spellId() {
-		return 30;
-	}
-	
-	@Override
-	public double exp() {
-		return 60;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.ANCIENTS;
-	}
-	
-	@Override
-	public int castSoundId() {
-		return 179;
-	}
-	
-	@Override
-	public int impactSoundId() {
-		return 180;
-	}
+class SmokeBurstSpellPlugin : CombatSpellPlugin {
+    override fun delay(player: Player): Int {
+        return 4
+    }
+
+    override fun animationId(): Int {
+        return 1979
+    }
+
+    override fun hitGfx(): Int {
+        return 389
+    }
+
+    override fun maxHit(player: Player, target: Actor): Int {
+        return 190
+    }
+
+    override fun cast(source: Player, target: Actor, style: MagicCombatStyle) {
+        style.sendMultiSpell(source, target, this, null, null).forEach(Consumer { spellContext: CombatSwingDetail ->
+            if (spellContext.hit.damage != 0 && RandomFunction.percentageChance(10)) {
+                val spellTarget = spellContext.target
+                if (!spellTarget.poisonManager.isPoisoned) {
+                    spellTarget.poisonManager.makePoisoned(20)
+                }
+            }
+        })
+    }
+
+    override fun spellId(): Int {
+        return 30
+    }
+
+    override fun exp(): Double {
+        return 60.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.ANCIENTS
+    }
+
+    override fun castSoundId(): Int {
+        return 179
+    }
+
+    override fun impactSoundId(): Int {
+        return 180
+    }
 }

@@ -1,41 +1,36 @@
-package plugin.interaction.combat.magic.ancient.teleport;
+package plugin.interaction.combat.magic.ancient.teleport
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.MagicConstants
+import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 7/27/2017
  */
-public class DareeyakTeleportSpell implements TeleportSpellPlugin {
-	
-	@Override
-	public int levelRequired() {
-		return 78;
-	}
-	
-	@Override
-	public int[] runesRequired() {
-		return arguments(LAW_RUNE, 2, FIRE_RUNE, 3, AIR_RUNE, 2);
-	}
-	
-	@Override
-	public WorldTile destination() {
-		return new WorldTile(2990, 3696, 0);
-	}
-	
-	@Override
-	public int spellId() {
-		return 44;
-	}
-	
-	@Override
-	public double exp() {
-		return 88;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.ANCIENTS;
-	}
+class DareeyakTeleportSpell : TeleportSpellPlugin {
+    override fun levelRequired(): Int {
+        return 78
+    }
+
+    override fun runesRequired(): IntArray {
+        return arguments(MagicConstants.LAW_RUNE, 2, MagicConstants.FIRE_RUNE, 3, MagicConstants.AIR_RUNE, 2)
+    }
+
+    override fun destination(): WorldTile {
+        return WorldTile(2990, 3696, 0)
+    }
+
+    override fun spellId(): Int {
+        return 44
+    }
+
+    override fun exp(): Double {
+        return 88.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.ANCIENTS
+    }
 }

@@ -1,41 +1,36 @@
-package plugin.interaction.combat.magic.modern.teleport;
+package plugin.interaction.combat.magic.modern.teleport
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.MagicConstants
+import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 7/27/2017
  */
-public class CamelotTeleportSpell implements TeleportSpellPlugin {
-	
-	@Override
-	public int levelRequired() {
-		return 45;
-	}
-	
-	@Override
-	public int[] runesRequired() {
-		return arguments(AIR_RUNE, 5, LAW_RUNE, 1);
-	}
-	
-	@Override
-	public WorldTile destination() {
-		return new WorldTile(2757, 3478, 0);
-	}
-	
-	@Override
-	public int spellId() {
-		return 51;
-	}
-	
-	@Override
-	public double exp() {
-		return 55.5;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.REGULAR;
-	}
+class CamelotTeleportSpell : TeleportSpellPlugin {
+    override fun levelRequired(): Int {
+        return 45
+    }
+
+    override fun runesRequired(): IntArray {
+        return arguments(MagicConstants.AIR_RUNE, 5, MagicConstants.LAW_RUNE, 1)
+    }
+
+    override fun destination(): WorldTile {
+        return WorldTile(2757, 3478, 0)
+    }
+
+    override fun spellId(): Int {
+        return 51
+    }
+
+    override fun exp(): Double {
+        return 55.5
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.REGULAR
+    }
 }
