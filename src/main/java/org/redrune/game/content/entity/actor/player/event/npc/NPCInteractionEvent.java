@@ -14,8 +14,6 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.RouteEvent;
 import org.redrune.utility.game.ClickOption;
 
-import java.util.Arrays;
-
 import static org.redrune.utility.game.ClickOption.*;
 
 /**
@@ -73,7 +71,7 @@ public class NPCInteractionEvent extends Event {
 	 * 		The player
 	 */
 	private void handleFirstOption(Player player) {
-		String option = npc.getDefinitions().getOption(1);
+		String option = npc.getDefinitions().getOption(2);
 		FishingSpots spot = FishingSpots.forId(npc.getId() | 1 << 24);
 		if (spot != null) {
 			player.getActionManager().setAction(new Fishing(spot, npc));
@@ -103,8 +101,7 @@ public class NPCInteractionEvent extends Event {
 	 * 		The player
 	 */
 	private void handleSecondOption(Player player) {
-		String option = npc.getDefinitions().getOption(2);
-		System.out.println(Arrays.toString(npc.getDefinitions().getOptions()));
+		String option = npc.getDefinitions().getOption(3);
 		if (option == null) {
 			throw new IllegalStateException("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
 		}
@@ -160,7 +157,7 @@ public class NPCInteractionEvent extends Event {
 	 * 		The player
 	 */
 	private void handleThirdOption(Player player) {
-		String option = npc.getDefinitions().getOption(3);
+		String option = npc.getDefinitions().getOption(4);
 		if (option == null) {
 			throw new IllegalStateException("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
 		}
@@ -184,7 +181,7 @@ public class NPCInteractionEvent extends Event {
 	 * 		The player
 	 */
 	private void handleFourthOption(Player player) {
-		String option = npc.getDefinitions().getOption(4);
+		String option = npc.getDefinitions().getOption(5);
 		if (option == null) {
 			throw new IllegalStateException("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
 		}
