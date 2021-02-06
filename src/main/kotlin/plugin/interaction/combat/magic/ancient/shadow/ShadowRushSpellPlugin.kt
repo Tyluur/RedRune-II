@@ -1,70 +1,72 @@
-package plugin.interaction.combat.magic.ancient.shadow;
+package plugin.interaction.combat.magic.ancient.shadow
 
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.game.entity.projectile.ProjectileManager;
-import org.redrune.utility.constants.SkillConstants;
+import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
+import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.projectile.ProjectileManager
+import org.redrune.utility.constants.MagicConstants.MagicBook
+import org.redrune.utility.constants.SkillConstants
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 8/1/2017
  */
-public class ShadowRushSpellPlugin implements CombatSpellPlugin {
-	
-	@Override
-	public int delay(Player player) {
-		return 4;
-	}
-	
-	@Override
-	public int animationId() {
-		return 1978;
-	}
-	
-	@Override
-	public int hitGfx() {
-		return 379;
-	}
-	
-	@Override
-	public int maxHit(Player player, Actor target) {
-		return 160;
-	}
-	
-	@Override
-	public void cast(Player source, Actor target, MagicCombatStyle style) {
-		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(source, target, 380, 18, 9, 52, 15, 0));
-		style.sendSpell(source, target, this, null, null).consume(spellDetail -> {
-			if (spellDetail.getHit().getDamage() != 0 && spellDetail.getTarget().isPlayer()) {
-				spellDetail.getTarget().toPlayer().getSkills().drainLevel(SkillConstants.ATTACK, 0.05, 0.10);
-			}
-		});
-	}
-	
-	@Override
-	public int spellId() {
-		return 32;
-	}
-	
-	@Override
-	public double exp() {
-		return 31;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.ANCIENTS;
-	}
-	
-	@Override
-	public int castSoundId() {
-		return 175;
-	}
-	
-	@Override
-	public int impactSoundId() {
-		return 176;
-	}
+class ShadowRushSpellPlugin : CombatSpellPlugin {
+    override fun delay(player: Player): Int {
+        return 4
+    }
+
+    override fun animationId(): Int {
+        return 1978
+    }
+
+    override fun hitGfx(): Int {
+        return 379
+    }
+
+    override fun maxHit(player: Player, target: Actor): Int {
+        return 160
+    }
+
+    override fun cast(source: Player, target: Actor, style: MagicCombatStyle) {
+        ProjectileManager.sendProjectile(
+            ProjectileManager.createSpeedDefinedProjectile(
+                source,
+                target,
+                380,
+                18,
+                9,
+                52,
+                15,
+                0
+            )
+        )
+        style.sendSpell(source, target, this, null, null).consume { spellDetail: CombatSwingDetail ->
+            if (spellDetail.hit.damage != 0 && spellDetail.target.isPlayer) {
+                spellDetail.target.toPlayer().skills.drainLevel(SkillConstants.ATTACK, 0.05, 0.10)
+            }
+        }
+    }
+
+    override fun spellId(): Int {
+        return 32
+    }
+
+    override fun exp(): Double {
+        return 31.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.ANCIENTS
+    }
+
+    override fun castSoundId(): Int {
+        return 175
+    }
+
+    override fun impactSoundId(): Int {
+        return 176
+    }
 }

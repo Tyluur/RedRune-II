@@ -1,41 +1,73 @@
-package plugin.interaction.combat.magic.modern.teleport;
+package plugin.interaction.combat.magic.modern.teleport
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
+import org.redrune.engine.cycle.GameCycleWorker.Companion.ticksPassed
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
+import plugin.interaction.combat.magic.modern.god.ChargeSpellPlugin
+import org.redrune.engine.cycle.GameCycleWorker
+import org.redrune.utility.constants.MagicConstants.MagicBook
+import org.redrune.game.entity.actor.mask.Animation
+import plugin.interaction.combat.magic.modern.god.StormOfArmadylSpellPlugin
+import org.redrune.game.entity.projectile.ProjectileManager
+import org.redrune.utility.constants.SkillConstants
+import plugin.interaction.combat.magic.modern.fire.FireBoltSpellPlugin
+import plugin.interaction.combat.magic.modern.fire.FireWaveSpellPlugin
+import plugin.interaction.combat.magic.modern.fire.FireBlastSpellPlugin
+import plugin.interaction.combat.magic.modern.fire.FireSurgeSpellPlugin
+import plugin.interaction.combat.magic.modern.fire.FireStrikeSpellPlugin
+import plugin.interaction.combat.magic.modern.wind.WindSurgeSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.BindSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.StunSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.CurseSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.SnareSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.WeakenSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.EnfeebleSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.EntangleSpellPlugin
+import plugin.interaction.combat.magic.modern.curse.VulernabilitySpellPlugin
+import plugin.interaction.combat.magic.modern.earth.EarthBoltSpellPlugin
+import plugin.interaction.combat.magic.modern.earth.EarthWaveSpellPlugin
+import plugin.interaction.combat.magic.modern.earth.EarthBlastSpellPlugin
+import plugin.interaction.combat.magic.modern.earth.EarthSurgeSpellPlugin
+import plugin.interaction.combat.magic.modern.earth.EarthStrikeSpellPlugin
+import plugin.interaction.combat.magic.modern.water.WaterBoltSpellPlugin
+import plugin.interaction.combat.magic.modern.water.WaterWaveSpellPlugin
+import plugin.interaction.combat.magic.modern.water.WaterBlastSpellPlugin
+import plugin.interaction.combat.magic.modern.water.WaterSurgeSpellPlugin
+import plugin.interaction.combat.magic.modern.water.WaterStrikeSpellPlugin
+import org.redrune.game.entity.actor.npc.NPC
+import plugin.interaction.combat.magic.modern.special.TeleblockSpellPlugin
+import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.GameConstants
+import org.redrune.utility.constants.MagicConstants
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 7/27/2017
  */
-public class ArdougneTeleportSpell implements TeleportSpellPlugin {
-	
-	@Override
-	public int levelRequired() {
-		return 51;
-	}
-	
-	@Override
-	public int[] runesRequired() {
-		return arguments(WATER_RUNE, 2, LAW_RUNE, 2);
-	}
-	
-	@Override
-	public WorldTile destination() {
-		return new WorldTile(2664, 3305, 0);
-	}
-	
-	@Override
-	public int spellId() {
-		return 57;
-	}
-	
-	@Override
-	public double exp() {
-		return 61;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.REGULAR;
-	}
+class ArdougneTeleportSpell : TeleportSpellPlugin {
+    override fun levelRequired(): Int {
+        return 51
+    }
+
+    override fun runesRequired(): IntArray {
+        return arguments(MagicConstants.WATER_RUNE, 2, MagicConstants.LAW_RUNE, 2)
+    }
+
+    override fun destination(): WorldTile {
+        return WorldTile(2664, 3305, 0)
+    }
+
+    override fun spellId(): Int {
+        return 57
+    }
+
+    override fun exp(): Double {
+        return 61.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.REGULAR
+    }
 }

@@ -1,69 +1,72 @@
-package plugin.interaction.combat.magic.modern.water;
+package plugin.interaction.combat.magic.modern.water
 
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.mask.Graphics;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin;
-import org.redrune.game.entity.projectile.ProjectileManager;
+import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
+import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.mask.Graphics
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.projectile.ProjectileManager
+import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 8/7/2017
  */
-public class WaterBlastSpellPlugin implements CombatSpellPlugin {
-	
-	private static final Graphics GRAPHICS = new Graphics(2701);
-	
-	@Override
-	public int delay(Player player) {
-		return 5;
-	}
-	
-	@Override
-	public int animationId() {
-		return 14220;
-	}
-	
-	@Override
-	public int hitGfx() {
-		return 2710;
-	}
-	
-	@Override
-	public int maxHit(Player player, Actor target) {
-		return 140;
-	}
-	
-	@Override
-	public void cast(Player source, Actor target, MagicCombatStyle style) {
-		source.setNextGraphics(GRAPHICS);
-		ProjectileManager.sendProjectile(ProjectileManager.createSpeedDefinedProjectile(source, target, 2705, 30, 26, 52, 0, 0));
-		style.sendSpell(source, target, this);
-	}
-	
-	@Override
-	public int spellId() {
-		return 52;
-	}
-	
-	@Override
-	public double exp() {
-		return 31.5;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.REGULAR;
-	}
-	
-	@Override
-	public int castSoundId() {
-		return 207;
-	}
-	
-	@Override
-	public int impactSoundId() {
-		return castSoundId() + 1;
-	}
+class WaterBlastSpellPlugin : CombatSpellPlugin {
+    override fun delay(player: Player): Int {
+        return 5
+    }
+
+    override fun animationId(): Int {
+        return 14220
+    }
+
+    override fun hitGfx(): Int {
+        return 2710
+    }
+
+    override fun maxHit(player: Player, target: Actor): Int {
+        return 140
+    }
+
+    override fun cast(source: Player, target: Actor, style: MagicCombatStyle) {
+        source.setNextGraphics(GRAPHICS)
+        ProjectileManager.sendProjectile(
+            ProjectileManager.createSpeedDefinedProjectile(
+                source,
+                target,
+                2705,
+                30,
+                26,
+                52,
+                0,
+                0
+            )
+        )
+        style.sendSpell(source, target, this)
+    }
+
+    override fun spellId(): Int {
+        return 52
+    }
+
+    override fun exp(): Double {
+        return 31.5
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.REGULAR
+    }
+
+    override fun castSoundId(): Int {
+        return 207
+    }
+
+    override fun impactSoundId(): Int {
+        return castSoundId() + 1
+    }
+
+    companion object {
+        private val GRAPHICS = Graphics(2701)
+    }
 }

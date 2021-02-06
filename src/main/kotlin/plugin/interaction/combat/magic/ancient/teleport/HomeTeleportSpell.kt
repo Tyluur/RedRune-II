@@ -1,42 +1,36 @@
-package plugin.interaction.combat.magic.ancient.teleport;
+package plugin.interaction.combat.magic.ancient.teleport
 
-import org.redrune.utility.constants.GameConstants;
-import org.redrune.game.global.WorldTile;
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin;
+import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.GameConstants
+import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 7/27/2017
  */
-public class HomeTeleportSpell implements TeleportSpellPlugin {
-	
-	@Override
-	public int levelRequired() {
-		return 0;
-	}
-	
-	@Override
-	public int[] runesRequired() {
-		return new int[0];
-	}
-	
-	@Override
-	public WorldTile destination() {
-		return GameConstants.START_PLAYER_LOCATION;
-	}
-	
-	@Override
-	public int spellId() {
-		return 48;
-	}
-	
-	@Override
-	public double exp() {
-		return 0;
-	}
-	
-	@Override
-	public MagicBook book() {
-		return MagicBook.ANCIENTS;
-	}
+class HomeTeleportSpell : TeleportSpellPlugin {
+    override fun levelRequired(): Int {
+        return 0
+    }
+
+    override fun runesRequired(): IntArray {
+        return IntArray(0)
+    }
+
+    override fun destination(): WorldTile {
+        return GameConstants.START_PLAYER_LOCATION
+    }
+
+    override fun spellId(): Int {
+        return 48
+    }
+
+    override fun exp(): Double {
+        return 0.0
+    }
+
+    override fun book(): MagicBook {
+        return MagicBook.ANCIENTS
+    }
 }
