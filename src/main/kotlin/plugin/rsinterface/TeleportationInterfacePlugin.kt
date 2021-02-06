@@ -1,425 +1,577 @@
-package plugin.rsinterface;
+package plugin.rsinterface
 
-import org.redrune.engine.tick.task.WorldTask;
-import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.game.content.entity.actor.combat.function.Magic;
-import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
-import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
-import org.redrune.game.content.plugin.type.InterfacePlugin;
-import org.redrune.game.entity.actor.mask.ForceTalk;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.global.WorldTile;
-import org.redrune.utility.constants.ColorConstants;
-import org.redrune.utility.constants.MagicConstants;
-import org.redrune.utility.constants.key.AttributeKey;
-import org.redrune.utility.functions.Misc;
-import org.redrune.utility.game.map.Coordinates;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.redrune.engine.tick.task.WorldTask
+import org.redrune.engine.tick.task.WorldTasksManager
+import org.redrune.game.content.entity.actor.combat.function.Magic
+import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness
+import org.redrune.game.content.entity.actor.player.dialogue.Dialogue
+import org.redrune.game.content.plugin.type.InterfacePlugin
+import org.redrune.game.entity.actor.mask.ForceTalk
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.ColorConstants
+import org.redrune.utility.constants.MagicConstants
+import org.redrune.utility.constants.key.AttributeKey
+import org.redrune.utility.functions.Misc
+import org.redrune.utility.game.map.Coordinates
+import plugin.rsinterface.TeleportationInterfacePlugin.TravelLocations
+import java.io.Serializable
+import java.util.*
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/12/2017
  */
-public class TeleportationInterfacePlugin implements InterfacePlugin {
-	
-	/**
-	 * The possible messages the wizard can say
-	 */
-	private static final String[] WIZARD_MESSAGES = new String[] { "Amitus! Setitii!", "Sparanti Morudo Calmentor!", "Daemonicas Abhoris!", "Senventior disthine molenko!" };
-	
-	/**
-	 * The id of the interface which is scrollable and clickable with 106 options
-	 */
-	private static final int INTERFACE_ID = 156;
-	
-	@Override
-	public boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId) {
-		if (!player.getTemporaryAttribute("quest_selection_interface", "null").equalsIgnoreCase("teleportation")) {
-			return false;
-		}
-		
-		int teleportSlotId = (componentId - 7);
-		TravelLocations uncollapsed = player.getTemporaryAttribute("uncollapsed_teleport") != null ? player.getTemporaryAttribute("uncollapsed_teleport") : null;
-		
-		// a player has not selected a place to travel to
-		if (uncollapsed == null) {
-			if (teleportSlotId >= 0 && teleportSlotId < TravelLocations.values().length) {
-				player.putTemporaryAttribute("uncollapsed_teleport", uncollapsed = TravelLocations.values()[teleportSlotId]);
-				uncollapse(player, uncollapsed);
-			}
-		} else {
-			int uncollapsedTeleportsSlot = uncollapsed.ordinal();
-			int uncollapsedTeleportsStart = (uncollapsed.ordinal()) + 1;
-			int uncollapsedTeleportsEnd = (uncollapsed.ordinal()) + (uncollapsed.destinations.size());
-			
-			if (teleportSlotId < uncollapsedTeleportsStart) {
-				if (teleportSlotId == uncollapsedTeleportsSlot) {
-					displaySelectionInterface(player, false);
-					player.getAttributes().removeAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT);
-				} else {
-					player.putTemporaryAttribute("uncollapsed_teleport", uncollapsed = TravelLocations.values()[teleportSlotId]);
-					uncollapse(player, uncollapsed);
-				}
-			} else if (teleportSlotId > uncollapsedTeleportsEnd) {
-				Object[] uncollapsedArray = generateUncollapsedArray(uncollapsed);
-				if (teleportSlotId >= uncollapsedArray.length) {
-					return true;
-				}
-				Object newDestination = uncollapsedArray[teleportSlotId];
-				if (newDestination instanceof TravelLocations) {
-					displaySelectionInterface(player, true);
-					player.putTemporaryAttribute("uncollapsed_teleport", uncollapsed = (TravelLocations) newDestination);
-					uncollapse(player, uncollapsed);
-				}
-			} else if (teleportSlotId >= uncollapsedTeleportsStart && teleportSlotId <= uncollapsedTeleportsEnd) {
-				List<Object[]> destinations = uncollapsed.destinations;
-				int destinationIndex = (teleportSlotId) - uncollapsedTeleportsStart;
-				teleport(player, (WorldTile) destinations.get(destinationIndex)[1], uncollapsed, destinationIndex);
-			}
-		}
-		return true;
-	}
-	
-	@Override
-	public void register() {
-		registerInterfacePlugin(INTERFACE_ID);
-	}
-	
-	/**
-	 * Uncollapses a travel location for a player
-	 *
-	 * @param player
-	 * 		The player
-	 * @param travelLocations
-	 * 		The {@code TravelLocations} {@code Object} to be uncollapsed
-	 */
-	private static void uncollapse(Player player, TravelLocations travelLocations) {
-		int interfaceId = 156;
-		int start = 7;
-		
-		for (int i = start; i < 108; i++) {
-			player.getPackets().sendIComponentText(interfaceId, i, "");
-		}
-		for (TravelLocations locations : TravelLocations.values()) {
-			sendLocationText(player, locations, start);
-			start++;
-			
-			// we're looping on the one we should be uncollapsing
-			if (locations.equals(travelLocations)) {
-				for (Object[] destinations : locations.destinations) {
-					player.getPackets().sendIComponentText(interfaceId, start, ">>   " + destinations[0]);
-					start++;
-				}
-			}
-		}
-		player.getAttributes().putAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, travelLocations);
-	}
-	
-	/**
-	 * Displays the interface to select a teleport
-	 *
-	 * @param player
-	 * 		The player
-	 * @param showLastUncollapsed
-	 * 		If the last {@code TravelLocations} {@code Object} the player viewed should be shown
-	 */
-	public static void displaySelectionInterface(Player player, boolean showLastUncollapsed) {
-		int interfaceId = 156;
-		int start = 7;
-		
-		player.getInterfaceManager().sendInterface(interfaceId);
-		player.getPackets().sendRunScript(677, 100);
-		for (int i = start; i < 108; i++) {
-			player.getPackets().sendIComponentText(interfaceId, i, "");
-		}
-		for (TravelLocations locations : TravelLocations.values()) {
-			sendLocationText(player, locations, start);
-			start++;
-		}
-		player.getPackets().sendGlobalString(211, "Select a Destination");
-		player.putTemporaryAttribute("quest_selection_interface", "teleportation");
-		player.removeTemporaryAttribute("uncollapsed_teleport");
-		
-		if (!showLastUncollapsed) {
-			return;
-		}
-		Object last = player.getAttributes().getAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, null);
-		if (last != null) {
-			TravelLocations locations = TravelLocations.valueOf(last.toString());
-			player.putTemporaryAttribute("uncollapsed_teleport", locations);
-			uncollapse(player, locations);
-		}
-	}
-	
-	private static Object[] generateUncollapsedArray(TravelLocations uncollapsed) {
-		List<Object> list = new ArrayList<>();
-		
-		for (TravelLocations location : TravelLocations.values()) {
-			list.add(location);
-			if (location.equals(uncollapsed)) {
-				list.addAll(new ArrayList<>(uncollapsed.destinations));
-			}
-		}
-		return list.toArray(new Object[list.size()]);
-	}
-	
-	/**
-	 * Teleports a player to the destination and handles post teleportation
-	 *
-	 * @param player
-	 * 		The player
-	 * @param destination
-	 * 		The destination
-	 * @param travelLocations
-	 * 		The travelLocations we're on
-	 * @param optionIndex
-	 * 		The option index of the teleport
-	 */
-	private static void teleport(Player player, WorldTile destination, TravelLocations travelLocations, int optionIndex) {
-		if (Wilderness.isAtWild(destination)) {
-			player.getDialogueManager().startDialogue(new Dialogue() {
-				
-				@Override
-				public void start() {
-					npc(1263, NORMAL, "This destination is in the wilderness.", "Are you sure you wish to travel here?");
-				}
-				
-				@Override
-				public void run(int interfaceId, int option) {
-					switch (stage) {
-						case -1:
-							options(DEFAULT_OPTION, "Yes, I want to travel to a wilderness location.", "No, thanks for the notification!");
-							stage = 0;
-							break;
-						case 0:
-							if (option == FIRST) {
-								teleportPlayer(player, destination, () -> travelLocations.handlePostTeleportation(player, optionIndex));
-							}
-							end();
-							break;
-					}
-				}
-				
-				@Override
-				public void finish() {
-				}
-				
-			});
-		} else {
-			player.getAttributes().putAttribute(AttributeKey.LAST_TRANSPORTATION_LOCATION, new TransportationLocation(destination, travelLocations, optionIndex));
-			teleportPlayer(player, destination, () -> travelLocations.handlePostTeleportation(player, optionIndex));
-		}
-	}
-	
-	/**
-	 * Sends the location text
-	 *
-	 * @param player
-	 * 		The player
-	 * @param locations
-	 * 		The {@code TravelLocations} {@code Object}
-	 * @param slot
-	 * 		The slot of the text
-	 */
-	private static void sendLocationText(Player player, TravelLocations locations, int slot) {
-		player.getPackets().sendIComponentText(156, slot, "<u><col=" + ColorConstants.MAROON + ">" + locations.getTitle() + "</u>");
-	}
-	
-	/**
-	 * Teleports the player to the destination and performs some graphical things to make it look cool
-	 *
-	 * @param player
-	 * 		The player
-	 * @param destination
-	 * 		The destination
-	 * @param task
-	 * 		The task to be performed once the teleport is done
-	 */
-	public static void teleportPlayer(Player player, WorldTile destination, Runnable task) {
-		player.closeInterfaces();
-		NPC wizard = Misc.findLocalNPC(player, 1263);
-		
-		WorldTasksManager.schedule(new WorldTask() {
-			@Override
-			public void run() {
-				Magic.sendTeleportSpell(player, 14293, -1, 94, -1, 0, 0, destination, 6, false, MagicConstants.MAGIC_TELEPORT);
-				player.setCloseInterfacesEvent(task);
-			}
-		}, 1);
-		
-		if (wizard == null) {
-			return;
-		}
-		
-		wizard.resetWalkSteps();
-		wizard.setNextFaceWorldTile(player);
-		wizard.setNextForceTalk(new ForceTalk(Misc.randomArraySlot(WIZARD_MESSAGES)));
-	}
-	
-	public enum TravelLocations implements Coordinates {
-		
-		PVP("PvP") {
-			@Override
-			public void populateDestinations() {
-				add("Revenant Cave", REVENANTS_CAVE, "East Dragons", EAST_DRAGONS, "West Dragons", WEST_DRAGONS, "Graveyard", GRAVEYARD, "Obelisk: Lvl 50", LVL_50_OBELISK, "Mage Bank", MAGE_BANK);
-			}
-		},
-		
-		MINIGAMES("Minigames") {
-			@Override
-			public void populateDestinations() {
-				add("Duel Arena", DUEL_ARENA, "Pest Control", PEST_CONTROL, "Fight Caves", TZHAAR, "Barrows", BARROW, "Warriors Guild", WARRIORS_GUILD, "Clan Wars", CLAN_WARS, "Dicing", DICING_AREA/*, "Castle Wars", CASTLE_WARS*/);
-			}
-		},
-		
-		BOSSES("Bosses") {
-			@Override
-			public void populateDestinations() {
-				add("Nex", NEX_DUNGEON, "Godwars", GODWARS_DUNGEON, "Glacors", GLACOR_DUNGEON, "Kalphite Queen", KALPHITE_QUEEN, "King Black Dragon", KING_BLACK_DRAGON, "Chaos Elemental", CHAOS_ELEMENTAL, "Frost Dragons", FROST_DRAGONS, "Tormented Demons", TORMENTED_DEMONS);
-				add("Dagannoth Kings", DAGANNOTH_KINGS, "Corporeal Beast", CORPOREAL_BEAST, "Ice Strykwyrms", STRYKEWYRM_DUNGEON, "Sea Troll Queen", SEA_TROLL_QUEEN, "Bork", BORK);
-			}
-			
-			@Override
-			public void handlePostTeleportation(Player player, int index) {
-				switch (index) {
-					case 0:
-					case 1:
-						player.getControllerManager().startController("GodWars");
-						break;
-				}
-			}
-		},
-		
-		SKILLING("Skilling") {
-			@Override
-			public void populateDestinations() {
-				add("Skill Zone", SKILL_ZONE, "Gnome Agility Course", GNOME_AGILITY, "Barbarian Agility Course", BARBARIAN_AGILITY, "Wilderness Agility Course", WILDERNESS_AGILITY, "The Abyss", ABYSS);
-				add("Catherby Farming", new WorldTile(2817, 3460, 0), "Essence Mine", ESSENCE_MINE, "Plank Making", LUMBER_YARD_PLANKS, "Living Rock Cavern", LIVING_ROCK_CAVERNS, "Hunter Training", HUNTER_TRAINING);
-				add("Desert Phoenix Lair", new WorldTile(3414, 3157, 0), "Rogues' Den", ROGUES_DEN);
-			}
-		},
-		
-		MONSTERS("Monsters") {
-			@Override
-			public void populateDestinations() {
-				add("Rock Crabs", ROCK_CRABS, "Experiments", EXPERIMENTS, "Ogres", OGRES, "Yaks", YAKS, "Bandits", BANDITS, "Moss Giants", MOSS_GIANTS, "Chaos Druids", DRUIDS, "Tzhaar", TZHAAR, "Dust Devils", DUST_DEVILS);
-				add("Ape-Atoll Guards", MONKEY_GUARDS, "Armoured Zombies", ARMOURED_ZOMBIES, "Chaos Tunnels", CHAOS_TUNNELS, "Ice Giants", ICE_GIANTS, "Chickens", CHICKENS, "Monkey Skeletons", APE_ATOLL_DUNGEON);
-			}
-		},
-		
-		DUNGEONS("Dungeons") {
-			@Override
-			public void populateDestinations() {
-				add("Slayer Tower", SLAYER_TOWER, "Taverly Dungeon", TAVERLY_DUNGEON, "Fremennik Slayer Dungeon", FREMENNIK_SLAYER_DUNGEON, "Brimhaven Dungeon", BRIMHAVEN_DUNGEON, "Kuradal's Dungeon", KURADAL_SLAYER_DUNGEON, "Asgarnian Dungeon", ASGARNIAN_ICE_DUNGEON, "Ancient Cavern", ANCIENT_CAVERN, "Jadinko Lair", JADINKO_LAIR);
-			}
-		},
-		
-		CITIES("Cities") {
-			@Override
-			public void populateDestinations() {
-				add("Varrock", VARROCK, "Falador", FALADOR, "Camelot", CAMELOT, "Draynor", DRAYNOR, "Catherby", CATHERBY, "Al Kharid", AL_KHARID, "Karamja", KARAMJA, "Lumbridge", LUMBRIDGE, "Neitiznot", NEITIZNOT);
-				add("Ardougne", ARDOUGNE, "Rellekka", RELLEKKA, "Miscellania", MISCELLANIA, "The Grand Tree", GRAND_TREE, "Yanille", YANILLE, "Watchtower", WATCHTOWER);
-			}
-		};
-		
-		static {
-			Arrays.stream(values()).forEach(TravelLocations::populateDestinations);
-		}
-		
-		/**
-		 * The method used to populate the destinations
-		 */
-		public abstract void populateDestinations();
-		
-		/**
-		 * The list of destinations that can be travelled to, with the first slot in the Object[] as the name of the
-		 * destination, and the second slot as the {@code WorldTile} {@code Object}
-		 */
-		private final List<Object[]> destinations = new ArrayList<>();
-		
-		/**
-		 * The title of the teleport
-		 */
+class TeleportationInterfacePlugin : InterfacePlugin {
+    override fun handle(
+        player: Player,
+        interfaceId: Int,
+        componentId: Int,
+        itemId: Int,
+        slotId: Int,
+        packetId: Int
+    ): Boolean {
+        if (!player.getTemporaryAttribute("quest_selection_interface", "null")
+                .equals("teleportation", ignoreCase = true)
+        ) {
+            return false
+        }
+        val teleportSlotId = componentId - 7
+        var uncollapsed =
+            if (player.getTemporaryAttribute<Any?>("uncollapsed_teleport") != null) player.getTemporaryAttribute<TravelLocations>(
+                "uncollapsed_teleport"
+            ) else null
 
-		private final String title;
-		
-		TravelLocations(String title) {
-			this.title = title;
-		}
-		
-		/**
-		 * Adds destinations to the {@link #destinations} list
-		 *
-		 * @param params
-		 * 		The parameters, {@code String} first then {@code WorldTile}
-		 */
-		protected void add(Object... params) {
-			for (int i = 0; i < params.length; i++) {
-				Object param = params[i];
-				if (param instanceof String) {
-					String name = (String) param;
-					Object proceeding = params[i + 1];
-					if (proceeding instanceof WorldTile) {
-						destinations.add(new Object[] { name, proceeding });
-					} else {
-						throw new IllegalStateException("Unexpected parameter " + proceeding + " in " + this + " TravelLocation");
-					}
-				}
-			}
-		}
-		
-		/**
-		 * Handles actions after the teleport has been sent
-		 *
-		 * @param player
-		 * 		The player
-		 * @param index
-		 * 		The index of the teleport
-		 */
-		public void handlePostTeleportation(Player player, int index) {
-		
-		}
+        // a player has not selected a place to travel to
+        if (uncollapsed == null) {
+            if (teleportSlotId >= 0 && teleportSlotId < TravelLocations.values().size) {
+                player.putTemporaryAttribute(
+                    "uncollapsed_teleport",
+                    TravelLocations.values()[teleportSlotId].also { uncollapsed = it })
+                uncollapse(player, uncollapsed)
+            }
+        } else {
+            val uncollapsedTeleportsSlot = uncollapsed!!.ordinal
+            val uncollapsedTeleportsStart = uncollapsed!!.ordinal + 1
+            val uncollapsedTeleportsEnd = uncollapsed!!.ordinal + uncollapsed!!.destinations.size
+            if (teleportSlotId < uncollapsedTeleportsStart) {
+                if (teleportSlotId == uncollapsedTeleportsSlot) {
+                    displaySelectionInterface(player, false)
+                    player.attributes.removeAttribute<Any>(AttributeKey.LAST_UNCOLLAPSED_TELEPORT)
+                } else {
+                    player.putTemporaryAttribute(
+                        "uncollapsed_teleport",
+                        TravelLocations.values()[teleportSlotId].also { uncollapsed = it })
+                    uncollapse(player, uncollapsed)
+                }
+            } else if (teleportSlotId > uncollapsedTeleportsEnd) {
+                val uncollapsedArray = generateUncollapsedArray(
+                    uncollapsed!!
+                )
+                if (teleportSlotId >= uncollapsedArray.size) {
+                    return true
+                }
+                val newDestination = uncollapsedArray[teleportSlotId]
+                if (newDestination is TravelLocations) {
+                    displaySelectionInterface(player, true)
+                    player.putTemporaryAttribute("uncollapsed_teleport", newDestination)
+                    uncollapse(player, uncollapsed)
+                }
+            } else if (teleportSlotId >= uncollapsedTeleportsStart && teleportSlotId <= uncollapsedTeleportsEnd) {
+                val destinations: List<Array<Any>> = uncollapsed!!.destinations
+                val destinationIndex = teleportSlotId - uncollapsedTeleportsStart
+                teleport(player, destinations[destinationIndex][1] as WorldTile, uncollapsed!!, destinationIndex)
+            }
+        }
+        return true
+    }
 
-		public String getTitle() {
-			return title;
-		}
-	}
-	
-	public static final class TransportationLocation implements Serializable {
-		
-		private static final long serialVersionUID = 2836199090952003422L;
-		
+    override fun register() {
+        registerInterfacePlugin(INTERFACE_ID)
+    }
 
-		private final WorldTile destination;
-		
+    enum class TravelLocations(
+        /**
+         * The title of the teleport
+         */
+        val title: String
+    ) : Coordinates {
+        PVP("PvP") {
+            override fun populateDestinations() {
+                add(
+                    "Revenant Cave",
+                    Coordinates.REVENANTS_CAVE,
+                    "East Dragons",
+                    Coordinates.EAST_DRAGONS,
+                    "West Dragons",
+                    Coordinates.WEST_DRAGONS,
+                    "Graveyard",
+                    Coordinates.GRAVEYARD,
+                    "Obelisk: Lvl 50",
+                    Coordinates.LVL_50_OBELISK,
+                    "Mage Bank",
+                    Coordinates.MAGE_BANK
+                )
+            }
+        },
+        MINIGAMES("Minigames") {
+            override fun populateDestinations() {
+                add(
+                    "Duel Arena",
+                    Coordinates.DUEL_ARENA,
+                    "Pest Control",
+                    Coordinates.PEST_CONTROL,
+                    "Fight Caves",
+                    Coordinates.TZHAAR,
+                    "Barrows",
+                    Coordinates.BARROW,
+                    "Warriors Guild",
+                    Coordinates.WARRIORS_GUILD,
+                    "Clan Wars",
+                    Coordinates.CLAN_WARS,
+                    "Dicing",
+                    Coordinates.DICING_AREA /*, "Castle Wars", CASTLE_WARS*/
+                )
+            }
+        },
+        BOSSES("Bosses") {
+            override fun populateDestinations() {
+                add(
+                    "Nex",
+                    Coordinates.NEX_DUNGEON,
+                    "Godwars",
+                    Coordinates.GODWARS_DUNGEON,
+                    "Glacors",
+                    Coordinates.GLACOR_DUNGEON,
+                    "Kalphite Queen",
+                    Coordinates.KALPHITE_QUEEN,
+                    "King Black Dragon",
+                    Coordinates.KING_BLACK_DRAGON,
+                    "Chaos Elemental",
+                    Coordinates.CHAOS_ELEMENTAL,
+                    "Frost Dragons",
+                    Coordinates.FROST_DRAGONS,
+                    "Tormented Demons",
+                    Coordinates.TORMENTED_DEMONS
+                )
+                add(
+                    "Dagannoth Kings",
+                    Coordinates.DAGANNOTH_KINGS,
+                    "Corporeal Beast",
+                    Coordinates.CORPOREAL_BEAST,
+                    "Ice Strykwyrms",
+                    Coordinates.STRYKEWYRM_DUNGEON,
+                    "Sea Troll Queen",
+                    Coordinates.SEA_TROLL_QUEEN,
+                    "Bork",
+                    Coordinates.BORK
+                )
+            }
 
-		private final TravelLocations locations;
-		
+            override fun handlePostTeleportation(player: Player, index: Int) {
+                when (index) {
+                    0, 1 -> player.controllerManager.startController("GodWars")
+                }
+            }
+        },
+        SKILLING("Skilling") {
+            override fun populateDestinations() {
+                add(
+                    "Skill Zone",
+                    Coordinates.SKILL_ZONE,
+                    "Gnome Agility Course",
+                    Coordinates.GNOME_AGILITY,
+                    "Barbarian Agility Course",
+                    Coordinates.BARBARIAN_AGILITY,
+                    "Wilderness Agility Course",
+                    Coordinates.WILDERNESS_AGILITY,
+                    "The Abyss",
+                    Coordinates.ABYSS
+                )
+                add(
+                    "Catherby Farming",
+                    WorldTile(2817, 3460, 0),
+                    "Essence Mine",
+                    Coordinates.ESSENCE_MINE,
+                    "Plank Making",
+                    Coordinates.LUMBER_YARD_PLANKS,
+                    "Living Rock Cavern",
+                    Coordinates.LIVING_ROCK_CAVERNS,
+                    "Hunter Training",
+                    Coordinates.HUNTER_TRAINING
+                )
+                add("Desert Phoenix Lair", WorldTile(3414, 3157, 0), "Rogues' Den", Coordinates.ROGUES_DEN)
+            }
+        },
+        MONSTERS("Monsters") {
+            override fun populateDestinations() {
+                add(
+                    "Rock Crabs",
+                    Coordinates.ROCK_CRABS,
+                    "Experiments",
+                    Coordinates.EXPERIMENTS,
+                    "Ogres",
+                    Coordinates.OGRES,
+                    "Yaks",
+                    Coordinates.YAKS,
+                    "Bandits",
+                    Coordinates.BANDITS,
+                    "Moss Giants",
+                    Coordinates.MOSS_GIANTS,
+                    "Chaos Druids",
+                    Coordinates.DRUIDS,
+                    "Tzhaar",
+                    Coordinates.TZHAAR,
+                    "Dust Devils",
+                    Coordinates.DUST_DEVILS
+                )
+                add(
+                    "Ape-Atoll Guards",
+                    Coordinates.MONKEY_GUARDS,
+                    "Armoured Zombies",
+                    Coordinates.ARMOURED_ZOMBIES,
+                    "Chaos Tunnels",
+                    Coordinates.CHAOS_TUNNELS,
+                    "Ice Giants",
+                    Coordinates.ICE_GIANTS,
+                    "Chickens",
+                    Coordinates.CHICKENS,
+                    "Monkey Skeletons",
+                    Coordinates.APE_ATOLL_DUNGEON
+                )
+            }
+        },
+        DUNGEONS("Dungeons") {
+            override fun populateDestinations() {
+                add(
+                    "Slayer Tower",
+                    Coordinates.SLAYER_TOWER,
+                    "Taverly Dungeon",
+                    Coordinates.TAVERLY_DUNGEON,
+                    "Fremennik Slayer Dungeon",
+                    Coordinates.FREMENNIK_SLAYER_DUNGEON,
+                    "Brimhaven Dungeon",
+                    Coordinates.BRIMHAVEN_DUNGEON,
+                    "Kuradal's Dungeon",
+                    Coordinates.KURADAL_SLAYER_DUNGEON,
+                    "Asgarnian Dungeon",
+                    Coordinates.ASGARNIAN_ICE_DUNGEON,
+                    "Ancient Cavern",
+                    Coordinates.ANCIENT_CAVERN,
+                    "Jadinko Lair",
+                    Coordinates.JADINKO_LAIR
+                )
+            }
+        },
+        CITIES("Cities") {
+            override fun populateDestinations() {
+                add(
+                    "Varrock",
+                    Coordinates.VARROCK,
+                    "Falador",
+                    Coordinates.FALADOR,
+                    "Camelot",
+                    Coordinates.CAMELOT,
+                    "Draynor",
+                    Coordinates.DRAYNOR,
+                    "Catherby",
+                    Coordinates.CATHERBY,
+                    "Al Kharid",
+                    Coordinates.AL_KHARID,
+                    "Karamja",
+                    Coordinates.KARAMJA,
+                    "Lumbridge",
+                    Coordinates.LUMBRIDGE,
+                    "Neitiznot",
+                    Coordinates.NEITIZNOT
+                )
+                add(
+                    "Ardougne",
+                    Coordinates.ARDOUGNE,
+                    "Rellekka",
+                    Coordinates.RELLEKKA,
+                    "Miscellania",
+                    Coordinates.MISCELLANIA,
+                    "The Grand Tree",
+                    Coordinates.GRAND_TREE,
+                    "Yanille",
+                    Coordinates.YANILLE,
+                    "Watchtower",
+                    Coordinates.WATCHTOWER
+                )
+            }
+        };
 
-		private final int optionIndex;
-		
-		public TransportationLocation(WorldTile destination, TravelLocations locations, int optionIndex) {
-			this.destination = destination;
-			this.locations = locations;
-			this.optionIndex = optionIndex;
-		}
+        companion object {
+            init {
+                Arrays.stream(values())
+                    .forEach { obj: TravelLocations? -> obj?.populateDestinations() }
+            }
+        }
 
-		public WorldTile getDestination() {
-			return destination;
-		}
+        /**
+         * The method used to populate the destinations
+         */
+        abstract fun populateDestinations()
 
-		public TravelLocations getLocations() {
-			return locations;
-		}
+        /**
+         * The list of destinations that can be travelled to, with the first slot in the Object[] as the name of the
+         * destination, and the second slot as the `WorldTile` `Object`
+         */
+        val destinations: MutableList<Array<Any>> = ArrayList()
 
-		public int getOptionIndex() {
-			return optionIndex;
-		}
-	}
-	
+        /**
+         * Adds destinations to the [.destinations] list
+         *
+         * @param params
+         * The parameters, `String` first then `WorldTile`
+         */
+        protected fun add(vararg params: Any) {
+            for (i in 0 until params.size) {
+                val param = params[i]
+                if (param is String) {
+                    val proceeding = params[i + 1]
+                    if (proceeding is WorldTile) {
+                        destinations.add(arrayOf(param, proceeding))
+                    } else {
+                        throw IllegalStateException("Unexpected parameter $proceeding in $this TravelLocation")
+                    }
+                }
+            }
+        }
+
+        /**
+         * Handles actions after the teleport has been sent
+         *
+         * @param player
+         * The player
+         * @param index
+         * The index of the teleport
+         */
+        open fun handlePostTeleportation(player: Player, index: Int) {}
+    }
+
+    class TransportationLocation(val destination: WorldTile, val locations: TravelLocations, val optionIndex: Int) :
+        Serializable {
+
+        companion object {
+            private const val serialVersionUID = 2836199090952003422L
+        }
+    }
+
+    companion object {
+        /**
+         * The possible messages the wizard can say
+         */
+        private val WIZARD_MESSAGES = arrayOf(
+            "Amitus! Setitii!",
+            "Sparanti Morudo Calmentor!",
+            "Daemonicas Abhoris!",
+            "Senventior disthine molenko!"
+        )
+
+        /**
+         * The id of the interface which is scrollable and clickable with 106 options
+         */
+        private const val INTERFACE_ID = 156
+
+        /**
+         * Uncollapses a travel location for a player
+         *
+         * @param player
+         * The player
+         * @param travelLocations
+         * The `TravelLocations` `Object` to be uncollapsed
+         */
+        private fun uncollapse(player: Player, travelLocations: TravelLocations?) {
+            val interfaceId = 156
+            var start = 7
+            for (i in start..107) {
+                player.packets.sendIComponentText(interfaceId, i, "")
+            }
+            for (locations in TravelLocations.values()) {
+                sendLocationText(player, locations, start)
+                start++
+
+                // we're looping on the one we should be uncollapsing
+                if (locations == travelLocations) {
+                    for (destinations in locations.destinations) {
+                        player.packets.sendIComponentText(interfaceId, start, ">>   " + destinations[0])
+                        start++
+                    }
+                }
+            }
+            player.attributes.putAttribute(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, travelLocations)
+        }
+
+        /**
+         * Displays the interface to select a teleport
+         *
+         * @param player
+         * The player
+         * @param showLastUncollapsed
+         * If the last `TravelLocations` `Object` the player viewed should be shown
+         */
+        @kotlin.jvm.JvmStatic
+        fun displaySelectionInterface(player: Player, showLastUncollapsed: Boolean) {
+            val interfaceId = 156
+            var start = 7
+            player.interfaceManager.sendInterface(interfaceId)
+            player.packets.sendRunScript(677, 100)
+            for (i in start..107) {
+                player.packets.sendIComponentText(interfaceId, i, "")
+            }
+            for (locations in TravelLocations.values()) {
+                sendLocationText(player, locations, start)
+                start++
+            }
+            player.packets.sendGlobalString(211, "Select a Destination")
+            player.putTemporaryAttribute("quest_selection_interface", "teleportation")
+            player.removeTemporaryAttribute<Any>("uncollapsed_teleport")
+            if (!showLastUncollapsed) {
+                return
+            }
+            val last = player.attributes.getAttribute<Any?>(AttributeKey.LAST_UNCOLLAPSED_TELEPORT, null)
+            if (last != null) {
+                val locations = TravelLocations.valueOf(last.toString())
+                player.putTemporaryAttribute("uncollapsed_teleport", locations)
+                uncollapse(player, locations)
+            }
+        }
+
+        private fun generateUncollapsedArray(uncollapsed: TravelLocations): Array<Any> {
+            val list: MutableList<Any> = ArrayList()
+            for (location in TravelLocations.values()) {
+                list.add(location)
+                if (location == uncollapsed) {
+                    list.addAll(ArrayList(uncollapsed.destinations))
+                }
+            }
+            return list.toTypedArray()
+        }
+
+        /**
+         * Teleports a player to the destination and handles post teleportation
+         *
+         * @param player
+         * The player
+         * @param destination
+         * The destination
+         * @param travelLocations
+         * The travelLocations we're on
+         * @param optionIndex
+         * The option index of the teleport
+         */
+        private fun teleport(
+            player: Player,
+            destination: WorldTile,
+            travelLocations: TravelLocations,
+            optionIndex: Int
+        ) {
+            if (Wilderness.isAtWild(destination)) {
+                player.dialogueManager.startDialogue(object : Dialogue() {
+                    override fun start() {
+                        npc(
+                            1263,
+                            NORMAL,
+                            "This destination is in the wilderness.",
+                            "Are you sure you wish to travel here?"
+                        )
+                    }
+
+                    override fun run(interfaceId: Int, option: Int) {
+                        when (stage.toInt()) {
+                            -1 -> {
+                                options(
+                                    DEFAULT_OPTION,
+                                    "Yes, I want to travel to a wilderness location.",
+                                    "No, thanks for the notification!"
+                                )
+                                stage = 0
+                            }
+                            0 -> {
+                                if (option == FIRST) {
+                                    teleportPlayer(
+                                        player,
+                                        destination,
+                                        Runnable { travelLocations.handlePostTeleportation(player, optionIndex) })
+                                }
+                                end()
+                            }
+                        }
+                    }
+
+                    override fun finish() {}
+                })
+            } else {
+                player.attributes.putAttribute(
+                    AttributeKey.LAST_TRANSPORTATION_LOCATION,
+                    TransportationLocation(destination, travelLocations, optionIndex)
+                )
+                teleportPlayer(
+                    player,
+                    destination,
+                    Runnable { travelLocations.handlePostTeleportation(player, optionIndex) })
+            }
+        }
+
+        /**
+         * Sends the location text
+         *
+         * @param player
+         * The player
+         * @param locations
+         * The `TravelLocations` `Object`
+         * @param slot
+         * The slot of the text
+         */
+        private fun sendLocationText(player: Player, locations: TravelLocations, slot: Int) {
+            player.packets.sendIComponentText(
+                156,
+                slot,
+                "<u><col=" + ColorConstants.MAROON + ">" + locations.title + "</u>"
+            )
+        }
+
+        /**
+         * Teleports the player to the destination and performs some graphical things to make it look cool
+         *
+         * @param player
+         * The player
+         * @param destination
+         * The destination
+         * @param task
+         * The task to be performed once the teleport is done
+         */
+        @kotlin.jvm.JvmStatic
+        fun teleportPlayer(player: Player, destination: WorldTile?, task: Runnable?) {
+            player.closeInterfaces()
+            val wizard = Misc.findLocalNPC(player, 1263)
+            WorldTasksManager.schedule(object : WorldTask() {
+                override fun run() {
+                    Magic.sendTeleportSpell(
+                        player,
+                        14293,
+                        -1,
+                        94,
+                        -1,
+                        0,
+                        0.0,
+                        destination,
+                        6,
+                        false,
+                        MagicConstants.MAGIC_TELEPORT
+                    )
+                    player.setCloseInterfacesEvent(task)
+                }
+            }, 1)
+            if (wizard == null) {
+                return
+            }
+            wizard.resetWalkSteps()
+            wizard.nextFaceWorldTile = player
+            wizard.nextForceTalk =
+                ForceTalk(Misc.randomArraySlot(WIZARD_MESSAGES))
+        }
+    }
 }
