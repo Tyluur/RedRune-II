@@ -71,7 +71,7 @@ public class NPCInteractionEvent extends Event {
 	 * 		The player
 	 */
 	private void handleFirstOption(Player player) {
-		String option = npc.getDefinitions().getOption(2);
+		String option = npc.getDefinitions().getOption(1);
 		FishingSpots spot = FishingSpots.forId(npc.getId() | 1 << 24);
 		if (spot != null) {
 			player.getActionManager().setAction(new Fishing(spot, npc));
