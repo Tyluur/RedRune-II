@@ -29,7 +29,7 @@ class ZarosAltar : Dialogue() {
                         player.combatDefinitions.spellBook = 0
                     }
                     THIRD -> {
-                        player.combatDefinitions.spellBook = 1
+                        player.combatDefinitions.spellBook = 2
                     }
                 }
                 sendPlayerDialogue(UNSURE, "Wtf just happened to my magic dude?....")
