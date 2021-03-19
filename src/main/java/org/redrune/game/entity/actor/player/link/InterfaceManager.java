@@ -3,6 +3,7 @@ package org.redrune.game.entity.actor.player.link;
 import org.redrune.cache.loaders.IComponentDefinitions;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
+import org.redrune.utility.constants.ColorConstants;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -257,7 +258,14 @@ public class InterfaceManager {
 	}
 	
 	public void sendTaskSystem() {
-		sendTab(resizableScreen ? 91 : 205, 1056);
+		int interfaceId = 930;
+		sendTab(resizableScreen ? 91 : 205, interfaceId);
+		player.getPackets().sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
+		player.getPackets().sendIComponentText(interfaceId, 16, "");
+//		player.getPackets().sendHideIComponent(930, 12, true); //scroll bar
+		for (byte i = 17; i < 25; i++) {
+			player.getPackets().sendHideIComponent(930, i, true);
+		}
 	}
 	
 	public void sendEmotes() {

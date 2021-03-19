@@ -237,7 +237,8 @@ public class ObjectDefinitions {
             def.setId(id);
             byte[] data = Cache.STORE.getIndexes()[16].getFile(getArchiveId(id), id & 0xff);
             if (data == null) {
-                throw new IllegalStateException("Unable to get definitions for object " + id);
+                System.out.println("Unable to get definitions for object " + id);
+                return null;
             } else {
                 def.readValueLoop(new InputStream(data));
             }

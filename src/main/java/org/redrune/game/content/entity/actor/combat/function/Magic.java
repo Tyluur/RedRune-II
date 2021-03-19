@@ -73,7 +73,7 @@ public class Magic {
 		if (plugin instanceof CombatSpellPlugin) {
 			setCombatSpell(player, spellId);
 		} else {
-			plugin.cast(player, null);
+			plugin.cast(player, player);
 		}
 	}
 	

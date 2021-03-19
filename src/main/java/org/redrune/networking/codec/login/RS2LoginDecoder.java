@@ -319,7 +319,7 @@ public class RS2LoginDecoder extends ByteToMessageDecoder {
 			return;
 		}
 
-		if (!password.equals(player.getPassword())) {
+		if (GameConstants.HOSTED && !password.equals(player.getPassword())) {
 			ctx.writeAndFlush(new LoginResponseCodePacketBuilder(INVALID_CREDENTIALS).build().getBuffer());
 			return;
 		}
