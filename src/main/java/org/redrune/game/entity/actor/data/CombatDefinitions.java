@@ -14,51 +14,51 @@ import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 import java.io.Serializable;
 
 public final class CombatDefinitions implements Serializable {
-	
+
 	public static final int STAB_ATTACK = 0, SLASH_ATTACK = 1, CRUSH_ATTACK = 2, RANGE_ATTACK = 4, MAGIC_ATTACK = 3;
-	
+
 	public static final int STAB_DEF = 5, SLASH_DEF = 6, CRUSH_DEF = 7, RANGE_DEF = 9, MAGIC_DEF = 8, SUMMONING_DEF = 10;
-	
+
 	public static final int STRENGTH_BONUS = 14, RANGED_STR_BONUS = 15, MAGIC_DAMAGE = 17, PRAYER_BONUS = 16;
-	
+
 	public static final int ABSORVE_MELEE_BONUS = 11, ABSORVE_RANGE_BONUS = 13, ABSORVE_MAGE_BONUS = 12;
-	
+
 	public static final int SHARED = -1;
-	
+
 	private static final long serialVersionUID = 2102201264836121104L;
-	
+
 	private byte attackStyle;
-	
+
 	private byte specialAttackPercentage;
-	
+
 	private boolean autoRetaliate;
-	
+
 	// saving stuff
-	
+
 	private byte sortSpellBook;
-	
+
 	private boolean showCombatSpells;
-	
+
 	private boolean showSkillSpells;
-	
+
 	private boolean showMiscallaneousSpells;
-	
+
 	private boolean showTeleportSpells;
-	
+
 	private boolean defensiveCasting;
-	
+
 	private byte spellBook;
-	
+
 	private byte autoCastSpell;
-	
+
 	private transient Player player;
-	
+
 	private transient boolean usingSpecialAttack;
-	
+
 	private transient int[] bonuses;
-	
+
 	private transient boolean dungeonneringSpellBook;
-	
+
 	public CombatDefinitions() {
 		specialAttackPercentage = 100;
 		autoRetaliate = true;
@@ -67,7 +67,7 @@ public final class CombatDefinitions implements Serializable {
 		showMiscallaneousSpells = true;
 		showTeleportSpells = true;
 	}
-	
+
 	public static final int getMeleeDefenceBonus(int bonusId) {
 		if (bonusId == STAB_ATTACK) {
 			return STAB_DEF;
@@ -77,7 +77,7 @@ public final class CombatDefinitions implements Serializable {
 		}
 		return CRUSH_DEF;
 	}
-	
+
 	public static final int getMeleeBonusStyle(int weaponId, int attackStyle) {
 		if (weaponId != -1) {
 			String weaponName = ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
@@ -139,7 +139,7 @@ public final class CombatDefinitions implements Serializable {
 						return STAB_ATTACK;
 				}
 			}
-			
+
 			if (weaponName.contains("dagger") || weaponName.contains("rapier")) {
 				switch (attackStyle) {
 					case 2:
@@ -148,7 +148,7 @@ public final class CombatDefinitions implements Serializable {
 						return STAB_ATTACK;
 				}
 			}
-			
+
 			if (weaponName.contains("godsword") || weaponName.contains("greataxe") || weaponName.contains("2h sword") || weaponName.equals("saradomin sword")) {
 				switch (attackStyle) {
 					case 2:
@@ -157,14 +157,14 @@ public final class CombatDefinitions implements Serializable {
 						return SLASH_ATTACK;
 				}
 			}
-			
+
 		}
 		switch (weaponId) {
 			default:
 				return CRUSH_ATTACK;
 		}
 	}
-	
+
 	public static final int getXpStyle(int weaponId, int attackStyle) {
 		// TODO SHARED
 		if (weaponId != -1) {
@@ -241,12 +241,12 @@ public final class CombatDefinitions implements Serializable {
 				}
 		}
 	}
-	
+
 	public int getRealSpellId() {
 		int tempCastSpell = player.getTemporaryAttribute("tempCastSpell", -1);
 		return tempCastSpell != -1 ? tempCastSpell : autoCastSpell;
 	}
-	
+
 	public int getSpellId() {
 		Integer tempCastSpell = (Integer) player.getTemporaryAttributes().get("tempCastSpell");
 		if (tempCastSpell != null) {
@@ -254,16 +254,16 @@ public final class CombatDefinitions implements Serializable {
 		}
 		return autoCastSpell;
 	}
-	
+
 	public int getAutoCastSpell() {
 		return autoCastSpell;
 	}
-	
+
 	public void setAutoCastSpell(int id) {
 		autoCastSpell = (byte) id;
 		refreshAutoCastSpell();
 	}
-	
+
 	public void resetSpells(boolean removeAutoSpell) {
 		player.getTemporaryAttributes().remove("tempCastSpell");
 		if (removeAutoSpell) {
@@ -271,7 +271,7 @@ public final class CombatDefinitions implements Serializable {
 			refreshAutoCastSpell();
 		}
 	}
-	
+
 	public int getSpellBook() {
 		if (dungeonneringSpellBook) {
 			return 950; // dung book
@@ -285,11 +285,11 @@ public final class CombatDefinitions implements Serializable {
 			}
 		}
 	}
-	
+
 	public MagicBook getMagicBook() {
 		return MagicBook.getMagicBook(getSpellBook()).orElse(MagicBook.REGULAR);
 	}
-	
+
 	public void setSpellBook(int id) {
 		if (id == 3) {
 			dungeonneringSpellBook = true;
@@ -299,16 +299,16 @@ public final class CombatDefinitions implements Serializable {
 		refreshSpellBookScrollBar_DefCast();
 		player.getInterfaceManager().sendMagicBook();
 	}
-	
+
 	public void refreshSpellBookScrollBar_DefCast() {
 		player.getPackets().sendConfig(439, (dungeonneringSpellBook ? 3 : spellBook) + (defensiveCasting ? 0 : 1 << 8));
 	}
-	
+
 	public void switchShowCombatSpells() {
 		showCombatSpells = !showCombatSpells;
 		refreshSpellBook();
 	}
-	
+
 	public void refreshSpellBook() {
 		if (spellBook == 0) {
 			player.getPackets().sendConfig(1376, sortSpellBook | (showCombatSpells ? 0 : 1 << 9) | (showSkillSpells ? 0 : 1 << 10) | (showMiscallaneousSpells ? 0 : 1 << 11) | (showTeleportSpells ? 0 : 1 << 12));
@@ -318,45 +318,45 @@ public final class CombatDefinitions implements Serializable {
 			player.getPackets().sendConfig(1376, sortSpellBook << 6 | (showCombatSpells ? 0 : 1 << 13) | (showMiscallaneousSpells ? 0 : 1 << 14) | (showTeleportSpells ? 0 : 1 << 15));
 		}
 	}
-	
+
 	public void switchShowSkillSpells() {
 		showSkillSpells = !showSkillSpells;
 		refreshSpellBook();
 	}
-	
+
 	public void switchShowMiscallaneousSpells() {
 		showMiscallaneousSpells = !showMiscallaneousSpells;
 		refreshSpellBook();
 	}
-	
+
 	public void switchShowTeleportSkillSpells() {
 		showTeleportSpells = !showTeleportSpells;
 		refreshSpellBook();
 	}
-	
+
 	public void switchDefensiveCasting() {
 		defensiveCasting = !defensiveCasting;
 		refreshSpellBookScrollBar_DefCast();
 	}
-	
+
 	public void setSortSpellBook(int sortId) {
 		this.sortSpellBook = (byte) sortId;
 		refreshSpellBook();
 	}
-	
+
 	public boolean isDefensiveCasting() {
 		return defensiveCasting;
 	}
-	
+
 	public void setPlayer(Player player) {
 		this.player = player;
 		bonuses = new int[18];
 	}
-	
+
 	public int[] getBonuses() {
 		return bonuses;
 	}
-	
+
 	public void handleSoaking(Actor source, Actor target, Hit hit) {
 		Player p2 = (Player) target;
 		int damage = hit.getDamage() > p2.getHitpoints() ? p2.getHitpoints() : hit.getDamage();
@@ -391,7 +391,7 @@ public final class CombatDefinitions implements Serializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the bonus at an index
 	 *
@@ -405,7 +405,7 @@ public final class CombatDefinitions implements Serializable {
 		}
 		return bonuses[index];
 	}
-	
+
 	public void refreshBonuses() {
 		bonuses = new int[18];
 		for (Item item : player.getEquipment().getItems().getItems()) {
@@ -424,13 +424,13 @@ public final class CombatDefinitions implements Serializable {
 			}
 		}
 	}
-	
+
 	public void resetSpecialAttack() {
 		decreaseSpecialEnergy(0);
 		specialAttackPercentage = 100;
 		refreshSpecialAttackPercentage();
 	}
-	
+
 	public void decreaseSpecialEnergy(int amount) {
 		usingSpecialAttack = false;
 		refreshUsingSpecialAttack();
@@ -439,28 +439,28 @@ public final class CombatDefinitions implements Serializable {
 			refreshSpecialAttackPercentage();
 		}
 	}
-	
+
 	public void refreshSpecialAttackPercentage() {
 		player.getPackets().sendConfig(300, specialAttackPercentage * 10);
 	}
-	
+
 	public void refreshUsingSpecialAttack() {
 		player.getPackets().sendConfig(301, usingSpecialAttack ? 1 : 0);
 	}
-	
+
 	public void setSpecialAttack(int special) {
 		decreaseSpecialEnergy(0);
 		specialAttackPercentage = (byte) special;
 		refreshSpecialAttackPercentage();
 	}
-	
+
 	public void restoreSpecialAttack() {
 		restoreSpecialAttack(10);
 		if (player.getFamiliar() != null) {
 			player.getFamiliar().restoreSpecialAttack(15);
 		}
 	}
-	
+
 	public void restoreSpecialAttack(int percentage) {
 		if (specialAttackPercentage >= 100 || player.getInterfaceManager().containsScreenInter()) {
 			return;
@@ -468,7 +468,7 @@ public final class CombatDefinitions implements Serializable {
 		specialAttackPercentage += specialAttackPercentage > (100 - percentage) ? 100 - specialAttackPercentage : percentage;
 		refreshSpecialAttackPercentage();
 	}
-	
+
 	public void init() {
 		refreshUsingSpecialAttack();
 		refreshSpecialAttackPercentage();
@@ -478,20 +478,20 @@ public final class CombatDefinitions implements Serializable {
 		refreshAutoCastSpell();
 		refreshSpellBookScrollBar_DefCast();
 	}
-	
+
 	public void refreshAutoRelatie() {
 		player.getPackets().sendConfig(172, autoRetaliate ? 0 : 1);
 	}
-	
+
 	public void refreshAttackStyle() {
 		player.getPackets().sendConfig(43, autoCastSpell > 0 ? 4 : attackStyle);
 	}
-	
+
 	public void refreshAutoCastSpell() {
 		refreshAttackStyle();
 		player.getPackets().sendConfig(108, getSpellAutoCastConfigValue());
 	}
-	
+
 	public int getSpellAutoCastConfigValue() {
 		if (dungeonneringSpellBook) {
 			return 0;
@@ -590,50 +590,50 @@ public final class CombatDefinitions implements Serializable {
 			return 0;
 		}
 	}
-	
+
 	public void checkAttackStyle() {
 		if (autoCastSpell == 0) {
 			setAttackStyle(attackStyle);
 		}
 	}
-	
+
 	public void sendUnlockAttackStylesButtons() {
 		for (int componentId = 11; componentId <= 14; componentId++) {
 			player.getPackets().sendUnlockIComponentOptionSlots(884, componentId, -1, 0, 0);
 		}
 	}
-	
+
 	public void switchUsingSpecialAttack() {
 		usingSpecialAttack = !usingSpecialAttack;
 		refreshUsingSpecialAttack();
 	}
-	
+
 	public void setUsingSpecialAttack(boolean usingSpecialAttack) {
 		this.usingSpecialAttack = usingSpecialAttack;
 		refreshUsingSpecialAttack();
 	}
-	
+
 	public boolean hasRingOfVigour() {
 		return player.getEquipment().getRingId() == 19669;
 	}
-	
+
 	public int getSpecialAttackPercentage() {
 		return specialAttackPercentage;
 	}
-	
+
 	public void switchAutoRelatie() {
 		autoRetaliate = !autoRetaliate;
 		refreshAutoRelatie();
 	}
-	
+
 	public boolean isUsingSpecialAttack() {
 		return usingSpecialAttack;
 	}
-	
+
 	public int getAttackStyle() {
 		return attackStyle;
 	}
-	
+
 	public void setAttackStyle(int style) {
 		int maxSize = 3;
 		int weaponId = player.getEquipment().getWeaponId();
@@ -655,18 +655,18 @@ public final class CombatDefinitions implements Serializable {
 			resetSpells(true);
 		}
 	}
-	
+
 	public boolean isDungeonneringSpellBook() {
 		return dungeonneringSpellBook;
 	}
-	
+
 	public void removeDungeonneringBook() {
 		if (dungeonneringSpellBook) {
 			dungeonneringSpellBook = false;
 			player.getInterfaceManager().sendMagicBook();
 		}
 	}
-	
+
 	public boolean isAutocasting() {
 		return player.getTemporaryAttribute("tempCastSpell", -1) == -1 && autoCastSpell != 0;
 	}
