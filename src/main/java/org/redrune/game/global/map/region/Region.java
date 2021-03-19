@@ -305,6 +305,11 @@ public class Region {
 			return;
 		}
 		ObjectDefinitions objectDefinition = ObjectDefinitions.getObjectDefinitions(object.getId()); // load
+
+		if (objectDefinition == null) {
+			return;
+		}
+
 		// here
 		
 		if (type == 22 ? objectDefinition.getClipType() != 1 : objectDefinition.getClipType() == 0) {

