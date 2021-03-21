@@ -580,9 +580,8 @@ public class Player extends Actor {
         return o instanceof Player && ((Player) o).getUsername().equals(username);
     }
 
-    @Override
     public String toString() {
-        return "Player{" + "username='" + username + '\'' + ", rights=" + rights + '}';
+        return "Player[username=" + username + ", rights=" + rights + "]";
     }
 
     public void setRouteEvent(RouteEvent routeEvent) {
@@ -1193,4 +1192,5 @@ public class Player extends Actor {
         prayer.refreshPrayerPoints();
         resetCombat();
     }
+
 }

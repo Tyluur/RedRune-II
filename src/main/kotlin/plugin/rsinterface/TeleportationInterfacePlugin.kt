@@ -564,7 +564,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
                     )
                     player.setCloseInterfacesEvent(task)
                 }
-            }, 1)
+            }, 0)
             if (wizard == null) {
                 return
             }

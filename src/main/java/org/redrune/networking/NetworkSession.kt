@@ -1,97 +1,79 @@
-package org.redrune.networking;
+package org.redrune.networking
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.networking.packet.Packet;
-import org.redrune.networking.packet.PacketBuilder;
-import org.redrune.networking.packet.context.PacketContext;
-import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder;
-import org.redrune.utility.functions.Misc;
-import org.redrune.utility.game.session.ISAACCipher;
-
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-;
+import com.github.michaelbull.logging.InlineLogger
+import io.netty.channel.Channel
+import io.netty.channel.ChannelFuture
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.networking.packet.PacketBuilder
+import org.redrune.networking.packet.context.PacketContext
+import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder
+import org.redrune.utility.functions.Misc
+import org.redrune.utility.game.session.ISAACCipher
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 2019-02-02
  */
-public class NetworkSession {
-
+class NetworkSession(
+    /**
+     * The channel instance.
+     */
+    var channel: Channel
+) {
     /**
      * The queue of packets that have already been decoded and are awaiting processing
      */
-    private final ConcurrentLinkedQueue<PacketContext> contextQueue = new ConcurrentLinkedQueue<>();
+    private val contextQueue = ConcurrentLinkedQueue<PacketContext>()
 
     /**
      * The player affiliated with this network session
      */
-
-    private Player player;
-
-    /**
-     * The channel instance.
-     */
-
-    private Channel channel;
+    var player: Player? = null
 
     /**
      * The mac address affiliated with the session
      */
-
-    private String macAddress;
+    val macAddress: String? = null
 
     /**
      * If the session is in the lobby
      */
-
-
-    private boolean inLobby;
+    var isInLobby = false
 
     /**
      * The ISAAC cipher for incoming data.
      */
-
-
-    private ISAACCipher inCipher;
+    private var inCipher: ISAACCipher? = null
 
     /**
      * The ISAAC cipher for outgoing data
      */
-
-
-    private ISAACCipher outCipher;
-
-    public NetworkSession(Channel channel) {
-        this.channel = channel;
-    }
+    private var outCipher: ISAACCipher? = null
 
     /**
      * This method is invoked when the session is registered
      */
-    public void onRegistration() {
-        System.out.println("Session registered! [" + toString() + "]");
+    fun onRegistration() {
+        logger.info { "Session has registered successfully [session=${toString()}]" }
     }
 
-    @Override
-    public String toString() {
-        return "NetworkSession{" + "player=" + player + ", inLobby=" + inLobby + '}';
+    override fun toString(): String {
+        return "NetworkSession{" + "player=" + player + ", inLobby=" + isInLobby + '}'
     }
 
     /**
      * This method is invoked when the session is deregistered
      */
-    public void onDeregistration() {
+    fun onDeregistration() {
         if (player != null) {
-            if (inLobby) {
-                player.finishLobby();
+            if (isInLobby) {
+                player!!.finishLobby()
             } else {
-                player.finish();
+                player!!.finish()
             }
         }
-        System.out.println("Session deregistered! [" + toString() + "]");
+        logger.info { "Session has de-registered [session=${toString()}]" }
     }
 
     /**
@@ -99,10 +81,11 @@ public class NetworkSession {
      *
      * @param bldr The builder of the packet to flush
      */
-    public synchronized ChannelFuture write(OutgoingPacketBuilder bldr) {
-        Packet build = bldr.build();
+    @Synchronized
+    fun write(bldr: OutgoingPacketBuilder): ChannelFuture {
+        val build = bldr.build()
         //		System.out.println("Wrote packet " + build);
-        return channel.write(build);
+        return channel.write(build)
     }
 
     /**
@@ -110,25 +93,26 @@ public class NetworkSession {
      *
      * @param bldr The builder of the packet to flush
      */
-    public synchronized ChannelFuture write(PacketBuilder bldr) {
-        Packet msg = bldr.toPacket();
+    @Synchronized
+    fun write(bldr: PacketBuilder): ChannelFuture {
+        val msg = bldr.toPacket()
         //		System.out.println("Wrote packet " + msg);
-        return channel.write(msg);
+        return channel.write(msg)
     }
 
     /**
      * Flushes all the outgoing buffers
      */
-    public synchronized Channel flush() {
-        return channel.flush();
+    @Synchronized
+    fun flush(): Channel {
+        return channel.flush()
     }
 
     /**
      * Gets the ip
      */
-    public String getIPAddress() {
-        return Misc.getIpAddress(channel);
-    }
+    val iPAddress: String
+        get() = Misc.getIpAddress(channel)
 
     /**
      * Builds the ciphers
@@ -136,9 +120,9 @@ public class NetworkSession {
      * @param inCipher  The incoming cipher
      * @param outCipher The outgoing cipher
      */
-    public void buildCiphers(ISAACCipher inCipher, ISAACCipher outCipher) {
-        setInCipher(inCipher);
-        setOutCipher(outCipher);
+    fun buildCiphers(inCipher: ISAACCipher?, outCipher: ISAACCipher?) {
+        setInCipher(inCipher)
+        setOutCipher(outCipher)
     }
 
     /**
@@ -146,53 +130,30 @@ public class NetworkSession {
      *
      * @param context The context
      */
-    public void addContext(PacketContext context) {
-        contextQueue.add(context);
+    fun addContext(context: PacketContext) {
+        contextQueue.add(context)
     }
 
     /**
      * Processes the context queue
      */
-    public void processContextQueue() {
-        PacketContext context;
-        while ((context = contextQueue.poll()) != null) {
-            context.handle(player);
+    fun processContextQueue() {
+        for (context in contextQueue) {
+            context.handle(player)
         }
+        contextQueue.clear()
     }
 
-    public void setInCipher(ISAACCipher inCipher) {
-        this.inCipher = inCipher;
+    private fun setInCipher(inCipher: ISAACCipher?) {
+        this.inCipher = inCipher
     }
 
-    public void setOutCipher(ISAACCipher outCipher) {
-        this.outCipher = outCipher;
+    private fun setOutCipher(outCipher: ISAACCipher?) {
+        this.outCipher = outCipher
     }
 
-    public void setInLobby(boolean inLobby) {
-        this.inLobby = inLobby;
-    }
+    companion object {
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public void setChannel(Channel channel) {
-        this.channel = channel;
-    }
-
-    public Channel getChannel() {
-        return channel;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public boolean isInLobby() {
-        return inLobby;
+        private val logger = InlineLogger()
     }
 }

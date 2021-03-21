@@ -3,6 +3,7 @@ package plugin.npc
 import org.redrune.game.content.entity.actor.player.dialogue.impl.SimpleNPCMessage
 import org.redrune.game.content.plugin.type.NPCPlugin
 import org.redrune.game.entity.actor.mask.Animation
+import org.redrune.game.entity.actor.mask.ForceTalk
 import org.redrune.game.entity.actor.mask.Graphics
 import org.redrune.game.entity.actor.npc.NPC
 import org.redrune.game.entity.actor.player.Player
@@ -44,6 +45,7 @@ class NurseTafariNPCPlugin : NPCPlugin {
             "I have restored your character to extreme health!"
         )
         player.packets.sendMessage("You feel refreshed, past your normal health levels.")
+        npc.nextForceTalk = ForceTalk("There you go! All better, ${player.displayName} :)")
         return false
     }
 
