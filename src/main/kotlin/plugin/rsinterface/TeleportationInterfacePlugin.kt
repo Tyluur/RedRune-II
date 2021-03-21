@@ -546,7 +546,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
         @kotlin.jvm.JvmStatic
         fun teleportPlayer(player: Player, destination: WorldTile?, task: Runnable?) {
             player.closeInterfaces()
-            val wizard = Misc.findLocalNPC(player, 1263)
+            val wizard = Misc.findLocalNPC(player, 9434)
             WorldTasksManager.schedule(object : WorldTask() {
                 override fun run() {
                     Magic.sendTeleportSpell(
@@ -570,6 +570,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
             }
             wizard.resetWalkSteps()
             wizard.nextFaceWorldTile = player
+            wizard.setNextFaceActor(player)
             wizard.nextForceTalk =
                 ForceTalk(Misc.randomArraySlot(WIZARD_MESSAGES))
         }
