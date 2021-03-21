@@ -8,5 +8,295 @@
     "x": 3082,
     "y": 3497,
     "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3507,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3509,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3507,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3509,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3507,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3509,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3510,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3511,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3076,
+    "y": 3512,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 2,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3512,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3512,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3511,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3510,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3509,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3508,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3084,
+    "y": 3507,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3083,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3082,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3081,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3080,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3079,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3078,
+    "y": 3513,
+    "plane": 0
+  },
+  {
+    "id": 23923,
+    "type": 0,
+    "rotation": 3,
+    "life": 1,
+    "spawned": false,
+    "x": 3077,
+    "y": 3513,
+    "plane": 0
   }
 ]

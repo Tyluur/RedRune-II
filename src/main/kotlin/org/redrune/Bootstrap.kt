@@ -16,6 +16,7 @@ import org.redrune.game.content.entity.actor.player.market.ShopRepository
 import org.redrune.game.content.plugin.PluginRepository
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder
 import org.redrune.game.entity.actor.player.link.FriendChatsManager
+import org.redrune.game.global.map.MapMerger
 import org.redrune.game.global.map.region.RegionBuilder
 import org.redrune.game.global.punishment.PunishmentRepository
 import org.redrune.global.wordlist.WorldList
@@ -95,6 +96,8 @@ object Bootstrap {
             CutscenesHandler.init()
             ObjectRemoval.initialize()
             FriendChatsManager.initialize()
+        }, Runnable {
+            MapMerger.start()
         })
         BootHandler.await()
         try {
