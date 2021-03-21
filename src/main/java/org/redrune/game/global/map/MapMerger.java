@@ -11,8 +11,8 @@ public enum MapMerger {
     DUEL_ARENA_TO_EDGEVILLE {
         @Override
         public void merge() {
-            int topFromX = 419, toRegionX = 380;
-            int tomFromY = 408, toRegionY = 439;
+            int topFromX = 421, toRegionX = 384;
+            int tomFromY = 408, toRegionY = 437;
             int ratio = 4;
 
             RegionBuilder.copyAllPlanesMap(topFromX, tomFromY, toRegionX, toRegionY, ratio); // top
@@ -36,8 +36,8 @@ public enum MapMerger {
      * Merges all the maps
      */
     public static void start() {
-        for (MapMerger map : MapMerger.values()) {
+       /* for (MapMerger map : MapMerger.values()) {
             map.merge();
-        }
+        }*/
     }
 }

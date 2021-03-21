@@ -70,7 +70,7 @@ public class WorldTile implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "WorldTile{region=" + getRegionId() + ", x=" + x + ", y=" + y + ", plane=" + plane + '}';
+		return "Tile{id=" + getRegionId() + ", x=" + x + ", y=" + y + ", plane=" + plane + ", rx=" + getChunkX() + ", ry=" + getChunkY() + "}";
 	}
 	
 	public static final int getCoordFaceX(int x, int sizeX, int sizeY, int rotation) {
