@@ -243,19 +243,19 @@
     "direction": "SOUTH"
   },
   {
-    "npcId": 961,
-    "tile": {
-      "x": 3091,
-      "y": 3510,
-      "plane": 0
-    },
-    "direction": "EAST"
-  },
-  {
     "npcId": 2241,
     "tile": {
       "x": 3080,
       "y": 3512,
+      "plane": 0
+    },
+    "direction": "SOUTH"
+  },
+  {
+    "npcId": 961,
+    "tile": {
+      "x": 3091,
+      "y": 3506,
       "plane": 0
     },
     "direction": "SOUTH"
