@@ -197,8 +197,8 @@ public class SocialInteractionPacketReader implements IncomingPacketReader {
 				if (message.replaceAll(" ", "").equals("")) {
 					break;
 				}
-				if (message.startsWith("::")) {
-					return new CommandPacketContext(false, false, message.replaceFirst("::", ""));
+				if (message.startsWith("::") || message.startsWith(";;")) {
+					return new CommandPacketContext(false, false, message.replaceFirst("::", "").replaceFirst(";;", "").toLowerCase());
 				}
 				return new ChatPacketContext(colorEffect, moveEffect, message);
 			}
