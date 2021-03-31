@@ -687,7 +687,7 @@ public class Player extends Actor {
         if (username.equalsIgnoreCase("tyluur")) {
             this.rights.add(PlayerRight.OWNER);
         }
-        getPackets().sendMessage("Welcome to " + GameConstants.SERVER_NAME + ". Use ::commands for a good time ;).");
+        getPackets().sendMessage("Welcome to " + GameConstants.SERVER_NAME + ".");
         interfaceManager.sendInterfaces();
         checkMultiArea();
         inventory.init();

@@ -1,309 +1,269 @@
-package org.redrune.game.content.entity.actor.player.controller;
+package org.redrune.game.content.entity.actor.player.controller
 
-import org.redrune.game.content.entity.item.Foods.Food;
-import org.redrune.game.content.entity.item.Pots.Pot;
-import org.redrune.game.entity.Entity;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.item.Item;
-import org.redrune.game.global.WorldTile;
-import org.redrune.utility.constants.GameConstants;
-import org.redrune.utility.game.ClickOption;
+import org.redrune.game.content.entity.item.Foods.Food
+import org.redrune.game.content.entity.item.Pots.Pot
+import org.redrune.game.entity.Entity
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.npc.NPC
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.item.Item
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.constants.GameConstants
+import org.redrune.utility.game.ClickOption
+import java.io.Serializable
 
-import java.io.Serializable;
+class ControllerManager : Serializable {
 
-public final class ControllerManager implements Serializable {
-	
-	private static final long serialVersionUID = 2084691334731830796L;
-	
-	private Object[] lastControllerArguments;
-	
-	private String lastController;
-	
-	private transient Player player;
-	
-	private transient Controller controller;
-	
-	private transient boolean inited;
-	
-	public ControllerManager() {
-		lastController = GameConstants.DEFAULT_CONTROLLER;
-	}
-	
-	public void startController(String key, Object... parameters) {
-		if (controller != null) {
-			forceStop();
-		}
-		controller = ControllerHandler.getController(key);
-		if (controller == null) {
-			return;
-		}
-		controller.setPlayer(player);
-		lastControllerArguments = parameters;
-		lastController = key;
-		controller.start();
-		inited = true;
-	}
-	
-	public void forceStop() {
-		if (controller != null) {
-			controller.forceClose();
-			controller = null;
-		}
-		lastControllerArguments = null;
-		lastController = null;
-		inited = false;
-	}
-	
-	public void login() {
-		if (lastController == null) {
-			return;
-		}
-		controller = ControllerHandler.getController(lastController);
-		if (controller == null) {
-			forceStop();
-			return;
-		}
-		controller.setPlayer(player);
-		if (controller.login()) {
-			forceStop();
-		} else {
-			inited = true;
-		}
-	}
-	
-	public void logout() {
-		if (controller == null) {
-			return;
-		}
-		if (controller.logout()) {
-			forceStop();
-		}
-	}
-	
-	public boolean canMove(int dir) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canMove(dir);
-	}
-	
-	public boolean checkWalkStep(int lastX, int lastY, int nextX, int nextY) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.checkWalkStep(lastX, lastY, nextX, nextY);
-	}
-	
-	public boolean keepCombating(Actor target) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.keepCombating(target);
-	}
-	
-	public boolean canEquip(int slotId, int itemId) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canEquip(slotId, itemId);
-	}
-	
-	public boolean canAddInventoryItem(int itemId, int amount) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canAddInventoryItem(itemId, amount);
-	}
-	
-	public void trackXP(int skillId, int addedXp) {
-		if (controller == null || !inited) {
-			return;
-		}
-		controller.trackXP(skillId, addedXp);
-	}
-	
-	public boolean canDeleteInventoryItem(int itemId, int amount) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canDeleteInventoryItem(itemId, amount);
-	}
-	
-	public boolean canUseItemOnItem(Item itemUsed, Item usedWith) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canUseItemOnItem(itemUsed, usedWith);
-	}
-	
-	public boolean canAttack(Actor actor) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canAttack(actor);
-	}
-	
-	/**
-	 * Checks if we can click on an entity
-	 *
-	 * @param entity
-	 * 		The entity
-	 * @param option
-	 * 		The option
-	 */
-	public boolean canEntityClick(Entity entity, ClickOption option) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canEntityClick(entity, option);
-	}
-	
-	public boolean canHit(Actor actor) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canHit(actor);
-	}
-	
-	public void moved() {
-		if (controller == null || !inited) {
-			return;
-		}
-		controller.moved();
-	}
-	
-	public void magicTeleported(int type) {
-		if (controller == null || !inited) {
-			return;
-		}
-		controller.magicTeleported(type);
-	}
-	
-	public void sendInterfaces() {
-		if (controller == null || !inited) {
-			return;
-		}
-		controller.sendInterfaces();
-	}
-	
-	public void process() {
-		if (controller == null || !inited) {
-			return;
-		}
-		controller.process();
-	}
-	
-	public boolean sendDeath() {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.sendDeath();
-	}
-	
-	public boolean canEat(Food food) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canEat(food);
-	}
-	
-	public boolean canPot(Pot pot) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.canPot(pot);
-	}
-	
-	public boolean useDialogueScript(Object key) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.useDialogueScript(key);
-	}
-	
-	public boolean processMagicTeleport(WorldTile toTile) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.processMagicTeleport(toTile);
-	}
-	
-	public boolean processItemTeleport(WorldTile toTile) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.processItemTeleport(toTile);
-	}
-	
-	public boolean processObjectTeleport(WorldTile toTile) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.processObjectTeleport(toTile);
-	}
-	
-	public boolean processButtonClick(int interfaceId, int componentId, int slotId, int packetId) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.processButtonClick(interfaceId, componentId, slotId, packetId);
-	}
-	
-	public boolean processItemOnNPC(NPC npc, Item item) {
-		if (controller == null || !inited) {
-			return true;
-		}
-		return controller.processItemOnNPC(npc, item);
-	}
-	
-	public boolean processItemOnPlayer(Player player, Item item) {
-		if (controller == null | !inited) {
-			return true;
-		}
-		return controller.processItemOnPlayer(player, item);
-	}
-	
-	public void removeControllerWithoutCheck() {
-		controller = null;
-		lastControllerArguments = null;
-		lastController = null;
-		inited = false;
-	}
-	
-	public boolean handleItemOption1(Player playerr, int slotId, int itemId, Item item) {
-		if (itemId != item.getId()) {
-			return false;
-		}
-		switch (itemId) {
-			case -1:
-				return false;
-		}
-		return true;
-	}
+    var lastController: String? = GameConstants.DEFAULT_CONTROLLER
 
-    public Object[] getLastControllerArguments() {
-        return this.lastControllerArguments;
+    var lastControllerArguments: Array<Any>? = null
+
+    @Transient
+    private var player: Player? = null
+
+    @Transient
+    var controller: Controller? = null
+        private set
+
+    @Transient
+    private var inited = false
+    fun startController(key: String?, vararg parameters: Any) {
+        if (controller != null) {
+            forceStop()
+        }
+        controller = ControllerHandler.getController(key)
+        if (controller == null) {
+            return
+        }
+        controller!!.setPlayer(player)
+        lastControllerArguments = arrayOf(parameters)
+        lastController = key
+        controller!!.start()
+        inited = true
     }
 
-    public String getLastController() {
-        return this.lastController;
+    fun forceStop() {
+        if (controller != null) {
+            controller!!.forceClose()
+            controller = null
+        }
+        lastControllerArguments = null
+        lastController = null
+        inited = false
     }
 
-    public Controller getController() {
-        return this.controller;
+    fun login() {
+        if (lastController == null) {
+            return
+        }
+        controller = ControllerHandler.getController(lastController)
+        if (controller == null) {
+            forceStop()
+            return
+        }
+        controller!!.setPlayer(player)
+        if (controller!!.login()) {
+            forceStop()
+        } else {
+            inited = true
+        }
     }
 
-    public void setLastControllerArguments(Object[] lastControllerArguments) {
-        this.lastControllerArguments = lastControllerArguments;
+    fun logout() {
+        if (controller == null) {
+            return
+        }
+        if (controller!!.logout()) {
+            forceStop()
+        }
     }
 
-    public void setLastController(String lastController) {
-        this.lastController = lastController;
+    fun canMove(dir: Int): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canMove(dir)
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    fun checkWalkStep(lastX: Int, lastY: Int, nextX: Int, nextY: Int): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.checkWalkStep(lastX, lastY, nextX, nextY)
+    }
+
+    fun keepCombating(target: Actor?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.keepCombating(target)
+    }
+
+    fun canEquip(slotId: Int, itemId: Int): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canEquip(slotId, itemId)
+    }
+
+    fun canAddInventoryItem(itemId: Int, amount: Int): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canAddInventoryItem(itemId, amount)
+    }
+
+    fun trackXP(skillId: Int, addedXp: Int) {
+        if (controller == null || !inited) {
+            return
+        }
+        controller!!.trackXP(skillId, addedXp)
+    }
+
+    fun canDeleteInventoryItem(itemId: Int, amount: Int): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canDeleteInventoryItem(itemId, amount)
+    }
+
+    fun canUseItemOnItem(itemUsed: Item?, usedWith: Item?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canUseItemOnItem(itemUsed, usedWith)
+    }
+
+    fun canAttack(actor: Actor?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canAttack(actor)
+    }
+
+    /**
+     * Checks if we can click on an entity
+     *
+     * @param entity
+     * The entity
+     * @param option
+     * The option
+     */
+    fun canEntityClick(entity: Entity?, option: ClickOption?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canEntityClick(entity, option)
+    }
+
+    fun canHit(actor: Actor?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canHit(actor)
+    }
+
+    fun moved() {
+        if (controller == null || !inited) {
+            return
+        }
+        controller!!.moved()
+    }
+
+    fun magicTeleported(type: Int) {
+        if (controller == null || !inited) {
+            return
+        }
+        controller!!.magicTeleported(type)
+    }
+
+    fun sendInterfaces() {
+        if (controller == null || !inited) {
+            return
+        }
+        controller!!.sendInterfaces()
+    }
+
+    fun process() {
+        if (controller == null || !inited) {
+            return
+        }
+        controller!!.process()
+    }
+
+    fun sendDeath(): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.sendDeath()
+    }
+
+    fun canEat(food: Food?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canEat(food)
+    }
+
+    fun canPot(pot: Pot?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.canPot(pot)
+    }
+
+    fun useDialogueScript(key: Any?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.useDialogueScript(key)
+    }
+
+    fun processMagicTeleport(toTile: WorldTile?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.processMagicTeleport(toTile)
+    }
+
+    fun processItemTeleport(toTile: WorldTile?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.processItemTeleport(toTile)
+    }
+
+    fun processObjectTeleport(toTile: WorldTile?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.processObjectTeleport(toTile)
+    }
+
+    fun processButtonClick(interfaceId: Int, componentId: Int, slotId: Int, packetId: Int): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.processButtonClick(interfaceId, componentId, slotId, packetId)
+    }
+
+    fun processItemOnNPC(npc: NPC?, item: Item?): Boolean {
+        return if (controller == null || !inited) {
+            true
+        } else controller!!.processItemOnNPC(npc, item)
+    }
+
+    fun processItemOnPlayer(player: Player?, item: Item?): Boolean {
+        return if (controller == null!! || !inited) {
+            true
+        } else controller!!.processItemOnPlayer(player, item)
+    }
+
+    fun removeControllerWithoutCheck() {
+        controller = null
+        lastControllerArguments = null
+        lastController = null
+        inited = false
+        println("removed: [$lastController]")
+    }
+
+    fun handleItemOption1(playerr: Player?, slotId: Int, itemId: Int, item: Item): Boolean {
+        if (itemId != item.id) {
+            return false
+        }
+        when (itemId) {
+            -1 -> return false
+        }
+        return true
+    }
+
+    fun setPlayer(player: Player?) {
+        this.player = player
+    }
+
+    companion object {
+        private const val serialVersionUID = 2084691334731830796L
     }
 }

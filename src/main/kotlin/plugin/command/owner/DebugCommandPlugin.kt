@@ -1,5 +1,6 @@
 package plugin.command.owner
 
+import org.redrune.game.content.entity.actor.player.design.PlayerDesign
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 
@@ -8,9 +9,9 @@ import org.redrune.game.entity.actor.player.Player
  * @since 9/12/2017
  */
 class DebugCommandPlugin : CommandPlugin() {
+
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        val componentId = intParam(args, 1)
-        player.packets.sendIComponentText(1149, componentId, "" + componentId)
+        PlayerDesign.open(player)
     }
 
     override fun identifiers(): Array<String> {
