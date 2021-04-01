@@ -238,7 +238,9 @@ class ControllerManager : Serializable {
     fun processItemOnPlayer(player: Player?, item: Item?): Boolean {
         return if (controller == null!! || !inited) {
             true
-        } else controller!!.processItemOnPlayer(player, item)
+        } else {
+            controller!!.processItemOnPlayer(player, item)
+        }
     }
 
     fun removeControllerWithoutCheck() {
