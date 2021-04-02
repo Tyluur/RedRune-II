@@ -12,9 +12,9 @@ import org.redrune.utility.game.ClickOption
  */
 class BarbarianAgilityCoursePlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val id: Int = `object`.getId()
-        val x: Int = `object`.getX()
-        val y: Int = `object`.getY()
+        val id: Int = `object`.id
+        val x: Int = `object`.x
+        val y: Int = `object`.y
         if (id == 20210) {
             BarbarianOutpostAgility.enterObstaclePipe(player, `object`)
         } else if (id == 43526) {

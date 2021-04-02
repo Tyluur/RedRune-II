@@ -16,9 +16,9 @@ import java.util.List;
 
 public final class LocalNPCUpdate {
 	
-	private Player player;
+	private final Player player;
 	
-	private LinkedList<NPC> localNPCs;
+	private final LinkedList<NPC> localNPCs;
 	
 	public LocalNPCUpdate(Player player) {
 		this.player = player;

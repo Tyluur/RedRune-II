@@ -17,7 +17,7 @@ import org.redrune.utility.functions.Misc;
 
 public class Firemaking extends Action {
 	
-	private Fire fire;
+	private final Fire fire;
 	
 	public Firemaking(Fire fire) {
 		this.fire = fire;
@@ -136,17 +136,17 @@ public class Firemaking extends Action {
 		MAGIC(1513, 75, 90, 2732, 303.8, 1),
 		CURSED_MAGIC(13567, 82, 100, 2732, 303.8, 1);
 		
-		private int logId;
+		private final int logId;
 		
-		private int level;
+		private final int level;
 		
-		private int life;
+		private final int life;
 		
-		private int fireId;
+		private final int fireId;
 		
-		private int time;
+		private final int time;
 		
-		private double xp;
+		private final double xp;
 		
 		Fire(int logId, int level, int life, int fireId, double xp, int time) {
 			this.logId = logId;

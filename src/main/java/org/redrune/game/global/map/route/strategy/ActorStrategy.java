@@ -8,22 +8,22 @@ public class ActorStrategy extends RouteStrategy {
 	/**
 	 * Entity position x.
 	 */
-	private int x;
+	private final int x;
 
 	/**
 	 * Entity position y.
 	 */
-	private int y;
+	private final int y;
 
 	/**
 	 * Entity size.
 	 */
-	private int size;
+	private final int size;
 
 	/**
 	 * Access block flag, see RouteStrategy static final values.
 	 */
-	private int accessBlockFlag;
+	private final int accessBlockFlag;
 
 	public ActorStrategy(Actor actor) {
 		this(actor, 0);

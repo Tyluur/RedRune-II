@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class NPCGraphicAction extends CutsceneAction {
 	
-	private Graphics gfx;
+	private final Graphics gfx;
 	
 	public NPCGraphicAction(int cachedObjectIndex, Graphics gfx, int actionDelay) {
 		super(cachedObjectIndex, actionDelay);

@@ -17,9 +17,9 @@ public final class MusicManager implements Serializable {
 	
 	private static final int[] PLAY_LIST_CONFIG_IDS = new int[] { 1621, 1622, 1623, 1624, 1625, 1626 };
 	
-	private ArrayList<Integer> unlockedMusics;
+	private final ArrayList<Integer> unlockedMusics;
 	
-	private ArrayList<Integer> playList;
+	private final ArrayList<Integer> playList;
 	
 	private transient Player player;
 	

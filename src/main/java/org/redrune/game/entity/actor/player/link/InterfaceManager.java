@@ -28,7 +28,7 @@ public class InterfaceManager {
 	
 	private final ConcurrentHashMap<Integer, int[]> openedinterfaces = new ConcurrentHashMap<>();
 	
-	private Player player;
+	private final Player player;
 	
 	private boolean resizableScreen;
 	

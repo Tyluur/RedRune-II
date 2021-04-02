@@ -14,15 +14,15 @@ public final class Store {
 	
 	private Index[] indexes;
 	
-	private MainFile index255;
+	private final MainFile index255;
 	
-	private String path;
+	private final String path;
 	
-	private RandomAccessFile data;
+	private final RandomAccessFile data;
 	
-	private byte[] readCachedBuffer;
+	private final byte[] readCachedBuffer;
 	
-	private boolean newProtocol;
+	private final boolean newProtocol;
 	
 	public Store(String path) throws IOException {
 		this(path, Constants.CLIENT_BUILD >= 704);

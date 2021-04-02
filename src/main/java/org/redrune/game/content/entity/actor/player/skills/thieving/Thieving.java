@@ -118,19 +118,19 @@ public class Thieving {
 		SCIMITAR_STALL(4878, 65, new int[] { 1323 }, 1, 80, 100, 34381),
 		GEM_STALL(34385, 75, new int[] { 1623, 1621, 1619, 1617 }, 1, 180, 16, 34381);
 		
-		private int[] item;
+		private final int[] item;
 		
-		private int level;
+		private final int level;
 		
-		private int amount;
+		private final int amount;
 		
-		private int objectId;
+		private final int objectId;
 		
-		private int replaceObject;
+		private final int replaceObject;
 		
-		private double experience;
+		private final double experience;
 		
-		private double seconds;
+		private final double seconds;
 		
 		Stalls(int objectId, int level, int[] item, int amount, double seconds, double experience, int replaceObject) {
 			this.objectId = objectId;

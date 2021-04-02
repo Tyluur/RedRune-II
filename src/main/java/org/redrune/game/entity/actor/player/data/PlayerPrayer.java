@@ -57,7 +57,7 @@ public class PlayerPrayer implements Serializable {
 
     public int hitpoints;
 
-    private boolean[][] quickPrayers;
+    private final boolean[][] quickPrayers;
 
     private int prayerpoints;
 

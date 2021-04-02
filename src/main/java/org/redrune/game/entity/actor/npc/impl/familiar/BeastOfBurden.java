@@ -19,7 +19,7 @@ public class BeastOfBurden implements Serializable {
 	 */
 	private static final long serialVersionUID = -2090871604834210257L;
 
-	private ItemsContainer<Item> beastItems;
+	private final ItemsContainer<Item> beastItems;
 
 	private transient Player player;
 

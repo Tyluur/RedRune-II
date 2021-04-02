@@ -135,7 +135,7 @@ public class Smelting extends Action {
 		BASILISKBANE(80, 50, new Item[] { new Item(21781) }, new Item(21785, 1), 11),
 		ABYSSSALBANE(80, 50, new Item[] { new Item(21782) }, new Item(21786, 1), 11);
 
-		private static Map<Integer, SmeltingBar> bars = new HashMap<Integer, SmeltingBar>();
+		private static final Map<Integer, SmeltingBar> bars = new HashMap<Integer, SmeltingBar>();
 
 		static {
 			for (SmeltingBar bar : SmeltingBar.values()) {
@@ -143,15 +143,15 @@ public class Smelting extends Action {
 			}
 		}
 
-		private int levelRequired;
+		private final int levelRequired;
 
-		private double experience;
+		private final double experience;
 
-		private Item[] itemsRequired;
+		private final Item[] itemsRequired;
 
-		private int buttonId;
+		private final int buttonId;
 
-		private Item producedBar;
+		private final Item producedBar;
 
 		SmeltingBar(int levelRequired, double experience, Item[] itemsRequired, Item producedBar, int buttonId) {
 			this.levelRequired = levelRequired;

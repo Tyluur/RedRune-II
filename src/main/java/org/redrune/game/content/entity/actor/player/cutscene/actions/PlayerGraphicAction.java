@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class PlayerGraphicAction extends CutsceneAction {
 	
-	private Graphics gfx;
+	private final Graphics gfx;
 	
 	public PlayerGraphicAction(Graphics gfx, int actionDelay) {
 		super(-1, actionDelay);

@@ -11,7 +11,7 @@ import org.redrune.game.entity.item.Item;
  */
 public class WaterFillingAction extends Action {
 	
-	private Fill fill;
+	private final Fill fill;
 	
 	private int quantity;
 	
@@ -90,7 +90,8 @@ public class WaterFillingAction extends Action {
 		VASE(3734, 3735),
 		PLANT_POT(5350, 5354);
 		
-		private int empty, full;
+		private final int empty;
+		private final int full;
 		
 		Fill(int empty, int full) {
 			this.empty = empty;

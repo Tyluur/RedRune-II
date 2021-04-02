@@ -8,7 +8,10 @@ import org.redrune.game.global.WorldTile;
 
 public class CreateNPCAction extends CutsceneAction {
 
-	private int id, x, y, plane;
+	private final int id;
+	private final int x;
+	private final int y;
+	private final int plane;
 
 	public CreateNPCAction(int cachedObjectIndex, int id, int x, int y, int plane, int actionDelay) {
 		super(cachedObjectIndex, actionDelay);

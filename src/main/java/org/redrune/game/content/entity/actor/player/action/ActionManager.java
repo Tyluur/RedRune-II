@@ -4,7 +4,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public final class ActionManager {
 	
-	private Player player;
+	private final Player player;
 	
 	private Action action;
 	

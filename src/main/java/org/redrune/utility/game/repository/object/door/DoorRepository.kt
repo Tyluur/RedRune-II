@@ -74,10 +74,10 @@ object DoorRepository {
         val config = HikariConfig()
         var ds: HikariDataSource
         run {
-            config.setJdbcUrl("jdbc:mysql://localhost/arios")
-            config.setUsername("debug")
-            config.setPassword("debug")
-            config.setDriverClassName("com.mysql.cj.jdbc.Driver") //alternative is Class.forName("com.mysql.cj.jdbc.Driver")
+            config.jdbcUrl = "jdbc:mysql://localhost/arios"
+            config.username = "debug"
+            config.password = "debug"
+            config.driverClassName = "com.mysql.cj.jdbc.Driver" //alternative is Class.forName("com.mysql.cj.jdbc.Driver")
             config.addDataSourceProperty("cachePrepStmts", "true")
             config.addDataSourceProperty("prepStmtCacheSize", "250")
             config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
@@ -86,7 +86,7 @@ object DoorRepository {
         val query = "SELECT * from `door_configs`"
         val doors: MutableList<Door> = ArrayList()
         try {
-            ds.getConnection().use { con ->
+            ds.connection.use { con ->
                 con.prepareStatement(query).use { pst ->
                     pst.executeQuery().use { rs ->
                         while (rs.next()) {

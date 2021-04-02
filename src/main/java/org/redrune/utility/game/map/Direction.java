@@ -82,7 +82,7 @@ public enum Direction {
 	 * @param traversal
 	 * 		The traversal flags.
 	 */
-	private Direction(int stepX, int stepY, int value, int... traversal) {
+    Direction(int stepX, int stepY, int value, int... traversal) {
 		this.stepX = stepX;
 		this.stepY = stepY;
 		this.value = value;

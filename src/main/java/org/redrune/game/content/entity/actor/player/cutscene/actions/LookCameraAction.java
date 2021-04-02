@@ -5,15 +5,15 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class LookCameraAction extends CutsceneAction {
 	
-	private int viewLocalX;
+	private final int viewLocalX;
 	
-	private int viewLocalY;
+	private final int viewLocalY;
 	
-	private int viewZ;
+	private final int viewZ;
 	
-	private int speed;
+	private final int speed;
 	
-	private int speed2;
+	private final int speed2;
 	
 	public LookCameraAction(int viewLocalX, int viewLocalY, int viewZ, int actionDelay) {
 		this(viewLocalX, viewLocalY, viewZ, -1, -1, actionDelay);

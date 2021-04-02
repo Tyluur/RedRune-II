@@ -2,7 +2,7 @@ package org.redrune.utility.game.entity.actor.player;
 
 public class PublicChatMessage extends ChatMessage {
 	
-	private int effects;
+	private final int effects;
 	
 	public PublicChatMessage(String message, int effects) {
 		super(message);

@@ -2,7 +2,8 @@ package org.redrune.utility.game.session;
 
 public class IsaacKeyPair {
 	
-	private ISAACCipher inKey, outKey;
+	private final ISAACCipher inKey;
+    private final ISAACCipher outKey;
 	
 	public IsaacKeyPair(int[] seed) {
 		inKey = new ISAACCipher(seed);

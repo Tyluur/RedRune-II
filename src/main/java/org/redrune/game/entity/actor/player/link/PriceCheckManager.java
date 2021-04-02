@@ -8,9 +8,9 @@ import org.redrune.utility.constants.ItemConstants;
 
 public class PriceCheckManager {
 	
-	private Player player;
+	private final Player player;
 	
-	private ItemsContainer<Item> pcInv;
+	private final ItemsContainer<Item> pcInv;
 	
 	public PriceCheckManager(Player player) {
 		this.player = player;

@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 public class HomeCutScene extends Cutscene {
 	
-	private static int GUTHIX = 1, GUARD1 = 2, GUARD2 = 3;
+	private static final int GUTHIX = 1;
+    private static final int GUARD1 = 2;
+    private static final int GUARD2 = 3;
 	
 	@Override
 	public boolean hiddenMinimap() {

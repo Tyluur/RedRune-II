@@ -19,12 +19,12 @@ public class VarManager {
 	/**
 	 * The values for the player
 	 */
-	private int[] values;
+	private final int[] values;
 	
 	/**
 	 * The player this manager is an instance for
 	 */
-	private Player player;
+	private final Player player;
 	
 	public VarManager(Player player) {
 		this.player = player;

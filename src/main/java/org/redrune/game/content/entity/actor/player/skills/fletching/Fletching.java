@@ -20,9 +20,9 @@ public class Fletching extends Action {
 	
 	public static final int CROSSBOW_STRING = 9438;
 	
-	private Fletch fletch;
+	private final Fletch fletch;
 	
-	private int option;
+	private final int option;
 	
 	private int ticks;
 	
@@ -248,7 +248,7 @@ public class Fletching extends Action {
 		
 		DRAGON_DART(11232, 314, new int[] { 11230 }, new int[] { 95 }, new double[] { 18.4 }, new Animation(-1));
 		
-		private static Map<Integer, Fletch> fletching = new HashMap<Integer, Fletch>();
+		private static final Map<Integer, Fletch> fletching = new HashMap<Integer, Fletch>();
 		
 		static {
 			for (Fletch fletch : Fletch.values()) {
@@ -256,15 +256,17 @@ public class Fletching extends Action {
 			}
 		}
 		
-		private int[] product, level;
+		private final int[] product;
+		private final int[] level;
 		
-		private int id, selected;
+		private final int id;
+		private final int selected;
 		
-		private double[] xp;
+		private final double[] xp;
 		
-		private Animation anim;
+		private final Animation anim;
 		
-		Fletch(int id, int selected, int[] product, int level[], double[] xp, Animation anim) {
+		Fletch(int id, int selected, int[] product, int[] level, double[] xp, Animation anim) {
 			this.id = id;
 			this.product = product;
 			this.selected = selected;

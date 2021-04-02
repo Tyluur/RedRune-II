@@ -810,11 +810,8 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
         // if we can't clip to the target
         // or the target is too far away
         // or we're colliding with the target
-        if (!player.clipedProjectile(target, checkClose) || !Misc.isOnRange(player, target, getMinimumDistance(player, style) + modifier) || Misc.colides(player, target)) {
-            return false;
-        }
+        return player.clipedProjectile(target, checkClose) && Misc.isOnRange(player, target, getMinimumDistance(player, style) + modifier) && !Misc.colides(player, target);
         // otherwise we can fight
-        return true;
     }
 
     /**
@@ -2373,24 +2370,16 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
     private static boolean hasInfiniteRunes(int runeId, int weaponId, int shieldId) {
         if (runeId == AIR_RUNE) {
             // air staff
-            if (weaponId == 1381 || weaponId == 21777) {
-                return true;
-            }
+            return weaponId == 1381 || weaponId == 21777;
         } else if (runeId == WATER_RUNE) {
             // water staff
-            if (weaponId == 1383 || shieldId == 18346) {
-                return true;
-            }
+            return weaponId == 1383 || shieldId == 18346;
         } else if (runeId == EARTH_RUNE) {
             // earth staff
-            if (weaponId == 1385) {
-                return true;
-            }
+            return weaponId == 1385;
         } else if (runeId == FIRE_RUNE) {
             // fire staff
-            if (weaponId == 1387) {
-                return true;
-            }
+            return weaponId == 1387;
         }
         return false;
     }

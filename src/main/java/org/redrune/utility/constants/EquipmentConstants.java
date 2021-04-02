@@ -379,9 +379,6 @@ public interface EquipmentConstants {
 			return true;
 		} else if (wepEquiped.equals("saradomin sword")) {
 			return true;
-		} else if (wepEquiped.equals("hand cannon")) {
-			return true;
-		}
-		return false;
+		} else return wepEquiped.equals("hand cannon");
 	}
 }

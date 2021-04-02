@@ -63,7 +63,7 @@ public class ItemOnItemHandler {
 		/**
 		 * A hasmap to store all the data.
 		 */
-		private static Map<Integer, ItemOnItem> itemOnItems = new HashMap<Integer, ItemOnItem>();
+		private static final Map<Integer, ItemOnItem> itemOnItems = new HashMap<Integer, ItemOnItem>();
 		
 		/**
 		 * Populating the map.

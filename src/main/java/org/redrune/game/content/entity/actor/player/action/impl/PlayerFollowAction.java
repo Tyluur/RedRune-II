@@ -6,7 +6,7 @@ import org.redrune.utility.functions.Misc;
 
 public class PlayerFollowAction extends Action {
 	
-	private Player target;
+	private final Player target;
 	
 	public PlayerFollowAction(Player target) {
 		this.target = target;

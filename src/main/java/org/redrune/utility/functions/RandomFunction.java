@@ -107,7 +107,7 @@ public class RandomFunction {
 	 * @return A random element of the array.
 	 */
 	public static <T> T getRandomElement(T[] array) {
-		return (T) array[randomize(array.length)];
+		return array[randomize(array.length)];
 	}
 	
 	/**

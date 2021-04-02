@@ -18,7 +18,7 @@ public final class PlayerEquipment implements Serializable {
 
     private static final long serialVersionUID = -4147163237095647617L;
 
-    private ItemsContainer<Item> items;
+    private final ItemsContainer<Item> items;
 
     private transient Player player;
 

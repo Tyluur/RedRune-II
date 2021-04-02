@@ -6,9 +6,9 @@ public abstract class CutsceneAction {
 	
 	public abstract void process(Player player, Object[] cache);
 	
-	private int actionDelay; // -1 for no delay
+	private final int actionDelay; // -1 for no delay
 	
-	private int cachedObjectIndex;
+	private final int cachedObjectIndex;
 	
 	public CutsceneAction(int cachedObjectIndex, int actionDelay) {
 		this.cachedObjectIndex = cachedObjectIndex;

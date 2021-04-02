@@ -6,7 +6,8 @@ import org.redrune.game.global.WorldTile;
 
 public class PlayerFaceTileAction extends CutsceneAction {
 	
-	private int x, y;
+	private final int x;
+	private final int y;
 	
 	public PlayerFaceTileAction(int x, int y, int actionDelay) {
 		super(-1, actionDelay);

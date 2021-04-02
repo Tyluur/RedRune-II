@@ -7,7 +7,7 @@ import java.util.List;
 
 public class NoteManager {
 	
-	private static List<Note> notes = new LinkedList<Note>();
+	private static final List<Note> notes = new LinkedList<Note>();
 	
 	public NoteManager() {
 	}
@@ -76,7 +76,7 @@ public class NoteManager {
 	
 	public static class Note {
 		
-		private StringBuilder builder;
+		private final StringBuilder builder;
 		
 		private int value;
 		

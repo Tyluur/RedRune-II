@@ -7,13 +7,13 @@ import org.redrune.game.global.WorldTile;
  */
 public class RegionMap {
 	
-	private int regionX;
+	private final int regionX;
 	
-	private int regionY;
+	private final int regionY;
 	
-	private int masks[][][];
+	private final int[][][] masks;
 	
-	private boolean clipedOnly;
+	private final boolean clipedOnly;
 	
 	/**
 	 * The landscape data.

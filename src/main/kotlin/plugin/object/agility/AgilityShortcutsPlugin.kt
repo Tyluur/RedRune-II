@@ -12,7 +12,7 @@ import org.redrune.utility.game.ClickOption
  */
 class AgilityShortcutsPlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val id: Int = `object`.getId()
+        val id: Int = `object`.id
         if (id == 9311 || id == 9312) {
             Shortcuts.handleEdgevilleUnderwallTunnel(player, `object`)
         }

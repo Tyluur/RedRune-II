@@ -31,9 +31,9 @@ class WildernessDitchObjectPlugin : ObjectPlugin {
         fun performJump(player: Player, `object`: WorldObject, onJump: Runnable?) {
             player.locks.lock()
             player.nextAnimation = Animation(6132)
-            val `in`: Boolean = player.y < `object`.getY()
+            val `in`: Boolean = player.y < `object`.y
             val toTile =
-                WorldTile(player.x, if (`in`) `object`.getY() + 2 else `object`.getY() - 1, `object`.getPlane())
+                WorldTile(player.x, if (`in`) `object`.y + 2 else `object`.y - 1, `object`.plane)
             player.nextForceMovement =
                 ForceMovement(WorldTile(player), 1, toTile, 2, if (`in`) ForceMovement.NORTH else ForceMovement.SOUTH)
             WorldTasksManager.schedule(object : WorldTask() {

@@ -15,9 +15,9 @@ public class DynamicRegion extends Region {
 	/**
 	 * Contains render coordinates.
 	 */
-	private int[][][][] regionCoords;
+	private final int[][][][] regionCoords;
 	
-	private boolean[][][] needsReload;
+	private final boolean[][][] needsReload;
 	
 	private boolean recheckReload;
 	

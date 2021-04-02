@@ -167,11 +167,9 @@ public class NPCInteractionEvent extends Event {
         }
         player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
         if (!player.getControllerManager().canEntityClick(npc, THIRD)) {
-            ;
         } else if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
             ExchangeManager.INSTANCE.openCollectionBox(player);
         } else if (PluginRepository.handleNPC(player, npc, option)) {
-            ;
         } else {
             if (GameFlags.debugMode) {
                 System.out.println("No plugin registered for option [option" + option + ", idx=3] on npc " + npc);

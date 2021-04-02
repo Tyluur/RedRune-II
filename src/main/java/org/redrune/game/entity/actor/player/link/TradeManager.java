@@ -12,10 +12,11 @@ import java.util.stream.Stream;
 public class TradeManager {
 	
 	/** The important player objects in this class. Us and the recipient of our items */
-	private Player player, target;
+	private final Player player;
+	private Player target;
 	
 	/** The items we are offering */
-	private ItemsContainer<Item> items;
+	private final ItemsContainer<Item> items;
 	
 	/** If the item we're lending is lent until logout */
 	private boolean lentTillLogout;

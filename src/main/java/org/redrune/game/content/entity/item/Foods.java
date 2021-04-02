@@ -303,7 +303,7 @@ public class Foods {
 		/**
 		 * A map of object ids to foods.
 		 */
-		private static Map<Integer, Food> foods = new HashMap<Integer, Food>();
+		private static final Map<Integer, Food> foods = new HashMap<Integer, Food>();
 		
 		/**
 		 * Populates the tree map.
@@ -317,12 +317,12 @@ public class Foods {
 		/**
 		 * The food id
 		 */
-		private int id;
+		private final int id;
 		
 		/**
 		 * The healing health
 		 */
-		private int heal;
+		private final int heal;
 		
 		/**
 		 * The new food id if needed

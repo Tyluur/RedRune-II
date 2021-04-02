@@ -59,12 +59,12 @@ public class PickPocketAction extends Action {
 	/**
 	 * Pick pocketing npc.
 	 */
-	private NPC npc;
+	private final NPC npc;
 	
 	/**
 	 * Data of an npc.
 	 */
-	private PickPocketableNPC npcData;
+	private final PickPocketableNPC npcData;
 	
 	/**
 	 * The index to use in the levels required arrays.

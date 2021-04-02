@@ -21,10 +21,10 @@ public class ISAACCipher {
 	private int count = 0;
 	
 	/** The results. */
-	private int results[] = new int[SIZE];
+	private final int[] results = new int[SIZE];
 	
 	/** The internal memory state. */
-	private int memory[] = new int[SIZE];
+	private final int[] memory = new int[SIZE];
 	
 	/** The accumulator. */
 	private int a;

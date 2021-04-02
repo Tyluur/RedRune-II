@@ -5,15 +5,15 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class PosCameraAction extends CutsceneAction {
 
-	private int moveLocalX;
+	private final int moveLocalX;
 
-	private int moveLocalY;
+	private final int moveLocalY;
 
-	private int moveZ;
+	private final int moveZ;
 
-	private int speed;
+	private final int speed;
 
-	private int speed2;
+	private final int speed2;
 
 	public PosCameraAction(int moveLocalX, int moveLocalY, int moveZ, int actionDelay) {
 		this(moveLocalX, moveLocalY, moveZ, -1, -1, actionDelay);

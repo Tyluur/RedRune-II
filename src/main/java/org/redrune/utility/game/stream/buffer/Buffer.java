@@ -376,7 +376,7 @@ public abstract class Buffer {
 	 * @param end
 	 * 		the decode end offset.
 	 */
-	public void decodeXTEA(int keys[], int start, int end) {
+	public void decodeXTEA(int[] keys, int start, int end) {
 		int startOffset = offset;
 		offset = start;
 		int i1 = (end - start) / 8;
@@ -420,7 +420,7 @@ public abstract class Buffer {
 	 * @param end
 	 * 		the encode end offset.
 	 */
-	public final void encodeXTEA(int keys[], int start, int end) {
+	public final void encodeXTEA(int[] keys, int start, int end) {
 		int o = offset;
 		int j = (end - start) / 8;
 		offset = start;

@@ -9,7 +9,7 @@ import org.redrune.utility.constants.SkillConstants;
 
 public class GemCutting extends Action {
 	
-	private Gem gem;
+	private final Gem gem;
 	
 	private int quantity;
 	
@@ -92,13 +92,14 @@ public class GemCutting extends Action {
 		DRAGONSTONE(1631, 1615, 137.5, 55, 885),
 		ONYX(6571, 6573, 168, 67, 2717);
 		
-		private double experience;
+		private final double experience;
 		
-		private int levelRequired;
+		private final int levelRequired;
 		
-		private int uncut, cut;
+		private final int uncut;
+        private final int cut;
 		
-		private int emote;
+		private final int emote;
 		
 		Gem(int uncut, int cut, double experience, int levelRequired, int emote) {
 			this.uncut = uncut;

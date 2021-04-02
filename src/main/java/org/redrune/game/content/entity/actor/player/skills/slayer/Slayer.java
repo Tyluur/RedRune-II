@@ -52,17 +52,17 @@ public class Slayer {
 		
 		KURADAL(9084, "", 110, 75, new int[] { 190, 270 }, "Aberrant spectres", "Abbyssal demons", "Aquanties", "Black demons", "Black Dragons", "Bloodvelds", "Blue Dragons", "Dagannoth", "Dark beasts", "Desert strykewyrms", "Dust devils", "Fire giant", "Gargoyles", "Greater demons", "Hellhound", "Ice strykewyrms", "Iron dragons", "Jungle strykewyrms", "Kalphites", "Living rock creatures", "Mithril dragons", "Mutated jadinko", "Nechryael", "Skeletal wyverns", "Spiritual mages", "Steel dragons", "Suqahs", "Terror dogs", "Tez-Tek", "Warped tortoises", "Vyrewatch", "Waterfiends");
 		
-		private int combatLevel;
+		private final int combatLevel;
 		
-		private int master;
+		private final int master;
 		
-		private int levelRequired;
+		private final int levelRequired;
 		
-		private int[] range;
+		private final int[] range;
 		
-		private Object[] tasks;
+		private final Object[] tasks;
 		
-		private String dialouge;
+		private final String dialouge;
 		
 		Master(int master, String dialouge, int combatLevel, int levelRequired, int[] range, Object... tasks) {
 			this.combatLevel = combatLevel;
@@ -180,7 +180,7 @@ public class Slayer {
 		
 		DARK_BEAST(2783, 90);
 		
-		private static Map<Integer, SlayerMonsters> monsters = new HashMap<Integer, SlayerMonsters>();
+		private static final Map<Integer, SlayerMonsters> monsters = new HashMap<Integer, SlayerMonsters>();
 		
 		static {
 			for (SlayerMonsters monster : SlayerMonsters.values()) {
@@ -188,9 +188,9 @@ public class Slayer {
 			}
 		}
 		
-		private int id;
+		private final int id;
 		
-		private int req;
+		private final int req;
 		
 		SlayerMonsters(int id, int req) {
 			this.id = id;

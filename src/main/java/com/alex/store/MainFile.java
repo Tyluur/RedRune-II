@@ -11,15 +11,15 @@ import java.io.RandomAccessFile;
  */
 public final class MainFile {
 
-	private int id;
+	private final int id;
 
-	private RandomAccessFile data;
+	private final RandomAccessFile data;
 
-	private RandomAccessFile index;
+	private final RandomAccessFile index;
 
-	private byte[] readCachedBuffer;
+	private final byte[] readCachedBuffer;
 
-	private boolean newProtocol;
+	private final boolean newProtocol;
 	
 	protected MainFile(int id, RandomAccessFile data, RandomAccessFile index, byte[] readCachedBuffer, boolean newProtocol) throws IOException {
 		this.id = id;
@@ -57,7 +57,7 @@ public final class MainFile {
 				if (sector <= 0 || data.length() / 520L < sector) {
 					return null;
 				}
-				byte archive[] = new byte[archiveLength];
+				byte[] archive = new byte[archiveLength];
 				int readBytesCount = 0;
 				int part = 0;
 				while (archiveLength > readBytesCount) {

@@ -17,17 +17,17 @@ public class RouteEvent {
 	/**
 	 * Object to which we are finding the route.
 	 */
-	private Object destination;
+	private final Object destination;
 	
 	/**
 	 * The event instance.
 	 */
-	private Runnable event;
+	private final Runnable event;
 	
 	/**
 	 * Whether we also run on alternative.
 	 */
-	private boolean alternative;
+	private final boolean alternative;
 	
 	/**
 	 * Contains last route strategies.

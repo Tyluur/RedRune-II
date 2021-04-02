@@ -18,11 +18,11 @@ public class Cooking extends Action {
 	
 	private Cookables cook;
 	
-	private Item item;
+	private final Item item;
 	
-	private WorldObject object;
+	private final WorldObject object;
 	
-	private Animation COOKING = new Animation(883);
+	private final Animation COOKING = new Animation(883);
 	
 	public Cooking(WorldObject object, Item item, int amount) {
 		this.amount = amount;
@@ -337,7 +337,7 @@ public class Cooking extends Action {
 		 */
 		RAW_POTATO(new Item(1942, 1), 7, 200, 15, new Item(6699, 1), new Item(6701, 1), false, false);
 		
-		private static Map<Short, Cookables> ingredients = new HashMap<Short, Cookables>();
+		private static final Map<Short, Cookables> ingredients = new HashMap<Short, Cookables>();
 		
 		static {
 			for (Cookables ingredient : Cookables.values()) {
@@ -345,21 +345,21 @@ public class Cooking extends Action {
 			}
 		}
 		
-		private Item raw;
+		private final Item raw;
 		
-		private int lvl;
+		private final int lvl;
 		
-		private int burningLvl;
+		private final int burningLvl;
 		
-		private int xp;
+		private final int xp;
 		
-		private Item burnt;
+		private final Item burnt;
 		
-		private Item total;
+		private final Item total;
 		
-		private boolean spitRoast;
+		private final boolean spitRoast;
 		
-		private boolean fireOnly;
+		private final boolean fireOnly;
 		
 		Cookables(Item raw, int lvl, int burningLvl, int exp, Item burnt, Item total, boolean spitRoast, boolean fireOnly) {
 			this.raw = raw;

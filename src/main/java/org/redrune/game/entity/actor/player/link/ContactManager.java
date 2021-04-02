@@ -36,10 +36,10 @@ public class ContactManager implements Serializable {
 	private boolean coinshare;
 	
 	// friends list
-	private ArrayList<String> friends;
+	private final ArrayList<String> friends;
 	
 	@SuppressWarnings("unused")
-	private ArrayList<String> ignores;
+	private final ArrayList<String> ignores;
 	
 	private byte privateStatus;
 	

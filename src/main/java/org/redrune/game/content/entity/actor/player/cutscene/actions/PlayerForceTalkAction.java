@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class PlayerForceTalkAction extends CutsceneAction {
 
-	private String text;
+	private final String text;
 
 	public PlayerForceTalkAction(String text, int actionDelay) {
 		super(-1, actionDelay);

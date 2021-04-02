@@ -67,7 +67,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	/**
 	 * The handler and container of poison
 	 */
-	private PoisonManager poisonManager;
+	private final PoisonManager poisonManager;
 	
 	/**
 	 * If run mode is on, this is used for processing movement in a 2-tile-per-step fashion
@@ -387,7 +387,7 @@ public abstract class Actor extends WorldTile implements Entity {
 		if (objects.length == 0) {
 			return new int[] { getX(), getY() };
 		}
-		int step[] = (int[]) objects[objects.length - 1];
+		int[] step = (int[]) objects[objects.length - 1];
 		return new int[] { step[1], step[2] };
 	}
 	
@@ -850,7 +850,7 @@ public abstract class Actor extends WorldTile implements Entity {
 	}
 	
 	private int getNextWalkStep() {
-		int step[] = walkSteps.poll();
+		int[] step = walkSteps.poll();
 		if (step == null) {
 			return -1;
 		}

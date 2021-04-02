@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class DarkEnergyCore extends NPC {
 
-	private CorporealBeast beast;
+	private final CorporealBeast beast;
 
 	private Actor target;
 

@@ -20,7 +20,7 @@ class PotionConsumptionItemPlugin : ItemPlugin {
 
     override fun register() {
         Arrays.stream(Pots.Pot.values()).forEach(Consumer<Pots.Pot> { pot: Pots.Pot ->
-            Arrays.stream(pot.getIds()).forEach(
+            Arrays.stream(pot.ids).forEach(
                 IntConsumer { id: Int -> registerItem(id, "Drink") })
         })
     }

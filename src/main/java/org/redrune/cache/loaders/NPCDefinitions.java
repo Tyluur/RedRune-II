@@ -429,7 +429,7 @@ public final class NPCDefinitions {
     }
 
     public boolean hasPickupOption() {
-        String as[];
+        String[] as;
         int j = (as = getOptions()).length;
         for (int i = 0; i < j; i++) {
             String option = as[i];
@@ -442,7 +442,7 @@ public final class NPCDefinitions {
     }
 
     public boolean hasTakeOption() {
-        String as[];
+        String[] as;
         int j = (as = getOptions()).length;
         for (int i = 0; i < j; i++) {
             String option = as[i];

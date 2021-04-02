@@ -43,7 +43,7 @@ class FindObjectByNameCommandPlugin : CommandPlugin() {
                 continue
             }
             val e =
-                "Object{id=" + def.getId() + ", name=" + def.getName() + ", options=" + Arrays.toString(def.getOptions()) + ", sizes=[x=" + def.getSizeX() + ",y=" + def.getSizeY() + "]}"
+                "Object{id=" + def.id + ", name=" + def.name + ", options=" + Arrays.toString(def.options) + ", sizes=[x=" + def.sizeX + ",y=" + def.sizeY + "]}"
             if (optionValue != null) {
                 if (def.containsOption(optionValue)) {
                     found.add(e)

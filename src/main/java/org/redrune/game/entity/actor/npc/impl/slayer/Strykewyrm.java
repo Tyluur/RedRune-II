@@ -11,7 +11,7 @@ import org.redrune.utility.functions.Misc;
 @SuppressWarnings("serial")
 public class Strykewyrm extends NPC {
 	
-	private int stompId;
+	private final int stompId;
 	
 	public Strykewyrm(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
 		super(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, true);

@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class NPCForceTalkAction extends CutsceneAction {
 	
-	private String text;
+	private final String text;
 	
 	public NPCForceTalkAction(int cachedObjectIndex, String text, int actionDelay) {
 		super(cachedObjectIndex, actionDelay);

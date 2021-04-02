@@ -81,11 +81,11 @@ public final class InputStream extends Stream {
 		return offset < length ? length - offset : 0;
 	}
 	
-	public void readBytes(byte buffer[]) {
+	public void readBytes(byte[] buffer) {
 		readBytes(buffer, 0, buffer.length);
 	}
 
-	public void readBytes(byte buffer[], int off, int len) {
+	public void readBytes(byte[] buffer, int off, int len) {
 		for (int k = off; k < len + off; k++) {
 			buffer[k] = (byte) readByte();
 		}

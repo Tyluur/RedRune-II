@@ -12,11 +12,11 @@ public final class IndexedColorImageFile {
 
 	private BufferedImage[] images;
 
-	private int pallete[];
+	private int[] pallete;
 
-	private int pixelsIndexes[][];
+	private int[][] pixelsIndexes;
 
-	private byte alpha[][];
+	private byte[][] alpha;
 
 	private boolean[] usesAlpha;
 

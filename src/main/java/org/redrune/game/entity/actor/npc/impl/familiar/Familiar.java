@@ -41,7 +41,7 @@ public abstract class Familiar extends NPC implements Serializable {
 	
 	private BeastOfBurden bob;
 	
-	private Pouches pouch;
+	private final Pouches pouch;
 	
 	private transient Player owner;
 	

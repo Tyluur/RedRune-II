@@ -5,7 +5,10 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class ConstructMapAction extends CutsceneAction {
 	
-	private int baseChunkX, baseChunkY, widthChunks, heightChunks;
+	private final int baseChunkX;
+	private final int baseChunkY;
+	private final int widthChunks;
+	private final int heightChunks;
 	
 	public ConstructMapAction(int baseChunkX, int baseChunkY, int widthChunks, int heightChunks) {
 		super(-1, -1);

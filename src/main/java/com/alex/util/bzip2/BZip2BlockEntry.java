@@ -2,25 +2,25 @@ package com.alex.util.bzip2;
 
 public class BZip2BlockEntry {
 
-	boolean aBooleanArray2205[];
+	boolean[] aBooleanArray2205;
 
-	boolean aBooleanArray2213[];
+	boolean[] aBooleanArray2213;
 
 	byte aByte2201;
 
-	byte aByteArray2204[];
+	byte[] aByteArray2204;
 
-	byte aByteArray2211[];
+	byte[] aByteArray2211;
 
-	byte aByteArray2212[];
+	byte[] aByteArray2212;
 
-	byte aByteArray2214[];
+	byte[] aByteArray2214;
 
-	byte aByteArray2219[];
+	byte[] aByteArray2219;
 
-	byte aByteArray2224[];
+	byte[] aByteArray2224;
 
-	byte aByteArrayArray2229[][];
+	byte[][] aByteArrayArray2229;
 
 	int anInt2202;
 
@@ -52,19 +52,19 @@ public class BZip2BlockEntry {
 
 	int anInt2232;
 
-	int anIntArray2200[];
+	int[] anIntArray2200;
 
-	int anIntArray2220[];
+	int[] anIntArray2220;
 
-	int anIntArray2226[];
+	int[] anIntArray2226;
 
-	int anIntArray2228[];
+	int[] anIntArray2228;
 
-	int anIntArrayArray2210[][];
+	int[][] anIntArrayArray2210;
 
-	int anIntArrayArray2218[][];
+	int[][] anIntArrayArray2218;
 
-	int anIntArrayArray2230[][];
+	int[][] anIntArrayArray2230;
 
 	public BZip2BlockEntry() {
 		anIntArray2200 = new int[6];

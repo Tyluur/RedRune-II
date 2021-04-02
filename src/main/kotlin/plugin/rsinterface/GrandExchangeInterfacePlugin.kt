@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package plugin.rsinterface
 
 import com.github.michaelbull.logging.InlineLogger
@@ -26,6 +28,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         registerInterfacePlugin(COLLECTION_INTERFACE, MAIN_INTERFACE, SELL_INTERFACE)
     }
 
+    @Suppress("NAME_SHADOWING")
     override fun handle(
         player: Player,
         interfaceId: Int,
@@ -103,26 +106,32 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                         player.temporaryAttributes["exchange_slot"] = slot
                         sendScreen(player, ExchangeType.BUY)
                     }
+                    // sell buttons
+                    83, 32, 48, 102, 121, 64 -> {
+                        player.temporaryAttributes["exchange_slot"] = slot
+                        sendScreen(player, ExchangeType.SELL)
+                    }
+
                     // choose item button on buy screen
                     190 -> {
                         player.packets.sendRunScript(570, "Grand Exchange Item Search")
                     }
                     // back button
                     128 -> {
-                        resetInterfaceConfigs(player);
+                        resetInterfaceConfigs(player)
 
-                        player.interfaceManager.closeInventory();
-                        player.interfaceManager.sendInventory();
+                        player.interfaceManager.closeInventory()
+                        player.interfaceManager.sendInventory()
 
-                        val lastGameTab = player.interfaceManager.openGameTab(4); // inventory
+                        val lastGameTab = player.interfaceManager.openGameTab(4) // inventory
 
-                        player.setCloseInterfacesEvent(Runnable {
-                            player.interfaceManager.sendInventory();
-                            player.inventory.unlockInventoryOptions();
-                            player.interfaceManager.sendEquipment();
-                            player.interfaceManager.openGameTab(lastGameTab);
-                        });
-                        ExchangeManager.open(player);
+                        player.setCloseInterfacesEvent {
+                            player.interfaceManager.sendInventory()
+                            player.inventory.unlockInventoryOptions()
+                            player.interfaceManager.sendEquipment()
+                            player.interfaceManager.openGameTab(lastGameTab)
+                        }
+                        ExchangeManager.open(player)
                     }
                     // confirm button
                     186 -> {
@@ -142,7 +151,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                             return true
                         }
 
-                        val cashAmount = price.toInt()
+                        val cashAmount = price
 
                         when (offer.type) {
                             ExchangeType.BUY -> {
@@ -193,7 +202,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                         val slot = player.getTemporaryAttribute("exchange_slot", 0)
                         val offer =
                             (player.attributes.offers[slot] ?: return true)
-                        abortOffer(player, offer);
+                        abortOffer(player, offer)
                     }
 
                     // +1
@@ -367,7 +376,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
      * @param type
      * The type of offer
      */
-    fun sendScreen(player: Player, type: ExchangeType) {
+    private fun sendScreen(player: Player, type: ExchangeType) {
         resetInterfaceConfigs(player)
         if (type === ExchangeType.SELL) {
             player.packets.sendConfig(1113, 1)
@@ -377,11 +386,11 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
             player.packets.sendItems(93, player.inventory.items)
             player.packets.sendHideIComponent(SELL_INTERFACE, 0, false)
             player.packets.sendIComponentSettings(SELL_INTERFACE, 18, 0, 27, 1026)
-            player.packets.sendConfig(1112, (player.temporaryAttributes.get("exchange_slot") as Int?)!!)
+            player.packets.sendConfig(1112, (player.temporaryAttributes["exchange_slot"] as Int?)!!)
             player.packets.sendHideIComponent(105, 196, true)
         } else {
             player.packets.sendConfig1(744, 0)
-            player.packets.sendConfig(1112, (player.temporaryAttributes.get("exchange_slot") as Int?)!!)
+            player.packets.sendConfig(1112, (player.temporaryAttributes["exchange_slot"] as Int?)!!)
             player.packets.sendConfig(1113, 0)
             player.packets.sendInterface(true, 752, 7, 389)
             player.packets.sendRunScript(570, "Grand Exchange Item Search")

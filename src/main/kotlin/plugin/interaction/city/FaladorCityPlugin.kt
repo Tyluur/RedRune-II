@@ -17,7 +17,7 @@ import org.redrune.utility.constants.SkillConstants
  */
 class FaladorCityPlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val id: Int = `object`.getId()
+        val id: Int = `object`.id
         when (id) {
             11844 -> {
                 if (!Agility.hasLevel(player, 5)) {

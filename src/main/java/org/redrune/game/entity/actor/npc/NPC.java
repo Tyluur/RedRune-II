@@ -45,16 +45,16 @@ public class NPC extends Actor implements Serializable {
 
 	private int combatLevel;
 
-	private WorldTile respawnTile;
+	private final WorldTile respawnTile;
 
-	private int mapAreaNameHash;
+	private final int mapAreaNameHash;
 
-	private boolean canBeAttackFromOutOfArea;
+	private final boolean canBeAttackFromOutOfArea;
 
 	private int[] bonuses; // 0 stab, 1 slash, 2 crush,3 mage, 4 range, 5 stab
 
 	// def, blahblah till 9
-	private boolean spawned;
+	private final boolean spawned;
 
 	private WorldTile forceWalk;
 
@@ -80,7 +80,7 @@ public class NPC extends Actor implements Serializable {
 
 	private int walkType;
 
-	private List<NPCExtension> extensions = new ArrayList<>();
+	private final List<NPCExtension> extensions = new ArrayList<>();
 
 	private transient NPCCombat combat;
 

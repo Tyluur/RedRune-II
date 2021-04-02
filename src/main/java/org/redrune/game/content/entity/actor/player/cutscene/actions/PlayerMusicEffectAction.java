@@ -4,7 +4,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class PlayerMusicEffectAction extends CutsceneAction {
 
-	private int id;
+	private final int id;
 
 	public PlayerMusicEffectAction(int id, int actionDelay) {
 		super(-1, actionDelay);

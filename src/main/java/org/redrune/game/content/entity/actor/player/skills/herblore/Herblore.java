@@ -251,7 +251,7 @@ public class Herblore extends Action {
 		
 		BONEMEAL(6810, new short[] { 2434, 139, 141, 143 }, new short[] { 15328, 15329, 15330, 15331 }, new byte[] { 94, 94, 94, 94 }, new double[] { 270, 270, 270, 270 });
 		
-		private static Map<Short, Ingredients> ingredients = new HashMap<Short, Ingredients>();
+		private static final Map<Short, Ingredients> ingredients = new HashMap<Short, Ingredients>();
 		
 		static {
 			for (Ingredients ingredient : Ingredients.values()) {
@@ -356,7 +356,7 @@ public class Herblore extends Action {
 		
 		WYVERN_BONES(6812, new Item(6810, 1));
 		
-		private static Map<Short, RawIngredient> rawIngredients = new HashMap<Short, RawIngredient>();
+		private static final Map<Short, RawIngredient> rawIngredients = new HashMap<Short, RawIngredient>();
 		
 		static {
 			for (RawIngredient rawIngredient : RawIngredient.values()) {

@@ -48,7 +48,7 @@ public class WorldObject extends WorldTile implements Entity {
 	/**
 	 * The temporary attributes of this actor
 	 */
-	private transient ConcurrentHashMap<Object, Object> temporaryAttributes = new ConcurrentHashMap<>();
+	private final transient ConcurrentHashMap<Object, Object> temporaryAttributes = new ConcurrentHashMap<>();
 	
 	public WorldObject(int id, int type, int rotation, WorldTile tile) {
 		super(tile.getX(), tile.getY(), tile.getPlane());

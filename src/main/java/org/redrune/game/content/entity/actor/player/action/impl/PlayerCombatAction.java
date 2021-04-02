@@ -19,7 +19,7 @@ public class PlayerCombatAction extends Action {
 	/**
 	 * The target of our combat action
 	 */
-	private Actor target;
+	private final Actor target;
 	
 	/**
 	 * The combat style

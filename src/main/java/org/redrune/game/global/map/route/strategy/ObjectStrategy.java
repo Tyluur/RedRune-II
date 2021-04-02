@@ -8,37 +8,37 @@ public class ObjectStrategy extends RouteStrategy {
 	/**
 	 * Contains object pos x.
 	 */
-	private int x;
+	private final int x;
 
 	/**
 	 * Contains object pos y.
 	 */
-	private int y;
+	private final int y;
 
 	/**
 	 * Contains object route type.
 	 */
-	private int routeType;
+	private final int routeType;
 
 	/**
 	 * Contains object type.
 	 */
-	private int type;
+	private final int type;
 
 	/**
 	 * Contains object rotation.
 	 */
-	private int rotation;
+	private final int rotation;
 
 	/**
 	 * Contains object size X.
 	 */
-	private int sizeX;
+	private final int sizeX;
 
 	/**
 	 * Contains object size Y.
 	 */
-	private int sizeY;
+	private final int sizeY;
 
 	/**
 	 * Contains block flag.

@@ -84,11 +84,7 @@ public class InteractionManager {
 						npcInteractionManager.reset(true);
 					} else {
 						Actor alternative = npcInteractionManager.getClosestAlternative();
-						if (alternative == null) {
-							npc.setNextFaceActor(null);
-						} else {
-							npc.setNextFaceActor(alternative);
-						}
+						npc.setNextFaceActor(alternative);
 					}
 				}
 			}

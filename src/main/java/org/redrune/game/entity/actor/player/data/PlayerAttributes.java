@@ -102,7 +102,7 @@ public class PlayerAttributes implements Serializable {
     /**
      * The pouch data, used for runecrafting
      */
-    private int[] pouches;
+    private final int[] pouches;
 
     /**
      * If we are filtering the game

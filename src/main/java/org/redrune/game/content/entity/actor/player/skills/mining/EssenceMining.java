@@ -11,9 +11,9 @@ import org.redrune.utility.functions.Misc;
 
 public class EssenceMining extends Action {
 	
-	private WorldObject rock;
+	private final WorldObject rock;
 	
-	private EssenceDefinitions definitions;
+	private final EssenceDefinitions definitions;
 	
 	private int emoteId;
 	
@@ -245,15 +245,15 @@ public class EssenceMining extends Action {
 		Rune_Essence(1, 5, 1436, 1, 1),
 		Pure_Essence(30, 5, 7936, 1, 1);
 		
-		private int level;
+		private final int level;
 		
-		private double xp;
+		private final double xp;
 		
-		private int oreId;
+		private final int oreId;
 		
-		private int oreBaseTime;
+		private final int oreBaseTime;
 		
-		private int oreRandomTime;
+		private final int oreRandomTime;
 		
 		EssenceDefinitions(int level, double xp, int oreId, int oreBaseTime, int oreRandomTime) {
 			this.level = level;

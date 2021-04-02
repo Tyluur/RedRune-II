@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class NexCutScene extends Cutscene {
 
-	private WorldTile dir;
+	private final WorldTile dir;
 
-	private int selected;
+	private final int selected;
 
 	public NexCutScene(WorldTile dir, int selected) {
 		this.dir = dir;

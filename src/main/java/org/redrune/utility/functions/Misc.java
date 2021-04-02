@@ -432,7 +432,7 @@ public final class Misc {
 			return null;
 		}
 		int i = 0;
-		char ac[] = new char[12];
+		char[] ac = new char[12];
 		while (l != 0L) {
 			long l1 = l;
 			l /= 37L;
@@ -1016,7 +1016,7 @@ public final class Misc {
 	
 	public static String getPackageName(Class clazz) {
 		String packageName = clazz.getPackage().toString();
-		return packageName.substring(packageName.lastIndexOf(".") + 1, packageName.length()).trim();
+		return packageName.substring(packageName.lastIndexOf(".") + 1).trim();
 	}
 	
 	/**
@@ -1200,7 +1200,7 @@ public final class Misc {
 			// the file is a directory
 			if (file.isDirectory()) {
 				String fileToDirectory = file.getPath().replace("\\", ".").replace("/", ".");
-				fileToDirectory = fileToDirectory.substring(fileToDirectory.indexOf(".org") + 1, fileToDirectory.length());
+				fileToDirectory = fileToDirectory.substring(fileToDirectory.indexOf(".org") + 1);
 				List<Object> classesInDirectory = getClassesInDirectory(fileToDirectory);
 				classes.addAll(classesInDirectory);
 			} else {
@@ -1266,7 +1266,7 @@ public final class Misc {
 		WEST(6),
 		NORTHWEST(7);
 		
-		private int value;
+		private final int value;
 		
 		FaceDirection(int value) {
 			this.value = value;
@@ -1296,7 +1296,7 @@ public final class Misc {
 		NORTHWEST(6144),
 		SOUTHWEST(2048);
 		
-		private int value;
+		private final int value;
 		
 		EntityDirection(int value) {
 			this.value = value;

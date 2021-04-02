@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class DialogueManager {
 	
-	private Player player;
+	private final Player player;
 	
 	private Dialogue lastDialogue;
 	

@@ -120,7 +120,7 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 		if (type == IS_PLAYER) {
 			title = player.getDisplayName();
 		} else if (type == IS_NPC) {
-			title = NPCDefinitions.getNPCDefinitions(entityId).getName().toString();
+			title = NPCDefinitions.getNPCDefinitions(entityId).getName();
 		} else if (type == IS_ITEM) {
 			title = ItemDefinitions.getItemDefinitions(entityId).getName();
 		}
@@ -184,7 +184,7 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 	}
 	
 	private static int[] getIComponentsIds(short interId) {
-		int childOptions[];
+		int[] childOptions;
 		switch (interId) {
 			
 			case 458:

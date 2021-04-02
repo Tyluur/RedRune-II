@@ -24,7 +24,7 @@ public class Hunter extends Action {
 	/**
 	 * Hunter's equipment.
 	 */
-	private HunterEquipment hunt;
+	private final HunterEquipment hunt;
 	
 	/**
 	 * Constructs a new {@code Fishing} {@code Object}.
@@ -145,11 +145,14 @@ public class Hunter extends Action {
 			}
 		}
 		
-		private int npcId, level, item, transformObjectId;
+		private final int npcId;
+		private final int level;
+		private final int item;
+		private final int transformObjectId;
 		
-		private double xp;
+		private final double xp;
 		
-		private HunterEquipment hunter;
+		private final HunterEquipment hunter;
 		
 		HunterNPC(int npcId, int item, int level, double xp, HunterEquipment hunter, int transformObjectId) {
 			this.npcId = npcId;
@@ -203,9 +206,11 @@ public class Hunter extends Action {
 		BOX(10008, 19187, new Animation(5208), 27),
 		BRID_SNARE(10006, 19175, new Animation(5207), 1);
 		
-		private int itemId, objectId, baseLevel;
+		private final int itemId;
+		private final int objectId;
+		private final int baseLevel;
 		
-		private Animation pickUpAnimation;
+		private final Animation pickUpAnimation;
 		
 		HunterEquipment(int itemId, int objectId, Animation pickUpAnimation, int baseLevel) {
 			this.itemId = itemId;

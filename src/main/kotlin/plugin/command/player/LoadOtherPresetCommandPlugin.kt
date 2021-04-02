@@ -17,7 +17,7 @@ class LoadOtherPresetCommandPlugin : CommandPlugin() {
                 player.packets.requestClientInput(object :
                     InputEvent("Enter other players presetname:", InputEventType.LONG_TEXT) {
                     override fun handleInput() {
-                        player.presetManager.loadPreset(getInput(), target);
+                        player.presetManager.loadPreset(getInput(), target)
                     }
                 })
             }

@@ -58,30 +58,22 @@ public abstract class RouteStrategy {
 				if (currentX == (targetX + 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_WEST) == 0) {
 					return true;
 				}
-				if (currentX == targetX && currentY == (targetY - 1) && (clip[currentX][currentY] & Flags.WALLOBJ_NORTH) == 0) {
-					return true;
-				}
+                return currentX == targetX && currentY == (targetY - 1) && (clip[currentX][currentY] & Flags.WALLOBJ_NORTH) == 0;
 			} else if (targetRotation == 1) {
 				if (currentX == (targetX - 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_EAST) == 0) {
 					return true;
 				}
-				if (currentX == targetX && currentY == (targetY - 1) && (clip[currentX][currentY] & Flags.WALLOBJ_NORTH) == 0) {
-					return true;
-				}
+                return currentX == targetX && currentY == (targetY - 1) && (clip[currentX][currentY] & Flags.WALLOBJ_NORTH) == 0;
 			} else if (targetRotation == 2) {
 				if (currentX == (targetX - 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_EAST) == 0) {
 					return true;
 				}
-				if (currentX == targetX && currentY == (targetY + 1) && (clip[currentX][currentY] & Flags.WALLOBJ_SOUTH) == 0) {
-					return true;
-				}
+                return currentX == targetX && currentY == (targetY + 1) && (clip[currentX][currentY] & Flags.WALLOBJ_SOUTH) == 0;
 			} else if (targetRotation == 3) {
 				if (currentX == (targetX + 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_WEST) == 0) {
 					return true;
 				}
-				if (currentX == targetX && currentY == (targetY + 1) && (clip[currentX][currentY] & Flags.WALLOBJ_SOUTH) == 0) {
-					return true;
-				}
+                return currentX == targetX && currentY == (targetY + 1) && (clip[currentX][currentY] & Flags.WALLOBJ_SOUTH) == 0;
 			}
 		} else if (targetType == 8) {
 			if (currentX == targetX && currentY == (targetY + 1) && (clip[currentX][currentY] & Flags.WALLOBJ_SOUTH) == 0) {
@@ -93,9 +85,7 @@ public abstract class RouteStrategy {
 			if (currentX == (targetX - 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_EAST) == 0) {
 				return true;
 			}
-			if (currentX == (targetX + 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_WEST) == 0) {
-				return true;
-			}
+            return currentX == (targetX + 1) && currentY == targetY && (clip[currentX][currentY] & Flags.WALLOBJ_WEST) == 0;
 		}
 		return false;
 	}
@@ -220,9 +210,7 @@ public abstract class RouteStrategy {
 				if (currentX == targetX - 1 && currentY == targetY && (clips[currentX][currentY] & 0x8) == 0) {
 					return true;
 				}
-				if (currentX == targetX + 1 && currentY == targetY && (clips[currentX][currentY] & 0x80) == 0) {
-					return true;
-				}
+                return currentX == targetX + 1 && currentY == targetY && (clips[currentX][currentY] & 0x80) == 0;
 			}
 		} else {
 			int i_66_ = currentX + sizeXY - 1;
@@ -335,9 +323,7 @@ public abstract class RouteStrategy {
 				if (targetX - sizeXY == currentX && targetY >= currentY && targetY <= i_67_ && (clips[i_66_][targetY] & 0x2c0108) == 0) {
 					return true;
 				}
-				if (currentX == targetX + 1 && targetY >= currentY && targetY <= i_67_ && (clips[currentX][targetY] & 0x2c0180) == 0) {
-					return true;
-				}
+                return currentX == targetX + 1 && targetY >= currentY && targetY <= i_67_ && (clips[currentX][targetY] & 0x2c0180) == 0;
 			}
 		}
 		return false;

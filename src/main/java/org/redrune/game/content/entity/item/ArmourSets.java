@@ -107,7 +107,7 @@ public class ArmourSets {
 		THIRDAGERANGE(11860, 10334, 10330, 10332, 10336),
 		THIRDAGEMAGE(11862, 10342, 10334, 10338, 10340);
 		
-		private static Map<Integer, Sets> sets = new HashMap<Integer, Sets>();
+		private static final Map<Integer, Sets> sets = new HashMap<Integer, Sets>();
 		
 		static {
 			for (Sets set : Sets.values()) {
@@ -115,9 +115,9 @@ public class ArmourSets {
 			}
 		}
 		
-		private int setId;
+		private final int setId;
 		
-		private int[] items;
+		private final int[] items;
 		
 		Sets(int setId, int... items) {
 			this.setId = setId;

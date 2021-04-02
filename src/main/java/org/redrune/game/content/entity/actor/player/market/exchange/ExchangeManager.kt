@@ -107,7 +107,7 @@ object ExchangeManager {
      */
     internal fun sendProgress(player: Player) {
         for (i in 0..5) {
-            player.packets.sendGrandExchangeBar(i, 0, ExchangeConfiguration.Progress.RESET, 0, 0, 0);
+            player.packets.sendGrandExchangeBar(i, 0, ExchangeConfiguration.Progress.RESET, 0, 0, 0)
         }
 
         for (offer in player.attributes.offers.filterNotNull()) {

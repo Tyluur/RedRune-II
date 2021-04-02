@@ -49,12 +49,12 @@ public class Player extends Actor {
     /**
      * The attributes the player has
      */
-    private PlayerAttributes attributes;
+    private final PlayerAttributes attributes;
 
     /**
      * The set of the rights the player has
      */
-    private Set<PlayerRight> rights;
+    private final Set<PlayerRight> rights;
 
     /**
      * The password for logging in
@@ -64,37 +64,37 @@ public class Player extends Actor {
     /**
      * The appearance handler and container
      */
-    private PlayerAppearance appearance;
+    private final PlayerAppearance appearance;
 
     /**
      * The inventory container and handler
      */
-    private PlayerInventory inventory;
+    private final PlayerInventory inventory;
 
     /**
      * The equipment container and handler
      */
-    private PlayerEquipment equipment;
+    private final PlayerEquipment equipment;
 
     /**
      * The skill handler and container
      */
-    private PlayerSkills skills;
+    private final PlayerSkills skills;
 
     /**
      * The bank handler and container
      */
-    private PlayerBank bank;
+    private final PlayerBank bank;
 
     /**
      * The prayer handler
      */
-    private PlayerPrayer prayer;
+    private final PlayerPrayer prayer;
 
     /**
      * The definitions used for combat events
      */
-    private CombatDefinitions combatDefinitions;
+    private final CombatDefinitions combatDefinitions;
 
     /**
      * The manager for {@code Controller}s
@@ -104,12 +104,12 @@ public class Player extends Actor {
     /**
      * The handler for music
      */
-    private MusicManager musicManager;
+    private final MusicManager musicManager;
 
     /**
      * The handler for emotes
      */
-    private EmotesManager emotesManager;
+    private final EmotesManager emotesManager;
 
     private PresetManager presetManager;
 
@@ -124,12 +124,12 @@ public class Player extends Actor {
     /**
      * The handler for all social interaction
      */
-    private ContactManager contactManager;
+    private final ContactManager contactManager;
 
     /**
      * The handler for auras
      */
-    private AuraManager auraManager;
+    private final AuraManager auraManager;
 
     /**
      * The instance of the familiar the player owns
@@ -139,7 +139,7 @@ public class Player extends Actor {
     /**
      * The handler for items with charges, meaning degradable items
      */
-    private ChargesManager charges;
+    private final ChargesManager charges;
 
     /**
      * The username, saved as a transient because it changes every time the player logs in

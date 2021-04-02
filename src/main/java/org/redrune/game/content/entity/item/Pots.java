@@ -227,9 +227,9 @@ public final class Pots {
 		
 		SUMMONING_POTION(new int[] { 12140, 12142, 12144, 12146 }, Effects.SUMMONING_POT);
 		
-		private int[] ids;
+		private final int[] ids;
 		
-		private Effects effect;
+		private final Effects effect;
 		
 		Pot(int[] ids, Effects effect) {
 			this.ids = ids;
@@ -519,9 +519,9 @@ public final class Pots {
 			
 		};
 		
-		private int[] affectedSkills;
+		private final int[] affectedSkills;
 		
-		private String drinkMessage;
+		private final String drinkMessage;
 		
 		Effects(int... affectedSkills) {
 			this(null, affectedSkills);

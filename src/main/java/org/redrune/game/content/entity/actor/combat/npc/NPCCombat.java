@@ -12,7 +12,7 @@ import org.redrune.utility.game.map.MapArchiveKeys;
 
 public final class NPCCombat {
 
-	private NPC npc;
+	private final NPC npc;
 
 	private int combatDelay;
 

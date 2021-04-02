@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("serial")
 public final class Glacor extends NPC {
 	
-	private boolean[] demonPrayer;
+	private final boolean[] demonPrayer;
 	
 	private int fixedCombatType;
 	

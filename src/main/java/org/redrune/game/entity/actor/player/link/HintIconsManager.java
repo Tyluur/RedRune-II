@@ -6,9 +6,9 @@ import org.redrune.utility.game.map.HintIcon;
 
 public class HintIconsManager {
 	
-	private Player player;
+	private final Player player;
 	
-	private HintIcon[] loadedIcons;
+	private final HintIcon[] loadedIcons;
 	
 	public HintIconsManager(Player p) {
 		this.player = p;

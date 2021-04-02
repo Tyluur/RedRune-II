@@ -5,7 +5,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class PlayerAnimationAction extends CutsceneAction {
 
-	private Animation anim;
+	private final Animation anim;
 
 	public PlayerAnimationAction(Animation anim, int actionDelay) {
 		super(-1, actionDelay);

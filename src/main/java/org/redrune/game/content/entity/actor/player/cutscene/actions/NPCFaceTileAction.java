@@ -7,7 +7,8 @@ import org.redrune.game.global.WorldTile;
 
 public class NPCFaceTileAction extends CutsceneAction {
 	
-	private int x, y;
+	private final int x;
+	private final int y;
 	
 	public NPCFaceTileAction(int cachedObjectIndex, int x, int y, int actionDelay) {
 		super(cachedObjectIndex, actionDelay);

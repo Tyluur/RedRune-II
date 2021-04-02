@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player;
 
 public class NPCAnimationAction extends CutsceneAction {
 	
-	private Animation anim;
+	private final Animation anim;
 	
 	public NPCAnimationAction(int cachedObjectIndex, Animation anim, int actionDelay) {
 		super(cachedObjectIndex, actionDelay);

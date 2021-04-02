@@ -19,7 +19,7 @@ public final class EmotesManager implements Serializable {
 	
 	private static final long serialVersionUID = 8489480378717534336L;
 	
-	private ArrayList<Integer> unlockedEmotes;
+	private final ArrayList<Integer> unlockedEmotes;
 	
 	private transient Player player;
 	
@@ -718,7 +718,7 @@ public final class EmotesManager implements Serializable {
 				player.setNextGraphics(new Graphics(2930));
 			} else if (id == 52) { // Seal Of Approval
 				WorldTasksManager.schedule(new WorldTask() {
-					int random = (int) (Math.random() * (2 + 1));
+					final int random = (int) (Math.random() * (2 + 1));
 					
 					private int step;
 					

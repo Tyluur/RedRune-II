@@ -23,9 +23,9 @@ public class LeatherCrafting extends Action {
 	
 	public static final Item THREAD = new Item(1734);
 	
-	public static final int LEATHER[] = { 1745, 2505, 2507, 2509 };
+	public static final int[] LEATHER = { 1745, 2505, 2507, 2509 };
 	
-	public static final int PRODUCTS[][] = { { 1065, 1099, 1135 }, { 2487, 2493, 2499 }, { 2489, 2495, 2501 }, { 2491, 2497, 2503 } };
+	public static final int[][] PRODUCTS = { { 1065, 1099, 1135 }, { 2487, 2493, 2499 }, { 2489, 2495, 2501 }, { 2491, 2497, 2503 } };
 	
 	public final Animation CRAFT_ANIMATION = new Animation(1249);
 	
@@ -153,7 +153,7 @@ public class LeatherCrafting extends Action {
 		BLACK_D_HIDE_CHAPS(2509, 2, 2497, 82, 172),
 		BLACK_D_HIDE_BODY(2509, 3, 2503, 84, 258);
 		
-		private static Map<Integer, LeatherData> leatherItems = new HashMap<Integer, LeatherData>();
+		private static final Map<Integer, LeatherData> leatherItems = new HashMap<Integer, LeatherData>();
 		
 		static {
 			for (LeatherData leather : LeatherData.values()) {
@@ -161,11 +161,14 @@ public class LeatherCrafting extends Action {
 			}
 		}
 		
-		private int leatherId, leatherAmount, finalProduct, requiredLevel;
+		private final int leatherId;
+		private final int leatherAmount;
+		private final int finalProduct;
+		private final int requiredLevel;
 		
-		private double experience;
+		private final double experience;
 		
-		private String name;
+		private final String name;
 		
 		LeatherData(int leatherId, int leatherAmount, int finalProduct, int requiredLevel, double experience) {
 			this.leatherId = leatherId;

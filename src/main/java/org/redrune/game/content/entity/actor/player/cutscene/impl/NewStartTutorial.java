@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class NewStartTutorial extends Cutscene {
 
-	private static int Ozan = 1;
+	private static final int Ozan = 1;
 
 	@Override
 	public boolean hiddenMinimap() {

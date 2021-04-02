@@ -381,7 +381,7 @@ object PluginRepository {
      */
     @JvmStatic
     fun handleObject(player: Player?, `object`: WorldObject, option: String): Boolean {
-        val pluginMap = OBJECT_PLUGINS[`object`.getId()]
+        val pluginMap = OBJECT_PLUGINS[`object`.id]
             ?: return false
         val plugin = pluginMap[option] ?: return false
         return plugin.handle(player, `object`, option)
@@ -447,7 +447,7 @@ object PluginRepository {
     fun handleItemOnObject(player: Player?, item: Item, `object`: WorldObject): Boolean {
         val itemOnPluginMap = ITEM_ON_OBJECT_PLUGINS[item.id]
             ?: return false
-        val plugin = itemOnPluginMap[`object`.getId()] ?: return false
+        val plugin = itemOnPluginMap[`object`.id] ?: return false
         return plugin.handle(player, item, `object`)
     }
 

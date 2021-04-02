@@ -12,7 +12,7 @@ import com.alex.utils.Constants;
 
 public class Archive {
 	
-	private int id;
+	private final int id;
 
 	private int revision;
 

@@ -2,11 +2,11 @@ package com.alex.util.bzip2;
 
 public class BZip2Decompressor {
 
-	private static int anIntArray257[];
+	private static int[] anIntArray257;
 
 	private static BZip2BlockEntry entryInstance = new BZip2BlockEntry();
 	
-	public static final void decompress(byte decompressedData[], byte packedData[], int containerSize, int blockSize) {
+	public static final void decompress(byte[] decompressedData, byte[] packedData, int containerSize, int blockSize) {
 		synchronized (entryInstance) {
 			entryInstance.aByteArray2224 = packedData;
 			entryInstance.anInt2209 = blockSize;
@@ -35,9 +35,9 @@ public class BZip2Decompressor {
 		 * flag17 = false;
 		 */
 		int j8 = 0;
-		int ai[] = null;
-		int ai1[] = null;
-		int ai2[] = null;
+		int[] ai = null;
+		int[] ai1 = null;
+		int[] ai2 = null;
 		entry.anInt2202 = 1;
 		if (anIntArray257 == null) {
 			anIntArray257 = new int[entry.anInt2202 * 0x186a0];
@@ -102,7 +102,7 @@ public class BZip2Decompressor {
 				entry.aByteArray2214[i1] = (byte) j3;
 			}
 
-			byte abyte0[] = new byte[6];
+			byte[] abyte0 = new byte[6];
 			for (byte byte16 = 0; byte16 < j4; byte16++) {
 				abyte0[byte16] = byte16;
 			}
@@ -368,7 +368,7 @@ public class BZip2Decompressor {
 		return j;
 	}
 
-	private static final void method1786(int ai[], int ai1[], int ai2[], byte abyte0[], int i, int j, int k) {
+	private static final void method1786(int[] ai, int[] ai1, int[] ai2, byte[] abyte0, int i, int j, int k) {
 		int l = 0;
 		for (int i1 = i; i1 <= j; i1++) {
 			for (int l2 = 0; l2 < k; l2++) {
@@ -414,9 +414,9 @@ public class BZip2Decompressor {
 		int i = entry.anInt2222;
 		int j = entry.anInt2227;
 		int k = entry.anInt2221;
-		int ai[] = anIntArray257;
+		int[] ai = anIntArray257;
 		int l = entry.anInt2208;
-		byte abyte0[] = entry.aByteArray2212;
+		byte[] abyte0 = entry.aByteArray2212;
 		int i1 = entry.anInt2203;
 		int j1 = entry.anInt2206;
 		int k1 = j1;

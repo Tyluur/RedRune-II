@@ -19,7 +19,7 @@ public final class Nomad extends NPC {
 	// private boolean[] demonPrayer;
 	private int fixedCombatType;
 	
-	private int[] cachedDamage;
+	private final int[] cachedDamage;
 	
 	// private int shieldTimer;
 	private int fixedAmount;

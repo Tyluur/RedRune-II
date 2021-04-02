@@ -20,7 +20,7 @@ class HunterEquipmentItemPlugin : ItemPlugin {
     }
 
     override fun register() {
-        registerItem(Hunter.HunterEquipment.BOX.getId(), "Lay")
-        registerItem(Hunter.HunterEquipment.BRID_SNARE.getId(), "Lay")
+        registerItem(Hunter.HunterEquipment.BOX.id, "Lay")
+        registerItem(Hunter.HunterEquipment.BRID_SNARE.id, "Lay")
     }
 }

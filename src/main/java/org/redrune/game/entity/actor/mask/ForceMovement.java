@@ -12,15 +12,15 @@ public final class ForceMovement {
 	
 	public static final int WEST = 3;
 	
-	private WorldTile toFirstTile;
+	private final WorldTile toFirstTile;
 	
-	private WorldTile toSecondTile;
+	private final WorldTile toSecondTile;
 	
-	private int firstTileTicketDelay;
+	private final int firstTileTicketDelay;
 	
-	private int secondTileTicketDelay;
+	private final int secondTileTicketDelay;
 	
-	private int direction;
+	private final int direction;
 	
 	/*
 	 * USE: moves to firsttile firstTileTicketDelay: the delay in game tickets

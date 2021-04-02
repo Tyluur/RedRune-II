@@ -23,8 +23,8 @@ public class DesignState implements Serializable {
 	
 	public enum InterfaceState {
 		MAIN,
-		CUSTOMIZATION;
-	}
+		CUSTOMIZATION
+    }
 	
 	public enum CustomizeCategory {
 		SKIN,

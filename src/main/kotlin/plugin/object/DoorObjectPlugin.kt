@@ -12,7 +12,7 @@ import org.redrune.utility.game.repository.`object`.door.DoorRepository
  */
 class DoorObjectPlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val name: String = `object`.getDefinitions().getName().toLowerCase()
+        val name: String = `object`.definitions.name.toLowerCase()
         if (name.contains("trapdoor") || name.contains("trap door")) {
             player.packets.sendMessage("This doesn't seem to go anywhere.")
             return true
@@ -28,7 +28,7 @@ class DoorObjectPlugin : ObjectPlugin {
 			return true;
 		}*/
         // mithril door
-        if (`object`.getId() == 25341) {
+        if (`object`.id == 25341) {
             return false
         }
         DoorFunctionality.handleDoor(player, `object`)

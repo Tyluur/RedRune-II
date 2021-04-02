@@ -13,7 +13,7 @@ public class ChargesManager implements Serializable {
 	
 	private static final long serialVersionUID = -5978513415281726450L;
 	
-	private HashMap<Integer, Integer> charges;
+	private final HashMap<Integer, Integer> charges;
 	
 	private transient Player player;
 	

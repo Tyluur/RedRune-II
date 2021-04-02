@@ -9,9 +9,9 @@ import com.alex.utils.Utils;
 
 public final class Index {
 	
-	private MainFile mainFile;
+	private final MainFile mainFile;
 	
-	private MainFile index255;
+	private final MainFile index255;
 	
 	private ReferenceTable table;
 	
@@ -142,7 +142,7 @@ public final class Index {
 			readPosition -= amtOfLoops * (filesCount * 4);
 			InputStream stream = new InputStream(data);
 			stream.setOffset(readPosition);
-			int filesSize[] = new int[filesCount];
+			int[] filesSize = new int[filesCount];
 			for (int loop = 0; loop < amtOfLoops; loop++) {
 				int offset = 0;
 				for (int i = 0; i < filesCount; i++) {

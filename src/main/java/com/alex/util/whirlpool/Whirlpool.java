@@ -66,9 +66,9 @@ public class Whirlpool {
 	 */
 	protected static final int R = 10;
 
-	private static long[][] C = new long[8][256];
+	private static final long[][] C = new long[8][256];
 
-	private static long[] rc = new long[R + 1];
+	private static final long[] rc = new long[R + 1];
 
 	static {
 		for (int x = 0; x < 256; x++) {
@@ -147,7 +147,7 @@ public class Whirlpool {
 	}
 
 	public static byte[] getHash(byte[] data, int off, int len) {
-		byte source[];
+		byte[] source;
 		if (off <= 0) {
 			source = data;
 		} else {
@@ -159,7 +159,7 @@ public class Whirlpool {
 		Whirlpool whirlpool = new Whirlpool();
 		whirlpool.NESSIEinit();
 		whirlpool.NESSIEadd(source, len * 8);
-		byte digest[] = new byte[64];
+		byte[] digest = new byte[64];
 		whirlpool.NESSIEfinalize(digest);
 		return digest;
 	}

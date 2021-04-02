@@ -11,9 +11,9 @@ import org.redrune.utility.functions.Misc;
 
 public final class Mining extends Action {
 	
-	private WorldObject rock;
+	private final WorldObject rock;
 	
-	private RockDefinitions definitions;
+	private final RockDefinitions definitions;
 	
 	private int emoteId;
 	
@@ -290,21 +290,21 @@ public final class Mining extends Action {
 		Adamant_Ore(70, 95, 449, 130, 25, 11552, 180, 0),
 		Runite_Ore(85, 125, 451, 150, 30, 11552, 360, 0);
 		
-		private int level;
+		private final int level;
 		
-		private double xp;
+		private final double xp;
 		
-		private int oreId;
+		private final int oreId;
 		
-		private int oreBaseTime;
+		private final int oreBaseTime;
 		
-		private int oreRandomTime;
+		private final int oreRandomTime;
 		
-		private int emptySpot;
+		private final int emptySpot;
 		
-		private int respawnDelay;
+		private final int respawnDelay;
 		
-		private int randomLifeProbability;
+		private final int randomLifeProbability;
 		
 		RockDefinitions(int level, double xp, int oreId, int oreBaseTime, int oreRandomTime, int emptySpot, int respawnDelay, int randomLifeProbability) {
 			this.level = level;

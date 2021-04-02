@@ -44,7 +44,7 @@ object ClimbableObjectRepository {
                 continue
             }
             if (ClimbActionHandler.isLadder(def)) {
-                objects.add(ClimbableObject(i, def.getName()))
+                objects.add(ClimbableObject(i, def.name))
             }
         }
         saveClimbables(objects)

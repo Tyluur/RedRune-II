@@ -7,7 +7,7 @@ public class Drop {
 	private double rate;
 	
 	@SuppressWarnings("unused")
-	private boolean rare;
+	private final boolean rare;
 	
 	public Drop(int itemId, double rate, int minAmount, int maxAmount, boolean rare) {
 		this.itemId = itemId;

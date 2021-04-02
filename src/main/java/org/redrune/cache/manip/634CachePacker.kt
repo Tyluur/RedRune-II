@@ -95,16 +95,16 @@ fun main() {
                 -1
             )
         ) {
-            println("Land file successfully packed.");
+            println("Land file successfully packed.")
             if (Cache.STORE.indexes[5].encryptArchive(landArchiveId, keys))
-                println("Land file successfully encrypted.");
+                println("Land file successfully encrypted.")
             else
                 System.err.println("Failed to encrypt land file!")
         } else {
-            System.err.println("Failed to pack land file!");
+            System.err.println("Failed to pack land file!")
         }
 
-        println("\nOperation completed [id=$regionId].");
+        println("\nOperation completed [id=$regionId].")
     }
 
 

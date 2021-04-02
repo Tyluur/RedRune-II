@@ -18,11 +18,11 @@ public class Smithing extends Action {
 	
 	public static int HAMMER = 2347;
 	
-	private static int SMITHING_INTERFACE = 300;
+	private static final int SMITHING_INTERFACE = 300;
 	
 	private ForgingBar bar;
 	
-	private int index;
+	private final int index;
 	
 	private int ticks;
 	
@@ -106,7 +106,7 @@ public class Smithing extends Action {
 		
 		STEEL(2353, 30, new Item[] { new Item(1207, 1), new Item(1353, 1), new Item(1424, 1), new Item(1141, 1), new Item(9378, 1), new Item(1281, 1), new Item(821, 1), new Item(1539, 1), new Item(-1, 1), new Item(-1, 1), new Item(2370, 1), new Item(41, 1), new Item(1325, 1), new Item(9425, 1), new Item(1295, 1), new Item(865, 1), new Item(1157, 1), new Item(1177, 1), new Item(4544, 1), new Item(-1, 1), new Item(1339, 1), new Item(1365, 1), new Item(1105, 1), new Item(1193, 1), new Item(3097, 1), new Item(1311, 1), new Item(1083, 1), new Item(1069, 1), new Item(1119, 1), new Item(1269, 1) }, new double[] { 37.5, 75, 112.5, 187.5 }, new int[] { 66, 98, 162, 210, 267 });
 		
-		private static Map<Integer, ForgingBar> bars = new HashMap<Integer, ForgingBar>();
+		private static final Map<Integer, ForgingBar> bars = new HashMap<Integer, ForgingBar>();
 		
 		static {
 			for (ForgingBar bar : ForgingBar.values()) {
@@ -114,15 +114,15 @@ public class Smithing extends Action {
 			}
 		}
 		
-		private int barId;
+		private final int barId;
 		
-		private int[] componentChilds;
+		private final int[] componentChilds;
 		
-		private double[] experience;
+		private final double[] experience;
 		
-		private Item items[];
+		private final Item[] items;
 		
-		private int level;
+		private final int level;
 		
 		ForgingBar(int barId, int level, Item[] items, double[] experience, int[] componentChilds) {
 			this.barId = barId;
@@ -159,9 +159,9 @@ public class Smithing extends Action {
 	
 	public static class ForgingInterface {
 		
-		public static final int componentChilds[] = new int[30];
+		public static final int[] componentChilds = new int[30];
 		
-		public static final int CLICKED_CHILDS[] = { 28, -1, 5, 1 };
+		public static final int[] CLICKED_CHILDS = { 28, -1, 5, 1 };
 		
 		public static void handleIComponents(Player player, int componentId) {
 			int slot = -1;

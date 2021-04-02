@@ -18,15 +18,15 @@ public class OwnedObjectManager {
 	
 	private Player player;
 	
-	private WorldObject[] objects;
+	private final WorldObject[] objects;
 	
 	private int count;
 	
-	private long cycleTime;
+	private final long cycleTime;
 	
 	private long lifeTime;
 	
-	private String managerKey;
+	private final String managerKey;
 	
 	private OwnedObjectManager(Player player, WorldObject[] objects, long cycleTime) {
 		managerKey = player.getUsername() + "_" + keyMaker.getAndIncrement();

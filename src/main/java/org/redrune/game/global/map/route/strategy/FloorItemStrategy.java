@@ -8,12 +8,12 @@ public class FloorItemStrategy extends RouteStrategy {
 	/**
 	 * Entity position x.
 	 */
-	private int x;
+	private final int x;
 
 	/**
 	 * Entity position y.
 	 */
-	private int y;
+	private final int y;
 
 	public FloorItemStrategy(FloorItem entity) {
 		this.x = entity.getTile().getX();

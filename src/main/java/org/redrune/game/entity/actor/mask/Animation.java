@@ -2,9 +2,9 @@ package org.redrune.game.entity.actor.mask;
 
 public final class Animation {
 	
-	private int[] ids;
+	private final int[] ids;
 	
-	private int speed;
+	private final int speed;
 	
 	public Animation(int id) {
 		this(id, 0);

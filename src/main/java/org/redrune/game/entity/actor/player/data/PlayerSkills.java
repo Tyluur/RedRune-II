@@ -10,17 +10,17 @@ public final class PlayerSkills implements Serializable, SkillConstants {
 	
 	private static final long serialVersionUID = -7086829989489745985L;
 	
-	public short level[];
+	public short[] level;
 	
-	private double xp[];
+	private double[] xp;
 	
 	private double xpCounter;
 	
-	private boolean[] enabledSkillsTargets;
+	private final boolean[] enabledSkillsTargets;
 	
-	private boolean[] skillsTargetsUsingLevelMode;
+	private final boolean[] skillsTargetsUsingLevelMode;
 	
-	private int[] skillsTargetsValues;
+	private final int[] skillsTargetsValues;
 	
 	private transient Player player;
 

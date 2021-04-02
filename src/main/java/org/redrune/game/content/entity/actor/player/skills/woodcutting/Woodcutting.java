@@ -11,13 +11,13 @@ import org.redrune.utility.functions.Misc;
 
 public final class Woodcutting extends Action {
 	
-	private WorldObject tree;
+	private final WorldObject tree;
 	
-	private TreeDefinitions definitions;
+	private final TreeDefinitions definitions;
 	
 	private int emoteId;
 	
-	private boolean usingBeaver = false;
+	private final boolean usingBeaver = false;
 	
 	private int axeTime;
 	
@@ -332,21 +332,21 @@ public final class Woodcutting extends Action {
 		
 		CURSED_MAGIC(82, 250, 1513, 150, 21, 37822, 121, 10);
 		
-		private int level;
+		private final int level;
 		
-		private double xp;
+		private final double xp;
 		
-		private int logsId;
+		private final int logsId;
 		
-		private int logBaseTime;
+		private final int logBaseTime;
 		
-		private int logRandomTime;
+		private final int logRandomTime;
 		
-		private int stumpId;
+		private final int stumpId;
 		
-		private int respawnDelay;
+		private final int respawnDelay;
 		
-		private int randomLifeProbability;
+		private final int randomLifeProbability;
 		
 		TreeDefinitions(int level, double xp, int logsId, int logBaseTime, int logRandomTime, int stumpId, int respawnDelay, int randomLifeProbability) {
 			this.level = level;

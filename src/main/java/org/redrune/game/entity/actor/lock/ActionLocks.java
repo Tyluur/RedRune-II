@@ -18,22 +18,22 @@ public final class ActionLocks {
 	/**
 	 * The movement lock.
 	 */
-	private Lock movementLock = new Lock();
+	private final Lock movementLock = new Lock();
 	
 	/**
 	 * The teleporting lock.
 	 */
-	private Lock teleportLock = new Lock();
+	private final Lock teleportLock = new Lock();
 	
 	/**
 	 * The component lock.
 	 */
-	private Lock componentLock = new Lock();
+	private final Lock componentLock = new Lock();
 	
 	/**
 	 * The interaction lock.
 	 */
-	private Lock interactionLock = new Lock();
+	private final Lock interactionLock = new Lock();
 	
 	/**
 	 * The equipment lock.
@@ -43,7 +43,7 @@ public final class ActionLocks {
 	/**
 	 * A mapping of custom locks (used for eg. food delay).
 	 */
-	private Map<String, Lock> customLocks;
+	private final Map<String, Lock> customLocks;
 	
 	/**
 	 * Constructs a new {@code ActionLocks} {@code Object}.

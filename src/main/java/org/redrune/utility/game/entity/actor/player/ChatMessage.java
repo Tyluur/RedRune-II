@@ -4,7 +4,7 @@ import org.redrune.utility.functions.Misc;
 
 public class ChatMessage {
 	
-	private String message;
+	private final String message;
 	
 	private String filteredMessage;
 	

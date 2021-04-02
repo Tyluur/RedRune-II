@@ -78,7 +78,7 @@ public class Burying {
 		
 		FROST_DRAGON(18830, 850);
 		
-		private static Map<Integer, Bone> bones = new HashMap<Integer, Bone>();
+		private static final Map<Integer, Bone> bones = new HashMap<Integer, Bone>();
 		
 		static {
 			for (Bone bone : Bone.values()) {
@@ -86,9 +86,9 @@ public class Burying {
 			}
 		}
 		
-		private int id;
+		private final int id;
 		
-		private double experience;
+		private final double experience;
 		
 		Bone(int id, double experience) {
 			this.id = id;

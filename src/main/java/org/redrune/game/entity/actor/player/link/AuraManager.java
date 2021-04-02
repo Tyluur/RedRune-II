@@ -17,7 +17,7 @@ public class AuraManager implements Serializable {
 	
 	private long activation;
 	
-	private HashMap<Integer, Long> cooldowns;
+	private final HashMap<Integer, Long> cooldowns;
 	
 	private transient Player player;
 	

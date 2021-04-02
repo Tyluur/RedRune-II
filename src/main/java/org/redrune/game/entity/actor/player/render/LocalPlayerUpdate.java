@@ -13,21 +13,21 @@ import java.security.MessageDigest;
 
 public final class LocalPlayerUpdate {
 	
-	private Player player;
+	private final Player player;
 	
-	private Player[] localPlayers;
+	private final Player[] localPlayers;
 	
-	private int[] localPlayersIndexes;
+	private final int[] localPlayersIndexes;
 	
 	private int localPlayersIndexesCount;
 	
-	private int[] outPlayersIndexes;
+	private final int[] outPlayersIndexes;
 	
 	private int outPlayersIndexesCount;
 	
-	private int[] regionHashes;
+	private final int[] regionHashes;
 	
-	private byte[][] cachedAppearencesHashes;
+	private final byte[][] cachedAppearencesHashes;
 	
 	private int totalRenderDataSentLength;
 	

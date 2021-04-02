@@ -20,7 +20,7 @@ import java.util.stream.Collectors
 @CommandManifest(description = "Stops an object from spawning on our tile")
 class StopObjectSpawnCommandPlugin : CommandPlugin() {
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        val stream: List<WorldObject> = RegionManager.getRegion(player.regionId).getObjects().stream().filter(
+        val stream: List<WorldObject> = RegionManager.getRegion(player.regionId).objects.stream().filter(
             Predicate<WorldObject> { `object`: WorldObject ->
                 !`object`.isSpawned && !STOPPED_OBJECTS.contains(
                     `object`
@@ -30,7 +30,7 @@ class StopObjectSpawnCommandPlugin : CommandPlugin() {
         )
         println(stream)
         val optional: Optional<WorldObject> = stream.stream().findFirst()
-        if (!optional.isPresent()) {
+        if (!optional.isPresent) {
             player.packets.sendMessage("Did not find any object on this tile...")
             return
         }
@@ -39,9 +39,9 @@ class StopObjectSpawnCommandPlugin : CommandPlugin() {
             BufferedWriter(FileWriter(ObjectRemoval.NONSPAWNING_OBJECTS_FILE, true)).use { bw ->
                 val pattern = "{0} {1} {2} {3} {4} {5}"
                 val arguments = arrayOf<Any>(
-                    `object`.getId().toString(),
-                    `object`.getType(),
-                    `object`.getRotation(),
+                    `object`.id.toString(),
+                    `object`.type,
+                    `object`.rotation,
                     player.x.toString(),
                     player.y.toString(),
                     player.plane.toString()

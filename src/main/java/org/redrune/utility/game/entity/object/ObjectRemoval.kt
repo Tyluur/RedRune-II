@@ -76,7 +76,7 @@ object ObjectRemoval {
      * The region id
      */
     fun getRemovedAtRegion(regionId: Int): List<WorldObject> {
-        return OBJECTS.stream().filter(Predicate<WorldObject> { p: WorldObject -> p.getRegionId() == regionId })
+        return OBJECTS.stream().filter(Predicate<WorldObject> { p: WorldObject -> p.regionId == regionId })
             .collect(
                 Collectors.toList()
             )

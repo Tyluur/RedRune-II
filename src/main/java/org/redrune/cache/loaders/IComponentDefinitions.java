@@ -12,9 +12,9 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public class IComponentDefinitions {
 	
-	private static IComponentDefinitions[][] icomponentsdefs = new IComponentDefinitions[Misc.getInterfaceDefinitionsSize()][];
+	private static final IComponentDefinitions[][] icomponentsdefs = new IComponentDefinitions[Misc.getInterfaceDefinitionsSize()][];
 	
-	private static IComponentSettings GLOBAL_SETTINGS = new IComponentSettings(0, -1);
+	private static final IComponentSettings GLOBAL_SETTINGS = new IComponentSettings(0, -1);
 	
 	public Object[] anObjectArray4758;
 	

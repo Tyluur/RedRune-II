@@ -28,14 +28,14 @@ public class Fishing extends Action {
 	/**
 	 * The fishing spot, where the player is fishing.
 	 */
-	private FishingSpots spot;
+	private final FishingSpots spot;
 	
 	/**
 	 * The npc, fishing spot is an npc.
 	 */
-	private NPC npc;
+	private final NPC npc;
 	
-	private WorldTile tile;
+	private final WorldTile tile;
 	
 	/**
 	 * The fish id.

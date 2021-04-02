@@ -12,7 +12,7 @@ import org.redrune.utility.game.ClickOption
  */
 class GnomeAgilityCoursePlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val id: Int = `object`.getId()
+        val id: Int = `object`.id
         if (id == 2295) {
             GnomeAgility.walkGnomeLog(player)
         } else if (id == 2285) {
@@ -28,7 +28,7 @@ class GnomeAgilityCoursePlugin : ObjectPlugin {
         } else if (id == 2286) {
             GnomeAgility.climbGnomeObstacleNet2(player)
         } else if (id == 43544 || id == 43543) {
-            GnomeAgility.enterGnomePipe(player, `object`.getX(), `object`.getY())
+            GnomeAgility.enterGnomePipe(player, `object`.x, `object`.y)
         } else if (id == 43528) {
             GnomeAgility.climbUpTree(player)
         } else if (id == 43529) {

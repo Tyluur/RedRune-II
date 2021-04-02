@@ -13,7 +13,7 @@ import plugin.command.CommandManifest
 @CommandManifest(description = "Lists all objects in your region")
 class ListObjectsCommandPlugin : CommandPlugin() {
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        val objects: List<WorldObject> = RegionManager.getRegion(player.regionId).getObjects()
+        val objects: List<WorldObject> = RegionManager.getRegion(player.regionId).objects
         if (objects == null) {
             sendResponse(player, "Unable to get objects list", console)
             return

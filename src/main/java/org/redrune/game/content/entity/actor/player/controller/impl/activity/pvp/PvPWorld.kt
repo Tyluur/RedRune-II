@@ -70,7 +70,7 @@ class PvPWorld : Controller() {
 
     override fun canAttack(target: Actor): Boolean {
         if (target is Player) {
-            val p2 = target as Player
+            val p2 = target
             if (player.attributes.isCanPvp && !p2.attributes.isCanPvp) {
                 player.packets.sendMessage("That player is not in the wilderness.")
                 return false
@@ -139,7 +139,7 @@ class PvPWorld : Controller() {
                 removeIcon(false, true)
             }
             arrivedSafely = false
-            player.attributes.setCanPvp(true)
+            player.attributes.isCanPvp = true
             showSkull()
             player.appearance.generateAppearanceData()
         } else if (insideSafeArea) {
@@ -162,7 +162,7 @@ class PvPWorld : Controller() {
                 )
             }
         } else if (!insidePvpArea && !insideSafeArea) {
-            player.attributes.setCanPvp(false)
+            player.attributes.isCanPvp = false
             removeIcon(true, false)
             removeController()
         }
@@ -201,7 +201,7 @@ class PvPWorld : Controller() {
             player.packets.sendIComponentText(
                 746,
                 17,
-                "" + lowest + " - " + highest + "<br>" + player.attributes.getFormattedEarningPotential()
+                "" + lowest + " - " + highest + "<br>" + player.attributes.formattedEarningPotential
             )
         } else {
             player.packets.sendIComponentText(548, 10, "$lowest - $highest")
@@ -219,7 +219,7 @@ class PvPWorld : Controller() {
      */
     fun removeIcon(force: Boolean, skullOnly: Boolean) {
         if (force) {
-            player.attributes.setCanPvp(false)
+            player.attributes.isCanPvp = false
             if (!skullOnly) {
                 player.packets.sendIComponentText(
                     if (player.interfaceManager.hasRezizableScreen()) 746 else 548,
@@ -249,7 +249,7 @@ class PvPWorld : Controller() {
     private fun inCombatRecently(): Boolean {
         val lastTimeCombatted: Long = player.getTemporaryAttribute("last_time_combatted", -1L)
         return if (lastTimeCombatted == -1L) {
-            player.isUnderCombat()
+            player.isUnderCombat
         } else {
             val toSeconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastTimeCombatted)
             toSeconds < 10

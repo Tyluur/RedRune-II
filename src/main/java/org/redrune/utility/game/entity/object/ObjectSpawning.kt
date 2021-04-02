@@ -35,7 +35,7 @@ object ObjectSpawning {
         }
         OBJECTS_TO_SPAWN.clear()
         var count = 0
-        for (`object` in objectList!!) {
+        for (`object` in objectList) {
             addObject(`object`)
             count++
         }
@@ -48,12 +48,12 @@ object ObjectSpawning {
      * @param object The object
      */
     private fun addObject(`object`: WorldObject) {
-        val regionId = `object`.getRegionId()
+        val regionId = `object`.regionId
         var objectsInRegion = OBJECTS_TO_SPAWN[regionId]
         if (objectsInRegion == null) {
             objectsInRegion = ArrayList<WorldObject>()
         }
-        objectsInRegion!!.add(`object`)
+        objectsInRegion.add(`object`)
         OBJECTS_TO_SPAWN[regionId] = objectsInRegion
     }
 

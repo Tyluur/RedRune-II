@@ -20,12 +20,12 @@ import java.util.Set;
 
 public class ActorListIterator<E extends Actor> implements Iterator<E> {
 	
-	private Integer[] indicies;
+	private final Integer[] indicies;
 	
-	private Object[] entities;
+	private final Object[] entities;
 	
 	@SuppressWarnings("rawtypes")
-	private ActorList actorList;
+	private final ActorList actorList;
 	
 	private int curIndex = 0;
 	

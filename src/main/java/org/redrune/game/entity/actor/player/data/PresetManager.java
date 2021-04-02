@@ -13,10 +13,10 @@ import java.util.Map;
 
 public final class PresetManager implements Serializable {
 
-	private transient boolean eco = false;//THEESE ARE TEMPORARY
-	private transient boolean halfEco = false;
-	private transient boolean spawn = true;
-	private transient int priceLimit = 100000;
+	private final transient boolean eco = false;//THEESE ARE TEMPORARY
+	private final transient boolean halfEco = false;
+	private final transient boolean spawn = true;
+	private final transient int priceLimit = 100000;
 
 	private static final long serialVersionUID = -2928476953478619103L;
 	/** Instantiated variables below **/
@@ -207,7 +207,7 @@ public final class PresetManager implements Serializable {
 
 		player.getInventory().deleteItem(0, 28);
 		player.getCombatDefinitions().setSpellBook(set.getSpellBook());
-		player.getPrayer().setPrayerBook(set.isAncientCurses() ? true : false);
+		player.getPrayer().setPrayerBook(set.isAncientCurses());
 		player.getAppearance().generateAppearanceData();
 		player.getPackets().sendMessage("Loaded setup: " + name + ".");
 

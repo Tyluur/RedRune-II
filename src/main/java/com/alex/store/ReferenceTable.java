@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public final class ReferenceTable {
 
-	private Archive archive;
+	private final Archive archive;
 
 	private int revision;
 
