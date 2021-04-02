@@ -24,7 +24,7 @@ object PlayerTutorial {
             "Welcome to ${GameConstants.SERVER_NAME} pvp.",
             "You can set your levels by clicking on a skill.",
             "And buy items from the grand exchange clerk infront of you.",
-            "Get money via skilling or pvp - Good luck!",
+            "Find me beside Mandrith if you'd ever like help."
         )
 
         player.setNextWorldTile(bankTile)

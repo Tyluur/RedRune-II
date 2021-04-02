@@ -2,8 +2,8 @@ package org.redrune.networking.packet;
 
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-
 import org.redrune.cache.huffman.Huffman;
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Graphics;
@@ -697,15 +697,15 @@ public class PacketSender {
 			sendConfig1(id, value);
 		}
 	}
-	
-	private void sendConfig1(int id, int value) {
+
+	public void sendConfig1(int id, int value) {
 		PacketBuilder stream = new PacketBuilder(101);
 		stream.writeShort(id);
 		stream.writeByte128(value);
 		session.write(stream);
 	}
-	
-	private void sendConfig2(int id, int value) {
+
+	public void sendConfig2(int id, int value) {
 		PacketBuilder stream = new PacketBuilder(39);
 		stream.writeIntV2(value);
 		stream.writeShort128(id);
@@ -1236,6 +1236,18 @@ public class PacketSender {
 		PacketBuilder output = new PacketBuilder(53);
 		output.writeByte(slot);
 		output.writeByte(progress);
+		output.writeShort(item);
+		output.writeInt(price);
+		output.writeInt(amountOffered);
+		output.writeInt(amountSold);
+		output.writeInt(price * amountSold);
+		session.write(output);
+	}
+
+	public void sendGrandExchangeBar(int slot, int item, Object progress, int price, int amountSold, int amountOffered) {
+		PacketBuilder output = new PacketBuilder(61);
+		output.writeByte(slot);
+		output.writeByte(progress instanceof ExchangeConfiguration.Progress ? ((ExchangeConfiguration.Progress) progress).getValue() : ((Integer) progress));
 		output.writeShort(item);
 		output.writeInt(price);
 		output.writeInt(amountOffered);
