@@ -15,6 +15,7 @@ import org.redrune.game.content.entity.actor.player.controller.ControllerHandler
 import org.redrune.game.content.entity.actor.player.cutscene.CutscenesHandler
 import org.redrune.game.content.entity.actor.player.dialogue.DialogueHandler
 import org.redrune.game.content.entity.actor.player.market.ShopRepository
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager
 import org.redrune.game.content.plugin.PluginRepository
 import org.redrune.game.entity.actor.npc.data.extension.NPCExtensionHolder
 import org.redrune.game.entity.actor.player.link.FriendChatsManager
@@ -106,6 +107,7 @@ object Bootstrap {
             FriendChatsManager.initialize()
         }, Runnable {
             MapMerger.start()
+            ExchangeManager.loadExchangeList()
         })
         BootHandler.await()
         launch()

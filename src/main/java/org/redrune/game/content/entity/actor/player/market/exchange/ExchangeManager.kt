@@ -1,13 +1,37 @@
 package org.redrune.game.content.entity.actor.player.market.exchange
 
+import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.MAIN_INTERFACE
 import org.redrune.game.entity.actor.player.Player
+import java.io.File
+import java.nio.charset.Charset
+import java.nio.file.Files
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since April 02, 2021
  */
 object ExchangeManager {
+
+    /**
+     * The list of items that can be exchanged
+     */
+    private val exchangeList = mutableListOf<Int>()
+
+    fun loadExchangeList() {
+        val text = Files.readAllLines(
+            File("./data/repository/item/full_exchange_list.txt").toPath(),
+            Charset.defaultCharset()
+        )
+        for (line in text) {
+            if (line.startsWith("//")) {
+                continue
+            }
+            val split = line.split(": ".toRegex()).toTypedArray()
+            exchangeList.add(split[1].toInt())
+        }
+        logger.info { "Registered ${exchangeList.size} items that can be bought from the grand exchange." }
+    }
 
     /**
      * Display the main grand exchange interface with the progression of all of
@@ -76,8 +100,17 @@ object ExchangeManager {
      */
     private fun sendProgress(player: Player) {
         for (i in 0..6) {
-       //     player.packets.sendGrandExchangeBar(i, 0, ExchangeConfiguration.Progress.RESET, 0, 0, 0);
+            //     player.packets.sendGrandExchangeBar(i, 0, ExchangeConfiguration.Progress.RESET, 0, 0, 0);
         }
     }
+
+    /**
+     * Checks if an item is buyable from the grand exchange
+     */
+    fun isBuyable(itemId: Int): Boolean {
+        return exchangeList.contains(itemId)
+    }
+
+    private val logger = InlineLogger()
 
 }

@@ -4,6 +4,7 @@ import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.COLLECTION_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.MAIN_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.SELL_INTERFACE
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeType
 import org.redrune.game.content.plugin.type.InterfacePlugin
 import org.redrune.game.entity.actor.player.Player
@@ -29,9 +30,31 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         when (interfaceId) {
             MAIN_INTERFACE -> {
                 when (componentId) {
+                    // buy buttons
                     31, 82, 101, 47, 63, 120 -> {
-                        player.temporaryAttributes.put("exchange_slot", getSlot(componentId))
+                        player.temporaryAttributes["exchange_slot"] = getSlot(componentId)
                         sendScreen(player, ExchangeType.BUY)
+                    }
+                    // choose item button on buy screen
+                    190 -> {
+                        player.packets.sendRunScript(570, "Grand Exchange Item Search")
+                    }
+                    // back button
+                    128 -> {
+                        resetInterfaceConfigs(player);
+
+                        player.interfaceManager.closeInventory();
+                        player.interfaceManager.sendInventory();
+
+                        val lastGameTab = player.interfaceManager.openGameTab(4); // inventory
+
+                        player.setCloseInterfacesEvent(Runnable {
+                            player.interfaceManager.sendInventory();
+                            player.inventory.unlockInventoryOptions();
+                            player.interfaceManager.sendEquipment();
+                            player.interfaceManager.openGameTab(lastGameTab);
+                        });
+                        ExchangeManager.open(player);
                     }
                 }
             }
