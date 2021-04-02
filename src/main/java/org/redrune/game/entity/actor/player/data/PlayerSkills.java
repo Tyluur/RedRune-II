@@ -422,4 +422,11 @@ public final class PlayerSkills implements Serializable, SkillConstants {
 		setSkillTargetValue(skillId, target);
 		
 	}
+
+	public void refreshAllSkills() {
+		for (int skill = 0; skill < level.length; skill++) {
+			refresh(skill);
+		}
+	}
+
 }
