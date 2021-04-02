@@ -141,8 +141,6 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                         val offer: ExchangeOffer =
                             (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
 
-                        logger.info { "Selected offer $offer" }
-
                         val price = (offer.amountRequested * offer.price)
 
                         if (price > Int.MAX_VALUE

@@ -398,17 +398,11 @@ public class PacketSender {
 			if (params != null) {
 				int index = 0;
 				for (int count = parameterTypes.length() - 1; count >= 0; count--) {
-					char c = parameterTypes.charAt(count);
 
-					System.out.println("char=" + c);
-
-					if (c == 's') {
+					if (parameterTypes.charAt(count) == 's') {
 						stream.writeString((String) params[index++]);
 					} else {
 						Object param = params[index++];
-
-						System.out.println("param=" + param.toString());
-
 						stream.writeInt(Integer.parseInt(param.toString()));
 					}
 				}
