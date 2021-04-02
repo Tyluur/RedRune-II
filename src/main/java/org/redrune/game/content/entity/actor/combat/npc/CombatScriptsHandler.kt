@@ -1,63 +1,64 @@
-package org.redrune.game.content.entity.actor.combat.npc;
+package org.redrune.game.content.entity.actor.combat.npc
 
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.utility.functions.Misc;
-
-import java.util.HashMap;
-import java.util.List;
+import com.github.michaelbull.logging.InlineLogger
+import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.npc.NPC
+import org.redrune.utility.functions.Misc
+import java.util.*
 
 /**
  * @author Matrix Team
  * @author Tyluur <itstyluur@icloud.com>
  */
-public final class CombatScriptsHandler {
-	
-	/**
-	 * The map of cached combat scripts
-	 */
-	public static final HashMap<Object, CombatScript> CACHED_COMBAT_SCRIPTS = new HashMap<>();
-	
-	/**
-	 * The default combat script
-	 */
-	private static final CombatScript DEFAULT_SCRIPT = new DefaultCombatScript();
-	
-	/**
-	 * Dynamically registers all npc combat scripts
-	 */
-	public static void registerAll() {
-		try {
-			List<Object> scripts = Misc.getClasses(CombatScriptsHandler.class.getPackage().getName() + ".scripts");
-			for (Object o : scripts) {
-				if (!(o instanceof CombatScript)) {
-					System.out.println(o + " was not a combat script.");
-					continue;
-				}
-				CombatScript script = (CombatScript) o;
-				for (Object key : script.getKeys()) {
-					CACHED_COMBAT_SCRIPTS.put(key, script);
-				}
-			}
-			System.out.println("Loaded " + CACHED_COMBAT_SCRIPTS.size() + " cached combat scripts.");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Fires the combat script for an npc
-	 *
-	 * @return The delay until the next swing
-	 */
-	public static int fireCombatScript(final NPC npc, final Actor target) {
-		CombatScript script = CACHED_COMBAT_SCRIPTS.get(npc.getId());
-		if (script == null) {
-			script = CACHED_COMBAT_SCRIPTS.get(npc.getDefinitions().getName());
-			if (script == null) {
-				script = DEFAULT_SCRIPT;
-			}
-		}
-		return script.attack(npc, target);
-	}
+object CombatScriptsHandler {
+
+    /**
+     * The map of cached combat scripts
+     */
+    private val CACHED_COMBAT_SCRIPTS = HashMap<Any, CombatScript>()
+
+    /**
+     * The default combat script
+     */
+    private val DEFAULT_SCRIPT: CombatScript = DefaultCombatScript()
+
+    /**
+     * Dynamically registers all npc combat scripts
+     */
+    fun registerAll() {
+        try {
+            val scripts = Misc.getClasses(CombatScriptsHandler::class.java.getPackage().name + ".scripts")
+            for (script in scripts) {
+                if (script !is CombatScript) {
+                    logger.info { "$script was not a combat script." }
+                    continue
+                }
+                for (key in script.keys) {
+                    CACHED_COMBAT_SCRIPTS[key] = script
+                }
+            }
+            logger.info { "Loaded " + CACHED_COMBAT_SCRIPTS.size + " cached combat scripts." }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Fires the combat script for an npc
+     *
+     * @return The delay until the next swing
+     */
+    @JvmStatic
+    fun fireCombatScript(npc: NPC, target: Actor?): Int {
+        var script = CACHED_COMBAT_SCRIPTS[npc.id]
+        if (script == null) {
+            script = CACHED_COMBAT_SCRIPTS[npc.definitions.name]
+            if (script == null) {
+                script = DEFAULT_SCRIPT
+            }
+        }
+        return script.attack(npc, target)
+    }
+
+    private val logger = InlineLogger()
 }
