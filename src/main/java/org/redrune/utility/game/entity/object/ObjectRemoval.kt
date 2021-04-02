@@ -1,108 +1,111 @@
-package org.redrune.utility.game.entity.object;
+package org.redrune.utility.game.entity.`object`
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.object.WorldObject;
-import org.redrune.game.global.WorldTile;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.github.michaelbull.logging.InlineLogger
+import org.redrune.game.entity.`object`.WorldObject
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.global.WorldTile
+import java.io.BufferedReader
+import java.io.FileReader
+import java.util.*
+import java.util.function.Predicate
+import java.util.stream.Collectors
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since Dec 13, 2013
  */
-public class ObjectRemoval {
-	
-	/**
-	 * The file to read from
-	 */
-	public static final String NONSPAWNING_OBJECTS_FILE = "data/repository/object/nonspawning.txt";
-	
-	/**
-	 * The list of objects that aren't spawned
-	 */
-	private static final Set<WorldObject> OBJECTS = new LinkedHashSet<>();
-	
-	/**
-	 * Starts up and populates the list
-	 */
-	public static void initialize() {
-		populateList();
-	}
-	
-	/**
-	 * Populates the list with data from the file
-	 */
-	private static void populateList() {
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(NONSPAWNING_OBJECTS_FILE));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("//") || line.trim().equalsIgnoreCase("")) {
-					continue;
-				}
-				int id = 0;
-				int type = 0;
-				int rotation = 0;
-				int x = 0;
-				int y = 0;
-				int z = 0;
-				try {
-					String[] split = line.split(" ");
-					id = Integer.parseInt(split[0]);
-					type = Integer.parseInt(split[1]);
-					rotation = Integer.parseInt(split[2]);
-					x = Integer.parseInt(split[3]);
-					y = Integer.parseInt(split[4]);
-					z = Integer.parseInt(split[5]);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-				OBJECTS.add(new WorldObject(id, type, rotation, new WorldTile(x, y, z)));
-			}
-			reader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println("Loaded " + OBJECTS.size() + " objects not to be spawned.");
-	}
-	
-	/**
-	 * Gets a list of all the objects removed on a region
-	 *
-	 * @param regionId
-	 * 		The region id
-	 */
-	public static List<WorldObject> getRemovedAtRegion(int regionId) {
-		return OBJECTS.stream().filter(p -> p.getRegionId() == regionId).collect(Collectors.toList());
-	}
-	
-	/**
-	 * Finds out if a removed object exists on this tile, and if so we returni t
-	 *
-	 * @param object
-	 * 		The object
-	 * @return The {@code WorldObject} that existed
-	 */
-	public static WorldObject removedObjectExists(WorldObject object) {
-		for (WorldObject loopObject : OBJECTS) {
-			if (loopObject.equals(object)) {
-				return object;
-			}
-		}
-		return null;
-	}
-	
-	public static void handleRegionChange(Player player) {
-		if (!player.hasStarted()) {
-			return;
-		}
-		player.getPackets().refreshSpawnedObjects();
-/*		if (!player.hasStarted()) {
+object ObjectRemoval {
+    /**
+     * The file to read from
+     */
+    const val NONSPAWNING_OBJECTS_FILE = "data/repository/object/nonspawning.txt"
+
+    /**
+     * The list of objects that aren't spawned
+     */
+    private val OBJECTS: MutableSet<WorldObject> = LinkedHashSet<WorldObject>()
+
+    /**
+     * Starts up and populates the list
+     */
+    fun initialize() {
+        populateList()
+    }
+
+    /**
+     * Populates the list with data from the file
+     */
+    private fun populateList() {
+        try {
+            val reader = BufferedReader(FileReader(NONSPAWNING_OBJECTS_FILE))
+            var line: String
+            while (reader.readLine().also { line = it } != null) {
+                if (line.startsWith("//") || line.trim { it <= ' ' }.equals("", ignoreCase = true)) {
+                    continue
+                }
+                var id = 0
+                var type = 0
+                var rotation = 0
+                var x = 0
+                var y = 0
+                var z = 0
+                try {
+                    val split = line.split(" ".toRegex()).toTypedArray()
+                    id = split[0].toInt()
+                    type = split[1].toInt()
+                    rotation = split[2].toInt()
+                    x = split[3].toInt()
+                    y = split[4].toInt()
+                    z = split[5].toInt()
+                } catch (e: NumberFormatException) {
+                    e.printStackTrace()
+                }
+                OBJECTS.add(WorldObject(id, type, rotation, WorldTile(x, y, z)))
+            }
+            reader.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        logger.info { "Loaded " + OBJECTS.size + " objects not to be spawned." }
+    }
+
+    /**
+     * Gets a list of all the objects removed on a region
+     *
+     * @param regionId
+     * The region id
+     */
+    fun getRemovedAtRegion(regionId: Int): List<WorldObject> {
+        return OBJECTS.stream().filter(Predicate<WorldObject> { p: WorldObject -> p.getRegionId() == regionId })
+            .collect(
+                Collectors.toList()
+            )
+    }
+
+    /**
+     * Finds out if a removed object exists on this tile, and if so we returni t
+     *
+     * @param object
+     * The object
+     * @return The `WorldObject` that existed
+     */
+    @JvmStatic
+    fun removedObjectExists(`object`: WorldObject): WorldObject? {
+        for (loopObject in OBJECTS) {
+            if (loopObject == `object`) {
+                return `object`
+            }
+        }
+        return null
+    }
+
+    @JvmStatic
+    fun handleRegionChange(player: Player) {
+        if (!player.hasStarted()) {
+            return
+        }
+        player.packets.refreshSpawnedObjects()
+        /*		if (!player.hasStarted()) {
 			return;
 		}
 		OBJECTS.stream().filter(object -> object.getRegionId() == player.getRegionId()).forEach(object -> {
@@ -113,7 +116,7 @@ public class ObjectRemoval {
 			player.getPackets().sendDestroyObject(object);
 			player.putAttribute(key, true);
 		});*/
-	}
-	
-	
+    }
+
+    private val logger = InlineLogger()
 }

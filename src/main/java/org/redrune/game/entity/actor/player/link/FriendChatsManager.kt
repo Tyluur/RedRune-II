@@ -1,6 +1,7 @@
 package org.redrune.game.entity.actor.player.link
 
 import com.alex.io.OutputStream
+import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
 import org.redrune.utility.constants.GameConstants
@@ -225,7 +226,7 @@ class FriendChatsManager private constructor(player: Player) {
         private var cachedFriendChats: HashMap<String, FriendChatsManager>? = null
         fun initialize() {
             cachedFriendChats = HashMap()
-            println("Loaded " + cachedFriendChats!!.size + " cached friends chats")
+            logger.info { "Loaded " + cachedFriendChats!!.size + " cached friends chats" }
         }
 
         fun destroyChat(player: Player) {
@@ -237,7 +238,7 @@ class FriendChatsManager private constructor(player: Player) {
         }
 
         @kotlin.jvm.JvmStatic
-		fun linkSettings(player: Player) {
+        fun linkSettings(player: Player) {
             synchronized(cachedFriendChats!!) {
                 val chat = cachedFriendChats!![player.username] ?: return
                 chat.settings = player.contactManager
@@ -245,7 +246,7 @@ class FriendChatsManager private constructor(player: Player) {
         }
 
         @kotlin.jvm.JvmStatic
-		fun refreshChat(player: Player) {
+        fun refreshChat(player: Player) {
             synchronized(cachedFriendChats!!) {
                 val chat = cachedFriendChats!![player.username] ?: return
                 chat.refreshChannel()
@@ -294,6 +295,8 @@ class FriendChatsManager private constructor(player: Player) {
                 }
             }
         }
+
+        private val logger = InlineLogger()
     }
 
     init {
