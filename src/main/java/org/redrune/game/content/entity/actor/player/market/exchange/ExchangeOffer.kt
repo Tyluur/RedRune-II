@@ -23,7 +23,7 @@ data class ExchangeOffer(
     /**
      * The amount of the offer that was requested initially
      */
-    val amountRequested: Int = amount
+    var amountRequested: Int = amount
 
     /**
      * The amount of the offer that has been processed

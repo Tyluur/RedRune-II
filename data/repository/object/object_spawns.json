@@ -318,5 +318,15 @@
     "x": 3098,
     "y": 3511,
     "plane": 0
+  },
+  {
+    "id": 45286,
+    "type": 10,
+    "rotation": 0,
+    "life": 1,
+    "spawned": false,
+    "x": 3091,
+    "y": 3496,
+    "plane": 0
   }
 ]

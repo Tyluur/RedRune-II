@@ -6,6 +6,7 @@ import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConf
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.MAIN_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.SELL_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.openCollectionBox
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.sendCollectInformation
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeOffer
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeType
@@ -13,6 +14,7 @@ import org.redrune.game.content.plugin.type.InterfacePlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
 import org.redrune.utility.functions.Misc
+import org.redrune.utility.game.InputEvent
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -33,6 +35,65 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         packetId: Int
     ): Boolean {
         when (interfaceId) {
+            COLLECTION_INTERFACE -> {
+                when (componentId) {
+
+                    19 -> {
+                        collectItems(
+                            player,
+                            0,
+                            if (slotId == 0) 0 else 1,
+                            if (packetId == 61) 0 else 1
+                        )
+                    }
+
+                    23 -> {
+                        collectItems(
+                            player,
+                            1,
+                            if (slotId == 0) 0 else 1,
+                            if (packetId == 61) 0 else 1
+                        )
+                    }
+
+                    27 -> {
+                        collectItems(
+                            player,
+                            2,
+                            if (slotId == 0) 0 else 1,
+                            if (packetId == 61) 0 else 1
+                        )
+                    }
+
+                    32 -> {
+                        collectItems(
+                            player,
+                            3,
+                            if (slotId == 0) 0 else 1,
+                            if (packetId == 61) 0 else 1
+                        )
+                    }
+
+                    37 -> {
+                        collectItems(
+                            player,
+                            4,
+                            if (slotId == 0) 0 else 1,
+                            if (packetId == 61) 0 else 1
+                        )
+                    }
+
+                    42 -> {
+                        collectItems(
+                            player,
+                            5,
+                            if (slotId == 0) 0 else 1,
+                            if (packetId == 61) 0 else 1
+                        )
+                    }
+                }
+
+            }
             MAIN_INTERFACE -> {
                 val slot = getSlot(componentId)
 
@@ -126,6 +187,99 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                             (player.attributes.offers[slot] ?: return true)
 
                         collectItem(player, offer, offer.itemId, packetId, componentId)
+                    }
+                    // abort via information screen:
+                    200 -> {
+                        val slot = player.getTemporaryAttribute("exchange_slot", 0)
+                        val offer =
+                            (player.attributes.offers[slot] ?: return true)
+                        abortOffer(player, offer);
+                    }
+
+                    // +1
+                    157 -> {
+                        val offer: ExchangeOffer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+                        increaseAmount(player, offer, 1)
+                    }
+
+                    // -1
+                    155 -> {
+
+                        val offer: ExchangeOffer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+                        increaseAmount(player, offer, -1)
+                    }
+
+                    160 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        if (offer.type === ExchangeType.SELL) {
+                            offer.amountRequested = (1)
+                            player.packets.sendConfig(1110, offer.amountRequested)
+                        } else {
+                            increaseAmount(player, offer, 1)
+                        }
+                    }
+
+                    162 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        if (offer.type === ExchangeType.SELL) {
+                            offer.amountRequested = (10)
+                            player.packets.sendConfig(1110, offer.amountRequested)
+                        } else {
+                            increaseAmount(player, offer, 10)
+                        }
+
+                    }
+
+                    164 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        if (offer.type === ExchangeType.SELL) {
+                            offer.amountRequested = (100)
+                            player.packets.sendConfig(1110, offer.amountRequested)
+                        } else {
+                            increaseAmount(player, offer, 100)
+                        }
+
+                    }
+
+                    166 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        if (offer.type === ExchangeType.SELL) {
+                            if (player.temporaryAttributes["exchange_sell_item"] != null) {
+                                val ids = player.temporaryAttributes["exchange_sell_item"] as IntArray
+                                offer.amountRequested = (player.inventory.getNumerOf(ids[0]))
+                            } else {
+                                offer.amountRequested = (player.inventory.getNumerOf(offer.itemId))
+                            }
+                            player.packets.sendConfig(1110, offer.amountRequested)
+                        } else {
+                            increaseAmount(player, offer, 1000)
+                        }
+
+                    }
+
+                    168 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        player.packets.requestClientInput(object : InputEvent("Enter amount", InputEventType.INTEGER) {
+
+                            override fun handleInput() {
+                                val input: Int = this.getInput()
+                                offer.amountRequested = input
+                                player.packets.sendConfig(1110, offer.amountRequested)
+                            }
+                        })
+
                     }
                 }
             }
@@ -275,6 +429,58 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         player.packets.sendMessage("Abort request acknowledged. Please be aware that your offer may have already been completed.")
     }
 
+    /**
+     * Collects an offer from the collection box
+     */
+    private fun collectItems(player: Player, offerSlot: Int, itemSlot: Int, option: Int) {
+        val offer: ExchangeOffer = player.attributes.offers[offerSlot]
+            ?: return
+
+        val item = offer.getItemsToCollect()[itemSlot] ?: return
+        val freeSlots = player.inventory.freeSlots
+        if (freeSlots == 0) {
+            player.packets.sendMessage("Not enough space in your inventory.")
+            return
+        }
+        var newId = -1
+        var noted = false
+        val amount = item.amount
+        if (!item.definitions.isStackable && item.amount > 1 && option == 0) {
+            noted = true
+        }
+        if (!item.definitions.isStackable && option == 1) {
+            noted = true
+        }
+        if (noted) {
+            newId = item.definitions.certId
+        }
+        if (newId == -1) {
+            newId = item.id
+        }
+        val received = Item(newId, amount)
+        if (!player.inventory.items.hasSpaceFor(received)) {
+            player.packets.sendMessage("You don't have enough inventory space for this item.")
+            return
+        }
+        if (itemSlot == 0) {
+            offer.amountReceived = (0)
+        } else {
+            offer.surplus = (0)
+        }
+        if (offer.aborted) {
+            player.attributes.offers[offer.slot] = null
+            openCollectionBox(player)
+        } else {
+            if (offer.amountProcessed >= offer.amountRequested && offer.getItemsToCollect().usedSlots == 0) {
+                player.attributes.offers[offer.slot] = null
+                openCollectionBox(player)
+            } else {
+                openCollectionBox(player)
+            }
+        }
+        player.inventory.addItem(received)
+    }
+
     companion object {
 
 
@@ -298,6 +504,24 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
 
         private val logger = InlineLogger()
 
+    }
+
+    /**
+     * Increases the amount of the offer
+     *
+     * @param player
+     * The player
+     * @param offer
+     * The offer
+     * @param amount
+     * The amount
+     */
+    private fun increaseAmount(player: Player, offer: ExchangeOffer?, amount: Int) {
+        if (offer == null) {
+            return
+        }
+        offer.amountRequested = (offer.amountRequested + amount)
+        player.packets.sendConfig(1110, offer.amountRequested)
     }
 
 }
