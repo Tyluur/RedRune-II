@@ -40,6 +40,11 @@ data class ExchangeOffer(
     var aborted: Boolean = false
 
     /**
+     * If the offer is currently being processed
+     */
+    var processing = false
+
+    /**
      * The extra cash on the offer
      */
     var surplus = 0

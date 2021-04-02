@@ -199,7 +199,6 @@ object ExchangeManager {
         player.interfaceManager.sendInterface(MAIN_INTERFACE)
     }
 
-
     /**
      * Sends the collection box to the player
      */

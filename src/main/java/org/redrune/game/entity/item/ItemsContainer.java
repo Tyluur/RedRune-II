@@ -348,7 +348,12 @@ public final class ItemsContainer<T extends Item> implements Serializable {
 		}
 		return -1;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public boolean hasSpaceFor(Item item) {
+		return hasSpaceForItem((T) item);
+	}
+
 	public boolean hasSpaceFor(ItemsContainer<T> container) {
 		for (int i = 0; i < container.getSize(); i++) {
 			T item = container.get(i);
