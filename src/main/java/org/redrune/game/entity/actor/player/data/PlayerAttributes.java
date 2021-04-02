@@ -1,5 +1,6 @@
 package org.redrune.game.entity.actor.player.data;
 
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeOffer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.SlayerTask;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.utility.constants.key.AttributeKey;
@@ -157,6 +158,11 @@ public class PlayerAttributes implements Serializable {
      * If the player has received a tutorial
      */
     private boolean receivedTutorial = false;
+
+    /**
+     * The exchange offers
+     */
+    private final ExchangeOffer[] offers = new ExchangeOffer[6];
 
     /**
      * The player whose attributes this is an instance for
@@ -854,5 +860,9 @@ public class PlayerAttributes implements Serializable {
 
     public void setReceivedTutorial(boolean receivedTutorial) {
         this.receivedTutorial = receivedTutorial;
+    }
+
+    public ExchangeOffer[] getOffers() {
+        return offers;
     }
 }

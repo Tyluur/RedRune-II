@@ -141,6 +141,8 @@ public interface PacketConstants {
 	int WORLD_LIST_REQUEST_PACKET = 34;
 	
 	int WINDOW_SWITCH_PACKET = 93;
+
+	int GRAND_EXCHANGE_SELECTION = 13;
 	
 	static void loadPacketSizes() {
 		for (int id = 0; id < 256; id++) {

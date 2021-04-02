@@ -7,6 +7,7 @@ import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.PlayerTutorial;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
+import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.event.EventManager;
 import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
@@ -1193,5 +1194,14 @@ public class Player extends Actor {
 
     public boolean isUnderCombat() {
         return getAttackedByDelay() + 10000 >= Misc.currentTimeMillis();
+    }
+
+    public boolean takeMoney(int amount) {
+        if (inventory.getNumerOf(995) >= amount) {
+            inventory.deleteItem(995, amount);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

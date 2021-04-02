@@ -5,9 +5,11 @@ import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConf
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.MAIN_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.SELL_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeOffer
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeType
 import org.redrune.game.content.plugin.type.InterfacePlugin
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.functions.Misc
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -55,6 +57,47 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                             player.interfaceManager.openGameTab(lastGameTab);
                         });
                         ExchangeManager.open(player);
+                    }
+                    // confirm button
+                    186 -> {
+                        val offer: ExchangeOffer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        logger.info { "Selected offer $offer" }
+
+                        val price = (offer.amountRequested * offer.price)
+
+                        if (price > Int.MAX_VALUE
+                            || price <= 0
+                            || offer.amountRequested <= 0
+                            || offer.price <= 0
+                        ) {
+                            player.packets.sendMessage("Invalid input.")
+                            return true
+                        }
+
+                        val cashAmount = price.toInt()
+
+                        when (offer.type) {
+                            ExchangeType.BUY -> {
+                                if (player.takeMoney(cashAmount)) {
+                                    player.attributes.offers[offer.slot] = offer
+                                    ExchangeManager.open(player)
+                                } else {
+                                    player.packets.sendMessage(
+                                        "You need to have " + Misc.format(price)
+                                            .toString() + " coins to make this exchange."
+                                    )
+                                    return true
+                                }
+                                return true
+                            }
+                            ExchangeType.SELL -> {
+                                return true
+                            }
+                        }
+
+
                     }
                 }
             }

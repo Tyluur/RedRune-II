@@ -3,6 +3,7 @@ package org.redrune.game.content.entity.actor.player.event.npc;
 import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.dialogue.impl.Banker;
 import org.redrune.game.content.entity.actor.player.event.Event;
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager;
 import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing;
 import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots;
 import org.redrune.game.content.entity.actor.player.skills.thieving.PickPocketAction;
@@ -156,6 +157,7 @@ public class NPCInteractionEvent extends Event {
      *
      * @param player The player
      */
+    @SuppressWarnings("StatementWithEmptyBody")
     private void handleThirdOption(Player player) {
         String option = npc.getDefinitions().getOption(4);
         if (option == null) {
@@ -165,14 +167,16 @@ public class NPCInteractionEvent extends Event {
         }
         player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
         if (!player.getControllerManager().canEntityClick(npc, THIRD)) {
-            return;
-        }
-        if (PluginRepository.handleNPC(player, npc, option)) {
-            return;
-        }
-        player.getPackets().sendMessage("Nothing interesting happens.");
-        if (GameFlags.debugMode) {
-            System.out.println("No plugin registered for option " + option + " on npc " + npc);
+            ;
+        } else if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
+            ExchangeManager.INSTANCE.openCollectionBox(player);
+        } else if (PluginRepository.handleNPC(player, npc, option)) {
+            ;
+        } else {
+            if (GameFlags.debugMode) {
+                System.out.println("No plugin registered for option [option" + option + ", idx=3] on npc " + npc);
+            }
+            player.getPackets().sendMessage("Nothing interesting happens.");
         }
     }
 
