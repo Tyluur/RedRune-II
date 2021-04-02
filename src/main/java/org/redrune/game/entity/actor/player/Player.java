@@ -1193,4 +1193,7 @@ public class Player extends Actor {
         resetCombat();
     }
 
+    public boolean isUnderCombat() {
+        return getAttackedByDelay() + 10000 >= Misc.currentTimeMillis();
+    }
 }

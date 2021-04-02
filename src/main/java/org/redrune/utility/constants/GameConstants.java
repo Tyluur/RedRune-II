@@ -20,7 +20,7 @@ public interface GameConstants {
 	/**
 	 * The location that players spawn at
 	 */
-	WorldTile START_PLAYER_LOCATION = new WorldTile(3092, 3503, 0);
+	WorldTile START_PLAYER_LOCATION = new WorldTile(3094, 3495, 0);
 	
 	/**
 	 * The location that players who die spawn at

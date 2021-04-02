@@ -49,7 +49,9 @@ dependencies {
     implementation("io.github.classgraph", "classgraph", "4.8.78")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("ch.qos.logback:logback-classic:1.2.3") {
+        exclude("org.slf4j", "slf4j-jdk14")
+    }
     implementation("com.michael-bull.kotlin-inline-logger", "kotlin-inline-logger-jvm", "1.0.2")
 
     // RuneScape API
@@ -86,5 +88,13 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (this.requested.name == "log4j") {
+            useTarget("log4j:log4j:1.7.+")
+        }
     }
 }
