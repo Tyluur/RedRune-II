@@ -121,7 +121,7 @@ object Bootstrap {
         GameFlags.hostMode = hostMode
         GameFlags.pvpWorld = pvpWorld
 
-        val elapsed = BootHandler.getSTOPWATCH().elapsed(TimeUnit.MILLISECONDS)
+        val elapsed = BootHandler.sTOPWATCH.elapsed(TimeUnit.MILLISECONDS)
 
         logger.info {
             "Parameters: [hostMode=$hostMode, debugMode=$debugMode, pvpWorld=$pvpWorld]"

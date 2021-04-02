@@ -1,156 +1,148 @@
-package org.redrune.engine.worker.boot;
+package org.redrune.engine.worker.boot
 
-import com.google.common.base.Stopwatch;
-import org.redrune.engine.SystemManager;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
+import com.google.common.base.Stopwatch
+import org.redrune.engine.SystemManager
+import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CountDownLatch
+import java.util.function.Consumer
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 10/24/2015
  */
-public class BootHandler {
-	
-	/**
-	 * The amount of threads we can construct
-	 */
-	private static final int THREAD_SIZE = SystemManager.PROCESSOR_COUNT;
-	
-	/**
-	 * The list of work we must complete
-	 */
-	private static final List<Runnable> WORK_TO_COMPLETE = new ArrayList<>();
-	
-	/**
-	 * The list of boot workers
-	 */
-	private static final CopyOnWriteArrayList<BootWorker> BOOT_WORKERS = new CopyOnWriteArrayList<>();
-	
-	/**
-	 * The amount of work that must be complete
-	 */
-	private static CountDownLatch countDownLatch;
-	
-	/**
-	 * The instance of the stopwatch
-	 */
+object BootHandler {
+    /**
+     * The amount of threads we can construct
+     */
+    private val THREAD_SIZE = SystemManager.PROCESSOR_COUNT
 
-	private static final Stopwatch STOPWATCH = Stopwatch.createUnstarted();
-	
-	/**
-	 * Adds all of the runnables to the {@link #WORK_TO_COMPLETE} list
-	 *
-	 * @param work
-	 * 		The work we must complete later
-	 */
-	public static void addWork(Runnable... work) {
-		STOPWATCH.start();
-		Collections.addAll(WORK_TO_COMPLETE, work);
-		prepareAll();
-		executeWorkers();
-	}
-	
-	/**
-	 * Prepares all essentials for work to be done. We first construct the {@link #countDownLatch}, then create {@code
-	 * BootWorker}s into the {@link #BOOT_WORKERS} list, then the {@link #prepareBootWorkers()} method is ran
-	 */
-	public static void prepareAll() {
-		countDownLatch = new CountDownLatch(WORK_TO_COMPLETE.size());
-		for (int i = 0; i < THREAD_SIZE; i++) {
-			BOOT_WORKERS.add(new BootWorker(i));
-		}
-		prepareBootWorkers();
-	}
-	
-	/**
-	 * Prepares the workers by populating them with workload from the {@link #WORK_TO_COMPLETE}
-	 */
-	public static void prepareBootWorkers() {
-		int index = 0;
-		for (Iterator<Runnable> it$ = WORK_TO_COMPLETE.iterator(); it$.hasNext(); ) {
-			getBestWorker().addToWorkLoad(it$.next(), index);
-			it$.remove();
-			index++;
-		}
-	}
-	
-	/**
-	 * Executes the workers
-	 */
-	public static void executeWorkers() {
-		BOOT_WORKERS.forEach(SystemManager.SLOW_EXECUTOR::execute);
-	}
-	
-	/**
-	 * Getting the best worker to use for the upcoming workload. This is dependent on the amount of work the worker
-	 * currently has to do
-	 */
-	private static BootWorker getBestWorker() {
-		int leastWorkDone = -1;
-		BootWorker bestWorker = null;
-		for (BootWorker worker : BOOT_WORKERS) {
-			if (worker.getWorkLoadSize() < leastWorkDone || leastWorkDone == -1) {
-				leastWorkDone = worker.getWorkLoadSize();
-				bestWorker = worker;
-			}
-		}
-		return bestWorker;
-	}
-	
-	/**
-	 * Awaits the completion of the countdown
-	 */
-	public static void await() {
-		try {
-			countDownLatch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		STOPWATCH.stop();
-	}
-	
-	/**
-	 * Performs the finishing operations on the threads after we have completed
-	 */
-	public static void finish() {
-		BOOT_WORKERS.forEach(BootWorker::interrupt);
-		BOOT_WORKERS.clear();
-	}
-	
-	/**
-	 * Gets the worker numbers left in a list
-	 */
-	private static List<Integer> workerNumbersLeft() {
-		List<Integer> result = new ArrayList<>();
-		BOOT_WORKERS.forEach(worker -> worker.getWorkLoad().forEach(load -> result.add(load.getTaskNumber())));
-		return result;
-	}
-	
-	/**
-	 * The details of the workers left
-	 */
-	public static String workersLeftDetails() {
-		StringBuilder details = new StringBuilder();
-		List<Integer> numbersLeft = workerNumbersLeft();
-		for (int i = 0; i < numbersLeft.size(); i++) {
-			details.append(numbersLeft.get(i)).append(i == numbersLeft.size() - 1 ? "" : ", ");
-		}
-		return details.toString();
-	}
-	
-	/**
-	 * Gets the {@link #countDownLatch}
-	 */
-	static CountDownLatch getCountDownLatch() {
-		return countDownLatch;
-	}
+    /**
+     * The list of work we must complete
+     */
+    private val WORK_TO_COMPLETE: MutableList<Runnable> = ArrayList()
 
-	public static Stopwatch getSTOPWATCH() {
-		return STOPWATCH;
-	}
+    /**
+     * The list of boot workers
+     */
+    private val BOOT_WORKERS = CopyOnWriteArrayList<BootWorker>()
+    /**
+     * Gets the [.countDownLatch]
+     */
+    /**
+     * The amount of work that must be complete
+     */
+    @JvmStatic
+    var countDownLatch: CountDownLatch? = null
+        private set
+
+    /**
+     * The instance of the stopwatch
+     */
+    val sTOPWATCH = Stopwatch.createUnstarted()
+
+    /**
+     * Adds all of the runnables to the [.WORK_TO_COMPLETE] list
+     *
+     * @param work
+     * The work we must complete later
+     */
+    fun addWork(vararg work: Runnable) {
+        sTOPWATCH.start()
+        Collections.addAll(WORK_TO_COMPLETE, *work)
+        prepareAll()
+        executeWorkers()
+    }
+
+    /**
+     * Prepares all essentials for work to be done. We first construct the [.countDownLatch], then create `BootWorker`s into the [.BOOT_WORKERS] list, then the [.prepareBootWorkers] method is ran
+     */
+    fun prepareAll() {
+        countDownLatch = CountDownLatch(WORK_TO_COMPLETE.size)
+        for (i in 0 until THREAD_SIZE) {
+            BOOT_WORKERS.add(BootWorker(i))
+        }
+        prepareBootWorkers()
+    }
+
+    /**
+     * Prepares the workers by populating them with workload from the [.WORK_TO_COMPLETE]
+     */
+    fun prepareBootWorkers() {
+        var index = 0
+        val `it$` = WORK_TO_COMPLETE.iterator()
+        while (`it$`.hasNext()) {
+            bestWorker!!.addToWorkLoad(`it$`.next(), index)
+            `it$`.remove()
+            index++
+        }
+    }
+
+    /**
+     * Executes the workers
+     */
+    fun executeWorkers() {
+        BOOT_WORKERS.forEach(Consumer { command: BootWorker? -> SystemManager.SLOW_EXECUTOR.execute(command) })
+    }
+
+    /**
+     * Getting the best worker to use for the upcoming workload. This is dependent on the amount of work the worker
+     * currently has to do
+     */
+    private val bestWorker: BootWorker?
+        private get() {
+            var leastWorkDone = -1
+            var bestWorker: BootWorker? = null
+            for (worker in BOOT_WORKERS) {
+                if (worker.workLoadSize < leastWorkDone || leastWorkDone == -1) {
+                    leastWorkDone = worker.workLoadSize
+                    bestWorker = worker
+                }
+            }
+            return bestWorker
+        }
+
+    /**
+     * Awaits the completion of the countdown
+     */
+    fun await() {
+        try {
+            countDownLatch!!.await()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        sTOPWATCH.stop()
+    }
+
+    /**
+     * Performs the finishing operations on the threads after we have completed
+     */
+    fun finish() {
+        BOOT_WORKERS.forEach(Consumer { obj: BootWorker -> obj.interrupt() })
+        BOOT_WORKERS.clear()
+    }
+
+    /**
+     * Gets the worker numbers left in a list
+     */
+    private fun workerNumbersLeft(): List<Int> {
+        val result: MutableList<Int> = ArrayList()
+        BOOT_WORKERS.forEach(Consumer { worker: BootWorker ->
+            worker.workLoad.forEach(
+                Consumer { load: BootTask -> result.add(load.taskNumber) })
+        })
+        return result
+    }
+
+    /**
+     * The details of the workers left
+     */
+    fun workersLeftDetails(): String {
+        val details = StringBuilder()
+        val numbersLeft = workerNumbersLeft()
+        for (i in numbersLeft.indices) {
+            details.append(numbersLeft[i]).append(if (i == numbersLeft.size - 1) "" else ", ")
+        }
+        return details.toString()
+    }
 }
