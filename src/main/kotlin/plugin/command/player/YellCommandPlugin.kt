@@ -20,7 +20,7 @@ class YellCommandPlugin : CommandPlugin() {
             return
         }
         if (!player.rightsContains(
-                PlayerRight.PREMIUM_DONATOR,
+                PlayerRight.DONATOR,
                 PlayerRight.SERVER_MODERATOR,
                 PlayerRight.ADMINISTRATOR,
                 PlayerRight.OWNER

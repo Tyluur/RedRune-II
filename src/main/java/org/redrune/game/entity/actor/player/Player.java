@@ -4,6 +4,7 @@ import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.GameFlags;
+import org.redrune.game.content.entity.actor.player.PlayerTutorial;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
 import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
@@ -109,9 +110,6 @@ public class Player extends Actor {
      */
     private EmotesManager emotesManager;
 
-    /**
-     * @Presets
-     */
     private PresetManager presetManager;
 
     public PresetManager getPresetManager() {
@@ -121,7 +119,6 @@ public class Player extends Actor {
     public void setPresetManager(PresetManager presetManager) {
         this.presetManager = presetManager;
     }
-
 
     /**
      * The handler for all social interaction
@@ -745,6 +742,7 @@ public class Player extends Actor {
         appearance.generateAppearanceData();
         controllerManager.login(); // checks what to do on login after welcome "Log in"
         OwnedObjectManager.linkKeys(this);
+        PlayerTutorial.INSTANCE.onLogin(this);
     }
 
     public void logout(boolean lobby) {
@@ -946,7 +944,7 @@ public class Player extends Actor {
      * If there are donator rights in the {@link #rights} set
      */
     public boolean isDonator() {
-        return rights.contains(PlayerRight.PREMIUM_DONATOR) || rights.contains(PlayerRight.EXTREME_DONATOR);
+        return rights.contains(PlayerRight.DONATOR);
     }
 
     /**

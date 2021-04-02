@@ -25,63 +25,18 @@ public enum PlayerRight {
 	ADMINISTRATOR(2, 14) {
 		@Override
 		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
-		}
-	},
-	DEVELOPER(2, 10) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
-		}
-	},
-	COMMUNITY_MANAGER(2, 4) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
-		}
-	},
-	ADVERTISEMENT_TEAM(2, 20) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
-		}
-	},
-	GLOBAL_MODERATOR(1, 11) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER);
+			addOtherRights(OWNER, ADMINISTRATOR);
 		}
 	},
 	SERVER_MODERATOR(1, 7) {
 		@Override
 		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR);
+			addOtherRights(OWNER, ADMINISTRATOR);
 		}
 	},
-	FORUM_MODERATOR(6) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR);
-		}
-	},
-	TRIAL_MODERATOR(16) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, FORUM_MODERATOR);
-		}
-	},
-	SERVER_ASSISTANT(12) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, COMMUNITY_MANAGER, ADMINISTRATOR, DEVELOPER, GLOBAL_MODERATOR, SERVER_MODERATOR);
-		}
-	},
-	EXTREME_DONATOR(9),
-	PREMIUM_DONATOR(8),
+	DONATOR(9),
 	YOUTUBER(18),
 	VETERAN(13),
-	GRAPHIC_DESIGNER(17),
-	THEME_EDITOR(22),
 	RESPECTED_MEMBER(15),
 	BETA_TESTER(21),
 	PLAYER(3);

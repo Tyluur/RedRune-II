@@ -1,9 +1,9 @@
-package plugin.command.server_assistant
+package plugin.command.server_moderator
 
-import plugin.command.CommandManifest
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
+import plugin.command.CommandManifest
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

@@ -154,6 +154,11 @@ public class PlayerAttributes implements Serializable {
     private double earningPotential = 25;
 
     /**
+     * If the player has received a tutorial
+     */
+    private boolean receivedTutorial = false;
+
+    /**
      * The player whose attributes this is an instance for
      */
     private transient Player player;
@@ -841,5 +846,13 @@ public class PlayerAttributes implements Serializable {
             colour = "33FF33";
         }
         return "EP: <col=" + colour + ">" + (int) earningPotential + "%</col>";
+    }
+
+    public boolean isReceivedTutorial() {
+        return receivedTutorial;
+    }
+
+    public void setReceivedTutorial(boolean receivedTutorial) {
+        this.receivedTutorial = receivedTutorial;
     }
 }

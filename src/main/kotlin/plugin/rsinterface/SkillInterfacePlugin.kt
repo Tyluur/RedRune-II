@@ -1,46 +1,14 @@
 package plugin.rsinterface
 
-import org.redrune.game.content.plugin.type.InterfacePlugin
-import org.redrune.game.content.entity.actor.player.design.PlayerDesign
-import org.redrune.game.content.entity.actor.player.PlayerLook
-import org.redrune.utility.constants.PacketConstants
-import org.redrune.utility.game.InputEvent.InputEventType
-import org.redrune.engine.SystemManager
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
-import org.redrune.game.global.WorldTile
-import org.redrune.utility.constants.EquipmentConstants
-import org.redrune.game.entity.actor.player.data.PlayerEquipment
-import plugin.rsinterface.EquipmentBonusesInterfacePlugin
-import org.redrune.utility.game.repository.item.ItemCharacteristicRepository
-import org.redrune.game.entity.actor.npc.impl.familiar.Familiar
-import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack
-import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing.ForgingInterface
-import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer
-import org.redrune.game.content.entity.actor.combat.function.Magic
-import org.redrune.game.content.entity.actor.player.dialogue.impl.Transportation
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.utility.functions.Misc
-import org.redrune.game.content.entity.actor.player.action.impl.PlayerRestAction
-import plugin.rsinterface.GenieSkillSelectionInterfacePlugin
-import org.redrune.game.content.entity.actor.player.event.item.ItemInteractionEvent
-import org.redrune.game.content.entity.item.InventoryOptionsHandler
-import org.redrune.game.content.entity.actor.player.skills.crafting.JewelrySmithing
-import org.redrune.game.content.entity.actor.player.market.Shop
-import org.redrune.game.content.entity.actor.player.dialogue.impl.SkillsDialogue
+import org.redrune.game.GameFlags
+import org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp.PvPWorld
 import org.redrune.game.content.entity.actor.player.dialogue.impl.LevelUp
-import plugin.rsinterface.TeleportationInterfacePlugin.TravelLocations
-import plugin.rsinterface.TeleportationInterfacePlugin
-import org.redrune.utility.game.map.Coordinates
-import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness
-import org.redrune.game.content.entity.actor.player.dialogue.Dialogue
-import org.redrune.utility.constants.ChatAnimations
-import plugin.rsinterface.TeleportationInterfacePlugin.TransportationLocation
-import org.redrune.game.entity.actor.npc.NPC
-import org.redrune.engine.tick.task.WorldTasksManager
-import org.redrune.engine.tick.task.WorldTask
-import org.redrune.utility.constants.MagicConstants
-import org.redrune.game.entity.actor.mask.ForceTalk
+import org.redrune.game.content.entity.actor.player.dialogue.impl.SimpleNPCMessage
+import org.redrune.game.content.plugin.type.InterfacePlugin
+import org.redrune.game.entity.actor.mask.Graphics
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.constants.PacketConstants
+import org.redrune.utility.constants.SkillConstants.*
 import org.redrune.utility.game.InputEvent
 
 /**
@@ -282,6 +250,58 @@ class SkillInterfacePlugin : InterfacePlugin {
                         }
                     }
                 }
+                val skillId = getSkillId(componentId)
+                if (PvPWorld.inBankSafe(player) && isSettableSkill(componentId) && GameFlags.pvpWorld && skillId != -1) {
+                    val name = SKILL_NAME[skillId]
+
+                    if (player.isUnderCombat || player.equipment.isWearingArmour || player.isDead) {
+                        player.dialogueManager.startDialogue(
+                            SimpleNPCMessage::class.java, 945,
+                            "Please take off any armour before changing your stats."
+                        )
+                        return true
+                    }
+
+                    when (skillId) {
+                        ATTACK, STRENGTH, DEFENCE, HITPOINTS, MAGIC, RANGE -> {
+                            player.packets.requestClientInput(object :
+                                InputEvent("Enter a level:", InputEventType.INTEGER) {
+                                override fun handleInput() {
+                                    val level: Int = getInput()
+
+                                    if (level <= 0 || level > 99) {
+                                        player.dialogueManager.startDialogue(
+                                            SimpleNPCMessage::class.java, 945,
+                                            "Nice try, noob.",
+                                        )
+                                        return
+                                    }
+
+                                    if (skillId == HITPOINTS && level < 10) {
+                                        player.dialogueManager.startDialogue(
+                                            SimpleNPCMessage::class.java, 945,
+                                            "Nice try, noob.",
+                                        )
+                                        return
+                                    }
+
+
+                                    player.skills[skillId] = level
+                                    player.skills.setXp(skillId, getXPForLevel(level).toDouble())
+                                    player.setNextGraphics(Graphics(1320))
+                                    player.appearance.generateAppearanceData()
+
+                                    player.dialogueManager.startDialogue(
+                                        SimpleNPCMessage::class.java, 945,
+                                        "Your $name level has just been set to $level!",
+                                        "Enjoy!"
+                                    )
+                                }
+                            })
+                        }
+                    }
+                    return true
+                }
                 player.interfaceManager.sendInterface(if (lvlupSkill != -1) 741 else 499)
                 if (lvlupSkill != -1) {
                     LevelUp.switchFlash(player, lvlupSkill, false)
@@ -360,7 +380,30 @@ class SkillInterfacePlugin : InterfacePlugin {
         return true
     }
 
+    private fun getSkillId(componentId: Int): Int {
+        return when (componentId) {
+            200 -> ATTACK
+            11 -> STRENGTH
+            28 -> DEFENCE
+            52 -> RANGE
+            93 -> MAGIC
+            193 -> HITPOINTS
+            else -> -1
+        }
+    }
+
     override fun register() {
         registerInterfacePlugin(320, 499)
+    }
+
+    fun isSettableSkill(componentId: Int): Boolean {
+        return when (componentId) {
+            200, 11, 28, 52, 93, 193 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
     }
 }

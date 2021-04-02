@@ -1,13 +1,10 @@
 package org.redrune.engine.cycle
 
 import com.github.michaelbull.logging.InlineLogger
-import org.redrune.engine.SystemManager
-import org.redrune.game.global.World
-import org.redrune.utility.functions.Misc
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-class GameCycleWorker : Runnable {
+class GameCycleWorker {
 
     /**
      * The instance of the update sequence
@@ -24,35 +21,6 @@ class GameCycleWorker : Runnable {
      */
     private var started = false
 
-    override fun run() {
-        while (!SystemManager.shutdown) {
-            val currentTime = Misc.currentTimeMillis()
-            try {
-                updateSequence.fire(World.getLobbyPlayers(), World.getPlayers(), World.getNPCs())
-            } catch (e: Throwable) {
-                e.printStackTrace()
-            }
-            sleepThread(currentTime)
-        }
-    }
-
-    /**
-     * Handles the sleeping of the thread
-     */
-    private fun sleepThread(startTime: Long) {
-        lastCycleTime = Misc.currentTimeMillis()
-        val sleepTime = 600 + (startTime - lastCycleTime)
-        if (sleepTime <= 0) {
-            return
-        }
-        ticksPassed++
-        try {
-            Thread.sleep(sleepTime)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-    }
-
     /**
      * Starts the worker
      */
@@ -61,7 +29,7 @@ class GameCycleWorker : Runnable {
             return
         }
         started = true
-        executor.execute(this@GameCycleWorker)
+        executor.execute(updateSequence)
         logger.info { "Main game cycle worker started." }
     }
 
@@ -79,6 +47,5 @@ class GameCycleWorker : Runnable {
          */
         @JvmStatic
         var ticksPassed = 0
-            private set
     }
 }
