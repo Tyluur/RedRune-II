@@ -1,139 +1,138 @@
-package org.redrune.utility.game.map;
+package org.redrune.utility.game.map
 
-import org.redrune.game.global.WorldTile;
-import org.redrune.utility.functions.Misc;
-
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel.MapMode;
-import java.util.HashMap;
-import java.util.Map;
+import com.github.michaelbull.logging.InlineLogger
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.functions.Misc
+import java.io.*
+import java.nio.ByteBuffer
+import java.nio.channels.FileChannel
+import java.util.*
+import kotlin.experimental.and
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 8/30/2017
  */
-public class MapArchiveKeys {
+object MapArchiveKeys {
+    /**
+     * The path to packed xteas
+     */
+    private const val PACKED_FILE_PATH = "data/repository/map/packedKeys.bin"
 
-	/**
-	 * The path to packed xteas
-	 */
-	private static final String PACKED_FILE_PATH = "data/repository/map/packedKeys.bin";
+    /**
+     * The path to unpacked exteas
+     */
+    private const val UNPACKED_FILE_PATH = "data/repository/map/containersXteas/workingkeys/"
 
-	/**
-	 * The path to unpacked exteas
-	 */
-	private static final String UNPACKED_FILE_PATH = "data/repository/map/containersXteas/workingkeys/";
+    /**
+     * MapKeys.
+     */
+    private val mapKeys: MutableMap<Int, IntArray> = HashMap()
+    fun isAtArea(areaName: String?, tile: WorldTile): Boolean {
+        return isAtArea(Misc.getNameHash(areaName), tile)
+    }
 
-	/**
-	 * MapKeys.
-	 */
-	private static Map<Integer, int[]> mapKeys = new HashMap<>();
+    @JvmStatic
+    fun isAtArea(areaNameHash: Int, tile: WorldTile): Boolean {
+        val coordsList = mapKeys[areaNameHash] ?: return false
+        var index = 0
+        while (index < coordsList.size) {
+            if (tile.plane == coordsList[index] && tile.x >= coordsList[index + 1] && tile.x <= coordsList[index + 2] && tile.y >= coordsList[index + 3] && tile.y <= coordsList[index + 4]) return true
+            index += 5
+        }
+        return false
+    }
 
-	public static final boolean isAtArea(String areaName, WorldTile tile) {
-		return isAtArea(Misc.getNameHash(areaName), tile);
-	}
+    /**
+     * Initiating void.
+     */
+    fun initialize() {
+        try {
+            if (!loadPackedFile()) {
+                loadUnpacked()
+            }
+            logger.info { ("Loaded " + mapKeys.size + " map XTEA key(s)") }
+        } catch (e: Throwable) {
+            System.err.println("Failed to load map xtea(s)!")
+            e.printStackTrace()
+        }
+    }
 
-	public static final boolean isAtArea(int areaNameHash, WorldTile tile) {
-		int[] coordsList = mapKeys.get(areaNameHash);
-		if (coordsList == null)
-			return false;
-		int index = 0;
-		while (index < coordsList.length) {
-			if (tile.getPlane() == coordsList[index] && tile.getX() >= coordsList[index + 1]
-					&& tile.getX() <= coordsList[index + 2] && tile.getY() >= coordsList[index + 3]
-					&& tile.getY() <= coordsList[index + 4])
-				return true;
-			index += 5;
-		}
-		return false;
-	}
+    /**
+     * Loads xteas from the packed file
+     *
+     * @return True if we could load
+     * @throws IOException
+     * In the case of an exception in parsing
+     */
+    @Throws(IOException::class)
+    private fun loadPackedFile(): Boolean {
+        val file = File(PACKED_FILE_PATH)
+        if (!file.exists()) {
+            return false
+        }
+        val raf = RandomAccessFile(file, "rw")
+        val buffer: ByteBuffer = raf.channel.map(FileChannel.MapMode.READ_ONLY, 0, raf.length())
+        while (buffer.remaining() > 0) {
+            val id: Int = (buffer.short and 0xFFFF.toShort()).toInt()
+            val key = IntArray(4)
+            for (i2 in 0..3) {
+                key[i2] = buffer.int
+            }
+            mapKeys[id] = key
+        }
+        raf.close()
+        return true
+    }
 
-	/**
-	 * Initiating void.
-	 */
-	public static void initialize() {
-		try {
-			if (!loadPackedFile()) {
-				loadUnpacked();
-			}
-			System.out.println("Loaded " + mapKeys.size() + " map XTEA key(s)");
-		} catch (Throwable e) {
-			System.err.println("Failed to load map xtea(s)!");
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Loads xteas from the unpacked file location and packs them into the file [.PACKED_FILE_PATH]
+     */
+    @Throws(IOException::class)
+    private fun loadUnpacked() {
+        val directory = File(UNPACKED_FILE_PATH)
+        val output = DataOutputStream(FileOutputStream(PACKED_FILE_PATH))
+        if (directory.isDirectory) {
+            val files = directory.listFiles() ?: return
+            for (file in files) {
+                if (file.isFile) {
+                    val input = BufferedReader(FileReader(file))
+                    val id = file.name.substring(0, file.name.indexOf(".")).toInt()
+                    val keys = IntArray(4)
+                    output.writeShort(id)
+                    for (i in 0..3) {
+                        val line = input.readLine()
+                        try {
+                            if (line != null) {
+                                keys[i] = line.toInt()
+                            } else {
+                                logger.info { "Corrupted XTEA file : $id" }
+                                keys[i] = 0
+                            }
+                        } catch (e: NumberFormatException) {
+                            logger.info { "Corrupted XTEA file : $id; line: $line" }
+                            keys[i] = 0
+                        }
+                        output.writeInt(keys[i])
+                    }
+                    input.close()
+                    mapKeys[id] = keys
+                }
+            }
+        }
+        output.close()
+    }
 
-	/**
-	 * Loads xteas from the packed file
-	 *
-	 * @return True if we could load
-	 * @throws IOException
-	 * 		In the case of an exception in parsing
-	 */
-	private static boolean loadPackedFile() throws IOException {
-		File file = new File(PACKED_FILE_PATH);
-		if (!file.exists()) {
-			return false;
-		}
-		RandomAccessFile raf = new RandomAccessFile(file, "rw");
-		ByteBuffer buffer = raf.getChannel().map(MapMode.READ_ONLY, 0, raf.length());
-		while (buffer.remaining() > 0) {
-			int id = buffer.getShort() & 0xFFFF;
-			int[] key = new int[4];
-			for (int i2 = 0; i2 < 4; i2++) {
-				key[i2] = buffer.getInt();
-			}
-			mapKeys.put(id, key);
-		}
-		raf.close();
-		return true;
-	}
+    /**
+     * Gets the keys of a regionId
+     *
+     * @param regionId
+     * The region id
+     */
+    @JvmStatic
+    fun getKey(regionId: Int): IntArray? {
+        return mapKeys[regionId]
+    }
 
-	/**
-	 * Loads xteas from the unpacked file location and packs them into the file {@link #PACKED_FILE_PATH}
-	 */
-	private static void loadUnpacked() throws IOException {
-		File directory = new File(UNPACKED_FILE_PATH);
-		DataOutputStream output = new DataOutputStream(new FileOutputStream(PACKED_FILE_PATH));
-		if (directory.isDirectory()) {
-			for (File file : directory.listFiles()) {
-				if (file.isFile()) {
-					BufferedReader input = new BufferedReader(new FileReader(file));
-					int id = Integer.parseInt(file.getName().substring(0, file.getName().indexOf(".")));
-					int[] keys = new int[4];
-					output.writeShort(id);
-					for (int i = 0; i < 4; i++) {
-						String line = input.readLine();
-						try {
-							if (line != null) {
-								keys[i] = Integer.parseInt(line);
-							} else {
-								System.out.println("Corrupted XTEA file : " + id);
-								keys[i] = 0;
-							}
-						} catch (NumberFormatException e) {
-							System.out.println("Corrupted XTEA file : " + id + "; line: " + line);
-							keys[i] = 0;
-						}
-						output.writeInt(keys[i]);
-					}
-					input.close();
-					mapKeys.put(id, keys);
-				}
-			}
-		}
-		output.close();
-	}
-
-	/**
-	 * Gets the keys of a regionId
-	 *
-	 * @param regionId
-	 * 		The region id
-	 */
-	public static int[] getKey(int regionId) {
-		return mapKeys.get(regionId);
-	}
-
+    private val logger = InlineLogger()
 }

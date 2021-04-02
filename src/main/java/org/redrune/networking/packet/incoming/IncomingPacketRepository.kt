@@ -25,7 +25,7 @@ object IncomingPacketRepository {
         Misc.getClasses(IncomingPacketRepository::class.java.getPackage().name + ".impl").stream()
             .filter { obj: Any? -> IncomingPacketReader::class.java.isInstance(obj) }
             .forEach { clazz: Any -> include(clazz as IncomingPacketReader) }
-        println("Initialized " + PACKET_MAP.size + " incoming packet decoders")
+        logger.info { "Initialized " + PACKET_MAP.size + " incoming packet decoders" }
     }
 
     /**
