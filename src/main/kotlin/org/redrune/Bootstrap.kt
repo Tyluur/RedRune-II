@@ -1,6 +1,8 @@
 package org.redrune
 
 import com.github.michaelbull.logging.InlineLogger
+import org.koin.core.context.startKoin
+import org.koin.logger.slf4jLogger
 import org.redrune.cache.Cache
 import org.redrune.cache.huffman.Huffman
 import org.redrune.cache.loaders.ItemEquipIds
@@ -58,6 +60,10 @@ object Bootstrap {
      * This is a blocking method due to [BootHandler.await]
      */
     private fun initialize() {
+        startKoin {
+            slf4jLogger()
+            fileProperties("/game.properties")
+        }
         try {
             Cache.initialize()
         } catch (e: IOException) {
@@ -103,7 +109,7 @@ object Bootstrap {
         try {
             logger.info {
                 "Startup completed in " + BootHandler.getSTOPWATCH()
-                    .elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + "]"
+                    .elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + ", pvpWorld=" + GameFlags.pvpWorld + "]"
             }
             NetworkBinder.bind()
         } catch (e: Throwable) {

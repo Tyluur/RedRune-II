@@ -274,4 +274,9 @@ public class WorldTile implements Serializable {
 	public int getTileHash() {
 		return y + (x << 14) + (plane << 28);
 	}
+
+	public boolean withinArea(int bottomX, int bottomY, int topX, int topY) {
+		return getX() >= bottomX && getY() >= bottomY && getX() <= topX && getY() <= topY;
+	}
+
 }

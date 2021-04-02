@@ -15,4 +15,6 @@ public class GameFlags {
 	 * If the server was launched in host mode
 	 */
 	public static boolean hostMode;
+
+	public static boolean pvpWorld;
 }

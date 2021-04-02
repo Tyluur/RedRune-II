@@ -1,6 +1,6 @@
 package plugin.command.owner
 
-import org.redrune.game.content.entity.actor.player.design.PlayerDesign
+import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 
@@ -11,10 +11,16 @@ import org.redrune.game.entity.actor.player.Player
 class DebugCommandPlugin : CommandPlugin() {
 
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        PlayerDesign.open(player)
+        val controller = player.controllerManager.controller
+
+        logger.debug { "Your controller = $controller" }
     }
 
     override fun identifiers(): Array<String> {
         return arguments("dbg")
+    }
+
+    companion object {
+        private val logger = InlineLogger()
     }
 }
