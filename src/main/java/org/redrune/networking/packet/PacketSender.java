@@ -191,9 +191,9 @@ public class PacketSender {
 	}
 	
 	public void sendPlayerUnderNPCPriority(boolean priority) {
-		PacketBuilder output = new PacketBuilder(2);
-		output.write128Byte(priority ? 1 : 0);
-		session.write(output);
+		PacketBuilder stream = new PacketBuilder(123);
+		stream.write128Byte(priority ? 1 : 0);
+		session.write(stream);
 	}
 
 	public void sendInterFullScreen(int id, int type) {
