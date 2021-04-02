@@ -1,7 +1,7 @@
 [
   {
     "identifier": 1,
-    "name": "Blood Money Shop",
+    "name": "Mandrith's Collection",
     "items": [
       {
         "id": 11694,
@@ -24,7 +24,7 @@
         "amount": 10
       }
     ],
-    "currencyName": "BloodMoney",
+    "currencyName": "Coin",
     "generalStore": false
   },
   {

@@ -1,10 +1,10 @@
-package plugin.command.player
+package plugin.command.administrator
 
-import plugin.command.CommandManifest
 import org.redrune.game.content.plugin.type.CommandPlugin
+import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
 import org.redrune.utility.constants.SkillConstants
-import org.redrune.game.entity.actor.player.Player
+import plugin.command.CommandManifest
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

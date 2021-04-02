@@ -10,9 +10,9 @@ import org.redrune.game.entity.item.Item;
 public interface ItemConstants {
 	
 	/**
-	 * The id of blood money
+	 * The id of coins
 	 */
-	int BLOOD_MONEY = 995;
+	int COINS = 995;
 	
 	/**
 	 * The id of the gold ticket

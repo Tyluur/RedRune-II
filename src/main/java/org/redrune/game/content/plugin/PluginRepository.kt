@@ -490,7 +490,7 @@ object PluginRepository {
      */
     @JvmStatic
     fun handleCommand(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        if (args.size == 0) {
+        if (args.isEmpty()) {
             return
         }
         val name = args[0]
@@ -500,7 +500,7 @@ object PluginRepository {
             return
         }
         // verifying parameters
-        val manifest: CommandManifest = command.manifest
+        val manifest: CommandManifest? = command.manifest
         if (command.clientCommandOnly() && !clientCommand) {
             CommandPlugin.sendResponse(player, "Unexpected command entry type, please report this on forums.", false)
             return

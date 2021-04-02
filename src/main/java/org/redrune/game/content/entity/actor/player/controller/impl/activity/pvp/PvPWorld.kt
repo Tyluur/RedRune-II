@@ -43,7 +43,6 @@ class PvPWorld : Controller() {
         Wilderness.checkBoosts(player)
         showSkull()
         moved()
-        logger.info { "Started the pvp world controller" }
     }
 
     override fun login(): Boolean {
@@ -63,7 +62,7 @@ class PvPWorld : Controller() {
         if (!canAttack(target)) {
             return false
         }
-        if (target.getAttackedBy() !== player && player.attackedBy !== target) {
+        if (target.attackedBy !== player && player.attackedBy !== target) {
             player.attributes.setWildernessSkull()
         }
         return true

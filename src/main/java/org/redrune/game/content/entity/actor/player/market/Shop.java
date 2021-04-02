@@ -232,7 +232,7 @@ public final class Shop {
 			return false;
 		}
 		// TODO untradeables
-		if (itemId == ItemConstants.BLOOD_MONEY /*|| ItemRepository.isUntradeable(itemId)*/) {
+		if (itemId == ItemConstants.COINS /*|| ItemRepository.isUntradeable(itemId)*/) {
 			return false;
 		}
 		if (isGeneralStore()) {

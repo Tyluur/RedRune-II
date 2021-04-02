@@ -128,10 +128,12 @@ public final class World {
      * Checks the controllers that the player should be in after they move.
      */
     public static void checkControllersAtMove(Player player) {
-        if (Wilderness.isAtWild(player)) {
-            player.getControllerManager().startController("Wilderness");
-        } else if (PvPWorld.Companion.isAtPvpArea(player)) {
-            player.getControllerManager().startController("PvPWorld");
+        if (player.getControllerManager().getController() == null) {
+            if (Wilderness.isAtWild(player)) {
+                player.getControllerManager().startController("Wilderness");
+            } else if (PvPWorld.Companion.isAtPvpArea(player)) {
+                player.getControllerManager().startController("PvPWorld");
+            }
         }
     }
 
