@@ -1,179 +1,177 @@
-package org.redrune.game.global.punishment;
+package org.redrune.game.global.punishment
 
-import com.google.gson.reflect.TypeToken;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.file.JsonFileManager;
-import org.redrune.utility.functions.Misc;
-import org.redrune.utility.game.entity.actor.player.PlayerSaving;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Collectors;
-
-import static org.redrune.utility.functions.GsonFunctions.GSON;
+import com.github.michaelbull.logging.InlineLogger
+import com.google.gson.reflect.TypeToken
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.file.JsonFileManager
+import org.redrune.utility.functions.GsonFunctions
+import org.redrune.utility.functions.Misc
+import org.redrune.utility.game.entity.actor.player.PlayerSaving.fromFile
+import java.io.File
+import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.stream.Collectors
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/13/2017
  */
-public class PunishmentRepository {
-	
-	/**
-	 * The punishments that exist in the world
-	 */
-	private static final List<Punishment> PUNISHMENTS = new ArrayList<>();
-	
-	/**
-	 * The location of all item characteristics
-	 */
-	private static final String PUNISHMENTS_FILE_LOCATION = "./data/saves/punishments.json";
-	
-	/**
-	 * The queue of punishments awaiting addition
-	 */
-	private static final Queue<Punishment> AWAITING_ADDITION = new ConcurrentLinkedQueue<>();
-	
-	/**
-	 * Loads all punishments
-	 */
-	public static void loadAll() {
-		List<Punishment> punishments = getPunishmentsFromFile();
-		if (punishments == null) {
-			punishments = new ArrayList<>();
-		}
-		PUNISHMENTS.addAll(punishments);
-		System.out.println("Loaded " + PUNISHMENTS.size() + " punishments from file " + new File(PUNISHMENTS_FILE_LOCATION).getPath());
-	}
-	
-	/**
-	 * Adds a punishment to the queue awaiting addition
-	 */
-	public static boolean addToQueue(Punishment punishment) {
-		return AWAITING_ADDITION.add(punishment);
-	}
-	
-	/**
-	 * Gets the queue of punishments awaiting addition
-	 */
-	public static Queue<Punishment> getQueue() {
-		return AWAITING_ADDITION;
-	}
-	
-	/**
-	 * Adds a punishment to the collection of punishments {@link #PUNISHMENTS}
-	 *
-	 * @param save
-	 * 		If we should save to the file
-	 */
-	public static void add(Punishment punishment, boolean save) {
-		boolean added = PUNISHMENTS.add(punishment);
-		if (save) {
-			JsonFileManager.save(PUNISHMENTS, PUNISHMENTS_FILE_LOCATION);
-		}
-		punishment.notify(true, added);
-		if (added && punishment.getAdditionEvent() != null) {
-			punishment.getAdditionEvent().run();
-		}
-	}
-	
-	/**
-	 * Deletes a punishment and updates the file if requested
-	 */
-	public static boolean delete(Punishment punishment, boolean save) {
-		boolean removed = PUNISHMENTS.removeIf(p -> p.equals(punishment));
-		if (save) {
-			JsonFileManager.save(PUNISHMENTS, PUNISHMENTS_FILE_LOCATION);
-		}
-		punishment.notify(false, removed);
-		return removed;
-	}
-	
-	/**
-	 * Gets the characteristic instance from a file
-	 */
-	private static List<Punishment> getPunishmentsFromFile() {
-		File file = new File(PUNISHMENTS_FILE_LOCATION);
-		if (!file.exists()) {
-			return null;
-		}
-		String text = Misc.getText(PUNISHMENTS_FILE_LOCATION);
-		return GSON.fromJson(text, new TypeToken<List<Punishment>>() {
-		}.getType());
-	}
-	
-	/**
-	 * Checks if the player has any of the following punishments
-	 */
-	public static boolean isPunished(Player player, PunishmentType... types) {
-		List<PunishmentType> typeList = new ArrayList<>(Arrays.asList(types));
-		List<Punishment> applicable = PUNISHMENTS.stream().filter(punishment -> typeList.contains(punishment.getType())).collect(Collectors.toList());
-		for (Punishment punishment : applicable) {
-			switch (punishment.getType()) {
-				case PLAYER_MUTE:
-					if (punishment.getPunished().equals(player.getUsername())) {
-						return true;
-					}
-					break;
-				case PLAYER_BAN:
-					if (punishment.getPunished().equals(player.getUsername())) {
-						return true;
-					}
-					break;
-				case ADDRESS_MUTE:
-					if (punishment.getIp().orElse("n/a").equals(player.getSession().getIPAddress()) || punishment.getMac().orElse("n/a").equals(player.getSession().getMacAddress())) {
-						return true;
-					}
-					break;
-				case ADDRESS_BAN:
-					if (punishment.getIp().orElse("n/a").equals(player.getSession().getIPAddress()) || punishment.getMac().orElse("n/a").equals(player.getSession().getMacAddress())) {
-						return true;
-					}
-					break;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Gets all the punishments
-	 */
-	public static List<Punishment> getPunishments() {
-		return PUNISHMENTS;
-	}
-	
-	/**
-	 * Finds all punishments that match the name and type
-	 */
-	public static List<Punishment> findPunishments(String name, Player target, PunishmentType type) {
-		List<Punishment> punishments = new ArrayList<>();
-		for (Punishment punishment : PUNISHMENTS) {
-			if (punishment.getType() != type) {
-				continue;
-			}
-			switch (punishment.getType()) {
-				case PLAYER_MUTE:
-				case PLAYER_BAN:
-					if (punishment.getPunished().equals(name)) {
-						punishments.add(punishment);
-					}
-					break;
-				case ADDRESS_MUTE:
-					if (target != null && (target.getSession().getIPAddress().equals(punishment.getIp().orElse("n/a")) || target.getSession().getMacAddress().equals(punishment.getMac().orElse("n/a")))) {
-						punishments.add(punishment);
-					}
-					break;
-				case ADDRESS_BAN:
-					target = PlayerSaving.fromFile(name);
-					if (target != null && (target.getAttributes().getLastIP().equals(punishment.getIp().orElse("n/a")) || target.getAttributes().getLastMac().equals(punishment.getMac().orElse("n/a")))) {
-						punishments.add(punishment);
-					}
-					break;
-			}
-		}
-		return punishments;
-	}
+object PunishmentRepository {
+    /**
+     * The punishments that exist in the world
+     */
+    private val PUNISHMENTS: MutableList<Punishment> = ArrayList()
+
+    /**
+     * The location of all item characteristics
+     */
+    private const val PUNISHMENTS_FILE_LOCATION = "./data/saves/punishments.json"
+    /**
+     * Gets the queue of punishments awaiting addition
+     */
+    /**
+     * The queue of punishments awaiting addition
+     */
+    val queue: Queue<Punishment> = ConcurrentLinkedQueue()
+
+    /**
+     * Loads all punishments
+     */
+    fun loadAll() {
+        var punishments = punishmentsFromFile
+        if (punishments == null) {
+            punishments = ArrayList()
+        }
+        PUNISHMENTS.addAll(punishments)
+        logger.info { ("Loaded " + PUNISHMENTS.size + " punishments from file " + File(PUNISHMENTS_FILE_LOCATION).path) }
+    }
+
+    /**
+     * Adds a punishment to the queue awaiting addition
+     */
+    @JvmStatic
+    fun addToQueue(punishment: Punishment): Boolean {
+        return queue.add(punishment)
+    }
+
+    /**
+     * Adds a punishment to the collection of punishments [.PUNISHMENTS]
+     *
+     * @param save
+     * If we should save to the file
+     */
+    @JvmStatic
+    fun add(punishment: Punishment, save: Boolean) {
+        val added = PUNISHMENTS.add(punishment)
+        if (save) {
+            JsonFileManager.save<List<Punishment>>(PUNISHMENTS, PUNISHMENTS_FILE_LOCATION)
+        }
+        punishment.notify(true, added)
+        if (added && punishment.additionEvent != null) {
+            punishment.additionEvent.run()
+        }
+    }
+
+    /**
+     * Deletes a punishment and updates the file if requested
+     */
+    @JvmStatic
+    fun delete(punishment: Punishment, save: Boolean): Boolean {
+        val removed = PUNISHMENTS.removeIf { p: Punishment -> p == punishment }
+        if (save) {
+            JsonFileManager.save<List<Punishment>>(PUNISHMENTS, PUNISHMENTS_FILE_LOCATION)
+        }
+        punishment.notify(false, removed)
+        return removed
+    }
+
+    /**
+     * Gets the characteristic instance from a file
+     */
+    private val punishmentsFromFile: List<Punishment>?
+        private get() {
+            val file = File(PUNISHMENTS_FILE_LOCATION)
+            if (!file.exists()) {
+                return null
+            }
+            val text = Misc.getText(PUNISHMENTS_FILE_LOCATION)
+            return GsonFunctions.GSON.fromJson(text, object : TypeToken<List<Punishment?>?>() {}.type)
+        }
+
+    /**
+     * Checks if the player has any of the following punishments
+     */
+    @JvmStatic
+    fun isPunished(player: Player, vararg types: PunishmentType?): Boolean {
+        val typeList: List<PunishmentType> = ArrayList(Arrays.asList(*types))
+        val applicable = PUNISHMENTS.stream().filter { punishment: Punishment -> typeList.contains(punishment.type) }
+            .collect(Collectors.toList())
+        for (punishment in applicable) {
+            when (punishment.type) {
+                PunishmentType.PLAYER_MUTE -> if (punishment.punished == player.username) {
+                    return true
+                }
+                PunishmentType.PLAYER_BAN -> if (punishment.punished == player.username) {
+                    return true
+                }
+                PunishmentType.ADDRESS_MUTE -> if (punishment.ip.orElse("n/a") == player.session.iPAddress || punishment.mac.orElse(
+                        "n/a"
+                    ) == player.session.macAddress
+                ) {
+                    return true
+                }
+                PunishmentType.ADDRESS_BAN -> if (punishment.ip.orElse("n/a") == player.session.iPAddress || punishment.mac.orElse(
+                        "n/a"
+                    ) == player.session.macAddress
+                ) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    /**
+     * Gets all the punishments
+     */
+    @JvmStatic
+    val punishments: List<Punishment>
+        get() = PUNISHMENTS
+
+    /**
+     * Finds all punishments that match the name and type
+     */
+    @JvmStatic
+    fun findPunishments(name: String, target: Player?, type: PunishmentType): List<Punishment> {
+        var target = target
+        val punishments: MutableList<Punishment> = ArrayList()
+        for (punishment in PUNISHMENTS) {
+            if (punishment.type !== type) {
+                continue
+            }
+            when (punishment.type) {
+                PunishmentType.PLAYER_MUTE, PunishmentType.PLAYER_BAN -> if (punishment.punished == name) {
+                    punishments.add(punishment)
+                }
+                PunishmentType.ADDRESS_MUTE -> if (target != null && (target.session.iPAddress == punishment.ip.orElse("n/a") || target.session.macAddress == punishment.mac.orElse(
+                        "n/a"
+                    ))
+                ) {
+                    punishments.add(punishment)
+                }
+                PunishmentType.ADDRESS_BAN -> {
+                    target = fromFile(name)
+                    if (target != null && (target.attributes.lastIP == punishment.ip.orElse("n/a") || target.attributes.lastMac == punishment.mac.orElse(
+                            "n/a"
+                        ))
+                    ) {
+                        punishments.add(punishment)
+                    }
+                }
+            }
+        }
+        return punishments
+    }
+
+    private val logger = InlineLogger()
 }

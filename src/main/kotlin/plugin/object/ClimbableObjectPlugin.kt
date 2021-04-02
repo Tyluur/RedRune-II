@@ -17,7 +17,7 @@ class ClimbableObjectPlugin : ObjectPlugin {
     }
 
     override fun register() {
-        for (objectId in ClimbableObjectRepository.getObjectIds()) {
+        for (objectId in ClimbableObjectRepository.objectIds) {
             registerObject(objectId, "Climb")
             registerObject(objectId, "Climb-up")
             registerObject(objectId, "Climb-down")
