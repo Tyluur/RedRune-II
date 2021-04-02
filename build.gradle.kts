@@ -1,6 +1,6 @@
 plugins {
     application
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.30"
 }
 
 val koinVersion = "2.1.5"
@@ -25,6 +25,7 @@ allprojects {
         maven(url = "https://jitpack.io")
         maven(url = "https://dl.bintray.com/michaelbull/maven")
     }
+
 }
 
 application {
@@ -35,6 +36,7 @@ dependencies {
     // Java
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation(kotlin("gradle-plugin", version = "1.4.30"))
 
     // Kotlin
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
@@ -66,7 +68,7 @@ dependencies {
     implementation("it.unimi.dsi:fastutil:8.3.1")
     implementation("com.zaxxer", "HikariCP", "2.3.2")
     implementation("org.yaml", "snakeyaml", "1.26")
-    implementation ("com.sun.activation:javax.activation:1.2.0")
+    implementation("com.sun.activation:javax.activation:1.2.0")
 
     // Network
     implementation("io.netty:netty-all:4.1.44.Final")

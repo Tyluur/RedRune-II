@@ -1,63 +1,73 @@
-package org.redrune.game.content.entity.actor.player.dialogue;
+package org.redrune.game.content.entity.actor.player.dialogue
 
-import org.redrune.utility.functions.Misc;
-
-import java.util.HashMap;
+import com.github.michaelbull.logging.InlineLogger
+import org.redrune.utility.functions.Misc
+import java.util.*
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @author Matrix Team
  * @since 2/9/19
  */
-public final class DialogueHandler {
-	
-	/**
-	 * The map of cached dialogues
-	 */
-	private static final HashMap<Object, Dialogue> DIALOGUES = new HashMap<>();
-	
-	/**
-	 * Reloads all dialogues
-	 */
-	public static void reload() {
-		DIALOGUES.clear();
-		initialize();
-	}
-	
-	/**
-	 * Initializes all game dialogues
-	 */
-	public static void initialize() {
-		Misc.getClasses(DialogueHandler.class.getPackage().getName() + ".impl").stream().filter(Dialogue.class::isInstance).forEach(clazz -> {
-			try {
-				DIALOGUES.put(clazz.getClass().getSimpleName(), (Dialogue) clazz);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		System.out.println("Loaded " + DIALOGUES.size() + " game dialogues");
-	}
-	
-	/**
-	 * Gets a dialogue by the key
-	 *
-	 * @param key
-	 * 		The dialogue
-	 */
-	public static Dialogue getDialogue(Object key) {
-		if (key instanceof Dialogue) {
-			return (Dialogue) key;
-		}
-		Dialogue dialogue = DIALOGUES.get(key);
-		if (dialogue == null) {
-			System.err.println("Unable to find a dialogue for key'" + key + "'");
-			return null;
-		}
-		try {
-			return (Dialogue) Class.forName(dialogue.getClass().getName()).newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+object DialogueHandler {
+    /**
+     * The map of cached dialogues
+     */
+    private val DIALOGUES = HashMap<Any, Dialogue>()
+
+    /**
+     * Reloads all dialogues
+     */
+    fun reload() {
+        DIALOGUES.clear()
+        initialize()
+    }
+
+    /**
+     * Initializes all game dialogues
+     */
+    fun initialize() {
+        Misc.getClasses(DialogueHandler::class.java.getPackage().name + ".impl").stream()
+            .filter { obj: Any? -> Dialogue::class.java.isInstance(obj) }
+            .forEach { clazz: Any ->
+                try {
+                    DIALOGUES[clazz.javaClass.simpleName] = clazz as Dialogue
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        println("Loaded " + DIALOGUES.size + " game dialogues")
+    }
+
+    /**
+     * Gets a dialogue by the key
+     *
+     * @param key
+     * The dialogue
+     */
+    @JvmStatic
+    fun getDialogue(key: Any): Dialogue? {
+        if (key is Dialogue) {
+            return key
+        }
+        val dialogue = DIALOGUES[key]
+        if (dialogue == null) {
+            System.err.println("Unable to find a dialogue for key'$key'")
+            return null
+        }
+        return try {
+            Class.forName(dialogue.javaClass.name).newInstance() as Dialogue
+        } catch (e: InstantiationException) {
+            e.printStackTrace()
+            null
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+            null
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private val logger = InlineLogger()
 }

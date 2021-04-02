@@ -2,7 +2,6 @@ package org.redrune
 
 import com.github.michaelbull.logging.InlineLogger
 import org.koin.core.context.startKoin
-import org.koin.logger.slf4jLogger
 import org.redrune.cache.Cache
 import org.redrune.cache.huffman.Huffman
 import org.redrune.cache.loaders.ItemEquipIds
@@ -61,7 +60,6 @@ object Bootstrap {
      */
     private fun initialize() {
         startKoin {
-            slf4jLogger()
             fileProperties("/game.properties")
         }
         try {
