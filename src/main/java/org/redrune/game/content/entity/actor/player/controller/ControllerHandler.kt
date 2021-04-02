@@ -1,7 +1,6 @@
 package org.redrune.game.content.entity.actor.player.controller
 
 import com.github.michaelbull.logging.InlineLogger
-import org.redrune.game.GameFlags
 import org.redrune.game.content.entity.actor.player.controller.impl.CorpBeastController
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp.PvPWorld
@@ -28,9 +27,7 @@ object ControllerHandler {
         try {
             register("Wilderness", Wilderness::class.java)
             register("CorpBeastController", CorpBeastController::class.java)
-            if (GameFlags.pvpWorld) {
-                register("PvPWorld", PvPWorld::class.java)
-            }
+            register("PvPWorld", PvPWorld::class.java)
             logger.info { "Successfully registered ${CACHED_CONTROLLERS.size} controllers." }
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()

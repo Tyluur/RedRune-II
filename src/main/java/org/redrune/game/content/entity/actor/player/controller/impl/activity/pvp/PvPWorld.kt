@@ -47,11 +47,13 @@ class PvPWorld : Controller() {
     }
 
     override fun login(): Boolean {
+        updateWildLevel()
+        moved()
         return super.login()
     }
 
     override fun logout(): Boolean {
-        return super.logout()
+        return false
     }
 
     override fun keepCombating(target: Actor): Boolean {
