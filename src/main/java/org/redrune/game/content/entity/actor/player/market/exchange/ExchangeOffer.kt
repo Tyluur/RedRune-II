@@ -2,6 +2,7 @@ package org.redrune.game.content.entity.actor.player.market.exchange
 
 import org.redrune.game.entity.item.Item
 import org.redrune.game.entity.item.ItemsContainer
+import org.redrune.game.global.World
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -86,4 +87,20 @@ data class ExchangeOffer(
     fun isFinished(): Boolean {
         return amountProcessed >= amountRequested
     }
+
+
+    fun notifyUpdated() {
+        val player = World.getPlayerByDisplayName(owner) ?: return
+        var hasOpen = false
+        if (player.interfaceManager.containsInterface(105)
+            || player.interfaceManager.containsTab(105)
+        ) {
+            ExchangeManager.sendProgress(player)
+            hasOpen = true
+        }
+        if (!hasOpen) {
+            player.packets.sendMessage("One or more of your grand exchange offers have been updated!")
+        }
+    }
+
 }

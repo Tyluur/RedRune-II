@@ -191,11 +191,11 @@ public class PacketSender {
 	}
 	
 	public void sendPlayerUnderNPCPriority(boolean priority) {
-		PacketBuilder stream = new PacketBuilder(123);
-		stream.write128Byte(priority ? 1 : 0);
-		session.write(stream);
+		PacketBuilder output = new PacketBuilder(2);
+		output.write128Byte(priority ? 1 : 0);
+		session.write(output);
 	}
-	
+
 	public void sendInterFullScreen(int id, int type) {
 		int[] xteas = new int[4];
 		player.getInterfaceManager().setWindowsPane(id);
@@ -1255,7 +1255,7 @@ public class PacketSender {
 		output.writeInt(price * amountSold);
 		session.write(output);
 	}
-	
+
 	public void sendInterFlashScript(int interfaceId, int componentId, int width, int height, int slot) {
 		Object[] parameters = new Object[4];
 		int index = 0;

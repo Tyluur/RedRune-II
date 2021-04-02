@@ -10,6 +10,7 @@ import plugin.command.CommandManifest
  */
 @CommandManifest(description = "Spawns an item", types = [Int::class])
 class ItemSpawnCommandPlugin : CommandPlugin() {
+
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         val itemId = intParam(args, 1)
         val amount = intParamOrDefault(args, 2, 1)

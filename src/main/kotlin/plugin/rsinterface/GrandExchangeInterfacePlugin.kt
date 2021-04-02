@@ -122,13 +122,10 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                     206, 208 -> {
                         val slot = player.getTemporaryAttribute("exchange_slot", 0)
 
-                        logger.info { "collecting slot $slot"}
                         val offer =
                             (player.attributes.offers[slot] ?: return true)
 
-                        logger.info { "col offer $offer"}
-
-                        collectItem(player, offer, slotId, packetId, componentId)
+                        collectItem(player, offer, offer.itemId, packetId, componentId)
                     }
                 }
             }
@@ -152,6 +149,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         val item = offer.getItemsToCollect().lookup(itemId) ?: return
         val freeSlots = player.inventory.freeSlots
 
+        logger.info { "Freeslots: $freeSlots" }
         if (freeSlots == 0) {
             player.packets.sendMessage("Not enough space in your inventory.")
             return
@@ -167,10 +165,12 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         if (!item.definitions.isStackable && amount == 1 && option == 2) {
             toNote = true
         }
-        var newId = if (toNote) ItemDefinitions.getItemDefinitions(itemId).getCertId() else itemId
+
+        var newId = if (toNote) ItemDefinitions.getItemDefinitions(itemId).certId else itemId
         if (newId == -1) {
             newId = itemId
         }
+
         val amountReq: Int = offer.amountRequested
         val received = Item(newId, amount)
 
@@ -185,6 +185,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
             offer.surplus = 0
         }
 
+        logger.info { "amountProcessed: ${offer.amountProcessed}" }
         if (offer.aborted) {
             player.attributes.offers[offer.slot] = null
             ExchangeManager.open(player)

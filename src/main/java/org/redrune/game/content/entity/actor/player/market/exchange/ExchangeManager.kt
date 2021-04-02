@@ -105,7 +105,7 @@ object ExchangeManager {
      * @param player
      * 		The player
      */
-    private fun sendProgress(player: Player) {
+    internal fun sendProgress(player: Player) {
         for (i in 0..5) {
             player.packets.sendGrandExchangeBar(i, 0, ExchangeConfiguration.Progress.RESET, 0, 0, 0);
         }
