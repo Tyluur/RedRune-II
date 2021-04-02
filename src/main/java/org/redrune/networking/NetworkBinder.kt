@@ -15,15 +15,15 @@ import org.redrune.utility.constants.NetworkConstants
 /**
  * This is the network binder for the main game protocol. This initializes the main game server and the update server.
  *
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/18/2017
  */
 @Sharable
 object NetworkBinder {
+
     /**
      * Binds to port [NetworkConstants.PORT_ID]
      */
-    @Throws(InterruptedException::class)
     fun bind() {
         val bossGroup: EventLoopGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)
         val workerGroup: EventLoopGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)

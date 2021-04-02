@@ -1,6 +1,7 @@
 package org.redrune
 
 import com.github.michaelbull.logging.InlineLogger
+import kotlinx.coroutines.runBlocking
 import org.koin.core.context.startKoin
 import org.redrune.cache.Cache
 import org.redrune.cache.huffman.Huffman
@@ -31,6 +32,9 @@ import org.redrune.utility.game.map.MapArchiveKeys
 import org.redrune.utility.game.repository.`object`.climbable.ClimbableObjectRepository
 import org.redrune.utility.game.repository.`object`.door.DoorRepository
 import org.redrune.utility.game.repository.npc.NPCWalkingFlag
+import org.redrune.utility.getBoolProperty
+import org.redrune.utility.getIntProperty
+import org.redrune.utility.getProperty
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -46,9 +50,8 @@ object Bootstrap {
      * The main method invoked by the jvm
      */
     @JvmStatic
-    fun main(args: Array<String>) {
-        // startup work
-        initialize()
+    fun main(args: Array<String>) = runBlocking {
+        boot()
     }
 
     /**
@@ -58,7 +61,7 @@ object Bootstrap {
      *
      * This is a blocking method due to [BootHandler.await]
      */
-    private fun initialize() {
+    private fun boot() {
         startKoin {
             fileProperties("/game.properties")
         }
@@ -104,15 +107,31 @@ object Bootstrap {
             MapMerger.start()
         })
         BootHandler.await()
-        try {
-            logger.info {
-                "Startup completed in " + BootHandler.getSTOPWATCH()
-                    .elapsed(TimeUnit.MILLISECONDS) + " milliseconds [hostMode=" + GameFlags.hostMode + ", debugMode=" + GameFlags.debugMode + ", pvpWorld=" + GameFlags.pvpWorld + "]"
-            }
-            NetworkBinder.bind()
-        } catch (e: Throwable) {
-            e.printStackTrace()
+        launch()
+    }
+
+    private fun launch() {
+        val name = getProperty("name")
+        val worldId = getIntProperty("world_id")
+        val pvpWorld = getBoolProperty("pvp_world")
+        val hostMode = getBoolProperty("host_mode")
+        val debugMode = getBoolProperty("debug_mode")
+
+        GameFlags.debugMode = debugMode
+        GameFlags.hostMode = hostMode
+        GameFlags.pvpWorld = pvpWorld
+
+        val elapsed = BootHandler.getSTOPWATCH().elapsed(TimeUnit.MILLISECONDS)
+
+        logger.info {
+            "Parameters: [hostMode=$hostMode, debugMode=$debugMode, pvpWorld=$pvpWorld]"
         }
+
+        logger.info {
+            "$name successfully launched world $worldId in $elapsed ms."
+        }
+
+        NetworkBinder.bind()
     }
 
     private val logger = InlineLogger()
