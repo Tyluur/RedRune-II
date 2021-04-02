@@ -8,6 +8,7 @@ import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeType
 import org.redrune.game.global.World
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.function.Consumer
 import java.util.stream.Collectors
 import kotlin.Int as Int1
 
@@ -37,6 +38,12 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
         for (offer in queuedProcess) {
             synchronized(lock) {
+                // the list of offer that are a barter to the current offer
+                val sortedBarters: List<ExchangeOffer> = getOffersByType(
+                    offers,
+                    if (offer.type == ExchangeType.BUY) ExchangeType.SELL else ExchangeType.BUY
+                )
+
                 when (offer.type) {
                     ExchangeType.BUY -> {
                         val autoBuy = ExchangeManager.isBuyable(offer.itemId)
@@ -54,13 +61,8 @@ class ExchangeTask : ScheduledTask(6, -1) {
                                     offer.price
                                 )
                             offers.add(sellOffer)
+                            logger.info { "Successfully automatically handled offer [offer: $offer]" }
                         }
-                        // the list of offer that are a barter to the current offer
-                        val sortedBarters: List<ExchangeOffer> = getOffersByType(
-                            offers,
-                            if (offer.type == ExchangeType.BUY) ExchangeType.SELL else ExchangeType.BUY
-                        )
-
                         for (sellOffer in sortedBarters) {
                             val buyPrice: Int1 = offer.price
                             val buy: Int1 = offer.amountRequested - offer.amountReceived
@@ -96,12 +98,12 @@ class ExchangeTask : ScheduledTask(6, -1) {
                             offer.amountReceived = (offer.amountReceived + newAmount)
 
                             offer.notifyUpdated()
-
-                            logger.info { "Successfully automatically handled offer [offer: $offer]" }
                         }
                     }
                     ExchangeType.SELL -> {
-
+                        if (!sortedBarters.isEmpty()) {
+                            sortedBarters.forEach(Consumer { offer: ExchangeOffer? -> queue(offer) })
+                        }
                     }
                 }
             }

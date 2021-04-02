@@ -218,7 +218,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                         val offer =
                             (player.attributes.offers[slot] ?: return true)
 
-                        collectItem(player, offer, offer.itemId, packetId, componentId)
+                        collectItem(player, offer, itemId, packetId, componentId)
                     }
                     // abort via information screen:
                     200 -> {
@@ -370,7 +370,13 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
      * The packet id
      */
     private fun collectItem(player: Player, offer: ExchangeOffer, itemId: Int, packetId: Int, componentId: Int) {
-        val item = offer.getItemsToCollect().lookup(itemId) ?: return
+        val item = offer.getItemsToCollect().lookup(itemId)
+
+        if (item == null) {
+            logger.error { "Unable to find item to collect [itemId:$itemId]" }
+            return
+        }
+
         val freeSlots = player.inventory.freeSlots
 
         logger.info { "Freeslots: $freeSlots" }
