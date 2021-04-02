@@ -36,7 +36,7 @@ object DialogueHandler {
                     e.printStackTrace()
                 }
             }
-        println("Loaded " + DIALOGUES.size + " game dialogues")
+        logger.info { "Loaded " + DIALOGUES.size + " game dialogues" }
     }
 
     /**
@@ -52,7 +52,7 @@ object DialogueHandler {
         }
         val dialogue = DIALOGUES[key]
         if (dialogue == null) {
-            System.err.println("Unable to find a dialogue for key'$key'")
+            logger.error { "Unable to find a dialogue for key'$key'" }
             return null
         }
         return try {

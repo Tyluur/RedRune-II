@@ -40,6 +40,6 @@ public abstract class SpecialAttackPlugin implements Plugin, SkillConstants, Equ
 	
 	@Override
 	public void register() {
-		PluginRepository.register(this, getWeaponIds());
+		PluginRepository.INSTANCE.register(this, getWeaponIds());
 	}
 }

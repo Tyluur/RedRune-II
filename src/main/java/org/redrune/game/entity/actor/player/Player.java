@@ -728,7 +728,7 @@ public class Player extends Actor {
         emotesManager.refreshListConfigs();
 
         if (attributes.getCurrentFriendChatOwner() != null) {
-            FriendChatsManager.joinChat(attributes.getCurrentFriendChatOwner(), this);
+            FriendChatsManager.Companion.joinChat(attributes.getCurrentFriendChatOwner(), this);
             if (currentFriendChat == null) {
                 attributes.setCurrentFriendChatOwner(null);
             }

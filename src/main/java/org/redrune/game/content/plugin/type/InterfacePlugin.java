@@ -36,6 +36,6 @@ public interface InterfacePlugin extends Plugin {
 	 * 		The id of the interfaces that will be registered
 	 */
 	default void registerInterfacePlugin(int... interfaceIds) {
-		PluginRepository.register(this, interfaceIds);
+		PluginRepository.INSTANCE.register(this, interfaceIds);
 	}
 }

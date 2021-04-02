@@ -16,7 +16,7 @@ import java.util.*
 class ListCommandsCommandPlugin : CommandPlugin() {
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         val messages = ArrayList<String>()
-        val commands = PluginRepository.getCommands()
+        val commands = PluginRepository.commands
 
         for (command in commands) {
             if (!player.rightsContains(command.rightRequired)) {

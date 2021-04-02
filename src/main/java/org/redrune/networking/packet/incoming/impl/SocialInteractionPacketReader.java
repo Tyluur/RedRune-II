@@ -39,7 +39,7 @@ public class SocialInteractionPacketReader implements IncomingPacketReader {
 				return new PacketContext() {
 					@Override
 					public void handle(Player player) {
-						FriendChatsManager.joinChat(name, player);
+						FriendChatsManager.Companion.joinChat(name, player);
 					}
 				};
 			}

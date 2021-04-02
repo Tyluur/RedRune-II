@@ -28,7 +28,6 @@ object ControllerHandler {
             register("Wilderness", Wilderness::class.java)
             register("CorpBeastController", CorpBeastController::class.java)
             register("PvPWorld", PvPWorld::class.java)
-            println("Loaded " + CACHED_CONTROLLERS.size + " game controllers")
             logger.info { "Successfully registered ${CACHED_CONTROLLERS.size} controllers." }
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()

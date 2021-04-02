@@ -29,7 +29,7 @@ public abstract class RangeWeaponPlugin implements Plugin {
 	
 	@Override
 	public void register() {
-		PluginRepository.register(this, getWeaponNames());
+		PluginRepository.INSTANCE.register(this, getWeaponNames());
 	}
 	
 	/**

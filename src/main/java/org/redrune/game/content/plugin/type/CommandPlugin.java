@@ -52,7 +52,7 @@ public abstract class CommandPlugin implements Plugin {
 		if (manifest != null) {
 			setManifest(manifest);
 		}
-		PluginRepository.register(this, identifiers());
+		PluginRepository.INSTANCE.register(this, identifiers());
 	}
 	
 	/**

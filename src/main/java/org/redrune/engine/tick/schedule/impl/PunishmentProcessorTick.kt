@@ -1,37 +1,34 @@
-package org.redrune.engine.tick.schedule.impl;
+package org.redrune.engine.tick.schedule.impl
 
-import org.redrune.engine.tick.schedule.ScheduledTask;
-import org.redrune.game.global.punishment.Punishment;
-import org.redrune.game.global.punishment.PunishmentRepository;
-
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import org.redrune.engine.tick.schedule.ScheduledTask
+import org.redrune.game.global.punishment.Punishment
+import org.redrune.game.global.punishment.PunishmentRepository.add
+import org.redrune.game.global.punishment.PunishmentRepository.delete
+import org.redrune.game.global.punishment.PunishmentRepository.punishments
+import org.redrune.game.global.punishment.PunishmentRepository.queue
+import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 9/13/2017
  */
-public class PunishmentProcessorTick extends ScheduledTask {
-	
-	public PunishmentProcessorTick() {
-		super(5, -1);
-	}
-	
-	@Override
-	public void run() {
-		Queue<Punishment> awaiting = PunishmentRepository.getQueue();
-		Punishment punishment;
-		while ((punishment = awaiting.poll()) != null) {
-			PunishmentRepository.add(punishment, awaiting.isEmpty());
-		}
-		Queue<Punishment> deleting = new LinkedBlockingQueue<>();
-		for (Punishment p : PunishmentRepository.getPunishments()) {
-			if (p.hasExpired()) {
-				deleting.add(p);
-			}
-		}
-		while((punishment = deleting.poll()) != null) {
-			PunishmentRepository.delete(punishment, deleting.isEmpty());
-		}
-	}
+class PunishmentProcessorTick : ScheduledTask(5, -1) {
+
+    override fun run() {
+        val awaiting = queue
+        var punishment: Punishment?
+        while (awaiting.poll().also { punishment = it } != null) {
+            add(punishment!!, awaiting.isEmpty())
+        }
+        val deleting: Queue<Punishment> = LinkedBlockingQueue()
+        for (p in punishments) {
+            if (p.hasExpired()) {
+                deleting.add(p)
+            }
+        }
+        while (deleting.poll().also { punishment = it } != null) {
+            delete(punishment!!, deleting.isEmpty())
+        }
+    }
 }

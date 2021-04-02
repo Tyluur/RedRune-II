@@ -191,7 +191,7 @@ public class ContactManager implements Serializable {
 					if (chatName != null) {
 						chatName = null;
 						refreshChatName();
-						FriendChatsManager.destroyChat(player);
+						FriendChatsManager.Companion.destroyChat(player);
 					}
 				}
 			} else if (componentId == 23) {
