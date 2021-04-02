@@ -1,43 +1,45 @@
-package org.redrune.game.content.entity.actor.player.cutscene;
+package org.redrune.game.content.entity.actor.player.cutscene
 
-import org.redrune.game.content.entity.actor.player.cutscene.impl.*;
+import com.github.michaelbull.logging.InlineLogger
+import org.redrune.game.content.entity.actor.player.cutscene.impl.*
+import java.util.*
 
-import java.util.HashMap;
+object CutscenesHandler {
+    private val HANDLED_CUTSCENES = HashMap<Any, Class<Cutscene>>()
+    fun reload() {
+        HANDLED_CUTSCENES.clear()
+        init()
+    }
 
-public class CutscenesHandler {
-	
-	private static final HashMap<Object, Class<Cutscene>> HANDLED_CUTSCENES = new HashMap<>();
-	
-	public static void reload() {
-		HANDLED_CUTSCENES.clear();
-		init();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void init() {
-		try {
-			HANDLED_CUTSCENES.put("EdgeWilderness", (Class<Cutscene>) Class.forName(EdgeWilderness.class.getCanonicalName()));
-			HANDLED_CUTSCENES.put("DTPreview", (Class<Cutscene>) Class.forName(DTPreview.class.getCanonicalName()));
-			HANDLED_CUTSCENES.put("NexCutScene", (Class<Cutscene>) Class.forName(NexCutScene.class.getCanonicalName()));
-			HANDLED_CUTSCENES.put("TowersPkCutscene", (Class<Cutscene>) Class.forName(TowersPkCutscene.class.getCanonicalName()));
-			HANDLED_CUTSCENES.put("HomeCutScene", (Class<Cutscene>) Class.forName(HomeCutScene.class.getCanonicalName()));
-			HANDLED_CUTSCENES.put("NewStartTutorial", (Class<Cutscene>) Class.forName(NewStartTutorial.class.getCanonicalName()));
-			System.out.println("Loaded " + HANDLED_CUTSCENES.size() + " game cutscenes");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static Cutscene getCutscene(Object key) {
-		Class<Cutscene> classC = HANDLED_CUTSCENES.get(key);
-		if (classC == null) {
-			return null;
-		}
-		try {
-			return classC.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    fun init() {
+        try {
+            HANDLED_CUTSCENES["EdgeWilderness"] =
+                Class.forName(EdgeWilderness::class.java.canonicalName) as Class<Cutscene>
+            HANDLED_CUTSCENES["DTPreview"] = Class.forName(DTPreview::class.java.canonicalName) as Class<Cutscene>
+            HANDLED_CUTSCENES["NexCutScene"] = Class.forName(NexCutScene::class.java.canonicalName) as Class<Cutscene>
+            HANDLED_CUTSCENES["TowersPkCutscene"] =
+                Class.forName(TowersPkCutscene::class.java.canonicalName) as Class<Cutscene>
+            HANDLED_CUTSCENES["HomeCutScene"] = Class.forName(HomeCutScene::class.java.canonicalName) as Class<Cutscene>
+            HANDLED_CUTSCENES["NewStartTutorial"] =
+                Class.forName(NewStartTutorial::class.java.canonicalName) as Class<Cutscene>
+            logger.info { ("Loaded " + HANDLED_CUTSCENES.size + " game cutscenes") }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    @JvmStatic
+    fun getCutscene(key: Any): Cutscene? {
+        val classC = HANDLED_CUTSCENES[key] ?: return null
+        try {
+            return classC.newInstance()
+        } catch (e: InstantiationException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private val logger = InlineLogger()
 }

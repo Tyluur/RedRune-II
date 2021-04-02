@@ -1,49 +1,45 @@
-package org.redrune.utility.game.entity.object;
+package org.redrune.utility.game.entity.`object`
 
-import com.google.gson.reflect.TypeToken;
-import org.redrune.game.entity.object.WorldObject;
-import org.redrune.game.global.map.region.RegionManager;
-import org.redrune.utility.functions.Misc;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.redrune.utility.functions.GsonFunctions.GSON;
+import com.github.michaelbull.logging.InlineLogger
+import com.google.gson.reflect.TypeToken
+import org.redrune.game.entity.`object`.WorldObject
+import org.redrune.game.global.map.region.RegionManager
+import org.redrune.utility.functions.GsonFunctions
+import org.redrune.utility.functions.Misc
+import java.io.File
+import java.util.*
+import java.util.function.Consumer
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 2019-01-31
  */
-public class ObjectSpawning {
-
+object ObjectSpawning {
     /**
      * The location of all door mappings
      */
-    private static final String STORAGE_FILE_LOCATION = "./data/repository/object/object_spawns.json";
+    private const val STORAGE_FILE_LOCATION = "./data/repository/object/object_spawns.json"
 
     /**
      * The map of objects to spawn, key being the region id, and the value being the list of objects in that region
      */
-    private static final Map<Integer, List<WorldObject>> OBJECTS_TO_SPAWN = new HashMap<>();
+    private val OBJECTS_TO_SPAWN = HashMap<Int, MutableList<WorldObject>?>()
 
     /**
      * Initializes the object spawns
      */
-    public static void initialize() {
-        List<WorldObject> objectList = loadObjectsFromFile();
+    fun initialize() {
+        var objectList = loadObjectsFromFile()
         if (objectList == null) {
-            objectList = new ArrayList<>();
+            objectList = ArrayList<WorldObject>()
         }
-        OBJECTS_TO_SPAWN.clear();
-        int count = 0;
-        for (WorldObject object : objectList) {
-            addObject(object);
-            count++;
+        OBJECTS_TO_SPAWN.clear()
+        var count = 0
+        for (`object` in objectList!!) {
+            addObject(`object`)
+            count++
         }
-        System.out.println("Loaded " + count + " objects to spawn");
+        logger.info { "Loaded $count objects to spawn" }
     }
 
     /**
@@ -51,49 +47,50 @@ public class ObjectSpawning {
      *
      * @param object The object
      */
-    private static void addObject(WorldObject object) {
-        int regionId = object.getRegionId();
-        List<WorldObject> objectsInRegion = OBJECTS_TO_SPAWN.get(regionId);
+    private fun addObject(`object`: WorldObject) {
+        val regionId = `object`.getRegionId()
+        var objectsInRegion = OBJECTS_TO_SPAWN[regionId]
         if (objectsInRegion == null) {
-            objectsInRegion = new ArrayList<>();
+            objectsInRegion = ArrayList<WorldObject>()
         }
-        objectsInRegion.add(object);
-        OBJECTS_TO_SPAWN.put(regionId, objectsInRegion);
+        objectsInRegion!!.add(`object`)
+        OBJECTS_TO_SPAWN[regionId] = objectsInRegion
     }
 
-    public static void loadObjectSpawns(int regionId) {
-        List<WorldObject> objectList = OBJECTS_TO_SPAWN.get(regionId);
-        if (objectList == null) {
-            return;
+    @JvmStatic
+    fun loadObjectSpawns(regionId: Int) {
+        val objectList = OBJECTS_TO_SPAWN[regionId] ?: return
+        with(objectList) {
+            forEach(Consumer { `object`: WorldObject? -> RegionManager.spawnObject(`object`) })
         }
-        objectList.forEach(RegionManager::spawnObject);
     }
 
     /**
      * Loading the objects file into a gson list
      */
-    private static List<WorldObject> loadObjectsFromFile() {
-        File file = new File(STORAGE_FILE_LOCATION);
+    private fun loadObjectsFromFile(): MutableList<WorldObject> {
+        val file = File(STORAGE_FILE_LOCATION)
         if (!file.exists()) {
-            return new ArrayList<>();
+            return ArrayList<WorldObject>()
         }
-        String text = Misc.getText(STORAGE_FILE_LOCATION);
-        return GSON.fromJson(text, new TypeToken<List<WorldObject>>() {
-        }.getType());
+        val text: String = Misc.getText(STORAGE_FILE_LOCATION)
+        return GsonFunctions.GSON.fromJson(text, object : TypeToken<List<WorldObject?>?>() {}.type)
     }
 
     /**
-     * Saves the list of objects to the file {@link #STORAGE_FILE_LOCATION} by overwriting it
+     * Saves the list of objects to the file [.STORAGE_FILE_LOCATION] by overwriting it
      *
      * @param objectList The list of objects
      */
-    public static void saveObjectList(List<WorldObject> objectList) {
-        Misc.saveToJsonFile(STORAGE_FILE_LOCATION, objectList);
+    private fun saveObjectList(objectList: List<WorldObject>?) {
+        Misc.saveToJsonFile(STORAGE_FILE_LOCATION, objectList)
     }
 
-    public static void saveObject(WorldObject object) {
-        List<WorldObject> objects = loadObjectsFromFile();
-        objects.add(object);
-        saveObjectList(objects);
+    fun saveObject(`object`: WorldObject) {
+        val objects: MutableList<WorldObject> = loadObjectsFromFile()
+        objects.add(`object`)
+        saveObjectList(objects)
     }
+
+    private val logger = InlineLogger()
 }
