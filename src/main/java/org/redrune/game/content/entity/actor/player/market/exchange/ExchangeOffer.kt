@@ -88,8 +88,15 @@ data class ExchangeOffer(
         return amountProcessed >= amountRequested
     }
 
+    /**
+     * If this is a valid offer to be processed
+     */
+    fun isValid(): Boolean {
+        return !isFinished() && !aborted && ExchangeManager.isBuyable(itemId)
+    }
 
     fun notifyUpdated() {
+
         val player = World.getPlayerByDisplayName(owner) ?: return
         var hasOpen = false
         if (player.interfaceManager.containsInterface(105)

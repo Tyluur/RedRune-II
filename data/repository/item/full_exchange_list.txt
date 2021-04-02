@@ -2680,27 +2680,7 @@ Glassblowing book: 11656
 Godsword shards: 11686
 Godsword shards: 11688
 Godsword blade: 11690
-Godsword shards: 11692
-Armadyl godsword: 11694
-Bandos godsword: 11696
-Saradomin godsword: 11698
-Zamorak godsword: 11700
-Armadyl hilt: 11702
-Bandos hilt: 11704
-Saradomin hilt: 11706
-Zamorak hilt: 11708
-Godsword shard 1: 11710
-Godsword shard 2: 11712
-Godsword shard 3: 11714
 Zamorakian spear: 11716
-Armadyl helmet: 11718
-Armadyl chestplate: 11720
-Armadyl chainskirt: 11722
-Bandos chestplate: 11724
-Bandos tassets: 11726
-Bandos boots: 11728
-Saradomin sword: 11730
-Dragon boots: 11732
 Steam battlestaff: 11736
 Mystic steam staff: 11738
 Bronze armour set (lg): 11814
@@ -2717,17 +2697,6 @@ Adamant armour set (lg): 11834
 Adamant armour set (sk): 11836
 Rune armour set (lg): 11838
 Rune armour set (sk): 11840
-Dragon chain armour set (lg): 11842
-Dragon chain armour set (sk): 11844
-Barrows - ahrim's set: 11846
-Barrows - dharok's set: 11848
-Barrows - guthan's set: 11850
-Barrows - karil's set: 11852
-Barrows - torag's set: 11854
-Barrows - verac's set: 11856
-Third-age melee set: 11858
-Third-age ranger set: 11860
-Third-age mage set: 11862
 Green dragonhide set: 11864
 Blue dragonhide set: 11866
 Red dragonhide set: 11868
@@ -2735,39 +2704,7 @@ Black dragonhide set: 11870
 Mystic robes set: 11872
 Infinity robes set: 11874
 Splitbark armour set: 11876
-Black trimmed armour set (lg): 11878
-Black trimmed armour set (sk): 11880
-Black gold-trimmed armour set (lg): 11882
-Black gold-trimmed armour set (sk): 11884
-Adamant trimmed armour set (lg): 11886
-Adamant trimmed armour set (sk): 11888
-Adamant gold-trimmed armour set (lg): 11890
-Adamant gold-trimmed armour set (sk): 11892
-Rune trimmed armour set (lg): 11894
-Rune trimmed armour set (sk): 11896
-Rune gold-trimmed armour set (lg): 11898
-Rune gold-trimmed armour set (sk): 11900
 Enchanted set: 11902
-Trimmed blue wizard set: 11904
-Gold-trimmed blue wizard set: 11906
-Trimmed leather armour set: 11908
-Gold-trimmed leather armour set: 11910
-Green d'hide trimmed set: 11912
-Green d'hide gold-trimmed set: 11914
-Blue d'hide trimmed set: 11916
-Blue d'hide gold-trimmed set: 11918
-Green d'hide blessed set: 11920
-Blue d'hide blessed set: 11922
-Red d'hide blessed set: 11924
-Guthix armour set (lg): 11926
-Saradomin armour set (lg): 11928
-Zamorak armour set (lg): 11930
-Guthix armour set (sk): 11932
-Saradomin armour set (sk): 11934
-Zamorak armour set (sk): 11936
-Gilded armour set (lg): 11938
-Gilded armour set (sk): 11940
-Rock-shell armour set: 11942
 Spined armour set: 11944
 Skeletal armour set: 11946
 Light mystic robes set: 11960
@@ -2785,46 +2722,8 @@ Karam. overlord pouch: 12023
 Hydra pouch: 12025
 Spirit jelly pouch: 12027
 Bunyip pouch: 12029
-War tortoise pouch: 12031
 Fruit bat pouch: 12033
-Abyssal parasite pouch: 12035
-Abyssal lurker pouch: 12037
-Unicorn stallion pouch: 12039
 Magpie pouch: 12041
-Dreadfowl pouch: 12043
-Stranger plant pouch: 12045
-Spirit wolf pouch: 12047
-Desert wyrm pouch: 12049
-Evil turnip pouch: 12051
-Vampyre bat pouch: 12053
-Spirit scorpion pouch: 12055
-Arctic bear pouch: 12057
-Spirit spider pouch: 12059
-Bloated leech pouch: 12061
-Spirit kalphite pouch: 12063
-Honey badger pouch: 12065
-Albino rat pouch: 12067
-Granite lobster pouch: 12069
-Macaw pouch: 12071
-Bronze minotaur pouch: 12073
-Iron minotaur pouch: 12075
-Steel minotaur pouch: 12077
-Mithril minotaur pouch: 12079
-Adamant minotaur pouch: 12081
-Rune minotaur pouch: 12083
-Smoke devil pouch: 12085
-Bull ant pouch: 12087
-Wolpertinger pouch: 12089
-Compost mound pouch: 12091
-Pack yak pouch: 12093
-Sp. cockatrice pouch: 12095
-Sp. guthatrice pouch: 12097
-Sp. saratrice pouch: 12099
-Sp. zamatrice pouch: 12101
-Sp. pengatrice pouch: 12103
-Sp. coraxatrice pouch: 12105
-Sp. vulatrice pouch: 12107
-Cockatrice egg: 12109
 Guthatrice egg: 12111
 Saratrice egg: 12113
 Zamatrice egg: 12115
@@ -2859,55 +2758,6 @@ Feather headdress: 12213
 Feather headdress: 12216
 Feather headdress: 12219
 Feather headdress: 12222
-Herbcall scroll: 12422
-Fruitfall scroll: 12423
-Fish rain scroll: 12424
-Howl scroll: 12425
-Thieving fingers scroll: 12426
-Abyssal stealth scroll: 12427
-Egg spawn scroll: 12428
-Multichop scroll: 12429
-Cheese feast scroll: 12430
-Unburden scroll: 12431
-Venom shot scroll: 12432
-Insane ferocity scroll: 12433
-Healing aura scroll: 12434
-Winter storage scroll: 12435
-Oph. incubation scroll: 12436
-Magic focus scroll: 12437
-Swallow whole scroll: 12438
-Testudo scroll: 12439
-Generate compost scroll: 12440
-Tireless run scroll: 12441
-Regrowth scroll: 12442
-Call to arms scroll: 12443
-Blood drain scroll: 12444
-Dreadfowl strike scroll: 12445
-Sandstorm scroll: 12446
-Vampyre touch scroll: 12447
-Evil flames scroll: 12448
-Crushing claw scroll: 12449
-Mantis strike scroll: 12450
-Arctic blast scroll: 12451
-Toad bark scroll: 12452
-Dissolve scroll: 12453
-Abyssal drain scroll: 12454
-Doomsphere scroll: 12455
-Spike shot scroll: 12456
-Acorn missile scroll: 12457
-Petrifying gaze scroll: 12458
-Slime spray scroll: 12459
-Electric lash scroll: 12460
-Bronze bull rush scroll: 12461
-Iron bull rush scroll: 12462
-Steel bull rush scroll: 12463
-Mith bull rush scroll: 12464
-Addy bull rush scroll: 12465
-Rune bull rush scroll: 12466
-Poisonous blast scroll: 12467
-Dust cloud scroll: 12468
-Ibis pouch: 12531
-Stony shell scroll: 12533
 Raw pawya meat: 12535
 Grenwall spikes: 12539
 Ogre wig: 12559
@@ -2928,42 +2778,7 @@ Amulet of farming (1): 12608
 Amulet of farming (8): 12622
 Swamp titan pouch: 12776
 Spirit mosquito pouch: 12778
-Void spinner pouch: 12780
-Forge regent pouch: 12782
-Spirit larupia pouch: 12784
-Geyser titan pouch: 12786
-Lava titan pouch: 12788
-Steel titan pouch: 12790
-Obsidian golem pouch: 12792
-Talon beast pouch: 12794
-Abyssal titan pouch: 12796
-Void torcher pouch: 12798
-Giant chinchompa pouch: 12800
-Fire titan pouch: 12802
-Moss titan pouch: 12804
-Ice titan pouch: 12806
-Spirit tz-kih pouch: 12808
-Spirit graahk pouch: 12810
-Spirit kyatt pouch: 12812
-Void shifter pouch: 12814
 Pyrelord pouch: 12816
-Void ravager pouch: 12818
-Ravenous locust pouch: 12820
-Iron titan pouch: 12822
-Titan's con. scroll: 12824
-Steel of legends scroll: 12825
-Volcanic str. scroll: 12826
-Essence shipment scroll: 12827
-Iron within scroll: 12828
-Immense heat scroll: 12829
-Famine scroll: 12830
-Deadly claw scroll: 12831
-Swamp plague scroll: 12832
-Boil scroll: 12833
-Explode scroll: 12834
-Goad scroll: 12835
-Ambush scroll: 12836
-Ebon thunder scroll: 12837
 Pester scroll: 12838
 Fireball assault scroll: 12839
 Rending scroll: 12840
@@ -3285,134 +3100,12 @@ Miscellania teleport: 19477
 Phoenix lair teleport: 19478
 Tai bwo wannai teleport: 19479
 Lumber yard teleport: 19480
-Black heraldic armour set 1 (lg): 19520
-Black heraldic armour set 2 (lg): 19522
-Black heraldic armour set 3 (lg): 19524
-Black heraldic armour set 4 (lg): 19526
-Black heraldic armour set 5 (lg): 19528
-Black heraldic armour set 1 (sk): 19530
-Black heraldic armour set 2 (sk): 19532
-Black heraldic armour set 3 (sk): 19534
-Black heraldic armour set 4 (sk): 19536
-Black heraldic armour set 5 (sk): 19538
-Adamant heraldic armour set 1 (lg): 19540
 Adamant heraldic armour set 2 (lg): 19542
-Adamant heraldic armour set 3 (lg): 19544
-Adamant heraldic armour set 4 (lg): 19546
-Adamant heraldic armour set 5 (lg): 19548
-Adamant heraldic armour set 1 (sk): 19550
-Adamant heraldic armour set 2 (sk): 19552
-Adamant heraldic armour set 3 (sk): 19554
-Adamant heraldic armour set 4 (sk): 19556
-Adamant heraldic armour set 5 (sk): 19558
-Rune heraldic armour set 1 (lg): 19560
-Rune heraldic armour set 2 (lg): 19562
-Rune heraldic armour set 3 (lg): 19564
-Rune heraldic armour set 4 (lg): 19566
-Rune heraldic armour set 5 (lg): 19568
-Rune heraldic armour set 1 (sk): 19570
-Rune heraldic armour set 2 (sk): 19572
-Rune heraldic armour set 3 (sk): 19574
-Rune heraldic armour set 4 (sk): 19576
-Rune heraldic armour set 5 (sk): 19578
 Third-age prayer set: 19580
-Dyed brown d'hide blessed set: 19582
-Dyed purple d'hide blessed set: 19584
-Dyed silver d'hide blessed set: 19586
-Armadyl armour set (lg): 19588
-Armadyl armour set (sk): 19590
-Bandos armour set (lg): 19592
-Bandos armour set (sk): 19594
-Ancient armour set (lg): 19596
-Ancient armour set (sk): 19598
 Bandos page 1: 19600
-Bandos page 2: 19601
-Bandos page 3: 19602
-Bandos page 4: 19603
-Armadyl page 1: 19604
-Armadyl page 2: 19605
-Armadyl page 3: 19606
-Armadyl page 4: 19607
-Ancient page 1: 19608
-Ancient page 2: 19609
-Ancient page 3: 19610
-Ancient page 4: 19611
 Fetch casket scroll: 19621
 Meerkats pouch: 19622
 Sling: 19830
-Red blossom seed: 19922
-Blue blossom seed: 19927
-Green blossom seed: 19932
-Marasamaw plant: 19965
-Juju teleport spiritbag: 19967
-Juju vial of water: 19994
-Juju vial: 19996
-Clay ring (unfired): 20052
-Clay ring: 20053
-Cyclopean helmet: 20070
-Ancient ceremonial mask: 20125
-Ancient ceremonial top: 20127
-Ancient ceremonial legs: 20129
-Ancient ceremonial gloves: 20131
-Ancient ceremonial boots: 20133
-Torva full helm: 20135
-Torva platebody: 20139
-Torva platelegs: 20143
-Pernix cowl: 20147
-Pernix body: 20151
-Pernix chaps: 20155
-Virtus mask: 20159
-Virtus robe top: 20163
-Virtus robe legs: 20167
-Zaryte bow: 20171
-Impious ashes: 20264
-Accursed ashes: 20266
-Infernal ashes: 20268
-Cracked smelting urn (nr): 20272
-Fragile smelting urn (nr): 20278
-Smelting urn (nr): 20284
-Strong smelting urn (nr): 20290
-Cracked woodcutting urn (nr): 20296
-Fragile woodcutting urn (nr): 20302
-Woodcutting urn (nr): 20308
-Strong woodcutting urn (nr): 20314
-Cracked fishing urn (nr): 20320
-Fragile fishing urn (nr): 20326
-Fishing urn (nr): 20332
-Strong fishing urn (nr): 20338
-Decorated fishing urn (nr): 20344
-Cracked cooking urn (nr): 20350
-Fragile cooking urn (nr): 20356
-Cooking urn (nr): 20362
-Strong cooking urn (nr): 20368
-Decorated cooking urn (nr): 20374
-Cracked mining urn (nr): 20380
-Fragile mining urn (nr): 20386
-Mining urn (nr): 20392
-Strong mining urn (nr): 20398
-Decorated mining urn (nr): 20404
-Impious urn (nr): 20410
-Accursed urn (nr): 20416
-Infernal urn (nr): 20422
-Cosmic shield: 20436
-Chaos shield: 20438
-Cosmic helmet: 20440
-Chaos helmet: 20442
-Cosmic body: 20444
-Chaos body: 20446
-Elemental boots: 20448
-Mind boots: 20450
-Body boots: 20452
-Cosmic boots: 20454
-Chaos boots: 20456
-Elemental gloves: 20458
-Mind gloves: 20460
-Body gloves: 20462
-Cosmic gloves: 20464
-Chaos gloves: 20466
-Ring of wealth (4): 20659
-Jewelled golden statuette: 20661
-Vecna skull: 20667
 Brackish blade: 20671
 Mutated vine: 21358
 Clan cloak: 20708

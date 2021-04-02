@@ -384,24 +384,32 @@ public class PacketSender {
 	public void sendRunScript(int scriptId, Object... params) {
 		try {
 			PacketBuilder stream = new PacketBuilder(50, PacketType.VAR_SHORT);
-			StringBuilder parameterTypes = new StringBuilder();
+			String parameterTypes = "";
 			if (params != null) {
 				for (int count = params.length - 1; count >= 0; count--) {
 					if (params[count] instanceof String) {
-						parameterTypes.append("s"); // string
+						parameterTypes += "s"; // string
 					} else {
-						parameterTypes.append("i"); // integer
+						parameterTypes += "i"; // integer
 					}
 				}
 			}
-			stream.writeString(parameterTypes.toString());
+			stream.writeString(parameterTypes);
 			if (params != null) {
 				int index = 0;
 				for (int count = parameterTypes.length() - 1; count >= 0; count--) {
-					if (parameterTypes.charAt(count) == 's') {
+					char c = parameterTypes.charAt(count);
+
+					System.out.println("char=" + c);
+
+					if (c == 's') {
 						stream.writeString((String) params[index++]);
 					} else {
-						stream.writeInt((Integer) params[index++]);
+						Object param = params[index++];
+
+						System.out.println("param=" + param.toString());
+
+						stream.writeInt(Integer.parseInt(param.toString()));
 					}
 				}
 			}

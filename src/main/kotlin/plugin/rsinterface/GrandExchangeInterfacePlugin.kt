@@ -4,10 +4,11 @@ package plugin.rsinterface
 
 import com.github.michaelbull.logging.InlineLogger
 import org.redrune.cache.loaders.ItemDefinitions
+import org.redrune.engine.tick.schedule.impl.ExchangeTask
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.COLLECTION_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.MAIN_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.SELL_INTERFACE
-import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.open
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.openCollectionBox
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.sendCollectInformation
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeOffer
@@ -15,8 +16,10 @@ import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeType
 import org.redrune.game.content.plugin.type.InterfacePlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
+import org.redrune.utility.constants.ItemConstants
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.InputEvent
+import org.redrune.utility.game.repository.item.ItemCharacteristicRepository
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -131,7 +134,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                             player.interfaceManager.sendEquipment()
                             player.interfaceManager.openGameTab(lastGameTab)
                         }
-                        ExchangeManager.open(player)
+                        open(player)
                     }
                     // confirm button
                     186 -> {
@@ -151,13 +154,11 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                             return true
                         }
 
-                        val cashAmount = price
-
                         when (offer.type) {
                             ExchangeType.BUY -> {
-                                if (player.takeMoney(cashAmount)) {
+                                if (player.takeMoney(price)) {
                                     player.attributes.offers[offer.slot] = offer
-                                    ExchangeManager.open(player)
+                                    open(player)
                                 } else {
                                     player.packets.sendMessage(
                                         "You need to have " + Misc.format(price)
@@ -165,9 +166,31 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                                     )
                                     return true
                                 }
+                                ExchangeTask.queue(offer)
                                 return true
                             }
                             ExchangeType.SELL -> {
+                                var noteId = -1
+                                var sellId = -1
+                                if (player.temporaryAttributes["exchange_sell_item"] != null) {
+                                    val ids = player.temporaryAttributes["exchange_sell_item"] as IntArray
+                                    sellId = ids[1]
+                                    noteId = ids[0]
+                                } else {
+                                    sellId = offer.itemId
+                                }
+                                val sellingId = if (noteId == -1) sellId else noteId
+                                if (player.inventory.getNumerOf(sellingId) < offer.amountRequested) {
+                                    player.packets.sendMessage(
+                                        "You do not have " + Misc.format(offer.amountRequested)
+                                            .toString() + " of this item to sell."
+                                    )
+                                    return true
+                                }
+                                player.inventory.deleteItem(sellingId, offer.amountRequested)
+                                player.attributes.offers[offer.slot] = offer
+                                open(player)
+                                ExchangeTask.queue(offer)
                                 return true
                             }
                         }
@@ -292,6 +315,44 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                     }
                 }
             }
+            SELL_INTERFACE -> {
+                if (!ItemConstants.isTradeable(Item(itemId)) || itemId == 995) {
+                    player.packets.sendMessage("That item cannot be sold on the grand exchange.")
+                    return true
+                }
+
+                player.temporaryAttributes.remove("exchange_sell_item")
+
+                var itemId2: Int = itemId
+                val itemDefinitions = ItemDefinitions.getItemDefinitions(itemId)
+                if (itemDefinitions.isNoted) {
+                    itemId2 = itemDefinitions.certId
+                }
+
+                val amountToSell = 1
+
+                val price: Int = itemDefinitions.value / 5
+
+                val sellOffer = ExchangeOffer(
+                    player.username,
+                    itemId2,
+                    amountToSell,
+                    player.getTemporaryAttribute("exchange_slot", 0),
+                    ExchangeType.SELL,
+                    price
+                )
+
+                player.temporaryAttributes["exchange_offer"] = sellOffer
+
+                player.packets.sendConfig(1109, sellOffer.itemId)
+                player.packets.sendConfig(1110, amountToSell)
+                player.packets.sendConfig(1111, price)
+                player.packets.sendConfig(1114, price)
+
+                player.packets.sendIComponentText(MAIN_INTERFACE, 143, ItemCharacteristicRepository.getExamine(itemId2))
+
+
+            }
         }
         return true
     }
@@ -351,18 +412,18 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         logger.info { "amountProcessed: ${offer.amountProcessed}" }
         if (offer.aborted) {
             player.attributes.offers[offer.slot] = null
-            ExchangeManager.open(player)
+            open(player)
         } else {
             if (offer.amountProcessed >= amountReq && offer.getItemsToCollect().usedSlots == 0) {
                 player.attributes.offers[offer.slot] = null
-                ExchangeManager.open(player)
+                open(player)
             } else {
                 sendCollectInformation(
                     player,
                     offer.slot
                 )
                 if (offer.getItemsToCollect().usedSlots == 0) {
-                    ExchangeManager.open(player)
+                    open(player)
                 }
             }
         }
@@ -381,16 +442,15 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         if (type === ExchangeType.SELL) {
             player.packets.sendConfig(1113, 1)
             player.interfaceManager.sendInventoryInterface(SELL_INTERFACE)
-            val params = arrayOf<Any>("", "", "", "", "Offer", -1, 0, 7, 4, 93, 7012370)
-            player.packets.sendRunScript(149, params)
             player.packets.sendItems(93, player.inventory.items)
             player.packets.sendHideIComponent(SELL_INTERFACE, 0, false)
             player.packets.sendIComponentSettings(SELL_INTERFACE, 18, 0, 27, 1026)
-            player.packets.sendConfig(1112, (player.temporaryAttributes["exchange_slot"] as Int?)!!)
+            player.packets.sendConfig(1112, (player.getTemporaryAttribute("exchange_slot", 0)))
             player.packets.sendHideIComponent(105, 196, true)
+            player.packets.sendRunScript(149, "", "", "", "", "Offer", -1, 0, 7, 4, 93, 7012370)
         } else {
             player.packets.sendConfig1(744, 0)
-            player.packets.sendConfig(1112, (player.temporaryAttributes["exchange_slot"] as Int?)!!)
+            player.packets.sendConfig(1112, (player.getTemporaryAttribute("exchange_slot", 0)))
             player.packets.sendConfig(1113, 0)
             player.packets.sendInterface(true, 752, 7, 389)
             player.packets.sendRunScript(570, "Grand Exchange Item Search")
@@ -430,7 +490,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
             return
         }
         offer.aborted = (true)
-        ExchangeManager.open(player)
+        open(player)
         sendCollectInformation(
             player,
             offer.slot
