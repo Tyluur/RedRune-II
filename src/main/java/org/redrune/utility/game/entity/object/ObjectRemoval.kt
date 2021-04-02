@@ -38,8 +38,8 @@ object ObjectRemoval {
     private fun populateList() {
         try {
             val reader = BufferedReader(FileReader(NONSPAWNING_OBJECTS_FILE))
-            var line: String
-            while (reader.readLine().also { line = it } != null) {
+            while(true) {
+                val line = reader.readLine() ?: break
                 if (line.startsWith("//") || line.trim { it <= ' ' }.equals("", ignoreCase = true)) {
                     continue
                 }

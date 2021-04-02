@@ -36,7 +36,7 @@ class DoorObjectPlugin : ObjectPlugin {
     }
 
     override fun register() {
-        for (objectId in DoorRepository.getDoorIds()) {
+        for (objectId in DoorRepository.doorIds) {
             registerObject(objectId, "Open")
             registerObject(objectId, "Close")
         }
