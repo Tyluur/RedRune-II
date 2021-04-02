@@ -1,4 +1,4 @@
-package plugin.command.administrator
+package plugin.command.player
 
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
@@ -9,7 +9,7 @@ import plugin.command.CommandManifest
  * @since 9/1/2017
  */
 @CommandManifest(description = "Spawns an item", types = [Int::class])
-class ItemSpawnCommandPlugin : CommandPlugin() {
+class SpawnItemCommandPlugin : CommandPlugin() {
 
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         val itemId = intParam(args, 1)
