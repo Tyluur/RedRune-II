@@ -2,6 +2,8 @@ package org.redrune.game.entity.actor;
 
 import org.redrune.cache.loaders.AnimationDefinitions;
 import org.redrune.cache.loaders.ObjectDefinitions;
+import org.redrune.engine.tick.task.WorldTask;
+import org.redrune.engine.tick.task.WorldTasksManager;
 import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.entity.Entity;
 import org.redrune.game.entity.actor.link.InteractionManager;
@@ -893,8 +895,13 @@ public abstract class Actor extends WorldTile implements Entity {
 		} else if (this instanceof Player) {
 			Player player = (Player) this;
 			if (player.getEquipment().getRingId() == 2550) {
-				if (hit.getSource() != null && hit.getSource() != player) {
-					hit.getSource().applyHit(new Hit(player, (int) (hit.getDamage() * 0.1), HitSplat.REFLECTED_DAMAGE));
+				if (hit.getSource() != null && hit.getSource() != player && hit.getDamage() > 0 && !hit.getSplat().equals(HitSplat.REFLECTED_DAMAGE)) {
+					WorldTasksManager.schedule(new WorldTask() {
+						@Override
+						public void run() {
+							hit.getSource().applyHit(new Hit(player, (int) (hit.getDamage() * 0.1), HitSplat.REFLECTED_DAMAGE));
+						}
+					});
 				}
 			}
 			if (player.getPrayer().hasPrayersOn()) {

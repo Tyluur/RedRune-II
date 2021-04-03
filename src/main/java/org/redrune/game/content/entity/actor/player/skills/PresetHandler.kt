@@ -61,7 +61,7 @@ class PresetHandler {
                 2 to 99,
                 3 to 99,
                 4 to 99,
-                5 to 1,
+                5 to 31,
                 6 to 99
             )
 
@@ -121,6 +121,7 @@ class PresetHandler {
                 2 to 99,
                 3 to 99,
                 4 to 99,
+                5 to 31,
                 6 to 99,
             )
 
