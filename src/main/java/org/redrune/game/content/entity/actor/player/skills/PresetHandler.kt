@@ -194,6 +194,67 @@ class PresetHandler {
 
         },
 
+
+        MAIN_HYBRID("Main - Hybrid") {
+            override fun inventory() = hashMapOf(
+                0 to Item(3024, 1),
+                1 to Item(6685, 1),
+                2 to Item(2440, 1),
+                3 to Item(2436, 1),
+                4 to Item(2503, 1),
+                5 to Item(10551, 1),
+                6 to Item(6570, 1),
+                7 to Item(8850, 1),
+                8 to Item(5698, 1),
+                9 to Item(1079, 1),
+                10 to Item(4587, 1),
+                11 to Item(15272, 1),
+                12 to Item(15272, 1),
+                13 to Item(15272, 1),
+                14 to Item(15272, 1),
+                15 to Item(15272, 1),
+                16 to Item(15272, 1),
+                17 to Item(15272, 1),
+                18 to Item(15272, 1),
+                19 to Item(15272, 1),
+                20 to Item(15272, 1),
+                21 to Item(3144, 1),
+                22 to Item(3144, 1),
+                23 to Item(6685, 1),
+                24 to Item(555, 5000),
+                25 to Item(565, 5000),
+                26 to Item(560, 5000),
+                27 to Item(3024, 1)
+            )
+
+            override fun equipment() = hashMapOf(
+                0 to Item(10828, 1),
+                1 to Item(2412, 1),
+                2 to Item(1725, 1),
+                3 to Item(4675, 1),
+                4 to Item(4091, 1),
+                5 to Item(13734, 1),
+                7 to Item(4093, 1),
+                9 to Item(7462, 1),
+                10 to Item(3105, 1)
+            )
+
+            override fun skills() = hashMapOf(
+                0 to 99,
+                1 to 99,
+                2 to 99,
+                3 to 99,
+                4 to 99,
+                5 to 99,
+                6 to 99
+            )
+
+            override fun spellBook() = 2
+
+            override fun prayerBook() = 2
+
+        }
+
         /* ZERKER("Zerker") {
 
          },
@@ -202,10 +263,6 @@ class PresetHandler {
 
          },
 
-
-         MAIN_HYBRID("Main - Hybrid") {
-
-         }
  */
         ;
 
