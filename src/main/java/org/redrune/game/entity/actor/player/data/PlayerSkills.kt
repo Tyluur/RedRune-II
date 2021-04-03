@@ -1,431 +1,375 @@
-package org.redrune.game.entity.actor.player.data;
+package org.redrune.game.entity.actor.player.data
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.constants.SkillConstants;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.constants.SkillConstants
+import org.redrune.utility.functions.Misc
+import java.io.Serializable
 
-import java.io.Serializable;
+class PlayerSkills : Serializable, SkillConstants {
+    var level: IntArray
+    var xp: DoubleArray
+        private set
+    private var xpCounter = 0.0
+    private val enabledSkillsTargets: BooleanArray
+    private val skillsTargetsUsingLevelMode: BooleanArray
+    private val skillsTargetsValues: IntArray
 
-public final class PlayerSkills implements Serializable, SkillConstants {
-	
-	private static final long serialVersionUID = -7086829989489745985L;
-	
-	public short[] level;
-	
-	private double[] xp;
-	
-	private double xpCounter;
-	
-	private final boolean[] enabledSkillsTargets;
-	
-	private final boolean[] skillsTargetsUsingLevelMode;
-	
-	private final int[] skillsTargetsValues;
-	
-	private transient Player player;
+    @Transient
+    private var player: Player? = null
+    fun passLevels(p: Player) {
+        level = p.skills.level
+        xp = p.skills.xp
+    }
 
-	public double[] getXp() {
-		return xp;
-	}
-	
-	public PlayerSkills() {
-		level = new short[25];
-		xp = new double[25];
-		for (int i = 0; i < level.length; i++) {
-			level[i] = 1;
-			xp[i] = 0;
-		}
-		level[3] = 10;
-		xp[3] = 1184;
-		level[HERBLORE] = 3;
-		xp[HERBLORE] = 250;
-		enabledSkillsTargets = new boolean[25];
-		skillsTargetsUsingLevelMode = new boolean[25];
-		skillsTargetsValues = new int[25];
-	}
-	
-	public void passLevels(Player p) {
-		this.level = p.getSkills().level;
-		this.xp = p.getSkills().xp;
-	}
-	
-	public void restoreSkills() {
-		for (int skill = 0; skill < level.length; skill++) {
-			level[skill] = (short) getLevelForXp(skill);
-			refresh(skill);
-		}
-	}
-	
-	public int getLevelForXp(int skill) {
-		double exp = xp[skill];
-		int points = 0;
-		int output = 0;
-		for (int lvl = 1; lvl <= (skill == DUNGEONEERING ? 120 : 99); lvl++) {
-			points += Math.floor((double) lvl + 300.0 * Math.pow(2.0, (double) lvl / 7.0));
-			output = (int) Math.floor(points / 4);
-			if ((output - 1) >= exp) {
-				return lvl;
-			}
-		}
-		return skill == DUNGEONEERING ? 120 : 99;
-	}
-	
-	public void refresh(int skill) {
-		player.getPackets().sendSkillLevel(skill);
-		player.getAppearance().generateAppearanceData();
-	}
-	
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-	
-	public double getXp(int skill) {
-		return xp[skill];
-	}
-	
-	/**
-	 * Drains a skill level with a cap on it
-	 *
-	 * @param skill
-	 * 		The skill id to drain
-	 * @param drainAmount
-	 * 		The amount to drain
-	 * @param drainCap
-	 * 		The amount we are capped by
-	 */
-	public void drainLevel(int skill, double drainAmount, double drainCap) {
-		int skillLevel = level[skill];
-		int levelForXp = getLevelForXp(skill);
-		int lowestAllowed = levelForXp - (int) Math.round(levelForXp * drainCap);
-		// can no longer drain past this
-		if (skillLevel <= lowestAllowed) {
-			return;
-		}
-		int drain = (int) Math.round(levelForXp * drainAmount);
-		drainLevel(skill, drain);
-	}
-	
-	/**
-	 * Drains a level
-	 *
-	 * @param skill
-	 * 		The skill
-	 * @param drain
-	 * 		The amount to drain
-	 */
-	public int drainLevel(int skill, int drain) {
-		int drainLeft = drain - level[skill];
-		if (drainLeft < 0) {
-			drainLeft = 0;
-		}
-		level[skill] -= drain;
-		if (level[skill] < 0) {
-			level[skill] = 0;
-		}
-		refresh(skill);
-		return drainLeft;
-	}
-	
-	public int getCombatLevelWithSummoning() {
-		return getCombatLevel() + getSummoningCombatLevel();
-	}
-	
-	public int getCombatLevel() {
-		int attack = getLevelForXp(0);
-		int defence = getLevelForXp(1);
-		int strength = getLevelForXp(2);
-		int hp = getLevelForXp(3);
-		int prayer = getLevelForXp(5);
-		int ranged = getLevelForXp(4);
-		int magic = getLevelForXp(6);
-		int combatLevel = 3;
-		combatLevel = (int) ((defence + hp + Math.floor(prayer / 2)) * 0.25) + 1;
-		double melee = (attack + strength) * 0.325;
-		double ranger = Math.floor(ranged * 1.5) * 0.325;
-		double mage = Math.floor(magic * 1.5) * 0.325;
-		if (melee >= ranger && melee >= mage) {
-			combatLevel += melee;
-		} else if (ranger >= melee && ranger >= mage) {
-			combatLevel += ranger;
-		} else if (mage >= melee && mage >= ranger) {
-			combatLevel += mage;
-		}
-		return combatLevel;
-	}
-	
-	public int getSummoningCombatLevel() {
-		return getLevelForXp(SUMMONING) / 8;
-	}
-	
-	public void drainSummoning(int amt) {
-		int level = getLevel(SUMMONING);
-		if (level == 0) {
-			return;
-		}
-		set(SUMMONING, amt > level ? 0 : level - amt);
-	}
-	
-	public int getLevel(int skill) {
-		return level[skill];
-	}
-	
-	public void set(int skill, int newLevel) {
-		level[skill] = (short) newLevel;
-		refresh(skill);
-	}
-	
-	public void init() {
-		for (int skill = 0; skill < level.length; skill++) {
-			refresh(skill);
-		}
-		refreshEnabledSkillsTargets();
-		refreshUsingLevelTargets();
-		refreshSkillsTargetsValues();
-		refreshXpCounter();
-	}
-	
-	private void refreshXpCounter() {
-		player.getPackets().sendConfig(1801, (int) (xpCounter * 10));
-	}
-	
-	public void resetXpCounter() {
-		xpCounter = 0;
-		refreshXpCounter();
-	}
-	
-	public void addXpNoModifier(int skill, double exp) {
-		if (player.getAttributes().isExperienceLocked()) {
-			return;
-		}
-		trackExperienceChange(skill, exp);
-	}
-	
-	public void addXp(int skill, double exp) {
-		if (player.getAttributes().isExperienceLocked()) {
-			return;
-		}
-		trackExperienceChange(skill, exp);
-	}
-	
-	private void trackExperienceChange(int skill, double exp) {
-		player.getControllerManager().trackXP(skill, (int) exp);
-		int oldLevel = getLevelForXp(skill);
-		xp[skill] += exp;
-		xpCounter += exp;
-		refreshXpCounter();
-		if (xp[skill] > MAXIMUM_EXP) {
-			xp[skill] = MAXIMUM_EXP;
-		}
-		int newLevel = getLevelForXp(skill);
-		int levelDiff = newLevel - oldLevel;
-		if (newLevel > oldLevel) {
-			level[skill] += levelDiff;
-			player.getDialogueManager().startDialogue("LevelUp", skill);
-			if (skill == HITPOINTS) {
-				player.heal(levelDiff * 10);
-			}
-			if (skill == PRAYER) {
-				player.getPrayer().restorePrayer(levelDiff * 10);
-			}
-			if (skill == SUMMONING || skill <= MAGIC) {
-				player.getAppearance().generateAppearanceData();
-			}
-		}
-		refresh(skill);
-	}
-	
-	public boolean isMaxed() {
-		int maxlevels = 0;
-		for (int ji = 0; ji < level.length; ji++) {
-			if (this.getLevel(ji) != 99) {
-				continue;
-			}
-			maxlevels++;
-		}
-		return maxlevels >= 23;
-	}
-	
-	public void addSkillXpRefresh(int skill, double xp) {
-		this.xp[skill] += xp;
-		level[skill] = (short) getLevelForXp(skill);
-	}
-	
-	public void resetSkillNoRefresh(int skill) {
-		xp[skill] = 0;
-		level[skill] = 1;
-	}
-	
-	public boolean NumberToSkill(int number) {
-		int found = 0;
-		for (int i = 0; i < 24; i++) {
-			if (getLevel(i) >= 99) {
-				found++;
-			}
-		}
-		return found >= number;
-		
-	}
-	
-	public void setXp(int skill, double exp) {
-		xp[skill] = exp;
-		refresh(skill);
-	}
-	
-	public int getTargetIdByComponentId(int componentId) {
-		switch (componentId) {
-			case 200: // Attack
-				return 0;
-			case 11: // Strength
-				return 1;
-			case 52: // Range
-				return 2;
-			case 93: // Magic
-				return 3;
-			case 28: // Defence
-				return 4;
-			case 193: // Constitution
-				return 5;
-			case 76: // Prayer
-				return 6;
-			case 19: // Agility
-				return 7;
-			case 36: // Herblore
-				return 8;
-			case 60: // Theiving
-				return 9;
-			case 84: // Crafting
-				return 10;
-			case 110: // Runecrafting
-				return 11;
-			case 186: // Mining
-				return 12;
-			case 179: // Smithing
-				return 13;
-			case 44: // Fishing
-				return 14;
-			case 68: // Cooking
-				return 15;
-			case 172: // Firemaking
-				return 16;
-			case 165: // Woodcutting
-				return 17;
-			case 101: // Fletching
-				return 18;
-			case 118: // Slayer
-				return 19;
-			case 126: // Farming
-				return 20;
-			case 134: // Construction
-				return 21;
-			case 142: // Hunter
-				return 22;
-			case 150: // Summoning
-				return 23;
-			case 158: // Dungeoneering
-				return 24;
-			default:
-				return -1;
-		}
-	}
-	
-	public int getSkillIdByTargetId(int targetId) {
-		switch (targetId) {
-			case 0: // Attack
-				return ATTACK;
-			case 1: // Strength
-				return STRENGTH;
-			case 2: // Range
-				return RANGE;
-			case 3: // Magic
-				return MAGIC;
-			case 4: // Defence
-				return DEFENCE;
-			case 5: // Constitution
-				return HITPOINTS;
-			case 6: // Prayer
-				return PRAYER;
-			case 7: // Agility
-				return AGILITY;
-			case 8: // Herblore
-				return HERBLORE;
-			case 9: // Thieving
-				return THIEVING;
-			case 10: // Crafting
-				return CRAFTING;
-			case 11: // Runecrafting
-				return RUNECRAFTING;
-			case 12: // Mining
-				return MINING;
-			case 13: // Smithing
-				return SMITHING;
-			case 14: // Fishing
-				return FISHING;
-			case 15: // Cooking
-				return COOKING;
-			case 16: // Firemaking
-				return FIREMAKING;
-			case 17: // Woodcutting
-				return WOODCUTTING;
-			case 18: // Fletching
-				return FLETCHING;
-			case 19: // Slayer
-				return SLAYER;
-			case 20: // Farming
-				return FARMING;
-			case 21: // Construction
-				return CONSTRUCTION;
-			case 22: // Hunter
-				return HUNTER;
-			case 23: // Summoning
-				return SUMMONING;
-			case 24: // Dungeoneering
-				return DUNGEONEERING;
-			default:
-				return -1;
-		}
-	}
-	
-	public void refreshEnabledSkillsTargets() {
-		int value = Misc.get32BitValue(enabledSkillsTargets, true);
-		player.getPackets().sendConfig(1966, value);
-	}
-	
-	public void refreshUsingLevelTargets() {
-		int value = Misc.get32BitValue(skillsTargetsUsingLevelMode, true);
-		player.getPackets().sendConfig(1968, value);
-	}
-	
-	public void refreshSkillsTargetsValues() {
-		for (int i = 0; i < 25; i++) {
-			player.getPackets().sendConfig(1969 + i, skillsTargetsValues[i]);
-		}
-	}
-	
-	public void setSkillTargetEnabled(int id, boolean enabled) {
-		enabledSkillsTargets[id] = enabled;
-		refreshEnabledSkillsTargets();
-	}
-	
-	public void setSkillTargetUsingLevelMode(int id, boolean using) {
-		skillsTargetsUsingLevelMode[id] = using;
-		refreshUsingLevelTargets();
-	}
-	
-	public void setSkillTargetValue(int skillId, int value) {
-		skillsTargetsValues[skillId] = value;
-		refreshSkillsTargetsValues();
-	}
-	
-	public void setSkillTarget(boolean usingLevel, int skillId, int target) {
-		setSkillTargetEnabled(skillId, true);
-		setSkillTargetUsingLevelMode(skillId, usingLevel);
-		setSkillTargetValue(skillId, target);
-	}
+    fun restoreSkills() {
+        for (skill in level.indices) {
+            level[skill] = getLevelForXp(skill)
+            refresh(skill)
+        }
+    }
 
-	public void refreshAllSkills() {
-		for (int skill = 0; skill < level.length; skill++) {
-			refresh(skill);
-		}
-	}
+    fun getLevelForXp(skill: Int): Int {
+        val exp = xp[skill]
+        var points = 0
+        var output = 0
+        for (lvl in 1..if (skill == SkillConstants.DUNGEONEERING) 120 else 99) {
+            points += Math.floor(lvl.toDouble() + 300.0 * Math.pow(2.0, lvl.toDouble() / 7.0)).toInt()
+            output = Math.floor((points / 4).toDouble()).toInt()
+            if (output - 1 >= exp) {
+                return lvl
+            }
+        }
+        return if (skill == SkillConstants.DUNGEONEERING) 120 else 99
+    }
 
+    fun refresh(skill: Int) {
+        player!!.packets.sendSkillLevel(skill)
+        player!!.appearance.generateAppearanceData()
+    }
+
+    fun setPlayer(player: Player?) {
+        this.player = player
+    }
+
+    fun getXp(skill: Int): Double {
+        return xp[skill]
+    }
+
+    /**
+     * Drains a skill level with a cap on it
+     *
+     * @param skill
+     * The skill id to drain
+     * @param drainAmount
+     * The amount to drain
+     * @param drainCap
+     * The amount we are capped by
+     */
+    fun drainLevel(skill: Int, drainAmount: Double, drainCap: Double) {
+        val skillLevel = level[skill].toInt()
+        val levelForXp = getLevelForXp(skill)
+        val lowestAllowed = levelForXp - Math.round(levelForXp * drainCap).toInt()
+        // can no longer drain past this
+        if (skillLevel <= lowestAllowed) {
+            return
+        }
+        val drain = Math.round(levelForXp * drainAmount).toInt()
+        drainLevel(skill, drain)
+    }
+
+    /**
+     * Drains a level
+     *
+     * @param skill
+     * The skill
+     * @param drain
+     * The amount to drain
+     */
+    fun drainLevel(skill: Int, drain: Int): Int {
+        var drainLeft = drain - level[skill]
+        if (drainLeft < 0) {
+            drainLeft = 0
+        }
+        level[skill] -= drain
+        if (level[skill] < 0) {
+            level[skill] = 0
+        }
+        refresh(skill)
+        return drainLeft
+    }
+
+    val combatLevelWithSummoning: Int
+        get() = combatLevel + summoningCombatLevel
+    val combatLevel: Int
+        get() {
+            val attack = getLevelForXp(0)
+            val defence = getLevelForXp(1)
+            val strength = getLevelForXp(2)
+            val hp = getLevelForXp(3)
+            val prayer = getLevelForXp(5)
+            val ranged = getLevelForXp(4)
+            val magic = getLevelForXp(6)
+            var combatLevel = 3
+            combatLevel = ((defence + hp + Math.floor((prayer / 2).toDouble())) * 0.25).toInt() + 1
+            val melee = (attack + strength) * 0.325
+            val ranger = Math.floor(ranged * 1.5) * 0.325
+            val mage = Math.floor(magic * 1.5) * 0.325
+            if (melee >= ranger && melee >= mage) {
+                combatLevel += melee.toInt()
+            } else if (ranger >= melee && ranger >= mage) {
+                combatLevel += ranger.toInt()
+            } else if (mage >= melee && mage >= ranger) {
+                combatLevel += mage.toInt()
+            }
+            return combatLevel
+        }
+    val summoningCombatLevel: Int
+        get() = getLevelForXp(SkillConstants.SUMMONING) / 8
+
+    fun drainSummoning(amt: Int) {
+        val level = getLevel(SkillConstants.SUMMONING)
+        if (level == 0) {
+            return
+        }
+        set(SkillConstants.SUMMONING, if (amt > level) 0 else level - amt)
+    }
+
+    fun getLevel(skill: Int): Int {
+        return level[skill].toInt()
+    }
+
+    operator fun set(skill: Int, newLevel: Int) {
+        level[skill] = newLevel
+        refresh(skill)
+    }
+
+    fun init() {
+        for (skill in level.indices) {
+            refresh(skill)
+        }
+        refreshEnabledSkillsTargets()
+        refreshUsingLevelTargets()
+        refreshSkillsTargetsValues()
+        refreshXpCounter()
+    }
+
+    private fun refreshXpCounter() {
+        player!!.packets.sendConfig(1801, (xpCounter * 10).toInt())
+    }
+
+    fun resetXpCounter() {
+        xpCounter = 0.0
+        refreshXpCounter()
+    }
+
+    fun addXpNoModifier(skill: Int, exp: Double) {
+        if (player!!.attributes.isExperienceLocked) {
+            return
+        }
+        trackExperienceChange(skill, exp)
+    }
+
+    fun addXp(skill: Int, exp: Double) {
+        if (player!!.attributes.isExperienceLocked) {
+            return
+        }
+        trackExperienceChange(skill, exp)
+    }
+
+    private fun trackExperienceChange(skill: Int, exp: Double) {
+        player!!.controllerManager.trackXP(skill, exp.toInt())
+        val oldLevel = getLevelForXp(skill)
+        xp[skill] += exp
+        xpCounter += exp
+        refreshXpCounter()
+        if (xp[skill] > SkillConstants.MAXIMUM_EXP) {
+            xp[skill] = SkillConstants.MAXIMUM_EXP
+        }
+        val newLevel = getLevelForXp(skill)
+        val levelDiff = newLevel - oldLevel
+        if (newLevel > oldLevel) {
+            level[skill] += levelDiff
+            player!!.dialogueManager.startDialogue("LevelUp", skill)
+            if (skill == SkillConstants.HITPOINTS) {
+                player!!.heal(levelDiff * 10)
+            }
+            if (skill == SkillConstants.PRAYER) {
+                player!!.prayer.restorePrayer(levelDiff * 10)
+            }
+            if (skill == SkillConstants.SUMMONING || skill <= SkillConstants.MAGIC) {
+                player!!.appearance.generateAppearanceData()
+            }
+        }
+        refresh(skill)
+    }
+
+    val isMaxed: Boolean
+        get() {
+            var maxlevels = 0
+            for (ji in level.indices) {
+                if (getLevel(ji) != 99) {
+                    continue
+                }
+                maxlevels++
+            }
+            return maxlevels >= 23
+        }
+
+    fun addSkillXpRefresh(skill: Int, xp: Double) {
+        this.xp[skill] += xp
+        level[skill] = getLevelForXp(skill)
+    }
+
+    fun resetSkillNoRefresh(skill: Int) {
+        xp[skill] = 0.0
+        level[skill] = 1
+    }
+
+    fun NumberToSkill(number: Int): Boolean {
+        var found = 0
+        for (i in 0..23) {
+            if (getLevel(i) >= 99) {
+                found++
+            }
+        }
+        return found >= number
+    }
+
+    fun setXp(skill: Int, exp: Double) {
+        xp[skill] = exp
+        refresh(skill)
+    }
+
+    fun getTargetIdByComponentId(componentId: Int): Int {
+        return when (componentId) {
+            200 -> 0
+            11 -> 1
+            52 -> 2
+            93 -> 3
+            28 -> 4
+            193 -> 5
+            76 -> 6
+            19 -> 7
+            36 -> 8
+            60 -> 9
+            84 -> 10
+            110 -> 11
+            186 -> 12
+            179 -> 13
+            44 -> 14
+            68 -> 15
+            172 -> 16
+            165 -> 17
+            101 -> 18
+            118 -> 19
+            126 -> 20
+            134 -> 21
+            142 -> 22
+            150 -> 23
+            158 -> 24
+            else -> -1
+        }
+    }
+
+    fun getSkillIdByTargetId(targetId: Int): Int {
+        return when (targetId) {
+            0 -> SkillConstants.ATTACK
+            1 -> SkillConstants.STRENGTH
+            2 -> SkillConstants.RANGE
+            3 -> SkillConstants.MAGIC
+            4 -> SkillConstants.DEFENCE
+            5 -> SkillConstants.HITPOINTS
+            6 -> SkillConstants.PRAYER
+            7 -> SkillConstants.AGILITY
+            8 -> SkillConstants.HERBLORE
+            9 -> SkillConstants.THIEVING
+            10 -> SkillConstants.CRAFTING
+            11 -> SkillConstants.RUNECRAFTING
+            12 -> SkillConstants.MINING
+            13 -> SkillConstants.SMITHING
+            14 -> SkillConstants.FISHING
+            15 -> SkillConstants.COOKING
+            16 -> SkillConstants.FIREMAKING
+            17 -> SkillConstants.WOODCUTTING
+            18 -> SkillConstants.FLETCHING
+            19 -> SkillConstants.SLAYER
+            20 -> SkillConstants.FARMING
+            21 -> SkillConstants.CONSTRUCTION
+            22 -> SkillConstants.HUNTER
+            23 -> SkillConstants.SUMMONING
+            24 -> SkillConstants.DUNGEONEERING
+            else -> -1
+        }
+    }
+
+    fun refreshEnabledSkillsTargets() {
+        val value = Misc.get32BitValue(enabledSkillsTargets, true)
+        player!!.packets.sendConfig(1966, value)
+    }
+
+    fun refreshUsingLevelTargets() {
+        val value = Misc.get32BitValue(skillsTargetsUsingLevelMode, true)
+        player!!.packets.sendConfig(1968, value)
+    }
+
+    fun refreshSkillsTargetsValues() {
+        for (i in 0..24) {
+            player!!.packets.sendConfig(1969 + i, skillsTargetsValues[i])
+        }
+    }
+
+    fun setSkillTargetEnabled(id: Int, enabled: Boolean) {
+        enabledSkillsTargets[id] = enabled
+        refreshEnabledSkillsTargets()
+    }
+
+    fun setSkillTargetUsingLevelMode(id: Int, using: Boolean) {
+        skillsTargetsUsingLevelMode[id] = using
+        refreshUsingLevelTargets()
+    }
+
+    fun setSkillTargetValue(skillId: Int, value: Int) {
+        skillsTargetsValues[skillId] = value
+        refreshSkillsTargetsValues()
+    }
+
+    fun setSkillTarget(usingLevel: Boolean, skillId: Int, target: Int) {
+        setSkillTargetEnabled(skillId, true)
+        setSkillTargetUsingLevelMode(skillId, usingLevel)
+        setSkillTargetValue(skillId, target)
+    }
+
+    fun refreshAllSkills() {
+        for (skill in level.indices) {
+            refresh(skill)
+        }
+    }
+
+    override fun toString(): String {
+        var contents = ""
+        for ((index, skill) in this.level.withIndex()) {
+            contents += "$index to $skill\n"
+        }
+        return contents
+    }
+
+    companion object {
+        private const val serialVersionUID = -7086829989489745985L
+    }
+
+    init {
+        level = IntArray(25)
+        xp = DoubleArray(25)
+        for (i in level.indices) {
+            level[i] = 1
+            xp[i] = 0.0
+        }
+        level[3] = 10
+        xp[3] = 1184.0
+        level[SkillConstants.HERBLORE] = 3
+        xp[SkillConstants.HERBLORE] = 250.0
+        enabledSkillsTargets = BooleanArray(25)
+        skillsTargetsUsingLevelMode = BooleanArray(25)
+        skillsTargetsValues = IntArray(25)
+    }
 }

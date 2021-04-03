@@ -1,6 +1,8 @@
 package org.redrune.game.content.entity.actor.player.skills
 
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.item.Item
+import org.redrune.utility.functions.Misc
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -10,19 +12,134 @@ class PresetHandler {
 
     enum class Preset(val title: String) {
 
-        PURE("Pure DDS") {
-            override fun onEquip(player: Player) {
-                val equipment = player.equipment
-                val inventory = player.inventory
+        PURE("Pure") {
+            override fun inventory() = hashMapOf(
+                1 to Item(6570, 1),
+                2 to Item(1725, 1),
+                3 to Item(4587, 1),
+                4 to Item(544, 1),
+                5 to Item(3842, 1),
+                7 to Item(542, 1),
+                9 to Item(7459, 1),
+                10 to Item(3105, 1)
+            )
+
+            override fun equipment() = hashMapOf(
+                1 to Item(6570, 1),
+                2 to Item(1725, 1),
+                3 to Item(4587, 1),
+                4 to Item(544, 1),
+                5 to Item(3842, 1),
+                7 to Item(542, 1),
+                9 to Item(7459, 1),
+                10 to Item(3105, 1)
+            )
+
+            override fun skills() = hashMapOf(
+                0 to 60,
+                1 to 1,
+                2 to 99,
+                3 to 99,
+                4 to 99,
+                5 to 1,
+                6 to 99
+            )
+
+            override fun spellBook() = 1
+
+            override fun prayerBook() = 2
+
+        },
 
 
-            }
+        PURE_RANGE("Pure - Ranged") {
+            override fun inventory() = hashMapOf(
+                0 to Item(6685, 1),
+                1 to Item(6685, 1),
+                2 to Item(3024, 1),
+                3 to Item(3024, 1),
+                4 to Item(2440, 1),
+                5 to Item(2436, 1),
+                6 to Item(2444, 1),
+                7 to Item(15272, 1),
+                8 to Item(15272, 1),
+                9 to Item(15272, 1),
+                10 to Item(15272, 1),
+                11 to Item(15272, 1),
+                12 to Item(15272, 1),
+                13 to Item(15272, 1),
+                14 to Item(15272, 1),
+                15 to Item(15272, 1),
+                16 to Item(15272, 1),
+                17 to Item(15272, 1),
+                18 to Item(15272, 1),
+                19 to Item(15272, 1),
+                20 to Item(4153, 1),
+                21 to Item(15272, 1),
+                22 to Item(15272, 1),
+                23 to Item(15272, 1),
+                24 to Item(15272, 1),
+                25 to Item(15272, 1),
+                26 to Item(15272, 1),
+                27 to Item(15272, 1)
+            )
 
-        }
+            override fun equipment() = hashMapOf(
+                1 to Item(6570, 1),
+                2 to Item(1725, 1),
+                3 to Item(861, 1),
+                4 to Item(544, 1),
+                7 to Item(2497, 1),
+                9 to Item(7459, 1),
+                10 to Item(3105, 1),
+                13 to Item(892, 1000),
+            )
 
+            override fun skills() = hashMapOf(
+                0 to 60,
+                1 to 1,
+                2 to 99,
+                3 to 99,
+                4 to 99,
+                6 to 99,
+            )
+
+            override fun spellBook() = 2
+
+            override fun prayerBook() = 1
+
+
+        },
+
+        /* ZERKER("Zerker") {
+
+         },
+
+         ZERKER_BRID("Zerker - Hybrid") {
+
+         },
+
+         MAIN("Main") {
+
+         },
+
+
+         MAIN_HYBRID("Main - Hybrid") {
+
+         }
+ */
         ;
 
-        abstract fun onEquip(player: Player)
+        abstract fun inventory(): HashMap<Int, Item>
+
+        abstract fun equipment(): HashMap<Int, Item>
+
+        abstract fun skills(): HashMap<Int, Int>
+
+        abstract fun spellBook(): Int
+
+        abstract fun prayerBook(): Int
+                ;
 
 
     }
@@ -43,7 +160,7 @@ class PresetHandler {
             }
             packets.sendHideIComponent(interfaceId, 3, false);
             packets.sendIComponentModel(interfaceId, 3, 835)
-            packets.sendHideIComponent(interfaceId, 1, true);
+//            packets.sendHideIComponent(interfaceId, 1, true);
             packets.sendHideIComponent(interfaceId, 8, true);
 
             refresh(player)
@@ -65,7 +182,7 @@ class PresetHandler {
             for (i in presets.indices) {
                 val preset = presets[i]
 
-                colour += colourize(1, i)
+                colour += colourize(Misc.random(1, 3), i)
 
                 player.packets.sendConfig(1440, colour)
             }

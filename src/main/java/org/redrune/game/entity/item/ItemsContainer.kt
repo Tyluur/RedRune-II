@@ -409,7 +409,7 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     override fun toString(): String {
         var contents = ""
         for ((index, item) in items.withIndex()) {
-            contents += "items[$index] = Item(${item?.id}, ${item?.amount})\n"
+            contents += "$index to Item(${item?.id}, ${item?.amount})\n"
         }
         return contents
     }
