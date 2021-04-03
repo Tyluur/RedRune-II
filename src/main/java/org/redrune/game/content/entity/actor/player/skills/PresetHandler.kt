@@ -166,7 +166,7 @@ class PresetHandler {
             override fun equipment() = hashMapOf(
                 0 to Item(3751, 1),
                 1 to Item(2412, 1),
-                2 to Item(1725, 1),
+                2 to Item(1712, 1),
                 3 to Item(4675, 1),
                 4 to Item(3387, 1),
                 5 to Item(3842, 1),
@@ -187,7 +187,7 @@ class PresetHandler {
 
             override fun spellBook() = 2
 
-            override fun prayerBook() = 2
+            override fun prayerBook() = 1
 
         },
 
@@ -289,7 +289,7 @@ class PresetHandler {
             override fun equipment() = hashMapOf(
                 0 to Item(10828, 1),
                 1 to Item(2412, 1),
-                2 to Item(1725, 1),
+                2 to Item(1712, 1),
                 3 to Item(4675, 1),
                 4 to Item(4091, 1),
                 5 to Item(13734, 1),
