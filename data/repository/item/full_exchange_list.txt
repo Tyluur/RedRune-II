@@ -1,8 +1,3 @@
-Cannonball: 2
-Cannon base: 6
-Cannon stand: 8
-Cannon barrels: 10
-Cannon furnace: 12
 Candle: 36
 Bronze arrowtips: 39
 Iron arrowtips: 40
@@ -168,22 +163,6 @@ Oyster pearls: 413
 Priest gown: 426
 Priest gown: 428
 Clay: 434
-Copper ore: 436
-Tin ore: 438
-Iron ore: 440
-Silver ore: 442
-Gold ore: 444
-Mithril ore: 447
-Adamantite ore: 449
-Runite ore: 451
-Coal: 453
-Strange fruit: 464
-Bones: 526
-Burnt bones: 528
-Bat bones: 530
-Big bones: 532
-Babydragon bones: 534
-Dragon bones: 536
 Druid's robe: 538
 Druid's robe: 540
 Monk's robe: 542
@@ -292,31 +271,16 @@ Mithril knife: 866
 Adamant knife: 867
 Rune knife: 868
 Black knife: 869
-Bronze knife (p): 870
-Iron knife (p): 871
-Steel knife (p): 872
-Mithril knife (p): 873
-Black knife (p): 874
-Adamant knife (p): 875
-Rune knife (p): 876
-Bronze bolts: 877
-Bronze bolts (p): 878
 Opal bolts: 879
 Pearl bolts: 880
 Barbed bolts: 881
 Bronze arrow: 882
-Bronze arrow (p): 883
 Iron arrow: 884
-Iron arrow (p): 885
 Steel arrow: 886
 Steel arrow (p): 887
 Mithril arrow: 888
-Mithril arrow (p): 889
 Adamant arrow: 890
-Adamant arrow (p): 891
 Rune arrow: 892
-Rune arrow (p): 893
-Bronze fire arrows: 942
 Knife: 946
 Bear fur: 948
 Silk: 950
@@ -324,11 +288,9 @@ Spade: 952
 Rope: 954
 Grey wolf fur: 958
 Plank: 960
-Christmas cracker: 962
 Papyrus: 970
 Charcoal: 973
 Machete: 975
-Disk of returning: 981
 Brass key: 983
 Tooth half of a key: 985
 Loop half of a key: 987
@@ -351,16 +313,6 @@ Cape: 1029
 Cape: 1031
 Zamorak robe: 1033
 Zamorak robe: 1035
-Red partyhat: 1038
-Yellow partyhat: 1040
-Blue partyhat: 1042
-Green partyhat: 1044
-Purple partyhat: 1046
-White partyhat: 1048
-Santa hat: 1050
-Green h'ween mask: 1053
-Blue h'ween mask: 1055
-Red h'ween mask: 1057
 Leather gloves: 1059
 Leather boots: 1061
 Leather vambraces: 1063
@@ -592,30 +544,6 @@ Uncut opal: 1625
 Uncut jade: 1627
 Uncut red topaz: 1629
 Uncut dragonstone: 1631
-Gold ring: 1635
-Sapphire ring: 1637
-Emerald ring: 1639
-Ruby ring: 1641
-Diamond ring: 1643
-Dragonstone ring: 1645
-Gold necklace: 1654
-Sapphire necklace: 1656
-Emerald necklace: 1658
-Ruby necklace: 1660
-Diamond necklace: 1662
-Dragon necklace: 1664
-Gold amulet: 1673
-Sapphire amulet: 1675
-Emerald amulet: 1677
-Ruby amulet: 1679
-Diamond amulet: 1681
-Dragonstone ammy: 1683
-Gold amulet: 1692
-Sapphire amulet: 1694
-Emerald amulet: 1696
-Ruby amulet: 1698
-Diamond amulet: 1700
-Dragonstone ammy: 1702
 Amulet of glory: 1704
 Amulet of glory (4): 1712
 Unstrung symbol: 1714
@@ -846,7 +774,6 @@ Rune bar: 2363
 Shield left half: 2366
 Shield right half: 2368
 Steel studs: 2370
-Ground bat bones: 2391
 Saradomin cape: 2412
 Guthix cape: 2413
 Zamorak cape: 2414
@@ -903,67 +830,7 @@ Rune fire arrows: 2541
 Ring of recoil: 2550
 Ring of duelling (8): 2552
 Ring of duelling (1): 2566
-Ring of forging: 2568
-Ring of life: 2570
-Ring of wealth: 2572
-Ranger boots: 2577
-Wizard boots: 2579
-Robin hood hat: 2581
-Black platebody (t): 2583
-Black platelegs (t): 2585
-Black full helm (t): 2587
-Black kiteshield (t): 2589
-Black platebody (g): 2591
-Black platelegs (g): 2593
-Black full helm (g): 2595
-Black kiteshield (g): 2597
-Adamant platebody (t): 2599
-Adamant platelegs (t): 2601
-Adamant kiteshield (t): 2603
-Adamant full helm (t): 2605
-Adamant platebody (g): 2607
-Adamant platelegs (g): 2609
-Adamant kiteshield (g): 2611
-Adamant full helm (g): 2613
-Rune platebody (g): 2615
-Rune platelegs (g): 2617
-Rune full helm (g): 2619
-Rune kiteshield (g): 2621
-Rune platebody (t): 2623
-Rune platelegs (t): 2625
-Rune full helm (t): 2627
-Rune kiteshield (t): 2629
-Highwayman mask: 2631
-Blue beret: 2633
-Black beret: 2635
-White beret: 2637
-Tan cavalier: 2639
-Dark cavalier: 2641
-Black cavalier: 2643
-Red headband: 2645
-Black headband: 2647
-Brown headband: 2649
-Pirate's hat: 2651
-Zamorak platebody: 2653
-Zamorak platelegs: 2655
-Zamorak full helm: 2657
-Zamorak kiteshield: 2659
-Saradomin platebody: 2661
-Saradomin platelegs: 2663
-Saradomin full helm: 2665
-Saradomin kiteshield: 2667
-Guthix platebody: 2669
-Guthix platelegs: 2671
-Guthix full helm: 2673
-Guthix kiteshield: 2675
-Wolf bones: 2859
 Wolfbone arrowtips: 2861
-Achey tree logs: 2862
-Ogre arrow shaft: 2864
-Flighted ogre arrow: 2865
-Ogre arrow: 2866
-Raw chompy: 2876
-Cooked chompy: 2878
 Elemental shield: 2890
 Boots: 2894
 Robe top: 2896
@@ -1036,15 +903,12 @@ Adamant claws: 3100
 Rune claws: 3101
 Rock climbing boots: 3105
 Granite shield: 3122
-Shaikahan bones: 3123
-Jogre bones: 3125
 Potato cactus: 3138
 Dragon chainbody: 3140
 Raw karambwan: 3142
 Cooked karambwan: 3144
 Karambwan vessel: 3157
 Sliced banana: 3162
-Monkey bones: 3183
 Cleaning cloth: 3188
 Bronze halberd: 3190
 Iron halberd: 3192
@@ -1303,174 +1167,6 @@ Dust rune: 4696
 Smoke rune: 4697
 Mud rune: 4698
 Lava rune: 4699
-Ahrim's hood: 4708
-Ahrim's staff: 4710
-Ahrim's robe top: 4712
-Ahrim's robe skirt: 4714
-Dharok's helm: 4716
-Dharok's greataxe: 4718
-Dharok's platebody: 4720
-Dharok's platelegs: 4722
-Guthan's helm: 4724
-Guthan's warspear: 4726
-Guthan's platebody: 4728
-Guthan's chainskirt: 4730
-Karil's coif: 4732
-Karil's crossbow: 4734
-Karil's top: 4736
-Karil's skirt: 4738
-Bolt rack: 4740
-Torag's helm: 4745
-Torag's hammers: 4747
-Torag's platebody: 4749
-Torag's platelegs: 4751
-Verac's helm: 4753
-Verac's flail: 4755
-Verac's brassard: 4757
-Verac's plateskirt: 4759
-Bronze brutal: 4773
-Iron brutal: 4778
-Steel brutal: 4783
-Black brutal: 4788
-Mithril brutal: 4793
-Adamant brutal: 4798
-Rune brutal: 4803
-Zogre bones: 4812
-Bronze nails: 4819
-Iron nails: 4820
-Black nails: 4821
-Mithril nails: 4822
-Adamantite nails: 4823
-Rune nails: 4824
-Unstrung comp bow: 4825
-Comp ogre bow: 4827
-Fayrg bones: 4830
-Raurg bones: 4832
-Ourg bones: 4834
-Rogue's purse potion (unf): 4840
-Relicym's balm (4): 4842
-Relicym's balm (3): 4844
-Relicym's balm (2): 4846
-Relicym's balm (1): 4848
-Ogre coffin key: 4850
-Ahrim's hood 0: 4860
-Ahrim's staff 0: 4866
-Ahrim's robe top 0: 4872
-Ahrim's robe skirt 0: 4878
-Dharok's helm 0: 4884
-Dharok's greataxe 0: 4890
-Dharok's platebody 0: 4896
-Dharok's platelegs 0: 4902
-Guthan's helm 0: 4908
-Guthan's warspear 0: 4914
-Guthan's platebody 0: 4920
-Guthan's chainskirt 0: 4926
-Karil's coif 0: 4932
-Karil's crossbow 0: 4938
-Karil's top 0: 4944
-Karil's skirt 0: 4950
-Torag's helm 0: 4956
-Torag's hammers 0: 4962
-Torag's platebody 0: 4968
-Torag's platelegs 0: 4974
-Verac's helm 0: 4980
-Verac's flail 0: 4986
-Verac's brassard 0: 4992
-Verac's plateskirt 0: 4998
-Raw cave eel: 5001
-Cave eel: 5003
-Mining helmet: 5014
-Bone spear: 5016
-Bone club: 5018
-Woven top: 5024
-Woven top: 5026
-Woven top: 5028
-Shirt: 5030
-Shirt: 5032
-Shirt: 5034
-Trousers: 5036
-Trousers: 5038
-Trousers: 5040
-Shorts: 5042
-Shorts: 5044
-Shorts: 5046
-Skirt: 5048
-Skirt: 5050
-Skirt: 5052
-Marigold seed: 5096
-Rosemary seed: 5097
-Nasturtium seed: 5098
-Woad seed: 5099
-Limpwurt seed: 5100
-Redberry seed: 5101
-Cadavaberry seed: 5102
-Dwellberry seed: 5103
-Jangerberry seed: 5104
-Whiteberry seed: 5105
-Poison ivy seed: 5106
-Cactus seed: 5280
-Belladonna seed: 5281
-Bittercap mushroom spore: 5282
-Apple tree seed: 5283
-Banana tree seed: 5284
-Orange tree seed: 5285
-Curry tree seed: 5286
-Pineapple seed: 5287
-Papaya tree seed: 5288
-Palm tree seed: 5289
-Calquat tree seed: 5290
-Guam seed: 5291
-Marrentill seed: 5292
-Tarromin seed: 5293
-Harralander seed: 5294
-Ranarr seed: 5295
-Toadflax seed: 5296
-Irit seed: 5297
-Avantoe seed: 5298
-Kwuarm seed: 5299
-Snapdragon seed: 5300
-Cadantine seed: 5301
-Lantadyme seed: 5302
-Dwarf weed seed: 5303
-Torstol seed: 5304
-Barley seed: 5305
-Jute seed: 5306
-Hammerstone seed: 5307
-Asgarnian seed: 5308
-Yanillian seed: 5309
-Krandorian seed: 5310
-Wildblood seed: 5311
-Acorn: 5312
-Willow seed: 5313
-Maple seed: 5314
-Yew seed: 5315
-Magic seed: 5316
-Potato seed: 5318
-Onion seed: 5319
-Sweetcorn seed: 5320
-Watermelon seed: 5321
-Tomato seed: 5322
-Strawberry seed: 5323
-Cabbage seed: 5324
-Gardening trowel: 5325
-Secateurs: 5329
-Watering can: 5331
-Rake: 5341
-Seed dibber: 5343
-Gardening boots: 5345
-Plant pot: 5350
-Unfired plant pot: 5352
-Plant pot: 5354
-Basket: 5376
-Apples (5): 5386
-Oranges (5): 5396
-Strawberries (5): 5406
-Bananas (5): 5416
-Empty sack: 5418
-Potatoes (10): 5438
-Onions (10): 5458
-Cabbages (10): 5478
-Strawberry: 5504
 Elemental talisman: 5516
 Binding necklace: 5521
 Tiara mould: 5523
@@ -1490,90 +1186,6 @@ Blood tiara: 5549
 Initiate sallet: 5574
 Initiate hauberk: 5575
 Initiate cuisse: 5576
-Bronze arrow (p+): 5616
-Iron arrow (p+): 5617
-Steel arrow (p+): 5618
-Mithril arrow (p+): 5619
-Adamant arrow (p+): 5620
-Rune arrow (p+): 5621
-Bronze arrow (p++): 5622
-Iron arrow (p++): 5623
-Steel arrow (p++): 5624
-Mithril arrow (p++): 5625
-Adamant arrow (p++): 5626
-Rune arrow (p++): 5627
-Bronze dart (p+): 5628
-Iron dart (p+): 5629
-Steel dart (p+): 5630
-Black dart (p+): 5631
-Mithril dart (p+): 5632
-Adamant dart (p+): 5633
-Rune dart (p+): 5634
-Bronze dart (p++): 5635
-Iron dart (p++): 5636
-Steel dart (p++): 5637
-Black dart (p++): 5638
-Mithril dart (p++): 5639
-Adamant dart (p++): 5640
-Rune dart (p++): 5641
-Bronze javelin (p+): 5642
-Iron javelin (p+): 5643
-Steel javelin (p+): 5644
-Mithril javelin (p+): 5645
-Adamant javelin (p+): 5646
-Rune javelin (p+): 5647
-Bronze jav'n (p++): 5648
-Iron javelin (p++): 5649
-Steel javelin (p++): 5650
-Mithril javelin (p++): 5651
-Adamant javelin (p++): 5652
-Rune javelin (p++): 5653
-Bronze knife (p+): 5654
-Iron knife (p+): 5655
-Steel knife (p+): 5656
-Mithril knife (p+): 5657
-Black knife (p+): 5658
-Adamant knife (p+): 5659
-Rune knife (p+): 5660
-Bronze knife (p++): 5661
-Iron knife (p++): 5662
-Steel knife (p++): 5663
-Mithril knife (p++): 5664
-Black knife (p++): 5665
-Adamant knife (p++): 5666
-Rune knife (p++): 5667
-Iron dagger (p+): 5668
-Bronze dagger (p+): 5670
-Steel dagger (p+): 5672
-Mithril dagger (p+): 5674
-Adamant dagger (p+): 5676
-Rune dagger (p+): 5678
-Dragon dagger (p+): 5680
-Black dagger (p+): 5682
-Iron dagger (p++): 5686
-Bronze dagger (p++): 5688
-Steel dagger (p++): 5690
-Mithril dagger (p++): 5692
-Adamant dagger (p++): 5694
-Rune dagger (p++): 5696
-Dragon dagger (p++): 5698
-Black dagger (p++): 5700
-Bronze spear (p+): 5704
-Iron spear (p+): 5706
-Steel spear (p+): 5708
-Mithril spear (p+): 5710
-Adamant spear (p+): 5712
-Rune spear (p+): 5714
-Dragon spear (p+): 5716
-Bronze spear (p++): 5718
-Iron spear (p++): 5720
-Steel spear (p++): 5722
-Mithril spear (p++): 5724
-Adamant spear (p++): 5726
-Rune spear (p++): 5728
-Dragon spear (p++): 5730
-Black spear (p+): 5734
-Black spear (p++): 5736
 Asgarnian ale (m): 5739
 Mature wmb: 5741
 Greenman's ale (m): 5743
@@ -1715,14 +1327,7 @@ Leaves: 6026
 Leaves: 6028
 Leaves: 6030
 Compost: 6032
-Supercompost: 6034
-Plant cure: 6036
 Magic string: 6038
-Pre-nature amulet: 6041
-Oak roots: 6043
-Willow roots: 6045
-Maple roots: 6047
-Yew roots: 6049
 Magic roots: 6051
 Bronze bolts (p+): 6061
 Bronze bolts (p++): 6062
@@ -1824,18 +1429,6 @@ Menap action kilt: 6398
 Menap headgear: 6400
 Menaphite top: 6402
 Menaphite robe: 6404
-Menap action kilt: 6406
-Oak blackjack (o): 6408
-Oak blackjack (d): 6410
-Willow blackjack (o): 6412
-Willow blackjack (d): 6414
-Maple blackjack: 6416
-Maple blackjack (o): 6418
-Maple blackjack (d): 6420
-Compost potion (4): 6470
-Compost potion (3): 6472
-Compost potion (2): 6474
-Compost potion (1): 6476
 Toktz-xil-ul: 6522
 Toktz-xil-ak: 6523
 Toktz-ket-xil: 6524
@@ -1846,13 +1439,6 @@ Tzhaar-ket-om: 6528
 Mud battlestaff: 6562
 Mystic mud staff: 6563
 Obsidian cape: 6568
-Uncut onyx: 6571
-Onyx: 6573
-Onyx ring: 6575
-Onyx necklace: 6577
-Onyx amulet: 6581
-Ring of stone: 6583
-Amulet of fury: 6585
 White claws: 6587
 White battleaxe: 6589
 White dagger: 6591
@@ -1890,18 +1476,12 @@ Baked potato: 6701
 Potato with butter: 6703
 Potato with cheese: 6705
 Seercull: 6724
-Dagannoth bones: 6729
-Seers' ring: 6731
-Archers' ring: 6733
-Warrior ring: 6735
-Berserker ring: 6737
 Dragon hatchet: 6739
 Guthix mjolnir: 6760
 Saradomin mjolnir: 6762
 Zamorak mjolnir: 6764
 Choc-ice: 6794
 Granite legs: 6809
-Wyvern bones: 6812
 Fur: 6814
 Mages' book: 6889
 Beginner wand: 6908
@@ -2077,8 +1657,6 @@ Camelot teleport: 8010
 Ardougne teleport: 8011
 Watchtower t'port: 8012
 Teleport to house: 8013
-Bones to bananas: 8014
-Bones to peaches: 8015
 Enchant sapphire: 8016
 Enchant emerald: 8017
 Enchant ruby: 8018
@@ -2096,39 +1674,6 @@ Mahogany armchair: 8508
 Wooden bookcase: 8510
 Oak bookcase: 8512
 Mahogany b'kcase: 8514
-Beer barrel: 8516
-Cider barrel: 8518
-Asgarnian ale: 8520
-Greenman's ale: 8522
-Dragon bitter: 8524
-Chef's delight: 8526
-Wood kitchen table: 8528
-Oak kitchen table: 8530
-Teak kitchen table: 8532
-Wood dining table: 8548
-Oak dining table: 8550
-Carved oak table: 8552
-Teak table: 8554
-Carved teak table: 8556
-Mahogany table: 8558
-Opulent table: 8560
-Wooden bench: 8562
-Oak bench: 8564
-Carved oak bench: 8566
-Teak dining bench: 8568
-Carved teak bench: 8570
-Mahogany bench: 8572
-Gilded bench: 8574
-Wooden bed: 8576
-Oak bed: 8578
-Large oak bed: 8580
-Teak bed: 8582
-Large teak bed: 8584
-4-poster: 8586
-Gilded 4-poster: 8588
-Oak clock: 8590
-Teak clock: 8592
-Gilded clock: 8594
 Shaving stand: 8596
 Oak shaving stand: 8598
 Oak dresser: 8600
@@ -2137,51 +1682,6 @@ Fancy teak dresser: 8604
 Mahogany dresser: 8606
 Gilded dresser: 8608
 Shoe box: 8610
-Oak drawers: 8612
-Oak wardrobe: 8614
-Teak drawers: 8616
-Teak wardrobe: 8618
-Mahogany 'drobe: 8620
-Gilded wardrobe: 8622
-Oak plank: 8778
-Teak plank: 8780
-Mahogany plank: 8782
-Gold leaf: 8784
-Marble block: 8786
-Magic stone: 8788
-Bolt of cloth: 8790
-Clockwork: 8792
-Saw: 8794
-Timber beam: 8837
-Bone dagger: 8872
-Bone dagger (p): 8874
-Bone dagger (p+): 8876
-Bone dagger (p++): 8878
-Dorgeshuun c'bow: 8880
-Bone bolts: 8882
-Black mask (10): 8901
-Black mask: 8921
-Bandana and eyepatch: 8924
-Bandana and eyepatch: 8925
-Bandana and eyepatch: 8926
-Bandana and eyepatch: 8927
-Hat and eyepatch: 8928
-Security book: 9003
-Stronghold notes: 9004
-Ivory comb: 9026
-Golden scarab: 9028
-Stone scarab: 9030
-Pottery scarab: 9032
-Golden statuette: 9034
-Pottery statuette: 9036
-Stone statuette: 9038
-Gold seal: 9040
-Stone seal: 9042
-Pharaoh's sceptre (3): 9044
-Pharaoh's sceptre: 9050
-Locust meat: 9052
-Astral rune: 9075
-Iron bolts: 9140
 Steel bolts: 9141
 Mithril bolts: 9142
 Adamant bolts: 9143
@@ -2235,46 +1735,9 @@ Ruby bolts: 9339
 Diamond bolts: 9340
 Dragon bolts: 9341
 Onyx bolts: 9342
-Bronze bolts (unf): 9375
-Iron bolts (unf): 9377
-Steel bolts (unf): 9378
-Mithril bolts (unf): 9379
-Adamant bolts (unf): 9380
-Runite bolts (unf): 9381
-Silver bolts (unf): 9382
-Mith grapple tip: 9416
-Mith grapple: 9418
-Mith grapple: 9419
-Bronze limbs: 9420
-Iron limbs: 9423
-Steel limbs: 9425
-Mithril limbs: 9427
-Adamantite limbs: 9429
-Runite limbs: 9431
-Bolt mould: 9434
 Sinew: 9436
-Crossbow string: 9438
-Wooden stock: 9440
-Oak stock: 9442
-Willow stock: 9444
-Teak stock: 9446
-Maple stock: 9448
-Mahogany stock: 9450
 Yew stock: 9452
-Bronze c'bow (u): 9454
-Iron c'bow (u): 9457
-Steel c'bow (u): 9459
-Mithril c'bow (u): 9461
-Adamant c'bow (u): 9463
-Runite c'bow (u): 9465
-Grand seed pod: 9469
-Gnome scarf: 9470
-Gnome goggles: 9472
-Mint cake: 9475
 Tyras helm: 9629
-Vyrewatch top: 9634
-Vyrewatch legs: 9636
-Vyrewatch shoes: 9638
 Citizen top: 9640
 Citizen trousers: 9642
 Citizen shoes: 9644
@@ -2300,22 +1763,6 @@ M'gany cape rack: 9845
 Gilded cape rack: 9846
 Marble cape rack: 9847
 Magical cape rack: 9848
-Oak toy box: 9849
-Teak toy box: 9850
-Mahogany toy box: 9851
-Oak magic wardrobe: 9852
-Carved oak magic wardrobe: 9853
-Teak magic wardrobe: 9854
-Carved teak magic wardrobe: 9855
-Mahogany magic wardrobe: 9856
-Gilded magic wardrobe: 9857
-Marble magic wardrobe: 9858
-Oak armour case: 9859
-Teak armour case: 9860
-M'gany arm'r case: 9861
-Oak treasure chest: 9862
-Teak treas' chest: 9863
-M'gany treas' chest: 9864
 Oak costume box: 9865
 Teak costume box: 9866
 Mahogany cos box: 9867
@@ -2412,99 +1859,6 @@ Long kebbit bolts: 10159
 Willow composite bow: 10280
 Yew composite bow: 10282
 Magic composite bow: 10284
-Rune helm (h1): 10286
-Rune helm (h2): 10288
-Rune helm (h3): 10290
-Rune helm (h4): 10292
-Rune helm (h5): 10294
-Adamant helm (h1): 10296
-Adamant helm (h2): 10298
-Adamant helm (h3): 10300
-Adamant helm (h4): 10302
-Adamant helm (h5): 10304
-Black helm (h1): 10306
-Black helm (h2): 10308
-Black helm (h3): 10310
-Black helm (h4): 10312
-Black helm (h5): 10314
-Bob shirt: 10316
-Bob shirt: 10318
-Bob shirt: 10320
-Bob shirt: 10322
-Bob shirt: 10324
-Purple firelighter: 10326
-White firelighter: 10327
-Third-age range top: 10330
-Third-age range legs: 10332
-Third-age range coif: 10334
-Third-age vambraces: 10336
-Third-age robe top: 10338
-Third-age robe: 10340
-Third-age mage hat: 10342
-Third-age amulet: 10344
-Third-age platelegs: 10346
-Third-age platebody: 10348
-Third-age full helmet: 10350
-Third-age kiteshield: 10352
-Amulet of glory (t4): 10354
-Amulet of glory (t): 10362
-Strength amulet (t): 10364
-Amulet of magic (t): 10366
-Zamorak vambraces: 10368
-Zamorak body: 10370
-Zamorak chaps: 10372
-Zamorak coif: 10374
-Guthix vambraces: 10376
-Guthix body: 10378
-Guthix chaps: 10380
-Guthix coif: 10382
-Saradomin vambraces: 10384
-Saradomin body: 10386
-Saradomin chaps: 10388
-Saradomin coif: 10390
-A powdered wig: 10392
-Flared trousers: 10394
-Pantaloons: 10396
-Sleeping cap: 10398
-Black elegant shirt: 10400
-Black elegant legs: 10402
-Red elegant shirt: 10404
-Red elegant legs: 10406
-Blue elegant shirt: 10408
-Blue elegant legs: 10410
-Green elegant shirt: 10412
-Green elegant legs: 10414
-Purple elegant shirt: 10416
-Purple elegant legs: 10418
-White elegant blouse: 10420
-White elegant skirt: 10422
-Red elegant blouse: 10424
-Red elegant skirt: 10426
-Blue elegant blouse: 10428
-Blue elegant skirt: 10430
-Green elegant blouse: 10432
-Green elegant skirt: 10434
-Purple elegant blouse: 10436
-Purple elegant skirt: 10438
-Saradomin crozier: 10440
-Guthix crozier: 10442
-Zamorak crozier: 10444
-Saradomin cloak: 10446
-Guthix cloak: 10448
-Zamorak cloak: 10450
-Saradomin mitre: 10452
-Guthix mitre: 10454
-Zamorak mitre: 10456
-Saradomin robe top: 10458
-Zamorak robe top: 10460
-Guthix robe top: 10462
-Saradomin robe legs: 10464
-Guthix robe legs: 10466
-Zamorak robe legs: 10468
-Saradomin stole: 10470
-Guthix stole: 10472
-Zamorak stole: 10474
-Purple sweets: 10476
 Ava's accumulator: 10499
 Granite body: 10564
 Granite helm: 10589
@@ -2569,26 +1923,8 @@ Shrunk ogleroot: 11205
 Dragon arrow: 11212
 Dragon fire arrows: 11217
 Dragon fire arrows: 11222
-Dragon arrow (p): 11227
-Dragon arrow (p+): 11228
-Dragon arrow (p++): 11229
 Dragon dart: 11230
-Dragon dart (p): 11231
 Dragon dart tip: 11232
-Dragon dart (p+): 11233
-Dragon dart (p++): 11234
-Dark bow: 11235
-Dragon arrowtips: 11237
-Baby impling jar: 11238
-Young impling jar: 11240
-Gourm' impling jar: 11242
-Earth impling jar: 11244
-Ess' impling jar: 11246
-Eclectic impling jar: 11248
-Nature impling jar: 11250
-Magpie impling jar: 11252
-Ninja impling jar: 11254
-Dragon impling jar: 11256
 Impling jar: 11260
 Imp repellent: 11262
 Anchovy oil: 11264
@@ -2608,540 +1944,18 @@ Iron hasta: 11369
 Steel hasta: 11371
 Mithril hasta: 11373
 Adamant hasta: 11375
-Rune hasta: 11377
-Bronze hasta (p): 11379
-Bronze hasta (p+): 11382
-Bronze hasta (p++): 11384
-Iron hasta (p): 11386
-Iron hasta (p+): 11389
-Iron hasta (p++): 11391
-Steel hasta (p): 11393
-Steel hasta (p+): 11396
-Steel hasta (p++): 11398
-Mithril hasta (p): 11400
-Mithril hasta (p+): 11403
-Mithril hasta (p++): 11405
-Adamant hasta (p): 11407
-Adamant hasta (p+): 11410
-Adamant hasta (p++): 11412
-Rune hasta (p): 11414
-Rune hasta (p+): 11417
-Rune hasta (p++): 11419
-Attack mix (2): 11429
-Attack mix (1): 11431
-Antipoison mix (2): 11433
-Antipoison mix (1): 11435
-Relicym's mix (2): 11437
-Relicym's mix (1): 11439
-Strength mix (1): 11441
-Strength mix (2): 11443
-Combat mix (2): 11445
-Combat mix (1): 11447
-Restore mix (2): 11449
-Restore mix (1): 11451
-Energy mix (2): 11453
-Energy mix (1): 11455
-Defence mix (2): 11457
-Defence mix (1): 11459
-Agility mix (2): 11461
-Agility mix (1): 11463
-Prayer mix (2): 11465
-Prayer mix (1): 11467
-Super attack mix (2): 11469
-Super attack mix (1): 11471
-Anti-p supermix (2): 11473
-Anti-p supermix (1): 11475
-Fishing mix (2): 11477
-Fishing mix (1): 11479
-Super energy mix (2): 11481
-Super energy mix (1): 11483
-Super strength mix (2): 11485
-Super strength mix (1): 11487
-Magic essence mix (2): 11489
-Magic essence mix (1): 11491
-Super restore mix (2): 11493
-Super restore mix (1): 11495
-Super defence mix (2): 11497
-Super defence mix (1): 11499
-Antidote+ mix (2): 11501
-Antidote+ mix (1): 11503
-Antifire mix (2): 11505
-Antifire mix (1): 11507
-Ranging mix (2): 11509
-Ranging mix (1): 11511
-Magic mix (2): 11513
-Magic mix (1): 11515
-Hunting mix (2): 11517
-Hunting mix (1): 11519
-Zamorak mix (2): 11521
-Zamorak mix (1): 11523
-Wimpy feather: 11525
-Glassblowing book: 11656
-Godsword shards: 11686
-Godsword shards: 11688
-Godsword blade: 11690
-Zamorakian spear: 11716
-Steam battlestaff: 11736
-Mystic steam staff: 11738
-Bronze armour set (lg): 11814
-Bronze armour set (sk): 11816
-Iron armour set (lg): 11818
-Iron armour set (sk): 11820
-Steel armour set (lg): 11822
-Steel armour set (sk): 11824
-Black armour set (lg): 11826
-Black armour set (sk): 11828
-Mithril armour set (lg): 11830
-Mithril armour set (sk): 11832
-Adamant armour set (lg): 11834
-Adamant armour set (sk): 11836
-Rune armour set (lg): 11838
-Rune armour set (sk): 11840
-Green dragonhide set: 11864
-Blue dragonhide set: 11866
-Red dragonhide set: 11868
-Black dragonhide set: 11870
-Mystic robes set: 11872
-Infinity robes set: 11874
-Splitbark armour set: 11876
-Enchanted set: 11902
-Spined armour set: 11944
-Skeletal armour set: 11946
-Light mystic robes set: 11960
-Dark mystic robes set: 11962
-Dwarf cannon set: 11967
-Spirit terrorbird pouch: 12007
-Granite crab pouch: 12009
-Praying mantis pouch: 12011
-Giant ent pouch: 12013
-Spirit cobra pouch: 12015
-Spirit dagannoth pouch: 12017
-Thorny snail pouch: 12019
-Beaver pouch: 12021
-Karam. overlord pouch: 12023
-Hydra pouch: 12025
-Spirit jelly pouch: 12027
-Bunyip pouch: 12029
-Fruit bat pouch: 12033
-Magpie pouch: 12041
-Guthatrice egg: 12111
-Saratrice egg: 12113
-Zamatrice egg: 12115
-Pengatrice egg: 12117
-Coraxatrice egg: 12119
-Vulatrice egg: 12121
-Barker toad pouch: 12123
-Flies: 12125
-Beetle bits: 12127
-Ground fishing bait: 12129
-Nuts: 12130
-Evil turnip: 12134
-2/3 evil turnip: 12136
-1/3 evil turnip: 12138
-Summoning potion (4): 12140
-Summoning potion (3): 12142
-Summoning potion (2): 12144
-Summoning potion (1): 12146
-Evil turnip seed: 12148
-Carved evil turnip: 12153
-Pouch: 12155
-Honeycomb: 12156
-Clean spirit weed: 12172
-Grimy spirit weed: 12174
-Spirit weed seed: 12176
-Spirit weed potion (unf): 12181
-Spirit shards: 12183
-Antlers: 12204
-Lizard skull: 12207
-Feather headdress: 12210
-Feather headdress: 12213
-Feather headdress: 12216
-Feather headdress: 12219
-Feather headdress: 12222
-Raw pawya meat: 12535
-Grenwall spikes: 12539
-Ogre wig: 12559
-Ogre kilt: 12561
-Ogre top: 12563
-Ogre boots: 12565
-Diseased kebbit fur: 12567
-Davy kebbit hat: 12568
-Ogre club: 12570
-Lavender: 12572
-Fever grass: 12574
-Tansymum: 12576
-Eucalyptus logs: 12581
-Eucalyptus pyre logs: 12583
-Primweed: 12588
-Stinkbloom: 12590
-Amulet of farming (1): 12608
-Amulet of farming (8): 12622
-Swamp titan pouch: 12776
-Spirit mosquito pouch: 12778
-Pyrelord pouch: 12816
-Pester scroll: 12838
-Fireball assault scroll: 12839
-Rending scroll: 12840
-Inferno scroll: 12841
-Battle hood 0: 12871
-Battle robe top 0: 12878
-Battle robe bottom 0: 12885
-Druidic mage hood 0: 12892
-Druidic mage top 0: 12899
-Druidic mage bottom 0: 12906
-Adamant spikeshield 0: 12913
-Adamant berserker shield 0: 12920
-Rune spikeshield 0: 12927
-Rune berserker shield 0: 12934
-Green d'hide coif 0: 12941
-Blue d'hide coif 0: 12948
-Red d'hide coif 0: 12955
-Black d'hide coif 0: 12962
-Combat hood 0: 12969
-Combat robe top 0: 12976
-Combat robe bottom 0: 12983
-Worn-out bronze gauntlets: 12986
-Worn-out iron gauntlets: 12989
-Worn-out steel gauntlets: 12992
-Worn-out black gauntlets: 12995
-Worn-out mithril gauntlets: 12998
-Worn-out adamant gauntlets: 13001
-Worn-out rune gauntlets: 13004
-Worn-out dragon gauntlets: 13007
-Black crossbow: 13081
-Black bolts: 13083
-Black bolts (p): 13084
-Black bolts (p+): 13085
-Black bolts (p++): 13086
-Black cane: 13095
-Adamant cane: 13097
-Rune cane: 13099
-Top hat: 13101
-Pith helmet: 13103
-Spiked helmet: 13105
-Sheep mask: 13107
-Penguin mask: 13109
-Bat mask: 13111
-Cat mask: 13113
-Wolf mask: 13115
-Broad arrow heads: 13278
-Unfinished broad bolts: 13279
-Broad-tipped bolts: 13280
-Leaf-bladed sword: 13290
-Pirate impling jar: 13337
-Left eyepatch: 13355
-Stripy pirate shirt: 13358
-Stripy pirate shirt: 13360
-Stripy pirate shirt: 13362
-Pirate leggings: 13364
-Pirate leggings: 13366
-Pirate leggings: 13368
-Bandana: 13370
-Bandana: 13372
-Bandana: 13374
-Crayfish cage: 13431
-Crayfish: 13433
 Raw crayfish: 13435
 Button mushroom: 13563
 Spirit shield: 13734
-Blessed spirit shield: 13736
-Arcane spirit shield: 13738
-Divine spirit shield: 13740
-Elysian spirit shield: 13742
-Spectral spirit shield: 13744
-Arcane sigil: 13746
-Divine sigil: 13748
-Elysian sigil: 13750
-Spectral sigil: 13752
-Holy elixir: 13754
-Zuriel's robe top: 13858
-Zuriel's robe bottom: 13861
-Zuriel's hood: 13864
-Zuriel's staff: 13867
-Morrigan's leather body: 13870
-Morrigan's leather chaps: 13873
-Morrigan's coif: 13876
-Morrigan's javelin: 13879
-Morrigan's javelin (p): 13880
-Morrigan's javelin (p+): 13881
-Morrigan's javelin (p++): 13882
-Morrigan's throwing axe: 13883
-Statius's platebody: 13884
-Vesta's chainbody: 13887
-Statius's platelegs: 13890
-Vesta's plateskirt: 13893
-Statius's full helm: 13896
-Vesta's longsword: 13899
-Statius's warhammer: 13902
-Vesta's spear: 13905
-Corrupt statius's platebody: 13908
-Corrupt vesta's chainbody: 13911
-Corrupt statius's platelegs: 13914
-Corrupt vesta's plateskirt: 13917
-Corrupt statius's full helm: 13920
-Corrupt vesta's longsword: 13923
-Corrupt statius's warhammer: 13926
-Corrupt vesta's spear: 13929
-Corrupt zuriel's robe top: 13932
-Corrupt zuriel's robe bottom: 13935
-Corrupt zuriel's hood: 13938
-Corrupt zuriel's staff: 13941
-Corrupt morrigan's leather body: 13944
-Corrupt morrigan's leather chaps: 13947
-Corrupt morrigan's coif: 13950
-Corrupt morrigan's javelin: 13953
-C. morrigan's javelin (p): 13954
-C. morrigan's javelin (p+): 13955
-C. morrigan's javelin (p++): 13956
-C. morrigan's throwing axe: 13957
-Corrupt dragon chainbody: 13958
-Corrupt dragon med helm: 13961
-Corrupt dragon sq shield: 13964
-Corrupt dragon plateskirt: 13967
-Corrupt dragon platelegs: 13970
-Corrupt dragon battleaxe: 13973
-Corrupt dragon dagger: 13976
-Corrupt dragon scimitar: 13979
-Corrupt dragon longsword: 13982
-Corrupt dragon mace: 13985
-Corrupt dragon spear: 13988
-Ruined dragon armour lump: 14472
-Ruined dragon armour slice: 14474
-Ruined dragon armour shard: 14476
-Dragon platebody: 14479
 Dragon claws: 14484
-Elite black platelegs: 14490
-Elite black platebody: 14492
-Elite black full helm: 14494
 Dagon'hai robe top: 14497
 Dagon'hai hat: 14499
 Dagon'hai robe bottom: 14501
 Dagon'hai robes set: 14525
-Elite black armour set: 14527
-Dragon plate armour set (lg): 14529
-Dragon plate armour set (sk): 14531
-Phoenix quill: 14616
-Rise from the ashes scroll: 14622
-Phoenix pouch: 14623
 Granite mace: 14679
-Ourg bones: 14793
-Grimy wergali: 14836
-Crafting potion (4): 14838
-Crafting potion (3): 14840
-Crafting potion (2): 14842
-Crafting potion (1): 14844
-Fletching potion (4): 14846
-Fletching potion (3): 14848
-Fletching potion (2): 14850
-Fletching potion (1): 14852
 Clean wergali: 14854
 Wergali potion (unf): 14856
-Empty seaweed net: 14859
-Wergali seed: 14870
-Ranger's aid: 15119
-Ranger's aid (m): 15121
-Skewered kebab: 15123
-Amulet of ranging: 15126
-Hand cannon: 15241
-Hand cannon shot: 15243
-Dragon pickaxe: 15259
-Living minerals: 15263
-Raw cavefish: 15264
-Cavefish: 15266
-Raw rocktail: 15270
-Rocktail: 15272
-Staff of light: 15486
-Hexcrest: 15488
-Focus sight: 15490
-Royal shirt: 15503
-Royal leggings: 15505
-Royal sceptre: 15507
-Royal crown: 15509
-Royal amulet: 15511
-Spirit impling jar: 15513
-Zombie impling jar: 15515
-Kingly impling jar: 15517
-Body shield: 18691
-Body helmet: 18693
 Body body: 18695
 Mind body: 18697
 Elemental body: 18699
-Frost dragon bones: 18832
-Saradomin bow: 19143
-Guthix bow: 19146
-Zamorak bow: 19149
-Saradomin arrows: 19152
-Guthix arrows: 19157
-Zamorak arrows: 19162
-Black platebody (h1): 19167
-Black platelegs (h1): 19169
-Black plateskirt (h1): 19171
-Adamant platebody (h1): 19173
-Adamant platelegs (h1): 19175
-Adamant plateskirt (h1): 19177
-Rune platebody (h1): 19179
-Rune platelegs (h1): 19182
-Rune plateskirt (h1): 19185
-Black platebody (h2): 19188
-Black platelegs (h2): 19190
-Black plateskirt (h2): 19192
-Adamant platebody (h2): 19194
-Adamant platelegs (h2): 19196
-Adamant plateskirt (h2): 19198
-Rune platebody (h2): 19200
-Rune platelegs (h2): 19203
-Rune plateskirt (h2): 19206
-Black platebody (h3): 19209
-Black platelegs (h3): 19211
-Black plateskirt (h3): 19213
-Adamant platebody (h3): 19215
-Adamant platelegs (h3): 19217
-Adamant plateskirt (h3): 19219
-Rune platebody (h3): 19221
-Rune platelegs (h3): 19224
-Rune plateskirt (h3): 19227
-Black platebody (h4): 19230
-Black platelegs (h4): 19232
-Black plateskirt (h4): 19234
-Adamant platebody (h4): 19236
-Adamant platelegs (h4): 19238
-Adamant plateskirt (h4): 19240
-Rune platebody (h4): 19242
-Rune platelegs (h4): 19245
-Rune plateskirt (h4): 19248
-Black platebody (h5): 19251
-Black platelegs (h5): 19253
-Black plateskirt (h5): 19255
-Adamant platebody (h5): 19257
-Adamant platelegs (h5): 19259
-Adamant plateskirt (h5): 19261
-Rune platebody (h5): 19263
-Rune platelegs (h5): 19266
-Rune plateskirt (h5): 19269
-Fox mask: 19272
-White unicorn mask: 19275
-Black unicorn mask: 19278
-Green dragon mask: 19281
-Blue dragon mask: 19284
-Red dragon mask: 19287
-Black dragon mask: 19290
-Frost dragon mask: 19293
-Bronze dragon mask: 19296
-Iron dragon mask: 19299
-Steel dragon mask: 19302
-Mithril dragon mask: 19305
-Third-age druidic staff: 19308
-Third-age druidic cloak: 19311
-Third-age druidic wreath: 19314
-Third-age druidic robe top: 19317
-Third-age druidic robe: 19320
-Dragon staff: 19323
-Penguin staff: 19325
-Bat staff: 19327
-Wolf staff: 19329
 Cat staff: 19331
-Fury ornament kit: 19333
-Dragon full helm ornament kit (or): 19346
-Dragon platelegs/skirt ornament kit (or): 19348
-Dragon platebody ornament kit (or): 19350
-Dragon sq shield ornament kit (or): 19352
-Dragon full helm ornament kit (sp): 19354
-Dragon platelegs/skirt ornament kit (sp): 19356
-Dragon platebody ornament kit (sp): 19358
-Dragon sq shield ornament kit (sp): 19360
-Armadyl crozier: 19362
-Bandos crozier: 19364
-Ancient crozier: 19366
-Armadyl cloak: 19368
-Bandos cloak: 19370
-Ancient cloak: 19372
-Armadyl mitre: 19374
-Bandos mitre: 19376
-Ancient mitre: 19378
-Armadyl robe top: 19380
-Ancient robe top: 19382
-Bandos robe top: 19384
-Armadyl robe legs: 19386
-Bandos robe legs: 19388
-Ancient robe legs: 19390
-Armadyl stole: 19392
-Bandos stole: 19394
-Ancient stole: 19396
-Ancient platebody: 19398
-Ancient platelegs: 19401
-Ancient plateskirt: 19404
-Ancient full helm: 19407
-Ancient kiteshield: 19410
-Armadyl platebody: 19413
-Armadyl platelegs: 19416
-Armadyl plateskirt: 19419
-Armadyl full helm: 19422
-Armadyl kiteshield: 19425
-Bandos platebody: 19428
-Bandos platelegs: 19431
-Bandos plateskirt: 19434
-Bandos full helm: 19437
-Bandos kiteshield: 19440
-Ancient vambraces: 19443
-Ancient body: 19445
-Ancient chaps: 19447
-Ancient coif: 19449
-Bandos vambraces: 19451
-Bandos body: 19453
-Bandos chaps: 19455
-Bandos coif: 19457
-Armadyl vambraces: 19459
-Armadyl body: 19461
-Armadyl chaps: 19463
-Armadyl coif: 19465
-Nardah teleport: 19475
-Bandit camp teleport: 19476
-Miscellania teleport: 19477
-Phoenix lair teleport: 19478
-Tai bwo wannai teleport: 19479
-Lumber yard teleport: 19480
-Adamant heraldic armour set 2 (lg): 19542
-Third-age prayer set: 19580
-Bandos page 1: 19600
-Fetch casket scroll: 19621
-Meerkats pouch: 19622
-Sling: 19830
-Brackish blade: 20671
-Mutated vine: 21358
-Clan cloak: 20708
-Clan vexillum: 20709
-Sagaie: 21364
-Bolas: 21365
-Whip vine: 21369
-Morchella mushroom spore: 21620
-Fellstalk seed: 21621
-Morchella mushroom: 21622
-Clean fellstalk: 21624
-Grimy fellstalk: 21626
-Fellstalk potion (unf): 21628
-Prayer renewal (4): 21630
-Prayer renewal (3): 21632
-Prayer renewal (2): 21634
-Prayer renewal (1): 21636
-Akrisae's hood: 21736
-Akrisae's hood 0: 21742
-Akrisae's war mace: 21744
-Akrisae's war mace 0: 21750
-Akrisae's robe top: 21752
-Akrisae's robe top 0: 21758
-Akrisae's robe skirt: 21760
-Akrisae's robe skirt 0: 21766
-Barrows - akrisae's set: 21768
-Armadyl rune: 21773
-Dust of armadyl: 21774
-Armadyl battlestaff: 21777
-Steadfast boots: 21787
-Glaiven boots: 21790
-Ragefire boots: 21793
-New crystal bow: 4212
-New crystal shield: 4224
-Darklight: 6746
-Silverlight: 2402
-Scroll of piety: 18839
-Scroll of augury: 18344
-Wilderness token: 4278
