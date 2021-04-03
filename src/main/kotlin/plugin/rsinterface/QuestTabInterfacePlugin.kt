@@ -53,7 +53,7 @@ class QuestTabInterfacePlugin : InterfacePlugin {
         player.appearance.generateAppearanceData()
 
         player.prayer.setPrayerBook(prayerBook == 2)
-        player.combatDefinitions.spellBook = spellBook
+        player.combatDefinitions.spellBook = spellBook - 1
 
         player.dialogueManager.startDialogue(
             "SimpleNPCMessage",
