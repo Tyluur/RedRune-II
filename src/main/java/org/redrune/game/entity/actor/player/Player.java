@@ -7,9 +7,9 @@ import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.PlayerTutorial;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
-import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.event.EventManager;
+import org.redrune.game.content.entity.actor.player.skills.PresetHandler;
 import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.SlayerMonsters;
@@ -744,6 +744,7 @@ public class Player extends Actor {
         controllerManager.login(); // checks what to do on login after welcome "Log in"
         OwnedObjectManager.linkKeys(this);
         PlayerTutorial.INSTANCE.onLogin(this);
+        PresetHandler.Companion.unlock(this);
     }
 
     public void logout(boolean lobby) {

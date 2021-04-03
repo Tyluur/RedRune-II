@@ -1,414 +1,425 @@
-package org.redrune.game.entity.item;
+package org.redrune.game.entity.item
 
-import java.io.Serializable;
+import java.io.Serializable
 
 /**
  * Container class.
  *
  * @author Graham / edited by Dragonkk(Alex)
  */
-public final class ItemsContainer<T extends Item> implements Serializable {
-	
-	private static final long serialVersionUID = 1099313426737026107L;
-	
-	private Item[] data;
-	
-	private boolean alwaysStackable = false;
-	
-	public ItemsContainer(int size, boolean alwaysStackable) {
-		data = new Item[size];
-		this.alwaysStackable = alwaysStackable;
-	}
-	
-	public boolean goesOverAmount(ItemsContainer<T> container) {
-		for (int i = 0; i < container.getSize(); i++) {
-			Item item = container.get(i);
-			if (item != null) {
-				if (getNumberOf(item) + item.getAmount() < 0) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public int getSize() {
-		return data.length;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public T get(int slot) {
-		if (slot < 0 || slot >= data.length) {
-			return null;
-		}
-		return (T) data[slot];
-	}
-	
-	public int getNumberOf(Item item) {
-		int count = 0;
-		for (Item aData : data) {
-			if (aData != null) {
-				if (aData.getId() == item.getId()) {
-					count += aData.getAmount();
-				}
-			}
-		}
-		return count;
-	}
-	
-	public void shift() {
-		Item[] oldData = data;
-		data = new Item[oldData.length];
-		int ptr = 0;
-		for (int i = 0; i < data.length; i++) {
-			if (oldData[i] != null) {
-				data[ptr++] = oldData[i];
-			}
-		}
-	}
-	
-	public boolean forceAdd(T item) {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] == null) {
-				data[i] = item;
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public int remove(T item) {
-		int removed = 0, toRemove = item.getAmount();
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] != null) {
-				if (data[i].getId() == item.getId()) {
-					int amt = data[i].getAmount();
-					if (amt > toRemove) {
-						removed += toRemove;
-						amt -= toRemove;
-						toRemove = 0;
-						data[i] = new Item(data[i].getId(), amt);
-						return removed;
-					} else {
-						removed += amt;
-						toRemove -= amt;
-						data[i] = null;
-					}
-				}
-			}
-		}
-		return removed;
-	}
-	
-	public void removeAll(T item) {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] != null) {
-				if (data[i].getId() == item.getId()) {
-					data[i] = null;
-				}
-			}
-		}
-	}
-	
-	public boolean containsOne(T item) {
-		for (Item aData : data) {
-			if (aData != null) {
-				if (aData.getId() == item.getId()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public boolean contains(T item) {
-		int amtOf = 0;
-		for (Item aData : data) {
-			if (aData != null) {
-				if (aData.getId() == item.getId()) {
-					amtOf += aData.getAmount();
-				}
-			}
-		}
-		return amtOf >= item.getAmount();
-	}
-	
-	public void clear() {
-		for (int i = 0; i < data.length; i++) {
-			data[i] = null;
-		}
-	}
-	
-	public int getFreeSlots() {
-		int s = 0;
-		for (Item aData : data) {
-			if (aData == null) {
-				s++;
-			}
-		}
-		return s;
-	}
-	
-	public int getUsedSlots() {
-		int s = 0;
-		for (Item aData : data) {
-			if (aData != null) {
-				s++;
-			}
-		}
-		return s;
-	}
-	
-	public int getNumberOf(int item) {
-		int count = 0;
-		for (Item aData : data) {
-			if (aData != null) {
-				if (aData.getId() == item) {
-					count += aData.getAmount();
-				}
-			}
-		}
-		return count;
-	}
-	
-	public Item[] getItemsCopy() {
-		Item[] newData = new Item[data.length];
-		System.arraycopy(data, 0, newData, 0, newData.length);
-		return newData;
-	}
-	
-	public ItemsContainer<Item> asItemContainer() {
-		ItemsContainer<Item> c = new ItemsContainer<Item>(data.length, this.alwaysStackable);
-		System.arraycopy(data, 0, c.data, 0, data.length);
-		return c;
-	}
-	
-	public int getThisItemSlot(T item) {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] != null) {
-				if (data[i].getId() == item.getId()) {
-					return i;
-				}
-			}
-		}
-		return getFreeSlot();
-	}
-	
-	public int getFreeSlot() {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] == null) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	public Item lookup(int id) {
-		for (Item aData : data) {
-			if (aData == null) {
-				continue;
-			}
-			if (aData.getId() == id) {
-				return aData;
-			}
-		}
-		return null;
-	}
-	
-	public int lookupSlot(int id) {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] == null) {
-				continue;
-			}
-			if (data[i].getId() == id) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	public void reset() {
-		data = new Item[data.length];
-	}
-	
-	public int remove(int preferredSlot, Item item) {
-		int removed = 0, toRemove = item.getAmount();
-		if (data[preferredSlot] != null) {
-			if (data[preferredSlot].getId() == item.getId()) {
-				int amt = data[preferredSlot].getAmount();
-				if (amt > toRemove) {
-					removed += toRemove;
-					amt -= toRemove;
-					toRemove = 0;
-					// data[preferredSlot] = new
-					// Item(data[preferredSlot].getDefinition().getIds(), amt);
-					set2(preferredSlot, new Item(data[preferredSlot].getId(), amt));
-					return removed;
-				} else {
-					removed += amt;
-					toRemove -= amt;
-					// data[preferredSlot] = null;
-					set(preferredSlot, null);
-				}
-			}
-		}
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] != null) {
-				if (data[i].getId() == item.getId()) {
-					int amt = data[i].getAmount();
-					if (amt > toRemove) {
-						removed += toRemove;
-						amt -= toRemove;
-						toRemove = 0;
-						// data[i] = new Item(data[i].getDefinition().getIds(),
-						// amt);
-						set2(i, new Item(data[i].getId(), amt));
-						return removed;
-					} else {
-						removed += amt;
-						toRemove -= amt;
-						// data[i] = null;
-						set(i, null);
-					}
-				}
-			}
-		}
-		return removed;
-	}
-	
-	public void set2(int slot, Item item) {
-		if (slot < 0 || slot >= data.length) {
-			return;
-		}
-		data[slot] = item;
-	}
-	
-	public void set(int slot, T item) {
-		if (slot < 0 || slot >= data.length) {
-			return;
-		}
-		data[slot] = item;
-	}
-	
-	public void addAll(ItemsContainer<T> container) {
-		for (int i = 0; i < container.getSize(); i++) {
-			T item = container.get(i);
-			if (item != null) {
-				this.add(item);
-			}
-		}
-	}
-	
-	public boolean add(T item) {
-		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
-			for (int i = 0; i < data.length; i++) {
-				if (data[i] != null) {
-					if (data[i].getId() == item.getId()) {
-						data[i] = new Item(data[i].getId(), data[i].getAmount() + item.getAmount());
-						return true;
-					}
-				}
-			}
-		} else {
-			if (item.getAmount() > 1) {
-				if (freeSlots() >= item.getAmount()) {
-					for (int i = 0; i < item.getAmount(); i++) {
-						int index = freeSlot();
-						data[index] = new Item(item.getId(), 1);
-					}
-					return true;
-				} else {
-					return false;
-				}
-			}
-		}
-		int index = freeSlot();
-		if (index == -1) {
-			return false;
-		}
-		data[index] = item;
-		return true;
-	}
-	
-	public int freeSlots() {
-		int j = 0;
-		for (Item aData : data) {
-			if (aData == null) {
-				j++;
-			}
-		}
-		return j;
-	}
-	
-	public int freeSlot() {
-		for (int i = 0; i < data.length; i++) {
-			if (data[i] == null) {
-				return i;
-			}
-		}
-		return -1;
-	}
+class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializable {
 
-	@SuppressWarnings("unchecked")
-	public boolean hasSpaceFor(Item item) {
-		return hasSpaceForItem((T) item);
-	}
+    var items: Array<Item?>
+        private set
+    private var alwaysStackable = false
 
-	public boolean hasSpaceFor(ItemsContainer<T> container) {
-		for (int i = 0; i < container.getSize(); i++) {
-			T item = container.get(i);
-			if (item != null) {
-				if (!this.hasSpaceForItem(item)) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	public boolean hasSpaceForItem(T item) {
-		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
-			for (Item aData : data) {
-				if (aData != null) {
-					if (aData.getId() == item.getId()) {
-						return true;
-					}
-				}
-			}
-		} else {
-			if (item.getAmount() > 1) {
-				return freeSlots() >= item.getAmount();
-			}
-		}
-		int index = freeSlot();
-		return index != -1;
-	}
-	
-	public Item[] toArray() {
-		
-		return this.getItems();
-	}
-	
-	public Item[] getItems() {
-		return data;
-	}
-	
-	public boolean canAdd(T item) {
-		if (alwaysStackable || item.getDefinitions().isStackable() || item.getDefinitions().isNoted()) {
-			for (Item aData : data) {
-				if (aData != null) {
-					if (aData.getId() == item.getId()) {
-						return true;
-					}
-				}
-			}
-		} else {
-			if (item.getAmount() > 1) {
-				return freeSlots() >= item.getAmount();
-			}
-		}
-		int index = freeSlot();
-		return index != -1;
-	}
-	
+    fun goesOverAmount(container: ItemsContainer<T>): Boolean {
+        for (i in 0 until container.size) {
+            val item: Item? = container[i]
+            if (item != null) {
+                if (getNumberOf(item) + item.getAmount() < 0) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    val size: Int
+        get() = items.size
+
+    operator fun get(slot: Int): T? {
+        return if (slot < 0 || slot >= items.size) {
+            null
+        } else items[slot] as T?
+    }
+
+    fun getNumberOf(item: Item): Int {
+        var count = 0
+        for (aData in items) {
+            if (aData != null) {
+                if (aData.id == item.id) {
+                    count += aData.getAmount()
+                }
+            }
+        }
+        return count
+    }
+
+    fun shift() {
+        val oldData = items
+        items = arrayOfNulls(oldData.size)
+        var ptr = 0
+        for (i in items.indices) {
+            if (oldData[i] != null) {
+                items[ptr++] = oldData[i]
+            }
+        }
+    }
+
+    fun forceAdd(item: T): Boolean {
+        for (i in items.indices) {
+            if (items[i] == null) {
+                items[i] = item
+                return true
+            }
+        }
+        return false
+    }
+
+    fun remove(item: T): Int {
+        var removed = 0
+        var toRemove = item!!.getAmount()
+        for (i in items.indices) {
+            if (items[i] != null) {
+                if (items[i]!!.id == item.id) {
+                    var amt = items[i]!!.getAmount()
+                    if (amt > toRemove) {
+                        removed += toRemove
+                        amt -= toRemove
+                        toRemove = 0
+                        items[i] = Item(items[i]!!.id, amt)
+                        return removed
+                    } else {
+                        removed += amt
+                        toRemove -= amt
+                        items[i] = null
+                    }
+                }
+            }
+        }
+        return removed
+    }
+
+    fun removeAll(item: T) {
+        for (i in items.indices) {
+            if (items[i] != null) {
+                if (items[i]!!.id == item!!.id) {
+                    items[i] = null
+                }
+            }
+        }
+    }
+
+    fun containsOne(item: T): Boolean {
+        for (aData in items) {
+            if (aData != null) {
+                if (aData.id == item!!.id) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    operator fun contains(item: T): Boolean {
+        var amtOf = 0
+        for (aData in items) {
+            if (aData != null) {
+                if (aData.id == item!!.id) {
+                    amtOf += aData.getAmount()
+                }
+            }
+        }
+        return amtOf >= item!!.getAmount()
+    }
+
+    fun clear() {
+        for (i in items.indices) {
+            items[i] = null
+        }
+    }
+
+    val freeSlots: Int
+        get() {
+            var s = 0
+            for (aData in items) {
+                if (aData == null) {
+                    s++
+                }
+            }
+            return s
+        }
+    val usedSlots: Int
+        get() {
+            var s = 0
+            for (aData in items) {
+                if (aData != null) {
+                    s++
+                }
+            }
+            return s
+        }
+
+    fun getNumberOf(item: Int): Int {
+        var count = 0
+        for (aData in items) {
+            if (aData != null) {
+                if (aData.id == item) {
+                    count += aData.getAmount()
+                }
+            }
+        }
+        return count
+    }
+
+    val itemsCopy: Array<Item?>
+        get() {
+            val newData = arrayOfNulls<Item>(
+                items.size
+            )
+            System.arraycopy(items, 0, newData, 0, newData.size)
+            return newData
+        }
+
+    fun asItemContainer(): ItemsContainer<Item> {
+        val c = ItemsContainer<Item>(
+            items.size, alwaysStackable
+        )
+        System.arraycopy(items, 0, c.items, 0, items.size)
+        return c
+    }
+
+    fun getThisItemSlot(item: T): Int {
+        for (i in items.indices) {
+            if (items[i] != null) {
+                if (items[i]!!.id == item!!.id) {
+                    return i
+                }
+            }
+        }
+        return freeSlot
+    }
+
+    val freeSlot: Int
+        get() {
+            for (i in items.indices) {
+                if (items[i] == null) {
+                    return i
+                }
+            }
+            return -1
+        }
+
+    fun lookup(id: Int): Item? {
+        for (aData in items) {
+            if (aData == null) {
+                continue
+            }
+            if (aData.id == id) {
+                return aData
+            }
+        }
+        return null
+    }
+
+    fun lookupSlot(id: Int): Int {
+        for (i in items.indices) {
+            if (items[i] == null) {
+                continue
+            }
+            if (items[i]!!.id == id) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    fun reset() {
+        items = arrayOfNulls(items.size)
+    }
+
+    fun remove(preferredSlot: Int, item: Item): Int {
+        var removed = 0
+        var toRemove = item.getAmount()
+        if (items[preferredSlot] != null) {
+            if (items[preferredSlot]!!.id == item.id) {
+                var amt = items[preferredSlot]!!.getAmount()
+                if (amt > toRemove) {
+                    removed += toRemove
+                    amt -= toRemove
+                    toRemove = 0
+                    // data[preferredSlot] = new
+                    // Item(data[preferredSlot].getDefinition().getIds(), amt);
+                    set2(preferredSlot, Item(items[preferredSlot]!!.id, amt))
+                    return removed
+                } else {
+                    removed += amt
+                    toRemove -= amt
+                    // data[preferredSlot] = null;
+                    set(preferredSlot, null)
+                }
+            }
+        }
+        for (i in items.indices) {
+            if (items[i] != null) {
+                if (items[i]!!.id == item.id) {
+                    var amt = items[i]!!.getAmount()
+                    if (amt > toRemove) {
+                        removed += toRemove
+                        amt -= toRemove
+                        toRemove = 0
+                        // data[i] = new Item(data[i].getDefinition().getIds(),
+                        // amt);
+                        set2(i, Item(items[i]!!.id, amt))
+                        return removed
+                    } else {
+                        removed += amt
+                        toRemove -= amt
+                        // data[i] = null;
+                        set(i, null)
+                    }
+                }
+            }
+        }
+        return removed
+    }
+
+    fun set2(slot: Int, item: Item?) {
+        if (slot < 0 || slot >= items.size) {
+            return
+        }
+        items[slot] = item
+    }
+
+    operator fun set(slot: Int, item: T?) {
+        if (slot < 0 || slot >= items.size) {
+            return
+        }
+        items[slot] = item
+    }
+
+    fun addAll(container: ItemsContainer<T>) {
+        for (i in 0 until container.size) {
+            val item = container[i]
+            if (item != null) {
+                add(item)
+            }
+        }
+    }
+
+    fun add(item: T): Boolean {
+        if (alwaysStackable || item!!.definitions.isStackable || item.definitions.isNoted) {
+            for (i in items.indices) {
+                if (items[i] != null) {
+                    if (items[i]!!.id == item!!.id) {
+                        items[i] = Item(
+                            items[i]!!.id, items[i]!!.getAmount() + item.getAmount()
+                        )
+                        return true
+                    }
+                }
+            }
+        } else {
+            if (item.getAmount() > 1) {
+                return if (freeSlots() >= item.getAmount()) {
+                    for (i in 0 until item.getAmount()) {
+                        val index = freeSlot()
+                        items[index] = Item(item.id, 1)
+                    }
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+        val index = freeSlot()
+        if (index == -1) {
+            return false
+        }
+        items[index] = item
+        return true
+    }
+
+    fun freeSlots(): Int {
+        var j = 0
+        for (aData in items) {
+            if (aData == null) {
+                j++
+            }
+        }
+        return j
+    }
+
+    fun freeSlot(): Int {
+        for (i in items.indices) {
+            if (items[i] == null) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    fun hasSpaceFor(item: Item): Boolean {
+        return hasSpaceForItem(item as T)
+    }
+
+    fun hasSpaceFor(container: ItemsContainer<T>): Boolean {
+        for (i in 0 until container.size) {
+            val item = container[i]
+            if (item != null) {
+                if (!hasSpaceForItem(item)) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    fun hasSpaceForItem(item: T): Boolean {
+        if (alwaysStackable || item!!.definitions.isStackable || item.definitions.isNoted) {
+            for (aData in items) {
+                if (aData != null) {
+                    if (aData.id == item!!.id) {
+                        return true
+                    }
+                }
+            }
+        } else {
+            if (item.getAmount() > 1) {
+                return freeSlots() >= item.getAmount()
+            }
+        }
+        val index = freeSlot()
+        return index != -1
+    }
+
+    fun toArray(): Array<Item?> {
+        return items
+    }
+
+    fun canAdd(item: T): Boolean {
+        if (alwaysStackable || item!!.definitions.isStackable || item.definitions.isNoted) {
+            for (aData in items) {
+                if (aData != null) {
+                    if (aData.id == item!!.id) {
+                        return true
+                    }
+                }
+            }
+        } else {
+            if (item.getAmount() > 1) {
+                return freeSlots() >= item.getAmount()
+            }
+        }
+        val index = freeSlot()
+        return index != -1
+    }
+
+    override fun toString(): String {
+        var contents = ""
+        for ((index, item) in items.withIndex()) {
+            contents += "items[$index] = Item(${item?.id}, ${item?.amount})\n"
+        }
+        return contents
+    }
+
+    companion object {
+        private const val serialVersionUID = 1099313426737026107L
+    }
+
+    init {
+        items = arrayOfNulls(size)
+        this.alwaysStackable = alwaysStackable
+    }
 }

@@ -420,7 +420,6 @@ public final class PlayerSkills implements Serializable, SkillConstants {
 		setSkillTargetEnabled(skillId, true);
 		setSkillTargetUsingLevelMode(skillId, usingLevel);
 		setSkillTargetValue(skillId, target);
-		
 	}
 
 	public void refreshAllSkills() {

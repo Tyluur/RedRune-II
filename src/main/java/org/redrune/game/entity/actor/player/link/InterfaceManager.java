@@ -1,6 +1,7 @@
 package org.redrune.game.entity.actor.player.link;
 
 import org.redrune.cache.loaders.IComponentDefinitions;
+import org.redrune.game.content.entity.actor.player.skills.PresetHandler;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
 import org.redrune.utility.constants.ColorConstants;
@@ -277,7 +278,9 @@ public class InterfaceManager {
 	}
 	
 	public void sendQuestTab() {
-		sendTab(resizableScreen ? 93 : 207, 190);
+		int interfaceId = 34;
+		sendTab(resizableScreen ? 93 : 207, interfaceId);
+		PresetHandler.Companion.sendLoginConfiguration(player);
 	}
 	
 	public void sendFriendsChat() {

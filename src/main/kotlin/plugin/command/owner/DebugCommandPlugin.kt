@@ -11,9 +11,9 @@ import org.redrune.game.entity.actor.player.Player
 class DebugCommandPlugin : CommandPlugin() {
 
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        val controller = player.controllerManager.controller
-
-        logger.debug { "Your controller = $controller" }
+        logger.info { "inventory=${player.inventory.items}" }
+        logger.info { "equipment=${player.equipment.items}" }
+        logger.info { "skills=${player.skills}" }
     }
 
     override fun identifiers(): Array<String> {
