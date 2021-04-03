@@ -262,7 +262,7 @@ public class InterfaceManager {
 		sendTab(resizableScreen ? 91 : 205, interfaceId);
 		player.getPackets().sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
 		player.getPackets().sendIComponentText(interfaceId, 16, "");
-//		player.getPackets().sendHideIComponent(930, 12, true); //scroll bar
+		player.getPackets().sendHideIComponent(930, 12, true); //scroll bar
 		for (byte i = 17; i < 25; i++) {
 			player.getPackets().sendHideIComponent(930, i, true);
 		}
