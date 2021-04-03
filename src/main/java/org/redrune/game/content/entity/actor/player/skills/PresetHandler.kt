@@ -14,14 +14,34 @@ class PresetHandler {
 
         PURE("Pure") {
             override fun inventory() = hashMapOf(
-                1 to Item(6570, 1),
-                2 to Item(1725, 1),
-                3 to Item(4587, 1),
-                4 to Item(544, 1),
-                5 to Item(3842, 1),
-                7 to Item(542, 1),
-                9 to Item(7459, 1),
-                10 to Item(3105, 1)
+                0 to Item(2436, 1),
+                1 to Item(2440, 1),
+                2 to Item(3024, 1),
+                3 to Item(3024, 1),
+                4 to Item(15272, 1),
+                5 to Item(15272, 1),
+                6 to Item(15272, 1),
+                7 to Item(15272, 1),
+                8 to Item(15272, 1),
+                9 to Item(15272, 1),
+                10 to Item(15272, 1),
+                11 to Item(15272, 1),
+                12 to Item(15272, 1),
+                13 to Item(15272, 1),
+                14 to Item(15272, 1),
+                15 to Item(15272, 1),
+                16 to Item(15272, 1),
+                17 to Item(15272, 1),
+                18 to Item(15272, 1),
+                19 to Item(15272, 1),
+                20 to Item(5698, 1),
+                21 to Item(15272, 1),
+                22 to Item(15272, 1),
+                23 to Item(15272, 1),
+                24 to Item(15272, 1),
+                25 to Item(15272, 1),
+                26 to Item(15272, 1),
+                27 to Item(15272, 1)
             )
 
             override fun equipment() = hashMapOf(
@@ -47,7 +67,7 @@ class PresetHandler {
 
             override fun spellBook() = 1
 
-            override fun prayerBook() = 2
+            override fun prayerBook() = 1
 
         },
 
@@ -111,15 +131,73 @@ class PresetHandler {
 
         },
 
+        MAIN("Main") {
+            override fun inventory() = hashMapOf(
+                0 to Item(3144, 1),
+                1 to Item(6685, 1),
+                2 to Item(3024, 1),
+                3 to Item(2436, 1),
+                4 to Item(3144, 1),
+                5 to Item(6685, 1),
+                6 to Item(3024, 1),
+                7 to Item(2440, 1),
+                8 to Item(15272, 1),
+                9 to Item(15272, 1),
+                10 to Item(15272, 1),
+                11 to Item(15272, 1),
+                12 to Item(15272, 1),
+                13 to Item(15272, 1),
+                14 to Item(15272, 1),
+                15 to Item(15272, 1),
+                16 to Item(15272, 1),
+                17 to Item(15272, 1),
+                18 to Item(15272, 1),
+                19 to Item(15272, 1),
+                20 to Item(5698, 1),
+                21 to Item(15272, 1),
+                22 to Item(15272, 1),
+                23 to Item(15272, 1),
+                24 to Item(15272, 1),
+                25 to Item(557, 5000),
+                26 to Item(560, 5000),
+                27 to Item(9075, 5000)
+            )
+
+            override fun equipment() = hashMapOf(
+                0 to Item(10828, 1),
+                1 to Item(6570, 1),
+                2 to Item(1725, 1),
+                3 to Item(4587, 1),
+                4 to Item(10551, 1),
+                5 to Item(8850, 1),
+                7 to Item(1079, 1),
+                9 to Item(7459, 1),
+                10 to Item(3105, 1),
+                12 to Item(2550, 1),
+                13 to Item(892, 1000),
+            )
+
+            override fun skills() = hashMapOf(
+                0 to 99,
+                1 to 99,
+                2 to 99,
+                3 to 99,
+                4 to 99,
+                5 to 99,
+                6 to 99
+            )
+
+            override fun spellBook() = 3
+
+            override fun prayerBook() = 2
+
+        },
+
         /* ZERKER("Zerker") {
 
          },
 
          ZERKER_BRID("Zerker - Hybrid") {
-
-         },
-
-         MAIN("Main") {
 
          },
 

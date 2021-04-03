@@ -42,11 +42,13 @@ class QuestTabInterfacePlugin : InterfacePlugin {
         inventory.forEach { (slot, item) ->
             player.inventory.items[slot] = item
         }
+
         skills.forEach { (skillId, level) ->
             player.skills[skillId] = level
             player.skills.setXp(skillId, SkillConstants.getXPForLevel(level).toDouble())
         }
-        player.inventory.refresh()
+
+        player.inventory.init()
         player.equipment.refreshAll()
         player.appearance.generateAppearanceData()
 
@@ -59,6 +61,8 @@ class QuestTabInterfacePlugin : InterfacePlugin {
             "You have just activated the preset '${preset.title}'.",
             "Go tease the noobs!"
         )
+
+        player.restoreAll()
 
         return true
     }
