@@ -24,7 +24,7 @@ enum class PvPZones(val bottomX: Int, val bottomY: Int, val topX: Int, val topY:
     FALADOR_WEST_BANK2(2948, 3368, 2949, 3369, true),
     FALADOR_EAST_BANK(3009, 3353, 3018, 3358, true),
     EDGEVILLE_BANK(3091, 3488, 3098, 3499, true),
-    GRAND_EXCHANGE(3145, 3473, 3184, 3508, true),
+    GRAND_EXCHANGE(3152, 3473, 3177, 3506, true),
     VARROCK_WEST_BANK(3179, 3432, 3194, 3446, true),
     VARROCK_EAST_BANK(3250, 3416, 3257, 3424, true),
     DRAYNOR_BANK(3088, 3240, 3097, 3246, true),
@@ -44,9 +44,9 @@ enum class PvPZones(val bottomX: Int, val bottomY: Int, val topX: Int, val topY:
 
     companion object {
 
-        val SAFE_ZONES: MutableList<PvPZones> = ArrayList()
+        val SAFE_ZONES = ArrayList<PvPZones>()
 
-        val DANGEROUS_ZONES: MutableList<PvPZones> = ArrayList()
+        val DANGEROUS_ZONES = ArrayList<PvPZones>()
 
         init {
             values().forEach { zone ->
