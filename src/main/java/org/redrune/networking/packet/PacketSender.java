@@ -1246,15 +1246,15 @@ public class PacketSender {
 		session.write(output);
 	}
 
-	public void sendGrandExchangeBar(int slot, int item, Object progress, int price, int amountSold, int amountOffered) {
+	public void sendGrandExchangeBar(int slot, int item, Object progress, int price, int amount, int maximumAmount) {
 		PacketBuilder output = new PacketBuilder(61);
 		output.writeByte(slot);
 		output.writeByte(progress instanceof ExchangeConfiguration.Progress ? ((ExchangeConfiguration.Progress) progress).getValue() : ((Integer) progress));
 		output.writeShort(item);
 		output.writeInt(price);
-		output.writeInt(amountOffered);
-		output.writeInt(amountSold);
-		output.writeInt(price * amountSold);
+		output.writeInt(maximumAmount);
+		output.writeInt(amount);
+		output.writeInt(price * amount);
 		session.write(output);
 	}
 

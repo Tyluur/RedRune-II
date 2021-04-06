@@ -1,5 +1,6 @@
 package org.redrune.engine.cycle
 
+import com.github.michaelbull.logging.InlineLogger
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -41,18 +42,21 @@ class UpdateSequence : Runnable {
         SystemManager.SCHEDULER.pulse()
         WorldTasksManager.processTasks()
 
-        lobbyPlayers.stream().filter { p: Player? -> p != null && !p.session.isInLobby }
-            .forEach { p: Player -> p.session.processContextQueue() }
-        lobbyPlayers.stream().filter { player: Player? -> player != null && player.session.isInLobby }
-            .forEach { player: Player -> player.session.processContextQueue() }
-        gamePlayers.stream().filter { player: Player? -> player != null && player.hasStarted() && !player.isFinished }
-            .forEach { player: Player ->
+        lobbyPlayers.stream().filter { p -> p != null && !p.session.isInLobby }
+            .forEach { p -> p.session.processContextQueue() }
+
+        lobbyPlayers.stream().filter { player -> player != null && player.session.isInLobby }
+            .forEach { player -> player.session.processContextQueue() }
+
+        gamePlayers.stream().filter { player -> player != null && player.hasStarted() && !player.isFinished }
+
+            .forEach { player ->
                 if (currentTime - player.attributes.packetsDecoderPing > NetworkConstants.MAX_PACKETS_DECODER_PING_DELAY && player.session.channel.isOpen) {
                     player.session.channel.close()
                 }
                 player.processEntity()
             }
-        npcs.stream().filter { npc: NPC? -> npc != null && !npc.isFinished }.forEach { obj: NPC -> obj.processEntity() }
+        npcs.stream().filter { npc -> npc != null && !npc.isFinished }.forEach { obj: NPC -> obj.processEntity() }
     }
 
     /**
@@ -85,33 +89,27 @@ class UpdateSequence : Runnable {
      * Finishes the update sequence
      */
     fun finish(lobbyPlayers: ActorList<Player>, players: ActorList<Player>, npcs: ActorList<NPC>) {
-        players.stream().filter { player: Player? -> player != null && player.hasStarted() && !player.isFinished }
+        players.stream().filter { player -> player != null && player.hasStarted() && !player.isFinished }
             .forEach { obj: Player -> obj.resetMasks() }
-        npcs.stream().filter { npc: NPC? -> npc != null && !npc.isFinished }.forEach { obj: NPC -> obj.resetMasks() }
+        npcs.stream().filter { npc -> npc != null && !npc.isFinished }.forEach { obj: NPC -> obj.resetMasks() }
+
         lobbyPlayers.stream().filter { obj: Player? -> Objects.nonNull(obj) }
-            .forEach { player: Player -> player.session.flush() }
+            .forEach { player -> player.session.flush() }
+
         players.stream().filter { player: Player? -> player != null && player.hasStarted() && !player.isFinished }
-            .forEach { player: Player -> player.session.flush() }
-    }
-
-    companion object {
-
-        /**
-         * The executor used for parallel execution of player updating and npc updating
-         */
-        private val EXECUTOR = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+            .forEach { player -> player.session.flush() }
     }
 
     override fun run() {
         while (!SystemManager.shutdown) {
-            val currentTime = Misc.currentTimeMillis()
             runBlocking {
                 try {
+                    val currentTime = Misc.currentTimeMillis()
                     fire(World.getLobbyPlayers(), World.getPlayers(), World.getNPCs())
+                    sleepThread(currentTime)
                 } catch (e: Throwable) {
                     e.printStackTrace()
                 }
-                sleepThread(currentTime)
             }
         }
     }
@@ -132,4 +130,16 @@ class UpdateSequence : Runnable {
             e.printStackTrace()
         }
     }
+
+
+    companion object {
+
+        /**
+         * The executor used for parallel execution of player updating and npc updating
+         */
+        private val EXECUTOR = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+
+        private val logger = InlineLogger()
+    }
+
 }

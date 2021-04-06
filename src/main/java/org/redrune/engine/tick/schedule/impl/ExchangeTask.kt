@@ -50,7 +50,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
                         val offers = getBarteringOffers(offer)
 
-                        if (autoBuy && offer.isValid()) {
+                        /*if (autoBuy && offer.isValid()) {
                             val sellOffer =
                                 ExchangeOffer(
                                     offer.owner,
@@ -62,21 +62,21 @@ class ExchangeTask : ScheduledTask(6, -1) {
                                 )
                             offers.add(sellOffer)
                             logger.info { "Successfully automatically handled offer [offer: $offer]" }
-                        }
+                        }*/
                         for (sellOffer in sortedBarters) {
                             val buyPrice: Int1 = offer.price
-                            val buy: Int1 = offer.amountRequested - offer.amountReceived
-
-                            logger.info { "Successfully found sell offer [$sellOffer] for buy offer [$offer]"}
+                            val buy = offer.amountRequested - offer.amountReceived
 
                             if (offer.isFinished() || offer.aborted) {
                                 continue
                             }
 
-                            val sellPrice: Int1 = sellOffer.price
+                            val sellPrice = sellOffer.price
                             if (sellPrice > offer.price) {
                                 continue
                             }
+
+                            logger.info { "Su ccessfully found sell offer [$sellOffer] for buy offer [$offer]" }
 
                             val difference = buyPrice - sellPrice
                             val sellAmount = sellOffer.amountRequested - sellOffer.amountProcessed
@@ -103,6 +103,10 @@ class ExchangeTask : ScheduledTask(6, -1) {
                             offer.amountReceived = (offer.amountReceived + newAmount)
 
                             offer.notifyUpdated()
+
+                            sellOffer.amountProcessed = (sellOffer.amountProcessed + newAmount)
+                            sellOffer.amountReceived = (sellOffer.amountReceived + newAmount)
+                            sellOffer.notifyUpdated()
                         }
                     }
                     ExchangeType.SELL -> {

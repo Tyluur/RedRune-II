@@ -17,7 +17,7 @@ data class ExchangeOffer(
 
     val slot: Int,
     val type: ExchangeType,
-    val price: Int
+    var price: Int
 ) {
 
     /**

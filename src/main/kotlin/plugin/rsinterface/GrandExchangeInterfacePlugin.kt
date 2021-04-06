@@ -20,6 +20,7 @@ import org.redrune.utility.constants.ItemConstants
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.InputEvent
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository
+import kotlin.math.ceil
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -309,6 +310,53 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                                 player.packets.sendConfig(1110, offer.amountRequested)
                             }
                         })
+
+                    }
+
+                    // -0.5%
+                    181 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        offer.price = (ceil(offer.price - offer.price * 0.05).toInt())
+                        player.packets.sendConfig(1111, offer.price)
+
+                    }
+
+                    // guide price
+                    175 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        offer.price = ItemDefinitions.getItemDefinitions(offer.itemId).value
+                        player.packets.sendConfig(1111, offer.price)
+
+                    }
+
+                    // input price
+                    177 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        player.packets.requestClientInput(object : InputEvent("Enter price", InputEventType.INTEGER) {
+
+                            override fun handleInput() {
+                                val input: Int = this.getInput()
+                                offer.price = input
+                                player.packets.sendConfig(1111, offer.price)
+                            }
+                        })
+
+
+                    }
+
+                    // +0.5%
+                    179 -> {
+                        val offer =
+                            (player.temporaryAttributes["exchange_offer"] ?: return true) as ExchangeOffer
+
+                        offer.price = (ceil(offer.price + offer.price * 0.05).toInt())
+                        player.packets.sendConfig(1111, offer.price)
 
                     }
                 }

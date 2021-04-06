@@ -107,7 +107,7 @@ object ExchangeManager {
      */
     internal fun sendProgress(player: Player) {
         for (i in 0..5) {
-            player.packets.sendGrandExchangeBar(i, 0, ExchangeConfiguration.Progress.RESET, 0, 0, 0)
+            player.packets.sendGrandExchangeBar(i, 0, RESET, 0, 0, 0)
         }
 
         for (offer in player.attributes.offers.filterNotNull()) {
@@ -231,8 +231,22 @@ object ExchangeManager {
             player.packets.sendItems(523 + slotId, ic)
             return
         }
+        val itemId = offer.itemId
+        val definition = ItemDefinitions.getItemDefinitions(itemId) ?: return
 
-        val ic: ItemsContainer<Item> = offer.getItemsToCollect()
+        val ic = offer.getItemsToCollect()
+        val examine = ItemCharacteristicRepository.getExamine(itemId)
+        val description = "$examine<br><br>"
+
+        player.packets.sendIComponentText(MAIN_INTERFACE, 143, description)
+
+        var price = definition.value
+
+        player.packets.sendConfig(1109, itemId)
+        player.packets.sendConfig(1110, 1)
+        player.packets.sendConfig(1111, price)
+        player.packets.sendConfig(1114, 3)
+
         player.packets.sendConfig(1113, offer.type.ordinal)
         player.packets.sendConfig(1112, slotId)
         player.packets.sendItems(523 + slotId, ic)
