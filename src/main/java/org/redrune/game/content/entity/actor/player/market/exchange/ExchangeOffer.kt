@@ -110,4 +110,8 @@ data class ExchangeOffer(
         }
     }
 
+    override fun toString(): String {
+        return "Offer[owner=$owner, type=$type, slot=$slot, itemId=$itemId, amount=$amount, amountRequest=$amountRequested, amountReceived=$amountReceived, amountProcessed=$amountProcessed]"
+    }
+
 }

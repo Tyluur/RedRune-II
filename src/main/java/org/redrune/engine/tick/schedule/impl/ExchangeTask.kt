@@ -20,27 +20,27 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
     override fun run() {
         val lock = Object()
-        val offers = mutableListOf<ExchangeOffer>()
+        val world = mutableListOf<ExchangeOffer>()
 
-        queuedProcess.addAll(waitingToBeAdded)
-        waitingToBeAdded.clear()
+        pending.addAll(awaiting)
+        awaiting.clear()
 
         World.getPlayers().filterNotNull().forEach { player ->
             val filteredOffers = player.attributes.offers.filterNotNull()
                 .filter { offer -> !offer.isFinished() && !offer.aborted }
 
             for (offer in filteredOffers) {
-                offers.add(offer)
+                world.add(offer)
             }
         }
 
-        queuedProcess.addAll(offers)
+        pending.addAll(world)
 
-        for (offer in queuedProcess) {
+        for (offer in pending) {
             synchronized(lock) {
                 // the list of offer that are a barter to the current offer
-                val sortedBarters: List<ExchangeOffer> = getOffersByType(
-                    offers,
+                val sortedBarters = getOffersByType(
+                    world,
                     if (offer.type == ExchangeType.BUY) ExchangeType.SELL else ExchangeType.BUY
                 )
 
@@ -50,7 +50,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
                         val offers = getBarteringOffers(offer)
 
-                        if (autoBuy) {
+                        if (autoBuy && offer.isValid()) {
                             val sellOffer =
                                 ExchangeOffer(
                                     offer.owner,
@@ -66,13 +66,18 @@ class ExchangeTask : ScheduledTask(6, -1) {
                         for (sellOffer in sortedBarters) {
                             val buyPrice: Int1 = offer.price
                             val buy: Int1 = offer.amountRequested - offer.amountReceived
+
+                            logger.info { "Successfully found sell offer [$sellOffer] for buy offer [$offer]"}
+
                             if (offer.isFinished() || offer.aborted) {
                                 continue
                             }
+
                             val sellPrice: Int1 = sellOffer.price
                             if (sellPrice > offer.price) {
                                 continue
                             }
+
                             val difference = buyPrice - sellPrice
                             val sellAmount = sellOffer.amountRequested - sellOffer.amountProcessed
 
@@ -101,7 +106,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
                         }
                     }
                     ExchangeType.SELL -> {
-                        if (!sortedBarters.isEmpty()) {
+                        if (sortedBarters.isNotEmpty()) {
                             sortedBarters.forEach(Consumer { offer: ExchangeOffer? -> queue(offer) })
                         }
                     }
@@ -157,9 +162,9 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
     companion object {
 
-        private val queuedProcess = ConcurrentLinkedQueue<ExchangeOffer>()
+        private val pending = ConcurrentLinkedQueue<ExchangeOffer>()
 
-        private val waitingToBeAdded = ConcurrentLinkedQueue<ExchangeOffer>()
+        private val awaiting = ConcurrentLinkedQueue<ExchangeOffer>()
 
         /**
          * Queues an offer to the [.waitingToBeAdded] queue
@@ -169,7 +174,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
          */
         fun queue(offer: ExchangeOffer?) {
             try {
-                waitingToBeAdded.add(offer)
+                awaiting.add(offer)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
