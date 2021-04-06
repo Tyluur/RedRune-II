@@ -2,62 +2,25 @@ package org.redrune.cache.manip
 
 import com.alex.store.Store
 import org.redrune.cache.Cache
+import org.redrune.utility.game.map.MapArchiveKeys
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since April 01, 2021
  */
 fun main() {
+
     val FROM_CACHE_PATH = "./data/634cache/"
 
     val fromCache = Store(FROM_CACHE_PATH)
 
     val xteas = hashMapOf<Int, IntArray>()
 
-    xteas[12342] = intArrayOf(
-        461494502,
-        1692498230,
-        -1263351240,
-        1628478856
-    )
-    xteas[12598] = intArrayOf(
-        6023912,
-        -1398996940,
-        -1850857481,
-        -1428087612
-    )
-    xteas[12599] = intArrayOf(
-        -851268296,
-        -1881238983,
-        -865361909,
-        -1679324594
-    )
-    xteas[12343] = intArrayOf(
-        -288891831,
-        -2086480984,
-        810591370,
-        -131418701
-    )
-    xteas[12086] = intArrayOf(
-        -1633321492,
-        1601075772,
-        582544019,
-        -643423676
-    )
-    xteas[13110] = intArrayOf(
-        214591005,
-        -1562708636,
-        -840026806,
-        -1971120246
-    )
-    xteas[12087] = intArrayOf(
-        765385787,
-        -371523714,
-        -2115680887,
-        939120868
-    )
-
     Cache.initialize()
+    MapArchiveKeys.initialize()
+    MapArchiveKeys.mapKeys.entries.forEach { entry ->
+        xteas[entry.key] = entry.value
+    }
 
     for (xtea in xteas) {
         val regionId = xtea.key

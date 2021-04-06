@@ -14,20 +14,22 @@ import kotlin.experimental.and
  * @since 8/30/2017
  */
 object MapArchiveKeys {
+
     /**
      * The path to packed xteas
      */
-    private const val PACKED_FILE_PATH = "data/repository/map/packedKeys.bin"
+    const val PACKED_FILE_PATH = "data/repository/map/packedKeys.bin"
 
     /**
      * The path to unpacked exteas
      */
-    private const val UNPACKED_FILE_PATH = "data/repository/map/containersXteas/workingkeys/"
+    const val UNPACKED_FILE_PATH = "data/repository/map/634xteas/"
 
     /**
      * MapKeys.
      */
-    private val mapKeys: MutableMap<Int, IntArray> = HashMap()
+    val mapKeys: MutableMap<Int, IntArray> = HashMap()
+
     fun isAtArea(areaName: String?, tile: WorldTile): Boolean {
         return isAtArea(Misc.getNameHash(areaName), tile)
     }
