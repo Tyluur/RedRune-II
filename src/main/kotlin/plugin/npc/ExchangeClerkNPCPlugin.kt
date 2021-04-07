@@ -12,10 +12,12 @@ import org.redrune.game.entity.actor.player.Player
 class ExchangeClerkNPCPlugin : NPCPlugin {
 
     override fun register() {
-        registerNPC(2593, "Talk-to")
-        registerNPC(2593, "Exchange")
-        registerNPC(2593, "History")
-        registerNPC(2593, "Sets")
+        for (clerk in clerks) {
+            registerNPC(clerk, "Talk-to")
+            registerNPC(clerk, "Exchange")
+            registerNPC(clerk, "History")
+            registerNPC(clerk, "Sets")
+        }
     }
 
 
@@ -30,4 +32,6 @@ class ExchangeClerkNPCPlugin : NPCPlugin {
         }
         return true
     }
+
+    private val clerks = listOf(1419, 2240, 2241, 2593)
 }

@@ -14,24 +14,52 @@ fun main() {
 
     val srcCache = Store(src)
 
-    val localXteas = hashMapOf<Int, IntArray>()
-
     Cache.initialize()
-    MapArchiveKeys.initialize()
 
-    pack634ObjectDefinitions(srcCache)
+    /*      pack634ObjectDefinitions(srcCache)
 
-//    pack634Maps(localXteas, fromCache)
+    val localXteas = hashMapOf<Int, IntArray>()
+       MapArchiveKeys.initialize()
+       pack634Maps(localXteas, srcCache)*/
+
+    pack634Cache(srcCache)
+}
+
+private fun pack634Cache(srcCache: Store) {
+    val dstCache = Cache.STORE
+
+    with(Indices) {
+
+
+        val indices = listOf(MAPS, MODELS, OBJECTS)
+
+        for (index in indices) {
+            dstCache.indexes[index].packIndex(srcCache)
+
+            println("Finished packing index $index")
+        }
+    }
 
 }
 
-private fun pack634ObjectDefinitions(fromCache: Store) {
-    val cache = Cache.STORE
+private fun pack634ObjectDefinitions(srcCache: Store) {
+    val dstCache = Cache.STORE
 
     val index = Indices.OBJECTS
-    cache.indexes[index].packIndex(fromCache)
 
-    println("Completed packing [index=$index] ")
+
+    val ids = listOf(26827)
+
+    for (id in ids) {
+        val archiveId = id ushr 8
+        val fileId = id and 0xff
+
+        val data = srcCache.indexes[index].getFile(archiveId, fileId)
+
+        dstCache.indexes[index].putFile(archiveId, fileId, data)
+    }
+
+    println("Completed")
 }
 
 private fun pack634Maps(

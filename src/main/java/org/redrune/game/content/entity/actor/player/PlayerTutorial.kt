@@ -49,7 +49,7 @@ object PlayerTutorial {
         }
     }
 
-    private val bankTile = WorldTile(3097, 3496, 0)
+    private val bankTile = WorldTile(3165, 3487, 0)
 
     private val logger = InlineLogger()
 }

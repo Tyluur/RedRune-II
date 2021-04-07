@@ -38,7 +38,7 @@ object ClimbableObjectRepository {
         Cache.initialize()
         val objects: MutableList<ClimbableObject> = ArrayList()
         for (i in 0 until Misc.getObjectDefinitionsSize()) {
-            val def: ObjectDefinitions = ObjectDefinitions.getObjectDefinitions(i)
+            val def = ObjectDefinitions.getObjectDefinitions(i)
             if (def == null) {
                 logger.error { ("Unable to object definitions for object $i") }
                 continue
@@ -55,7 +55,7 @@ object ClimbableObjectRepository {
      */
     fun initialize() {
         val climbableObjects = listFromFile
-            ?: throw IllegalStateException("Unable to parse doors from file {" + CONFIGURATION_FILE + "}, recheck running directory!")
+            ?: throw IllegalStateException("Unable to parse doors from file {$CONFIGURATION_FILE}, recheck running directory!")
         for (`object` in climbableObjects) {
             CLIMBABLE_OBJECTS[`object`.objectId] = `object`
         }
