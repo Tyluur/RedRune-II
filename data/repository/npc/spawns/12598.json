@@ -124,5 +124,59 @@
       "plane": 0
     },
     "direction": "WEST"
+  },
+  {
+    "npcId": 2759,
+    "tile": {
+      "x": 3163,
+      "y": 3490,
+      "plane": 0
+    },
+    "direction": "WEST"
+  },
+  {
+    "npcId": 2759,
+    "tile": {
+      "x": 3163,
+      "y": 3489,
+      "plane": 0
+    },
+    "direction": "WEST"
+  },
+  {
+    "npcId": 2759,
+    "tile": {
+      "x": 3166,
+      "y": 3489,
+      "plane": 0
+    },
+    "direction": "EAST"
+  },
+  {
+    "npcId": 2759,
+    "tile": {
+      "x": 3166,
+      "y": 3490,
+      "plane": 0
+    },
+    "direction": "EAST"
+  },
+  {
+    "npcId": 2593,
+    "tile": {
+      "x": 3165,
+      "y": 3491,
+      "plane": 0
+    },
+    "direction": "NORTH"
+  },
+  {
+    "npcId": 2593,
+    "tile": {
+      "x": 3164,
+      "y": 3491,
+      "plane": 0
+    },
+    "direction": "NORTH"
   }
 ]
