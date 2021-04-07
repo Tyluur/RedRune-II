@@ -36,8 +36,16 @@ class QuestTabInterfacePlugin : InterfacePlugin {
         val spellBook = preset.spellBook()
         val prayerBook = preset.prayerBook()
 
+        player.equipment.items.items.forEachIndexed { index, _ ->
+            player.equipment.items[index] = null
+        }
         equipment.forEach { (slot, item) ->
             player.equipment.items[slot] = item
+        }
+
+
+        player.inventory.items.items.forEachIndexed { index, _ ->
+            player.inventory.items[index] = null
         }
         inventory.forEach { (slot, item) ->
             player.inventory.items[slot] = item
