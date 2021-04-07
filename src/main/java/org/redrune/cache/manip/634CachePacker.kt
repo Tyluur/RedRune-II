@@ -10,14 +10,35 @@ import org.redrune.utility.game.map.MapArchiveKeys
  */
 fun main() {
 
-    val FROM_CACHE_PATH = "./data/634cache/"
+    val src = "./data/634cache/"
 
-    val fromCache = Store(FROM_CACHE_PATH)
+    val srcCache = Store(src)
 
-    val xteas = hashMapOf<Int, IntArray>()
+    val localXteas = hashMapOf<Int, IntArray>()
 
     Cache.initialize()
     MapArchiveKeys.initialize()
+
+    pack634ObjectModels(srcCache)
+
+//    pack634Maps(localXteas, fromCache)
+
+}
+
+private fun pack634ObjectModels(fromCache: Store) {
+    val cache = Cache.STORE
+
+    val index = Indices.OBJECTS
+    cache.indexes[index].packIndex(fromCache)
+
+    println("Completed packing [index=$index] ")
+
+}
+
+private fun pack634Maps(
+    xteas: HashMap<Int, IntArray>,
+    fromCache: Store
+) {
     MapArchiveKeys.mapKeys.entries.forEach { entry ->
         xteas[entry.key] = entry.value
     }
@@ -69,6 +90,4 @@ fun main() {
 
         println("\nOperation completed [id=$regionId].")
     }
-
-
 }

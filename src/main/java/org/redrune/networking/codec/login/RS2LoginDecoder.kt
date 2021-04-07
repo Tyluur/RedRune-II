@@ -145,7 +145,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         }
         val player: Player?
         if (!playerExists(username)) {
-            player = Player(password)
+            player = Player(username, password)
         } else {
             player = fromFile(username)
             if (player == null) {
@@ -291,7 +291,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         }
         val player: Player?
         if (!playerExists(username)) {
-            player = Player(password)
+            player = Player(username, password)
         } else {
             player = fromFile(username)
             if (player == null) {

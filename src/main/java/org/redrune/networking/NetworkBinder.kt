@@ -5,7 +5,6 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.buffer.PooledByteBufAllocator
 import io.netty.channel.ChannelHandler.Sharable
 import io.netty.channel.ChannelOption
-import io.netty.channel.EventLoopGroup
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import org.redrune.engine.SystemManager
@@ -13,7 +12,7 @@ import org.redrune.networking.channel.WorldChannelInitializer
 import org.redrune.utility.constants.NetworkConstants
 
 /**
- * This is the network binder for the main game protocol. This initializes the main game server and the update server.
+ * This is the network binder for the game protocol.
  *
  * @author Tyluur <itstyluur@icloud.com>
  * @since 5/18/2017
@@ -25,8 +24,8 @@ object NetworkBinder {
      * Binds to port [NetworkConstants.PORT_ID]
      */
     fun bind() {
-        val bossGroup: EventLoopGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)
-        val workerGroup: EventLoopGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)
+        val bossGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)
+        val workerGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)
         try {
             val bootstrap = ServerBootstrap()
 

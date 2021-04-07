@@ -143,7 +143,7 @@ public class Player extends Actor {
     /**
      * The username, saved as a transient because it changes every time the player logs in
      */
-    private transient String username;
+    private transient String username = "";
 
     /**
      * The network session used for the player
@@ -242,10 +242,11 @@ public class Player extends Actor {
      */
     private transient boolean finishing;
 
-    public Player(String password) {
+    public Player(String username, String password) {
         super(GameConstants.START_PLAYER_LOCATION);
         setHitpoints(100);
-        this.password = password;
+        this.username = username;
+        this.password = password;f
         appearance = new PlayerAppearance();
         inventory = new PlayerInventory();
         equipment = new PlayerEquipment();
@@ -260,7 +261,8 @@ public class Player extends Actor {
         charges = new ChargesManager();
         auraManager = new AuraManager();
         attributes = new PlayerAttributes();
-        rights = new LinkedHashSet<>(Collections.singletonList(username.equalsIgnoreCase("tyluur") ? PlayerRight.OWNER : PlayerRight.PLAYER));
+        rights = new LinkedHashSet<>(
+                Collections.singletonList(username.equalsIgnoreCase("tyluur") ? PlayerRight.OWNER : PlayerRight.PLAYER));
         SkillCapeCustomizer.resetSkillCapes(this);
     }
 
