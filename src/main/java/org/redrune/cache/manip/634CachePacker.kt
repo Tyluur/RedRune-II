@@ -19,20 +19,19 @@ fun main() {
     Cache.initialize()
     MapArchiveKeys.initialize()
 
-    pack634ObjectModels(srcCache)
+    pack634ObjectDefinitions(srcCache)
 
 //    pack634Maps(localXteas, fromCache)
 
 }
 
-private fun pack634ObjectModels(fromCache: Store) {
+private fun pack634ObjectDefinitions(fromCache: Store) {
     val cache = Cache.STORE
 
     val index = Indices.OBJECTS
     cache.indexes[index].packIndex(fromCache)
 
     println("Completed packing [index=$index] ")
-
 }
 
 private fun pack634Maps(

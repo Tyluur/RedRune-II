@@ -246,7 +246,7 @@ public class Player extends Actor {
         super(GameConstants.START_PLAYER_LOCATION);
         setHitpoints(100);
         this.username = username;
-        this.password = password;f
+        this.password = password;
         appearance = new PlayerAppearance();
         inventory = new PlayerInventory();
         equipment = new PlayerEquipment();
