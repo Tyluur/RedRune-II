@@ -1,35 +1,23 @@
-package org.redrune.engine.tick.task;
+package org.redrune.engine.tick.task
 
-public abstract class WorldTask implements Runnable {
-	
-	protected int ticksPassed;
-	
-	/**
-	 * If the task needs to be removed
-	 */
-    boolean needRemove;
-	
-	@Override
-	public String toString() {
-		return "WorldTask[ticksPassed=" + ticksPassed + ", needRemove=" + needRemove + "]";
-	}
-	
-	/**
-	 * Stops the task
-	 */
-	public void stop() {
-		needRemove = true;
-	}
+abstract class WorldTask : Runnable {
 
-    public int getTicksPassed() {
-        return this.ticksPassed;
+    @JvmField
+    var ticksPassed = 0
+
+    /**
+     * If the task needs to be removed
+     */
+    var isNeedRemove = false
+
+    override fun toString(): String {
+        return "WorldTask[ticksPassed=" + ticksPassed + ", needRemove=" + isNeedRemove + "]"
     }
 
-    public boolean isNeedRemove() {
-        return this.needRemove;
-    }
-
-    public void setTicksPassed(int ticksPassed) {
-        this.ticksPassed = ticksPassed;
+    /**
+     * Stops the task
+     */
+    fun stop() {
+        isNeedRemove = true
     }
 }
