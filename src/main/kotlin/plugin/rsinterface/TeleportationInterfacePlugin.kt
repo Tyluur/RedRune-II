@@ -558,7 +558,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
                         0,
                         0.0,
                         destination,
-                        6,
+                        4,
                         false,
                         MagicConstants.MAGIC_TELEPORT
                     )
