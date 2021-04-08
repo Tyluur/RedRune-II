@@ -31,6 +31,7 @@ import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.networking.NetworkSession;
 import org.redrune.networking.packet.PacketSender;
+import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.functions.Misc;
@@ -1205,5 +1206,23 @@ public class Player extends Actor {
         } else {
             return false;
         }
+    }
+
+    public void processSwitches() {
+        List<Integer[]> slots = getAttributes().getSwitchItemCache();
+
+        int[][] slot = new int[slots.size()][];
+
+        for (int i = 0; i < slot.length; i++) {
+            Integer[] data = slots.get(i);
+            int itemId = data[0];
+            int slotId = data[1];
+
+            EquipmentConstants.sendWear(this, slotId, itemId);
+        }
+
+        getAttributes().getSwitchItemCache().clear();
+
+        stopAll(false, true);
     }
 }

@@ -488,7 +488,6 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                 }
             }
             if (weaponName.contains("scimitar") || weaponName.contains("hatchet") || weaponName.contains("claws") || weaponName.contains(" sword") || weaponName.contains("longsword")) {
-                System.out.println("using style " + attackStyle + " with weapon " + weaponName);
                 switch (attackStyle) {
                     case 2:
                         return STAB_ATTACK;
@@ -1646,6 +1645,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
      */
     public static void checkSpecialToggle(Player player, final int attempt) {
         if (!player.getAttributes().getSwitchItemCache().isEmpty() && attempt <= 3) {
+            player.processSwitches();
             SystemManager.SLOW_EXECUTOR.schedule(() -> checkSpecialToggle(player, attempt + 1), 100, TimeUnit.MILLISECONDS);
             return;
         }

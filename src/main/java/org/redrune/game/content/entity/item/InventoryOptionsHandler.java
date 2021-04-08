@@ -12,7 +12,6 @@ import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class InventoryOptionsHandler {
@@ -35,24 +34,14 @@ public class InventoryOptionsHandler {
             }
 
             if (player.getAttributes().getSwitchItemCache().isEmpty()) {
-                player.getAttributes().getSwitchItemCache().add(slotId);
+                player.getAttributes().getSwitchItemCache().add(new Integer[]{itemId, slotId});
                 SystemManager.SLOW_EXECUTOR.schedule(() -> {
                     try {
                         WorldTasksManager.schedule(new WorldTask() {
 
                             @Override
                             public void run() {
-                                List<Integer> slots = player.getAttributes().getSwitchItemCache();
-                                int[] slot = new int[slots.size()];
-
-                                for (int i = 0; i < slot.length; i++) {
-                                    slot[i] = slots.get(i);
-                                }
-
-                                player.getAttributes().getSwitchItemCache().clear();
-                                EquipmentConstants.sendWear(player, slotId, itemId);
-
-                                player.stopAll(false, true);
+                                player.processSwitches();
                             }
                         }, 0);
                     } catch (Throwable e) {
@@ -61,7 +50,7 @@ public class InventoryOptionsHandler {
                 }, 300, TimeUnit.MILLISECONDS);
 
             } else if (!player.getAttributes().getSwitchItemCache().contains(slotId)) {
-                player.getAttributes().getSwitchItemCache().add(slotId);
+                player.getAttributes().getSwitchItemCache().add(new Integer[]{itemId, slotId});
             }
 
             player.stopAll(false);

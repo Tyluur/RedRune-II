@@ -17,13 +17,17 @@ class CombatTabInterfacePlugin : InterfacePlugin {
         slotId: Int,
         packetId: Int
     ): Boolean {
-        if (componentId == 4) {
-            player.putTemporaryAttribute("special_attack_toggled", true)
-            CombatAlgorithm.checkSpecialToggle(player, 0)
-        } else if (componentId >= 11 && componentId <= 14) {
-            player.combatDefinitions.attackStyle = componentId - 11
-        } else if (componentId == 15) {
-            player.combatDefinitions.switchAutoRelatie()
+        when (componentId) {
+            4 -> {
+                player.putTemporaryAttribute("special_attack_toggled", true)
+                CombatAlgorithm.checkSpecialToggle(player, 0)
+            }
+            in 11..14 -> {
+                player.combatDefinitions.attackStyle = componentId - 11
+            }
+            15 -> {
+                player.combatDefinitions.switchAutoRelatie()
+            }
         }
         return true
     }

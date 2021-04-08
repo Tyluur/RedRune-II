@@ -172,7 +172,7 @@ public class PlayerAttributes implements Serializable {
     /**
      * The cache of items to switch
      */
-    private transient List<Integer> switchItemCache;
+    private transient List<Integer[]> switchItemCache;
 
     /**
      * The maximum amount of traps
@@ -638,7 +638,7 @@ public class PlayerAttributes implements Serializable {
         return this.updateMovementType;
     }
 
-    public List<Integer> getSwitchItemCache() {
+    public List<Integer[]> getSwitchItemCache() {
         return this.switchItemCache;
     }
 
@@ -770,7 +770,7 @@ public class PlayerAttributes implements Serializable {
         this.player = player;
     }
 
-    public void setSwitchItemCache(List<Integer> switchItemCache) {
+    public void setSwitchItemCache(List<Integer[]> switchItemCache) {
         this.switchItemCache = switchItemCache;
     }
 
