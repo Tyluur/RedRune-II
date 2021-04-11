@@ -47,9 +47,14 @@ public class Player extends Actor {
     private static final long serialVersionUID = 2011932556974180375L;
 
     /**
-     * The attributes the player has
+     * The username, saved as a transient because it changes every time the player logs in
      */
-    private final PlayerAttributes attributes;
+    private String username = "";
+
+    /**
+     * The password for logging in
+     */
+    private String password;
 
     /**
      * The set of the rights the player has
@@ -57,10 +62,9 @@ public class Player extends Actor {
     private final Set<PlayerRight> rights;
 
     /**
-     * The password for logging in
+     * The attributes the player has
      */
-    private String password;
-
+    private final PlayerAttributes attributes;
     /**
      * The appearance handler and container
      */
@@ -99,7 +103,7 @@ public class Player extends Actor {
     /**
      * The manager for {@code Controller}s
      */
-    private ControllerManager controllerManager;
+    private final ControllerManager controllerManager;
 
     /**
      * The handler for music
@@ -111,15 +115,15 @@ public class Player extends Actor {
      */
     private final EmotesManager emotesManager;
 
+    /**
+     * The manager for presets
+     */
     private PresetManager presetManager;
 
-    public PresetManager getPresetManager() {
-        return presetManager;
-    }
-
-    public void setPresetManager(PresetManager presetManager) {
-        this.presetManager = presetManager;
-    }
+    /**
+     * The instance of the familiar the player owns
+     */
+    private Familiar familiar;
 
     /**
      * The handler for all social interaction
@@ -132,19 +136,9 @@ public class Player extends Actor {
     private final AuraManager auraManager;
 
     /**
-     * The instance of the familiar the player owns
-     */
-    private transient Familiar familiar;
-
-    /**
      * The handler for items with charges, meaning degradable items
      */
     private final ChargesManager charges;
-
-    /**
-     * The username, saved as a transient because it changes every time the player logs in
-     */
-    private transient String username = "";
 
     /**
      * The network session used for the player
@@ -242,6 +236,30 @@ public class Player extends Actor {
      * #finish()} process
      */
     private transient boolean finishing;
+
+    public Player() {
+        super(GameConstants.START_PLAYER_LOCATION);
+        this.username = "username";
+        this.password = "password";
+        setHitpoints(100);
+        appearance = new PlayerAppearance();
+        inventory = new PlayerInventory();
+        equipment = new PlayerEquipment();
+        skills = new PlayerSkills();
+        combatDefinitions = new CombatDefinitions();
+        prayer = new PlayerPrayer();
+        bank = new PlayerBank();
+        controllerManager = new ControllerManager();
+        musicManager = new MusicManager();
+        emotesManager = new EmotesManager();
+        contactManager = new ContactManager();
+        charges = new ChargesManager();
+        auraManager = new AuraManager();
+        attributes = new PlayerAttributes();
+        rights = new LinkedHashSet<>(
+                Collections.singletonList(username.equalsIgnoreCase("tyluur") ? PlayerRight.OWNER : PlayerRight.PLAYER));
+        SkillCapeCustomizer.resetSkillCapes(this);
+    }
 
     public Player(String username, String password) {
         super(GameConstants.START_PLAYER_LOCATION);
@@ -747,6 +765,7 @@ public class Player extends Actor {
         OwnedObjectManager.linkKeys(this);
         PlayerTutorial.INSTANCE.onLogin(this);
         PresetHandler.Companion.unlock(this);
+        PlayerSaving.savePlayer(this);
     }
 
     public void logout(boolean lobby) {
@@ -1155,10 +1174,6 @@ public class Player extends Actor {
         this.password = password;
     }
 
-    public void setControllerManager(ControllerManager controllerManager) {
-        this.controllerManager = controllerManager;
-    }
-
     public void setFamiliar(Familiar familiar) {
         this.familiar = familiar;
     }
@@ -1225,4 +1240,13 @@ public class Player extends Actor {
 
         stopAll(false, true);
     }
+
+    public PresetManager getPresetManager() {
+        return presetManager;
+    }
+
+    public void setPresetManager(PresetManager presetManager) {
+        this.presetManager = presetManager;
+    }
+
 }

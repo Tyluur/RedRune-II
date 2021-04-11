@@ -42,21 +42,18 @@ class UpdateSequence : Runnable {
         SystemManager.SCHEDULER.pulse()
         WorldTasksManager.processTasks()
 
-        lobbyPlayers.stream().filter { p -> p != null && !p.session.isInLobby }
+        lobbyPlayers.stream().filter { it != null && !it.session.isInLobby }
             .forEach { p -> p.session.processContextQueue() }
 
-        lobbyPlayers.stream().filter { player -> player != null && player.session.isInLobby }
-            .forEach { player -> player.session.processContextQueue() }
-
-        gamePlayers.stream().filter { player -> player != null && player.hasStarted() && !player.isFinished }
-
-            .forEach { player ->
-                if (currentTime - player.attributes.packetsDecoderPing > NetworkConstants.MAX_PACKETS_DECODER_PING_DELAY && player.session.channel.isOpen) {
-                    player.session.channel.close()
+        gamePlayers.stream().filter { it != null && it.hasStarted() && !it.isFinished }
+            .forEach {
+                if (currentTime - it.attributes.packetsDecoderPing > NetworkConstants.MAX_PACKETS_DECODER_PING_DELAY && it.session.channel.isOpen) {
+                    it.session.channel.close()
+                    return@forEach
                 }
-                player.processEntity()
+                it.processEntity()
             }
-        npcs.stream().filter { npc -> npc != null && !npc.isFinished }.forEach { obj: NPC -> obj.processEntity() }
+        npcs.stream().filter { it != null && !it.isFinished }.forEach(NPC::processEntity)
     }
 
     /**

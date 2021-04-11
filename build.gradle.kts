@@ -5,7 +5,7 @@ plugins {
 
 val koinVersion = "2.1.5"
 val junitVersion = "5.6.2"
-val jacksonVersion = "2.11.0"
+val jacksonVersion = "2.12.2"
 
 allprojects {
     apply(plugin = "kotlin")
@@ -62,9 +62,15 @@ dependencies {
     implementation("com.google.guava:guava:29.0-jre")
     implementation("org.apache.commons:commons-lang3:3.10")
     implementation("commons-cli", "commons-cli", "1.4")
+
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-paranamer:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+
     implementation("org.postgresql:postgresql:42.2.12")
     implementation("com.zaxxer:HikariCP:3.4.5")
     implementation("it.unimi.dsi:fastutil:8.3.1")
@@ -88,13 +94,5 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
-    }
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (this.requested.name == "log4j") {
-            useTarget("log4j:log4j:1.7.+")
-        }
     }
 }

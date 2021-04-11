@@ -1,20 +1,40 @@
 package org.redrune.utility.game.entity.actor.player
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.constants.GameConstants
-import org.redrune.utility.functions.Misc
 import java.io.File
-import java.io.FileWriter
 import java.io.IOException
-import java.lang.reflect.Modifier
+import java.nio.file.Paths
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 2019-01-29
  */
 object PlayerSaving {
+
+    private val mapper = ObjectMapper()
+
+    init {
+        mapper.findAndRegisterModules();
+
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.setVisibility(
+            mapper.serializationConfig.defaultVisibilityChecker
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY).withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+        );
+
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+    }
+
     /**
      * The suffix of the file
      */
@@ -24,6 +44,7 @@ object PlayerSaving {
      * The location in which player files are saved
      */
     private val FILES_LOCATION = GameConstants.FILES_PATH + "saves/players/accounts/"
+
 
     /**
      * The gson instance for reading from files
@@ -38,13 +59,14 @@ object PlayerSaving {
     @JvmStatic
     fun savePlayer(player: Player) {
         try {
-            FileWriter(FILES_LOCATION + player.username + SUFFIX).use { writer ->
-                val builder = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(
-                    Modifier.TRANSIENT, Modifier.STATIC
-                )
-                val gson = builder.create()
-                gson.toJson(player, writer)
-            }
+            mapper.writeValue(Paths.get(getFileLocation(player.username)).toFile(), player)
+            /* FileWriter(FILES_LOCATION + player.username + SUFFIX).use { writer ->
+                 val builder = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(
+                     Modifier.TRANSIENT, Modifier.STATIC
+                 )
+                 val gson = builder.create()
+                 gson.toJson(player, writer)
+             }*/
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -65,7 +87,8 @@ object PlayerSaving {
                 System.err.println("Error reading file: " + file.absolutePath)
                 return null
             }
-            GSON.fromJson(Misc.getText(getFileLocation(name)), Player::class.java)
+            mapper.readValue(Paths.get(getFileLocation(name)).toFile(), Player::class.java)
+//            GSON.fromJson(Misc.getText(getFileLocation(name)), Player::class.java)
         } catch (e: Exception) {
             e.printStackTrace()
             null
