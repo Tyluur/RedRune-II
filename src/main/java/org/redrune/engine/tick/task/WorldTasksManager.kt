@@ -6,6 +6,7 @@ import java.util.*
  * This class manages all world tasks
  */
 object WorldTasksManager {
+
     /**
      * The list of tasks that are being processed
      */
@@ -35,15 +36,7 @@ object WorldTasksManager {
             }
         }
     }
-    /**
-     * Schedules a task with a set delay count and a set repeat count
-     */
-    /**
-     * Schedules a new task with a 0 initial delay and never repeating
-     */
-    /**
-     * Schedules a task with a set delay count but never repeating
-     */
+
     @JvmStatic
 	@JvmOverloads
     fun schedule(task: WorldTask?, delayCount: Int = 0, periodCount: Int = -1) {

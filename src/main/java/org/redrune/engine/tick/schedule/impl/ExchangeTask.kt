@@ -50,19 +50,22 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
                         val offers = getBarteringOffers(offer)
 
-                        /*if (autoBuy && offer.isValid()) {
+                        if (autoBuy && offer.isValid()) {
+
                             val sellOffer =
                                 ExchangeOffer(
-                                    offer.owner,
+                                    "",
                                     offer.itemId,
                                     offer.amount,
                                     offer.slot,
                                     offer.type,
                                     offer.price
                                 )
+
                             offers.add(sellOffer)
                             logger.info { "Successfully automatically handled offer [offer: $offer]" }
-                        }*/
+                        }
+
                         for (sellOffer in sortedBarters) {
                             val buyPrice: Int1 = offer.price
                             val buy = offer.amountRequested - offer.amountReceived

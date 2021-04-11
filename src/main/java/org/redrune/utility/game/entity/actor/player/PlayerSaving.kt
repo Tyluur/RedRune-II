@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.constants.GameConstants
 import java.io.File
@@ -17,7 +18,7 @@ import java.nio.file.Paths
  */
 object PlayerSaving {
 
-    private val mapper = ObjectMapper()
+    private val mapper = ObjectMapper(YAMLFactory())
 
     init {
         mapper.findAndRegisterModules();
@@ -37,7 +38,7 @@ object PlayerSaving {
     /**
      * The suffix of the file
      */
-    private const val SUFFIX = ".json"
+    private const val SUFFIX = ".yml"
 
     /**
      * The location in which player files are saved
