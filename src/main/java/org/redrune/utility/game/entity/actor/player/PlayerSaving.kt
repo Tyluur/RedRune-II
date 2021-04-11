@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.google.gson.Gson
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.constants.GameConstants
 import java.io.File
@@ -13,7 +12,7 @@ import java.io.IOException
 import java.nio.file.Paths
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-29
  */
 object PlayerSaving {
@@ -45,12 +44,6 @@ object PlayerSaving {
      */
     private val FILES_LOCATION = GameConstants.FILES_PATH + "saves/players/accounts/"
 
-
-    /**
-     * The gson instance for reading from files
-     */
-    private val GSON = Gson()
-
     /**
      * Saves the player to the json file
      *
@@ -60,13 +53,6 @@ object PlayerSaving {
     fun savePlayer(player: Player) {
         try {
             mapper.writeValue(Paths.get(getFileLocation(player.username)).toFile(), player)
-            /* FileWriter(FILES_LOCATION + player.username + SUFFIX).use { writer ->
-                 val builder = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(
-                     Modifier.TRANSIENT, Modifier.STATIC
-                 )
-                 val gson = builder.create()
-                 gson.toJson(player, writer)
-             }*/
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -81,14 +67,11 @@ object PlayerSaving {
     fun fromFile(name: String): Player? {
         return try {
             val file = File(getFileLocation(name))
-            // The file is too big; its nulled. Instead of dedicating resources we will return a null player
-            // which will stop the login
             if (file.length() <= 0 || file.length() > 1000000) {
                 System.err.println("Error reading file: " + file.absolutePath)
                 return null
             }
             mapper.readValue(Paths.get(getFileLocation(name)).toFile(), Player::class.java)
-//            GSON.fromJson(Misc.getText(getFileLocation(name)), Player::class.java)
         } catch (e: Exception) {
             e.printStackTrace()
             null
