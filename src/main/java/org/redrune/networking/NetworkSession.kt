@@ -155,5 +155,6 @@ class NetworkSession(
     companion object {
 
         private val logger = InlineLogger()
+
     }
 }
