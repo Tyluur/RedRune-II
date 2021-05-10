@@ -1947,7 +1947,6 @@ Adamant hasta: 11375
 Raw crayfish: 13435
 Button mushroom: 13563
 Spirit shield: 13734
-Dragon claws: 14484
 Dagon'hai robe top: 14497
 Dagon'hai hat: 14499
 Dagon'hai robe bottom: 14501
