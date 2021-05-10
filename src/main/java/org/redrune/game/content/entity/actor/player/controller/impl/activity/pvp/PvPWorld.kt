@@ -18,7 +18,6 @@ import kotlin.math.abs
  */
 class PvPWorld : Controller() {
 
-
     /**
      * The amount of ticks spent in the wild
      */

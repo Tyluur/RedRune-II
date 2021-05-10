@@ -7,8 +7,6 @@ import org.redrune.game.entity.item.Item;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 
 public final class PresetManager implements Serializable {
@@ -94,19 +92,6 @@ public final class PresetManager implements Serializable {
 					"You can't load gear presets in the wilderness.");
 			return;
 		}
-		//TODO: check for controler/areas you cant use presets in
-		/*if (player.getControlerManager().getControler() != null
-				&& !(player.getControlerManager().getControler() instanceof EdgevillePvPControler)) {
-			player.getPackets()
-					.sendGameMessage(HexColours.getMessage(Colours.RED, "You can't load gear presets in here."));
-			return;
-		}*/
-		//TODO: make sure you cant use presets in pvpinstance
-		/*if (EdgevillePvPControler.isAtPvP(player) && !EdgevillePvPControler.isAtBank(player)) {
-			player.getPackets()
-					.sendGameMessage(HexColours.getMessage(Colours.RED, "You can't load gear presets in pvp area."));
-			return;
-		}*/
 		name = name.toLowerCase();
 		final Preset set = (p2 != null ? p2.getPresetManager().PRESET_SETUPS.get(name) : PRESET_SETUPS.get(name));
 		if (set == null) {

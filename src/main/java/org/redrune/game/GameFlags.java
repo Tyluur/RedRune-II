@@ -16,5 +16,8 @@ public class GameFlags {
 	 */
 	public static boolean hostMode;
 
+	/**
+	 * If the world is a pvp world
+	 */
 	public static boolean pvpWorld;
 }

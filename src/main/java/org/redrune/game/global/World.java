@@ -1,5 +1,6 @@
 package org.redrune.game.global;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness;
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp.PvPWorld;
 import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterNPC;
@@ -131,7 +132,7 @@ public final class World {
         if (player.getControllerManager().getController() == null) {
             if (Wilderness.isAtWild(player)) {
                 player.getControllerManager().startController("Wilderness");
-            } else if (PvPWorld.Companion.isAtPvpArea(player)) {
+            } else if (GameFlags.pvpWorld && PvPWorld.Companion.isAtPvpArea(player)) {
                 player.getControllerManager().startController("PvPWorld");
             }
         }
