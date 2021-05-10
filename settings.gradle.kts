@@ -1,1 +1,1 @@
-rootProject.name = "redrune667-server"
+rootProject.name = "dusk-pvp"

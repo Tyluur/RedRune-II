@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.map.region.RegionBuilder
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/12/2017
  */
 class DebugCommandPlugin : CommandPlugin() {

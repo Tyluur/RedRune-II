@@ -810,7 +810,6 @@ public class Player extends Actor {
         PlayerSaving.savePlayer(this);
         RegionManager.updateActorRegion(this);
         World.removePlayer(this, false);
-        System.out.println("Finished Player: " + username);
     }
 
     public void stopAll() {
