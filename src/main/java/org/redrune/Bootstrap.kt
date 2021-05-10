@@ -29,6 +29,7 @@ import org.redrune.utility.constants.PacketConstants
 import org.redrune.utility.game.entity.`object`.ObjectRemoval
 import org.redrune.utility.game.entity.`object`.ObjectSpawning
 import org.redrune.utility.game.entity.actor.player.Censor
+import org.redrune.utility.game.entity.item.priceLoaderModule
 import org.redrune.utility.game.map.MapArchiveKeys
 import org.redrune.utility.game.repository.`object`.climbable.ClimbableObjectRepository
 import org.redrune.utility.game.repository.`object`.door.DoorRepository
@@ -67,6 +68,8 @@ object Bootstrap {
             fileProperties("/game.properties")
             fileProperties("/parameters.properties")
             fileProperties("/world.properties")
+
+            modules(priceLoaderModule)
         }
         try {
             Cache.initialize()

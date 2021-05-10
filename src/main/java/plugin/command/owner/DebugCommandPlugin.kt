@@ -12,16 +12,16 @@ import org.redrune.game.global.map.region.RegionBuilder
 class DebugCommandPlugin : CommandPlugin() {
 
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        val fromX = 404
-        val fromY = 1164
+        val fromX = 422
+        val fromY = 408
 
-        val toX = player.regionX
-        val toY = player.regionY
+        val toX = 385
+        val toY = 437
 
-        val ratio = 64
+        val ratio = intParam(args, 1)
 
-        RegionBuilder.copyAllPlanesMap(404, 1164, toX, toY, ratio);
-        RegionBuilder.copyAllPlanesMap(400, 1160, toX, toY, ratio);
+        RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio)
+        RegionBuilder.copyAllPlanesMap(400, 1160, toX, toY, ratio)
 
         player.packets.sendMapRegion(false)
     }

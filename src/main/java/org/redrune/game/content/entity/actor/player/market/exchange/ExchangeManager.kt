@@ -9,7 +9,9 @@ import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConf
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
 import org.redrune.game.entity.item.ItemsContainer
+import org.redrune.utility.game.entity.item.GrandExchangePriceLoader
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository
+import org.redrune.utility.inject
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -173,7 +175,13 @@ object ExchangeManager {
 
         player.packets.sendIComponentText(MAIN_INTERFACE, 143, description)
 
-        var price = definition.value
+        val priceLoader: GrandExchangePriceLoader by inject()
+        val price = priceLoader.getPrice(itemId)
+
+        if (price == null || price <= 0) {
+            player.packets.sendMessage("This item is unable to be bought.")
+            return
+        }
 
         player.packets.sendConfig(1109, itemId)
         player.packets.sendConfig(1110, 1)
@@ -181,9 +189,6 @@ object ExchangeManager {
         player.packets.sendConfig(1114, 3)
 
         val amount = 1
-        if (price <= 0) {
-            price = 1
-        }
 
         val offer = ExchangeOffer(
             player.username,
