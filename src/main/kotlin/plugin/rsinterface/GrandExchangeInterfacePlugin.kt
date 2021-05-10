@@ -424,7 +424,6 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         }
 
         val freeSlots = player.inventory.freeSlots
-
         logger.info { "Freeslots: $freeSlots" }
         if (freeSlots == 0) {
             player.packets.sendMessage("Not enough space in your inventory.")
@@ -461,7 +460,6 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
             offer.surplus = 0
         }
 
-        logger.info { "amountProcessed: ${offer.amountProcessed}" }
         if (offer.aborted) {
             player.attributes.offers[offer.slot] = null
             open(player)

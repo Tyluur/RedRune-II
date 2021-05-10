@@ -66,7 +66,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
                             logger.info { "Successfully automatically handled offer [offer: $offer]" }
                         }
 
-                        for (sellOffer in sortedBarters) {
+                        for (sellOffer in offers) {
                             val buyPrice: Int1 = offer.price
                             val buy = offer.amountRequested - offer.amountReceived
 
@@ -79,7 +79,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
                                 continue
                             }
 
-                            logger.info { "Su ccessfully found sell offer [$sellOffer] for buy offer [$offer]" }
+                            logger.info { "Successfully found sell offer [$sellOffer] for buy offer [$offer]" }
 
                             val difference = buyPrice - sellPrice
                             val sellAmount = sellOffer.amountRequested - sellOffer.amountProcessed
