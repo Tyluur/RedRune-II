@@ -20,12 +20,12 @@ public interface GameConstants {
 	/**
 	 * The location that players spawn at
 	 */
-	WorldTile START_PLAYER_LOCATION = new WorldTile(3163, 3486, 0);
+	WorldTile START_PLAYER_LOCATION = new WorldTile(3080, 3505, 0);
 	
 	/**
 	 * The location that players who die spawn at
 	 */
-	WorldTile RESPAWN_PLAYER_LOCATION = new WorldTile(3164, 3483, 0);
+	WorldTile RESPAWN_PLAYER_LOCATION = new WorldTile(3094, 3470, 0);
 	
 	/**
 	 * If we're hosted on linux

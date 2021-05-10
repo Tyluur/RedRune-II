@@ -248,7 +248,6 @@ class ControllerManager : Serializable {
         lastControllerArguments = null
         lastController = null
         inited = false
-        println("removed: [$lastController]")
     }
 
     fun handleItemOption1(playerr: Player?, slotId: Int, itemId: Int, item: Item): Boolean {
