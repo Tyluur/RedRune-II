@@ -1,6 +1,7 @@
 package org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp
 
 import com.github.michaelbull.logging.InlineLogger
+import org.redrune.game.GameFlags
 import org.redrune.game.content.entity.actor.player.controller.Controller
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness
 import org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp.PvPZones.Companion.SAFE_ZONES
@@ -39,12 +40,17 @@ class PvPWorld : Controller() {
     private var arrivedSafely = false
 
     override fun start() {
+        if (!GameFlags.pvpWorld) {
+            forceClose()
+            return
+        }
         Wilderness.checkBoosts(player)
         showSkull()
         moved()
     }
 
     override fun login(): Boolean {
+        start()
         updateWildLevel()
         moved()
         return super.login()
