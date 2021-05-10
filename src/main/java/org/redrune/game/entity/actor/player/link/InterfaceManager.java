@@ -161,7 +161,7 @@ public class InterfaceManager {
 		sendTab(214, 1109);
 		
 		// Clan Chat Interface
-		sendTab(215, 1110);
+		sendClanChat();
 		
 		// Settings Interface
 		sendSettings();
@@ -236,7 +236,7 @@ public class InterfaceManager {
 		sendTab(100, 1109);
 		
 		// Clan Chat Interface (Interface 589 = Lobby Clan Chat)
-		sendTab(101, 1110);
+		sendClanChat();
 		
 		// Settings Interface
 		sendSettings();
@@ -288,7 +288,7 @@ public class InterfaceManager {
 	}
 	
 	public void sendClanChat() {
-		sendTab(resizableScreen ? 101 : 215, 1110);
+//		sendTab(215, 1110);
 	}
 	
 	public void sendMusic() {
