@@ -33,13 +33,13 @@ object BootHandler {
      * The amount of work that must be complete
      */
     @JvmStatic
-    var countDownLatch: CountDownLatch? = null
+    var latch: CountDownLatch? = null
         private set
 
     /**
      * The instance of the stopwatch
      */
-    val sTOPWATCH = Stopwatch.createUnstarted()
+    val stopwatch = Stopwatch.createUnstarted()
 
     /**
      * Adds all of the runnables to the [.WORK_TO_COMPLETE] list
@@ -48,7 +48,7 @@ object BootHandler {
      * The work we must complete later
      */
     fun addWork(vararg work: Runnable) {
-        sTOPWATCH.start()
+        stopwatch.start()
         Collections.addAll(WORK_TO_COMPLETE, *work)
         prepareAll()
         executeWorkers()
@@ -57,8 +57,8 @@ object BootHandler {
     /**
      * Prepares all essentials for work to be done. We first construct the [.countDownLatch], then create `BootWorker`s into the [.BOOT_WORKERS] list, then the [.prepareBootWorkers] method is ran
      */
-    fun prepareAll() {
-        countDownLatch = CountDownLatch(WORK_TO_COMPLETE.size)
+    private fun prepareAll() {
+        latch = CountDownLatch(WORK_TO_COMPLETE.size)
         for (i in 0 until THREAD_SIZE) {
             BOOT_WORKERS.add(BootWorker(i))
         }
@@ -68,12 +68,12 @@ object BootHandler {
     /**
      * Prepares the workers by populating them with workload from the [.WORK_TO_COMPLETE]
      */
-    fun prepareBootWorkers() {
+    private fun prepareBootWorkers() {
         var index = 0
-        val `it$` = WORK_TO_COMPLETE.iterator()
-        while (`it$`.hasNext()) {
-            bestWorker!!.addToWorkLoad(`it$`.next(), index)
-            `it$`.remove()
+        val iterator = WORK_TO_COMPLETE.iterator()
+        while (iterator.hasNext()) {
+            bestWorker!!.addToWorkLoad(iterator.next(), index)
+            iterator.remove()
             index++
         }
     }
@@ -81,7 +81,7 @@ object BootHandler {
     /**
      * Executes the workers
      */
-    fun executeWorkers() {
+    private fun executeWorkers() {
         BOOT_WORKERS.forEach(Consumer { command: BootWorker? -> SystemManager.SLOW_EXECUTOR.execute(command) })
     }
 
@@ -90,7 +90,7 @@ object BootHandler {
      * currently has to do
      */
     private val bestWorker: BootWorker?
-        private get() {
+        get() {
             var leastWorkDone = -1
             var bestWorker: BootWorker? = null
             for (worker in BOOT_WORKERS) {
@@ -107,11 +107,11 @@ object BootHandler {
      */
     fun await() {
         try {
-            countDownLatch!!.await()
+            latch!!.await()
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-        sTOPWATCH.stop()
+        stopwatch.stop()
     }
 
     /**

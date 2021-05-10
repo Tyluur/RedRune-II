@@ -2,9 +2,9 @@ package org.redrune.engine.worker.boot
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.redrune.engine.worker.boot.BootHandler.countDownLatch
-import java.util.*
+import org.redrune.engine.worker.boot.BootHandler.latch
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.system.exitProcess
 
 /**
  * @author Tyluur<itstyluur></itstyluur>@icloud.com>
@@ -29,12 +29,12 @@ class BootWorker internal constructor(number: Int) : Thread() {
                     //					long start = System.currentTimeMillis();
                     work.task.run()
                     workLoad.remove(work)
-                    countDownLatch!!.countDown()
+                    latch!!.countDown()
                     //					long delay = System.currentTimeMillis() - start;
                     //					System.out.println("Worker #" + number + ":\t\tFinished job " + work.getTaskNumber() + " in " + delay + " ms\t\t\tqueue=[" + BootHandler.workersLeftDetails() + "]");
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    System.exit(1)
+                    exitProcess(1)
                 }
             }
         }

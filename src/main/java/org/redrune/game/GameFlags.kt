@@ -1,23 +1,25 @@
-package org.redrune.game;
+package org.redrune.game
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
-public class GameFlags {
-	
-	/**
-	 * If the server was launched in debug mode
-	 */
-	public static boolean debugMode;
-	
-	/**
-	 * If the server was launched in host mode
-	 */
-	public static boolean hostMode;
+object GameFlags {
 
-	/**
-	 * If the world is a pvp world
-	 */
-	public static boolean pvpWorld;
+    /**
+     * If the server was launched in debug mode
+     */
+	@JvmField
+	var debugMode = false
+
+    /**
+     * If the server was launched in host mode
+     */
+    var hostMode = false
+
+    /**
+     * If the world is a pvp world
+     */
+	@JvmField
+	var pvpWorld = false
 }
