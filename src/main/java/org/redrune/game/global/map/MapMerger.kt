@@ -1,43 +1,40 @@
-package org.redrune.game.global.map;
-
-import org.redrune.game.global.map.region.RegionBuilder;
+package org.redrune.game.global.map
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since March 20, 2021
  */
-public enum MapMerger {
-
+enum class MapMerger {
     DUEL_ARENA_TO_EDGEVILLE {
-        @Override
-        public void merge() {
-            int topFromX = 421, toRegionX = 384;
-            int tomFromY = 408, toRegionY = 437;
-            int ratio = 4;
+        override fun merge() {
+            val fromX = 420
+            val fromY = 408
 
-            RegionBuilder.copyAllPlanesMap(topFromX, tomFromY, toRegionX, toRegionY, ratio); // top
-            // left
-            RegionBuilder.copyAllPlanesMap(topFromX - 4, tomFromY, toRegionX - 4, toRegionY, ratio); // top
-            // right
+            val toX = 383
+            val toY = 436
 
-            RegionBuilder.copyAllPlanesMap(topFromX - 4, tomFromY - 4, toRegionX - 4, toRegionY - 4, ratio); // bottom
-            // left
-            RegionBuilder.copyAllPlanesMap(topFromX, tomFromY - 4, toRegionX, toRegionY - 4, ratio); // bottom
-            // right
+            val ratio = 4
+
+           // RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio);
+//            RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio);
+
+//            RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio) // top-left
         }
     };
 
     /**
      * Merges the maps
      */
-    public abstract void merge();
+    abstract fun merge()
 
-    /**
-     * Merges all the maps
-     */
-    public static void start() {
-       /* for (MapMerger map : MapMerger.values()) {
-            map.merge();
-        }*/
+    companion object {
+        /**
+         * Merges all the maps
+         */
+        fun start() {
+            for (map in values()) {
+                map.merge()
+            }
+        }
     }
 }
