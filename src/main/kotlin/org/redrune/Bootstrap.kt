@@ -65,7 +65,8 @@ object Bootstrap {
     private fun boot() {
         startKoin {
             fileProperties("/game.properties")
-
+            fileProperties("/parameters.properties")
+            fileProperties("/world.properties")
         }
         try {
             Cache.initialize()
