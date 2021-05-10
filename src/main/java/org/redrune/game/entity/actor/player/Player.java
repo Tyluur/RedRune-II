@@ -3,7 +3,6 @@ package org.redrune.game.entity.actor.player;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
-import org.redrune.game.content.entity.actor.player.PlayerTutorial;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
 import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
@@ -760,7 +759,6 @@ public class Player extends Actor {
         appearance.generateAppearanceData();
         controllerManager.login(); // checks what to do on login after welcome "Log in"
         OwnedObjectManager.linkKeys(this);
-        PlayerTutorial.INSTANCE.onLogin(this);
         PresetHandler.Companion.unlock(this);
         PlayerSaving.savePlayer(this);
     }
