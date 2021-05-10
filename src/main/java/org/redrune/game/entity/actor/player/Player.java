@@ -619,7 +619,6 @@ public class Player extends Actor {
         if (username.equalsIgnoreCase("tyluur")) {
             giveRight(PlayerRight.OWNER);
         }
-        System.out.println("Initialized Player: " + username);
     }
 
     /**
@@ -678,8 +677,6 @@ public class Player extends Actor {
         // inited so lets add it
         World.addWorldPlayer(this);
         RegionManager.updateActorRegion(this);
-        System.out.println("Player Logged in: " + username);
-        System.out.println(World.getPlayers());
     }
 
     // now that we inited we can start showing game

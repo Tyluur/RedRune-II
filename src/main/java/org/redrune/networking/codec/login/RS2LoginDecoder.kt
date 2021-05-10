@@ -67,6 +67,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         `in`.readBytes(data)
         // convert the buffer into a readable object
         val buffer = FixedBuffer(data)
+
         if (opcode == 19) {
             decodeLobbyLogin(ctx, buffer, out)
         } else if (opcode == 16) {
