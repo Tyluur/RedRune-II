@@ -33,7 +33,6 @@ class GrandExchangePriceLoader {
         return map[itemId]
     }
 
-
     companion object {
 
         private val map = hashMapOf<Int, Int>()

@@ -216,15 +216,6 @@
     "direction": "NORTH"
   },
   {
-    "npcId": 961,
-    "tile": {
-      "x": 3094,
-      "y": 3499,
-      "plane": 0
-    },
-    "direction": "SOUTH"
-  },
-  {
     "npcId": 1,
     "tile": {
       "x": 3096,
@@ -259,5 +250,14 @@
       "plane": 0
     },
     "direction": "NORTH"
+  },
+  {
+    "npcId": 961,
+    "tile": {
+      "x": 3092,
+      "y": 3506,
+      "plane": 0
+    },
+    "direction": "SOUTH"
   }
 ]

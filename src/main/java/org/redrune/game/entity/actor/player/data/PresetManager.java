@@ -17,16 +17,18 @@ public final class PresetManager implements Serializable {
 	private final transient int priceLimit = 100000;
 
 	private static final long serialVersionUID = -2928476953478619103L;
-	/** Instantiated variables below **/
+	/**
+	 * Instantiated variables below
+	 **/
 	private transient Player player;
-	public HashMap<String, Preset> PRESET_SETUPS;
+	public HashMap<String, Preset> setups;
 
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
 	public PresetManager() {
-		PRESET_SETUPS = new HashMap<String, Preset>();
+		setups = new HashMap<String, Preset>();
 	}
 
 	private final int getMaxSize() {
@@ -34,7 +36,7 @@ public final class PresetManager implements Serializable {
 	}
 
 	public void reset() {
-		PRESET_SETUPS.clear();
+		setups.clear();
 		player.getPackets().sendMessage(
 				"All of your sets have been cleared. You now have " + getMaxSize() + " available slots.");
 	}
@@ -44,12 +46,12 @@ public final class PresetManager implements Serializable {
 			return;
 		name = name.toLowerCase();
 		player.getPackets()
-				.sendMessage((PRESET_SETUPS.remove(name) == null ? "No set was found for the query: " + name
+				.sendMessage((setups.remove(name) == null ? "No set was found for the query: " + name
 						: "Successfully removed the set: " + name) + ".");
 	}
 
 	public void savePreset(String name) {
-		final int size = PRESET_SETUPS.size(), max = getMaxSize();
+		final int size = setups.size(), max = getMaxSize();
 		if (size >= max) {
 			player.getPackets().sendMessage("You were unable to store the set " + name
 					+ " as your maximum capacity (" + max + ") has been reached.", true);
@@ -58,7 +60,7 @@ public final class PresetManager implements Serializable {
 		if (name == "")
 			return;
 		name = name.toLowerCase();
-		final Preset set = PRESET_SETUPS.get(name);
+		final Preset set = setups.get(name);
 		if (set != null) {
 			player.getPackets().sendMessage("You were unable to store the set " + name + " as it already exists.",
 					true);
@@ -66,7 +68,7 @@ public final class PresetManager implements Serializable {
 		}
 		final Item[] inventory = player.getInventory().getItems().getItemsCopy(),
 				equipment = player.getEquipment().getItems().getItemsCopy();
-		PRESET_SETUPS.put(name,
+		setups.put(name,
 				new Preset(name, inventory, equipment, player.getPrayer().isAncientCurses(),
 						(byte) player.getCombatDefinitions().getSpellBook(), (Arrays.copyOf(player.getSkills().getXp(), 7))));
 
@@ -74,11 +76,11 @@ public final class PresetManager implements Serializable {
 	}
 
 	public void printPresets() {
-		final int size = PRESET_SETUPS.size();
+		final int size = setups.size();
 		player.getPackets().sendMessage("You have used " + size + "/" + getMaxSize() + " available setups.", true);
 		if (size > 0) {
 			player.getPackets().sendMessage("<col=ff0000>Your available setups are:", true);
-			for (final String key : PRESET_SETUPS.keySet()) {
+			for (final String key : setups.keySet()) {
 				player.getPackets().sendMessage(key, true);
 			}
 		}
@@ -93,7 +95,7 @@ public final class PresetManager implements Serializable {
 			return;
 		}
 		name = name.toLowerCase();
-		final Preset set = (p2 != null ? p2.getPresetManager().PRESET_SETUPS.get(name) : PRESET_SETUPS.get(name));
+		final Preset set = (p2 != null ? p2.getPresetManager().setups.get(name) : setups.get(name));
 		if (set == null) {
 			player.getPackets().sendMessage("You were unable to load the set " + name + " as it does not exist.",
 					true);

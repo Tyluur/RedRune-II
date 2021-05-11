@@ -1,13 +1,13 @@
 package org.redrune.networking.codec.login
 
 import com.alex.utils.Utils
+import com.github.michaelbull.logging.InlineLogger
 import io.netty.buffer.ByteBuf
 import io.netty.channel.Channel
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import org.redrune.cache.Cache
-import org.redrune.game.GameFlags
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
 import org.redrune.game.global.punishment.PunishmentRepository
@@ -73,9 +73,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         } else if (opcode == 16) {
             decodeWorldLogin(ctx, buffer, out)
         } else {
-            if (GameFlags.debugMode) {
-                println("Received unexpected login request from $session. [opcode=$opcode]")
-            }
+            logger.debug { "Received unexpected login request from $session. [opcode=$opcode]" }
             ctx.channel().close()
         }
     }
@@ -332,4 +330,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         session = NetworkSession(channel)
         channel.attr(NetworkConstants.SESSION_KEY).set(session)
     }
+
+    private val logger = InlineLogger()
+
 }

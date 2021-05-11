@@ -122,7 +122,7 @@ public class Player extends Actor {
     /**
      * The instance of the familiar the player owns
      */
-    private Familiar familiar;
+    private transient Familiar familiar;
 
     /**
      * The handler for all social interaction

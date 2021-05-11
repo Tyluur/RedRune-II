@@ -1,7 +1,6 @@
 package org.redrune.networking.packet.context.impl
 
 import com.github.michaelbull.logging.InlineLogger
-import org.redrune.game.GameFlags
 import org.redrune.game.content.plugin.PluginRepository.handleInterface
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.networking.packet.context.PacketContext
@@ -24,12 +23,10 @@ class InterfaceInteractionPacketContext(
         }
         val plugin = handleInterface(player, interfaceId, componentId, itemId, slotId, packetId)
 
-        if (GameFlags.debugMode) {
-            if (plugin != null) {
-                logger.info { ("[" + plugin.javaClass.simpleName + "] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]") }
-            } else {
-                logger.info { ("[N/A] handled [$interfaceId, $componentId, $packetId]") }
-            }
+        if (plugin != null) {
+            logger.debug { ("[" + plugin.javaClass.simpleName + "] handled [" + interfaceId + ", " + componentId + ", " + packetId + "]") }
+        } else {
+            logger.debug { ("[N/A] handled [$interfaceId, $componentId, $packetId]") }
         }
     }
 

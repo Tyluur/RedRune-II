@@ -4,7 +4,6 @@ import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public final class Preset implements Serializable {
@@ -76,7 +75,7 @@ public final class Preset implements Serializable {
 
 	public final int getId(final Player player) {
 		int i = 0;
-		for (Entry<String, Preset> gear : player.getPresetManager().PRESET_SETUPS.entrySet()) {
+		for (Entry<String, Preset> gear : player.getPresetManager().setups.entrySet()) {
 			if (gear.getKey().toLowerCase().equals(name)) {
 				return i;
 			}
