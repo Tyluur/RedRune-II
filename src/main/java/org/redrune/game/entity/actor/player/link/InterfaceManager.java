@@ -262,7 +262,7 @@ public class InterfaceManager {
 		int interfaceId = 34;
 		sendTab(resizableScreen ? 91 : 205, interfaceId);
 
-		PresetHandler.Companion.sendLoginConfiguration(player);
+		PresetHandler.INSTANCE.sendLoginConfiguration(player);
 		player.getPackets().sendHideIComponent(930, 12, true); //scroll bar
 		for (byte i = 17; i < 25; i++) {
 			player.getPackets().sendHideIComponent(930, i, true);

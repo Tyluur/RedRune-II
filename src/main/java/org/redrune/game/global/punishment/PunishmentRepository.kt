@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.file.JsonFileManager
 import org.redrune.utility.functions.GsonFunctions
 import org.redrune.utility.functions.Misc
-import org.redrune.utility.game.entity.actor.player.PlayerSaving.fromFile
+import org.redrune.utility.game.entity.actor.player.JacksonFactory.fromFile
 import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue

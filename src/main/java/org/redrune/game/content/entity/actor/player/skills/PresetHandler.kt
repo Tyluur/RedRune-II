@@ -1,520 +1,208 @@
 package org.redrune.game.content.entity.actor.player.skills
 
+import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import org.redrune.game.entity.actor.player.data.Preset
 import org.redrune.utility.functions.Misc
+import org.redrune.utility.game.entity.actor.player.JacksonFactory
+import java.nio.file.Paths
+import kotlin.math.pow
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since April 02, 2021
  */
-class PresetHandler {
+object PresetHandler {
 
-    enum class Preset(val title: String) {
+    val presets = mutableListOf<Preset>()
 
-        PURE("Pure") {
-            override fun inventory() = hashMapOf(
-                0 to Item(2436, 1),
-                1 to Item(2440, 1),
-                2 to Item(3024, 1),
-                3 to Item(3024, 1),
-                4 to Item(15272, 1),
-                5 to Item(15272, 1),
-                6 to Item(15272, 1),
-                7 to Item(15272, 1),
-                8 to Item(15272, 1),
-                9 to Item(15272, 1),
-                10 to Item(15272, 1),
-                11 to Item(15272, 1),
-                12 to Item(15272, 1),
-                13 to Item(15272, 1),
-                14 to Item(15272, 1),
-                15 to Item(15272, 1),
-                16 to Item(15272, 1),
-                17 to Item(15272, 1),
-                18 to Item(15272, 1),
-                19 to Item(15272, 1),
-                20 to Item(5698, 1),
-                21 to Item(15272, 1),
-                22 to Item(15272, 1),
-                23 to Item(15272, 1),
-                24 to Item(15272, 1),
-                25 to Item(15272, 1),
-                26 to Item(15272, 1),
-                27 to Item(15272, 1)
-            )
+    private val path = Paths.get("./data/repository/item/presets.yml")
 
-            override fun equipment() = hashMapOf(
-                1 to Item(6570, 1),
-                2 to Item(1725, 1),
-                3 to Item(4587, 1),
-                4 to Item(544, 1),
-                5 to Item(3842, 1),
-                7 to Item(542, 1),
-                9 to Item(7459, 1),
-                10 to Item(3105, 1)
-            )
-
-            override fun skills() = hashMapOf(
-                0 to 60,
-                1 to 1,
-                2 to 99,
-                3 to 99,
-                4 to 99,
-                5 to 31,
-                6 to 99
-            )
-
-            override fun spellBook() = 1
-
-            override fun prayerBook() = 1
-
-        },
-
-
-        PURE_RANGE("Pure - Ranged") {
-            override fun inventory() = hashMapOf(
-                0 to Item(6685, 1),
-                1 to Item(6685, 1),
-                2 to Item(3024, 1),
-                3 to Item(3024, 1),
-                4 to Item(2440, 1),
-                5 to Item(2436, 1),
-                6 to Item(2444, 1),
-                7 to Item(15272, 1),
-                8 to Item(15272, 1),
-                9 to Item(15272, 1),
-                10 to Item(15272, 1),
-                11 to Item(15272, 1),
-                12 to Item(15272, 1),
-                13 to Item(15272, 1),
-                14 to Item(15272, 1),
-                15 to Item(15272, 1),
-                16 to Item(15272, 1),
-                17 to Item(15272, 1),
-                18 to Item(15272, 1),
-                19 to Item(15272, 1),
-                20 to Item(4153, 1),
-                21 to Item(15272, 1),
-                22 to Item(15272, 1),
-                23 to Item(15272, 1),
-                24 to Item(15272, 1),
-                25 to Item(15272, 1),
-                26 to Item(15272, 1),
-                27 to Item(15272, 1)
-            )
-
-            override fun equipment() = hashMapOf(
-                1 to Item(6570, 1),
-                2 to Item(1725, 1),
-                3 to Item(861, 1),
-                4 to Item(544, 1),
-                7 to Item(2497, 1),
-                9 to Item(7459, 1),
-                10 to Item(3105, 1),
-                13 to Item(892, 1000),
-            )
-
-            override fun skills() = hashMapOf(
-                0 to 60,
-                1 to 1,
-                2 to 99,
-                3 to 99,
-                4 to 99,
-                5 to 31,
-                6 to 99,
-            )
-
-            override fun spellBook() = 2
-
-            override fun prayerBook() = 1
-
-        },
-
-        ZERKER_BRID("Zerker - Hybrid") {
-            override fun inventory() = hashMapOf(
-                0 to Item(3024, 1),
-                1 to Item(6685, 1),
-                2 to Item(2440, 1),
-                3 to Item(2436, 1),
-                4 to Item(2503, 1),
-                5 to Item(10551, 1),
-                6 to Item(6570, 1),
-                7 to Item(8850, 1),
-                8 to Item(5698, 1),
-                9 to Item(1079, 1),
-                10 to Item(4587, 1),
-                11 to Item(15272, 1),
-                12 to Item(15272, 1),
-                13 to Item(15272, 1),
-                14 to Item(15272, 1),
-                15 to Item(15272, 1),
-                16 to Item(15272, 1),
-                17 to Item(15272, 1),
-                18 to Item(15272, 1),
-                19 to Item(15272, 1),
-                20 to Item(15272, 1),
-                21 to Item(3144, 1),
-                22 to Item(3144, 1),
-                23 to Item(6685, 1),
-                24 to Item(555, 5000),
-                25 to Item(565, 5000),
-                26 to Item(560, 5000),
-                27 to Item(3024, 1)
-            )
-
-            override fun equipment() = hashMapOf(
-                0 to Item(3751, 1),
-                1 to Item(2412, 1),
-                2 to Item(1712, 1),
-                3 to Item(4675, 1),
-                4 to Item(3387, 1),
-                5 to Item(3842, 1),
-                7 to Item(3389, 1),
-                9 to Item(7462, 1),
-                10 to Item(3105, 1),
-            )
-
-            override fun skills() = hashMapOf(
-                0 to 60,
-                1 to 45,
-                2 to 99,
-                3 to 99,
-                4 to 99,
-                5 to 52,
-                6 to 99
-            )
-
-            override fun spellBook() = 2
-
-            override fun prayerBook() = 1
-
-        },
-
-        MAIN("Main") {
-            override fun inventory() = hashMapOf(
-                0 to Item(3144, 1),
-                1 to Item(6685, 1),
-                2 to Item(3024, 1),
-                3 to Item(2436, 1),
-                4 to Item(3144, 1),
-                5 to Item(6685, 1),
-                6 to Item(3024, 1),
-                7 to Item(2440, 1),
-                8 to Item(15272, 1),
-                9 to Item(15272, 1),
-                10 to Item(15272, 1),
-                11 to Item(15272, 1),
-                12 to Item(15272, 1),
-                13 to Item(15272, 1),
-                14 to Item(15272, 1),
-                15 to Item(15272, 1),
-                16 to Item(15272, 1),
-                17 to Item(15272, 1),
-                18 to Item(15272, 1),
-                19 to Item(15272, 1),
-                20 to Item(5698, 1),
-                21 to Item(15272, 1),
-                22 to Item(15272, 1),
-                23 to Item(15272, 1),
-                24 to Item(15272, 1),
-                25 to Item(557, 5000),
-                26 to Item(560, 5000),
-                27 to Item(9075, 5000)
-            )
-
-            override fun equipment() = hashMapOf(
-                0 to Item(10828, 1),
-                1 to Item(6570, 1),
-                2 to Item(1725, 1),
-                3 to Item(4587, 1),
-                4 to Item(10551, 1),
-                5 to Item(8850, 1),
-                7 to Item(1079, 1),
-                9 to Item(7459, 1),
-                10 to Item(3105, 1),
-                12 to Item(2550, 1),
-                13 to Item(892, 1000),
-            )
-
-            override fun skills() = hashMapOf(
-                0 to 99,
-                1 to 99,
-                2 to 99,
-                3 to 99,
-                4 to 99,
-                5 to 99,
-                6 to 99
-            )
-
-            override fun spellBook() = 3
-
-            override fun prayerBook() = 2
-
-        },
-
-
-        MAIN_HYBRID("Main - Hybrid") {
-            override fun inventory() = hashMapOf(
-                0 to Item(3024, 1),
-                1 to Item(6685, 1),
-                2 to Item(2440, 1),
-                3 to Item(2436, 1),
-                4 to Item(2503, 1),
-                5 to Item(10551, 1),
-                6 to Item(6570, 1),
-                7 to Item(8850, 1),
-                8 to Item(5698, 1),
-                9 to Item(1079, 1),
-                10 to Item(4587, 1),
-                11 to Item(15272, 1),
-                12 to Item(15272, 1),
-                13 to Item(15272, 1),
-                14 to Item(15272, 1),
-                15 to Item(15272, 1),
-                16 to Item(15272, 1),
-                17 to Item(15272, 1),
-                18 to Item(15272, 1),
-                19 to Item(15272, 1),
-                20 to Item(15272, 1),
-                21 to Item(3144, 1),
-                22 to Item(3144, 1),
-                23 to Item(6685, 1),
-                24 to Item(555, 5000),
-                25 to Item(565, 5000),
-                26 to Item(560, 5000),
-                27 to Item(3024, 1)
-            )
-
-            override fun equipment() = hashMapOf(
-                0 to Item(10828, 1),
-                1 to Item(2412, 1),
-                2 to Item(1712, 1),
-                3 to Item(4675, 1),
-                4 to Item(4091, 1),
-                5 to Item(13734, 1),
-                7 to Item(4093, 1),
-                9 to Item(7462, 1),
-                10 to Item(3105, 1)
-            )
-
-            override fun skills() = hashMapOf(
-                0 to 99,
-                1 to 99,
-                2 to 99,
-                3 to 99,
-                4 to 99,
-                5 to 99,
-                6 to 99
-            )
-
-            override fun spellBook() = 2
-
-            override fun prayerBook() = 2
-
-        }
-
-        /* ZERKER("Zerker") {
-
-         },
-
-
- */
-        ;
-
-        abstract fun inventory(): HashMap<Int, Item>
-
-        abstract fun equipment(): HashMap<Int, Item>
-
-        abstract fun skills(): HashMap<Int, Int>
-
-        abstract fun spellBook(): Int
-
-        abstract fun prayerBook(): Int
-                ;
-
+    fun loadPresets() {
 
     }
 
-    companion object {
+    fun addPreset(preset: Preset) {
+        presets.add(preset)
+        JacksonFactory.saveObject(presets, path.toString())
+    }
 
-        /**
-         * The indented values
-         */
-        private const val INDENT = "          "
+    private val logger = InlineLogger()
 
-        fun sendLoginConfiguration(player: Player) {
-            val interfaceId = 34
-            val packets = player.packets
-            packets.sendIComponentSettings(34, 9, 0, 30, 2621470)
-            for (i in 10..15) {
-                packets.sendHideIComponent(34, i, true)
-            }
-            packets.sendHideIComponent(interfaceId, 3, false);
-            packets.sendIComponentModel(interfaceId, 3, 835)
+
+    /**
+     * The indented values
+     */
+    private const val INDENT = "          "
+
+    fun sendLoginConfiguration(player: Player) {
+        val interfaceId = 34
+        val packets = player.packets
+        packets.sendIComponentSettings(34, 9, 0, 30, 2621470)
+        for (i in 10..15) {
+            packets.sendHideIComponent(34, i, true)
+        }
+        packets.sendHideIComponent(interfaceId, 3, false)
+        packets.sendIComponentModel(interfaceId, 3, 835)
 //            packets.sendHideIComponent(interfaceId, 1, true);
-            packets.sendHideIComponent(interfaceId, 8, true);
+        packets.sendHideIComponent(interfaceId, 8, true)
 
-            refresh(player)
+        refresh(player)
+    }
+
+    fun refresh(player: Player) {
+        val presets = arrayListOf<Preset>()
+
+        val interfaceId = 34
+
+        for (i in 0..29) {
+            player.packets.sendGlobalString(149 + i, if (i < presets.size) presets[i].name else "")
         }
 
-        fun refresh(player: Player) {
-            val presets = arrayListOf<Preset>()
+        var colour = 0
 
-            presets.addAll(Preset.values())
+        for (i in presets.indices) {
+            val preset = presets[i]
 
-            val interfaceId = 34
+            colour += colourize(Misc.random(1, 3), i)
 
-            for (i in 0..29) {
-                player.packets.sendGlobalString(149 + i, if (i < presets.size) presets[i].title else "")
-            }
+            player.packets.sendConfig(1440, colour)
+        }
 
-            var colour = 0
+        player.packets.sendHideIComponent(interfaceId, 3, true)
+        player.packets.sendConfig(1439, -1)
+        player.packets.sendIComponentText(
+            interfaceId,
+            2,
+            "Presets"
+        )
 
-            for (i in presets.indices) {
-                val preset = presets[i]
+    }
 
-                colour += colourize(Misc.random(1, 3), i)
+    /**
+     * Unlocks the note interface
+     *
+     * @param player
+     * The player to unlock the note interface for.
+     */
+    fun unlock(player: Player) {
+        val encoder = player.packets
+        encoder.sendIComponentSettings(34, 9, 0, 30, 2621470)
+        encoder.sendHideIComponent(34, 3, false)
+        encoder.sendHideIComponent(34, 44, false)
+        for (i in 10..15) {
+            encoder.sendHideIComponent(34, i, true)
+        }
+        player.packets.sendConfig(1439, -1)
+        for (i in 1430..1449) {
+            player.packets.sendConfig(i, i)
+        }
+        refresh(player)
+    }
 
-                player.packets.sendConfig(1440, colour)
-            }
+    private fun refresh(player: Player, journalText: List<String>) {
+        for (i in 0..29) {
+            player.packets.sendGlobalString(149 + i, if (journalText.size <= i) "" else journalText[i])
+        }
+        player.packets.sendConfig(1440, getPrimaryColour(journalText))
+        player.packets.sendConfig(1441, getSecondaryColour(journalText))
+    }
 
-            player.packets.sendHideIComponent(interfaceId, 3, true)
-            player.packets.sendConfig(1439, -1)
-            player.packets.sendIComponentText(
-                interfaceId,
-                2,
-                "Presets"
+    fun displayJournalInformation(player: Player) {
+        val journalText = ArrayList<String>()
+        journalText.add("[COLOUR=0]My Presets")
+
+        // player.getPresetManager().getPresets().keySet()
+        //    .forEach { key -> journalText.add("[PRESETFLAG]+" + INDENT + key) }
+
+        journalText.add("[COLOUR=1]+" + INDENT + "Click to add")
+        journalText.add("[COLOUR=0]Default Presets")
+
+        //DefaultPresetsLoader.getDefaultPresets()
+        //    .forEach { preset -> journalText.add("[PRESETFLAG]+ " + INDENT + preset.getName()) }
+
+
+        player.packets.sendIComponentSettings(34, 9, 0, 30, 2621470)
+        player.packets.sendHideIComponent(34, 3, false)
+        player.packets.sendHideIComponent(34, 8, true)
+        player.packets.sendHideIComponent(34, 44, false)
+        player.packets.sendConfig(1437, 1) // unlocks add notes
+        player.packets.sendConfig(1439, -1)
+        refresh(player, journalText)
+
+        player.packets.sendConfig(1439, journalText.size)
+
+        for (i in 0..29) {
+            player.packets.sendGlobalString(
+                149 + i,
+                filterTags(if (i >= journalText.size) "" else journalText[i])
             )
-
         }
+        player.packets.sendConfig(
+            1440,
+            getPrimaryColour(journalText)
+        )
+        player.packets.sendConfig(
+            1441,
+            getSecondaryColour(journalText)
+        )
+    }
 
-        /**
-         * Unlocks the note interface
-         *
-         * @param player
-         * The player to unlock the note interface for.
-         */
-        fun unlock(player: Player) {
-            val encoder = player.packets
-            encoder.sendIComponentSettings(34, 9, 0, 30, 2621470)
-            encoder.sendHideIComponent(34, 3, false)
-            encoder.sendHideIComponent(34, 44, false)
-            for (i in 10..15) {
-                encoder.sendHideIComponent(34, i, true)
-            }
-            player.packets.sendConfig(1439, -1)
-            for (i in 1430..1449) {
-                player.packets.sendConfig(i, i)
-            }
-            refresh(player)
-        }
+    private fun filterTags(text: String): String {
+        val indexOfClose = text.indexOf("]")
+        return text.substring(indexOfClose + 1, text.length)
+    }
 
-        private fun refresh(player: Player, journalText: List<String>) {
-            for (i in 0..29) {
-                player.packets.sendGlobalString(149 + i, if (journalText.size <= i) "" else journalText[i])
-            }
-            player.packets.sendConfig(1440, getPrimaryColour(journalText))
-            player.packets.sendConfig(1441, getSecondaryColour(journalText))
-        }
-
-        fun displayJournalInformation(player: Player) {
-            val journalText = ArrayList<String>()
-            journalText.add("[COLOUR=0]My Presets")
-
-            // player.getPresetManager().getPresets().keySet()
-            //    .forEach { key -> journalText.add("[PRESETFLAG]+" + INDENT + key) }
-
-            journalText.add("[COLOUR=1]+" + INDENT + "Click to add")
-            journalText.add("[COLOUR=0]Default Presets")
-
-            //DefaultPresetsLoader.getDefaultPresets()
-            //    .forEach { preset -> journalText.add("[PRESETFLAG]+ " + INDENT + preset.getName()) }
-
-
-            player.packets.sendIComponentSettings(34, 9, 0, 30, 2621470)
-            player.packets.sendHideIComponent(34, 3, false)
-            player.packets.sendHideIComponent(34, 8, true)
-            player.packets.sendHideIComponent(34, 44, false)
-            player.packets.sendConfig(1437, 1) // unlocks add notes
-            player.packets.sendConfig(1439, -1)
-            refresh(player, journalText)
-
-            player.packets.sendConfig(1439, journalText.size)
-
-            for (i in 0..29) {
-                player.packets.sendGlobalString(
-                    149 + i,
-                    filterTags(if (i >= journalText.size) "" else journalText[i])
+    fun getPrimaryColour(journalText: List<String>): Int {
+        var color = 0
+        for (i in 0..15) {
+            if (journalText.size > i) {
+                color += colourize(
+                    getColour(
+                        journalText[i]
+                    ), i
                 )
             }
-            player.packets.sendConfig(
-                1440,
-                getPrimaryColour(journalText)
-            )
-            player.packets.sendConfig(
-                1441,
-                getSecondaryColour(journalText)
-            )
         }
+        return color
+    }
 
-        private fun filterTags(text: String): String {
-            val indexOfClose = text.indexOf("]")
-            return text.substring(indexOfClose + 1, text.length)
-        }
-
-        fun getPrimaryColour(journalText: List<String>): Int {
-            var color = 0
-            for (i in 0..15) {
-                if (journalText.size > i) {
-                    color += colourize(
-                        getColour(
-                            journalText[i]
-                        ), i
-                    )
-                }
+    fun getSecondaryColour(journalText: List<String>): Int {
+        var color = 0
+        for (i in 0..14) {
+            if (journalText.size > i + 16) {
+                color += colourize(
+                    getColour(
+                        journalText[i + 16]
+                    ), i
+                )
             }
-            return color
         }
+        return color
+    }
 
-        fun getSecondaryColour(journalText: List<String>): Int {
-            var color = 0
-            for (i in 0..14) {
-                if (journalText.size > i + 16) {
-                    color += colourize(
-                        getColour(
-                            journalText[i + 16]
-                        ), i
-                    )
-                }
-            }
-            return color
-        }
+    /**
+     * Colourizes text in the note tab
+     *
+     * @param colour
+     * The colour id for the text
+     * @param noteId
+     * The note id to colour
+     */
+    private fun colourize(colour: Int, noteId: Int): Int {
+        return (4.0.pow(noteId.toDouble()) * colour).toInt()
+    }
 
-        /**
-         * Colourizes text in the note tab
-         *
-         * @param colour
-         * The colour id for the text
-         * @param noteId
-         * The note id to colour
-         */
-        private fun colourize(colour: Int, noteId: Int): Int {
-            return (Math.pow(4.0, noteId.toDouble()) * colour).toInt()
-        }
-
-        private fun getColour(text: String): Int {
-            if (text.contains("[COLOUR=")) {
-                val openIndex = text.indexOf("[")
-                val closeIndex = text.indexOf("]")
-                val substring = text.substring(openIndex, closeIndex)
-                return substring.substring(text.indexOf("=") + 1, closeIndex).toInt()
-            } else if (text.contains("[PRESETFLAG]")) {
-                return 1
-            }
+    private fun getColour(text: String): Int {
+        if (text.contains("[COLOUR=")) {
+            val openIndex = text.indexOf("[")
+            val closeIndex = text.indexOf("]")
+            val substring = text.substring(openIndex, closeIndex)
+            return substring.substring(text.indexOf("=") + 1, closeIndex).toInt()
+        } else if (text.contains("[PRESETFLAG]")) {
             return 1
         }
-
+        return 1
     }
 
 }

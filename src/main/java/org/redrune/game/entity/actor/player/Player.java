@@ -7,7 +7,6 @@ import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
 import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
 import org.redrune.game.content.entity.actor.player.event.EventManager;
-import org.redrune.game.content.entity.actor.player.skills.PresetHandler;
 import org.redrune.game.content.entity.actor.player.skills.SkillCapeCustomizer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.SlayerMonsters;
@@ -34,7 +33,7 @@ import org.redrune.utility.constants.EquipmentConstants;
 import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.SkillConstants;
 import org.redrune.utility.functions.Misc;
-import org.redrune.utility.game.entity.actor.player.PlayerSaving;
+import org.redrune.utility.game.entity.actor.player.JacksonFactory;
 import org.redrune.utility.game.entity.actor.player.PublicChatMessage;
 
 import java.util.*;
@@ -759,8 +758,7 @@ public class Player extends Actor {
         appearance.generateAppearanceData();
         controllerManager.login(); // checks what to do on login after welcome "Log in"
         OwnedObjectManager.linkKeys(this);
-        PresetHandler.Companion.unlock(this);
-        PlayerSaving.savePlayer(this);
+        JacksonFactory.saveObject(this, JacksonFactory.INSTANCE.getFileLocation(username));
     }
 
     public void logout(boolean lobby) {
@@ -805,7 +803,7 @@ public class Player extends Actor {
             familiar.dissmissFamiliar(true);
         }
         setFinished(true);
-        PlayerSaving.savePlayer(this);
+        JacksonFactory.saveObject(this, JacksonFactory.INSTANCE.getFileLocation(username));
         RegionManager.updateActorRegion(this);
         World.removePlayer(this, false);
     }

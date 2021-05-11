@@ -16,12 +16,12 @@ import java.nio.file.Paths
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-29
  */
-object PlayerSaving {
+object JacksonFactory {
 
     private val mapper = ObjectMapper(YAMLFactory())
 
     init {
-        mapper.findAndRegisterModules();
+        mapper.findAndRegisterModules()
 
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
         mapper.setVisibility(
@@ -29,9 +29,9 @@ object PlayerSaving {
                 .withFieldVisibility(JsonAutoDetect.Visibility.ANY).withGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-        );
+        )
 
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
     }
 
@@ -48,12 +48,12 @@ object PlayerSaving {
     /**
      * Saves the player to the json file
      *
-     * @param player The player
+     * @param data The player
      */
     @JvmStatic
-    fun savePlayer(player: Player) {
+    fun saveObject(data: Any, location: String) {
         try {
-            mapper.writeValue(Paths.get(getFileLocation(player.username)).toFile(), player)
+            mapper.writeValue(Paths.get(location).toFile(), data)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -84,7 +84,7 @@ object PlayerSaving {
      *
      * @param name The name of the player
      */
-    private fun getFileLocation(name: String): String {
+    fun getFileLocation(name: String): String {
         return FILES_LOCATION + name + SUFFIX
     }
 

@@ -18,7 +18,8 @@ import org.redrune.game.global.map.region.RegionManager
 import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.constants.SkillConstants
 import org.redrune.utility.functions.Misc
-import org.redrune.utility.game.entity.actor.player.PlayerSaving.savePlayer
+import org.redrune.utility.game.entity.actor.player.JacksonFactory
+import org.redrune.utility.game.entity.actor.player.JacksonFactory.saveObject
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -244,7 +245,7 @@ object SystemManager {
             if (player == null || !player.hasStarted() || player.isFinished) {
                 continue
             }
-            savePlayer(player)
+            saveObject(player, JacksonFactory.getFileLocation(player.username))
         }
     }
 
