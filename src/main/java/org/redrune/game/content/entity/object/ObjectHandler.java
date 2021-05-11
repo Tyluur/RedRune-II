@@ -204,7 +204,7 @@ public class ObjectHandler {
                 player.addWalkSteps(3222, 3223, -1, false);
                 player.getPackets().sendMessage("You examine portal and it aborves you...");
             } else if (object.getId() == 46500 && object.getX() == 3351 && object.getY() == 3415) { // zaros portal
-                player.useStairs(-1, new WorldTile(GameConstants.RESPAWN_PLAYER_LOCATION.getX(), GameConstants.RESPAWN_PLAYER_LOCATION.getY(), GameConstants.RESPAWN_PLAYER_LOCATION.getPlane()), 2, 3, "You found your way back to home.");
+                player.useStairs(-1, new WorldTile(GameConstants.RESPAWN_TILE.getX(), GameConstants.RESPAWN_TILE.getY(), GameConstants.RESPAWN_TILE.getPlane()), 2, 3, "You found your way back to home.");
                 player.addWalkSteps(3351, 3415, -1, false);
             } else if (object.getId() == 9293) {
                 if (player.getSkills().getLevel(SkillConstants.AGILITY) < 70) {

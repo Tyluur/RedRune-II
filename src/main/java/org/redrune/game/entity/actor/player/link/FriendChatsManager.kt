@@ -279,7 +279,7 @@ class FriendChatsManager private constructor(player: Player) {
                     }
                     val settings = owner.contactManager
                     if (!settings.hasFriendChat()) {
-                        player.packets.sendMessage("The channel you tried to join does not exist.")
+                        player.packets.sendMessage("The channel you tried to join does not exist.", true)
                         return
                     }
                     if (player.username != ownerName && !settings.hasRankToJoin(player.username)) {

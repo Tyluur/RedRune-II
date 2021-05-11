@@ -236,7 +236,7 @@ public class Player extends Actor {
     private transient boolean finishing;
 
     public Player() {
-        super(GameConstants.START_PLAYER_LOCATION);
+        super(GameConstants.START_TILE);
         this.username = "username";
         this.password = "password";
         setHitpoints(100);
@@ -260,7 +260,7 @@ public class Player extends Actor {
     }
 
     public Player(String username, String password) {
-        super(GameConstants.START_PLAYER_LOCATION);
+        super(GameConstants.START_TILE);
         setHitpoints(100);
         this.username = username;
         this.password = password;
@@ -500,7 +500,7 @@ public class Player extends Actor {
                     equipment.init();
                     inventory.init();
                     reset();
-                    setNextWorldTile(new WorldTile(GameConstants.RESPAWN_PLAYER_LOCATION));
+                    setNextWorldTile(new WorldTile(GameConstants.RESPAWN_TILE));
                     setNextAnimation(new Animation(-1));
                 } else if (loop == 4) {
                     getPackets().sendMusicEffect(90);

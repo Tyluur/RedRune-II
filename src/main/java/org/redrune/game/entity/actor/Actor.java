@@ -911,7 +911,7 @@ public abstract class Actor extends WorldTile implements Entity {
 					player.getSkills().set(SkillConstants.PRAYER, 0);
 					player.getPrayer().setPrayerpoints(0);
 				} else if (player.getEquipment().getAmuletId() != 11090 && player.getEquipment().getRingId() == 11090 && player.getHitpoints() <= player.getMaxHitpoints() * 0.1) {
-					Magic.sendNormalTeleportSpell(player, 1, 0, GameConstants.RESPAWN_PLAYER_LOCATION);
+					Magic.sendNormalTeleportSpell(player, 1, 0, GameConstants.RESPAWN_TILE);
 					player.getEquipment().deleteItem(11090, 1);
 					player.getPackets().sendMessage("Your ring of life saves you, but is destroyed in the process.");
 				}
