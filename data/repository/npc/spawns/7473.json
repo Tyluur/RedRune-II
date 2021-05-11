@@ -7,5 +7,14 @@
       "plane": 0
     },
     "direction": "WEST"
+  },
+  {
+    "npcId": 961,
+    "tile": {
+      "x": 1893,
+      "y": 3175,
+      "plane": 0
+    },
+    "direction": "NORTH"
   }
 ]
