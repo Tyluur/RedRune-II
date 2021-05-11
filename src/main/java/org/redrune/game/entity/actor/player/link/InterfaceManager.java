@@ -5,6 +5,7 @@ import org.redrune.game.content.entity.actor.player.skills.PresetHandler;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.actor.player.data.PlayerInventory;
 import org.redrune.utility.constants.ColorConstants;
+import org.redrune.utility.constants.GameConstants;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -162,19 +163,19 @@ public class InterfaceManager {
 		
 		// Clan Chat Interface
 		sendClanChat();
-		
+
 		// Settings Interface
 		sendSettings();
-		
+
 		// Emotes Interface
 		sendTab(217, 464);
-		
+
 		// Music Interface
 		sendTab(218, 187);
-		
+
 		//// notes Interface
-		sendTab(219, 34);
-		
+		sendNotes();
+
 		// Logout Interface
 		sendTab(222, 182); // Logout tab
 	}
@@ -237,19 +238,18 @@ public class InterfaceManager {
 		
 		// Clan Chat Interface (Interface 589 = Lobby Clan Chat)
 		sendClanChat();
-		
+
 		// Settings Interface
 		sendSettings();
-		
+
 		// Emotes Interface
 		sendTab(103, 464);
-		
+
 		// Music Interface
 		sendTab(104, 187);
-		
+
 		// Notes Interface
-		sendTab(105, 34);
-		NoteManager.refresh(player, true);
+		sendNotes();
 		// Logout Interface
 		sendTab(108, 182);
 	}
@@ -259,10 +259,10 @@ public class InterfaceManager {
 	}
 	
 	public void sendTaskSystem() {
-		int interfaceId = 930;
+		int interfaceId = 34;
 		sendTab(resizableScreen ? 91 : 205, interfaceId);
-		player.getPackets().sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
-		player.getPackets().sendIComponentText(interfaceId, 16, "");
+
+		PresetHandler.Companion.sendLoginConfiguration(player);
 		player.getPackets().sendHideIComponent(930, 12, true); //scroll bar
 		for (byte i = 17; i < 25; i++) {
 			player.getPackets().sendHideIComponent(930, i, true);
@@ -278,9 +278,18 @@ public class InterfaceManager {
 	}
 	
 	public void sendQuestTab() {
-		int interfaceId = 34;
+		int interfaceId = 1019;
 		sendTab(resizableScreen ? 93 : 207, interfaceId);
-		PresetHandler.Companion.sendLoginConfiguration(player);
+
+		player.getPackets().sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information");
+		player.getPackets().sendIComponentText(interfaceId, 16, "");
+		player.getPackets().sendIComponentText(interfaceId, 3, "Player support");
+		player.getPackets().sendIComponentText(interfaceId, 16, "Report Bug");
+		player.getPackets().sendIComponentText(interfaceId, 18, "Submit Ticket");
+		player.getPackets().sendIComponentText(interfaceId, 11, " ");
+		player.getPackets().sendIComponentText(interfaceId, 0, "Report any game/website bug you have found on " + GameConstants.SERVER_NAME + "");
+		player.getPackets().sendIComponentText(interfaceId, 8, "Submit help-request ticket to online staff member ");
+
 	}
 	
 	public void sendFriendsChat() {
@@ -288,7 +297,7 @@ public class InterfaceManager {
 	}
 	
 	public void sendClanChat() {
-//		sendTab(215, 1110);
+		sendTab(215, 1110);
 	}
 	
 	public void sendMusic() {
@@ -296,7 +305,8 @@ public class InterfaceManager {
 	}
 	
 	public void sendNotes() {
-		sendTab(resizableScreen ? 105 : 219, 34);
+	/*	sendTab(resizableScreen ? 105 : 219, 34);
+		NoteManager.refresh(player, true);*/
 	}
 	
 	public void sendEquipment() {

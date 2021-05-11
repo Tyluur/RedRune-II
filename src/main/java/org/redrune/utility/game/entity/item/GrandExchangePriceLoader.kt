@@ -22,7 +22,7 @@ class GrandExchangePriceLoader {
                 itemId = Integer.parseInt(split[0])
                 price = Integer.parseInt(split[1])
             } catch (e: Exception) {
-                logger.error { "Unable to parse grand exchange price! [line[$index]=$line]" }
+                logger.debug { "Unable to parse grand exchange price! [line[$index]=$line]" }
             }
             map[itemId] = price
         }
