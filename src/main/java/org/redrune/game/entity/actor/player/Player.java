@@ -1243,8 +1243,8 @@ public class Player extends Actor {
         this.presetManager = presetManager;
     }
 
-    public int getNetworth() {
-        return inventory.getNumerOf(995);
+    public long getNetworth() {
+        return inventory.getNumerOf(995) + bank.getTotalWorth();
     }
 
 }

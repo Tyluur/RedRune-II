@@ -55,7 +55,7 @@ class NetworkSession(
      * This method is invoked when the session is registered
      */
     fun onRegistration() {
-        logger.info { "Session has registered successfully [session=${toString()}]" }
+        logger.debug { "Session has registered successfully [session=${toString()}]" }
     }
 
     override fun toString(): String {
@@ -73,7 +73,7 @@ class NetworkSession(
                 player!!.finish()
             }
         }
-        logger.info { "Session has de-registered [session=${toString()}]" }
+        logger.debug { "Session has de-registered [session=${toString()}]" }
     }
 
     /**

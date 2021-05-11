@@ -717,4 +717,16 @@ public class PlayerBank implements Serializable {
         this.currentTab = currentTab;
     }
 
+    public long getTotalWorth() {
+        long value = 0;
+
+        for (int slot = 0; slot < bankTabs.length; slot++) {
+            for (Item item : bankTabs[slot]) {
+                value += item.getValue();
+            }
+        }
+
+        return value;
+    }
+
 }

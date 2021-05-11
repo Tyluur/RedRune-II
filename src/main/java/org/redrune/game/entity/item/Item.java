@@ -88,4 +88,8 @@ public class Item implements Serializable, Entity {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public int getValue() {
+        return getDefinitions().getValue() * amount;
+    }
 }
