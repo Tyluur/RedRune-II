@@ -18,7 +18,7 @@ import java.nio.file.Paths
  */
 object JacksonFactory {
 
-    private val mapper = ObjectMapper(YAMLFactory())
+    val mapper = ObjectMapper(YAMLFactory())
 
     init {
         mapper.findAndRegisterModules()

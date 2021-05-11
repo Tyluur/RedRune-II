@@ -9,7 +9,7 @@ import plugin.command.CommandManifest
 @CommandManifest(description = "Saves a preset to the global repository")
 class SavePresetToFileCommand : CommandPlugin() {
     override fun handle(player: Player, args: Array<out String>, console: Boolean, clientCommand: Boolean) {
-        PresetHandler.addPreset(Preset.generatePreset(player))
+        PresetHandler.dumpPreset(Preset.generatePreset(player))
     }
 
     override fun identifiers(): Array<String> {

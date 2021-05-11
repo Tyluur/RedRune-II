@@ -1,5 +1,6 @@
 package org.redrune.game.content.entity.actor.player.skills
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.actor.player.data.Preset
@@ -7,6 +8,7 @@ import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.entity.actor.player.JacksonFactory
 import java.nio.file.Paths
 import kotlin.math.pow
+
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -19,10 +21,16 @@ object PresetHandler {
     private val path = Paths.get("./data/repository/item/presets.yml")
 
     fun loadPresets() {
+        val presets = JacksonFactory.mapper.readValue(path.toFile(), object : TypeReference<List<Preset?>?>() {})
 
+        for (preset in presets!!) {
+            preset?.let { this.presets.add(it) }
+        }
+
+        logger.info { "Loaded ${presets.size} presets successfully" }
     }
 
-    fun addPreset(preset: Preset) {
+    fun dumpPreset(preset: Preset) {
         presets.add(preset)
         JacksonFactory.saveObject(presets, path.toString())
     }

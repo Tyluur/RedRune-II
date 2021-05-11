@@ -2,15 +2,16 @@ package org.redrune.game.entity.actor.player.data
 
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
+import org.redrune.utility.constants.SkillConstants
 import java.io.Serializable
 
 class Preset(
-    val name: String,
-    val inventory: Array<Item?>,
-    val equipment: Array<Item?>,
-    val isAncientCurses: Boolean,
-    val spellBook: Byte,
-    val levels: DoubleArray
+    val name: String = "",
+    val inventory: Array<Item?> = arrayOf(),
+    val equipment: Array<Item?> = arrayOf(),
+    val isAncientCurses: Boolean = false,
+    val spellBook: Int = 0,
+    val levels: DoubleArray = DoubleArray(SkillConstants.SKILL_NAME.size)
 ) : Serializable {
 
     fun getId(player: Player): Int {
@@ -32,7 +33,7 @@ class Preset(
                 player.inventory.items.itemsCopy,
                 player.equipment.items.itemsCopy,
                 player.prayer.isAncientCurses,
-                player.combatDefinitions.spellBook.toByte(),
+                player.combatDefinitions.spellBook.toInt(),
                 player.skills.xp.copyOf(7)
             )
         }

@@ -1,0 +1,94 @@
+---
+- name: "Main Hybrid"
+  inventory:
+    - id: 6685
+      amount: 1
+    - id: 3024
+      amount: 1
+    - id: 2440
+      amount: 1
+    - id: 2436
+      amount: 1
+    - id: 4736
+      amount: 1
+    - id: 11724
+      amount: 1
+    - id: 6585
+      amount: 1
+    - id: 20072
+      amount: 1
+    - id: 11694
+      amount: 1
+    - id: 11726
+      amount: 1
+    - id: 6570
+      amount: 1
+    - id: 4151
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 15272
+      amount: 1
+    - id: 560
+      amount: 5000
+    - id: 555
+      amount: 5000
+    - id: 565
+      amount: 5000
+    - id: 12437
+      amount: 998
+  equipment:
+    - id: 12681
+      amount: 1
+    - id: 2412
+      amount: 1
+    - id: 18335
+      amount: 1
+    - id: 15486
+      amount: 1
+    - id: 4712
+      amount: 1
+    - id: 13738
+      amount: 1
+    - null
+    - id: 4714
+      amount: 1
+    - null
+    - id: 7462
+      amount: 1
+    - id: 6920
+      amount: 1
+    - null
+    - null
+    - null
+    - null
+  isAncientCurses: true
+  spellBook: 193
+  levels:
+    - 1.3034431E7
+    - 1.3034431E7
+    - 1.3034431E7
+    - 1.3034431E7
+    - 1.3034431E7
+    - 1.3034431E7
+    - 1.3034431E7
