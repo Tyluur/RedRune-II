@@ -5,11 +5,9 @@ import io.netty.channel.Channel
 import io.netty.channel.ChannelFuture
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.networking.packet.PacketBuilder
-import org.redrune.networking.packet.context.PacketContext
 import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.session.ISAACCipher
-import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>
@@ -21,11 +19,6 @@ class NetworkSession(
      */
     var channel: Channel
 ) {
-    /**
-     * The queue of packets that have already been decoded and are awaiting processing
-     */
-    private val contextQueue = ConcurrentLinkedQueue<PacketContext>()
-
     /**
      * The player affiliated with this network session
      */
@@ -96,7 +89,7 @@ class NetworkSession(
     @Synchronized
     fun write(bldr: PacketBuilder): ChannelFuture {
         val msg = bldr.toPacket()
-        //		System.out.println("Wrote packet " + msg);
+
         return channel.write(msg)
     }
 
@@ -123,25 +116,6 @@ class NetworkSession(
     fun buildCiphers(inCipher: ISAACCipher?, outCipher: ISAACCipher?) {
         setInCipher(inCipher)
         setOutCipher(outCipher)
-    }
-
-    /**
-     * Adds the context of a packet to the queue
-     *
-     * @param context The context
-     */
-    fun addContext(context: PacketContext) {
-        contextQueue.add(context)
-    }
-
-    /**
-     * Processes the context queue
-     */
-    fun processContextQueue() {
-        for (context in contextQueue) {
-            context.handle(player)
-        }
-        contextQueue.clear()
     }
 
     private fun setInCipher(inCipher: ISAACCipher?) {

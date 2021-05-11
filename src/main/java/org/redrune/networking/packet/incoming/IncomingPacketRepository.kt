@@ -46,7 +46,7 @@ object IncomingPacketRepository {
      * @param player The player whose session received the packet
      * @param packet The packet that will be read
      */
-    fun handlePacket(player: Player?, packet: Packet) {
+    fun handlePacket(player: Player, packet: Packet) {
         try {
             val packetId = packet.opcode
             val reader = PACKET_MAP[packetId]

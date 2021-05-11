@@ -1,27 +1,25 @@
-package org.redrune.networking.packet.incoming.impl;
+package org.redrune.networking.packet.incoming.impl
 
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.networking.packet.Packet;
-import org.redrune.networking.packet.context.PacketContext;
-import org.redrune.networking.packet.context.impl.WalkPacketContext;
-import org.redrune.networking.packet.incoming.IncomingPacketReader;
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.networking.packet.Packet
+import org.redrune.networking.packet.context.PacketContext
+import org.redrune.networking.packet.context.impl.WalkPacketContext
+import org.redrune.networking.packet.incoming.IncomingPacketReader
+import org.redrune.utility.constants.PacketConstants
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
-public class WalkPacketReader implements IncomingPacketReader {
-	
-	@Override
-	public int[] bindings() {
-		return arguments(WALKING_PACKET, MINI_WALKING_PACKET);
-	}
-	
-	@Override
-	public PacketContext read(Player player, Packet packet) {
-		int destX = packet.readUnsignedShortLE128();
-		int destY = packet.readUnsignedShortLE128();
-		boolean forceRun = packet.readByte() == 1;
-		return new WalkPacketContext(destX, destY, forceRun);
-	}
+class WalkPacketReader : IncomingPacketReader {
+    override fun bindings(): IntArray {
+        return arguments(PacketConstants.WALKING_PACKET, PacketConstants.MINI_WALKING_PACKET)
+    }
+
+    override fun read(player: Player, packet: Packet): PacketContext {
+        val destX = packet.readUnsignedShortLE128()
+        val destY = packet.readUnsignedShortLE128()
+        val forceRun = packet.readByte().toInt() == 1
+        return WalkPacketContext(destX, destY, forceRun)
+    }
 }

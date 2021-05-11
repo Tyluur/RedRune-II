@@ -384,7 +384,6 @@ public class Player extends Actor {
 
     @Override
     public void processEntity() {
-        session.processContextQueue();
         cutsceneManager.process();
         super.processEntity();
         if (musicManager.musicEnded()) {

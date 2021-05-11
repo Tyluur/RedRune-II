@@ -42,9 +42,6 @@ class UpdateSequence : Runnable {
         SystemManager.SCHEDULER.pulse()
         WorldTasksManager.processTasks()
 
-        lobbyPlayers.stream().filter { it != null && !it.session.isInLobby }
-            .forEach { p -> p.session.processContextQueue() }
-
         gamePlayers.stream().filter { it != null && it.hasStarted() && !it.isFinished }
             .forEach {
                 if (currentTime - it.attributes.packetsDecoderPing > NetworkConstants.MAX_PACKETS_DECODER_PING_DELAY && it.session.channel.isOpen) {

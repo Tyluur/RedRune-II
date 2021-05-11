@@ -253,12 +253,11 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendTaskSystem() {
-
     }
 
     fun sendQuestTab() {
         val interfaceId = 34
-        sendTab(if (resizableScreen) 91 else 205, interfaceId)
+        sendTab(if (resizableScreen) 93 else 207, interfaceId)
 
         PresetHandler.sendLoginConfiguration(player)
         PresetHandler.unlock(player)
@@ -267,6 +266,7 @@ class InterfaceManager(private val player: Player) {
             player.packets.sendHideIComponent(930, i, true)
         }
         PresetHandler.refresh(player)
+
     }
 
     fun sendFriends() {
