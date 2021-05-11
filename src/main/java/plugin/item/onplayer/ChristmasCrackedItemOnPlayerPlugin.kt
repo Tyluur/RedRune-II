@@ -1,9 +1,9 @@
 package plugin.item.onplayer
 
-import org.redrune.game.content.entity.actor.player.dialogue.impl.ChristmasCrackerD
-import org.redrune.game.content.plugin.type.ItemOnPlayerPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import game.content.entity.actor.player.dialogue.impl.ChristmasCrackerD
+import game.content.plugin.type.ItemOnPlayerPlugin
+import game.entity.actor.player.Player
+import game.entity.item.Item
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

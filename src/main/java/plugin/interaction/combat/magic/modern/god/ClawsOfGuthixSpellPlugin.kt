@@ -1,12 +1,12 @@
 package plugin.interaction.combat.magic.modern.god
 
-import org.redrune.engine.cycle.GameCycleWorker.Companion.ticksPassed
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.constants.MagicConstants.MagicBook
-import org.redrune.utility.constants.key.AttributeKey
+import engine.cycle.GameCycleWorker.Companion.ticksPassed
+import game.content.entity.actor.combat.player.style.MagicCombatStyle
+import game.content.plugin.combat.spell.type.CombatSpellPlugin
+import game.entity.actor.Actor
+import game.entity.actor.player.Player
+import utility.constants.MagicConstants.MagicBook
+import utility.constants.key.AttributeKey
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

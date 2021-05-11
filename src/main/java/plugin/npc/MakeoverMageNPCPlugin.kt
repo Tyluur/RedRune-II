@@ -1,9 +1,9 @@
 package plugin.npc
 
-import org.redrune.game.content.entity.actor.player.design.PlayerDesign
-import org.redrune.game.content.plugin.type.NPCPlugin
-import org.redrune.game.entity.actor.npc.NPC
-import org.redrune.game.entity.actor.player.Player
+import game.content.entity.actor.player.design.PlayerDesign
+import game.content.plugin.type.NPCPlugin
+import game.entity.actor.npc.NPC
+import game.entity.actor.player.Player
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

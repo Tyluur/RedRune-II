@@ -1,8 +1,8 @@
 package plugin.command.administrator
 
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.World
+import game.content.plugin.type.CommandPlugin
+import game.entity.actor.player.Player
+import game.global.World
 import plugin.command.CommandManifest
 
 /**

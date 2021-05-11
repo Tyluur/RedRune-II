@@ -1,16 +1,16 @@
 package plugin.interaction.combat.magic.lunar
 
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
-import org.redrune.game.content.plugin.combat.spell.type.RegularSpellPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.World
-import org.redrune.game.global.map.region.RegionManager
-import org.redrune.utility.constants.MagicConstants
-import org.redrune.utility.constants.MagicConstants.MagicBook
-import org.redrune.utility.constants.SkillConstants
+import game.content.entity.actor.combat.CombatAlgorithm
+import game.content.plugin.combat.spell.type.RegularSpellPlugin
+import game.entity.actor.Actor
+import game.entity.actor.mask.Animation
+import game.entity.actor.mask.Graphics
+import game.entity.actor.player.Player
+import game.global.World
+import game.global.map.region.RegionManager
+import utility.constants.MagicConstants
+import utility.constants.MagicConstants.MagicBook
+import utility.constants.SkillConstants
 import java.util.concurrent.TimeUnit
 
 /**

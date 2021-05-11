@@ -94,7 +94,7 @@ Media
 
 2/6/19 - Networking, Combat visual improvements, and dialogues code improvements {
 
-	+   Fixed some networking mishaps during the conversion
+	+   Fixed some network mishaps during the conversion
 	+   Updated range combat to have delays showing properly
 	+   Updated dialogue system for seamless in-line dialogue code
 	+   Added more "events" [walking/item on item interaction] to the Event System

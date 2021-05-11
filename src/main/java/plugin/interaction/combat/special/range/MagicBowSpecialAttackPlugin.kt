@@ -1,48 +1,13 @@
 package plugin.interaction.combat.special.range
 
-import org.redrune.game.content.plugin.combat.SpecialAttackPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
-import plugin.interaction.combat.special.magic.StaffOfLightSpecialAttackPlugin
-import org.redrune.game.entity.actor.mask.Animation
-import plugin.interaction.combat.special.melee.DragonHalberdSpecialPlugin
-import plugin.interaction.combat.special.melee.ExcaliburSpecialAttackPlugin
-import org.redrune.game.entity.actor.player.data.PlayerSkills
-import org.redrune.utility.constants.SkillConstants
-import org.redrune.engine.tick.task.WorldTasksManager
-import org.redrune.engine.tick.task.WorldTask
-import org.redrune.game.entity.actor.mask.ForceTalk
-import org.redrune.utility.constants.GameConstants
-import plugin.interaction.combat.special.melee.DragonClawSpecialAttackPlugin
-import org.redrune.utility.functions.Misc
-import plugin.interaction.combat.special.melee.DragonMaceSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.AbyssalWhipSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.GraniteMaulSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.KorasiSwordSpecialAttackPlugin
-import org.redrune.game.entity.actor.mask.HitSplat
-import plugin.interaction.combat.special.melee.DragonDaggerSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.BandosGodswordSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.DragonScimitarSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.SaradominSwordSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.VestaLongswordSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.ArmadylGodswordSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.DragonBattleaxeSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.DragonLongswordSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.ZamorakGodswordSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.StatiusWarhammerSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.BarrelchestAnchorSpecialAttackPlugin
-import plugin.interaction.combat.special.melee.SaradominGodswordSpecialAttackPlugin
-import plugin.interaction.combat.special.range.MagicBowSpecialAttackPlugin
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin
-import org.redrune.game.entity.projectile.Projectile
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
-import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
-import plugin.interaction.combat.special.range.HandCannonSpecialAttackPlugin
-import plugin.interaction.combat.special.range.MorriganJavelinSpecialAttackPlugin
-import org.redrune.game.entity.actor.mask.Hit
-import org.redrune.game.entity.actor.player.Player
-import plugin.interaction.combat.special.range.MorriganThrownAxeSpecialAttackPlugin
+import game.content.plugin.combat.SpecialAttackPlugin
+import game.entity.actor.Actor
+import game.content.entity.actor.combat.player.AbstractCombatStyle
+import game.entity.actor.mask.Animation
+import game.entity.projectile.ProjectileManager
+import game.content.plugin.combat.RangeWeaponPlugin
+import game.entity.projectile.Projectile
+import game.entity.actor.player.Player
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

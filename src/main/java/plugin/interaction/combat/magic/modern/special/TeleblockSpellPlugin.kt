@@ -1,13 +1,13 @@
 package plugin.interaction.combat.magic.modern.special
 
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.npc.NPC
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.utility.constants.MagicConstants.MagicBook
+import game.content.entity.actor.combat.player.style.MagicCombatStyle
+import game.content.plugin.combat.spell.type.CombatSpellPlugin
+import game.entity.actor.Actor
+import game.entity.actor.mask.Graphics
+import game.entity.actor.npc.NPC
+import game.entity.actor.player.Player
+import game.entity.projectile.ProjectileManager
+import utility.constants.MagicConstants.MagicBook
 import java.util.concurrent.TimeUnit
 
 /**

@@ -1,20 +1,13 @@
 package plugin.interaction.combat.magic.ancient.smoke
 
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.utility.constants.MagicConstants.MagicBook
-import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
-import org.redrune.utility.functions.RandomFunction
-import org.redrune.utility.constants.SkillConstants
-import org.redrune.engine.SystemManager
-import org.redrune.engine.tick.schedule.ScheduledTask
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.WorldTile
-import org.redrune.utility.constants.GameConstants
-import org.redrune.utility.constants.MagicConstants
+import game.content.plugin.combat.spell.type.CombatSpellPlugin
+import game.entity.actor.Actor
+import game.content.entity.actor.combat.player.style.MagicCombatStyle
+import game.entity.projectile.ProjectileManager
+import utility.constants.MagicConstants.MagicBook
+import game.content.entity.actor.combat.CombatSwingDetail
+import utility.functions.RandomFunction
+import game.entity.actor.player.Player
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

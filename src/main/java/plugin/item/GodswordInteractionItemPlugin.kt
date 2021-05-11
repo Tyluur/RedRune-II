@@ -1,18 +1,18 @@
 package plugin.item
 
-import org.redrune.cache.loaders.ItemDefinitions
-import org.redrune.engine.tick.task.WorldTask
-import org.redrune.engine.tick.task.WorldTasksManager
-import org.redrune.game.content.entity.actor.player.dialogue.impl.SimpleMessage
-import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing
-import org.redrune.game.content.plugin.type.ItemOnItemPlugin
-import org.redrune.game.content.plugin.type.ItemOnObjectPlugin
-import org.redrune.game.content.plugin.type.ItemPlugin
-import org.redrune.game.entity.`object`.WorldObject
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
-import org.redrune.utility.constants.SkillConstants
+import cache.codec.loaders.ItemDefinitions
+import engine.tick.task.WorldTask
+import engine.tick.task.WorldTasksManager
+import game.content.entity.actor.player.dialogue.impl.SimpleMessage
+import game.content.entity.actor.player.skills.smithing.Smithing
+import game.content.plugin.type.ItemOnItemPlugin
+import game.content.plugin.type.ItemOnObjectPlugin
+import game.content.plugin.type.ItemPlugin
+import game.entity.`object`.WorldObject
+import game.entity.actor.mask.Animation
+import game.entity.actor.player.Player
+import game.entity.item.Item
+import utility.constants.SkillConstants
 import java.util.*
 
 /**

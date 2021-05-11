@@ -1,10 +1,10 @@
 package plugin.command.owner
 
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.`object`.WorldObject
+import game.content.plugin.type.CommandPlugin
+import game.entity.`object`.WorldObject
 import plugin.command.CommandManifest
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.map.region.RegionManager
+import game.entity.actor.player.Player
+import game.global.map.region.RegionManager
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

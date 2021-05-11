@@ -1,9 +1,9 @@
 package plugin.interaction.combat.magic.modern.teleport
 
-import org.redrune.game.content.plugin.combat.spell.type.TeleportSpellPlugin
-import org.redrune.game.global.WorldTile
-import org.redrune.utility.constants.MagicConstants
-import org.redrune.utility.constants.MagicConstants.MagicBook
+import game.content.plugin.combat.spell.type.TeleportSpellPlugin
+import game.global.WorldTile
+import utility.constants.MagicConstants
+import utility.constants.MagicConstants.MagicBook
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

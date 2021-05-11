@@ -1,16 +1,16 @@
 package plugin.interaction.combat.range
 
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.mask.Hit
-import org.redrune.game.entity.actor.mask.HitSplat
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.utility.constants.SkillConstants
-import org.redrune.utility.functions.Misc
+import game.content.entity.actor.combat.player.AbstractCombatStyle
+import game.content.plugin.combat.RangeWeaponPlugin
+import game.entity.actor.Actor
+import game.entity.actor.mask.Animation
+import game.entity.actor.mask.Graphics
+import game.entity.actor.mask.Hit
+import game.entity.actor.mask.HitSplat
+import game.entity.actor.player.Player
+import game.entity.projectile.ProjectileManager
+import utility.constants.SkillConstants
+import utility.functions.Misc
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

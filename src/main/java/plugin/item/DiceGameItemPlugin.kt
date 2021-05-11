@@ -1,11 +1,11 @@
 package plugin.item
 
-import org.redrune.game.content.entity.item.DiceGame
-import org.redrune.game.content.plugin.type.ItemPlugin
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import game.content.entity.item.DiceGame
+import game.content.plugin.type.ItemPlugin
+import game.entity.actor.mask.Animation
+import game.entity.actor.mask.Graphics
+import game.entity.actor.player.Player
+import game.entity.item.Item
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

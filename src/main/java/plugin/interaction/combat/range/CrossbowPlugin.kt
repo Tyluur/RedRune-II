@@ -1,18 +1,18 @@
 package plugin.interaction.combat.range
 
-import org.redrune.cache.loaders.ItemDefinitions
-import org.redrune.engine.cycle.GameCycleWorker.Companion.ticksPassed
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
-import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.mask.Hit
-import org.redrune.game.entity.actor.mask.HitSplat
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.utility.functions.RandomFunction
+import cache.codec.loaders.ItemDefinitions
+import engine.cycle.GameCycleWorker.Companion.ticksPassed
+import game.content.entity.actor.combat.CombatAlgorithm
+import game.content.entity.actor.combat.CombatSwingDetail
+import game.content.entity.actor.combat.player.AbstractCombatStyle
+import game.content.plugin.combat.RangeWeaponPlugin
+import game.entity.actor.Actor
+import game.entity.actor.mask.Graphics
+import game.entity.actor.mask.Hit
+import game.entity.actor.mask.HitSplat
+import game.entity.actor.player.Player
+import game.entity.projectile.ProjectileManager
+import utility.functions.RandomFunction
 import java.util.*
 
 /**

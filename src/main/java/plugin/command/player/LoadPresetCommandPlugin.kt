@@ -1,8 +1,8 @@
 package plugin.command.player
 
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.game.InputEvent
+import game.content.plugin.type.CommandPlugin
+import game.entity.actor.player.Player
+import utility.game.InputEvent
 import plugin.command.CommandManifest
 
 @CommandManifest(description = "Loads a preset of yours", types = [String::class])

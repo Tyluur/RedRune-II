@@ -1,15 +1,15 @@
 package plugin.rsinterface
 
-import org.redrune.game.GameFlags
-import org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp.PvPWorld
-import org.redrune.game.content.entity.actor.player.dialogue.impl.LevelUp
-import org.redrune.game.content.entity.actor.player.dialogue.impl.SimpleNPCMessage
-import org.redrune.game.content.plugin.type.InterfacePlugin
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.constants.PacketConstants
-import org.redrune.utility.constants.SkillConstants.*
-import org.redrune.utility.game.InputEvent
+import game.GameFlags
+import game.content.entity.actor.player.controller.impl.activity.pvp.PvPWorld
+import game.content.entity.actor.player.dialogue.impl.LevelUp
+import game.content.entity.actor.player.dialogue.impl.SimpleNPCMessage
+import game.content.plugin.type.InterfacePlugin
+import game.entity.actor.mask.Graphics
+import game.entity.actor.player.Player
+import utility.constants.PacketConstants
+import utility.constants.SkillConstants.*
+import utility.game.InputEvent
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

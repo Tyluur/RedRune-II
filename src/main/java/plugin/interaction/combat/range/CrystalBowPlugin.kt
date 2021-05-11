@@ -1,10 +1,10 @@
 package plugin.interaction.combat.range
 
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
-import org.redrune.game.content.plugin.combat.RangeWeaponPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.projectile.ProjectileManager
+import game.content.entity.actor.combat.player.AbstractCombatStyle
+import game.content.plugin.combat.RangeWeaponPlugin
+import game.entity.actor.Actor
+import game.entity.actor.player.Player
+import game.entity.projectile.ProjectileManager
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

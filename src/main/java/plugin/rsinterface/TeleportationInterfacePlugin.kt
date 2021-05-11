@@ -1,20 +1,19 @@
 package plugin.rsinterface
 
-import org.redrune.engine.tick.task.WorldTask
-import org.redrune.engine.tick.task.WorldTasksManager
-import org.redrune.game.content.entity.actor.combat.function.Magic
-import org.redrune.game.content.entity.actor.player.controller.impl.activity.Wilderness
-import org.redrune.game.content.entity.actor.player.dialogue.Dialogue
-import org.redrune.game.content.plugin.type.InterfacePlugin
-import org.redrune.game.entity.actor.mask.ForceTalk
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.WorldTile
-import org.redrune.utility.constants.ColorConstants
-import org.redrune.utility.constants.MagicConstants
-import org.redrune.utility.constants.key.AttributeKey
-import org.redrune.utility.functions.Misc
-import org.redrune.utility.game.map.Coordinates
-import plugin.rsinterface.TeleportationInterfacePlugin.TravelLocations
+import engine.tick.task.WorldTask
+import engine.tick.task.WorldTasksManager
+import game.content.entity.actor.combat.function.Magic
+import game.content.entity.actor.player.controller.impl.activity.Wilderness
+import game.content.entity.actor.player.dialogue.Dialogue
+import game.content.plugin.type.InterfacePlugin
+import game.entity.actor.mask.ForceTalk
+import game.entity.actor.player.Player
+import game.global.WorldTile
+import utility.constants.ColorConstants
+import utility.constants.MagicConstants
+import utility.constants.key.AttributeKey
+import utility.functions.Misc
+import utility.game.map.Coordinates
 import java.io.Serializable
 import java.util.*
 

@@ -1,11 +1,11 @@
 package plugin.item.onitem
 
-import org.redrune.game.content.entity.actor.player.skills.crafting.GemCutting
-import org.redrune.game.content.entity.actor.player.skills.crafting.GemCutting.Gem
-import org.redrune.game.content.entity.item.InventoryOptionsHandler
-import org.redrune.game.content.plugin.type.ItemOnItemPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import game.content.entity.actor.player.skills.crafting.GemCutting
+import game.content.entity.actor.player.skills.crafting.GemCutting.Gem
+import game.content.entity.item.InventoryOptionsHandler
+import game.content.plugin.type.ItemOnItemPlugin
+import game.entity.actor.player.Player
+import game.entity.item.Item
 import java.util.*
 
 /**

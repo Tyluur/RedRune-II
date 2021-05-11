@@ -1,8 +1,8 @@
 package plugin.command.owner
 
-import org.redrune.game.content.plugin.type.CommandPlugin
+import game.content.plugin.type.CommandPlugin
 import plugin.command.CommandManifest
-import org.redrune.game.entity.actor.player.Player
+import game.entity.actor.player.Player
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

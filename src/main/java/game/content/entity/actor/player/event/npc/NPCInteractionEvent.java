@@ -1,0 +1,206 @@
+package game.content.entity.actor.player.event.npc;
+
+import game.GameFlags;
+import game.content.entity.actor.player.dialogue.impl.Banker;
+import game.content.entity.actor.player.event.Event;
+import game.content.entity.actor.player.market.exchange.ExchangeManager;
+import game.content.entity.actor.player.skills.fishing.Fishing;
+import game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots;
+import game.content.entity.actor.player.skills.thieving.PickPocketAction;
+import game.content.entity.actor.player.skills.thieving.PickPocketableNPC;
+import game.content.plugin.PluginRepository;
+import game.entity.actor.npc.NPC;
+import game.entity.actor.npc.impl.familiar.Familiar;
+import game.entity.actor.player.Player;
+import game.entity.actor.player.data.RouteEvent;
+import utility.game.ClickOption;
+
+import static utility.game.ClickOption.*;
+
+/**
+ * @author Tyluur <itstyluur@icloud.com>
+ * @since 2019-01-25
+ */
+@SuppressWarnings("DuplicatedCode")
+public class NPCInteractionEvent extends Event {
+
+    /**
+     * The npc to interact with
+     */
+    private final NPC npc;
+
+    /**
+     * The clickOption the player used on the npc
+     */
+    private final ClickOption clickOption;
+
+    public NPCInteractionEvent(NPC npc, ClickOption clickOption) {
+        this.npc = npc;
+        this.clickOption = clickOption;
+    }
+
+    @Override
+    public void run(Player player) {
+        player.setNextFaceActor(npc);
+        player.setRouteEvent(new RouteEvent(npc, () -> {
+            npc.resetWalkSteps();
+            switch (clickOption) {
+                case FIRST:
+                    handleFirstOption(player);
+                    break;
+                case SECOND:
+                    handleSecondOption(player);
+                    break;
+                case THIRD:
+                    handleThirdOption(player);
+                    break;
+                case FOURTH:
+                    handleFourthOption(player);
+                    break;
+            }
+        }, true));
+    }
+
+    @Override
+    public EventPolicy[] policies() {
+        return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK);
+    }
+
+    /**
+     * Performs the necessary actions when the player arrives at the npc after a first option packet
+     *
+     * @param player The player
+     */
+    private void handleFirstOption(Player player) {
+        String option = npc.getDefinitions().getOption(1);
+        FishingSpots spot = FishingSpots.forId(npc.getId() | 1 << 24);
+        if (spot != null) {
+            player.getActionManager().setAction(new Fishing(spot, npc));
+            return;
+        }
+        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
+        if (!player.getControllerManager().canEntityClick(npc, FIRST)) {
+            return;
+        }
+        if (PluginRepository.handleNPC(player, npc, option)) {
+            return;
+        }
+        if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
+            player.getDialogueManager().startDialogue(Banker.class, npc.getId());
+        } else {
+            player.getPackets().sendMessage("Nothing interesting happens.");
+            if (GameFlags.debugMode) {
+                System.out.println("No plugin registered for option " + option + " on npc " + npc);
+            }
+        }
+    }
+
+    /**
+     * Performs the necessary actions when the player arrives at the npc after a second option packet
+     *
+     * @param player The player
+     */
+    private void handleSecondOption(Player player) {
+        String option = npc.getDefinitions().getOption(3);
+        if (option == null) {
+            System.err.println("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
+            player.getPackets().sendMessage("This has not yet been added, please let somebody know!");
+            return;
+        }
+        FishingSpots spot = FishingSpots.forId(npc.getId() | (2 << 24));
+        if (spot != null) {
+            player.getActionManager().setAction(new Fishing(spot, npc));
+            return;
+        }
+        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
+        PickPocketableNPC pocket = PickPocketableNPC.get(npc.getId());
+        if (pocket != null) {
+            player.getActionManager().setAction(new PickPocketAction(npc, pocket));
+            return;
+        }
+        if (npc instanceof Familiar) {
+            if (player.getFamiliar() != npc) {
+                player.getPackets().sendMessage("That isn't your familiar.");
+                return;
+            }
+            if (npc.getDefinitions().hasOption("store")) {
+                player.getFamiliar().store();
+            } else if (npc.getDefinitions().hasOption("cure")) {
+                if (!player.getPoisonManager().isPoisoned()) {
+                    player.getPackets().sendMessage("Your aren't poisoned or diseased.");
+                    return;
+                } else {
+                    player.getFamiliar().drainSpecial(2);
+                    player.getAttributes().addPoisonImmune(120);
+                }
+            }
+            return;
+        }
+        if (!player.getControllerManager().canEntityClick(npc, SECOND)) {
+            return;
+        }
+        if (PluginRepository.handleNPC(player, npc, option)) {
+            return;
+        }
+        if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker") || npc.getId() == 13455) {
+            player.getBank().openBank();
+        } else {
+            player.getPackets().sendMessage("Nothing interesting happens.");
+            if (GameFlags.debugMode) {
+                System.out.println("No plugin registered for option " + option + " on npc " + npc);
+            }
+        }
+    }
+
+    /**
+     * Performs the necessary actions when the player arrives at the npc after a third option packet
+     *
+     * @param player The player
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
+    private void handleThirdOption(Player player) {
+        String option = npc.getDefinitions().getOption(4);
+        if (option == null) {
+            System.err.println("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
+            player.getPackets().sendMessage("This has not yet been added, please let somebody know!");
+            return;
+        }
+        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
+        if (!player.getControllerManager().canEntityClick(npc, THIRD)) {
+        } else if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
+            ExchangeManager.INSTANCE.openCollectionBox(player);
+        } else if (PluginRepository.handleNPC(player, npc, option)) {
+        } else {
+            if (GameFlags.debugMode) {
+                System.out.println("No plugin registered for option [option" + option + ", idx=3] on npc " + npc);
+            }
+            player.getPackets().sendMessage("Nothing interesting happens.");
+        }
+    }
+
+    /**
+     * Performs the necessary actions when the player arrives at the npc after a fourth option packet
+     *
+     * @param player The player
+     */
+    private void handleFourthOption(Player player) {
+        String option = npc.getDefinitions().getOption(5);
+        if (option == null) {
+            System.err.println("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
+            player.getPackets().sendMessage("This has not yet been added, please let somebody know!");
+            return;
+        }
+        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
+        if (!player.getControllerManager().canEntityClick(npc, FOURTH)) {
+            return;
+        }
+        if (PluginRepository.handleNPC(player, npc, option)) {
+            return;
+        }
+        player.getPackets().sendMessage("Nothing interesting happens.");
+        if (GameFlags.debugMode) {
+            System.out.println("No plugin registered for option " + option + " on npc " + npc);
+        }
+    }
+
+}

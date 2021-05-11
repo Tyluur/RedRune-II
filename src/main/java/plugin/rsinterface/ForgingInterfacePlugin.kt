@@ -1,8 +1,8 @@
 package plugin.rsinterface
 
-import org.redrune.game.content.entity.actor.player.skills.smithing.Smithing.ForgingInterface
-import org.redrune.game.content.plugin.type.InterfacePlugin
-import org.redrune.game.entity.actor.player.Player
+import game.content.entity.actor.player.skills.smithing.Smithing.ForgingInterface
+import game.content.plugin.type.InterfacePlugin
+import game.entity.actor.player.Player
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

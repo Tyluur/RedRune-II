@@ -117,7 +117,7 @@
 }
 
 7/19/17 {
-	+   Converted networking to use netty 4 library
+	+   Converted network to use netty 4 library
 		-   This came with addition of RSA & ISAAC encryption/decryption
 	+   Changed client src to a better 666 src
 	+  Added 'lobby server' to be the main connection server

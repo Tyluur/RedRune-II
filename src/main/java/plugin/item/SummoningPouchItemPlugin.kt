@@ -1,9 +1,9 @@
 package plugin.item
 
-import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning
-import org.redrune.game.content.plugin.type.ItemPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import game.content.entity.actor.player.skills.summoning.Summoning
+import game.content.plugin.type.ItemPlugin
+import game.entity.actor.player.Player
+import game.entity.item.Item
 import java.util.*
 
 /**

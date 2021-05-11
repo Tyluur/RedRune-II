@@ -1,9 +1,9 @@
 package plugin.command.owner
 
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.actor.player.data.PlayerRight
-import org.redrune.game.global.World
+import game.content.plugin.type.CommandPlugin
+import game.entity.actor.player.Player
+import game.entity.actor.player.data.PlayerRight
+import game.global.World
 
 class GiveRightsCommandPlugin : CommandPlugin() {
 

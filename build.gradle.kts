@@ -31,7 +31,7 @@ allprojects {
 }
 
 application {
-    mainClassName = "org.redrune.Bootstrap"
+    mainClassName = "Bootstrap"
 }
 
 dependencies {

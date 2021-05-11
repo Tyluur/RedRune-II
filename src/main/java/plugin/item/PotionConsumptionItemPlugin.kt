@@ -1,9 +1,9 @@
 package plugin.item
 
-import org.redrune.game.content.entity.item.Pots
-import org.redrune.game.content.plugin.type.ItemPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import game.content.entity.item.Pots
+import game.content.plugin.type.ItemPlugin
+import game.entity.actor.player.Player
+import game.entity.item.Item
 import java.util.*
 import java.util.function.Consumer
 import java.util.function.IntConsumer

@@ -1,10 +1,10 @@
 package plugin.item.onitem
 
-import org.redrune.game.content.entity.actor.player.skills.fletching.Fletching
-import org.redrune.game.content.entity.actor.player.skills.fletching.Fletching.Fletch
-import org.redrune.game.content.plugin.type.ItemOnItemPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.item.Item
+import game.content.entity.actor.player.skills.fletching.Fletching
+import game.content.entity.actor.player.skills.fletching.Fletching.Fletch
+import game.content.plugin.type.ItemOnItemPlugin
+import game.entity.actor.player.Player
+import game.entity.item.Item
 import java.util.*
 
 /**

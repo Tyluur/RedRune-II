@@ -1,14 +1,14 @@
 package plugin.`object`
 
-import org.redrune.engine.tick.task.WorldTask
-import org.redrune.engine.tick.task.WorldTasksManager
-import org.redrune.game.content.plugin.type.ObjectPlugin
-import org.redrune.game.entity.`object`.WorldObject
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.mask.ForceMovement
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.WorldTile
-import org.redrune.utility.game.ClickOption
+import engine.tick.task.WorldTask
+import engine.tick.task.WorldTasksManager
+import game.content.plugin.type.ObjectPlugin
+import game.entity.`object`.WorldObject
+import game.entity.actor.mask.Animation
+import game.entity.actor.mask.ForceMovement
+import game.entity.actor.player.Player
+import game.global.WorldTile
+import utility.game.ClickOption
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

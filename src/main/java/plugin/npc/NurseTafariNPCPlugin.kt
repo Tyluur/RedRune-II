@@ -1,12 +1,12 @@
 package plugin.npc
 
-import org.redrune.game.content.entity.actor.player.dialogue.impl.SimpleNPCMessage
-import org.redrune.game.content.plugin.type.NPCPlugin
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.mask.ForceTalk
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.npc.NPC
-import org.redrune.game.entity.actor.player.Player
+import game.content.entity.actor.player.dialogue.impl.SimpleNPCMessage
+import game.content.plugin.type.NPCPlugin
+import game.entity.actor.mask.Animation
+import game.entity.actor.mask.ForceTalk
+import game.entity.actor.mask.Graphics
+import game.entity.actor.npc.NPC
+import game.entity.actor.player.Player
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

@@ -1,12 +1,12 @@
 package plugin.interaction.combat.special.melee
 
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
-import org.redrune.game.content.plugin.combat.SpecialAttackPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.mask.Animation
-import org.redrune.game.entity.actor.mask.Graphics
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.functions.Misc
+import game.content.entity.actor.combat.player.AbstractCombatStyle
+import game.content.plugin.combat.SpecialAttackPlugin
+import game.entity.actor.Actor
+import game.entity.actor.mask.Animation
+import game.entity.actor.mask.Graphics
+import game.entity.actor.player.Player
+import utility.functions.Misc
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>

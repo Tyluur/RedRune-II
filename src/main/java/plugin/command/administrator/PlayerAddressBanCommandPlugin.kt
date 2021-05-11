@@ -1,10 +1,10 @@
 package plugin.command.administrator
 
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.global.punishment.PunishmentHandler
-import org.redrune.game.global.punishment.PunishmentType
-import org.redrune.utility.game.InputEvent
+import game.content.plugin.type.CommandPlugin
+import game.entity.actor.player.Player
+import game.global.punishment.PunishmentHandler
+import game.global.punishment.PunishmentType
+import utility.game.InputEvent
 import plugin.command.CommandManifest
 
 /**

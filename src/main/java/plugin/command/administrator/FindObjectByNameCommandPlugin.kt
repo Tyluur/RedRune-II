@@ -1,12 +1,12 @@
 package plugin.command.administrator
 
 import org.apache.commons.cli.*
-import org.redrune.cache.loaders.ObjectDefinitions
-import org.redrune.game.GameFlags
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.functions.DebugFunctions
-import org.redrune.utility.functions.Misc
+import cache.codec.loaders.ObjectDefinitions
+import game.GameFlags
+import game.content.plugin.type.CommandPlugin
+import game.entity.actor.player.Player
+import utility.functions.DebugFunctions
+import utility.functions.Misc
 import plugin.command.CommandManifest
 import java.util.*
 import java.util.function.Consumer

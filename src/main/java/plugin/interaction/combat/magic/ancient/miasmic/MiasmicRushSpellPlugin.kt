@@ -1,14 +1,14 @@
 package plugin.interaction.combat.magic.ancient.miasmic
 
-import org.redrune.engine.SystemManager
-import org.redrune.engine.tick.schedule.ScheduledTask
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.utility.constants.MagicConstants.MagicBook
-import org.redrune.utility.constants.key.AttributeKey
+import engine.SystemManager
+import engine.tick.schedule.ScheduledTask
+import game.content.entity.actor.combat.player.style.MagicCombatStyle
+import game.content.plugin.combat.spell.type.CombatSpellPlugin
+import game.entity.actor.Actor
+import game.entity.actor.player.Player
+import game.entity.projectile.ProjectileManager
+import utility.constants.MagicConstants.MagicBook
+import utility.constants.key.AttributeKey
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

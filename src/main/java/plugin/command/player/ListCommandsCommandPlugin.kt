@@ -1,9 +1,9 @@
 package plugin.command.player
 
-import org.redrune.game.content.plugin.PluginRepository
-import org.redrune.game.content.plugin.type.CommandPlugin
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.constants.InterfaceConstants
+import game.content.plugin.PluginRepository
+import game.content.plugin.type.CommandPlugin
+import game.entity.actor.player.Player
+import utility.constants.InterfaceConstants
 import plugin.command.CommandManifest
 import java.util.*
 

@@ -1,13 +1,13 @@
 package plugin.interaction.combat.magic.ancient.shadow
 
-import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
-import org.redrune.game.content.entity.actor.combat.player.style.MagicCombatStyle
-import org.redrune.game.content.plugin.combat.spell.type.CombatSpellPlugin
-import org.redrune.game.entity.actor.Actor
-import org.redrune.game.entity.actor.player.Player
-import org.redrune.game.entity.projectile.ProjectileManager
-import org.redrune.utility.constants.MagicConstants.MagicBook
-import org.redrune.utility.constants.SkillConstants
+import game.content.entity.actor.combat.CombatSwingDetail
+import game.content.entity.actor.combat.player.style.MagicCombatStyle
+import game.content.plugin.combat.spell.type.CombatSpellPlugin
+import game.entity.actor.Actor
+import game.entity.actor.player.Player
+import game.entity.projectile.ProjectileManager
+import utility.constants.MagicConstants.MagicBook
+import utility.constants.SkillConstants
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

@@ -1,0 +1,41 @@
+package game.content.plugin.type;
+
+import game.content.plugin.Plugin;
+import game.content.plugin.PluginRepository;
+import game.entity.actor.player.Player;
+
+/**
+ * @author Tyluur <itstyluur@icloud.com>
+ * @since 8/30/2017
+ */
+public interface InterfacePlugin extends Plugin {
+	
+	/**
+	 * Handles the interface interaction
+	 *
+	 * @param player
+	 * 		The player clicking the interface
+	 * @param interfaceId
+	 * 		The id of the interface
+	 * @param componentId
+	 * 		The component id of the interface
+	 * @param itemId
+	 * 		The item id on the interface, -1 if none.
+	 * @param slotId
+	 * 		The slot id on the interface, -1 if none.
+	 * @param packetId
+	 * 		The packet id of the click, different ids are used for different options
+	 * @return {@code True} if it was handled successfully
+	 */
+	boolean handle(Player player, int interfaceId, int componentId, int itemId, int slotId, int packetId);
+	
+	/**
+	 * Handles the registration of an interface plugin
+	 *
+	 * @param interfaceIds
+	 * 		The id of the interfaces that will be registered
+	 */
+	default void registerInterfacePlugin(int... interfaceIds) {
+		PluginRepository.INSTANCE.register(this, interfaceIds);
+	}
+}
