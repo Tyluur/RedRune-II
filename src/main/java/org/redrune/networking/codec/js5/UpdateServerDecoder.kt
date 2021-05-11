@@ -33,12 +33,13 @@ class UpdateServerDecoder : ByteToMessageDecoder() {
      * Serves the request
      *
      * @param ctx      The channel context
-     * @param in       The buffer
+     * @param `in`       The buffer
      * @param priority The priority of the request
      */
-    private fun serveRequest(ctx: ChannelHandlerContext, `in`: ByteBuf, priority: Int) {
-        val indexId: Int = (`in`.readByte() and 0xFF.toByte()).toInt()
-        val archiveId: Int = (`in`.readShort() and 0xFFFF.toShort()).toInt()
+    private fun serveRequest(ctx: ChannelHandlerContext, buf: ByteBuf, priority: Int) {
+        val indexId = (buf.readUnsignedByte() and 0xFF).toInt()
+        val archiveId = (buf.readUnsignedShort() and 0xFFFF).toInt()
+
         if (indexId != 255) {
             if (Cache.STORE.indexes.size <= indexId || Cache.STORE.indexes[indexId] == null || !Cache.STORE.indexes[indexId].archiveExists(
                     archiveId

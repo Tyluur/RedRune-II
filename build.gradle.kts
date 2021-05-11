@@ -38,7 +38,7 @@ dependencies {
     // Java
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation(kotlin("gradle-plugin", version = "1.4.30"))
+    implementation(kotlin("gradle-plugin", version = "1.5.0"))
 
     // Kotlin
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
