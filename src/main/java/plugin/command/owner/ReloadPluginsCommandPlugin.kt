@@ -13,7 +13,7 @@ import plugin.command.CommandManifest
 class ReloadPluginsCommandPlugin : CommandPlugin() {
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         PluginRepository.reload()
-        player.packets.sendMessage("All plugins have been reloaded.")
+        sendResponse(player, "All plugins have been reloaded.", clientCommand)
     }
 
     override fun identifiers(): Array<String> {

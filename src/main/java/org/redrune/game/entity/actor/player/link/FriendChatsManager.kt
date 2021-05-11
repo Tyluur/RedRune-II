@@ -257,7 +257,7 @@ class FriendChatsManager private constructor(player: Player) {
                 if (player.currentFriendChat != null) {
                     return
                 }
-                player.packets.sendMessage("Attempting to join channel...")
+                player.packets.sendMessage("Attempting to join channel...", true)
                 val formatedName = Misc.formatPlayerNameForProtocol(ownerName)
                 var chat = cachedFriendChats!![formatedName]
                 if (chat == null) {
@@ -267,12 +267,12 @@ class FriendChatsManager private constructor(player: Player) {
                     }
                     if (owner == null) {
                         if (!playerExists(formatedName)) {
-                            player.packets.sendMessage("The channel you tried to join does not exist.")
+                            player.packets.sendMessage("The channel you tried to join does not exist.", true)
                             return
                         }
                         owner = fromFile(formatedName)
                         if (owner == null) {
-                            player.packets.sendMessage("The channel you tried to join does not exist.")
+                            player.packets.sendMessage("The channel you tried to join does not exist.", true)
                             return
                         }
                         owner.username = formatedName
