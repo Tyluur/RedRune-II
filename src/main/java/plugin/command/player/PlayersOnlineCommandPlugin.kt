@@ -5,7 +5,6 @@ import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
 import org.redrune.utility.constants.InterfaceConstants
 import plugin.command.CommandManifest
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>
@@ -17,8 +16,7 @@ class PlayersOnlineCommandPlugin : CommandPlugin() {
         val messages: MutableList<String> = ArrayList()
         World.playerStream()
             .forEach { p: Player -> messages.add("" + p.displayName + " (lvl. " + p.skills.combatLevel + ")") }
-        sendResponse(player, "There are currently " + World.getPlayers().size + " players online.", console)
-
+        player.packets.sendMessage("There are currently " + World.getPlayers().size + " players online.")
         InterfaceConstants.sendQuestScroll(player, "Dusk", *messages.toTypedArray())
     }
 

@@ -1,69 +1,49 @@
-package org.redrune.game.content.entity.actor.player.event.npc;
+package org.redrune.game.content.entity.actor.player.event.npc
 
-import org.redrune.game.GameFlags;
-import org.redrune.game.content.entity.actor.player.dialogue.impl.Banker;
-import org.redrune.game.content.entity.actor.player.event.Event;
-import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager;
-import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing;
-import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots;
-import org.redrune.game.content.entity.actor.player.skills.thieving.PickPocketAction;
-import org.redrune.game.content.entity.actor.player.skills.thieving.PickPocketableNPC;
-import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.actor.player.data.RouteEvent;
-import org.redrune.utility.game.ClickOption;
-
-import static org.redrune.utility.game.ClickOption.*;
+import org.redrune.game.GameFlags
+import org.redrune.game.content.entity.actor.player.dialogue.impl.Banker
+import org.redrune.game.content.entity.actor.player.event.Event
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.openCollectionBox
+import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing
+import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots
+import org.redrune.game.content.entity.actor.player.skills.thieving.PickPocketAction
+import org.redrune.game.content.entity.actor.player.skills.thieving.PickPocketableNPC
+import org.redrune.game.content.plugin.PluginRepository.handleNPC
+import org.redrune.game.entity.actor.npc.NPC
+import org.redrune.game.entity.actor.npc.impl.familiar.Familiar
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.actor.player.data.RouteEvent
+import org.redrune.utility.game.ClickOption
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 2019-01-25
  */
-@SuppressWarnings("DuplicatedCode")
-public class NPCInteractionEvent extends Event {
-
+class NPCInteractionEvent(
     /**
      * The npc to interact with
      */
-    private final NPC npc;
-
+    private val npc: NPC,
     /**
      * The clickOption the player used on the npc
      */
-    private final ClickOption clickOption;
-
-    public NPCInteractionEvent(NPC npc, ClickOption clickOption) {
-        this.npc = npc;
-        this.clickOption = clickOption;
-    }
-
-    @Override
-    public void run(Player player) {
-        player.setNextFaceActor(npc);
-        player.setRouteEvent(new RouteEvent(npc, () -> {
-            npc.resetWalkSteps();
-            switch (clickOption) {
-                case FIRST:
-                    handleFirstOption(player);
-                    break;
-                case SECOND:
-                    handleSecondOption(player);
-                    break;
-                case THIRD:
-                    handleThirdOption(player);
-                    break;
-                case FOURTH:
-                    handleFourthOption(player);
-                    break;
+    private val clickOption: ClickOption
+) : Event() {
+    override fun run(player: Player) {
+        player.setNextFaceActor(npc)
+        player.setRouteEvent(RouteEvent(npc, {
+            npc.resetWalkSteps()
+            when (clickOption) {
+                ClickOption.FIRST -> handleFirstOption(player)
+                ClickOption.SECOND -> handleSecondOption(player)
+                ClickOption.THIRD -> handleThirdOption(player)
+                ClickOption.FOURTH -> handleFourthOption(player)
             }
-        }, true));
+        }, true))
     }
 
-    @Override
-    public EventPolicy[] policies() {
-        return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK);
+    override fun policies(): Array<EventPolicy> {
+        return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK)
     }
 
     /**
@@ -71,26 +51,26 @@ public class NPCInteractionEvent extends Event {
      *
      * @param player The player
      */
-    private void handleFirstOption(Player player) {
-        String option = npc.getDefinitions().getOption(1);
-        FishingSpots spot = FishingSpots.forId(npc.getId() | 1 << 24);
+    private fun handleFirstOption(player: Player) {
+        val option = npc.definitions.getOption(1)
+        val spot = FishingSpots.forId(npc.id or 1 shl 24)
         if (spot != null) {
-            player.getActionManager().setAction(new Fishing(spot, npc));
-            return;
+            player.actionManager.action = Fishing(spot, npc)
+            return
         }
-        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
-        if (!player.getControllerManager().canEntityClick(npc, FIRST)) {
-            return;
+        player.interactionManager.startInteraction(npc) // if its a spot, they dont interact with players
+        if (!player.controllerManager.canEntityClick(npc, ClickOption.FIRST)) {
+            return
         }
-        if (PluginRepository.handleNPC(player, npc, option)) {
-            return;
+        if (handleNPC(player, npc, option)) {
+            return
         }
-        if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
-            player.getDialogueManager().startDialogue(Banker.class, npc.getId());
+        if (npc.definitions.name.contains("Banker") || npc.definitions.name.contains("banker")) {
+            player.dialogueManager.startDialogue(Banker::class.java, npc.id)
         } else {
-            player.getPackets().sendMessage("Nothing interesting happens.");
+            player.packets.sendMessage("Nothing interesting happens.")
             if (GameFlags.debugMode) {
-                System.out.println("No plugin registered for option " + option + " on npc " + npc);
+                println("No plugin registered for option $option on npc $npc")
             }
         }
     }
@@ -100,54 +80,54 @@ public class NPCInteractionEvent extends Event {
      *
      * @param player The player
      */
-    private void handleSecondOption(Player player) {
-        String option = npc.getDefinitions().getOption(3);
+    private fun handleSecondOption(player: Player) {
+        val option = npc.definitions.getOption(3)
         if (option == null) {
-            System.err.println("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
-            player.getPackets().sendMessage("This has not yet been added, please let somebody know!");
-            return;
+            System.err.println("Unable to perform event due to undefined option. [npc=$npc, clickOption=$clickOption]")
+            player.packets.sendMessage("This has not yet been added, please let somebody know!")
+            return
         }
-        FishingSpots spot = FishingSpots.forId(npc.getId() | (2 << 24));
+        val spot = FishingSpots.forId(npc.id or (2 shl 24))
         if (spot != null) {
-            player.getActionManager().setAction(new Fishing(spot, npc));
-            return;
+            player.actionManager.action = Fishing(spot, npc)
+            return
         }
-        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
-        PickPocketableNPC pocket = PickPocketableNPC.get(npc.getId());
+        player.interactionManager.startInteraction(npc) // if its a spot, they dont interact with players
+        val pocket = PickPocketableNPC.get(npc.id)
         if (pocket != null) {
-            player.getActionManager().setAction(new PickPocketAction(npc, pocket));
-            return;
+            player.actionManager.action = PickPocketAction(npc, pocket)
+            return
         }
-        if (npc instanceof Familiar) {
-            if (player.getFamiliar() != npc) {
-                player.getPackets().sendMessage("That isn't your familiar.");
-                return;
+        if (npc is Familiar) {
+            if (player.familiar !== npc) {
+                player.packets.sendMessage("That isn't your familiar.")
+                return
             }
             if (npc.getDefinitions().hasOption("store")) {
-                player.getFamiliar().store();
+                player.familiar.store()
             } else if (npc.getDefinitions().hasOption("cure")) {
-                if (!player.getPoisonManager().isPoisoned()) {
-                    player.getPackets().sendMessage("Your aren't poisoned or diseased.");
-                    return;
+                if (!player.poisonManager.isPoisoned) {
+                    player.packets.sendMessage("Your aren't poisoned or diseased.")
+                    return
                 } else {
-                    player.getFamiliar().drainSpecial(2);
-                    player.getAttributes().addPoisonImmune(120);
+                    player.familiar.drainSpecial(2)
+                    player.attributes.addPoisonImmune(120)
                 }
             }
-            return;
+            return
         }
-        if (!player.getControllerManager().canEntityClick(npc, SECOND)) {
-            return;
+        if (!player.controllerManager.canEntityClick(npc, ClickOption.SECOND)) {
+            return
         }
-        if (PluginRepository.handleNPC(player, npc, option)) {
-            return;
+        if (handleNPC(player, npc, option)) {
+            return
         }
-        if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker") || npc.getId() == 13455) {
-            player.getBank().openBank();
+        if (npc.definitions.name.contains("Banker") || npc.definitions.name.contains("banker") || npc.id == 13455) {
+            player.bank.openBank()
         } else {
-            player.getPackets().sendMessage("Nothing interesting happens.");
+            player.packets.sendMessage("Nothing interesting happens.")
             if (GameFlags.debugMode) {
-                System.out.println("No plugin registered for option " + option + " on npc " + npc);
+                println("No plugin registered for option $option on npc $npc")
             }
         }
     }
@@ -157,24 +137,23 @@ public class NPCInteractionEvent extends Event {
      *
      * @param player The player
      */
-    @SuppressWarnings("StatementWithEmptyBody")
-    private void handleThirdOption(Player player) {
-        String option = npc.getDefinitions().getOption(4);
+    private fun handleThirdOption(player: Player) {
+        val option = npc.definitions.getOption(4)
         if (option == null) {
-            System.err.println("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
-            player.getPackets().sendMessage("This has not yet been added, please let somebody know!");
-            return;
+            System.err.println("Unable to perform event due to undefined option. [npc=$npc, clickOption=$clickOption]")
+            player.packets.sendMessage("This has not yet been added, please let somebody know!")
+            return
         }
-        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
-        if (!player.getControllerManager().canEntityClick(npc, THIRD)) {
-        } else if (npc.getDefinitions().getName().contains("Banker") || npc.getDefinitions().getName().contains("banker")) {
-            ExchangeManager.INSTANCE.openCollectionBox(player);
-        } else if (PluginRepository.handleNPC(player, npc, option)) {
+        player.interactionManager.startInteraction(npc) // if its a spot, they dont interact with players
+        if (!player.controllerManager.canEntityClick(npc, ClickOption.THIRD)) {
+        } else if (npc.definitions.name.contains("Banker") || npc.definitions.name.contains("banker")) {
+            openCollectionBox(player)
+        } else if (handleNPC(player, npc, option)) {
         } else {
             if (GameFlags.debugMode) {
-                System.out.println("No plugin registered for option [option" + option + ", idx=3] on npc " + npc);
+                println("No plugin registered for option [option$option, idx=3] on npc $npc")
             }
-            player.getPackets().sendMessage("Nothing interesting happens.");
+            player.packets.sendMessage("Nothing interesting happens.")
         }
     }
 
@@ -183,24 +162,23 @@ public class NPCInteractionEvent extends Event {
      *
      * @param player The player
      */
-    private void handleFourthOption(Player player) {
-        String option = npc.getDefinitions().getOption(5);
+    private fun handleFourthOption(player: Player) {
+        val option = npc.definitions.getOption(5)
         if (option == null) {
-            System.err.println("Unable to perform event due to undefined option. [npc=" + npc + ", clickOption=" + clickOption + "]");
-            player.getPackets().sendMessage("This has not yet been added, please let somebody know!");
-            return;
+            System.err.println("Unable to perform event due to undefined option. [npc=$npc, clickOption=$clickOption]")
+            player.packets.sendMessage("This has not yet been added, please let somebody know!")
+            return
         }
-        player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
-        if (!player.getControllerManager().canEntityClick(npc, FOURTH)) {
-            return;
+        player.interactionManager.startInteraction(npc) // if its a spot, they dont interact with players
+        if (!player.controllerManager.canEntityClick(npc, ClickOption.FOURTH)) {
+            return
         }
-        if (PluginRepository.handleNPC(player, npc, option)) {
-            return;
+        if (handleNPC(player, npc, option)) {
+            return
         }
-        player.getPackets().sendMessage("Nothing interesting happens.");
+        player.packets.sendMessage("Nothing interesting happens.")
         if (GameFlags.debugMode) {
-            System.out.println("No plugin registered for option " + option + " on npc " + npc);
+            println("No plugin registered for option $option on npc $npc")
         }
     }
-
 }

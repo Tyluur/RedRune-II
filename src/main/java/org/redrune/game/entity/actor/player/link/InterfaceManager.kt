@@ -1,7 +1,6 @@
 package org.redrune.game.entity.actor.player.link
 
 import org.redrune.cache.loaders.IComponentDefinitions
-import org.redrune.game.content.entity.actor.player.skills.PresetHandler
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.actor.player.data.PlayerInventory
 import org.redrune.utility.constants.ColorConstants
@@ -253,20 +252,19 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendTaskSystem() {
+        val interfaceId = 930
+        sendTab(if (resizableScreen) 91 else 205, interfaceId)
 
+        player.packets.sendIComponentText(interfaceId, 10, GameConstants.SERVER_NAME)
+        player.packets.sendHideIComponent(interfaceId, 12, true) //scroll bar
+        for (i in 17..24) {
+            player.packets.sendHideIComponent(interfaceId, i, true)
+        }
     }
 
     fun sendQuestTab() {
         val interfaceId = 34
-        sendTab(if (resizableScreen) 91 else 205, interfaceId)
-
-        PresetHandler.sendLoginConfiguration(player)
-        PresetHandler.unlock(player)
-        player.packets.sendHideIComponent(930, 12, true) //scroll bar
-        for (i in 17..24) {
-            player.packets.sendHideIComponent(930, i, true)
-        }
-        PresetHandler.refresh(player)
+        sendTab(if (resizableScreen) 93 else 207, interfaceId)
     }
 
     fun sendFriends() {

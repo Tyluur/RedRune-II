@@ -1,4 +1,4 @@
-package plugin.command.administrator
+package plugin.command.player
 
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
@@ -6,7 +6,7 @@ import org.redrune.utility.constants.SkillConstants
 import plugin.command.CommandManifest
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Sets your stats to max")

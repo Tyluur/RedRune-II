@@ -35,7 +35,8 @@ class CopyCommandPlugin : CommandPlugin() {
             0,
             player.equipment.items.toArray().size
         )
-        player.inventory.refresh()
+
+        player.inventory.init()
         player.equipment.refreshAll()
         player.skills.passLevels(target)
 

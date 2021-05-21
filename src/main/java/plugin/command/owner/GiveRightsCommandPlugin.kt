@@ -15,6 +15,4 @@ class GiveRightsCommandPlugin : CommandPlugin() {
     }
 
     override fun identifiers(): Array<String> = arrayOf("giveright")
-
-
 }

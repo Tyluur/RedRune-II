@@ -513,7 +513,6 @@ object PluginRepository {
             command.handle(player, args, console, clientCommand)
         } catch (e: Throwable) {
             player.packets.sendMessage("There was an error processing that command, try again...")
-            e.printStackTrace()
         }
     }
 
