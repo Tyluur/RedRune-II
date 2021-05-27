@@ -11,7 +11,7 @@ import org.redrune.game.entity.actor.player.Player
 class DebugCommandPlugin : CommandPlugin() {
 
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        player.packets.sendPlayerUnderNPCPriority(true)
+        player.packets.sendConfig(1801, Integer.parseInt(args[1]))
         /* PresetHandler.refresh(player)
          player.packets.sendMessage(
              "test"

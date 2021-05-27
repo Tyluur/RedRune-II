@@ -8,6 +8,7 @@ import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
 import org.redrune.game.content.entity.actor.combat.function.Magic;
 import org.redrune.game.content.entity.actor.player.action.Action;
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager;
+import org.redrune.game.content.entity.actor.player.skills.agility.WildernessAgility;
 import org.redrune.game.content.entity.actor.player.skills.hunter.Hunter.HunterNPC;
 import org.redrune.game.content.entity.actor.player.skills.mining.EssenceMining;
 import org.redrune.game.content.entity.actor.player.skills.mining.EssenceMining.EssenceDefinitions;
@@ -286,6 +287,30 @@ public class ObjectHandler {
             } else if (object.getId() == 32015 && object.getX() == 3069 && object.getY() == 10256) { // kbd stairs
                 player.useStairs(828, new WorldTile(3017, 3848, 0), 1, 2);
                 player.getControllerManager().startController("Wilderness");
+            } else if (object.getId() == 2297) {
+                WildernessAgility.walkAcrossLogBalance(player, object);
+            } else if (object.getId() == 37704) {
+                WildernessAgility.jumpSteppingStones(player, object);
+            } else if (object.getId() == 2288) {
+                WildernessAgility.enterWildernessPipe(player, object.getX(), object.getY());
+            } else if (object.getId() == 2328) {
+                WildernessAgility.climbUpWall(player, object);
+            } else if (object.getId() == 2283) {
+                WildernessAgility.swingOnRopeSwing(player, object);
+            } else if (object.getId() == 2309) {
+                WildernessAgility.enterWildernessCourse(player);
+            } else if (object.getId() == 2307 || object.getId() == 2308) {
+                WildernessAgility.exitWildernessCourse(player);
+            } else if (object.getId() == 5959) {
+                Magic.pushLeverTeleport(player, new WorldTile(2539, 4712, 0));
+            } else if (object.getId() == 5960) {
+                Magic.pushLeverTeleport(player, new WorldTile(3090, 3956, 0));
+            } else if (object.getId() == 1815) {
+                Magic.pushLeverTeleport(player, new WorldTile(2561, 3311, 0));
+            } else if (object.getId() == 9706) {
+                Magic.pushLeverTeleport(player, new WorldTile(3105, 3951, 0));
+            } else if (object.getId() == 9707) {
+                Magic.pushLeverTeleport(player, new WorldTile(3105, 3956, 0));
             } else if (object.getId() == 1765 && object.getX() == 3017 && object.getY() == 3849) { // kbd out stairs
                 player.stopAll();
                 player.setNextWorldTile(new WorldTile(3069, 10255, 0));

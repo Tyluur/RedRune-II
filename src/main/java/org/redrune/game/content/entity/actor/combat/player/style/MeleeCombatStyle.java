@@ -16,7 +16,6 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.functions.Misc;
 
 import java.util.Optional;
 
@@ -124,7 +123,11 @@ public class MeleeCombatStyle extends AbstractCombatStyle {
     public int getRandomDamage(Actor source, Actor target, double multiplier) {
         int weaponId = source.isPlayer() ? source.toPlayer().getEquipment().getWeaponId() : 0;
         int combatStyle = source.isPlayer() ? source.toPlayer().getCombatDefinitions().getAttackStyle() : source.toNPC().getCombatDefinitions().getAttackStyle();
-        return CombatRoll.randomizeHit(calculator.getMaximumHit(source, multiplier), calculator.getAttackBonus(source), calculator.getDefenceBonus(target, weaponId, combatStyle));
+        double maximumHit = calculator.getMaximumHit(source, multiplier) * 1.35;
+        double attackBonus = calculator.getAttackBonus(source) * 2.5;
+        double defenceBonus = calculator.getDefenceBonus(target, weaponId, combatStyle);
+
+        return CombatRoll.randomizeHit(maximumHit, attackBonus, defenceBonus);
     }
 
     @Override

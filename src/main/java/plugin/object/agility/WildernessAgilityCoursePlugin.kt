@@ -12,8 +12,7 @@ import org.redrune.utility.game.ClickOption
  */
 class WildernessAgilityCoursePlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val id: Int = `object`.id
-        when (id) {
+        when (`object`.id) {
             2297 -> WildernessAgility.walkAcrossLogBalance(player, `object`)
             37704 -> WildernessAgility.jumpSteppingStones(player, `object`)
             2288 -> WildernessAgility.enterWildernessPipe(player, `object`.x, `object`.y)

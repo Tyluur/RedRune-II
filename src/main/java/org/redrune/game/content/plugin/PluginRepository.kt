@@ -208,8 +208,7 @@ object PluginRepository {
             NPC_PLUGINS[key] = pluginMap
         }
         if (plugin is ObjectPlugin) {
-            val pluginMap: MutableMap<String, ObjectPlugin>
-            pluginMap = if (OBJECT_PLUGINS.containsKey(key)) {
+            val pluginMap: MutableMap<String, ObjectPlugin> = if (OBJECT_PLUGINS.containsKey(key)) {
                 OBJECT_PLUGINS[key]!!
             } else {
                 HashMap()
@@ -218,6 +217,7 @@ object PluginRepository {
                 pluginMap[option] = plugin
             }
             OBJECT_PLUGINS[key] = pluginMap
+            println("object plugin [$key] = $plugin")
         }
         if (plugin is ItemPlugin) {
             val pluginMap: MutableMap<String, ItemPlugin>
@@ -380,7 +380,7 @@ object PluginRepository {
      * The option clicked
      */
     @JvmStatic
-    fun handleObject(player: Player?, `object`: WorldObject, option: String): Boolean {
+    fun handleObject(player: Player, `object`: WorldObject, option: String): Boolean {
         val pluginMap = OBJECT_PLUGINS[`object`.id]
             ?: return false
         val plugin = pluginMap[option] ?: return false
