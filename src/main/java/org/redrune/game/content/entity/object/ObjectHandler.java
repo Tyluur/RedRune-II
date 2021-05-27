@@ -19,6 +19,7 @@ import org.redrune.game.content.entity.actor.player.skills.summoning.Summoning;
 import org.redrune.game.content.entity.actor.player.skills.thieving.Thieving;
 import org.redrune.game.content.entity.actor.player.skills.woodcutting.Woodcutting;
 import org.redrune.game.content.entity.actor.player.skills.woodcutting.Woodcutting.TreeDefinitions;
+import org.redrune.game.content.entity.actor.player.wilderness.WildernessObelisk;
 import org.redrune.game.content.plugin.PluginRepository;
 import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.ForceMovement;
@@ -311,6 +312,8 @@ public class ObjectHandler {
                 Magic.pushLeverTeleport(player, new WorldTile(3105, 3951, 0));
             } else if (object.getId() == 9707) {
                 Magic.pushLeverTeleport(player, new WorldTile(3105, 3956, 0));
+            } else if (object.getId() >= 14826 && object.getId() <= 14831) {
+                WildernessObelisk.activateObelisk(object.getId(), player);
             } else if (object.getId() == 1765 && object.getX() == 3017 && object.getY() == 3849) { // kbd out stairs
                 player.stopAll();
                 player.setNextWorldTile(new WorldTile(3069, 10255, 0));

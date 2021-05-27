@@ -245,20 +245,42 @@ public final class World {
     public static boolean isMultiArea(WorldTile tile) {
         int destX = tile.getX();
         int destY = tile.getY();
-        return (destX >= 3200 && destX <= 3390 && destY >= 3840 && destY <= 3967) // wild
-                || (destX >= 2835 && destX <= 2880 && destY >= 5905 && destY <= 5950) || (destX >= 2992 && destX <= 3007 && destY >= 3912 && destY <= 3967) || (destX >= 2946 && destX <= 2959 && destY >= 3816 && destY <= 3831) || (destX >= 3008 && destX <= 3199 && destY >= 3856 && destY <= 3903) || (destX >= 3008 && destX <= 3071 && destY >= 3600 && destY <= 3711) || (destX >= 3270 && destX <= 3346 && destY >= 3532 && destY <= 3625) || (destX >= 2965 && destX <= 3050 && destY >= 3904 && destY <= 3959) // wild
-                || (destX >= 2815 && destX <= 2966 && destY >= 5240 && destY <= 5375) || (destX >= 2840 && destX <= 2950 && destY >= 5190 && destY <= 5230) // godwars
+        return (destX >= 3462 && destX <= 3511 && destY >= 9481 && destY <= 9521 && tile.getPlane() == 0) // kalphite
+                // queen
+                // lair
+                || (destX >= 4540 && destX <= 4799 && destY >= 5052 && destY <= 5183 && tile.getPlane() == 0) // thzaar
+                // city
+                || tile.getRegionId() == 11051
+                || tile.getRegionId() == 16729 // glacors
+                || tile.getRegionId() == 11589 // dags
+                || tile.getRegionId() == 10894 // monkey skeles
+                || tile.getRegionId() == 11573 // sea troll queen
+                || tile.getRegionId() == 10554 || tile.getRegionId() == 10810 // rock crabs
+                || (destX >= 1721 && destX <= 1791 && destY >= 5123 && destY <= 5249) // mole
+                || (destX >= 3029 && destX <= 3374 && destY >= 3759 && destY <= 3903)// wild
+                || (destX >= 2250 && destX <= 2280 && destY >= 4670 && destY <= 4720) || (destX >= 3198 && destX <= 3380 && destY >= 3904 && destY <= 3970) || (destX >= 3191 && destX <= 3326 && destY >= 3510 && destY <= 3759) || (destX >= 2987 && destX <= 3006 && destY >= 3912 && destY <= 3937) || (destX >= 2245 && destX <= 2295 && destY >= 4675 && destY <= 4720) || (destX >= 2450 && destX <= 3520 && destY >= 9450 && destY <= 9550) || (destX >= 3006 && destX <= 3071 && destY >= 3602 && destY <= 3710) || (destX >= 3134 && destX <= 3192 && destY >= 3519 && destY <= 3646) || (destX >= 2815 && destX <= 2966 && destY >= 5240 && destY <= 5375)// wild
+                || (destX >= 2840 && destX <= 2950 && destY >= 5190 && destY <= 5230) // godwars
                 || (destX >= 3547 && destX <= 3555 && destY >= 9690 && destY <= 9699) // zaros
+                || (destX >= 1490 && destX <= 1515 && destY >= 4696 && destY <= 4714) // chaos dwarf battlefield
                 // godwars
                 || KingBlackDragon.atKBD(tile) // King Black Dragon lair
                 || TormentedDemon.atTD(tile) // Tormented demon's area
-                || (destX >= 2970 && destX <= 3000 && destY >= 4365 && destY <= 4400)// corp
-                || (destX >= 3136 && destX <= 3327 && destY >= 3520 && destY <= 3970 || (destX >= 2376 && 5127 >= destY && destX <= 2422 && 5168 <= destY)) || (destX >= 2374 && destY >= 5129 && destX <= 2424 && destY <= 5168) // pits
+//                || Bork.atBork(tile) // Bork's area
+                || tile.getRegionId() == 12590 || (destX >= 2970 && destX <= 3000 && destY >= 4365 && destY <= 4400)// corp
+                || (destX >= 3195 && destX <= 3327 && destY >= 3520 && destY <= 3970 || (destX >= 2376 && 5127 >= destY && destX <= 2422 && 5168 <= destY)) || (destX >= 2374 && destY >= 5129 && destX <= 2424 && destY <= 5168) // pits
                 || (destX >= 2622 && destY >= 5696 && destX <= 2573 && destY <= 5752) // torms
                 || (destX >= 2368 && destY >= 3072 && destX <= 2431 && destY <= 3135) // castlewars
-                || (destX >= 3086 && destY >= 5536 && destX <= 3315 && destY <= 5530) // Bork
-                || (tile.getX() >= 3526 && tile.getX() <= 3550 && tile.getY() >= 5185 && tile.getY() <= 5215) // out
-                || (destX >= 2365 && destY >= 9470 && destX <= 2436 && destY <= 9532); // castlewars
+                // out
+                || (destX >= 2365 && destY >= 9470 && destX <= 2436 && destY <= 9532) // castlewars
+                || (destX >= 2948 && destY >= 5537 && destX <= 3071 && destY <= 5631) // Risk
+                // ffa.
+                || (destX >= 2756 && destY >= 5537 && destX <= 2879 && destY <= 5631) // Safe
+                // ffa
+                || tile.getRegionId() == 1089
+
+                || tile.getRegionId() == 12341 || (tile.getX() >= 3011 && tile.getX() <= 3132 && tile.getY() >= 10052 && tile.getY() <= 10175 && (tile.getY() >= 10066 || tile.getX() >= 3094)) // fortihrny
+                // dungeon
+                ;
         // in
 
         // multi

@@ -153,12 +153,12 @@ public class Wilderness extends Controller {
 			player.getPackets().sendMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
-		if (player.getAttributes().getTeleBlockDelay() > Misc.currentTimeMillis()) {
+		if (player.isTeleblocked()) {
 			player.getPackets().sendMessage("A mysterious force prevents you from teleporting.");
 			return false;
 		}
 		return true;
-		
+
 	}
 	
 	@Override
