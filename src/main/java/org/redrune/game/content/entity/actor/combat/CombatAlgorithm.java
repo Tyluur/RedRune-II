@@ -1644,9 +1644,9 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
      * @param attempt The attempt number
      */
     public static void checkSpecialToggle(Player player, final int attempt) {
-        if (!player.getAttributes().getSwitchItemCache().isEmpty() && attempt <= 3) {
+        if (!player.getAttributes().getSwitchItemCache().isEmpty() && attempt <= 1) {
             player.processSwitches();
-            SystemManager.SLOW_EXECUTOR.schedule(() -> checkSpecialToggle(player, attempt + 1), 100, TimeUnit.MILLISECONDS);
+            SystemManager.SLOW_EXECUTOR.schedule(() -> checkSpecialToggle(player, attempt + 1), 10, TimeUnit.MILLISECONDS);
             return;
         }
         if (player.removeTemporaryAttribute("special_attack_toggled", false)) {

@@ -1,7 +1,6 @@
 package plugin.command.owner
 
 import com.github.michaelbull.logging.InlineLogger
-import org.redrune.game.content.entity.actor.player.skills.PresetHandler
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 
@@ -12,22 +11,23 @@ import org.redrune.game.entity.actor.player.Player
 class DebugCommandPlugin : CommandPlugin() {
 
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
-        PresetHandler.refresh(player)
-        player.packets.sendMessage(
-            "test"
-        )
-/*        val fromX = 422
-        val fromY = 408
+        player.packets.sendPlayerUnderNPCPriority(true)
+        /* PresetHandler.refresh(player)
+         player.packets.sendMessage(
+             "test"
+         )
+         val fromX = 422
+         val fromY = 408
 
-        val toX = 385
-        val toY = 437
+         val toX = 385
+         val toY = 437
 
-        val ratio = intParam(args, 1)
+         val ratio = intParam(args, 1)
 
-        RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio)
-        RegionBuilder.copyAllPlanesMap(400, 1160, toX, toY, ratio)
+         RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio)
+         RegionBuilder.copyAllPlanesMap(400, 1160, toX, toY, ratio)
 
-        player.packets.sendMapRegion(false)*/
+         player.packets.sendMapRegion(false)*/
     }
 
     override fun identifiers(): Array<String> {

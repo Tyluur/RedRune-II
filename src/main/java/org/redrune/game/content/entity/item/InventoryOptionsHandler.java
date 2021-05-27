@@ -20,7 +20,11 @@ public class InventoryOptionsHandler {
         if (!player.getControllerManager().handleItemOption1(player, slotId, itemId, item)) {
             return;
         }
-        if (PluginRepository.handleItem(player, item, slotId, item.getDefinitions().getInventoryOption(1))) {
+        String inventoryOption = item.getDefinitions().getInventoryOption(1);
+        if (inventoryOption == null) {
+            return;
+        }
+        if (PluginRepository.handleItem(player, item, slotId, inventoryOption)) {
             return;
         }
         player.getPackets().sendMessage("Nothing interesting happens.");

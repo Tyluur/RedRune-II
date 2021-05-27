@@ -1,7 +1,6 @@
 package org.redrune.networking.packet.incoming
 
 import com.github.michaelbull.logging.InlineLogger
-import org.redrune.game.GameFlags
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.networking.packet.Packet
 import org.redrune.utility.functions.Misc
@@ -56,9 +55,7 @@ object IncomingPacketRepository {
             }
             val context = reader.read(player, packet)
             if (context == null) {
-                if (GameFlags.debugMode) {
-                    logger.debug { "Unable to get packet context for incoming packet " + packet + " with [reader=" + reader.javaClass.simpleName + "]!" }
-                }
+                logger.error { "Unable to get packet context for incoming packet " + packet + " with [reader=" + reader.javaClass.simpleName + "]!" }
                 return
             }
             context.handle(player)

@@ -105,6 +105,7 @@ public abstract class Familiar extends NPC implements Serializable {
 			}
 			return;
 		}
+		owner.getPackets().sendPlayerUnderNPCPriority(true);
 		sentRequestMoveMessage = false;
 		setNextWorldTile(teleTile);
 	}
@@ -254,6 +255,7 @@ public abstract class Familiar extends NPC implements Serializable {
 	}
 	
 	public void dissmissFamiliar(boolean logged) {
+		owner.getPackets().sendPlayerUnderNPCPriority(false);
 		if (!logged) {
 			owner.setFamiliar(null);
 			switchOrb(false);

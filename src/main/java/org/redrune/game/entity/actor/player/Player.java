@@ -831,6 +831,24 @@ public class Player extends Actor {
         setNextFaceActor(null);
     }
 
+
+    // as walk done clientsided
+    public void stopAll(boolean stopWalk, boolean stopInterfaces, boolean actions) {
+        routeEvent = null;
+        if (stopInterfaces) {
+            closeInterfaces();
+        }
+        if (stopWalk) {
+            resetWalkSteps();
+        }
+        if (actions) {
+            actionManager.forceStop();
+        }
+        combatDefinitions.resetSpells(false);
+        getInteractionManager().cancelActorInteraction();
+        setNextFaceActor(null);
+    }
+
     public void closeInterfaces() {
         if (interfaceManager.containsScreenInter()) {
             interfaceManager.closeScreenInterface();
@@ -1230,7 +1248,7 @@ public class Player extends Actor {
 
         getAttributes().getSwitchItemCache().clear();
 
-        stopAll(false, true);
+        stopAll(false, true, false);
     }
 
     public PresetManager getPresetManager() {

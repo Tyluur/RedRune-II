@@ -34,7 +34,6 @@ class WorldChannelReader : SimpleChannelInboundHandler<Packet>() {
     }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, e: Throwable) {
-        println("ctx = [$ctx], e = [$e]")
         if (NetworkConstants.IGNORED_EXCEPTIONS.stream()
                 .noneMatch { `$it`: String? -> Objects.equal(`$it`, e.message) }
         ) {
