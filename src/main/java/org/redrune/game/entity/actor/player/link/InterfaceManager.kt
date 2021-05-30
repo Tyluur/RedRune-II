@@ -109,16 +109,15 @@ class InterfaceManager(private val player: Player) {
         sendTab(192, 752) // chatbox interface
         player.packets.sendInterface(true, 752, 9, 137)
 
-        player.equipment.refresh()
         player.packets.sendGlobalConfig(181, 0)
         player.packets.sendUnlockIComponentOptionSlots(271, 8, 0, 29, 0)
-
-        sendTab(if (resizableScreen) 248 else 264, 1153)
 
         // Blank Interface
         sendTab(17, 754)
 
+        // orbs
         sendTab(if (resizableScreen) 247 else 263, 1152)
+        sendTab(if (resizableScreen) 248 else 264, 1153)
 
         /* -- the start of all tabs */
         sendTab(204, 884)
