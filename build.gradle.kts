@@ -64,6 +64,7 @@ dependencies {
     implementation("com.google.guava:guava:29.0-jre")
     implementation("org.apache.commons:commons-lang3:3.10")
     implementation("commons-cli", "commons-cli", "1.4")
+    implementation("com.discord4j", "discord4j-core", "3.1.5")
 
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")

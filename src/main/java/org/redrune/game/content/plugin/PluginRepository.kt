@@ -217,7 +217,6 @@ object PluginRepository {
                 pluginMap[option] = plugin
             }
             OBJECT_PLUGINS[key] = pluginMap
-            println("object plugin [$key] = $plugin")
         }
         if (plugin is ItemPlugin) {
             val pluginMap: MutableMap<String, ItemPlugin>

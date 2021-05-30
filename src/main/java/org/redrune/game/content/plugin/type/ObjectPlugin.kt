@@ -25,7 +25,7 @@ interface ObjectPlugin : Plugin {
     fun handle(player: Player, `object`: WorldObject, option: String): Boolean
 
     /**
-     * Registers the first option for a variable amount of object ids
+     * Registers the specified option for a variable amount of object ids
      */
     fun registerSpecifiedOptionVarags(option: ClickOption, vararg objectIds: Int) {
         for (objectId in objectIds) {
@@ -51,9 +51,8 @@ interface ObjectPlugin : Plugin {
             ClickOption.FOURTH -> 4
             else -> throw IllegalStateException()
         }
-        println("option slot = $optionSlot for object $objectId")
-        val optionName: String = definitions.getOption(optionSlot)
-        println("optionName = $optionName for object $objectId")
+
+        val optionName = definitions.getOption(optionSlot)
 
         registerObject(objectId, optionName)
     }

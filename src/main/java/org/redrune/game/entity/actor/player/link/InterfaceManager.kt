@@ -263,8 +263,8 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendQuestTab() {
-        val interfaceId = 34
-        sendTab(if (resizableScreen) 93 else 207, interfaceId)
+        val interfaceId = 1019
+        //sendTab(if (resizableScreen) 93 else 207, interfaceId)
     }
 
     fun sendFriends() {
@@ -282,6 +282,7 @@ class InterfaceManager(private val player: Player) {
     fun sendClanChat() {
         val interfaceId = 1019
         sendTab(215, interfaceId)
+
         player.packets.sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information")
         player.packets.sendIComponentText(interfaceId, 16, "")
         player.packets.sendIComponentText(interfaceId, 3, "Player support")
@@ -301,8 +302,8 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendNotes() {
-        /*	sendTab(resizableScreen ? 105 : 219, 34);
-		NoteManager.refresh(player, true);*/
+        sendTab(if (resizableScreen) 104 else 218, 34)
+        NoteManager.refresh(player, true)
     }
 
     fun sendEquipment() {

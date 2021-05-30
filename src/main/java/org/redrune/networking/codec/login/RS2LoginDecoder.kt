@@ -32,29 +32,30 @@ import java.util.*
  * @since 2019-02-02
  */
 class RS2LoginDecoder : ByteToMessageDecoder() {
+
     /**
      * The `NetworkSession` instance created
      */
     private var session: NetworkSession? = null
 
     @Throws(Exception::class)
-    override fun decode(ctx: ChannelHandlerContext, `in`: ByteBuf, out: List<Any>) {
-        if (`in`.readableBytes() < 3) {
+    override fun decode(ctx: ChannelHandlerContext, buffer: ByteBuf, out: List<Any>) {
+        if (buffer.readableBytes() < 3) {
             return
         }
-        val opcode = `in`.readUnsignedByte().toInt()
-        val size = `in`.readUnsignedShort()
-        if (`in`.readableBytes() != size) {
+        val opcode = buffer.readUnsignedByte().toInt()
+        val size = buffer.readUnsignedShort()
+        if (buffer.readableBytes() != size) {
             ctx.close()
             return
         }
         if (opcode != 16 && opcode != 18 && opcode != 19) {
-            println("Received unexpected world login opcode: $opcode")
+            logger.error { "Received unexpected world login opcode: $opcode" }
             setSession(ctx.channel())
             ctx.writeAndFlush(LoginResponseCodePacketBuilder(LoginReturnCode.BAD_SESSION_ID).build().buffer)
             return
         }
-        val revision = `in`.readInt()
+        val revision = buffer.readInt()
         if (revision != NetworkConstants.PROTOCOL_NUMBER) {
             println("Received unexpected protocol number: $revision")
             setSession(ctx.channel())
@@ -64,17 +65,21 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         setSession(ctx.channel())
         val data = ByteArray(size - 4)
         // store the data into the buffer
-        `in`.readBytes(data)
+        buffer.readBytes(data)
         // convert the buffer into a readable object
         val buffer = FixedBuffer(data)
 
-        if (opcode == 19) {
-            decodeLobbyLogin(ctx, buffer, out)
-        } else if (opcode == 16) {
-            decodeWorldLogin(ctx, buffer, out)
-        } else {
-            logger.debug { "Received unexpected login request from $session. [opcode=$opcode]" }
-            ctx.channel().close()
+        when (opcode) {
+            19 -> {
+                decodeLobbyLogin(ctx, buffer, out)
+            }
+            16 -> {
+                decodeWorldLogin(ctx, buffer, out)
+            }
+            else -> {
+                logger.debug { "Received unexpected login request from $session. [opcode=$opcode]" }
+                ctx.channel().close()
+            }
         }
     }
 
@@ -91,6 +96,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
     private fun decodeLobbyLogin(ctx: ChannelHandlerContext, buffer: FixedBuffer, out: List<Any>) {
         val rsaSize = buffer.readUnsignedShort()
         if (rsaSize > buffer.remaining) {
+            logger.error { "Unexpected buffer length" }
             ctx.writeAndFlush(LoginResponseCodePacketBuilder(LoginReturnCode.BAD_SESSION_ID).build().buffer)
             return
         }
@@ -99,6 +105,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         val rsaBuffer =
             FixedBuffer(Utils.cryptRSA(rsaData, NetworkConstants.LOGIN_EXPONENT, NetworkConstants.LOGIN_MODULUS))
         if (rsaBuffer.readUnsignedByte() != 10) {
+            logger.error { "Unexpected buffer length" }
             ctx.writeAndFlush(LoginResponseCodePacketBuilder(LoginReturnCode.BAD_SESSION_ID).build().buffer)
             return
         }
@@ -107,6 +114,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
             isaacSeed[i] = rsaBuffer.readInt()
         }
         if (rsaBuffer.readLong() != 0L) {
+            logger.error { "Unexpected rsa long" }
             ctx.writeAndFlush(LoginResponseCodePacketBuilder(LoginReturnCode.BAD_SESSION_ID).build().buffer)
             return
         }
@@ -183,9 +191,10 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
      * The outgoing response
      */
     private fun decodeWorldLogin(ctx: ChannelHandlerContext, buffer: FixedBuffer, out: List<Any>) {
-        val reconnecting = buffer.readBoolean()
+        buffer.readUnsignedByte()
         val rsaSize = buffer.readUnsignedShort()
         if (rsaSize > buffer.remaining) {
+            logger.error { "Unexpected buffer length" }
             ctx.writeAndFlush(LoginResponseCodePacketBuilder(LoginReturnCode.BAD_SESSION_ID).build().buffer)
             return
         }
@@ -194,6 +203,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         val rsaBuffer =
             FixedBuffer(Utils.cryptRSA(rsaData, NetworkConstants.LOGIN_EXPONENT, NetworkConstants.LOGIN_MODULUS))
         if (rsaBuffer.readUnsignedByte() != 10) {
+            logger.error { "Unexpected rsa length" }
             ctx.writeAndFlush(LoginResponseCodePacketBuilder(LoginReturnCode.BAD_SESSION_ID).build().buffer)
             return
         }
