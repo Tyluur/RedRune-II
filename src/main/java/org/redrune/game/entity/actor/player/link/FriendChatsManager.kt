@@ -134,8 +134,8 @@ class FriendChatsManager private constructor(player: Player) {
             players.add(player)
             player.currentFriendChat = this
             player.attributes.currentFriendChatOwner = ownerName
-            player.packets.sendMessage("You are now talking in the friends chat channel " + settings.chatName)
-            player.packets.sendMessage("To talk, start each line of chat with the / symbol.")
+            player.packets.sendMessage("You are now talking in the friends chat channel " + settings.chatName, true)
+            player.packets.sendMessage("To talk, start each line of chat with the / symbol.", true)
             refreshChannel()
         }
     }

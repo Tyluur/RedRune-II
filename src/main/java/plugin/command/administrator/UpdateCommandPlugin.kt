@@ -1,4 +1,4 @@
-package plugin.command.owner
+package plugin.command.administrator
 
 import org.redrune.engine.SystemManager
 import org.redrune.game.content.plugin.type.CommandPlugin

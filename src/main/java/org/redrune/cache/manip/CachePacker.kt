@@ -9,20 +9,29 @@ import org.redrune.utility.game.map.MapArchiveKeys
  * @since April 01, 2021
  */
 fun main() {
+    packOSRSData()
+}
 
-    val src = "./data/634cache/"
+fun packOSRSData() {
+    Cache.initialize()
+
+    val src = "./data/osrs/nalore/"
 
     val srcCache = Store(src)
 
-    Cache.initialize()
+    val dstCache = Cache.STORE
 
-    /*      pack634ObjectDefinitions(srcCache)
+    with(Indices) {
 
-    val localXteas = hashMapOf<Int, IntArray>()
-       MapArchiveKeys.initialize()
-       pack634Maps(localXteas, srcCache)*/
+        val indices = listOf(MAPS, MODELS, ITEMS)
 
-    pack634Cache(srcCache)
+        for (index in indices) {
+            dstCache.indexes[index].packIndex(srcCache)
+
+            println("Finished packing index $index")
+        }
+    }
+
 }
 
 private fun pack634Cache(srcCache: Store) {

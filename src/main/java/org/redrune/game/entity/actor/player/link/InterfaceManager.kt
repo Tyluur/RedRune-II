@@ -3,9 +3,9 @@ package org.redrune.game.entity.actor.player.link
 import org.redrune.cache.loaders.IComponentDefinitions
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.actor.player.data.PlayerInventory
-import org.redrune.utility.constants.ColorConstants
 import org.redrune.utility.constants.GameConstants
 import java.util.concurrent.ConcurrentHashMap
+
 
 class InterfaceManager(private val player: Player) {
     private val openedinterfaces = ConcurrentHashMap<Int, IntArray?>()
@@ -101,81 +101,61 @@ class InterfaceManager(private val player: Player) {
 
     fun sendFixedInterfaces() {
         player.packets.sendWindowsPane(548, 0)
-        // Blank Interface
-        sendTab(15, 745)
 
-        // ChatBox Tabs
-        sendTab(68, 751)
+        sendTab(15, 745) // tbd
 
-        // ChatBox Interface
-        sendTab(192, 752)
+        sendTab(68, 751) // chatbox tabs
+
+        sendTab(192, 752) // chatbox interface
         player.packets.sendInterface(true, 752, 9, 137)
+
+        player.equipment.refresh()
+        player.packets.sendGlobalConfig(181, 0)
+        player.packets.sendUnlockIComponentOptionSlots(271, 8, 0, 29, 0)
+
+        sendTab(if (resizableScreen) 248 else 264, 1153)
 
         // Blank Interface
         sendTab(17, 754)
 
-        // HP Orb
-        sendTab(183, 748)
+        sendTab(if (resizableScreen) 247 else 263, 1152)
 
-        // Prayer Orb
-        sendTab(185, 749)
-
-        // Energy Orb
-        sendTab(186, 750)
-
-        // Summoning Orb
-        sendTab(188, 747)
-
-        // Combat Interface
+        /* -- the start of all tabs */
         sendTab(204, 884)
 
-        sendTaskSystem()
+        // skills
+        sendTab(if (resizableScreen) 91 else 205, 320)
 
-        // Skills Interface
-        sendTab(206, 320)
-
-        // quests Interface
         sendQuestTab()
-
-        // Inventory Interface
         sendInventory()
-
-        // Equipment Interface
         sendEquipment()
-
-        // Prayer Interface
         sendPrayerBook()
-
-        // Magic Interface
         sendMagicBook()
+        sendFamiliar()
 
         // Friends Interface
-        sendTab(213, 550)
+        sendTab(212, 550)
 
         // Friends Chat Interface
-        sendTab(214, 1109)
+        sendTab(213, 1109)
 
-        // Clan Chat Interface
-        sendClanChat()
+        sendLogout()
 
-        // Settings Interface
         sendSettings()
 
-        // Emotes Interface
-        sendTab(217, 464)
+        sendEmotes()
 
         // Music Interface
-        sendTab(218, 187)
-
-        //// notes Interface
-        sendNotes()
-
-        // Logout Interface
-        sendTab(222, 182) // Logout tab
+        sendTab(217, 187)
     }
 
-    fun sendFullScreenInterfaces() {
+    private fun sendLogout() {
+        sendTab(if (resizableScreen) 100 else 214, 182)
+    }
+
+    private fun sendFullScreenInterfaces() {
         player.packets.sendWindowsPane(746, 0)
+
         // Blank Interface
         sendTab(15, 745)
 
@@ -189,24 +169,11 @@ class InterfaceManager(private val player: Player) {
         // Blank Interface
         sendTab(72, 754)
 
-        // HP Orb
-        sendTab(177, 748)
-
-        // Prayer Orb
-        sendTab(178, 749)
-
-        // Energy Orb
-        sendTab(179, 750)
-
-        // Summoning Orb
-        sendTab(180, 747)
-
         // Combat Interface
         sendTab(90, 884)
-        sendTaskSystem()
 
         // Skills Interface
-        sendTab(92, 320)
+        sendTab(91, 320)
 
         // Quests Interface
         sendQuestTab()
@@ -223,28 +190,28 @@ class InterfaceManager(private val player: Player) {
         // Magic Interface
         sendMagicBook()
 
+        sendFamiliar()
+
         // Friends Interface
-        sendTab(99, 550)
+        sendTab(98, 550)
 
         // Friend Chat Interface
-        sendTab(100, 1109)
+        sendTab(99, 1109)
 
         // Clan Chat Interface (Interface 589 = Lobby Clan Chat)
         sendClanChat()
 
-        // Settings Interface
         sendSettings()
 
-        // Emotes Interface
-        sendTab(103, 464)
+        sendEmotes()
 
         // Music Interface
         sendTab(104, 187)
 
-        // Notes Interface
         sendNotes()
+
         // Logout Interface
-        sendTab(108, 182)
+        sendLogout()
     }
 
     fun sendCombatStyles() {
@@ -263,8 +230,15 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendQuestTab() {
-        val interfaceId = 1019
-        //sendTab(if (resizableScreen) 93 else 207, interfaceId)
+        val interfaceId = 34
+        sendTab(if (resizableScreen) 92 else 206, interfaceId)
+
+        NoteManager.refresh(player, true)
+        NoteManager.sendUnlockNotes(player)
+    }
+
+    fun sendFamiliar() {
+        sendTab(if (resizableScreen) 97 else 97, 662)
     }
 
     fun sendFriends() {
@@ -272,7 +246,7 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendEmotes() {
-        sendTab(if (resizableScreen) 124 else 217, 464)
+        sendTab(if (resizableScreen) 102 else 216, 464)
     }
 
     fun sendFriendsChat() {
@@ -282,19 +256,6 @@ class InterfaceManager(private val player: Player) {
     fun sendClanChat() {
         val interfaceId = 1019
         sendTab(215, interfaceId)
-
-        player.packets.sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information")
-        player.packets.sendIComponentText(interfaceId, 16, "")
-        player.packets.sendIComponentText(interfaceId, 3, "Player support")
-        player.packets.sendIComponentText(interfaceId, 16, "Report Bug")
-        player.packets.sendIComponentText(interfaceId, 18, "Submit Ticket")
-        player.packets.sendIComponentText(interfaceId, 11, " ")
-        player.packets.sendIComponentText(
-            interfaceId,
-            0,
-            "Report any game/website bug you have found on " + GameConstants.SERVER_NAME + ""
-        )
-        player.packets.sendIComponentText(interfaceId, 8, "Submit help-request ticket to online staff member ")
     }
 
     fun sendMusic() {
@@ -306,8 +267,12 @@ class InterfaceManager(private val player: Player) {
         NoteManager.refresh(player, true)
     }
 
+    fun sendInventory() {
+        sendTab(if (resizableScreen) 93 else 207, PlayerInventory.INVENTORY_INTERFACE)
+    }
+
     fun sendEquipment() {
-        sendTab(if (resizableScreen) 95 else 209, 387)
+        sendTab(if (resizableScreen) 94 else 208, 387)
     }
 
     fun closeQuestTab() {
@@ -342,10 +307,6 @@ class InterfaceManager(private val player: Player) {
         player.packets.closeInterface(if (resizableScreen) 95 else 209)
     }
 
-    fun sendInventory() {
-        sendTab(if (resizableScreen) 94 else 208, PlayerInventory.INVENTORY_INTERFACE)
-    }
-
     fun closeInventory() {
         player.packets.closeInterface(if (resizableScreen) 94 else 208)
     }
@@ -356,15 +317,15 @@ class InterfaceManager(private val player: Player) {
 
     @JvmOverloads
     fun sendSettings(interfaceId: Int = 261) {
-        sendTab(if (resizableScreen) 102 else 216, interfaceId)
+        sendTab(if (resizableScreen) 101 else 215, interfaceId)
     }
 
     fun sendPrayerBook() {
-        sendTab(if (resizableScreen) 96 else 210, 271)
+        sendTab(if (resizableScreen) 95 else 209, 271)
     }
 
     fun sendMagicBook() {
-        sendTab(if (resizableScreen) 97 else 211, player.combatDefinitions.spellBook)
+        sendTab(if (resizableScreen) 96 else 210, player.combatDefinitions.spellBook)
     }
 
     fun addInterface(windowId: Int, tabId: Int, childId: Int): Boolean {

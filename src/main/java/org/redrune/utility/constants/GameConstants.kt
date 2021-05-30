@@ -1,6 +1,7 @@
 package org.redrune.utility.constants
 
 import org.redrune.game.global.WorldTile
+import java.util.*
 
 /**
  * All constants for the game are stored here
@@ -14,7 +15,7 @@ object GameConstants {
     /**
      * The path that the cache is at
      */
-    const val CACHE_PATH = "./data/cache/"
+    const val CACHE_PATH = "./data/osrs/nalore/"
 
     /**
      * The location that players spawn at
@@ -37,14 +38,15 @@ object GameConstants {
     /**
      * If we're hosted on linux
      */
-    val LINUX_HOST = System.getProperty("os.name").toLowerCase().contains("linux")
+    val LINUX_HOST = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("linux")
 
     /**
      * The server is on hosted mode if the main user name contains 'Administrator'
      */
     val HOSTED =
-        System.getProperty("user.home").toLowerCase().contains("administrator") || System.getProperty("user.home")
-            .toLowerCase().contains("root") || LINUX_HOST
+        System.getProperty("user.home").lowercase(Locale.getDefault())
+            .contains("administrator") || System.getProperty("user.home")
+            .lowercase(Locale.getDefault()).contains("root") || LINUX_HOST
 
     /**
      * The path for files to be saved at
