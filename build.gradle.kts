@@ -2,7 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.4.30"
+//    kotlin("jvm") version "1.4.30"
+    id("org.jetbrains.kotlin.jvm") version "1.5.20-M1"
 }
 
 val koinVersion = "2.1.5"
