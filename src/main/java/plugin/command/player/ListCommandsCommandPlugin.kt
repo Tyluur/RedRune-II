@@ -5,11 +5,9 @@ import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.constants.InterfaceConstants
 import plugin.command.CommandManifest
-import java.util.*
-
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Lists the commands available.")
