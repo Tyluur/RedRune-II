@@ -1,72 +1,71 @@
-package org.redrune.utility.functions;
+package org.redrune.utility.functions
 
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.util.LinkedList;
+import java.io.*
+import java.nio.ByteBuffer
+import java.util.*
 
 /**
  * @author 'Mystic Flow
  */
-public class FileUtilities {
+object FileUtilities {
 
-	public static final int BUFFER = 1024;
+    const val BUFFER = 1024
 
-	public static boolean exists(String name) {
-		File file = new File(name);
-		return file.exists();
-	}
+    fun exists(name: String?): Boolean {
+        val file = File(name)
+        return file.exists()
+    }
 
-	public static ByteBuffer fileBuffer(String name) throws IOException {
-		File file = new File(name);
-		if (!file.exists()) {
-			return null;
-		}
-		FileInputStream in = new FileInputStream(name);
+    @Throws(IOException::class)
+    fun fileBuffer(name: String?): ByteBuffer? {
+        val file = File(name)
+        if (!file.exists()) {
+            return null
+        }
+        var `in`: FileInputStream? = FileInputStream(name)
+        val data = ByteArray(BUFFER)
+        var read: Int
+        return try {
+            val buffer = ByteBuffer.allocate(`in`!!.available() + 1)
+            while (`in`.read(data, 0, BUFFER).also { read = it } != -1) {
+                buffer.put(data, 0, read)
+            }
+            buffer.flip()
+            buffer
+        } finally {
+            `in`?.close()
+            `in` = null
+        }
+    }
 
-		byte[] data = new byte[BUFFER];
-		int read;
-		try {
-			ByteBuffer buffer = ByteBuffer.allocate(in.available() + 1);
-			while ((read = in.read(data, 0, BUFFER)) != -1) {
-				buffer.put(data, 0, read);
-			}
-			buffer.flip();
-			return buffer;
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-			in = null;
-		}
-	}
+    @Throws(IOException::class)
+    fun writeBufferToFile(name: String?, buffer: ByteBuffer) {
+        val file = File(name)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        val out = FileOutputStream(name)
+        out.write(buffer.array(), 0, buffer.remaining())
+        out.flush()
+        out.close()
+    }
 
-	public static void writeBufferToFile(String name, ByteBuffer buffer) throws IOException {
-		File file = new File(name);
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-		FileOutputStream out = new FileOutputStream(name);
-		out.write(buffer.array(), 0, buffer.remaining());
-		out.flush();
-		out.close();
-	}
-
-	public static LinkedList<String> readFile(String directory) throws IOException {
-		LinkedList<String> fileLines = new LinkedList<String>();
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(directory));
-			String string;
-			while ((string = reader.readLine()) != null) {
-				fileLines.add(string);
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-				reader = null;
-			}
-		}
-		return fileLines;
-	}
-
+    @Throws(IOException::class)
+    fun readFile(directory: String?): LinkedList<String> {
+        val fileLines = LinkedList<String>()
+        var reader: BufferedReader? = null
+        try {
+            reader = BufferedReader(FileReader(directory))
+            var string: String
+            while (reader.readLine().also { string = it } != null) {
+                fileLines.add(string)
+            }
+        } finally {
+            if (reader != null) {
+                reader.close()
+                reader = null
+            }
+        }
+        return fileLines
+    }
 }
