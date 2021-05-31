@@ -133,6 +133,10 @@ class PvPWorld : Controller() {
         return 20
     }
 
+    override fun magicTeleported(type: Int) {
+        moved()
+    }
+
     override fun moved() {
         val insidePvpArea: Boolean = isAtWildy(player)
         val insideSafeArea: Boolean = isAtSafeZone(player)

@@ -27,13 +27,13 @@ object GameConstants {
      * The home teleport tile
      */
     @JvmField
-    val HOME_TILE = WorldTile(1890, 3164, 0)
+    val HOME_TILE = WorldTile(1906, 3172, 0)
 
     /**
      * The location that players who die spawn at
      */
     @JvmField
-    val RESPAWN_TILE = WorldTile(1906, 3172, 0)
+    val RESPAWN_TILE = WorldTile(3209, 3219, 0)
 
     /**
      * If we're hosted on linux
