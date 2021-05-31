@@ -262,7 +262,7 @@ class InterfaceManager(private val player: Player) {
         }
     }
 
-    fun sendQuestTab() {
+    private fun sendQuestTab() {
         val interfaceId = 1019
         sendTab(if (resizableScreen) 93 else 207, interfaceId)
 
@@ -278,6 +278,7 @@ class InterfaceManager(private val player: Player) {
             "Report any game/website bug you have found on " + GameConstants.SERVER_NAME + ""
         )
         player.packets.sendIComponentText(interfaceId, 8, "Submit help-request ticket to online staff member ")
+        player.packets.sendHideIComponent(interfaceId, 9, true)
     }
 
     fun sendFriends() {
