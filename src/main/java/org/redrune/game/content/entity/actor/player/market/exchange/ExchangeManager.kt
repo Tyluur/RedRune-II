@@ -176,12 +176,7 @@ object ExchangeManager {
         player.packets.sendIComponentText(MAIN_INTERFACE, 143, description)
 
         val priceLoader: GrandExchangePriceLoader by inject()
-        val price = priceLoader.getPrice(itemId)
-
-        if (price == null || price <= 0) {
-            player.packets.sendMessage("This item is unable to be bought.")
-            return
-        }
+        val price = priceLoader.getPrice(itemId) ?: 1
 
         player.packets.sendConfig(1109, itemId)
         player.packets.sendConfig(1110, 1)

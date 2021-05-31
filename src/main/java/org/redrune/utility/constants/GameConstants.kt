@@ -21,7 +21,7 @@ object GameConstants {
      * The initial tile which players spawn at
      */
     @JvmField
-    val START_TILE = WorldTile(1890, 3164, 0)
+    val START_TILE = WorldTile(1894, 3172, 0)
 
     /**
      * The home teleport tile

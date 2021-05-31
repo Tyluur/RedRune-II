@@ -255,7 +255,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                 if ((GameFlags.pvpWorld) && (isSettableSkill(componentId) && GameFlags.pvpWorld) && skillId != -1) {
                     val name = SKILL_NAME[skillId]
 
-                    if (!PvPWorld.isAtSafeZone(player)) {
+                    if (player.controllerManager.controller != null && !PvPWorld.isAtSafeZone(player)) {
                         player.dialogueManager.startDialogue(
                             SimpleNPCMessage::class.java, 945,
                             "Please go to a safe zone before changing your levels."
