@@ -22,10 +22,10 @@ class UpdateServerDecoder : ByteToMessageDecoder() {
     private val requests = LinkedList<UpdateServerRequest>()
 
     @Throws(Exception::class)
-    override fun decode(ctx: ChannelHandlerContext, `in`: ByteBuf, out: List<Any>) {
-        while (`in`.readableBytes() >= 4) {
-            val priority: Int = (`in`.readByte() and 0xFF.toByte()).toInt()
-            serveRequest(ctx, `in`, priority)
+    override fun decode(ctx: ChannelHandlerContext, buffer: ByteBuf, out: List<Any>) {
+        while (buffer.readableBytes() >= 4) {
+            val priority = (buffer.readByte() and 0xFF.toByte()).toInt()
+            serveRequest(ctx, buffer, priority)
         }
     }
 
@@ -38,7 +38,7 @@ class UpdateServerDecoder : ByteToMessageDecoder() {
      */
     private fun serveRequest(ctx: ChannelHandlerContext, buf: ByteBuf, priority: Int) {
         val indexId = (buf.readUnsignedByte() and 0xFF).toInt()
-        val archiveId = (buf.readUnsignedShort() and 0xFFFF).toInt()
+        val archiveId = (buf.readUnsignedShort() and 0xFFFF)
 
         if (indexId != 255) {
             if (Cache.STORE.indexes.size <= indexId || Cache.STORE.indexes[indexId] == null || !Cache.STORE.indexes[indexId].archiveExists(
@@ -54,13 +54,17 @@ class UpdateServerDecoder : ByteToMessageDecoder() {
         }
         when (priority) {
             0 -> requests.add(UpdateServerRequest(indexId, archiveId, false))
-            1 -> EXECUTOR_SERVICE.submit(Callable {
+            1 -> pool.submit(Callable {
+
+                // TODO: cache this
+                val cacheArchive = Cache.getCacheArchive(
+                    indexId,
+                    archiveId,
+                    true
+                )
+
                 ctx.writeAndFlush(
-                    Cache.getCacheArchive(
-                        indexId,
-                        archiveId,
-                        true
-                    )
+                    cacheArchive
                 )
             })
             2, 3 -> requests.clear()
@@ -75,7 +79,7 @@ class UpdateServerDecoder : ByteToMessageDecoder() {
         /**
          * The service used explicitly for update server transmission
          */
-        private val EXECUTOR_SERVICE =
+        private val pool =
             Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), JS5ThreadFactory("JS5-Worker"))
     }
 }

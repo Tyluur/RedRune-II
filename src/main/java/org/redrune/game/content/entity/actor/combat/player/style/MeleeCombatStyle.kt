@@ -15,6 +15,7 @@ import org.redrune.game.entity.actor.mask.Animation
 import org.redrune.game.entity.actor.mask.Hit
 import org.redrune.game.entity.actor.mask.HitSplat
 import org.redrune.game.entity.actor.player.Player
+import java.util.*
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>
@@ -46,7 +47,8 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
             val weaponName = if (weaponId == -1) "unarmed" else ItemDefinitions.getItemDefinitions(weaponId).name
 
             // the delay until the hitsplat appears
-            val hitDelay = if (weaponId == 10887 || weaponName.toLowerCase().contains("maul") && !weaponName.startsWith(
+            val hitDelay = if (weaponId == 10887 || weaponName.lowercase(Locale.getDefault())
+                    .contains("maul") && !weaponName.startsWith(
                     "Granite"
                 )
             ) 1 else 0
@@ -72,7 +74,7 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
         val combatXp = damage / 2.5
         if (combatXp > 0) {
             source.auraManager.checkSuccefulHits(hit.damage)
-            if (hit.splat == HitSplat.RANGE_DAMAGE) {
+            if (hit.splat == HitSplat.MELEE_DAMAGE) {
                 if (attackStyle == 2) {
                     if (target.isPlayer) {
                         source.skills.addXpNoModifier(RANGE, combatXp / 2)

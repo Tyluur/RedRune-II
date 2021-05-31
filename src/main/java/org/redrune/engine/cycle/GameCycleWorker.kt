@@ -1,7 +1,6 @@
 package org.redrune.engine.cycle
 
 import com.github.michaelbull.logging.InlineLogger
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 class GameCycleWorker {
@@ -14,7 +13,7 @@ class GameCycleWorker {
     /**
      * The executor.
      */
-    private val executor: Executor = Executors.newSingleThreadExecutor()
+    private val executor = Executors.newSingleThreadExecutor()
 
     /**
      * If the major update worker has started.

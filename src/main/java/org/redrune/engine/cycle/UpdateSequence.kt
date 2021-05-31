@@ -1,6 +1,5 @@
 package org.redrune.engine.cycle
 
-import com.github.michaelbull.logging.InlineLogger
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -14,7 +13,6 @@ import org.redrune.utility.constants.NetworkConstants
 import org.redrune.utility.functions.Misc
 import java.util.*
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 /**
@@ -126,17 +124,6 @@ class UpdateSequence : Runnable {
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-    }
-
-
-    companion object {
-
-        /**
-         * The executor used for parallel execution of player updating and npc updating
-         */
-        private val EXECUTOR = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
-
-        private val logger = InlineLogger()
     }
 
 }
