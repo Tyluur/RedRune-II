@@ -50,6 +50,19 @@ class ExchangeTask : ScheduledTask(6, -1) {
 
                         val offers = getBarteringOffers(offer)
 
+                        if (autoBuy && offer.price > 0 && offer.price >= ExchangeManager.getAutobuyPrice(offer.itemId)) {
+                            offers.add(
+                                ExchangeOffer(
+                                    "",
+                                    offer.itemId,
+                                    offer.amount,
+                                    -1,
+                                    ExchangeType.SELL,
+                                    offer.price
+                                )
+                            )
+                        }
+
                         for (sellOffer in offers) {
                             val buyPrice: Int1 = offer.price
                             val buy = offer.amountRequested - offer.amountReceived
@@ -112,7 +125,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
     private fun getBarteringOffers(bartered: ExchangeOffer): MutableList<ExchangeOffer> {
         val list = ArrayList(getAllOffers())
         return list.stream()
-            .filter { offer: ExchangeOffer -> offer.type !== bartered.type && offer.itemId == bartered.itemId }
+            .filter { offer: ExchangeOffer -> offer.type != bartered.type && offer.itemId == bartered.itemId }
             .collect(Collectors.toList())
     }
 

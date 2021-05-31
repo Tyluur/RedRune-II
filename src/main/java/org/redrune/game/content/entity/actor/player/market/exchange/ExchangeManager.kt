@@ -29,7 +29,7 @@ object ExchangeManager {
 
     fun loadExchangeList() {
         val text = Files.readAllLines(
-            File("./data/repository/item/full_exchange_list.txt").toPath(),
+            File("./data/repository/item/unlimited.txt").toPath(),
             Charset.defaultCharset()
         )
         for (line in text) {
@@ -176,7 +176,7 @@ object ExchangeManager {
         player.packets.sendIComponentText(MAIN_INTERFACE, 143, description)
 
         val priceLoader: GrandExchangePriceLoader by inject()
-        val price = priceLoader.getPrice(itemId) ?: 1
+        val price = priceLoader.getPrice(itemId) ?: definition.value
 
         player.packets.sendConfig(1109, itemId)
         player.packets.sendConfig(1110, 1)
@@ -265,6 +265,22 @@ object ExchangeManager {
         })
     }
 
+    fun getAutobuyPrice(itemId: Int): Int {
+        val definitions = ItemDefinitions.getItemDefinitions(itemId)
+        val cacheValue = definitions.value
+        val exchangePrice = priceLoader.getPrice(itemId)
+
+        val bestPrice = if (cacheValue > cacheValue) cacheValue else exchangePrice
+
+        if (bestPrice == null) {
+            logger.error { "Unable to identify a price for item $itemId" }
+            return -1
+        }
+
+        return bestPrice
+    }
+
     private val logger = InlineLogger()
+    private val priceLoader: GrandExchangePriceLoader by inject()
 
 }

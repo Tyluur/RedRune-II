@@ -92,7 +92,7 @@ data class ExchangeOffer(
      * If this is a valid offer to be processed
      */
     fun isValid(): Boolean {
-        return !isFinished() && !aborted && ExchangeManager.isBuyable(itemId)
+        return !isFinished() && !aborted
     }
 
     fun notifyUpdated() {
@@ -106,8 +106,12 @@ data class ExchangeOffer(
             hasOpen = true
         }
         if (!hasOpen) {
-            player.packets.sendMessage("One or more of your grand exchange offers have been updated!")
+            player.packets.sendMessage("One or more of your grand exchange offers have been updated!", true)
         }
+    }
+
+    fun getAmountPending(): Int {
+        return amountRequested - amountProcessed
     }
 
     override fun toString(): String {

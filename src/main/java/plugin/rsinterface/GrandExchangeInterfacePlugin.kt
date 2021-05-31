@@ -8,6 +8,7 @@ import org.redrune.engine.tick.schedule.impl.ExchangeTask
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.COLLECTION_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.MAIN_INTERFACE
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration.SELL_INTERFACE
+import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.open
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.openCollectionBox
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager.sendCollectInformation
@@ -377,7 +378,8 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
 
                 val amountToSell = 1
 
-                val price: Int = itemDefinitions.value / 5
+                // the baseline price recommendation - based on the auto buy price
+                val price: Int = ExchangeManager.getAutobuyPrice(itemId)
 
                 val sellOffer = ExchangeOffer(
                     player.username,
