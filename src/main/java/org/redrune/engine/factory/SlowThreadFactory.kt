@@ -1,33 +1,30 @@
-package org.redrune.engine.factory;
+package org.redrune.engine.factory
 
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.atomic.AtomicInteger
 
-public class SlowThreadFactory implements ThreadFactory {
-	
-	private static final AtomicInteger poolNumber = new AtomicInteger(1);
-	
-	private final ThreadGroup group;
-	
-	private final AtomicInteger threadNumber = new AtomicInteger(1);
-	
-	private final String namePrefix;
-	
-	public SlowThreadFactory() {
-		SecurityManager s = System.getSecurityManager();
-		group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-		namePrefix = "Slow Pool-" + poolNumber.getAndIncrement() + "-thread-";
-	}
-	
-	public Thread newThread(Runnable r) {
-		Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
-		if (t.isDaemon()) {
-			t.setDaemon(false);
-		}
-		if (t.getPriority() != Thread.MIN_PRIORITY) {
-			t.setPriority(Thread.MIN_PRIORITY);
-		}
-		return t;
-	}
-	
+class SlowThreadFactory : ThreadFactory {
+    private val group: ThreadGroup
+    private val threadNumber = AtomicInteger(1)
+    private val namePrefix: String
+    override fun newThread(r: Runnable): Thread {
+        val t = Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0)
+        if (t.isDaemon) {
+            t.isDaemon = false
+        }
+        if (t.priority != Thread.MIN_PRIORITY) {
+            t.priority = Thread.MIN_PRIORITY
+        }
+        return t
+    }
+
+    companion object {
+        private val poolNumber = AtomicInteger(1)
+    }
+
+    init {
+        val s = System.getSecurityManager()
+        group = if (s != null) s.threadGroup else Thread.currentThread().threadGroup
+        namePrefix = "Slow Pool-" + poolNumber.getAndIncrement() + "-thread-"
+    }
 }
