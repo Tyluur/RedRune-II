@@ -57,6 +57,32 @@ class GuideDialogue : Dialogue() {
                 )
                 stage = 5
             }
+            2 -> {
+                sendNPCDialogue(
+                    npcId,
+                    NORMAL,
+                    "Wizard edvin will teleport you anywhere",
+                    "you wish to go."
+                )
+                stage = 7
+            }
+            3 -> {
+                sendNPCDialogue(
+                    npcId, NORMAL,
+                    "Good question!",
+                    "The grand exchange is where you can buy or sell items.",
+                    "There are many items that will be auto sold, as well."
+                )
+                stage = 4
+            }
+            4 -> {
+                sendNPCDialogue(
+                    npcId, NORMAL,
+                    "You can find the grand exchange clerk right beside",
+                    "the bank at home."
+                )
+                stage = -2
+            }
             5 -> {
                 sendNPCDialogue(
                     npcId,
@@ -70,7 +96,18 @@ class GuideDialogue : Dialogue() {
                 sendPlayerDialogue(LAUGHING, "Oh, that's pretty simple!", "Thanks!")
                 stage = -2
             }
-
+            7 -> {
+                sendPlayerDialogue(LAUGHING, "Where the hell is wizard edvin?")
+                stage = 8
+            }
+            8 -> {
+                sendNPCDialogue(
+                    npcId,
+                    FURIOUS,
+                    "Go find him yourself, are you blind?"
+                )
+                stage = -2
+            }
         }
     }
 
