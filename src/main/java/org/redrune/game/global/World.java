@@ -132,7 +132,7 @@ public final class World {
         if (player.getControllerManager().getController() == null) {
             if (Wilderness.isAtWild(player)) {
                 player.getControllerManager().startController("Wilderness");
-            } else if (GameFlags.pvpWorld && PvPWorld.Companion.isAtPvpArea(player)) {
+            } else if (GameFlags.pvpWorld && PvPWorld.Companion.isAtWildy(player)) {
                 player.getControllerManager().startController("PvPWorld");
             }
         }
@@ -339,7 +339,7 @@ public final class World {
      * Checks if a tile is a pvp area
      */
     public static boolean isPvpArea(WorldTile tile) {
-        return PvPWorld.Companion.isAtPvpArea(tile) || Wilderness.isAtWild(tile);
+        return PvPWorld.Companion.isAtWildy(tile) || Wilderness.isAtWild(tile);
     }
 
 }

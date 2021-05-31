@@ -264,7 +264,20 @@ class InterfaceManager(private val player: Player) {
 
     fun sendQuestTab() {
         val interfaceId = 1019
-        //sendTab(if (resizableScreen) 93 else 207, interfaceId)
+        sendTab(if (resizableScreen) 93 else 207, interfaceId)
+
+        player.packets.sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information")
+        player.packets.sendIComponentText(interfaceId, 16, "")
+        player.packets.sendIComponentText(interfaceId, 3, "Player support")
+        player.packets.sendIComponentText(interfaceId, 16, "Report Bug")
+        player.packets.sendIComponentText(interfaceId, 18, "Submit Ticket")
+        player.packets.sendIComponentText(interfaceId, 11, " ")
+        player.packets.sendIComponentText(
+            interfaceId,
+            0,
+            "Report any game/website bug you have found on " + GameConstants.SERVER_NAME + ""
+        )
+        player.packets.sendIComponentText(interfaceId, 8, "Submit help-request ticket to online staff member ")
     }
 
     fun sendFriends() {
@@ -280,21 +293,8 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendClanChat() {
-        val interfaceId = 1019
+        val interfaceId = 875
         sendTab(215, interfaceId)
-
-        player.packets.sendIComponentText(interfaceId, 10, "<col=" + ColorConstants.RED + ">Information")
-        player.packets.sendIComponentText(interfaceId, 16, "")
-        player.packets.sendIComponentText(interfaceId, 3, "Player support")
-        player.packets.sendIComponentText(interfaceId, 16, "Report Bug")
-        player.packets.sendIComponentText(interfaceId, 18, "Submit Ticket")
-        player.packets.sendIComponentText(interfaceId, 11, " ")
-        player.packets.sendIComponentText(
-            interfaceId,
-            0,
-            "Report any game/website bug you have found on " + GameConstants.SERVER_NAME + ""
-        )
-        player.packets.sendIComponentText(interfaceId, 8, "Submit help-request ticket to online staff member ")
     }
 
     fun sendMusic() {

@@ -251,7 +251,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                     }
                 }
                 val skillId = getSkillId(componentId)
-                if (PvPWorld.inBankSafe(player) && isSettableSkill(componentId) && GameFlags.pvpWorld && skillId != -1) {
+                if ((GameFlags.pvpWorld && PvPWorld.isAtSafeZone(player)) && (isSettableSkill(componentId) && GameFlags.pvpWorld) && skillId != -1) {
                     val name = SKILL_NAME[skillId]
 
                     if (player.isUnderCombat || player.equipment.isWearingArmour || player.isDead) {

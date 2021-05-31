@@ -105,12 +105,12 @@ class PvPWorld : Controller() {
             )
         }
         if (countingDown && timeAtSafe < System.currentTimeMillis()) {
-            val isAtWild: Boolean = isAtPvpArea(player)
+            val isAtWild: Boolean = isAtWildy(player)
             val isAtWildSafe: Boolean =
-                inBankSafe(player)
+                isAtSafeZone(player)
             if (!isAtWild || isAtWildSafe) {
                 removeIcon(force = true, skullOnly = true)
-                toggleSafeIcon(inBankSafe(player))
+                toggleSafeIcon(isAtSafeZone(player))
                 timeAtSafe = -1
                 countingDown = false
                 arrivedSafely = true
@@ -119,7 +119,7 @@ class PvPWorld : Controller() {
     }
 
     private fun incrementTicksAndUpdate() {
-        if (!inBankSafe(player)) {
+        if (!isAtSafeZone(player)) {
             dangerousTicks++
             if (dangerousTicks == 100) {
                 dangerousTicks = 0
@@ -134,8 +134,8 @@ class PvPWorld : Controller() {
     }
 
     override fun moved() {
-        val insidePvpArea: Boolean = isAtPvpArea(player)
-        val insideSafeArea: Boolean = inBankSafe(player)
+        val insidePvpArea: Boolean = isAtWildy(player)
+        val insideSafeArea: Boolean = isAtSafeZone(player)
         val waitingForSafe: Boolean = timeAtSafe > System.currentTimeMillis()
         if (insidePvpArea && !insideSafeArea) {
             if (waitingForSafe) {
@@ -158,7 +158,7 @@ class PvPWorld : Controller() {
                     )
                 } else {
                     removeIcon(true, true)
-                    toggleSafeIcon(inBankSafe(player))
+                    toggleSafeIcon(isAtSafeZone(player))
                 }
             } else {
                 sendSafeTimeLeft(
@@ -212,7 +212,7 @@ class PvPWorld : Controller() {
             player.packets.sendIComponentText(548, 10, "$lowest - $highest")
             player.packets.sendIComponentText(548, 11, player.attributes.formattedEarningPotential)
         }
-        toggleSafeIcon(inBankSafe(player))
+        toggleSafeIcon(isAtSafeZone(player))
     }
 
 
@@ -268,7 +268,7 @@ class PvPWorld : Controller() {
          *
          * @param tile The tile
          */
-        fun isAtPvpArea(tile: WorldTile): Boolean {
+        fun isAtWildy(tile: WorldTile): Boolean {
             for (zone in PvPZones.DANGEROUS_ZONES) {
                 if (zone.inside(tile)) {
                     return true
@@ -277,7 +277,7 @@ class PvPWorld : Controller() {
             return false
         }
 
-        fun inBankSafe(player: Player): Boolean {
+        fun isAtSafeZone(player: Player): Boolean {
             for (zone in SAFE_ZONES) {
                 if (zone.inside(player)) {
                     return true
