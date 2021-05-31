@@ -18,6 +18,6 @@ class TeleportToMeCommandPlugin : CommandPlugin() {
         player.packets.sendMessage("You have teleported " + target.username.toString() + " to you.")
     }
 
-    override fun identifiers() = arrayOf("teleto")
+    override fun identifiers() = arrayOf("teletome")
 
 }
