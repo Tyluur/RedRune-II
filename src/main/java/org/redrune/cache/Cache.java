@@ -3,8 +3,8 @@ package org.redrune.cache;
 import com.alex.store.Store;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.redrune.networking.packet.Packet;
-import org.redrune.networking.packet.PacketBuilder;
+import org.redrune.net.packet.Packet;
+import org.redrune.net.packet.PacketBuilder;
 import org.redrune.utility.constants.GameConstants;
 
 import java.io.IOException;

@@ -3,7 +3,7 @@ package org.redrune.cache.huffman;
 import com.alex.io.InputStream;
 import com.alex.io.OutputStream;
 import org.redrune.cache.Cache;
-import org.redrune.networking.packet.PacketBuilder;
+import org.redrune.net.packet.PacketBuilder;
 import org.redrune.utility.functions.Misc;
 
 public final class Huffman {

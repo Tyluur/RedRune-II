@@ -2,7 +2,7 @@ package org.redrune.utility.constants;
 
 import com.google.common.collect.ImmutableList;
 import io.netty.util.AttributeKey;
-import org.redrune.networking.NetworkSession;
+import org.redrune.net.NetworkSession;
 
 import java.math.BigInteger;
 

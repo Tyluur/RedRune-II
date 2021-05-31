@@ -1,7 +1,7 @@
 package org.redrune.utility.functions;
 
 import io.netty.buffer.ByteBuf;
-import org.redrune.networking.packet.Packet;
+import org.redrune.net.packet.Packet;
 
 import java.nio.ByteBuffer;
 
