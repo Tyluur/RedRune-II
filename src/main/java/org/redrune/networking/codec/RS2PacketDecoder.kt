@@ -14,10 +14,10 @@ import org.redrune.utility.constants.PacketConstants
  * Decodes a received packet.
  *
  * @author Cjay0091
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-05
  */
-class RS2PacketDecoder(session: NetworkSession) : ReplayingDecoder<GameState?>(GameState.VERSION) {
+class RS2PacketDecoder(val session: NetworkSession) : ReplayingDecoder<GameState?>(GameState.VERSION) {
     /**
      * The opcode of the current packed being decoded
      */

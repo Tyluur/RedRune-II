@@ -28,7 +28,7 @@ import org.redrune.utility.game.stream.buffer.FixedBuffer
 import java.util.*
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 class RS2LoginDecoder : ByteToMessageDecoder() {
@@ -177,7 +177,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         session!!.write(LobbyConfigurationPacketBuilder(player))
 
         // change decoders
-        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session))
+        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session!!))
     }
 
     /**
@@ -327,7 +327,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         player.start()
 
         // change decoders
-        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session))
+        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session!!))
     }
 
     /**
