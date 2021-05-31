@@ -19,7 +19,7 @@ class HomeTeleportSpell : TeleportSpellPlugin {
     }
 
     override fun destination(): WorldTile {
-        return GameConstants.START_TILE
+        return GameConstants.HOME_TILE
     }
 
     override fun spellId(): Int {

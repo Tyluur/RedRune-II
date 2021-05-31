@@ -260,7 +260,7 @@ public class Player extends Actor {
     }
 
     public Player(String username, String password) {
-        super(GameConstants.START_TILE);
+        super(GameConstants.HOME_TILE);
         setHitpoints(100);
         this.username = username;
         this.password = password;

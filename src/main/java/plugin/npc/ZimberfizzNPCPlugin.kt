@@ -8,6 +8,7 @@ class ZimberfizzNPCPlugin : NPCPlugin {
 
     override fun register() {
         registerNPC(8592, "Talk-to")
+        registerNPC(8592, "Rewards")
     }
 
     override fun handle(

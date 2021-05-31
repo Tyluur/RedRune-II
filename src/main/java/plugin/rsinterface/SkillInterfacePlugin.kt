@@ -250,10 +250,18 @@ class SkillInterfacePlugin : InterfacePlugin {
                         }
                     }
                 }
+                println("player = [${player}], interfaceId = [${interfaceId}], componentId = [${componentId}], itemId = [${itemId}], slotId = [${slotId}], packetId = [${packetId}]")
                 val skillId = getSkillId(componentId)
-                if ((GameFlags.pvpWorld && PvPWorld.isAtSafeZone(player)) && (isSettableSkill(componentId) && GameFlags.pvpWorld) && skillId != -1) {
+                if ((GameFlags.pvpWorld) && (isSettableSkill(componentId) && GameFlags.pvpWorld) && skillId != -1) {
                     val name = SKILL_NAME[skillId]
 
+                    if (!PvPWorld.isAtSafeZone(player)) {
+                        player.dialogueManager.startDialogue(
+                            SimpleNPCMessage::class.java, 945,
+                            "Please go to a safe zone before changing your levels."
+                        )
+                        return true
+                    }
                     if (player.isUnderCombat || player.equipment.isWearingArmour || player.isDead) {
                         player.dialogueManager.startDialogue(
                             SimpleNPCMessage::class.java, 945,
@@ -277,25 +285,40 @@ class SkillInterfacePlugin : InterfacePlugin {
                                         return
                                     }
 
-                                    if (skillId == HITPOINTS && level < 10) {
-                                        player.dialogueManager.startDialogue(
-                                            SimpleNPCMessage::class.java, 945,
-                                            "Nice try, noob.",
-                                        )
-                                        return
+                                    when (skillId) {
+                                        HITPOINTS -> {
+                                            if (level < 10) {
+                                                player.dialogueManager.startDialogue(
+                                                    SimpleNPCMessage::class.java, 945,
+                                                    "Nice try, noob.",
+                                                )
+                                                return
+                                            }
+                                        }
+                                        PRAYER -> {
+                                            if (level > 70) {
+                                                player.dialogueManager.startDialogue(
+                                                    SimpleNPCMessage::class.java, 945,
+                                                    "The highest prayer level you can set is 70.",
+                                                )
+                                                return
+                                            }
+                                        }
+                                        else -> {
+                                            player.skills[skillId] = level
+                                            player.skills.setXp(skillId, getXPForLevel(level).toDouble())
+                                            player.setNextGraphics(Graphics(1320))
+                                            player.appearance.generateAppearanceData()
+
+                                            player.dialogueManager.startDialogue(
+                                                SimpleNPCMessage::class.java, 945,
+                                                "Your $name level has just been set to $level!",
+                                                "Enjoy!"
+                                            )
+                                        }
                                     }
 
 
-                                    player.skills[skillId] = level
-                                    player.skills.setXp(skillId, getXPForLevel(level).toDouble())
-                                    player.setNextGraphics(Graphics(1320))
-                                    player.appearance.generateAppearanceData()
-
-                                    player.dialogueManager.startDialogue(
-                                        SimpleNPCMessage::class.java, 945,
-                                        "Your $name level has just been set to $level!",
-                                        "Enjoy!"
-                                    )
                                 }
                             })
                         }
@@ -396,9 +419,9 @@ class SkillInterfacePlugin : InterfacePlugin {
         registerInterfacePlugin(320, 499)
     }
 
-    fun isSettableSkill(componentId: Int): Boolean {
+    private fun isSettableSkill(componentId: Int): Boolean {
         return when (componentId) {
-            200, 11, 28, 52, 93, 193 -> {
+            200, 76, 11, 28, 52, 93, 193 -> {
                 true
             }
             else -> {
