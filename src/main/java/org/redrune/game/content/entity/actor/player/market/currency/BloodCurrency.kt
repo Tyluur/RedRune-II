@@ -1,46 +1,43 @@
-package org.redrune.game.content.entity.actor.player.market.currency;
+package org.redrune.game.content.entity.actor.player.market.currency
 
-import org.redrune.cache.loaders.ItemDefinitions;
-import org.redrune.game.content.entity.actor.player.market.ShopCurrency;
-import org.redrune.game.entity.actor.player.Player;
+import org.redrune.cache.loaders.ItemDefinitions
+import org.redrune.game.content.entity.actor.player.market.ShopCurrency
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.utility.constants.ItemConstants
 
 /**
- * @author Tyluur <itstyluur@icloud.com>
+ * @author Tyluur <itstyluur></itstyluur>@icloud.com>
  * @since 6/15/2017
  */
-public class BloodCurrency implements ShopCurrency {
-
-    @Override
-    public String name() {
-        return "blood money";
+class BloodCurrency : ShopCurrency {
+    override fun name(): String {
+        return "blood money"
     }
 
-    @Override
-    public int getCurrencyAmount(Player player) {
-        return player.getInventory().getItems().getNumberOf(COINS);
+    override fun getCurrencyAmount(player: Player): Int {
+        return player.inventory.items.getNumberOf(ItemConstants.COINS)
     }
 
-    @Override
-    public void reduceCurrency(Player player, int amount) {
-        player.getInventory().deleteItem(COINS, amount);
+    override fun reduceCurrency(player: Player, amount: Int) {
+        player.inventory.deleteItem(ItemConstants.COINS, amount)
     }
 
-    @Override
-    public int getBuyPrice(int itemId) {
-        return ItemDefinitions.getItemDefinitions(itemId).getValue();
-    }
-
-    @Override
-    public int stockAmount(int itemId) {
-        switch (itemId) {
-            case 15273:
-                return 10;
+    override fun getBuyPrice(itemId: Int): Int {
+        when (itemId) {
+            else -> {
+                return ItemDefinitions.getItemDefinitions(itemId).value
+            }
         }
-        return 1;
     }
 
-    @Override
-    public int itemId() {
-        return COINS;
+    override fun stockAmount(itemId: Int): Int {
+        when (itemId) {
+            15273 -> return 10
+        }
+        return 1
+    }
+
+    override fun itemId(): Int {
+        return ItemConstants.COINS
     }
 }
