@@ -33,7 +33,7 @@ object GameConstants {
      * The location that players who die spawn at
      */
     @JvmField
-    val RESPAWN_TILE = WorldTile(3209, 3219, 0)
+    val RESPAWN_TILE = WorldTile(3209, 3219, 2)
 
     /**
      * If we're hosted on linux

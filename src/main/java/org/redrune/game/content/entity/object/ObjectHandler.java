@@ -422,6 +422,9 @@ public class ObjectHandler {
                         }
                         break;
                     default:
+                        if (option == null) {
+                            return;
+                        }
                         if (PluginRepository.handleObject(player, object, option)) {
                             return;
                         }
@@ -452,6 +455,9 @@ public class ObjectHandler {
             } else if (object.getId() == 34384 || object.getId() == 34383 || object.getId() == 14011 || object.getId() == 7053 || object.getId() == 34387 || object.getId() == 34386 || object.getId() == 34385) {
                 Thieving.handleStalls(player, object);
             } else {
+                if (option == null) {
+                    return;
+                }
                 if (PluginRepository.handleObject(player, object, option)) {
                     return;
                 }
