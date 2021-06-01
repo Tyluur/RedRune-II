@@ -1808,7 +1808,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
             case 13902: // statius hammer
                 return 35;
             default:
-                return 0;
+                return -1;
         }
     }
 

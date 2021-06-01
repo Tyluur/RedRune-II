@@ -27,14 +27,14 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
         val combatStyle = source.combatDefinitions.attackStyle
         if (source.combatDefinitions.isUsingSpecialAttack) {
             val optional = getSpecialPlugin(weaponId)
-            var energy = CombatAlgorithm.getSpecialAmount(weaponId)
-            if (energy == 0 || !optional.isPresent) {
+            var energy = CombatAlgorithm.getSpecialAmount(weaponId).toDouble()
+            if (energy == -1.0 || !optional.isPresent) {
                 source.packets.sendMessage("This weapon has no special attack registered; please report this on forums.")
                 return false
             }
-            /*       if (source.combatDefinitions.hasRingOfVigour()) {
-                       energy *= TODO("Could not convert int literal '0.9' to Kotlin")
-                   }*/
+            if (source.combatDefinitions.hasRingOfVigour()) {
+                energy *= 0.9
+            }
             source.combatDefinitions.switchUsingSpecialAttack()
             if (source.combatDefinitions.specialAttackPercentage < energy) {
                 source.packets.sendMessage("You don't have enough power left.")
@@ -42,7 +42,7 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
             }
             val plugin = optional.get()
             plugin.fire(source, target, this)
-            source.combatDefinitions.decreaseSpecialEnergy(energy)
+            source.combatDefinitions.decreaseSpecialEnergy(energy.toInt())
         } else {
             val weaponName = if (weaponId == -1) "unarmed" else ItemDefinitions.getItemDefinitions(weaponId).name
 
@@ -126,7 +126,7 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
         val combatStyle =
             if (source.isPlayer) source.toPlayer().combatDefinitions.attackStyle else source.toNPC().combatDefinitions.attackStyle
         val maximumHit = calculator.getMaximumHit(source, multiplier) * 1.35
-        val attackBonus = calculator.getAttackBonus(source) * 2.5
+        val attackBonus = calculator.getAttackBonus(source)
         val defenceBonus = calculator.getDefenceBonus(target, weaponId, combatStyle)
         return CombatRoll.randomizeHit(maximumHit, attackBonus, defenceBonus)
     }

@@ -14,7 +14,6 @@ import org.redrune.utility.constants.MagicConstants
 import org.redrune.utility.constants.key.AttributeKey
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.map.Coordinates
-import plugin.rsinterface.TeleportationInterfacePlugin.TravelLocations
 import java.io.Serializable
 import java.util.*
 
@@ -99,8 +98,8 @@ class TeleportationInterfacePlugin : InterfacePlugin {
         PVP("PvP") {
             override fun populateDestinations() {
                 add(
-                    "Revenant Cave",
-                    Coordinates.REVENANTS_CAVE,
+//                    "Revenant Cave",
+//                    Coordinates.REVENANTS_CAVE,
                     "East Dragons",
                     Coordinates.EAST_DRAGONS,
                     "West Dragons",
