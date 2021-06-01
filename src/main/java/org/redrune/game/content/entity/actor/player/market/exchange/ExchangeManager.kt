@@ -25,7 +25,7 @@ object ExchangeManager {
     /**
      * The list of items that can be exchanged
      */
-    private val exchangeList = mutableListOf<Int>()
+    private val exchangeables = mutableMapOf<Int, Boolean>()
 
     fun loadExchangeList() {
         val text = Files.readAllLines(
@@ -37,9 +37,10 @@ object ExchangeManager {
                 continue
             }
             val split = line.split(": ".toRegex()).toTypedArray()
-            exchangeList.add(split[1].toInt())
+            val itemId = split[1].toInt()
+            exchangeables[itemId] = true
         }
-        logger.info { "Registered ${exchangeList.size} items that can be bought from the grand exchange." }
+        logger.info { "Registered ${exchangeables.size} items that can be bought from the grand exchange." }
     }
 
     /**
@@ -160,7 +161,7 @@ object ExchangeManager {
      * Checks if an item is buyable from the grand exchange
      */
     fun isBuyable(itemId: Int): Boolean {
-        return exchangeList.contains(itemId)
+        return exchangeables[itemId] != null
     }
 
     /**
