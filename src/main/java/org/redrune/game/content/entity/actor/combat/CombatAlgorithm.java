@@ -2314,7 +2314,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
      * @param runes  The runes
      */
     public static boolean checkSpellRequirements(Player player, int level, boolean delete, int... runes) {
-        if (player.getSkills().getLevel(SkillConstants.MAGIC) < level) {
+        if (player.getSkills().getLevelForXp(SkillConstants.MAGIC) < level) {
             player.getPackets().sendMessage("Your Magic level is not high enough for this spell.");
             return false;
         }

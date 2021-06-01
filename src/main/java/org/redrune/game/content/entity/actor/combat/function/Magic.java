@@ -89,7 +89,7 @@ public class Magic {
 		if (player.getLocks().isTeleportLocked()) {
 			return false;
 		}
-		if (player.getSkills().getLevel(SkillConstants.MAGIC) < level) {
+		if (player.getSkills().getLevelForXp(SkillConstants.MAGIC) < level) {
 			player.getPackets().sendMessage("Your Magic level is not high enough for this spell.");
 			return false;
 		}

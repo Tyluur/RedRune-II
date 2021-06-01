@@ -30,7 +30,7 @@ class VengeanceSpellPlugin : RegularSpellPlugin {
 
     override fun cast(player: Player, target: Actor) {
         val lastTimeCast = player.getTemporaryAttribute("last_veng_time", -1L)
-        if (player.skills.getLevel(SkillConstants.MAGIC) < 94) {
+        if (player.skills.getLevelForXp(SkillConstants.MAGIC) < 94) {
             player.packets.sendMessage("Your Magic level is not high enough for this spell.")
             return
         } else if (lastTimeCast != null && lastTimeCast + 30000 > System.currentTimeMillis()) {

@@ -250,7 +250,6 @@ class SkillInterfacePlugin : InterfacePlugin {
                         }
                     }
                 }
-                println("player = [${player}], interfaceId = [${interfaceId}], componentId = [${componentId}], itemId = [${itemId}], slotId = [${slotId}], packetId = [${packetId}]")
                 val skillId = getSkillId(componentId)
                 if ((GameFlags.pvpWorld) && (isSettableSkill(componentId) && GameFlags.pvpWorld) && skillId != -1) {
                     val name = SKILL_NAME[skillId]

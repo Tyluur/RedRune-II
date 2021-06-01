@@ -426,7 +426,6 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         }
 
         val freeSlots = player.inventory.freeSlots
-        logger.info { "Freeslots: $freeSlots" }
         if (freeSlots == 0) {
             player.packets.sendMessage("Not enough space in your inventory.")
             return

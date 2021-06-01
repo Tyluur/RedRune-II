@@ -16,7 +16,6 @@ class SupportInterfacePlugin : InterfacePlugin {
         slotId: Int,
         packetId: Int
     ): Boolean {
-        println("player = [${player}], interfaceId = [${interfaceId}], componentId = [${componentId}], itemId = [${itemId}], slotId = [${slotId}], packetId = [${packetId}]")
         return true
     }
 }
