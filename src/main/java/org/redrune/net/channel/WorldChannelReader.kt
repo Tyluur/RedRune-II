@@ -11,7 +11,7 @@ import org.redrune.utility.constants.NetworkConstants
 import org.redrune.utility.functions.Misc
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/19/2017
  */
 @Sharable
@@ -21,12 +21,13 @@ class WorldChannelReader : SimpleChannelInboundHandler<Packet>() {
     override fun channelRead0(ctx: ChannelHandlerContext, packet: Packet) {
         try {
             val session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get()
-            // makes sure we have a session
+
             Preconditions.checkArgument(session != null, "No session set for channel.")
-            // the player of the session
+
             val player = session!!.player ?: return
-            // make sure we have a player
+
             player.attributes.packetsDecoderPing = Misc.currentTimeMillis()
+
             IncomingPacketRepository.handlePacket(player, packet)
         } catch (e: Exception) {
             e.printStackTrace()

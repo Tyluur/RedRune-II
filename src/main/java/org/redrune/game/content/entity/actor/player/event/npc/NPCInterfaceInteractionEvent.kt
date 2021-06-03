@@ -1,185 +1,127 @@
-package org.redrune.game.content.entity.actor.player.event.npc;
+package org.redrune.game.content.entity.actor.player.event.npc
 
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
-import org.redrune.game.content.entity.actor.player.action.impl.PlayerCombatAction;
-import org.redrune.game.content.entity.actor.player.event.Event;
-import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots;
-import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
-import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.actor.player.data.PlayerInventory;
-import org.redrune.game.entity.actor.player.data.RouteEvent;
-import org.redrune.game.entity.item.Item;
-import org.redrune.game.global.WorldTile;
-import org.redrune.utility.functions.Misc;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
+import org.redrune.game.content.entity.actor.player.action.impl.PlayerCombatAction
+import org.redrune.game.content.entity.actor.player.event.Event
+import org.redrune.game.content.entity.actor.player.skills.fishing.Fishing.FishingSpots
+import org.redrune.game.content.plugin.PluginRepository.handleItemOnNPC
+import org.redrune.game.entity.actor.npc.NPC
+import org.redrune.game.entity.actor.npc.impl.familiar.Familiar
+import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.actor.player.data.PlayerInventory
+import org.redrune.game.entity.actor.player.data.RouteEvent
+import org.redrune.game.global.WorldTile
+import org.redrune.utility.functions.Misc
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
-public class NPCInterfaceInteractionEvent extends Event {
-	
-	/**
-	 * The npc we are casting the spell on
-	 */
-	private final NPC npc;
-	
-	/**
-	 * The details of the interface the spell is coming from
-	 */
-	private final int interfaceId, componentId, slot;
-	
-	public NPCInterfaceInteractionEvent(NPC npc, int interfaceId, int componentId, int slot) {
-		this.npc = npc;
-		this.interfaceId = interfaceId;
-		this.componentId = componentId;
-		this.slot = slot;
-	}
-	
-	@Override
-	public void run(Player player) {
-		switch (interfaceId) {
-			case PlayerInventory.INVENTORY_INTERFACE:
-				Item item = player.getInventory().getItem(slot);
-				if (item == null) {
-					return;
-				}
-				if (!player.getInventory().containsItem(item.getId(), item.getAmount())) {
-					return;
-				}
-				player.setNextFaceActor(npc);
-				player.setRouteEvent(new RouteEvent(npc, () -> {
-					npc.resetWalkSteps();
-					FishingSpots spot = FishingSpots.forId(npc.getId() | 1 << 24);
-					if (spot != null) {
-						return;
-					}
-					player.getInteractionManager().startInteraction(npc); // if its a spot, they dont interact with players
-					if (!player.getControllerManager().processItemOnNPC(npc, item)) {
-						return;
-					}
-					if (PluginRepository.handleItemOnNPC(player, item, npc)) {
-						return;
-					}
-					player.getPackets().sendMessage("Nothing interesting happens.");
-				}));
-				break;
-			case 662:
-			case 747:
-				if (player.getFamiliar() == null) {
-					return;
-				}
-				player.resetWalkSteps();
-				if ((interfaceId == 747 && componentId == 14) || (interfaceId == 662 && componentId == 65) || (interfaceId == 662 && componentId == 74) || interfaceId == 747 && componentId == 17 || interfaceId == 747 && componentId == 23) {
-					if ((interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 17)) {
-						if (player.getFamiliar().getSpecialAttack() != SpecialAttack.ENTITY) {
-							return;
-						}
-					}
-					if (npc == player.getFamiliar()) {
-						player.getPackets().sendMessage("You can't attack your own familiar.");
-						return;
-					}
-					if (!player.getFamiliar().canAttack(npc)) {
-						player.getPackets().sendMessage("You can only use your familiar in a multi-zone area.");
-						return;
-					} else {
-						player.getFamiliar().setSpecial(interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 17);
-						player.getFamiliar().setTarget(npc);
-					}
-				}
-				break;
-			case 192:
-			case 193:
-				switch (componentId) {
-					case 25: // air strike
-					case 28: // water strike
-					case 30: // earth strike
-					case 32: // fire strike
-					case 34: // air bolt
-					case 42: // earth bolt
-					case 45: // fire bolt
-					case 49: // air blast
-					case 52: // water blast
-					case 58: // earth blast
-					case 63: // fire blast
-					case 70: // air wave
-					case 73: // water wave
-					case 77: // earth wave
-					case 80: // fire wave
-					case 84: // air surge
-					case 87: // water surge
-					case 89: // earth surge
-					case 66: // Sara Strike
-					case 67: // Guthix Claws
-					case 68: // Flame of Zammy
-					case 93:
-					case 91: // fire surge
-					case 99: // storm of Armadyl
-					case 55: // snare
-					case 81: // entangle
-					case 24:
-					case 20:
-					case 26:
-					case 22:
-					case 29:
-					case 33:
-					case 21:
-					case 31:
-					case 35:
-					case 27:
-					case 23:
-					case 75:
-					case 78:
-					case 82:
-					case 86: // teleblock
-					case 36: // bind
-					case 37:
-					case 38:
-					case 39: // water bolt
-						if (CombatAlgorithm.checkCombatSpell(player, componentId, 1, false)) {
-							player.setNextFaceWorldTile(new WorldTile(npc.getCoordFaceX(npc.getSize()), npc.getCoordFaceY(npc.getSize()), npc.getPlane()));
-							if (!player.getControllerManager().canAttack(npc)) {
-								return;
-							}
-							player.setNextFaceActor(npc);
-							if (npc instanceof Familiar) {
-								Familiar familiar = (Familiar) npc;
-								if (familiar == player.getFamiliar()) {
-									player.getPackets().sendMessage("You can't attack your own familiar.");
-									return;
-								}
-								if (!familiar.canAttack(player)) {
-									player.getPackets().sendMessage("You can't attack this npc.");
-									return;
-								}
-							} else if (!npc.isForceMultiAttacked()) {
-								if (!npc.isInMultiArea() || !player.isInMultiArea()) {
-									if (player.getAttackedBy() != npc && player.getAttackedByDelay() > Misc.currentTimeMillis()) {
-										player.getPackets().sendMessage("I'm already under attack.");
-										return;
-									}
-									if (npc.getAttackedBy() != player && npc.getAttackedByDelay() > Misc.currentTimeMillis()) {
-										player.getPackets().sendMessage("Someone else is already fighting that.");
-										return;
-									}
-								}
-							}
-							if (!player.getControllerManager().canAttack(npc)) {
-								return;
-							}
-							player.getActionManager().setAction(new PlayerCombatAction(npc));
-						}
-						break;
-				}
-				break;
-		}
-	}
-	
-	@Override
-	public EventPolicy[] policies() {
-		return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK);
-	}
+class NPCInterfaceInteractionEvent(
+    /**
+     * The npc we are casting the spell on
+     */
+    private val npc: NPC,
+    /**
+     * The details of the interface the spell is coming from
+     */
+    private val interfaceId: Int, private val componentId: Int, private val slot: Int
+) : Event() {
+    override fun run(player: Player) {
+        when (interfaceId) {
+            PlayerInventory.INVENTORY_INTERFACE -> {
+                val item = player.inventory.getItem(slot) ?: return
+                if (!player.inventory.containsItem(item.id, item.amount)) {
+                    return
+                }
+                player.setNextFaceActor(npc)
+                player.setRouteEvent(RouteEvent(npc, label@ Runnable {
+                    npc.resetWalkSteps()
+                    val spot = FishingSpots.forId(npc.id or 1 shl 24)
+                    if (spot != null) {
+                        return@Runnable
+                    }
+                    player.interactionManager.startInteraction(npc) // if its a spot, they dont interact with players
+                    if (!player.controllerManager.processItemOnNPC(npc, item)) {
+                        return@Runnable
+                    }
+                    if (handleItemOnNPC(player, item, npc)) {
+                        return@Runnable
+                    }
+                    player.packets.sendMessage("Nothing interesting happens.")
+                }))
+            }
+            662, 747 -> {
+                if (player.familiar == null) {
+                    return
+                }
+                player.resetWalkSteps()
+                if (interfaceId == 747 && componentId == 14 || interfaceId == 662 && componentId == 65 || interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 17 || interfaceId == 747 && componentId == 23) {
+                    if (interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 17) {
+                        if (player.familiar.specialAttack != SpecialAttack.ENTITY) {
+                            return
+                        }
+                    }
+                    if (npc === player.familiar) {
+                        player.packets.sendMessage("You can't attack your own familiar.")
+                        return
+                    }
+                    if (!player.familiar.canAttack(npc)) {
+                        player.packets.sendMessage("You can only use your familiar in a multi-zone area.")
+                        return
+                    } else {
+                        player.familiar.setSpecial(interfaceId == 662 && componentId == 74 || interfaceId == 747 && componentId == 17)
+                        player.familiar.setTarget(npc)
+                    }
+                }
+            }
+            192, 193 -> when (componentId) {
+                25, 28, 30, 32, 34, 42, 45, 49, 52, 58, 63, 70, 73, 77, 80, 84, 87, 89, 66, 67, 68, 93, 91, 99, 55, 81, 24, 20, 26, 22, 29, 33, 21, 31, 35, 27, 23, 75, 78, 82, 86, 36, 37, 38, 39 -> if (CombatAlgorithm.checkCombatSpell(
+                        player,
+                        componentId,
+                        1,
+                        false
+                    )
+                ) {
+                    player.nextFaceWorldTile =
+                        WorldTile(npc.getCoordFaceX(npc.size), npc.getCoordFaceY(npc.size), npc.plane)
+                    if (!player.controllerManager.canAttack(npc)) {
+                        return
+                    }
+                    player.setNextFaceActor(npc)
+                    if (npc is Familiar) {
+                        val familiar = npc
+                        if (familiar === player.familiar) {
+                            player.packets.sendMessage("You can't attack your own familiar.")
+                            return
+                        }
+                        if (!familiar.canAttack(player)) {
+                            player.packets.sendMessage("You can't attack this npc.")
+                            return
+                        }
+                    } else if (!npc.isForceMultiAttacked) {
+                        if (!npc.isInMultiArea || !player.isInMultiArea) {
+                            if (player.attackedBy !== npc && player.attackedByDelay > Misc.currentTimeMillis()) {
+                                player.packets.sendMessage("I'm already under attack.")
+                                return
+                            }
+                            if (npc.attackedBy !== player && npc.attackedByDelay > Misc.currentTimeMillis()) {
+                                player.packets.sendMessage("Someone else is already fighting that.")
+                                return
+                            }
+                        }
+                    }
+                    if (!player.controllerManager.canAttack(npc)) {
+                        return
+                    }
+                    player.actionManager.action = PlayerCombatAction(npc)
+                }
+            }
+        }
+    }
+
+    override fun policies(): Array<EventPolicy> {
+        return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK)
+    }
 }

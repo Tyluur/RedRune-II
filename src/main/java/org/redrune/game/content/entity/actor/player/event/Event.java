@@ -9,7 +9,7 @@ import org.redrune.game.entity.actor.player.Player;
  * @since 2019-01-25
  */
 public abstract class Event {
-	
+
 	/**
 	 * Runs the event
 	 *
@@ -17,17 +17,17 @@ public abstract class Event {
 	 * 		The player running the event
 	 */
 	public abstract void run(Player player);
-	
+
 	/**
 	 * The policies of the event
 	 */
 	public abstract EventPolicy[] policies();
-	
+
 	/**
 	 * If the event has started
 	 */
 	protected EventState state = EventState.CREATED;
-	
+
 	/**
 	 * Converts varags arguments into an array
 	 *
@@ -37,7 +37,7 @@ public abstract class Event {
 	protected EventPolicy[] arguments(EventPolicy... policies) {
 		return policies;
 	}
-	
+
 	/**
 	 * Fires the preconditonal policies for the event
 	 *
@@ -74,7 +74,7 @@ public abstract class Event {
 		STARTED,
 		FINISHED
 	}
-	
+
 	/**
 	 * The policies for the event that must be followed prior to execution
 	 */

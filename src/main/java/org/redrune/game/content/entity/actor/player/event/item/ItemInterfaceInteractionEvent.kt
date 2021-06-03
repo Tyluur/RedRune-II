@@ -1,95 +1,76 @@
-package org.redrune.game.content.entity.actor.player.event.item;
+package org.redrune.game.content.entity.actor.player.event.item
 
-import org.redrune.game.content.entity.actor.player.event.Event;
-import org.redrune.game.content.entity.actor.player.skills.crafting.LeatherCrafting;
-import org.redrune.game.content.entity.actor.player.skills.herblore.Herblore;
-import org.redrune.game.content.plugin.PluginRepository;
-import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack;
-import org.redrune.game.entity.actor.player.Player;
-import org.redrune.game.entity.actor.player.data.PlayerInventory;
-import org.redrune.game.entity.item.Item;
-import org.redrune.game.entity.item.ItemOnItemHandler;
-import org.redrune.game.entity.item.ItemOnItemHandler.ItemOnItem;
+import org.redrune.game.content.entity.actor.player.event.Event
+import org.redrune.game.content.entity.actor.player.skills.crafting.LeatherCrafting
+import org.redrune.game.content.entity.actor.player.skills.herblore.Herblore
+import org.redrune.game.content.plugin.PluginRepository.handleItemOnItem
+import org.redrune.game.entity.actor.npc.impl.familiar.Familiar.SpecialAttack
+import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.actor.player.data.PlayerInventory
+import org.redrune.game.entity.item.ItemOnItemHandler
+import org.redrune.game.entity.item.ItemOnItemHandler.ItemOnItem
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-06
  */
-public class ItemInterfaceInteractionEvent extends Event {
-	
-	private final int interfaceId;
-	
-	private final int itemUsedId;
-	
-	private final int fromSlot;
-	
-	private final int interfaceId2;
-	
-	private final int itemUsedWithId;
-	
-	private final int toSlot;
-	
-	public ItemInterfaceInteractionEvent(int interfaceId, int itemUsedId, int fromSlot, int interfaceId2, int itemUsedWithId, int toSlot) {
-		this.interfaceId = interfaceId;
-		this.itemUsedId = itemUsedId;
-		this.fromSlot = fromSlot;
-		this.interfaceId2 = interfaceId2;
-		this.itemUsedWithId = itemUsedWithId;
-		this.toSlot = toSlot;
-	}
-	
-	@Override
-	public void run(Player player) {
-		if ((interfaceId2 == 747 || interfaceId2 == 662) && interfaceId == PlayerInventory.INVENTORY_INTERFACE) {
-			if (player.getFamiliar() != null) {
-				player.getFamiliar().setSpecial(true);
-				if (player.getFamiliar().getSpecialAttack() == SpecialAttack.ITEM) {
-					if (player.getFamiliar().hasSpecialOn()) {
-						player.getFamiliar().submitSpecial(toSlot);
-					}
-				}
-			}
-			return;
-		}
-		
-		if (interfaceId == PlayerInventory.INVENTORY_INTERFACE && interfaceId == interfaceId2 && !player.getInterfaceManager().containsInventoryInter()) {
-			if (toSlot >= 28 || fromSlot >= 28) {
-				return;
-			}
-			Item usedWith = player.getInventory().getItem(toSlot);
-			Item itemUsed = player.getInventory().getItem(fromSlot);
-			if (itemUsed == null || usedWith == null || itemUsed.getId() != itemUsedId || usedWith.getId() != itemUsedWithId) {
-				return;
-			}
-			if (!player.getControllerManager().canUseItemOnItem(itemUsed, usedWith)) {
-				return;
-			}
-			if (PluginRepository.handleItemOnItem(player, itemUsed, usedWith)) {
-				return;
-			}
-			int herblore = Herblore.isHerbloreSkill(itemUsed, usedWith);
-			if (herblore > -1) {
-				player.getDialogueManager().startDialogue("HerbloreD", herblore, itemUsed, usedWith);
-				return;
-			}
-			if (itemUsed.getId() == LeatherCrafting.NEEDLE.getId() || usedWith.getId() == LeatherCrafting.NEEDLE.getId()) {
-				if (LeatherCrafting.handleItemOnItem(player, itemUsed, usedWith)) {
-					return;
-				}
-			}
-			ItemOnItem itemOnItem = ItemOnItem.forId(itemUsedId);
-			if (itemOnItem != null) {
-				if (itemUsedWithId == itemOnItem.getItem2()) {
-					ItemOnItemHandler.handleItemOnItem(player, itemOnItem, usedWith.getId(), itemUsed.getId());
-				}
-				return;
-			}
-			player.getPackets().sendMessage("Nothing interesting happens.");
-		}
-	}
-	
-	@Override
-	public EventPolicy[] policies() {
-		return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK);
-	}
+class ItemInterfaceInteractionEvent(
+    private val interfaceId: Int,
+    private val itemUsedId: Int,
+    private val fromSlot: Int,
+    private val interfaceId2: Int,
+    private val itemUsedWithId: Int,
+    private val toSlot: Int
+) : Event() {
+    override fun run(player: Player) {
+        if ((interfaceId2 == 747 || interfaceId2 == 662) && interfaceId == PlayerInventory.INVENTORY_INTERFACE) {
+            if (player.familiar != null) {
+                player.familiar.setSpecial(true)
+                if (player.familiar.specialAttack == SpecialAttack.ITEM) {
+                    if (player.familiar.hasSpecialOn()) {
+                        player.familiar.submitSpecial(toSlot)
+                    }
+                }
+            }
+            return
+        }
+        if (interfaceId == PlayerInventory.INVENTORY_INTERFACE && interfaceId == interfaceId2 && !player.interfaceManager.containsInventoryInter()) {
+            if (toSlot >= 28 || fromSlot >= 28) {
+                return
+            }
+            val usedWith = player.inventory.getItem(toSlot)
+            val itemUsed = player.inventory.getItem(fromSlot)
+            if (itemUsed == null || usedWith == null || itemUsed.id != itemUsedId || usedWith.id != itemUsedWithId) {
+                return
+            }
+            if (!player.controllerManager.canUseItemOnItem(itemUsed, usedWith)) {
+                return
+            }
+            if (handleItemOnItem(player, itemUsed, usedWith)) {
+                return
+            }
+            val herblore = Herblore.isHerbloreSkill(itemUsed, usedWith)
+            if (herblore > -1) {
+                player.dialogueManager.startDialogue("HerbloreD", herblore, itemUsed, usedWith)
+                return
+            }
+            if (itemUsed.id == LeatherCrafting.NEEDLE.id || usedWith.id == LeatherCrafting.NEEDLE.id) {
+                if (LeatherCrafting.handleItemOnItem(player, itemUsed, usedWith)) {
+                    return
+                }
+            }
+            val itemOnItem = ItemOnItem.forId(itemUsedId)
+            if (itemOnItem != null) {
+                if (itemUsedWithId == itemOnItem.item2) {
+                    ItemOnItemHandler.handleItemOnItem(player, itemOnItem, usedWith.id, itemUsed.id)
+                }
+                return
+            }
+            player.packets.sendMessage("Nothing interesting happens.")
+        }
+    }
+
+    override fun policies(): Array<EventPolicy> {
+        return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK)
+    }
 }
