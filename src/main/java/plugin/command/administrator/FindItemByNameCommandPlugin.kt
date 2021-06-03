@@ -4,6 +4,7 @@ import org.redrune.cache.loaders.ItemDefinitions
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.constants.ColorConstants
+import org.redrune.utility.constants.InterfaceConstants
 import org.redrune.utility.functions.Misc
 import plugin.command.CommandManifest
 import java.util.*
@@ -31,7 +32,7 @@ class FindItemByNameCommandPlugin : CommandPlugin() {
                 continue
             }
             // the name of the item
-            val name = definition.name.toLowerCase()
+            val name = definition.name.lowercase(Locale.getDefault())
             var added = false
             // the name has the identifier we want
             if (name.contains(identifier)) {
@@ -50,15 +51,18 @@ class FindItemByNameCommandPlugin : CommandPlugin() {
                 continue
             }
             found.add(
-                "[<col=FF0000>" + itemId + "</col>] <col=" + ColorConstants.LIGHT_BLUE + ">" + definition.name + "</col> inventory=" + Arrays.toString(
-                    definition.inventoryOptions
-                ) + " ground=" + Arrays.toString(definition.groundOptions)
+                "[<col=FF0000>" + itemId + "</col>] <col=" + ColorConstants.LIGHT_BLUE + ">" + definition.name + "</col>"
             )
         }
         // shows the entries found
         found.forEach(Consumer { entry: String? -> player.packets.sendConsoleMessage(entry) })
+
+        if (console) {
+            sendResponse(player, "Found " + found.size + " items by name '" + identifier + "'.", console)
+        } else {
+            InterfaceConstants.sendQuestScroll(player, "Dusk", *found.toTypedArray())
+        }
         // sends a response with the amount of entries found
-        sendResponse(player, "Found " + found.size + " items by name '" + identifier + "'.", console)
     }
 
     override fun identifiers(): Array<String> {

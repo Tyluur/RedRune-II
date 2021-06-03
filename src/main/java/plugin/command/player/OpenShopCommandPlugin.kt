@@ -1,4 +1,4 @@
-package plugin.command.administrator
+package plugin.command.player
 
 import org.redrune.game.content.entity.actor.player.market.ShopRepository
 import org.redrune.game.content.plugin.type.CommandPlugin
@@ -17,6 +17,6 @@ class OpenShopCommandPlugin : CommandPlugin() {
     }
 
     override fun identifiers(): Array<String> {
-        return arguments("openshop")
+        return arguments("openshop", "shop")
     }
 }
