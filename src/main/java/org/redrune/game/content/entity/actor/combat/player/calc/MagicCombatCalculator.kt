@@ -1,67 +1,66 @@
-package org.redrune.game.content.entity.actor.combat.player.calc;
+package org.redrune.game.content.entity.actor.combat.player.calc
 
-import org.redrune.game.content.entity.actor.combat.CombatAlgorithm;
-import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator;
-import org.redrune.game.entity.actor.Actor;
-import org.redrune.game.entity.actor.npc.NPC;
-import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
+import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator
+import org.redrune.game.entity.actor.Actor
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 9/8/2017
  */
-public class MagicCombatCalculator extends AbstractCombatCalculator {
-	
-	@Override
-	public double getAttackBonus(Actor actor) {
-		// the prayer level bonus
-		final int level = actor.isPlayer() ? actor.toPlayer().getSkills().getLevel(MAGIC) : actor.toNPC().getCombatDefinitions().getMagicLevel();
-		// the prayer bonus
-		final double prayer = actor.isPlayer() ? actor.toPlayer().getPrayer().getMageMultiplier() : 1.0D;
-		// the calculated boost
-		double effective = Math.floor(level * prayer);
-		// the bonus from your equipment
-		int bonus = actor.isPlayer() ? actor.toPlayer().getCombatDefinitions().getBonus(MAGIC_ATTACK) : actor.toNPC().getBonus(MAGIC_ATTACK);
-		double voidAccuracy = 1.0;
-		if (actor.isPlayer() && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11663, 11674)) {
-			voidAccuracy = 1.45;
-		}
-		return (int) Math.floor(((effective + 8) * (bonus + 64)) / 10) * voidAccuracy;
-	}
-	
-	@Override
-	public double getDefenceBonus(Actor actor, int weaponId, int attackStyle) {
-		// the targets defence level
-		int defenceLevel;
-		// the targets magic level
-		int magicLevel;
-		// the targets prayer boost
-		double prayer;
-		// the targets magic defence bonus
-		double bonus;
-		if (actor.isPlayer()) {
-			Player player = actor.toPlayer();
-			defenceLevel = player.getSkills().getLevel(DEFENCE);
-			magicLevel = player.getSkills().getLevel(MAGIC);
-			prayer = actor.toPlayer().getPrayer().getMageMultiplier();
-			bonus = player.getCombatDefinitions().getBonus(MAGIC_DEFENCE);
-		} else {
-			NPC npc = actor.toNPC();
-			int combatLevel = npc.getCombatLevel();
-			defenceLevel = combatLevel / 2;
-			magicLevel = combatLevel / 2;
-			prayer = 1.0;
-			bonus = npc.getBonus(MAGIC_DEFENCE);
-		}
-		// the effective calculation
-		double effective = Math.floor((defenceLevel * prayer) * 0.3) + (magicLevel * 0.7);
-		// the equipment calculation [based on magic defence]
-		int equipment = (int) (bonus + 5);
-		return (int) Math.floor(((effective + 8) * (equipment + 64)) / 10);
-	}
-	
-	@Override
-	public int getMaximumHit(Actor actor, double multiplier) {
-		return -1;
-	}
+class MagicCombatCalculator : AbstractCombatCalculator() {
+
+    override fun getAttackBonus(actor: Actor): Double {
+        // the prayer level bonus
+        val level =
+            if (actor.isPlayer) actor.toPlayer().skills.getLevel(MAGIC) else actor.toNPC().combatDefinitions.magicLevel
+        // the prayer bonus
+        val prayer = if (actor.isPlayer) actor.toPlayer().prayer.mageMultiplier else 1.0
+        // the calculated boost
+        val effective = Math.floor(level * prayer)
+        // the bonus from your equipment
+        val bonus =
+            if (actor.isPlayer) actor.toPlayer().combatDefinitions.getBonus(MAGIC_ATTACK) else actor.toNPC().getBonus(
+                MAGIC_ATTACK
+            )
+        var voidAccuracy = 1.0
+        if (actor.isPlayer && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11663, 11674)) {
+            voidAccuracy = 1.45
+        }
+        return Math.floor((effective + 8) * (bonus + 64) / 10).toInt() * voidAccuracy
+    }
+
+    override fun getDefenceBonus(actor: Actor, weaponId: Int, attackStyle: Int): Double {
+        // the targets defence level
+        val defenceLevel: Int
+        // the targets magic level
+        val magicLevel: Int
+        // the targets prayer boost
+        val prayer: Double
+        // the targets magic defence bonus
+        val bonus: Double
+        if (actor.isPlayer) {
+            val player = actor.toPlayer()
+            defenceLevel = player.skills.getLevel(DEFENCE)
+            magicLevel = player.skills.getLevel(MAGIC)
+            prayer = actor.toPlayer().prayer.mageMultiplier
+            bonus = player.combatDefinitions.getBonus(MAGIC_DEFENCE).toDouble()
+        } else {
+            val npc = actor.toNPC()
+            val combatLevel = npc.combatLevel
+            defenceLevel = combatLevel / 2
+            magicLevel = combatLevel / 2
+            prayer = 1.0
+            bonus = npc.getBonus(MAGIC_DEFENCE).toDouble()
+        }
+        // the effective calculation
+        val effective = Math.floor(defenceLevel * prayer * 0.3) + magicLevel * 0.7
+        // the equipment calculation [based on magic defence]
+        val equipment = (bonus + 5).toInt()
+        return Math.floor((effective + 8) * (equipment + 64) / 10).toInt().toDouble()
+    }
+
+    override fun getMaximumHit(actor: Actor, multiplier: Double): Int {
+        return -1
+    }
 }
