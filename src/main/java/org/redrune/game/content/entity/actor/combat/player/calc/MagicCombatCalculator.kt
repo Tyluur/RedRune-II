@@ -3,6 +3,7 @@ package org.redrune.game.content.entity.actor.combat.player.calc
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator
 import org.redrune.game.entity.actor.Actor
+import kotlin.math.floor
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -27,7 +28,7 @@ class MagicCombatCalculator : AbstractCombatCalculator() {
         if (actor.isPlayer && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11663, 11674)) {
             voidAccuracy = 1.45
         }
-        return Math.floor((effective + 8) * (bonus + 64) / 10).toInt() * voidAccuracy
+        return floor((effective + 8) * (bonus + 64) / 10).toInt() * voidAccuracy
     }
 
     override fun getDefenceBonus(actor: Actor, weaponId: Int, attackStyle: Int): Double {
@@ -57,7 +58,7 @@ class MagicCombatCalculator : AbstractCombatCalculator() {
         val effective = Math.floor(defenceLevel * prayer * 0.3) + magicLevel * 0.7
         // the equipment calculation [based on magic defence]
         val equipment = (bonus + 5).toInt()
-        return Math.floor((effective + 8) * (equipment + 64) / 10).toInt().toDouble()
+        return floor((effective + 8) * (equipment + 64) / 10).toInt().toDouble()
     }
 
     override fun getMaximumHit(actor: Actor, multiplier: Double): Int {
