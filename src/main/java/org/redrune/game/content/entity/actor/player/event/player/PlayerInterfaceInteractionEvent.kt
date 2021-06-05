@@ -24,7 +24,11 @@ class PlayerInterfaceInteractionEvent(
     /**
      * The details of the interface we're casting from
      */
-    private val interfaceId: Int, private val componentId: Int, private val slotId: Int
+    private val interfaceId: Int,
+
+    private val componentId: Int,
+
+    private val slotId: Int
 ) : Event() {
     override fun run(player: Player) {
         when (interfaceId) {

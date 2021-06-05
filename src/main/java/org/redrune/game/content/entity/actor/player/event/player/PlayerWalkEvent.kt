@@ -8,7 +8,7 @@ import org.redrune.game.global.map.route.strategy.FixedTileStrategy
 import org.redrune.utility.functions.Misc
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-06
  */
 class PlayerWalkEvent(

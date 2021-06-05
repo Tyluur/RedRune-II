@@ -6,7 +6,7 @@ import org.redrune.game.entity.actor.player.data.RouteEvent
 import org.redrune.utility.constants.key.AttributeKey
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-25
  */
 class PlayerTradeEvent(
