@@ -1,13 +1,13 @@
 package org.redrune.game.content.entity.actor.combat.player.style
 
-import org.redrune.cache.loaders.ItemDefinitions
-import org.redrune.engine.tick.task.WorldTask
-import org.redrune.engine.tick.task.WorldTasksManager.schedule
+import org.redrune.engine.SystemManager
+import org.redrune.engine.tick.schedule.ScheduledTask
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
 import org.redrune.game.content.entity.actor.combat.CombatRoll
 import org.redrune.game.content.entity.actor.combat.CombatSwingDetail
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
-import org.redrune.game.content.entity.actor.combat.player.calc.MeleeCombatCalculator
+import org.redrune.game.content.entity.actor.combat.player.calc.RangeCombatCalculator
+import org.redrune.game.content.plugin.PluginRepository.getRangeWeapon
 import org.redrune.game.content.plugin.PluginRepository.getSpecialPlugin
 import org.redrune.game.entity.actor.Actor
 import org.redrune.game.entity.actor.data.CombatDefinitions
@@ -16,26 +16,29 @@ import org.redrune.game.entity.actor.mask.Hit
 import org.redrune.game.entity.actor.mask.HitSplat
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.constants.SkillConstants.*
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur></itstyluur>@icloud.com>
- * @since 9/4/2017
+ * @since 9/5/2017
  */
-class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
+class RangeCombatStyle : AbstractCombatStyle(RangeCombatCalculator()) {
 
     override fun fireSwing(source: Player, target: Actor): Boolean {
+        val response = CombatAlgorithm.getRangeResponse(source)
+        if (response == 3) {
+            source.packets.sendMessage("You don't have any more ammo left to use.")
+            return false
+        } else if (response == 1) {
+            source.packets.sendMessage("The ammo you're using is ineffective with your bow.")
+            return false
+        }
         val weaponId = source.equipment.weaponId
-        val combatStyle = source.combatDefinitions.attackStyle
         if (source.combatDefinitions.isUsingSpecialAttack) {
             val optional = getSpecialPlugin(weaponId)
-            var energy = CombatAlgorithm.getSpecialAmount(weaponId).toDouble()
-            if (energy == -1.0 || !optional.isPresent) {
+            val energy = CombatAlgorithm.getSpecialAmount(weaponId)
+            if (energy == 0 || !optional.isPresent) {
                 source.packets.sendMessage("This weapon has no special attack registered; please report this on forums.")
                 return false
-            }
-            if (source.combatDefinitions.hasRingOfVigour()) {
-                energy *= 0.9
             }
             source.combatDefinitions.switchUsingSpecialAttack()
             if (source.combatDefinitions.specialAttackPercentage < energy) {
@@ -44,29 +47,17 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
             }
             val plugin = optional.get()
             plugin.fire(source, target, this)
-            source.combatDefinitions.decreaseSpecialEnergy(energy.toInt())
+            source.combatDefinitions.decreaseSpecialEnergy(energy)
         } else {
-            val weaponName = if (weaponId == -1) "unarmed" else ItemDefinitions.getItemDefinitions(weaponId).name
-
-            // the delay until the hitsplat appears
-            val hitDelay = if (weaponId == 10887 || weaponName.lowercase(Locale.getDefault())
-                    .contains("maul") && !weaponName.startsWith(
-                    "Granite"
-                )
-            ) 1 else 0
-
-            // the player does the attack animation
+            val optional = getRangeWeapon(weaponId)
+            if (!optional.isPresent) {
+                source.packets.sendMessage("This bow has not yet been configured, please report it on the forums.")
+                return false
+            }
+            val event = optional.get()
             source.nextAnimation =
-                Animation(CombatAlgorithm.getWeaponAttackEmote(weaponId, combatStyle))
-
-            // sends the hit to the target
-            sendHit(
-                source,
-                target,
-                calculator.getMaximumHit(source, 1.0),
-                getRandomDamage(source, target, 1.0),
-                hitDelay
-            )
+                Animation(CombatAlgorithm.getWeaponAttackEmote(weaponId, source.combatDefinitions.attackStyle))
+            event.fire(source, target, this)
         }
         return true
     }
@@ -76,7 +67,7 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
         val combatXp = damage / 2.5
         if (combatXp > 0) {
             source.auraManager.checkSuccefulHits(hit.damage)
-            if (hit.splat == HitSplat.MELEE_DAMAGE) {
+            if (hit.splat == HitSplat.RANGE_DAMAGE) {
                 if (attackStyle == 2) {
                     if (target.isPlayer) {
                         source.skills.addXpNoModifier(RANGE, combatXp / 2)
@@ -127,22 +118,27 @@ class MeleeCombatStyle : AbstractCombatStyle(MeleeCombatCalculator()) {
         val weaponId = if (source.isPlayer) source.toPlayer().equipment.weaponId else 0
         val combatStyle =
             if (source.isPlayer) source.toPlayer().combatDefinitions.attackStyle else source.toNPC().combatDefinitions.attackStyle
-        val maximumHit = calculator.getMaximumHit(source, multiplier) * 1.35
-        val attackBonus = calculator.getAttackBonus(source)
-        val defenceBonus = calculator.getDefenceBonus(target, weaponId, combatStyle)
-        return CombatRoll.randomizeHit(maximumHit, attackBonus, defenceBonus)
+        return CombatRoll.randomizeHit(
+            calculator.getMaximumHit(source, 1.0).toDouble(),
+            calculator.getAttackBonus(source),
+            calculator.getDefenceBonus(target, weaponId, combatStyle)
+        )
     }
 
-    override fun sendHit(source: Player, target: Actor, maxHit: Int, damage: Int, delay: Int): CombatSwingDetail? {
-        val hit = Hit(source, damage, HitSplat.MELEE_DAMAGE).setMaxHit(maxHit)
+    override fun sendHit(source: Player, target: Actor, maxHit: Int, damage: Int, delay: Int): CombatSwingDetail {
+        val hit = Hit(source, damage, HitSplat.RANGE_DAMAGE).setMaxHit(maxHit)
         addExperience(source, target, hit, source.combatDefinitions.attackStyle, source.equipment.weaponId)
-        target.setNextAnimationNoPriority(Animation(CombatAlgorithm.getDefenceEmote(target)))
         handleEffects(source, target, hit)
-        schedule(object : WorldTask() {
+        SystemManager.SCHEDULER.schedule(object : ScheduledTask(1, delay) {
             override fun run() {
-                target.applyHit(hit)
+                if (ticksPassed == goalTicks - 1) {
+                    target.setNextAnimationNoPriority(Animation(CombatAlgorithm.getDefenceEmote(target)))
+                } else if (ticksPassed == goalTicks) {
+                    target.applyHit(hit)
+                    stop()
+                }
             }
-        }, delay)
+        })
         return CombatSwingDetail(source, target, hit)
     }
 }

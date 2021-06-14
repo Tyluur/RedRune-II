@@ -3,6 +3,12 @@ package org.redrune.game.content.entity.actor.combat.player.calc
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator
 import org.redrune.game.entity.actor.Actor
+import org.redrune.utility.constants.BonusConstants.*
+import org.redrune.utility.constants.EquipmentConstants.*
+import org.redrune.utility.constants.SkillConstants.DEFENCE
+import org.redrune.utility.constants.SkillConstants.RANGE
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -37,7 +43,7 @@ class RangeCombatCalculator : AbstractCombatCalculator() {
         if (attackStyle == 0) {
             styleBonus = 3
         }
-        val effective = Math.floor(level * prayer * additional + styleBonus + weaponBonus)
+        val effective = floor(level * prayer * additional + styleBonus + weaponBonus)
         val bonus =
             if (actor.isPlayer) actor.toPlayer().combatDefinitions.getBonus(RANGE_ATTACK) else actor.toNPC().getBonus(
                 RANGE_ATTACK
@@ -46,7 +52,7 @@ class RangeCombatCalculator : AbstractCombatCalculator() {
         if (actor.isPlayer && CombatAlgorithm.fullVoidEquipped(actor.toPlayer(), 11664, 11675)) {
             voidAccuracy = 1.1
         }
-        return Math.floor((effective + 8) * (bonus + 64) / 10).toInt() * voidAccuracy
+        return floor((effective + 8) * (bonus + 64) / 10).toInt() * voidAccuracy
     }
 
     override fun getDefenceBonus(actor: Actor, weaponId: Int, attackStyle: Int): Double {
@@ -87,7 +93,7 @@ class RangeCombatCalculator : AbstractCombatCalculator() {
                 )
         val prayer = if (actor.isPlayer) actor.toPlayer().prayer.rangeMultiplier else 1.0
         var cumulativeStr = Math.floor(level * prayer)
-        val styleBonus: Double = if (attackStyle == 0) 3.0 else (if (attackStyle == 1) 0 else 1.toDouble()) as Double
+        val styleBonus: Double = if (attackStyle == 0) 3.0 else (if (attackStyle == 1) 0 else 1.toDouble()).toDouble()
         cumulativeStr += 8 + styleBonus
         if (voidEquipped) {
             cumulativeStr *= if (actor.isPlayer && CombatAlgorithm.fullVoidEquipped(
@@ -100,7 +106,7 @@ class RangeCombatCalculator : AbstractCombatCalculator() {
             cumulativeStr += 150.0
         }
         val effective = ((14 + cumulativeStr + bonus / 8 + cumulativeStr * bonus * 0.016865) / 10 + 1) * multiplier
-        val maxHit = (Math.round(effective) * 10).toDouble()
+        val maxHit = (effective.roundToInt() * 10).toDouble()
         return maxHit.toInt()
     }
 }

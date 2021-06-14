@@ -3,6 +3,10 @@ package org.redrune.game.content.entity.actor.combat.player.calc
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator
 import org.redrune.game.entity.actor.Actor
+import org.redrune.game.entity.actor.data.CombatDefinitions.STAB_ATTACK
+import org.redrune.game.entity.actor.data.CombatDefinitions.STRENGTH_BONUS
+import org.redrune.utility.constants.EquipmentConstants.*
+import org.redrune.utility.constants.SkillConstants.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

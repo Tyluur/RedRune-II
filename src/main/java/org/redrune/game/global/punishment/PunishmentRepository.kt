@@ -68,7 +68,7 @@ object PunishmentRepository {
         }
         punishment.notify(true, added)
         if (added && punishment.additionEvent != null) {
-            punishment.additionEvent.run()
+            punishment.additionEvent!!.run()
         }
     }
 

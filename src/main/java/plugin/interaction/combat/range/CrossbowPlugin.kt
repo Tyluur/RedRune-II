@@ -27,7 +27,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
     override fun fire(source: Player, target: Actor, style: AbstractCombatStyle) {
         val weaponId = source.equipment.weaponId
         val ammoId = source.equipment.ammoId
-        val name = ItemDefinitions.getItemDefinitions(weaponId).name.toLowerCase()
+        val name = ItemDefinitions.getItemDefinitions(weaponId).name.lowercase(Locale.getDefault())
         ProjectileManager.sendProjectile(
             ProjectileManager.createSpeedDefinedProjectile(
                 source,
@@ -122,7 +122,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
                     style.calculator.getMaximumHit(source, 1.0),
                     (target.hitpoints * 0.20).toInt(),
                     ProjectileManager.getProjectileDelay(source, target)
-                )
+                )!!
             }
         },
         DIAMOND_BOLT(9243, 758) {
@@ -187,7 +187,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
                 style.calculator.getMaximumHit(source, 1.0),
                 style.getRandomDamage(source, target, 1.0),
                 ProjectileManager.getProjectileDelay(source, target)
-            )
+            )!!
         }
 
         companion object {

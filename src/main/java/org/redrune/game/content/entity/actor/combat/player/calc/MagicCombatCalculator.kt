@@ -3,6 +3,10 @@ package org.redrune.game.content.entity.actor.combat.player.calc
 import org.redrune.game.content.entity.actor.combat.CombatAlgorithm
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatCalculator
 import org.redrune.game.entity.actor.Actor
+import org.redrune.utility.constants.BonusConstants.MAGIC_ATTACK
+import org.redrune.utility.constants.BonusConstants.MAGIC_DEFENCE
+import org.redrune.utility.constants.SkillConstants.DEFENCE
+import org.redrune.utility.constants.SkillConstants.MAGIC
 import kotlin.math.floor
 
 /**
