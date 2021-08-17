@@ -21,7 +21,7 @@ import org.redrune.utility.constants.NetworkConstants
 object NetworkBinder {
 
     /**
-     * Binds to port [NetworkConstants.PORT_ID]
+     * Binds to [port][NetworkConstants.PORT_ID]
      */
     fun bind() {
         val bossGroup = NioEventLoopGroup(SystemManager.PROCESSOR_COUNT)

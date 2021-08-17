@@ -8,7 +8,7 @@ import org.redrune.game.entity.actor.mask.Graphics
 import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 class StaffOfLightSpecialAttackPlugin : SpecialAttackPlugin() {

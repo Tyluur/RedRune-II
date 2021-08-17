@@ -182,7 +182,7 @@ public class Region {
 				}
 			}
 			if (GameFlags.debugMode && landContainerData == null && landArchiveId != -1 && MapArchiveKeys.getKey(regionId) != null) {
-				System.out.println("Missing xteas for region " + regionId + ".");
+				System.out.println("Missing xteas for region " + regionId + " [landArchiveId=" + landArchiveId + ", landContainerData=" + landContainerData + ", key=" + MapArchiveKeys.getKey(regionId) + "].");
 			}
 		}
 	}

@@ -6,11 +6,10 @@ import org.redrune.utility.functions.Misc
 import java.io.*
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
-import java.util.*
 import kotlin.experimental.and
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur    @icloud.com>
  * @since 8/30/2017
  */
 object MapArchiveKeys {
