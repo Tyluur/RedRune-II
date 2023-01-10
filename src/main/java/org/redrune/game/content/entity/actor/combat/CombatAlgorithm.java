@@ -1702,9 +1702,10 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                 // just in case [nearly certain all instant specs are melee...]
                 CombatStyle style = findCombatStyle(player);
                 if (style == null) {
+                    System.out.println("Unable to find the combat style for this player " + player + " [weaponId=" + weaponId + "]");
                     return;
                 }
-                plugin.fire(player, target, style.getStyle());
+                plugin.fire(player, target, null);
             }
             // dropping the special attack amount
             player.getCombatDefinitions().decreaseSpecialEnergy(getSpecialAmount(player.getEquipment().getWeaponId()));

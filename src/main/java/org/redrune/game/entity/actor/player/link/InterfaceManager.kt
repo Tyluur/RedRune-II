@@ -253,6 +253,7 @@ class InterfaceManager(private val player: Player) {
     }
 
     fun sendTaskSystem() {
+        sendTab(if (resizableScreen) 112 else 205, 1056)
     }
 
     fun sendQuestTab() {

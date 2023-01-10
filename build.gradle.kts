@@ -80,6 +80,8 @@ dependencies {
     implementation("org.yaml", "snakeyaml", "1.26")
     implementation("com.sun.activation:javax.activation:1.2.0")
 
+    implementation("io.cryptoapis", "cryptoapis-java-client", "1.3.0")
+
     // Network
     implementation("io.netty:netty-all:4.1.44.Final")
 
