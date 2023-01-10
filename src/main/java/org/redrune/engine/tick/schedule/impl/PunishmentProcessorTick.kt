@@ -10,7 +10,7 @@ import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 class PunishmentProcessorTick : ScheduledTask(5, -1) {
