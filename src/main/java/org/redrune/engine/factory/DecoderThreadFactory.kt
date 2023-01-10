@@ -1,33 +1,47 @@
-package org.redrune.engine.factory;
+package org.redrune.engine.factory
 
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.atomic.AtomicInteger
 
-public class DecoderThreadFactory implements ThreadFactory {
-	
-	private static final AtomicInteger poolNumber = new AtomicInteger(1);
-	
-	private final ThreadGroup group;
-	
-	private final AtomicInteger threadNumber = new AtomicInteger(1);
-	
-	private final String namePrefix;
-	
-	public DecoderThreadFactory() {
-		SecurityManager s = System.getSecurityManager();
-		group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-		namePrefix = "Decoder Pool-" + poolNumber.getAndIncrement() + "-thread-";
-	}
-	
-	public Thread newThread(Runnable r) {
-		Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
-		if (t.isDaemon()) {
-			t.setDaemon(false);
-		}
-		if (t.getPriority() != Thread.MAX_PRIORITY - 1) {
-			t.setPriority(Thread.MAX_PRIORITY - 1);
-		}
-		return t;
-	}
-	
+class DecoderThreadFactory : ThreadFactory {
+    /**
+     * A [ThreadGroup] to which the created threads will be added.
+     */
+    private val group: ThreadGroup
+
+    /**
+     * An [AtomicInteger] to keep track of the number of threads created by this factory.
+     */
+    private val threadNumber = AtomicInteger(1)
+
+    /**
+     * The prefix to use for the name of the created threads.
+     */
+    private val namePrefix: String
+
+    /**
+     * Initializes the [group] with a [SecurityManager] if it exists, or the current thread's
+     * thread group otherwise. It also initializes the [namePrefix] using a static [AtomicInteger]
+     * to keep track of the number of instances of this class and an incrementing [threadNumber].
+     */
+    init {
+        val s = System.getSecurityManager()
+        group = if (s != null) s.threadGroup else Thread.currentThread().threadGroup
+        namePrefix = "Decoder Pool-" + poolNumber.getAndIncrement() + "-thread-"
+    }
+
+    override fun newThread(r: Runnable): Thread {
+        val t = Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0)
+        if (t.isDaemon) {
+            t.isDaemon = false
+        }
+        if (t.priority != Thread.MAX_PRIORITY - 1) {
+            t.priority = Thread.MAX_PRIORITY - 1
+        }
+        return t
+    }
+
+    companion object {
+        private val poolNumber = AtomicInteger(1)
+    }
 }
