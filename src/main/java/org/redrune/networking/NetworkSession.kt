@@ -52,7 +52,7 @@ class NetworkSession(
     }
 
     override fun toString(): String {
-        return "NetworkSession{" + "player=" + player + ", inLobby=" + isInLobby + '}'
+        return "NetworkSession{player=$player, inLobby=$isInLobby}"
     }
 
     /**
