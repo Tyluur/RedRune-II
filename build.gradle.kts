@@ -86,8 +86,8 @@ dependencies {
     implementation("io.netty:netty-all:4.1.44.Final")
 
     //Testing
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "$junitVersion")
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params", version = "$junitVersion")
     testImplementation(group = "org.koin", name = "koin-test", version = koinVersion)
     testImplementation(group = "io.mockk", name = "mockk", version = "1.10.0")
 }
