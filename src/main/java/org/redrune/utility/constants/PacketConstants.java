@@ -113,7 +113,9 @@ public interface PacketConstants {
 	int PLAYER_OPTION_2_PACKET = 53;
 	
 	int ITEM_TAKE_PACKET = 24;
-	
+
+	int ITEM_ON_FLOOR_PACKET = 86;
+
 	int DIALOGUE_CONTINUE_PACKET = 54;
 	
 	int ENTER_INTEGER_PACKET = 3;
