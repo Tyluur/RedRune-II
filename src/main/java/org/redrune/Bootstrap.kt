@@ -27,14 +27,14 @@ import org.redrune.global.wordlist.WorldList
 import org.redrune.networking.NetworkBinder
 import org.redrune.networking.packet.incoming.IncomingPacketRepository
 import org.redrune.utility.constants.PacketConstants
-import org.redrune.utility.game.entity.`object`.ObjectRemoval
-import org.redrune.utility.game.entity.`object`.ObjectSpawning
 import org.redrune.utility.game.entity.actor.player.Censor
 import org.redrune.utility.game.entity.item.priceLoaderModule
+import org.redrune.utility.game.entity.`object`.ObjectRemoval
+import org.redrune.utility.game.entity.`object`.ObjectSpawning
 import org.redrune.utility.game.map.MapArchiveKeys
+import org.redrune.utility.game.repository.npc.NPCWalkingFlag
 import org.redrune.utility.game.repository.`object`.climbable.ClimbableObjectRepository
 import org.redrune.utility.game.repository.`object`.door.DoorRepository
-import org.redrune.utility.game.repository.npc.NPCWalkingFlag
 import org.redrune.utility.getBoolProperty
 import org.redrune.utility.getIntProperty
 import org.redrune.utility.getProperty
@@ -58,7 +58,7 @@ object Bootstrap {
     }
 
     /**
-     * This method uses [BootHandler] to prepare all requirements for the game to start efficiently. All tasks
+     * This method uses [BfootHandler] to prepare all requirements for the game to start efficiently. All tasksfd
      * that require each other are performed in the same parallel instance, other ones can be performed
      * individually.
      *

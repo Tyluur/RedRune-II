@@ -1,6 +1,8 @@
 package org.redrune.networking.packet.incoming.impl;
 
+import org.jetbrains.annotations.NotNull;
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeManager;
+import org.redrune.game.content.entity.actor.player.skills.firemaking.Firemaking;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.FloorItem;
 import org.redrune.game.global.WorldTile;
@@ -20,12 +22,30 @@ public class ItemInteractionPacketReader implements IncomingPacketReader {
 
     @Override
     public int[] bindings() {
-        return arguments(ITEM_ON_ITEM_PACKET, ITEM_TAKE_PACKET, ITEM_EXAMINE_PACKET, GRAND_EXCHANGE_SELECTION);
+        return arguments(ITEM_ON_ITEM_PACKET, ITEM_TAKE_PACKET, ITEM_EXAMINE_PACKET, GRAND_EXCHANGE_SELECTION, ITEM_ON_FLOOR_PACKET);
     }
 
     @Override
     public PacketContext read(Player player, Packet stream) {
         switch (stream.getOpcode()) {
+            case ITEM_ON_FLOOR_PACKET: {
+
+                final int id = stream.readUnsignedShort128();
+                @SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;// Dont delete this.
+
+                int y = stream.readUnsignedShort();
+                int x = stream.readUnsignedShortLE();
+
+                return new PacketContext() {
+                    @Override
+                    public void handle(@NotNull Player player) {
+                        if (Firemaking.isFiremakingCapable(id)) {
+                            Firemaking.startFiremaking(player, id);
+                            return;
+                        }
+                    }
+                };
+            }
             case ITEM_EXAMINE_PACKET: {
                 final int id = stream.readUnsignedShort128();
                 @SuppressWarnings("unused") boolean unknown = stream.readByte() == 1;// Dont delete this.
