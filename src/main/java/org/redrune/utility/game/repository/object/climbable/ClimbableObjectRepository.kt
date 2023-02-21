@@ -47,6 +47,7 @@ object ClimbableObjectRepository {
                 objects.add(ClimbableObject(i, def.name))
             }
         }
+        logger.info { "Populated the list with ${objects.size} climbable objects." }
         saveClimbables(objects)
     }
 
