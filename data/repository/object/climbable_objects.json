@@ -1,182 +1,5750 @@
 [
   {
-    "id": 2782,
-    "type": 10,
-    "rotation": 2,
-    "life": 1,
-    "spawned": false,
-    "x": 3109,
-    "y": 3497,
-    "plane": 0
+    "objectId": 11,
+    "name": "Ladder"
   },
   {
-    "id": 61353,
-    "type": 10,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3097,
-    "y": 3505,
-    "plane": 0
+    "objectId": 13,
+    "name": "Mud pile"
   },
   {
-    "id": 1814,
-    "type": 4,
-    "rotation": 1,
-    "life": 1,
-    "spawned": false,
-    "x": 3095,
-    "y": 3506,
-    "plane": 0
+    "objectId": 45,
+    "name": "Staircase"
   },
   {
-    "id": 36711,
-    "type": 10,
-    "rotation": 2,
-    "life": 1,
-    "spawned": false,
-    "x": 3082,
-    "y": 3493,
-    "plane": 0
+    "objectId": 46,
+    "name": "Staircase"
   },
   {
-    "id": 36711,
-    "type": 10,
-    "rotation": 2,
-    "life": 1,
-    "spawned": false,
-    "x": 3082,
-    "y": 3495,
-    "plane": 0
+    "objectId": 54,
+    "name": "Stairs"
   },
   {
-    "id": 54639,
-    "type": 10,
-    "rotation": 3,
-    "life": 1,
-    "spawned": false,
-    "x": 3083,
-    "y": 3500,
-    "plane": 0
+    "objectId": 55,
+    "name": "Stairs"
   },
   {
-    "id": 30141,
-    "type": 0,
-    "rotation": 1,
-    "life": 1,
-    "spawned": false,
-    "x": 3092,
-    "y": 3506,
-    "plane": 0
+    "objectId": 56,
+    "name": "Stairs"
   },
   {
-    "id": 30141,
-    "type": 0,
-    "rotation": 1,
-    "life": 1,
-    "spawned": false,
-    "x": 3093,
-    "y": 3506,
-    "plane": 0
+    "objectId": 57,
+    "name": "Stairs"
   },
   {
-    "id": 30141,
-    "type": 0,
-    "rotation": 3,
-    "life": 1,
-    "spawned": false,
-    "x": 3092,
-    "y": 3514,
-    "plane": 0
+    "objectId": 65,
+    "name": "Crate wall"
   },
   {
-    "id": 30141,
-    "type": 0,
-    "rotation": 3,
-    "life": 1,
-    "spawned": false,
-    "x": 3093,
-    "y": 3514,
-    "plane": 0
+    "objectId": 66,
+    "name": "Crate wall"
   },
   {
-    "id": 54020,
-    "type": 5,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3091,
-    "y": 3512,
-    "plane": 0
+    "objectId": 96,
+    "name": "Stairs"
   },
   {
-    "id": 54019,
-    "type": 5,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3091,
-    "y": 3511,
-    "plane": 0
+    "objectId": 100,
+    "name": "Trapdoor"
   },
   {
-    "id": 40074,
-    "type": 10,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3091,
-    "y": 3507,
-    "plane": 0
+    "objectId": 101,
+    "name": "Ladder"
   },
   {
-    "id": 40074,
-    "type": 10,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3091,
-    "y": 3513,
-    "plane": 0
+    "objectId": 105,
+    "name": "Trapdoor"
   },
   {
-    "id": 59434,
-    "type": 10,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3384,
-    "y": 3614,
-    "plane": 0
+    "objectId": 106,
+    "name": "Trapdoor"
   },
   {
-    "id": 59434,
-    "type": 10,
-    "rotation": 0,
-    "life": 1,
-    "spawned": false,
-    "x": 3384,
-    "y": 3615,
-    "plane": 0
+    "objectId": 133,
+    "name": "Ladder"
   },
   {
-    "id": 14503,
-    "type": 10,
-    "rotation": 1,
-    "life": 1,
-    "spawned": false,
-    "x": 3091,
-    "y": 3509,
-    "plane": 0
+    "objectId": 164,
+    "name": "Stairs"
   },
   {
-    "id": 14503,
-    "type": 10,
-    "rotation": 1,
-    "life": 1,
-    "spawned": false,
-    "x": 3091,
-    "y": 3511,
-    "plane": 0
+    "objectId": 195,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 245,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 246,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 272,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 273,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 287,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 492,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 527,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 528,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 882,
+    "name": "Manhole"
+  },
+  {
+    "objectId": 993,
+    "name": "Stile"
+  },
+  {
+    "objectId": 1568,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 1570,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 1722,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1723,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1725,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1728,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1729,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1733,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1737,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1738,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1739,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1740,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1742,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1743,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1744,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 1746,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1747,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1748,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1749,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1750,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1751,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1752,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1754,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1755,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1756,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1757,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1759,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1764,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 1765,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1767,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 1948,
+    "name": "Crumbling wall"
+  },
+  {
+    "objectId": 2020,
+    "name": "Dead tree"
+  },
+  {
+    "objectId": 2113,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2147,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2159,
+    "name": "Barrel"
+  },
+  {
+    "objectId": 2160,
+    "name": "Barrel"
+  },
+  {
+    "objectId": 2161,
+    "name": "Barrel"
+  },
+  {
+    "objectId": 2174,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 2175,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 2231,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 2236,
+    "name": "Climbing rocks"
+  },
+  {
+    "objectId": 2257,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 2268,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2269,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2285,
+    "name": "Obstacle net"
+  },
+  {
+    "objectId": 2286,
+    "name": "Obstacle net"
+  },
+  {
+    "objectId": 2298,
+    "name": "Climbing rocks"
+  },
+  {
+    "objectId": 2299,
+    "name": "Climbing rocks"
+  },
+  {
+    "objectId": 2314,
+    "name": "Tree branch"
+  },
+  {
+    "objectId": 2315,
+    "name": "Tree branch"
+  },
+  {
+    "objectId": 2316,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 2317,
+    "name": "Pile of rubble"
+  },
+  {
+    "objectId": 2318,
+    "name": "Pile of rubble"
+  },
+  {
+    "objectId": 2328,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 2347,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 2348,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 2352,
+    "name": "Rope"
+  },
+  {
+    "objectId": 2353,
+    "name": "Rope"
+  },
+  {
+    "objectId": 2405,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2408,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2444,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 2447,
+    "name": "Tree"
+  },
+  {
+    "objectId": 2448,
+    "name": "Tree"
+  },
+  {
+    "objectId": 2511,
+    "name": "Tower ladder"
+  },
+  {
+    "objectId": 2512,
+    "name": "Tower ladder"
+  },
+  {
+    "objectId": 2533,
+    "name": "Mud pile"
+  },
+  {
+    "objectId": 2535,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 2536,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 2542,
+    "name": "Pipe"
+  },
+  {
+    "objectId": 2544,
+    "name": "Manhole"
+  },
+  {
+    "objectId": 2585,
+    "name": "Hand holds"
+  },
+  {
+    "objectId": 2590,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2591,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2592,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2605,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2638,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2641,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2711,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 2796,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2797,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2812,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2823,
+    "name": "Hole"
+  },
+  {
+    "objectId": 2832,
+    "name": "Battlement"
+  },
+  {
+    "objectId": 2833,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2853,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 2884,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 2935,
+    "name": "Winch"
+  },
+  {
+    "objectId": 2958,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 2959,
+    "name": "Rocky Ledge"
+  },
+  {
+    "objectId": 2960,
+    "name": "Rocky Ledge"
+  },
+  {
+    "objectId": 2961,
+    "name": "Rocky Ledge"
+  },
+  {
+    "objectId": 2962,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 2963,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 2964,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 3028,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3029,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3030,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3031,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3203,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 3205,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3265,
+    "name": "Pile of rocks"
+  },
+  {
+    "objectId": 3307,
+    "name": "Rockpile"
+  },
+  {
+    "objectId": 3309,
+    "name": "Rockslide"
+  },
+  {
+    "objectId": 3365,
+    "name": "Protruding rocks"
+  },
+  {
+    "objectId": 3415,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 3416,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 3565,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 3583,
+    "name": "Hand holds"
+  },
+  {
+    "objectId": 3610,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 3617,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3618,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3722,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 3723,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 3730,
+    "name": "Stile"
+  },
+  {
+    "objectId": 3748,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 3784,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3786,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3788,
+    "name": "Stone Staircase"
+  },
+  {
+    "objectId": 3789,
+    "name": "Stone Staircase"
+  },
+  {
+    "objectId": 3796,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3803,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 3808,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 3828,
+    "name": "Tunnel entrance"
+  },
+  {
+    "objectId": 3829,
+    "name": "Rope"
+  },
+  {
+    "objectId": 3832,
+    "name": "Rope"
+  },
+  {
+    "objectId": 3927,
+    "name": "Protruding rocks"
+  },
+  {
+    "objectId": 4004,
+    "name": "Well"
+  },
+  {
+    "objectId": 4005,
+    "name": "Well"
+  },
+  {
+    "objectId": 4158,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4159,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4160,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4161,
+    "name": "Escape rope"
+  },
+  {
+    "objectId": 4163,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4164,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4173,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4174,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4188,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4383,
+    "name": "Iron ladder"
+  },
+  {
+    "objectId": 4412,
+    "name": "Iron ladder"
+  },
+  {
+    "objectId": 4413,
+    "name": "Iron ladder"
+  },
+  {
+    "objectId": 4415,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4471,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4472,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4485,
+    "name": "Iron ladder"
+  },
+  {
+    "objectId": 4493,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4494,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4495,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4496,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4568,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4569,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4570,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 4575,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4576,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4620,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4622,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4624,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4625,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4626,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4627,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4643,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4644,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4645,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4646,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4712,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4728,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 4743,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4744,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4755,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4756,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 4772,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4773,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4774,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4775,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4776,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4777,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4778,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4779,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4780,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4781,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 4879,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4880,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 4881,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 4889,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 4918,
+    "name": "Mine cart"
+  },
+  {
+    "objectId": 4965,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4966,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4967,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4968,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4969,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 4970,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5005,
+    "name": "Tree"
+  },
+  {
+    "objectId": 5047,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5054,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5055,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5130,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5131,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5132,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5136,
+    "name": "Skull slope"
+  },
+  {
+    "objectId": 5206,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 5207,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 5250,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5251,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5262,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 5263,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 5264,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5265,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 5266,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 5267,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5268,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5281,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 5415,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 5416,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 5490,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5491,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5493,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5799,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5800,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5801,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5802,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5803,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5804,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5805,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5806,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 5847,
+    "name": "Rockslide"
+  },
+  {
+    "objectId": 5848,
+    "name": "Tall tree"
+  },
+  {
+    "objectId": 5884,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5886,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5903,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 5946,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 5947,
+    "name": "Dark hole under tree"
+  },
+  {
+    "objectId": 6085,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6086,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6087,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6088,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6089,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6090,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6092,
+    "name": "Bookcase"
+  },
+  {
+    "objectId": 6226,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6242,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6243,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6244,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6245,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6260,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6261,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6278,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 6280,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6281,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6372,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6419,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6434,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 6435,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 6436,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6439,
+    "name": "Rope"
+  },
+  {
+    "objectId": 6450,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6497,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6498,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6499,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6500,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6501,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6502,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6503,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6504,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6561,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6620,
+    "name": "Hole"
+  },
+  {
+    "objectId": 6645,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6672,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 6673,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 6686,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6702,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6703,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6704,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6705,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6706,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6707,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 6708,
+    "name": "Rope"
+  },
+  {
+    "objectId": 6751,
+    "name": "Ramp"
+  },
+  {
+    "objectId": 6752,
+    "name": "Ramp"
+  },
+  {
+    "objectId": 6753,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6754,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6755,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 6841,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6842,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 6881,
+    "name": "Crushed barricade"
+  },
+  {
+    "objectId": 6882,
+    "name": "Crushed barricade"
+  },
+  {
+    "objectId": 7056,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 7057,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 7221,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 7239,
+    "name": "Ledge"
+  },
+  {
+    "objectId": 7240,
+    "name": "Ledge"
+  },
+  {
+    "objectId": 7257,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 7433,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 7434,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 7435,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 7527,
+    "name": "Stile"
+  },
+  {
+    "objectId": 8744,
+    "name": "ladder"
+  },
+  {
+    "objectId": 8745,
+    "name": "ladder"
+  },
+  {
+    "objectId": 8746,
+    "name": "ladder"
+  },
+  {
+    "objectId": 8783,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 8785,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 8956,
+    "name": "Iron ladder"
+  },
+  {
+    "objectId": 8966,
+    "name": "Steps"
+  },
+  {
+    "objectId": 9084,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 9138,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 9141,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 9142,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 9296,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9297,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9301,
+    "name": "Underwall tunnel"
+  },
+  {
+    "objectId": 9302,
+    "name": "Underwall tunnel"
+  },
+  {
+    "objectId": 9303,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 9304,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 9305,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 9306,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 9309,
+    "name": "Underwall tunnel"
+  },
+  {
+    "objectId": 9310,
+    "name": "Underwall tunnel"
+  },
+  {
+    "objectId": 9311,
+    "name": "Underwall tunnel"
+  },
+  {
+    "objectId": 9312,
+    "name": "Underwall tunnel"
+  },
+  {
+    "objectId": 9316,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9317,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9319,
+    "name": "Spikey chain"
+  },
+  {
+    "objectId": 9320,
+    "name": "Spikey chain"
+  },
+  {
+    "objectId": 9327,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9331,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9332,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9335,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9336,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 9363,
+    "name": "Wall"
+  },
+  {
+    "objectId": 9470,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 9471,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 9472,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 9492,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 9558,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 9559,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 9582,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 9584,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 9744,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 9745,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 9978,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 9979,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10015,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 10016,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 10017,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 10018,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 10033,
+    "name": "Wall support"
+  },
+  {
+    "objectId": 10035,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 10036,
+    "name": "Rock"
+  },
+  {
+    "objectId": 10038,
+    "name": "Rope"
+  },
+  {
+    "objectId": 10136,
+    "name": "Wooden Stair"
+  },
+  {
+    "objectId": 10137,
+    "name": "Wooden Stair"
+  },
+  {
+    "objectId": 10167,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10168,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10177,
+    "name": "Iron ladder"
+  },
+  {
+    "objectId": 10193,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10194,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10195,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10196,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10197,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10198,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10199,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10200,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10201,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10202,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10203,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10204,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10205,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10206,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10207,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10208,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10209,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10210,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10211,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10212,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10213,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10214,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10215,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10216,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10217,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10218,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10219,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10220,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10221,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10222,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10223,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10224,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10225,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10226,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10227,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10228,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10229,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10230,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10287,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10288,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10308,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10319,
+    "name": "Trellis top"
+  },
+  {
+    "objectId": 10321,
+    "name": "Manhole"
+  },
+  {
+    "objectId": 10322,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10323,
+    "name": "Trellis"
+  },
+  {
+    "objectId": 10416,
+    "name": "Crevice"
+  },
+  {
+    "objectId": 10434,
+    "name": "Rope"
+  },
+  {
+    "objectId": 10482,
+    "name": "Wall"
+  },
+  {
+    "objectId": 10484,
+    "name": "Wall"
+  },
+  {
+    "objectId": 10493,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10494,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10525,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 10526,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 10554,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10557,
+    "name": "Champion statue"
+  },
+  {
+    "objectId": 10558,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 10559,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 10560,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10570,
+    "name": "Wall"
+  },
+  {
+    "objectId": 10592,
+    "name": "Handholds"
+  },
+  {
+    "objectId": 10597,
+    "name": "Wall"
+  },
+  {
+    "objectId": 10698,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 10699,
+    "name": "Trapdoor Steps"
+  },
+  {
+    "objectId": 10707,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10708,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 10771,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10772,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10773,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10774,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10775,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10776,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10804,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 10851,
+    "name": "Climbing rocks"
+  },
+  {
+    "objectId": 10857,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10858,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 10865,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 10950,
+    "name": "Sand pile"
+  },
+  {
+    "objectId": 11041,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11042,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11043,
+    "name": "Stone Ladder"
+  },
+  {
+    "objectId": 11044,
+    "name": "Stone Ladder"
+  },
+  {
+    "objectId": 11050,
+    "name": "Secret entrance"
+  },
+  {
+    "objectId": 11198,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11199,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11200,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11201,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11244,
+    "name": "Climbing Net"
+  },
+  {
+    "objectId": 11289,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 11290,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 11308,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 11309,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 11310,
+    "name": "Climbing net"
+  },
+  {
+    "objectId": 11417,
+    "name": "Dug hole"
+  },
+  {
+    "objectId": 11493,
+    "name": "Dungeon exit"
+  },
+  {
+    "objectId": 11511,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11724,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11725,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11727,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11728,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11729,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11731,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11732,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11733,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11734,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11735,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11736,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11737,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11739,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11740,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11741,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11742,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 11844,
+    "name": "Crumbling wall"
+  },
+  {
+    "objectId": 11888,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11889,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 11890,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 12112,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12113,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12230,
+    "name": "Rope"
+  },
+  {
+    "objectId": 12254,
+    "name": "Tunnel entrance"
+  },
+  {
+    "objectId": 12255,
+    "name": "Rope"
+  },
+  {
+    "objectId": 12265,
+    "name": "Cellar stairs"
+  },
+  {
+    "objectId": 12267,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 12389,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12390,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12391,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12475,
+    "name": "Anchor"
+  },
+  {
+    "objectId": 12536,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 12537,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 12538,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 12570,
+    "name": "Tropical tree"
+  },
+  {
+    "objectId": 12576,
+    "name": "Skull slope"
+  },
+  {
+    "objectId": 12601,
+    "name": "Rope"
+  },
+  {
+    "objectId": 12616,
+    "name": "Exit"
+  },
+  {
+    "objectId": 12618,
+    "name": "Tropical tree"
+  },
+  {
+    "objectId": 12622,
+    "name": "Vine"
+  },
+  {
+    "objectId": 12737,
+    "name": "Broken down wall"
+  },
+  {
+    "objectId": 12744,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 12745,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 12762,
+    "name": "Crumbled wall"
+  },
+  {
+    "objectId": 12764,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12779,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12780,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12781,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12906,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 12907,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 13129,
+    "name": "Boxing ring"
+  },
+  {
+    "objectId": 13130,
+    "name": "Boxing ring"
+  },
+  {
+    "objectId": 13131,
+    "name": "Boxing ring"
+  },
+  {
+    "objectId": 13132,
+    "name": "Boxing ring"
+  },
+  {
+    "objectId": 13133,
+    "name": "Fencing ring"
+  },
+  {
+    "objectId": 13137,
+    "name": "Combat ring"
+  },
+  {
+    "objectId": 13328,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 13329,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 13330,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 13497,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13498,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13499,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13500,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13501,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13502,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13503,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13505,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 13675,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 13676,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 13677,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 13678,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 13679,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 13680,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 13964,
+    "name": "Climbing block"
+  },
+  {
+    "objectId": 13966,
+    "name": "Climbing block"
+  },
+  {
+    "objectId": 13983,
+    "name": "Climbing block"
+  },
+  {
+    "objectId": 13985,
+    "name": "Climbing block"
+  },
+  {
+    "objectId": 13987,
+    "name": "Climbing block"
+  },
+  {
+    "objectId": 13989,
+    "name": "Climbing frame"
+  },
+  {
+    "objectId": 13991,
+    "name": "Climbing frame"
+  },
+  {
+    "objectId": 13999,
+    "name": "Rope"
+  },
+  {
+    "objectId": 14000,
+    "name": "null"
+  },
+  {
+    "objectId": 14012,
+    "name": "Climbing frame"
+  },
+  {
+    "objectId": 14014,
+    "name": "Climbing frame"
+  },
+  {
+    "objectId": 14016,
+    "name": "Climbing frame"
+  },
+  {
+    "objectId": 14296,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 14314,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 14735,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 14745,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 14746,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 14747,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 14758,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 15115,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 15116,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 15191,
+    "name": "Exit"
+  },
+  {
+    "objectId": 15202,
+    "name": "Hole"
+  },
+  {
+    "objectId": 15523,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 15638,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 15746,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 15747,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 15752,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 15753,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 15756,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 15790,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 15791,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 15896,
+    "name": "Copper Ladder"
+  },
+  {
+    "objectId": 15898,
+    "name": "Copper Ladder"
+  },
+  {
+    "objectId": 15899,
+    "name": "Copper Ladder"
+  },
+  {
+    "objectId": 15901,
+    "name": "Copper Ladder"
+  },
+  {
+    "objectId": 16048,
+    "name": "Bone Chain"
+  },
+  {
+    "objectId": 16049,
+    "name": "Boney ladder"
+  },
+  {
+    "objectId": 16078,
+    "name": "Rope"
+  },
+  {
+    "objectId": 16079,
+    "name": "Rope"
+  },
+  {
+    "objectId": 16080,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16081,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16112,
+    "name": "Goo covered vine"
+  },
+  {
+    "objectId": 16113,
+    "name": "Goo covered vine"
+  },
+  {
+    "objectId": 16114,
+    "name": "Dripping vine"
+  },
+  {
+    "objectId": 16115,
+    "name": "Dripping vine"
+  },
+  {
+    "objectId": 16146,
+    "name": "Spikey chain"
+  },
+  {
+    "objectId": 16147,
+    "name": "Spikey chain"
+  },
+  {
+    "objectId": 16148,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16149,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16154,
+    "name": "Entrance"
+  },
+  {
+    "objectId": 16174,
+    "name": "Bone Chain"
+  },
+  {
+    "objectId": 16369,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16371,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16450,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16535,
+    "name": "Climbing rocks"
+  },
+  {
+    "objectId": 16536,
+    "name": "Climbing rocks"
+  },
+  {
+    "objectId": 16556,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16640,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16732,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16733,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16734,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16735,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16736,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16945,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16946,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16947,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16948,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 16959,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16960,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16961,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 16962,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17122,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17143,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 17148,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17149,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17155,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 17159,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17160,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17959,
+    "name": "Rock"
+  },
+  {
+    "objectId": 17960,
+    "name": "Rock"
+  },
+  {
+    "objectId": 17974,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17975,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17976,
+    "name": "Stairs up"
+  },
+  {
+    "objectId": 17977,
+    "name": "Broken stairs"
+  },
+  {
+    "objectId": 17978,
+    "name": "Stairs down"
+  },
+  {
+    "objectId": 17979,
+    "name": "Broken stairs"
+  },
+  {
+    "objectId": 17985,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 17986,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 17999,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18000,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18001,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18002,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18034,
+    "name": "Floor"
+  },
+  {
+    "objectId": 18036,
+    "name": "Floor"
+  },
+  {
+    "objectId": 18037,
+    "name": "Wall rubble"
+  },
+  {
+    "objectId": 18038,
+    "name": "Wall rubble"
+  },
+  {
+    "objectId": 18049,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 18050,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 18061,
+    "name": "Trapdoor tunnel"
+  },
+  {
+    "objectId": 18069,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18085,
+    "name": "Tunnel"
+  },
+  {
+    "objectId": 18086,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18087,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18095,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18096,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18105,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18106,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18107,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18108,
+    "name": "Shelf"
+  },
+  {
+    "objectId": 18230,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18231,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18233,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18266,
+    "name": "Old ruin entrance"
+  },
+  {
+    "objectId": 18322,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18324,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18325,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18411,
+    "name": "Broken fence"
+  },
+  {
+    "objectId": 18427,
+    "name": "Exit"
+  },
+  {
+    "objectId": 18444,
+    "name": "Hole"
+  },
+  {
+    "objectId": 18596,
+    "name": "Hatch"
+  },
+  {
+    "objectId": 18597,
+    "name": "Stairwell"
+  },
+  {
+    "objectId": 18598,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 18599,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 18610,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 18611,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 18833,
+    "name": "Troll ladder"
+  },
+  {
+    "objectId": 18834,
+    "name": "Troll ladder"
+  },
+  {
+    "objectId": 18843,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18871,
+    "name": "Rock"
+  },
+  {
+    "objectId": 18903,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18904,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 18923,
+    "name": "Cliff"
+  },
+  {
+    "objectId": 18924,
+    "name": "Cliff"
+  },
+  {
+    "objectId": 18982,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 19040,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 19110,
+    "name": "Roots"
+  },
+  {
+    "objectId": 19222,
+    "name": "Stile"
+  },
+  {
+    "objectId": 19846,
+    "name": "Rocky handholds"
+  },
+  {
+    "objectId": 19847,
+    "name": "Rocky handholds"
+  },
+  {
+    "objectId": 19849,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 19966,
+    "name": "null"
+  },
+  {
+    "objectId": 20056,
+    "name": "Trellis"
+  },
+  {
+    "objectId": 20136,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20137,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20138,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20139,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20140,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20141,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20142,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20143,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20144,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20145,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20146,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20147,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20193,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20194,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20211,
+    "name": "Obstacle net"
+  },
+  {
+    "objectId": 20226,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20227,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20275,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20277,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20278,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20280,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20281,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20283,
+    "name": "null"
+  },
+  {
+    "objectId": 20284,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20285,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20286,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20287,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20340,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20353,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20354,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20356,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20357,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 20619,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 20631,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 20652,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 20653,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 20655,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 20659,
+    "name": "Air vent"
+  },
+  {
+    "objectId": 20684,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 20699,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 20711,
+    "name": "Sturdy tree"
+  },
+  {
+    "objectId": 20717,
+    "name": "Rope"
+  },
+  {
+    "objectId": 20724,
+    "name": "Air vent"
+  },
+  {
+    "objectId": 20725,
+    "name": "Air vent"
+  },
+  {
+    "objectId": 20750,
+    "name": "Dead tree"
+  },
+  {
+    "objectId": 20752,
+    "name": "Crevice"
+  },
+  {
+    "objectId": 20753,
+    "name": "Crevice"
+  },
+  {
+    "objectId": 20987,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21035,
+    "name": "Chasm"
+  },
+  {
+    "objectId": 21095,
+    "name": "Ice steps"
+  },
+  {
+    "objectId": 21120,
+    "name": "Stepping Stone"
+  },
+  {
+    "objectId": 21157,
+    "name": "Ice block"
+  },
+  {
+    "objectId": 21395,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21396,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21455,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 21511,
+    "name": "null"
+  },
+  {
+    "objectId": 21512,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21513,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21514,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21515,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 21578,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 21592,
+    "name": "Stone ladder"
+  },
+  {
+    "objectId": 21871,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 21872,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 21921,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 21922,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 22121,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22122,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22164,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22172,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22173,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22247,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22248,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22250,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22252,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22253,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22254,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22274,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22275,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22354,
+    "name": "Statue"
+  },
+  {
+    "objectId": 22367,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22368,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22369,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22370,
+    "name": "null"
+  },
+  {
+    "objectId": 22371,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22372,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22432,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22433,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22434,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22600,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22608,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22609,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22650,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22651,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22666,
+    "name": "Ladder top"
+  },
+  {
+    "objectId": 22667,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 22931,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22932,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22933,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22934,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22935,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22936,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 22937,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22938,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22939,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22940,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22941,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 22942,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 23073,
+    "name": "null"
+  },
+  {
+    "objectId": 23074,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 23118,
+    "name": "Warren exit"
+  },
+  {
+    "objectId": 23279,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23376,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23377,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23504,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23531,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23532,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23584,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23585,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 23610,
+    "name": "Tunnel entrance"
+  },
+  {
+    "objectId": 24073,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24074,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24075,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24264,
+    "name": "Hole"
+  },
+  {
+    "objectId": 24349,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24350,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24352,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24353,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24354,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24355,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24356,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24357,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24358,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24359,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24360,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24361,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24362,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24363,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24364,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24365,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24366,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24367,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24687,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24717,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24718,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24723,
+    "name": "Drain Pipe"
+  },
+  {
+    "objectId": 24733,
+    "name": "Beanstalk"
+  },
+  {
+    "objectId": 24749,
+    "name": "Crumbling wall"
+  },
+  {
+    "objectId": 24767,
+    "name": "Beard"
+  },
+  {
+    "objectId": 24771,
+    "name": "Rupert"
+  },
+  {
+    "objectId": 24772,
+    "name": "Rupert"
+  },
+  {
+    "objectId": 24795,
+    "name": "Nails"
+  },
+  {
+    "objectId": 24796,
+    "name": "Nails"
+  },
+  {
+    "objectId": 24819,
+    "name": "Beanstalk"
+  },
+  {
+    "objectId": 24918,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24919,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 24925,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 24926,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25038,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25045,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25161,
+    "name": "Wall"
+  },
+  {
+    "objectId": 25213,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 25214,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 25336,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25337,
+    "name": "Rough hewn steps"
+  },
+  {
+    "objectId": 25338,
+    "name": "Rough hewn steps"
+  },
+  {
+    "objectId": 25339,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25340,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25429,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25431,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25432,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25434,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25437,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 25604,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25606,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25629,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25630,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25662,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25663,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25682,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25683,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25786,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25787,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25801,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25843,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25844,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25935,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 25938,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25939,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25940,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 25941,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26017,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 26106,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26107,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26118,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26119,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 26144,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26145,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26146,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26147,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26148,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26149,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26150,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26151,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26197,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26199,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26208,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26293,
+    "name": "Rope"
+  },
+  {
+    "objectId": 26295,
+    "name": "Rock"
+  },
+  {
+    "objectId": 26297,
+    "name": "Rope"
+  },
+  {
+    "objectId": 26299,
+    "name": "Rock"
+  },
+  {
+    "objectId": 26323,
+    "name": "Rocky handholds"
+  },
+  {
+    "objectId": 26324,
+    "name": "Rocky handholds"
+  },
+  {
+    "objectId": 26327,
+    "name": "Rocky handholds"
+  },
+  {
+    "objectId": 26328,
+    "name": "Rocky handholds"
+  },
+  {
+    "objectId": 26341,
+    "name": "Hole"
+  },
+  {
+    "objectId": 26345,
+    "name": "Rope"
+  },
+  {
+    "objectId": 26439,
+    "name": "Ice bridge"
+  },
+  {
+    "objectId": 26518,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26519,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26806,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 26849,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26850,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26933,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 26934,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 26982,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 26983,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 27126,
+    "name": "Vine"
+  },
+  {
+    "objectId": 27128,
+    "name": "Vine"
+  },
+  {
+    "objectId": 27129,
+    "name": "Vine"
+  },
+  {
+    "objectId": 27130,
+    "name": "Vine"
+  },
+  {
+    "objectId": 27151,
+    "name": "Vine"
+  },
+  {
+    "objectId": 27152,
+    "name": "Vine"
+  },
+  {
+    "objectId": 27242,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 27243,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 27543,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 27668,
+    "name": "Tournament exit"
+  },
+  {
+    "objectId": 27669,
+    "name": "Tournament entrance"
+  },
+  {
+    "objectId": 27686,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 27866,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 27870,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 28386,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28388,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28444,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28488,
+    "name": "Rope"
+  },
+  {
+    "objectId": 28490,
+    "name": "Rope"
+  },
+  {
+    "objectId": 28512,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 28515,
+    "name": "Fallen pillar"
+  },
+  {
+    "objectId": 28516,
+    "name": "Fallen pillar"
+  },
+  {
+    "objectId": 28572,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28652,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28653,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28675,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 28676,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 28714,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28737,
+    "name": "Desert ladder"
+  },
+  {
+    "objectId": 28740,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28741,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 28742,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 28743,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 28782,
+    "name": "Exit"
+  },
+  {
+    "objectId": 29004,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29005,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29018,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29031,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29032,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29044,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29045,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29057,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29058,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 29355,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 29358,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 29385,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 29386,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 29387,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 29391,
+    "name": "Tunnel"
+  },
+  {
+    "objectId": 29392,
+    "name": "Tunnel"
+  },
+  {
+    "objectId": 29460,
+    "name": "Stile"
+  },
+  {
+    "objectId": 29589,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29592,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29655,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29656,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29659,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29660,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29663,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29664,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29667,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29668,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29671,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29672,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 29729,
+    "name": "Rope"
+  },
+  {
+    "objectId": 29807,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 30061,
+    "name": "Cave entrance"
+  },
+  {
+    "objectId": 30063,
+    "name": "Steps"
+  },
+  {
+    "objectId": 30489,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30494,
+    "name": "Wooden post"
+  },
+  {
+    "objectId": 30495,
+    "name": "Wooden beam"
+  },
+  {
+    "objectId": 30524,
+    "name": "Door"
+  },
+  {
+    "objectId": 30533,
+    "name": "Stairway"
+  },
+  {
+    "objectId": 30534,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 30571,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 30572,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 30573,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 30574,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30575,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30722,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 30723,
+    "name": "Staircase top"
+  },
+  {
+    "objectId": 30724,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 30725,
+    "name": "Staircase top"
+  },
+  {
+    "objectId": 30732,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30733,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30863,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30942,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 30943,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 30944,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 31002,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 31010,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 31011,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 31316,
+    "name": "Bucket rope"
+  },
+  {
+    "objectId": 31359,
+    "name": "Well"
+  },
+  {
+    "objectId": 31412,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 31417,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 31529,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 31530,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 31562,
+    "name": "Anchor"
+  },
+  {
+    "objectId": 31563,
+    "name": "Anchor"
+  },
+  {
+    "objectId": 31564,
+    "name": "Anchor"
+  },
+  {
+    "objectId": 31615,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 31616,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 32015,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 32016,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 32024,
+    "name": "Well"
+  },
+  {
+    "objectId": 32048,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 32270,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 32271,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 33184,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 33232,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 33246,
+    "name": "Exit"
+  },
+  {
+    "objectId": 33842,
+    "name": "Stile"
+  },
+  {
+    "objectId": 33977,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34040,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 34041,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 34080,
+    "name": "null"
+  },
+  {
+    "objectId": 34216,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 34217,
+    "name": "Bamboo Ladder"
+  },
+  {
+    "objectId": 34285,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 34286,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34287,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34388,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34390,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34394,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34396,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34397,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34398,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34498,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34499,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34548,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34550,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34567,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34568,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34776,
+    "name": "Stile"
+  },
+  {
+    "objectId": 34785,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34788,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34829,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 34869,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 34871,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34872,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34873,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34874,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34875,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34876,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34877,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 34878,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 34889,
+    "name": "Cliffside"
+  },
+  {
+    "objectId": 34904,
+    "name": "Climbing pegs"
+  },
+  {
+    "objectId": 34978,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 34995,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 35099,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 35121,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 35125,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 35391,
+    "name": "Rocks"
+  },
+  {
+    "objectId": 35516,
+    "name": "Steps"
+  },
+  {
+    "objectId": 35518,
+    "name": "Steps"
+  },
+  {
+    "objectId": 35533,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 35534,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 35645,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 35646,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 35672,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 35673,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 35781,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 35782,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 35783,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 35970,
+    "name": "Tree branch"
+  },
+  {
+    "objectId": 36002,
+    "name": "Smokey well"
+  },
+  {
+    "objectId": 36306,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36312,
+    "name": "Climbing rope"
+  },
+  {
+    "objectId": 36347,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36348,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 36349,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36363,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36365,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36402,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 36403,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 36440,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 36441,
+    "name": "Ship's ladder"
+  },
+  {
+    "objectId": 36476,
+    "name": "null"
+  },
+  {
+    "objectId": 36479,
+    "name": "null"
+  },
+  {
+    "objectId": 36480,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36481,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36484,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36495,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36500,
+    "name": "null"
+  },
+  {
+    "objectId": 36521,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36523,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36532,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36540,
+    "name": "Steps"
+  },
+  {
+    "objectId": 36644,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36645,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36646,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36687,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 36691,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 36693,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36694,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36703,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36707,
+    "name": "Young vine"
+  },
+  {
+    "objectId": 36708,
+    "name": "Young vine"
+  },
+  {
+    "objectId": 36709,
+    "name": "Growing vine"
+  },
+  {
+    "objectId": 36710,
+    "name": "Tall vine"
+  },
+  {
+    "objectId": 36768,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36769,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36770,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36771,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36772,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36773,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 36774,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 36775,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 36776,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 36777,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 36778,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 36791,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36792,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36793,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36794,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36795,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36796,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36797,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36920,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 36945,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36960,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36961,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36962,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36963,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36964,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36965,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36968,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36969,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 36984,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36985,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36986,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36987,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36988,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36989,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36990,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 36991,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37023,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37088,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 37116,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37117,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37211,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 37212,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 37268,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 37454,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37484,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 37493,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37494,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37495,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37496,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37497,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37498,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 37502,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37503,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37624,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37625,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37683,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37684,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 37710,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 37745,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 37746,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 37900,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38012,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 38221,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38222,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38332,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 38469,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38471,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38481,
+    "name": "Iron pegs"
+  },
+  {
+    "objectId": 38486,
+    "name": "Iron peg"
+  },
+  {
+    "objectId": 38549,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38761,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38762,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 38854,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 38855,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 38856,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 39188,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 39189,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 39191,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 39206,
+    "name": "Rubble mound"
+  },
+  {
+    "objectId": 39273,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 39274,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 39275,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 39329,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 39330,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 39331,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 39345,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 39346,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 39468,
+    "name": "Rough hewn steps"
+  },
+  {
+    "objectId": 39508,
+    "name": "Stile"
+  },
+  {
+    "objectId": 39509,
+    "name": "Stile"
+  },
+  {
+    "objectId": 39611,
+    "name": "Wall"
+  },
+  {
+    "objectId": 39612,
+    "name": "Wall"
+  },
+  {
+    "objectId": 39613,
+    "name": "Wall"
+  },
+  {
+    "objectId": 40026,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 40027,
+    "name": "ladder"
+  },
+  {
+    "objectId": 40057,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 40059,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 40113,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 40114,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 40260,
+    "name": "Cave opening"
+  },
+  {
+    "objectId": 40261,
+    "name": "Wall"
+  },
+  {
+    "objectId": 40262,
+    "name": "Wall"
+  },
+  {
+    "objectId": 40359,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 40360,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 40892,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 40898,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 40900,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 40901,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 40932,
+    "name": "Spiral staircase"
+  },
+  {
+    "objectId": 40933,
+    "name": "Spiral staircase"
+  },
+  {
+    "objectId": 40956,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 40957,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 40995,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 40996,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 41007,
+    "name": "Wall"
+  },
+  {
+    "objectId": 41065,
+    "name": "Rock"
+  },
+  {
+    "objectId": 41068,
+    "name": "Climbing wall"
+  },
+  {
+    "objectId": 41078,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 41079,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 41121,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 41122,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 41165,
+    "name": "Ice wall"
+  },
+  {
+    "objectId": 41281,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 41282,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 41383,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 41425,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 41435,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 41436,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 41458,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 41684,
+    "name": "Roots"
+  },
+  {
+    "objectId": 42493,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 42586,
+    "name": "Goblin statue"
+  },
+  {
+    "objectId": 42587,
+    "name": "Goblin statue"
+  },
+  {
+    "objectId": 42589,
+    "name": "Ork statue"
+  },
+  {
+    "objectId": 42590,
+    "name": "Ork statue"
+  },
+  {
+    "objectId": 42592,
+    "name": "Ogre statue"
+  },
+  {
+    "objectId": 42593,
+    "name": "Ogre statue"
+  },
+  {
+    "objectId": 42595,
+    "name": "Ourg statue"
+  },
+  {
+    "objectId": 42596,
+    "name": "Ourg statue"
+  },
+  {
+    "objectId": 42597,
+    "name": "Ourg statue"
+  },
+  {
+    "objectId": 42599,
+    "name": "Ourg statue"
+  },
+  {
+    "objectId": 42601,
+    "name": "Statue with bowl"
+  },
+  {
+    "objectId": 43182,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 43183,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 43184,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 43185,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 43528,
+    "name": "Tree"
+  },
+  {
+    "objectId": 43597,
+    "name": "Wall"
+  },
+  {
+    "objectId": 43790,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 43885,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 43897,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 43898,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 43899,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 43901,
+    "name": "Briefing room entrance"
+  },
+  {
+    "objectId": 44207,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 44208,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 44247,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 44253,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 44254,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 44255,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 44378,
+    "name": "Bone stile"
+  },
+  {
+    "objectId": 44379,
+    "name": "Bone stile"
+  },
+  {
+    "objectId": 45005,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45006,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45007,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45077,
+    "name": "Rope"
+  },
+  {
+    "objectId": 45078,
+    "name": "Rope"
+  },
+  {
+    "objectId": 45205,
+    "name": "Stile"
+  },
+  {
+    "objectId": 45481,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45482,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45483,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45484,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 45597,
+    "name": "Hole"
+  },
+  {
+    "objectId": 45600,
+    "name": "Hole"
+  },
+  {
+    "objectId": 45603,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 45608,
+    "name": "Wall"
+  },
+  {
+    "objectId": 45609,
+    "name": "Wall"
+  },
+  {
+    "objectId": 45610,
+    "name": "Wall"
+  },
+  {
+    "objectId": 45612,
+    "name": "Wall"
+  },
+  {
+    "objectId": 45784,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 45800,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 46499,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 46643,
+    "name": "Web wall"
+  },
+  {
+    "objectId": 46731,
+    "name": "Web ladder"
+  },
+  {
+    "objectId": 46936,
+    "name": "Web ladder"
+  },
+  {
+    "objectId": 46938,
+    "name": "Web ladder"
+  },
+  {
+    "objectId": 46939,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 46946,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 47129,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 47139,
+    "name": "Smashed rampart"
+  },
+  {
+    "objectId": 47140,
+    "name": "Smashed rampart"
+  },
+  {
+    "objectId": 47141,
+    "name": "Smashed rampart"
+  },
+  {
+    "objectId": 47142,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 47143,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 47144,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 47158,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 47159,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 47160,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 47161,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 47162,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47163,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47204,
+    "name": "Steps"
+  },
+  {
+    "objectId": 47205,
+    "name": "Steps"
+  },
+  {
+    "objectId": 47233,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 47234,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 47235,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 47239,
+    "name": "Exit"
+  },
+  {
+    "objectId": 47245,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 47259,
+    "name": "Hole"
+  },
+  {
+    "objectId": 47260,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47261,
+    "name": "Brundt's boat"
+  },
+  {
+    "objectId": 47355,
+    "name": "Obstruction"
+  },
+  {
+    "objectId": 47361,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 47364,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 47574,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47575,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47657,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 47776,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 47927,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47928,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47929,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47930,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 47980,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 48208,
+    "name": "Stile"
+  },
+  {
+    "objectId": 48496,
+    "name": "Dungeon entrance"
+  },
+  {
+    "objectId": 48611,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 48612,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 48677,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 48678,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 48679,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 48680,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 48683,
+    "name": "Lower catacomb exit"
+  },
+  {
+    "objectId": 48688,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 48707,
+    "name": "Low wall"
+  },
+  {
+    "objectId": 48797,
+    "name": "Catacomb entrance"
+  },
+  {
+    "objectId": 48798,
+    "name": "Catacomb exit"
+  },
+  {
+    "objectId": 49031,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 49032,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 49089,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 49916,
+    "name": "Stile"
+  },
+  {
+    "objectId": 50567,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 50568,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 50604,
+    "name": "Dungeon exit"
+  },
+  {
+    "objectId": 51127,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 51128,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 51156,
+    "name": "Dungeon exit"
+  },
+  {
+    "objectId": 51684,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 51685,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 51704,
+    "name": "Dungeon exit"
+  },
+  {
+    "objectId": 52219,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 52220,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 52284,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 52308,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 52309,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 52546,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 52547,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 52638,
+    "name": "Tunnel"
+  },
+  {
+    "objectId": 52641,
+    "name": "Discreet cave"
+  },
+  {
+    "objectId": 52644,
+    "name": "Hollow log"
+  },
+  {
+    "objectId": 52769,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 52806,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 52833,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 52834,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 53280,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 53281,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 53649,
+    "name": "Trapdoor"
+  },
+  {
+    "objectId": 53694,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 54675,
+    "name": "Dungeon exit"
+  },
+  {
+    "objectId": 55318,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 55402,
+    "name": "Staircase"
+  },
+  {
+    "objectId": 55403,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 55404,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 55450,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 56149,
+    "name": "Dungeon exit"
+  },
+  {
+    "objectId": 56805,
+    "name": "Climbable vine"
+  },
+  {
+    "objectId": 56865,
+    "name": "Hole"
+  },
+  {
+    "objectId": 56866,
+    "name": "Hole"
+  },
+  {
+    "objectId": 56867,
+    "name": "Hole"
+  },
+  {
+    "objectId": 56885,
+    "name": "Rockslide"
+  },
+  {
+    "objectId": 57225,
+    "name": "Landslide"
+  },
+  {
+    "objectId": 57256,
+    "name": "Hole"
+  },
+  {
+    "objectId": 57260,
+    "name": "Rope"
+  },
+  {
+    "objectId": 57315,
+    "name": "Wall"
+  },
+  {
+    "objectId": 57316,
+    "name": "Wall"
+  },
+  {
+    "objectId": 57464,
+    "name": "Stone stairs"
+  },
+  {
+    "objectId": 57465,
+    "name": "Stone stairs"
+  },
+  {
+    "objectId": 57466,
+    "name": "Stone stairs"
+  },
+  {
+    "objectId": 57467,
+    "name": "Stone stairs"
+  },
+  {
+    "objectId": 57468,
+    "name": "Stone stairs"
+  },
+  {
+    "objectId": 57469,
+    "name": "Stone stairs"
+  },
+  {
+    "objectId": 57777,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57778,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57876,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57877,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57895,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57897,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57899,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57901,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57903,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57904,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 57905,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57907,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57909,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57961,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 57962,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 58005,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 58007,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 58149,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 58151,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 58201,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 58203,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 61091,
+    "name": "Rope"
+  },
+  {
+    "objectId": 61197,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 61198,
+    "name": "Ladder"
+  },
+  {
+    "objectId": 61293,
+    "name": "Wall"
+  },
+  {
+    "objectId": 61493,
+    "name": "Stairs"
+  },
+  {
+    "objectId": 61525,
+    "name": "Hole"
+  },
+  {
+    "objectId": 61551,
+    "name": "Snow-covered tree"
   }
 ]
