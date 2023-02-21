@@ -39,6 +39,7 @@ public class ItemInteractionPacketReader implements IncomingPacketReader {
                 return new PacketContext() {
                     @Override
                     public void handle(@NotNull Player player) {
+                        //TODO remove item correctly from ground
                         if (Firemaking.isFiremakingCapable(id)) {
                             Firemaking.startFiremaking(player, id);
                             return;
