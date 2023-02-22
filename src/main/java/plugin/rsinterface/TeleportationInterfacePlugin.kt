@@ -19,7 +19,7 @@ import java.io.Serializable
 import java.util.*
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/12/2017
  */
 class TeleportationInterfacePlugin : InterfacePlugin {

@@ -12,7 +12,7 @@ import org.redrune.utility.constants.SkillConstants.*
 import org.redrune.utility.game.InputEvent
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/31/2017
  */
 class SkillInterfacePlugin : InterfacePlugin {

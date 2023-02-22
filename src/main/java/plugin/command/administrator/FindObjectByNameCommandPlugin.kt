@@ -12,7 +12,7 @@ import java.util.*
 import java.util.function.Consumer
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-01
  */
 @CommandManifest(description = "Finds an object by the name, and other possible parameters", types = [String::class])

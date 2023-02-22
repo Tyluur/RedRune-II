@@ -4,7 +4,7 @@ import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-29
  */
 class SendVarCommandPlugin : CommandPlugin() {

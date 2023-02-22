@@ -14,7 +14,7 @@ import java.util.function.Predicate
 import java.util.stream.Collectors
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Stops an object from spawning on our tile")

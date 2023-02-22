@@ -5,7 +5,7 @@ import org.redrune.utility.functions.Misc
 import java.util.*
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @author Matrix Team
  * @since 2/9/19
  */

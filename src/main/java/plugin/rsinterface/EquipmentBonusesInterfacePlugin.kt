@@ -45,7 +45,7 @@ import org.redrune.game.entity.item.Item
 import java.lang.StringBuilder
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 class EquipmentBonusesInterfacePlugin : InterfacePlugin {

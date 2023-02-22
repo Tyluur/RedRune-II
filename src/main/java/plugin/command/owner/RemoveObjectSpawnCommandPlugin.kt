@@ -4,7 +4,7 @@ import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/4/2017
  */
 class RemoveObjectSpawnCommandPlugin : CommandPlugin() {

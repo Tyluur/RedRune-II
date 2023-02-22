@@ -45,7 +45,7 @@ import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.constants.MagicConstants
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/7/2017
  */
 class WindSurgeSpellPlugin : CombatSpellPlugin {

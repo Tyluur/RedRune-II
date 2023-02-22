@@ -19,7 +19,7 @@ import java.util.function.Consumer
 import java.util.regex.Pattern
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 object PluginRepository {

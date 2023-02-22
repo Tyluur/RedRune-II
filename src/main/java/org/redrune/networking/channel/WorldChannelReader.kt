@@ -11,7 +11,7 @@ import org.redrune.utility.constants.NetworkConstants
 import org.redrune.utility.functions.Misc
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/19/2017
  */
 @Sharable

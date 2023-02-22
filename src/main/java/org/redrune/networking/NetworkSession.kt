@@ -10,7 +10,7 @@ import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.session.ISAACCipher
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 class NetworkSession(

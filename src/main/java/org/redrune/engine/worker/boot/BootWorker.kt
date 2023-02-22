@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.system.exitProcess
 
 /**
- * @author Tyluur<itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur<itstyluur@icloud.com>
  * @since 10/24/2015
  */
 class BootWorker internal constructor(number: Int) : Thread() {

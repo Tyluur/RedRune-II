@@ -42,7 +42,7 @@ import org.redrune.game.entity.actor.player.Player
 import plugin.interaction.combat.special.range.MorriganThrownAxeSpecialAttackPlugin
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 class SaradominSwordSpecialAttackPlugin : SpecialAttackPlugin() {

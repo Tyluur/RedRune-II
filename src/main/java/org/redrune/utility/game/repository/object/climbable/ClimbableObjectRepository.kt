@@ -13,7 +13,7 @@ import java.io.IOException
 import java.util.*
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-21
  */
 object ClimbableObjectRepository {

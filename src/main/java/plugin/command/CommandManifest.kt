@@ -3,7 +3,7 @@ package plugin.command
 import kotlin.reflect.KClass
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/31/2017
  */
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASS)

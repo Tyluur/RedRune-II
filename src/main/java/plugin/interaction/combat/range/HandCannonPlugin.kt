@@ -13,7 +13,7 @@ import org.redrune.utility.constants.SkillConstants
 import org.redrune.utility.functions.Misc
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/6/2017
  */
 class HandCannonPlugin : RangeWeaponPlugin() {

@@ -8,7 +8,7 @@ import org.redrune.utility.game.InputEvent
 import plugin.command.CommandManifest
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 @CommandManifest(description = "Bans a player", types = [String::class])

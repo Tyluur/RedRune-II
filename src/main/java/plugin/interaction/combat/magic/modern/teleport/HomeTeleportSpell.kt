@@ -6,7 +6,7 @@ import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/27/2017
  */
 class HomeTeleportSpell : TeleportSpellPlugin {
