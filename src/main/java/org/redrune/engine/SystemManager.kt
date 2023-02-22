@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Manages all system operations.
  *
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 5/21/2017
  */
 object SystemManager {

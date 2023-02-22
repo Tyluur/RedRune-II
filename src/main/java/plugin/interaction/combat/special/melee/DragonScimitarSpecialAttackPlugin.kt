@@ -9,7 +9,7 @@ import org.redrune.game.entity.actor.player.Player
 import org.redrune.utility.functions.Misc
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/5/2017
  */
 class DragonScimitarSpecialAttackPlugin : SpecialAttackPlugin() {

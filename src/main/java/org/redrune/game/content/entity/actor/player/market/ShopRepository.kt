@@ -11,7 +11,7 @@ import java.util.*
 import java.util.function.Consumer
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/15/2017
  */
 object ShopRepository {

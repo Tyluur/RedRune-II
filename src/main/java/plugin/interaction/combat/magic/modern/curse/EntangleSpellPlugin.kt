@@ -46,7 +46,7 @@ import org.redrune.utility.constants.MagicConstants
 import java.util.concurrent.TimeUnit
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/7/2017
  */
 class EntangleSpellPlugin : CombatSpellPlugin {

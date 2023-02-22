@@ -7,7 +7,7 @@ import org.redrune.game.global.punishment.PunishmentType
 import plugin.command.CommandManifest
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 @CommandManifest(description = "Removes an address ban for a player", types = [String::class])

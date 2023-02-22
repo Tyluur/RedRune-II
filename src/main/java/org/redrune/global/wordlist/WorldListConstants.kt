@@ -1,7 +1,7 @@
 package org.redrune.global.wordlist
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 object WorldListConstants {

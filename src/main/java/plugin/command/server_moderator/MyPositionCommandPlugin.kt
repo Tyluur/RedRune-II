@@ -8,7 +8,7 @@ import org.redrune.game.global.punishment.PunishmentHandler
 import org.redrune.game.global.punishment.PunishmentType
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Tells you your position")

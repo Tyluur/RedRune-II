@@ -8,7 +8,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.function.Consumer
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 10/24/2015
  */
 object BootHandler {

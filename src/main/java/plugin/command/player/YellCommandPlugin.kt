@@ -9,7 +9,7 @@ import org.redrune.utility.functions.Misc
 import plugin.command.CommandManifest
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 @CommandManifest(description = "Yells a message to everyone online", types = [String::class])

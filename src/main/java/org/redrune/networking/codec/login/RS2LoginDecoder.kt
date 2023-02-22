@@ -28,7 +28,7 @@ import org.redrune.utility.game.stream.buffer.FixedBuffer
 import java.util.*
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
 class RS2LoginDecoder : ByteToMessageDecoder() {

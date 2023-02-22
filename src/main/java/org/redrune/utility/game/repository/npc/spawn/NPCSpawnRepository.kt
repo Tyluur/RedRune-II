@@ -15,7 +15,7 @@ import java.util.*
 import java.util.function.Consumer
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
 object NPCSpawnRepository {

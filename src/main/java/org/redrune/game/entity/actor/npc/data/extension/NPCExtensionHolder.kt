@@ -6,7 +6,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 9/13/2017
  */
 object NPCExtensionHolder {

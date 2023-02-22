@@ -6,7 +6,7 @@ import org.redrune.utility.constants.MagicConstants
 import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 7/28/2017
  */
 class NorthArdougneTeleportSpell : TeleportSpellPlugin {

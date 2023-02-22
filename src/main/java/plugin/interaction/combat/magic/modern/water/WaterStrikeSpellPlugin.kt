@@ -9,7 +9,7 @@ import org.redrune.game.entity.projectile.ProjectileManager
 import org.redrune.utility.constants.MagicConstants.MagicBook
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 6/23/2017
  */
 class WaterStrikeSpellPlugin : CombatSpellPlugin {

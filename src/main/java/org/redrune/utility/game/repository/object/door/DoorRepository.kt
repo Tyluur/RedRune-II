@@ -12,7 +12,7 @@ import java.sql.SQLException
 import java.util.*
 
 /**
- * @author Tyluur <itstyluur></itstyluur>@icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-20
  */
 object DoorRepository {
