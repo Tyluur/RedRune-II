@@ -9,7 +9,7 @@ object GameConstants {
     /**
      * The name of the server
      */
-    const val SERVER_NAME = "Dusk"
+    const val SERVER_NAME = "RedRune"
 
     /**
      * The path that the cache is at
