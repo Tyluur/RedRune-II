@@ -22,6 +22,8 @@ class NPCInteractionPacketContext(private val npc: NPC, private val option: Clic
                     npc, option
                 )
             )
+
+            else -> {}
         }
     }
 }
