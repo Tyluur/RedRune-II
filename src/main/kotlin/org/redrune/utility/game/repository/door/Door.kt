@@ -1,4 +1,4 @@
-package org.redrune.utility.game.repository.`object`.door
+package org.redrune.utility.game.repository.door
 
 /**
  * Represents a door.

@@ -1,4 +1,4 @@
-package org.redrune.utility.game.repository.`object`.door
+package org.redrune.utility.game.repository.door
 
 import com.github.michaelbull.logging.InlineLogger
 import com.google.gson.GsonBuilder
