@@ -1,9 +1,9 @@
 package plugin.command.player
 
+import org.redrune.game.GameFlags
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
-import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.constants.InterfaceConstants
 import plugin.command.CommandManifest
 
@@ -20,7 +20,7 @@ class PlayersOnlineCommandPlugin : CommandPlugin() {
             .forEach { p: Player -> messages.add("${p.displayName} (lvl. ${p.skills.combatLevel})") }
         sendResponse(player, "There are currently ${World.getPlayers().size} players online.", console)
 
-        InterfaceConstants.sendQuestScroll(player, GameConstants.SERVER_NAME, *messages.toTypedArray())
+        InterfaceConstants.sendQuestScroll(player, GameFlags.SERVER_NAME, *messages.toTypedArray())
     }
 
     override fun identifiers(): Array<String> {

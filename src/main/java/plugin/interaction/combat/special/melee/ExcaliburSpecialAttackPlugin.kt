@@ -2,6 +2,7 @@ package plugin.interaction.combat.special.melee
 
 import org.redrune.engine.tick.task.WorldTask
 import org.redrune.engine.tick.task.WorldTasksManager
+import org.redrune.game.GameFlags
 import org.redrune.game.content.entity.actor.combat.player.AbstractCombatStyle
 import org.redrune.game.content.plugin.combat.SpecialAttackPlugin
 import org.redrune.game.entity.actor.Actor
@@ -9,7 +10,6 @@ import org.redrune.game.entity.actor.mask.Animation
 import org.redrune.game.entity.actor.mask.ForceTalk
 import org.redrune.game.entity.actor.mask.Graphics
 import org.redrune.game.entity.actor.player.Player
-import org.redrune.utility.constants.GameConstants
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -54,6 +54,6 @@ class ExcaliburSpecialAttackPlugin : SpecialAttackPlugin() {
     companion object {
         private val ANIMATION = Animation(1168)
         private val GRAPHICS = Graphics(247)
-        private val FORCE_TALK = ForceTalk("For " + GameConstants.SERVER_NAME.toUpperCase() + "!")
+        private val FORCE_TALK = ForceTalk("For ${GameFlags.SERVER_NAME.toUpperCase()}!")
     }
 }

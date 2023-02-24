@@ -1,10 +1,10 @@
 package org.redrune.game.entity.actor.player.data;
 
 import org.redrune.cache.loaders.ItemDefinitions;
+import org.redrune.game.GameFlags;
 import org.redrune.game.entity.actor.npc.impl.familiar.Familiar;
 import org.redrune.game.entity.actor.player.Player;
 import org.redrune.game.entity.item.Item;
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.game.repository.item.ItemCharacteristicRepository;
 
 import java.io.Serializable;
@@ -354,7 +354,7 @@ public class PlayerBank implements Serializable {
         final int lastGameTab = player.getInterfaceManager().openGameTab(9); // friends
         // tab
         sendBoxInterItems();
-        player.getPackets().sendIComponentText(11, 13, "Bank Of " + GameConstants.SERVER_NAME + " - Deposit Box");
+        player.getPackets().sendIComponentText(11, 13, "Bank Of " + GameFlags.SERVER_NAME + " - Deposit Box");
         player.setCloseInterfacesEvent(new Runnable() {
             @Override
             public void run() {

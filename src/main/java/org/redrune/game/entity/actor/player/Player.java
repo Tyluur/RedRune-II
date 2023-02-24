@@ -3,6 +3,7 @@ package org.redrune.game.entity.actor.player;
 import org.redrune.engine.SystemManager;
 import org.redrune.engine.tick.task.WorldTask;
 import org.redrune.engine.tick.task.WorldTasksManager;
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.action.ActionManager;
 import org.redrune.game.content.entity.actor.player.controller.ControllerManager;
 import org.redrune.game.content.entity.actor.player.cutscene.CutsceneManager;
@@ -699,7 +700,7 @@ public class Player extends Actor {
         if (username.equalsIgnoreCase("tyluur")) {
             this.rights.add(PlayerRight.OWNER);
         }
-        getPackets().sendMessage("Welcome to " + GameConstants.SERVER_NAME + ".");
+        getPackets().sendMessage("Welcome to " + GameFlags.SERVER_NAME + ".");
         interfaceManager.sendInterfaces();
         checkMultiArea();
         inventory.init();

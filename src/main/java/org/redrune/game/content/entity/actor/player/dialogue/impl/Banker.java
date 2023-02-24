@@ -1,7 +1,7 @@
 package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
-import org.redrune.utility.constants.GameConstants;
 
 public class Banker extends Dialogue {
 
@@ -35,7 +35,7 @@ public class Banker extends Dialogue {
             }
         } else if (stage == 1) {
             stage = 2;
-            sendNPCDialogue(npcId, NORMAL, "This is a branch of the Bank of " + GameConstants.SERVER_NAME + ". We have", "branches in many towns.");
+            sendNPCDialogue(npcId, NORMAL, "This is a branch of the Bank of " + GameFlags.SERVER_NAME + ". We have", "branches in many towns.");
         } else if (stage == 2) {
             stage = 3;
             sendOptions("What would you like to say?", "And what do you do?", "Didn't you used to be called the Bank of Varrock?");

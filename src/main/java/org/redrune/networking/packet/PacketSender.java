@@ -3,6 +3,7 @@ package org.redrune.networking.packet;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.redrune.cache.huffman.Huffman;
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.market.exchange.ExchangeConfiguration;
 import org.redrune.game.entity.actor.Actor;
 import org.redrune.game.entity.actor.mask.Animation;
@@ -23,7 +24,6 @@ import org.redrune.global.wordlist.WorldEntry;
 import org.redrune.global.wordlist.WorldList;
 import org.redrune.networking.NetworkSession;
 import org.redrune.networking.packet.outgoing.impl.MessagePacketBuilder;
-import org.redrune.utility.constants.GameConstants;
 import org.redrune.utility.constants.NetworkConstants;
 import org.redrune.utility.functions.Misc;
 import org.redrune.utility.functions.TextUtils;
@@ -643,7 +643,7 @@ public class PacketSender {
         stream.writeByte(player.getContactManager().getRank(Misc.formatPlayerNameForProtocol(username)));
         stream.writeByte(0);
         if (putOnline) {
-            stream.writeString(GameConstants.SERVER_NAME);
+            stream.writeString(GameFlags.SERVER_NAME);
             stream.writeByte(0);
         }
         session.write(stream);

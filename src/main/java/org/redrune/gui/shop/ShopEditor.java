@@ -6,10 +6,10 @@
 package org.redrune.gui.shop;
 
 import org.redrune.cache.Cache;
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.market.Shop;
 import org.redrune.game.content.entity.actor.player.market.ShopRepository;
 import org.redrune.game.entity.item.Item;
-import org.redrune.utility.constants.GameConstants;
 
 import javax.activation.ActivationDataFlavor;
 import javax.activation.DataHandler;
@@ -207,7 +207,7 @@ public class ShopEditor extends JFrame {
         sellBackButton.setText("Sell Back Allowed");
         sellBackButton.addActionListener(this::sellBackButtonActionPerformed);
 
-        setTitle(GameConstants.SERVER_NAME + " Shop Editor");
+        setTitle(GameFlags.SERVER_NAME + " Shop Editor");
 
         javax.swing.GroupLayout configurationPanelLayout = new javax.swing.GroupLayout(configurationPanel);
         configurationPanel.setLayout(configurationPanelLayout);

@@ -6,10 +6,6 @@ import org.redrune.game.global.WorldTile
  * All constants for the game are stored here
  */
 object GameConstants {
-    /**
-     * The name of the server
-     */
-    const val SERVER_NAME = "RedRune"
 
     /**
      * The path that the cache is at
