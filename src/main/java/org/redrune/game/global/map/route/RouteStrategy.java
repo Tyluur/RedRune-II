@@ -14,36 +14,6 @@ public abstract class RouteStrategy {
     public static final int BLOCK_FLAG_WEST = 0x8;
 
     /**
-     * Whether we can exit at specific x and y.
-     */
-    public abstract boolean canExit(int currentX, int currentY, int sizeXY, int[][] clip, int clipBaseX, int clipBaseY);
-
-    /**
-     * Get's approximated destination position X.
-     */
-    public abstract int getApproxDestinationX();
-
-    /**
-     * Get's approximated destination position Y.
-     */
-    public abstract int getApproxDestinationY();
-
-    /**
-     * Get's approximated destination size X.
-     */
-    public abstract int getApproxDestinationSizeX();
-
-    /**
-     * Get's approximated destination size Y.
-     */
-    public abstract int getApproxDestinationSizeY();
-
-    /**
-     * Whether this strategy equals to other object.
-     */
-    public abstract boolean equals(Object other);
-
-    /**
      * Check's if we can interact wall decoration from current position.
      */
     protected static boolean checkWallDecorationInteract(int[][] clip, int currentX, int currentY, int sizeXY, int targetX, int targetY, int targetType, int targetRotation) {
@@ -369,5 +339,35 @@ public abstract class RouteStrategy {
         }
         return false;
     }
+
+    /**
+     * Whether we can exit at specific x and y.
+     */
+    public abstract boolean canExit(int currentX, int currentY, int sizeXY, int[][] clip, int clipBaseX, int clipBaseY);
+
+    /**
+     * Get's approximated destination position X.
+     */
+    public abstract int getApproxDestinationX();
+
+    /**
+     * Get's approximated destination position Y.
+     */
+    public abstract int getApproxDestinationY();
+
+    /**
+     * Get's approximated destination size X.
+     */
+    public abstract int getApproxDestinationSizeX();
+
+    /**
+     * Get's approximated destination size Y.
+     */
+    public abstract int getApproxDestinationSizeY();
+
+    /**
+     * Whether this strategy equals to other object.
+     */
+    public abstract boolean equals(Object other);
 
 }

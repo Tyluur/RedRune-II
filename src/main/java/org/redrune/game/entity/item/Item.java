@@ -14,16 +14,14 @@ import java.io.Serializable;
 public class Item implements Serializable, Entity {
 
     private static final long serialVersionUID = -6485003878697568087L;
-
-    /**
-     * The id of the item
-     */
-    private int id;
-
     /**
      * The amount of the item
      */
     protected int amount;
+    /**
+     * The id of the item
+     */
+    private int id;
 
     public Item() {
         this(1, 1);
@@ -77,12 +75,12 @@ public class Item implements Serializable, Entity {
         return this.id;
     }
 
-    public int getAmount() {
-        return this.amount;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAmount() {
+        return this.amount;
     }
 
     public void setAmount(int amount) {

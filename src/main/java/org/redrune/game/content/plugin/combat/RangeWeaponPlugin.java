@@ -18,21 +18,6 @@ import org.redrune.utility.functions.Misc;
 public abstract class RangeWeaponPlugin implements Plugin {
 
     /**
-     * The pattern-matching names of weapons that will use this plugin
-     */
-    public abstract String[] getWeaponNames();
-
-    /**
-     * Handling the firing of the weapon
-     */
-    public abstract void fire(Player source, Actor target, AbstractCombatStyle style);
-
-    @Override
-    public void register() {
-        PluginRepository.INSTANCE.register(this, getWeaponNames());
-    }
-
-    /**
      * Handles the dropping of ammo
      *
      * @param player   The player
@@ -75,5 +60,20 @@ public abstract class RangeWeaponPlugin implements Plugin {
                 RegionManager.updateGroundItem(new Item(ammoId, quantity), new WorldTile(target.getCoordFaceX(target.getSize()), target.getCoordFaceY(target.getSize()), target.getPlane()), player);
             }
         }
+    }
+
+    /**
+     * The pattern-matching names of weapons that will use this plugin
+     */
+    public abstract String[] getWeaponNames();
+
+    /**
+     * Handling the firing of the weapon
+     */
+    public abstract void fire(Player source, Actor target, AbstractCombatStyle style);
+
+    @Override
+    public void register() {
+        PluginRepository.INSTANCE.register(this, getWeaponNames());
     }
 }

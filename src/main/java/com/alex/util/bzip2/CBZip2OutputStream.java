@@ -83,55 +83,41 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
      * The maximum supported blocksize <tt> == 9</tt>.
      */
     public static final int MAX_BLOCKSIZE = 9;
-
-    /**
-     * Knuth's increments seem to work better than Incerpi-Sedgewick here. Possibly because the number of elems to sort
-     * is usually small, typically &lt;= 20.
-     */
-    private static final int[] INCS = {1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484};
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int SETMASK = (1 << 21);
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int CLEARMASK = (~SETMASK);
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int GREATER_ICOST = 15;
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int LESSER_ICOST = 0;
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int SMALL_THRESH = 20;
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int DEPTH_THRESH = 10;
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it.
      */
     protected static final int WORK_FACTOR = 30;
-
     /**
      * This constant is accessible by subclasses for historical purposes. If you don't know what it means then you don't
      * need it. <p> If you are ever unlucky/improbable enough to get a stack overflow whilst sorting, increase the
@@ -139,7 +125,11 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
      * limit seems very generous.  </p>
      */
     protected static final int QSORT_STACK_SIZE = 1000;
-
+    /**
+     * Knuth's increments seem to work better than Incerpi-Sedgewick here. Possibly because the number of elems to sort
+     * is usually small, typically &lt;= 20.
+     */
+    private static final int[] INCS = {1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484};
     /**
      * Always: in the range 0 .. 9. The current block size is 100000 * this number.
      */
@@ -235,108 +225,6 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
         this.blockSize100k = blockSize;
         this.out = out;
         init();
-    }
-
-    private void init() throws IOException {
-        // write magic: done by caller who created this stream
-        // this.out.write('B');
-        // this.out.write('Z');
-
-        this.data = new Data(this.blockSize100k);
-
-        /*
-         * Write `magic' bytes h indicating file-format == huffmanised, followed
-         * by a digit indicating blockSize100k.
-         */
-        bsPutUByte('h');
-        bsPutUByte('0' + this.blockSize100k);
-
-        this.combinedCRC = 0;
-        initBlock();
-    }
-
-    private void bsPutUByte(final int c) throws IOException {
-        bsW(8, c);
-    }
-
-    private void initBlock() {
-        // blockNo++;
-        this.crc.initialiseCRC();
-        this.last = -1;
-        // ch = 0;
-
-        boolean[] inUse = this.data.inUse;
-        for (int i = 256; --i >= 0; ) {
-            inUse[i] = false;
-        }
-
-        /* 20 is just a paranoia constant */
-        this.allowableBlockSize = (this.blockSize100k * BZip2Constants.baseBlockSize) - 20;
-    }
-
-    private void bsW(final int n, final int v) throws IOException {
-        final OutputStream outShadow = this.out;
-        int bsLiveShadow = this.bsLive;
-        int bsBuffShadow = this.bsBuff;
-
-        while (bsLiveShadow >= 8) {
-            outShadow.write(bsBuffShadow >> 24); // write 8-bit
-            bsBuffShadow <<= 8;
-            bsLiveShadow -= 8;
-        }
-
-        this.bsBuff = bsBuffShadow | (v << (32 - bsLiveShadow - n));
-        this.bsLive = bsLiveShadow + n;
-    }
-
-    public void write(final int b) throws IOException {
-        if (this.out != null) {
-            write0(b);
-        } else {
-            throw new IOException("closed");
-        }
-    }
-
-    public void write(final byte[] buf, int offs, final int len) throws IOException {
-        if (offs < 0) {
-            throw new IndexOutOfBoundsException("offs(" + offs + ") < 0.");
-        }
-        if (len < 0) {
-            throw new IndexOutOfBoundsException("len(" + len + ") < 0.");
-        }
-        if (offs + len > buf.length) {
-            throw new IndexOutOfBoundsException("offs(" + offs + ") + len(" + len + ") > buf.length(" + buf.length + ").");
-        }
-        if (this.out == null) {
-            throw new IOException("stream closed");
-        }
-
-        for (int hi = offs + len; offs < hi; ) {
-            write0(buf[offs++]);
-        }
-    }
-
-    public void flush() throws IOException {
-        OutputStream outShadow = this.out;
-        if (outShadow != null) {
-            outShadow.flush();
-        }
-    }
-
-    public void close() throws IOException {
-        if (out != null) {
-            OutputStream outShadow = this.out;
-            finish();
-            outShadow.close();
-        }
-    }
-
-    /**
-     * Overriden to close the stream.
-     */
-    protected void finalize() throws Throwable {
-        finish();
-        super.finalize();
     }
 
     /**
@@ -666,6 +554,108 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
     private static byte med3(byte a, byte b, byte c) {
         return (a < b) ? (b < c ? b : a < c ? c : a) : (b > c ? b : a > c ? c : a);
+    }
+
+    private void init() throws IOException {
+        // write magic: done by caller who created this stream
+        // this.out.write('B');
+        // this.out.write('Z');
+
+        this.data = new Data(this.blockSize100k);
+
+        /*
+         * Write `magic' bytes h indicating file-format == huffmanised, followed
+         * by a digit indicating blockSize100k.
+         */
+        bsPutUByte('h');
+        bsPutUByte('0' + this.blockSize100k);
+
+        this.combinedCRC = 0;
+        initBlock();
+    }
+
+    private void bsPutUByte(final int c) throws IOException {
+        bsW(8, c);
+    }
+
+    private void initBlock() {
+        // blockNo++;
+        this.crc.initialiseCRC();
+        this.last = -1;
+        // ch = 0;
+
+        boolean[] inUse = this.data.inUse;
+        for (int i = 256; --i >= 0; ) {
+            inUse[i] = false;
+        }
+
+        /* 20 is just a paranoia constant */
+        this.allowableBlockSize = (this.blockSize100k * BZip2Constants.baseBlockSize) - 20;
+    }
+
+    private void bsW(final int n, final int v) throws IOException {
+        final OutputStream outShadow = this.out;
+        int bsLiveShadow = this.bsLive;
+        int bsBuffShadow = this.bsBuff;
+
+        while (bsLiveShadow >= 8) {
+            outShadow.write(bsBuffShadow >> 24); // write 8-bit
+            bsBuffShadow <<= 8;
+            bsLiveShadow -= 8;
+        }
+
+        this.bsBuff = bsBuffShadow | (v << (32 - bsLiveShadow - n));
+        this.bsLive = bsLiveShadow + n;
+    }
+
+    public void write(final int b) throws IOException {
+        if (this.out != null) {
+            write0(b);
+        } else {
+            throw new IOException("closed");
+        }
+    }
+
+    public void write(final byte[] buf, int offs, final int len) throws IOException {
+        if (offs < 0) {
+            throw new IndexOutOfBoundsException("offs(" + offs + ") < 0.");
+        }
+        if (len < 0) {
+            throw new IndexOutOfBoundsException("len(" + len + ") < 0.");
+        }
+        if (offs + len > buf.length) {
+            throw new IndexOutOfBoundsException("offs(" + offs + ") + len(" + len + ") > buf.length(" + buf.length + ").");
+        }
+        if (this.out == null) {
+            throw new IOException("stream closed");
+        }
+
+        for (int hi = offs + len; offs < hi; ) {
+            write0(buf[offs++]);
+        }
+    }
+
+    public void flush() throws IOException {
+        OutputStream outShadow = this.out;
+        if (outShadow != null) {
+            outShadow.flush();
+        }
+    }
+
+    public void close() throws IOException {
+        if (out != null) {
+            OutputStream outShadow = this.out;
+            finish();
+            outShadow.close();
+        }
+    }
+
+    /**
+     * Overriden to close the stream.
+     */
+    protected void finalize() throws Throwable {
+        finish();
+        super.finalize();
     }
 
     private void writeRun() throws IOException {

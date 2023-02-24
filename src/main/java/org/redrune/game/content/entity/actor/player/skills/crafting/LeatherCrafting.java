@@ -40,6 +40,35 @@ public class LeatherCrafting extends Action {
         this.quantity = quantity;
     }
 
+    public static boolean handleItemOnItem(Player player, Item itemUsed, Item usedWith) {
+        for (int i = 0; i < LEATHER.length; i++) {
+            if (itemUsed.getId() == LEATHER[i] || usedWith.getId() == LEATHER[i]) {
+                player.getTemporaryAttributes().put("leatherType", LEATHER[i]);
+                int index = getIndex(player);
+                if (index == -1) {
+                    return true;
+                }
+                player.getDialogueManager().startDialogue("LeatherCraftingD", LeatherData.forId(PRODUCTS[index][0]), LeatherData.forId(PRODUCTS[index][1]), LeatherData.forId(PRODUCTS[index][2]));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int getIndex(Player player) {
+        int leather = (Integer) player.getTemporaryAttributes().get("leatherType");
+        if (leather == LEATHER[0]) {
+            return 0;
+        }
+        if (leather == LEATHER[1]) {
+            return 1;
+        }
+        if (leather == LEATHER[2]) {
+            return 2;
+        }
+        return -1;
+    }
+
     @Override
     public boolean start(Player player) {
         if (!checkAll(player)) {
@@ -110,35 +139,6 @@ public class LeatherCrafting extends Action {
         this.data = null;
     }
 
-    public static boolean handleItemOnItem(Player player, Item itemUsed, Item usedWith) {
-        for (int i = 0; i < LEATHER.length; i++) {
-            if (itemUsed.getId() == LEATHER[i] || usedWith.getId() == LEATHER[i]) {
-                player.getTemporaryAttributes().put("leatherType", LEATHER[i]);
-                int index = getIndex(player);
-                if (index == -1) {
-                    return true;
-                }
-                player.getDialogueManager().startDialogue("LeatherCraftingD", LeatherData.forId(PRODUCTS[index][0]), LeatherData.forId(PRODUCTS[index][1]), LeatherData.forId(PRODUCTS[index][2]));
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static int getIndex(Player player) {
-        int leather = (Integer) player.getTemporaryAttributes().get("leatherType");
-        if (leather == LEATHER[0]) {
-            return 0;
-        }
-        if (leather == LEATHER[1]) {
-            return 1;
-        }
-        if (leather == LEATHER[2]) {
-            return 2;
-        }
-        return -1;
-    }
-
     public enum LeatherData {
         GREEN_D_HIDE_VAMBS(1745, 1, 1065, 57, 62),
         GREEN_D_HIDE_CHAPS(1745, 2, 1099, 60, 124),
@@ -179,12 +179,12 @@ public class LeatherCrafting extends Action {
             this.name = ItemDefinitions.getItemDefinitions(getFinalProduct()).getName().replace("d'hide", "");
         }
 
-        public int getFinalProduct() {
-            return finalProduct;
-        }
-
         public static LeatherData forId(int id) {
             return leatherItems.get(id);
+        }
+
+        public int getFinalProduct() {
+            return finalProduct;
         }
 
         public int getLeatherId() {

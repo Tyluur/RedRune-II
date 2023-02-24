@@ -137,36 +137,36 @@ public final class Hit {
         return this.source;
     }
 
-    public HitSplat getSplat() {
-        return this.splat;
-    }
-
-    public int getDamage() {
-        return this.damage;
-    }
-
-    public Hit getSoaking() {
-        return this.soaking;
-    }
-
-    public int getDelay() {
-        return this.delay;
-    }
-
     public void setSource(Actor source) {
         this.source = source;
+    }
+
+    public HitSplat getSplat() {
+        return this.splat;
     }
 
     public void setSplat(HitSplat splat) {
         this.splat = splat;
     }
 
+    public int getDamage() {
+        return this.damage;
+    }
+
     public void setDamage(int damage) {
         this.damage = damage;
     }
 
+    public Hit getSoaking() {
+        return this.soaking;
+    }
+
     public void setSoaking(Hit soaking) {
         this.soaking = soaking;
+    }
+
+    public int getDelay() {
+        return this.delay;
     }
 
     public void setDelay(int delay) {

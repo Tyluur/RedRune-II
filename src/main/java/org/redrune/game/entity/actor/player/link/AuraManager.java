@@ -14,15 +14,86 @@ import java.util.HashMap;
 public class AuraManager implements Serializable {
 
     private static final long serialVersionUID = -8860530757819448608L;
-
-    private long activation;
-
     private final HashMap<Integer, Long> cooldowns;
-
+    private long activation;
     private transient Player player;
 
     public AuraManager() {
         cooldowns = new HashMap<>();
+    }
+
+    /*
+     * return seconds
+     */
+    public static int getActivationTime(int aura) {
+        switch (aura) {
+            case 20958:
+                return 600; // 10minutes
+            case 22268:
+                return 1200; // 20minutes
+            case 22302:
+                return 1800; // 30minutes
+            case 22294:
+                return 7200; // 2hours
+            case 20959:
+                return 10800; // 3hours
+            default:
+                return 3600; // default 1hour
+        }
+    }
+
+    public static int getCooldown(int aura) {
+        switch (aura) {
+            case 20962:
+            case 22270:
+            case 20967:
+            case 22272:
+            case 22280:
+            case 22282:
+            case 22284:
+            case 22286:
+            case 20966:
+            case 22274:
+            case 20965:
+            case 22276:
+            case 22288:
+            case 22290:
+            case 22292:
+            case 22296:
+            case 22298:
+            case 22300:
+                return 10800; // 3hours
+            case 22294:
+                return 14400; // 4hours
+            case 20959:
+            case 22302:
+                return 86400; // 24hours
+            default:
+                return 3600; // default 1hour
+        }
+    }
+
+    public static int getTier(int aura) {
+        switch (aura) {
+            case 22302:
+                return 3;
+            case 20959:
+            case 22270:
+            case 22272:
+            case 22282:
+            case 22286:
+            case 22274:
+            case 22276:
+            case 22290:
+            case 22292:
+            case 22294:
+            case 22296:
+            case 22298:
+            case 22300:
+                return 2;
+            default:
+                return 1; // default 1
+        }
     }
 
     public void process() {
@@ -82,57 +153,6 @@ public class AuraManager implements Serializable {
         return coolDown;
     }
 
-    /*
-     * return seconds
-     */
-    public static int getActivationTime(int aura) {
-        switch (aura) {
-            case 20958:
-                return 600; // 10minutes
-            case 22268:
-                return 1200; // 20minutes
-            case 22302:
-                return 1800; // 30minutes
-            case 22294:
-                return 7200; // 2hours
-            case 20959:
-                return 10800; // 3hours
-            default:
-                return 3600; // default 1hour
-        }
-    }
-
-    public static int getCooldown(int aura) {
-        switch (aura) {
-            case 20962:
-            case 22270:
-            case 20967:
-            case 22272:
-            case 22280:
-            case 22282:
-            case 22284:
-            case 22286:
-            case 20966:
-            case 22274:
-            case 20965:
-            case 22276:
-            case 22288:
-            case 22290:
-            case 22292:
-            case 22296:
-            case 22298:
-            case 22300:
-                return 10800; // 3hours
-            case 22294:
-                return 14400; // 4hours
-            case 20959:
-            case 22302:
-                return 86400; // 24hours
-            default:
-                return 3600; // default 1hour
-        }
-    }
-
     public int getActiveGraphic(int tier) {
         if (tier == 2) {
             return 1764;
@@ -141,29 +161,6 @@ public class AuraManager implements Serializable {
             return 1763;
         }
         return 370; // default gold
-    }
-
-    public static int getTier(int aura) {
-        switch (aura) {
-            case 22302:
-                return 3;
-            case 20959:
-            case 22270:
-            case 22272:
-            case 22282:
-            case 22286:
-            case 22274:
-            case 22276:
-            case 22290:
-            case 22292:
-            case 22294:
-            case 22296:
-            case 22298:
-            case 22300:
-                return 2;
-            default:
-                return 1; // default 1
-        }
     }
 
     public void sendAuraRemainingTime() {

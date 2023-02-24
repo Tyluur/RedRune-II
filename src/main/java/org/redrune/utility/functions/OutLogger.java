@@ -23,6 +23,25 @@ public class OutLogger extends PrintStream {
         super(out);
     }
 
+    /**
+     * Gets the proper stacktrace element
+     *
+     * @param elements The elements
+     */
+    public static StackTraceElement getProperElement(StackTraceElement[] elements) {
+        for (int i = 0; i < elements.length; i++) {
+            StackTraceElement element = elements[i];
+            if (element.toString().contains("java.io.PrintStream")) {
+                int newIndex = i + 1;
+                if (newIndex >= elements.length) {
+                    continue;
+                }
+                return elements[newIndex];
+            }
+        }
+        return elements[elements.length - 2];
+    }
+
     @Override
     public void print(boolean message) {
         StackTraceElement element = getProperElement(Thread.currentThread().getStackTrace());
@@ -57,25 +76,6 @@ public class OutLogger extends PrintStream {
     public void print(Object message) {
         StackTraceElement element = getProperElement(Thread.currentThread().getStackTrace());
         prettyLog(element.getFileName() + ":" + element.getLineNumber() + "#" + element.getMethodName(), "" + message);
-    }
-
-    /**
-     * Gets the proper stacktrace element
-     *
-     * @param elements The elements
-     */
-    public static StackTraceElement getProperElement(StackTraceElement[] elements) {
-        for (int i = 0; i < elements.length; i++) {
-            StackTraceElement element = elements[i];
-            if (element.toString().contains("java.io.PrintStream")) {
-                int newIndex = i + 1;
-                if (newIndex >= elements.length) {
-                    continue;
-                }
-                return elements[newIndex];
-            }
-        }
-        return elements[elements.length - 2];
     }
 
     /**

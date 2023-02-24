@@ -23,6 +23,39 @@ public class Firemaking extends Action {
         this.fire = fire;
     }
 
+    public static boolean isFiremaking(Player player, Item item1, Item item2) {
+        Item log = InventoryOptionsHandler.contains(590, item1, item2);
+        if (log == null) {
+            return false;
+        }
+        return startFiremaking(player, log.getId());
+    }
+
+    public static boolean startFiremaking(Player player, int logId) {
+        for (Fire fire : Fire.values()) {
+            if (fire.getLogId() == logId) {
+                player.getActionManager().setAction(new Firemaking(fire));
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public static boolean isFiremakingCapable(int logId) {
+        for (Fire fire : Fire.values()) {
+            if (fire.getLogId() == logId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void startFamiliarFire(Player player, Familiar familiar, Fire fire) {
+        if (player.getFamiliar().getId() == 7378 || player.getFamiliar().getId() == 7377) {
+        }
+    }
+
     @Override
     public boolean start(Player player) {
         if (!checkAll(player)) {
@@ -96,39 +129,6 @@ public class Firemaking extends Action {
     @Override
     public void stop(Player player) {
 
-    }
-
-    public static boolean isFiremaking(Player player, Item item1, Item item2) {
-        Item log = InventoryOptionsHandler.contains(590, item1, item2);
-        if (log == null) {
-            return false;
-        }
-        return startFiremaking(player, log.getId());
-    }
-
-    public static boolean startFiremaking(Player player, int logId) {
-        for (Fire fire : Fire.values()) {
-            if (fire.getLogId() == logId) {
-                player.getActionManager().setAction(new Firemaking(fire));
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    public static boolean isFiremakingCapable(int logId) {
-        for (Fire fire : Fire.values()) {
-            if (fire.getLogId() == logId) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static void startFamiliarFire(Player player, Familiar familiar, Fire fire) {
-        if (player.getFamiliar().getId() == 7378 || player.getFamiliar().getId() == 7377) {
-        }
     }
 
     public enum Fire {

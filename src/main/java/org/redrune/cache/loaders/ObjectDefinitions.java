@@ -266,6 +266,10 @@ public class ObjectDefinitions {
         return id >>> 8;
     }
 
+    public static void clearObjectDefinitions() {
+        objectDefinitions.clear();
+    }
+
     private void readValueLoop(InputStream stream) {
         for (; ; ) {
             int opcode = stream.readUnsignedByte();
@@ -544,10 +548,6 @@ public class ObjectDefinitions {
         }
     }
 
-    public static void clearObjectDefinitions() {
-        objectDefinitions.clear();
-    }
-
     public String getFirstOption() {
         if (getOptions() == null || getOptions().length < 1) {
             return "";
@@ -606,108 +606,108 @@ public class ObjectDefinitions {
         return this.name;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public String[] getOptions() {
-        return this.options;
-    }
-
-    public int[][] getModelIds() {
-        return this.modelIds;
-    }
-
-    public int getSizeX() {
-        return this.sizeX;
-    }
-
-    public int getSizeY() {
-        return this.sizeY;
-    }
-
-    public int getConfigFileId() {
-        return this.configFileId;
-    }
-
-    public boolean isProjectileClipped() {
-        return this.projectileClipped;
-    }
-
-    public boolean isIgnoreClipOnAlternativeRoute() {
-        return this.ignoreClipOnAlternativeRoute;
-    }
-
-    public int getClipType() {
-        return this.clipType;
-    }
-
-    public int getConfigId() {
-        return this.configId;
-    }
-
-    public short[] getOriginalColors() {
-        return this.originalColors;
-    }
-
-    public int[] getToObjectIds() {
-        return this.toObjectIds;
-    }
-
-    public short[] getModifiedColors() {
-        return this.modifiedColors;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String[] getOptions() {
+        return this.options;
+    }
+
     public void setOptions(String[] options) {
         this.options = options;
+    }
+
+    public int[][] getModelIds() {
+        return this.modelIds;
     }
 
     public void setModelIds(int[][] modelIds) {
         this.modelIds = modelIds;
     }
 
+    public int getSizeX() {
+        return this.sizeX;
+    }
+
     public void setSizeX(int sizeX) {
         this.sizeX = sizeX;
+    }
+
+    public int getSizeY() {
+        return this.sizeY;
     }
 
     public void setSizeY(int sizeY) {
         this.sizeY = sizeY;
     }
 
+    public int getConfigFileId() {
+        return this.configFileId;
+    }
+
     public void setConfigFileId(int configFileId) {
         this.configFileId = configFileId;
+    }
+
+    public boolean isProjectileClipped() {
+        return this.projectileClipped;
     }
 
     public void setProjectileClipped(boolean projectileClipped) {
         this.projectileClipped = projectileClipped;
     }
 
+    public boolean isIgnoreClipOnAlternativeRoute() {
+        return this.ignoreClipOnAlternativeRoute;
+    }
+
     public void setIgnoreClipOnAlternativeRoute(boolean ignoreClipOnAlternativeRoute) {
         this.ignoreClipOnAlternativeRoute = ignoreClipOnAlternativeRoute;
+    }
+
+    public int getClipType() {
+        return this.clipType;
     }
 
     public void setClipType(int clipType) {
         this.clipType = clipType;
     }
 
+    public int getConfigId() {
+        return this.configId;
+    }
+
     public void setConfigId(int configId) {
         this.configId = configId;
+    }
+
+    public short[] getOriginalColors() {
+        return this.originalColors;
     }
 
     public void setOriginalColors(short[] originalColors) {
         this.originalColors = originalColors;
     }
 
+    public int[] getToObjectIds() {
+        return this.toObjectIds;
+    }
+
     public void setToObjectIds(int[] toObjectIds) {
         this.toObjectIds = toObjectIds;
+    }
+
+    public short[] getModifiedColors() {
+        return this.modifiedColors;
     }
 
     public void setModifiedColors(short[] modifiedColors) {

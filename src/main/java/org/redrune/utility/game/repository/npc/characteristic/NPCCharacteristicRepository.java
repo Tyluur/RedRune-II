@@ -414,57 +414,6 @@ public class NPCCharacteristicRepository {
     }
 
     /**
-     * Created by yak.
-     */
-    public enum Style {
-
-        STAB,
-        SLASH,
-        CRUSH,
-        RANGED,
-        DECENT_OF_DRAGONS,
-        DECENT_OF_DARKNESS,
-        DOWN_TO_EARTH,
-        CLEAR_MIND,
-        LIFE_LEECH,
-        KORASI_SPEC,
-        MAGIC,
-        DRAGON_FIRE,
-        SARADOMIN_LIGHTNING,
-        OTHER;
-
-        public boolean isMelee() {
-            return this == STAB || this == SLASH || this == CRUSH;
-        }
-
-        public boolean isRanged() {
-            return this == RANGED || this == DECENT_OF_DRAGONS || this == DECENT_OF_DARKNESS || this == DOWN_TO_EARTH || this == CLEAR_MIND || this == LIFE_LEECH;
-        }
-
-        public boolean isMagic() {
-            return this == MAGIC;
-        }
-
-        public int getAttackStyle() {
-            switch (this) {
-                case STAB:
-                    return BonusConstants.STAB_ATTACK;
-                case SLASH:
-                    return BonusConstants.SLASH_ATTACK;
-                case CRUSH:
-                    return BonusConstants.CRUSH_ATTACK;
-                case MAGIC:
-                    return BonusConstants.MAGIC_ATTACK;
-                case RANGED:
-                    return BonusConstants.RANGE_ATTACK;
-                default:
-                    throw new IllegalStateException("Unable to parse attack style");
-            }
-        }
-
-    }
-
-    /**
      * Gets the {@code NPCCharacteristic} instance from the file
      *
      * @param name The name of the npc we will use to find the file
@@ -700,6 +649,57 @@ public class NPCCharacteristicRepository {
             return "It's an npc.";
         }
         return examine;
+    }
+
+    /**
+     * Created by yak.
+     */
+    public enum Style {
+
+        STAB,
+        SLASH,
+        CRUSH,
+        RANGED,
+        DECENT_OF_DRAGONS,
+        DECENT_OF_DARKNESS,
+        DOWN_TO_EARTH,
+        CLEAR_MIND,
+        LIFE_LEECH,
+        KORASI_SPEC,
+        MAGIC,
+        DRAGON_FIRE,
+        SARADOMIN_LIGHTNING,
+        OTHER;
+
+        public boolean isMelee() {
+            return this == STAB || this == SLASH || this == CRUSH;
+        }
+
+        public boolean isRanged() {
+            return this == RANGED || this == DECENT_OF_DRAGONS || this == DECENT_OF_DARKNESS || this == DOWN_TO_EARTH || this == CLEAR_MIND || this == LIFE_LEECH;
+        }
+
+        public boolean isMagic() {
+            return this == MAGIC;
+        }
+
+        public int getAttackStyle() {
+            switch (this) {
+                case STAB:
+                    return BonusConstants.STAB_ATTACK;
+                case SLASH:
+                    return BonusConstants.SLASH_ATTACK;
+                case CRUSH:
+                    return BonusConstants.CRUSH_ATTACK;
+                case MAGIC:
+                    return BonusConstants.MAGIC_ATTACK;
+                case RANGED:
+                    return BonusConstants.RANGE_ATTACK;
+                default:
+                    throw new IllegalStateException("Unable to parse attack style");
+            }
+        }
+
     }
 
 }

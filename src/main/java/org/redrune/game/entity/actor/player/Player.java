@@ -44,22 +44,10 @@ import java.util.concurrent.TimeUnit;
 public class Player extends Actor {
 
     private static final long serialVersionUID = 2011932556974180375L;
-
-    /**
-     * The username, saved as a transient because it changes every time the player logs in
-     */
-    private String username = "";
-
-    /**
-     * The password for logging in
-     */
-    private String password;
-
     /**
      * The set of the rights the player has
      */
     private final Set<PlayerRight> rights;
-
     /**
      * The attributes the player has
      */
@@ -68,77 +56,70 @@ public class Player extends Actor {
      * The appearance handler and container
      */
     private final PlayerAppearance appearance;
-
     /**
      * The inventory container and handler
      */
     private final PlayerInventory inventory;
-
     /**
      * The equipment container and handler
      */
     private final PlayerEquipment equipment;
-
     /**
      * The skill handler and container
      */
     private final PlayerSkills skills;
-
     /**
      * The bank handler and container
      */
     private final PlayerBank bank;
-
     /**
      * The prayer handler
      */
     private final PlayerPrayer prayer;
-
     /**
      * The definitions used for combat events
      */
     private final CombatDefinitions combatDefinitions;
-
     /**
      * The manager for {@code Controller}s
      */
     private final ControllerManager controllerManager;
-
     /**
      * The handler for music
      */
     private final MusicManager musicManager;
-
     /**
      * The handler for emotes
      */
     private final EmotesManager emotesManager;
-
-    /**
-     * The manager for presets
-     */
-    private PresetManager presetManager;
-
-    /**
-     * The instance of the familiar the player owns
-     */
-    private transient Familiar familiar;
-
     /**
      * The handler for all social interaction
      */
     private final ContactManager contactManager;
-
     /**
      * The handler for auras
      */
     private final AuraManager auraManager;
-
     /**
      * The handler for items with charges, meaning degradable items
      */
     private final ChargesManager charges;
-
+    /**
+     * The username, saved as a transient because it changes every time the player logs in
+     */
+    private String username = "";
+    /**
+     * The password for logging in
+     */
+    private String password;
+    /**
+     * The manager for presets
+     */
+    private PresetManager presetManager;
+    /**
+     * The instance of the familiar the player owns
+     */
+    private transient Familiar familiar;
     /**
      * The network session used for the player
      */
@@ -1046,6 +1027,10 @@ public class Player extends Actor {
         return this.password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public PlayerAppearance getAppearance() {
         return this.appearance;
     }
@@ -1098,6 +1083,10 @@ public class Player extends Actor {
         return this.familiar;
     }
 
+    public void setFamiliar(Familiar familiar) {
+        this.familiar = familiar;
+    }
+
     public ChargesManager getCharges() {
         return this.charges;
     }
@@ -1106,8 +1095,16 @@ public class Player extends Actor {
         return this.username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public NetworkSession getSession() {
         return this.session;
+    }
+
+    public void setSession(NetworkSession session) {
+        this.session = session;
     }
 
     public InterfaceManager getInterfaceManager() {
@@ -1142,6 +1139,10 @@ public class Player extends Actor {
         return this.currentFriendChat;
     }
 
+    public void setCurrentFriendChat(FriendChatsManager currentFriendChat) {
+        this.currentFriendChat = currentFriendChat;
+    }
+
     public LocalPlayerUpdate getLocalPlayerUpdate() {
         return this.localPlayerUpdate;
     }
@@ -1162,28 +1163,8 @@ public class Player extends Actor {
         return this.running;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setFamiliar(Familiar familiar) {
-        this.familiar = familiar;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setSession(NetworkSession session) {
-        this.session = session;
-    }
-
     public void setCloseInterfacesEvent(Runnable closeInterfacesEvent) {
         this.closeInterfacesEvent = closeInterfacesEvent;
-    }
-
-    public void setCurrentFriendChat(FriendChatsManager currentFriendChat) {
-        this.currentFriendChat = currentFriendChat;
     }
 
     public void restoreAll() {

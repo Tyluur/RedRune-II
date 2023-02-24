@@ -166,10 +166,6 @@ public final class NPCDefinitions {
         anInt901 = -1;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public static NPCDefinitions getNPCDefinitions(int id) {
         try {
             NPCDefinitions def = npcDefinitions.get(id);
@@ -189,6 +185,10 @@ public final class NPCDefinitions {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void clearNPCDefinitions() {
+        npcDefinitions.clear();
     }
 
     public void method694() {
@@ -424,10 +424,6 @@ public final class NPCDefinitions {
         }
     }
 
-    public static void clearNPCDefinitions() {
-        npcDefinitions.clear();
-    }
-
     public boolean hasPickupOption() {
         String[] as;
         int j = (as = getOptions()).length;
@@ -492,88 +488,92 @@ public final class NPCDefinitions {
         return this.aBoolean3190;
     }
 
-    public byte getRespawnDirection() {
-        return this.respawnDirection;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
-
-    public int getRenderEmote() {
-        return this.renderEmote;
-    }
-
-    public int getCombatLevel() {
-        return this.combatLevel;
-    }
-
-    public byte getWalkMask() {
-        return this.walkMask;
-    }
-
-    public int[] getModelIds() {
-        return this.modelIds;
-    }
-
-    public int getHeadIcons() {
-        return this.headIcons;
-    }
-
-    public boolean isVisibleOnMap() {
-        return this.isVisibleOnMap;
-    }
-
-    public String[] getOptions() {
-        return this.options;
-    }
-
     public void setABoolean3190(boolean aBoolean3190) {
         this.aBoolean3190 = aBoolean3190;
+    }
+
+    public byte getRespawnDirection() {
+        return this.respawnDirection;
     }
 
     public void setRespawnDirection(byte respawnDirection) {
         this.respawnDirection = respawnDirection;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getSize() {
+        return this.size;
     }
 
     public void setSize(int size) {
         this.size = size;
     }
 
+    public int getRenderEmote() {
+        return this.renderEmote;
+    }
+
     public void setRenderEmote(int renderEmote) {
         this.renderEmote = renderEmote;
+    }
+
+    public int getCombatLevel() {
+        return this.combatLevel;
     }
 
     public void setCombatLevel(int combatLevel) {
         this.combatLevel = combatLevel;
     }
 
+    public byte getWalkMask() {
+        return this.walkMask;
+    }
+
     public void setWalkMask(byte walkMask) {
         this.walkMask = walkMask;
+    }
+
+    public int[] getModelIds() {
+        return this.modelIds;
     }
 
     public void setModelIds(int[] modelIds) {
         this.modelIds = modelIds;
     }
 
+    public int getHeadIcons() {
+        return this.headIcons;
+    }
+
     public void setHeadIcons(int headIcons) {
         this.headIcons = headIcons;
     }
 
+    public boolean isVisibleOnMap() {
+        return this.isVisibleOnMap;
+    }
+
     public void setVisibleOnMap(boolean isVisibleOnMap) {
         this.isVisibleOnMap = isVisibleOnMap;
+    }
+
+    public String[] getOptions() {
+        return this.options;
     }
 
     public void setOptions(String[] options) {

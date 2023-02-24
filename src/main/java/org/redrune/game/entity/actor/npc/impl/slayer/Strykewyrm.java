@@ -18,31 +18,6 @@ public class Strykewyrm extends NPC {
         stompId = id;
     }
 
-    @Override
-    public void reset() {
-        setNPC(stompId);
-        super.reset();
-    }
-
-    @Override
-    public void processNPC() {
-        super.processNPC();
-        if (isDead()) {
-            return;
-        }
-        if (getId() != stompId && !isCantInteract() && !isUnderCombat()) {
-            setNextAnimation(new Animation(12796));
-            setCantInteract(true);
-            WorldTasksManager.schedule(new WorldTask() {
-                @Override
-                public void run() {
-                    transformIntoNPC(9462);
-                    setCantInteract(false);
-                }
-            });
-        }
-    }
-
     public static void handleStomping(final Player player, final NPC npc) {
         if (npc.isCantInteract()) {
             return;
@@ -83,6 +58,31 @@ public class Strykewyrm extends NPC {
             }
 
         }, 1, 2);
+    }
+
+    @Override
+    public void reset() {
+        setNPC(stompId);
+        super.reset();
+    }
+
+    @Override
+    public void processNPC() {
+        super.processNPC();
+        if (isDead()) {
+            return;
+        }
+        if (getId() != stompId && !isCantInteract() && !isUnderCombat()) {
+            setNextAnimation(new Animation(12796));
+            setCantInteract(true);
+            WorldTasksManager.schedule(new WorldTask() {
+                @Override
+                public void run() {
+                    transformIntoNPC(9462);
+                    setCantInteract(false);
+                }
+            });
+        }
     }
 
 }

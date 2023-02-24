@@ -11,6 +11,11 @@ import org.redrune.game.entity.actor.player.Player;
 public abstract class Event {
 
     /**
+     * If the event has started
+     */
+    protected EventState state = EventState.CREATED;
+
+    /**
      * Runs the event
      *
      * @param player The player running the event
@@ -21,11 +26,6 @@ public abstract class Event {
      * The policies of the event
      */
     public abstract EventPolicy[] policies();
-
-    /**
-     * If the event has started
-     */
-    protected EventState state = EventState.CREATED;
 
     /**
      * Converts varags arguments into an array

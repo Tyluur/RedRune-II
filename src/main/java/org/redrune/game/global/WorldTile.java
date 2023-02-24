@@ -37,6 +37,14 @@ public class WorldTile implements Serializable {
         this.plane = tile.plane;
     }
 
+    public static final int getCoordFaceX(int x, int sizeX, int sizeY, int rotation) {
+        return x + ((rotation == 1 || rotation == 3 ? sizeY : sizeX) - 1) / 2;
+    }
+
+    public static final int getCoordFaceY(int y, int sizeX, int sizeY, int rotation) {
+        return y + ((rotation == 1 || rotation == 3 ? sizeX : sizeY) - 1) / 2;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -71,14 +79,6 @@ public class WorldTile implements Serializable {
     @Override
     public String toString() {
         return "Tile{id=" + getRegionId() + ", x=" + x + ", y=" + y + ", plane=" + plane + ", rx=" + getChunkX() + ", ry=" + getChunkY() + "}";
-    }
-
-    public static final int getCoordFaceX(int x, int sizeX, int sizeY, int rotation) {
-        return x + ((rotation == 1 || rotation == 3 ? sizeY : sizeX) - 1) / 2;
-    }
-
-    public static final int getCoordFaceY(int y, int sizeX, int sizeY, int rotation) {
-        return y + ((rotation == 1 || rotation == 3 ? sizeX : sizeY) - 1) / 2;
     }
 
     public void moveLocation(int xOffset, int yOffset, int planeOffset) {

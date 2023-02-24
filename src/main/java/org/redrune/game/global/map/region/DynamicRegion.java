@@ -36,6 +36,47 @@ public class DynamicRegion extends Region {
         recheckReload = false;
     }
 
+    public static int[] translate(int x, int y, int rotation) {
+        int[] coords = new int[2];
+        if (rotation == 0) {
+            coords[0] = x;
+            coords[1] = y;
+        } else if (rotation == 1) {
+            coords[0] = y;
+            coords[1] = 7 - x;
+        } else if (rotation == 2) {
+            coords[0] = 7 - x;
+            coords[1] = 7 - y;
+        } else {
+            coords[0] = 7 - y;
+            coords[1] = x;
+        }
+        return coords;
+    }
+
+    public static int[] translate(int x, int y, int mapRotation, int sizeX, int sizeY, int objectRotation) {
+        int[] coords = new int[2];
+        if ((objectRotation & 0x1) == 1) {
+            int prevSizeX = sizeX;
+            sizeX = sizeY;
+            sizeY = prevSizeX;
+        }
+        if (mapRotation == 0) {
+            coords[0] = x;
+            coords[1] = y;
+        } else if (mapRotation == 1) {
+            coords[0] = y;
+            coords[1] = 7 - x - (sizeX - 1);
+        } else if (mapRotation == 2) {
+            coords[0] = 7 - x - (sizeX - 1);
+            coords[1] = 7 - y - (sizeY - 1);
+        } else if (mapRotation == 3) {
+            coords[0] = 7 - y - (sizeY - 1);
+            coords[1] = x;
+        }
+        return coords;
+    }
+
     @Override
     public void checkLoadMap() {
         if (recheckReload) {
@@ -213,47 +254,6 @@ public class DynamicRegion extends Region {
                  */
             }
         }
-    }
-
-    public static int[] translate(int x, int y, int rotation) {
-        int[] coords = new int[2];
-        if (rotation == 0) {
-            coords[0] = x;
-            coords[1] = y;
-        } else if (rotation == 1) {
-            coords[0] = y;
-            coords[1] = 7 - x;
-        } else if (rotation == 2) {
-            coords[0] = 7 - x;
-            coords[1] = 7 - y;
-        } else {
-            coords[0] = 7 - y;
-            coords[1] = x;
-        }
-        return coords;
-    }
-
-    public static int[] translate(int x, int y, int mapRotation, int sizeX, int sizeY, int objectRotation) {
-        int[] coords = new int[2];
-        if ((objectRotation & 0x1) == 1) {
-            int prevSizeX = sizeX;
-            sizeX = sizeY;
-            sizeY = prevSizeX;
-        }
-        if (mapRotation == 0) {
-            coords[0] = x;
-            coords[1] = y;
-        } else if (mapRotation == 1) {
-            coords[0] = y;
-            coords[1] = 7 - x - (sizeX - 1);
-        } else if (mapRotation == 2) {
-            coords[0] = 7 - x - (sizeX - 1);
-            coords[1] = 7 - y - (sizeY - 1);
-        } else if (mapRotation == 3) {
-            coords[0] = 7 - y - (sizeY - 1);
-            coords[1] = x;
-        }
-        return coords;
     }
 
     @Override

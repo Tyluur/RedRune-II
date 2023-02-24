@@ -11,24 +11,23 @@ import java.util.HashMap;
 
 public final class PresetManager implements Serializable {
 
+    private static final long serialVersionUID = -2928476953478619103L;
     private final transient boolean eco = false;//THEESE ARE TEMPORARY
     private final transient boolean halfEco = false;
     private final transient boolean spawn = true;
     private final transient int priceLimit = 100000;
-
-    private static final long serialVersionUID = -2928476953478619103L;
+    public HashMap<String, Preset> setups;
     /**
      * Instantiated variables below
      **/
     private transient Player player;
-    public HashMap<String, Preset> setups;
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 
     public PresetManager() {
         setups = new HashMap<String, Preset>();
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     private int getMaxSize() {

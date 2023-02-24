@@ -29,17 +29,14 @@ public final class Shop {
      * The identifier of the shop
      */
     private final int identifier;
-
-    /**
-     * The name of the shop, this is not the identifier because we have multiple shops by one name.
-     */
-    private String name;
-
     /**
      * The list of items in the shop
      */
     private final List<Item> items;
-
+    /**
+     * The name of the shop, this is not the identifier because we have multiple shops by one name.
+     */
+    private String name;
     /**
      * The name of the currency this shop uses. This is used only to find the {@link #currency} object for this class
      */
@@ -352,6 +349,10 @@ public final class Shop {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<Item> getItems() {
         return this.items;
     }
@@ -360,24 +361,20 @@ public final class Shop {
         return this.currencyName;
     }
 
-    public boolean isGeneralStore() {
-        return this.generalStore;
-    }
-
-    public ShopCurrency getCurrency() {
-        return this.currency;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setCurrencyName(String currencyName) {
         this.currencyName = currencyName;
     }
 
+    public boolean isGeneralStore() {
+        return this.generalStore;
+    }
+
     public void setGeneralStore(boolean generalStore) {
         this.generalStore = generalStore;
+    }
+
+    public ShopCurrency getCurrency() {
+        return this.currency;
     }
 
     public void setCurrency(ShopCurrency currency) {

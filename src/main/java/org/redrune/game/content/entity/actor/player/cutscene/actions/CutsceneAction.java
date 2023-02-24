@@ -4,16 +4,15 @@ import org.redrune.game.entity.actor.player.Player;
 
 public abstract class CutsceneAction {
 
-    public abstract void process(Player player, Object[] cache);
-
     private final int actionDelay; // -1 for no delay
-
     private final int cachedObjectIndex;
 
     public CutsceneAction(int cachedObjectIndex, int actionDelay) {
         this.cachedObjectIndex = cachedObjectIndex;
         this.actionDelay = actionDelay;
     }
+
+    public abstract void process(Player player, Object[] cache);
 
     public int getActionDelay() {
         return actionDelay;

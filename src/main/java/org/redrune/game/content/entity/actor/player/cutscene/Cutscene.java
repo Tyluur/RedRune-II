@@ -31,6 +31,14 @@ public abstract class Cutscene {
 
     }
 
+    public static int getX(Player player, int x) {
+        return new WorldTile(x, 0, 0).getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize());
+    }
+
+    public static int getY(Player player, int y) {
+        return new WorldTile(0, y, 0).getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize());
+    }
+
     public void constructArea(final Player player, final int baseChunkX, final int baseChunkY, final int widthChunks, final int heightChunks) {
         constructingRegion = true;
         player.getPackets().sendWindowsPane(56, 0);
@@ -82,19 +90,11 @@ public abstract class Cutscene {
         return getX(player, getBaseX() + x);
     }
 
-    public static int getX(Player player, int x) {
-        return new WorldTile(x, 0, 0).getLocalX(player.getLastLoadedMapRegionTile(), player.getMapSize());
-    }
-
     public int getLocalY(Player player, int y) {
         if (currentMapData == null) {
             return y;
         }
         return getY(player, getBaseY() + y);
-    }
-
-    public static int getY(Player player, int y) {
-        return new WorldTile(0, y, 0).getLocalY(player.getLastLoadedMapRegionTile(), player.getMapSize());
     }
 
     public final void logout(Player player) {

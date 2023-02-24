@@ -135,92 +135,92 @@ public class Projectile {
         return this.source;
     }
 
-    public WorldTile getSourceTile() {
-        return this.sourceTile;
-    }
-
-    public Actor getVictim() {
-        return this.victim;
-    }
-
-    public int getProjectileId() {
-        return this.projectileId;
-    }
-
-    public int getStartHeight() {
-        return this.startHeight;
-    }
-
-    public int getEndHeight() {
-        return this.endHeight;
-    }
-
-    public int getDelay() {
-        return this.delay;
-    }
-
-    public int getSpeed() {
-        return this.speed;
-    }
-
-    public int getAngle() {
-        return this.angle;
-    }
-
-    public int getCreatorSize() {
-        return this.creatorSize;
-    }
-
-    public int getStartDistanceOffset() {
-        return this.startDistanceOffset;
-    }
-
-    public WorldTile getEndLocation() {
-        return this.endLocation;
-    }
-
     public void setSource(Actor source) {
         this.source = source;
+    }
+
+    public WorldTile getSourceTile() {
+        return this.sourceTile;
     }
 
     public void setSourceTile(WorldTile sourceTile) {
         this.sourceTile = sourceTile;
     }
 
+    public Actor getVictim() {
+        return this.victim;
+    }
+
     public void setVictim(Actor victim) {
         this.victim = victim;
+    }
+
+    public int getProjectileId() {
+        return this.projectileId;
     }
 
     public void setProjectileId(int projectileId) {
         this.projectileId = projectileId;
     }
 
+    public int getStartHeight() {
+        return this.startHeight;
+    }
+
     public void setStartHeight(int startHeight) {
         this.startHeight = startHeight;
+    }
+
+    public int getEndHeight() {
+        return this.endHeight;
     }
 
     public void setEndHeight(int endHeight) {
         this.endHeight = endHeight;
     }
 
+    public int getDelay() {
+        return this.delay;
+    }
+
     public void setDelay(int delay) {
         this.delay = delay;
+    }
+
+    public int getSpeed() {
+        return this.speed;
     }
 
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
+    public int getAngle() {
+        return this.angle;
+    }
+
     public void setAngle(int angle) {
         this.angle = angle;
+    }
+
+    public int getCreatorSize() {
+        return this.creatorSize;
     }
 
     public void setCreatorSize(int creatorSize) {
         this.creatorSize = creatorSize;
     }
 
+    public int getStartDistanceOffset() {
+        return this.startDistanceOffset;
+    }
+
     public void setStartDistanceOffset(int startDistanceOffset) {
         this.startDistanceOffset = startDistanceOffset;
+    }
+
+    public WorldTile getEndLocation() {
+        return this.endLocation;
     }
 
     public void setEndLocation(WorldTile endLocation) {

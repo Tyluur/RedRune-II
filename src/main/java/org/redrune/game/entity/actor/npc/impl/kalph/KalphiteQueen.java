@@ -26,6 +26,10 @@ public class KalphiteQueen extends NPC {
         setLureDelay(0);
     }
 
+    public static boolean atKQ(WorldTile tile) {
+        return (tile.getX() >= 3462 && tile.getX() <= 3510) && (tile.getY() >= 9462 && tile.getY() <= 9528);
+    }
+
     @Override
     public ArrayList<Actor> getPossibleTargets(boolean checkNPCs, boolean checkPlayers) {
         ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
@@ -92,10 +96,6 @@ public class KalphiteQueen extends NPC {
                 step++;
             }
         }, 0, 1);
-    }
-
-    public static boolean atKQ(WorldTile tile) {
-        return (tile.getX() >= 3462 && tile.getX() <= 3510) && (tile.getY() >= 9462 && tile.getY() <= 9528);
     }
 
     public void respawn() {

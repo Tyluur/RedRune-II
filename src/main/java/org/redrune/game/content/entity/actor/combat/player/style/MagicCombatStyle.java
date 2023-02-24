@@ -71,8 +71,8 @@ public class MagicCombatStyle extends AbstractCombatStyle {
             case REGULAR:
             case ANCIENTS:
             case LUNAR:
-				combatSpellPlugin.cast(source, target, this);
-				break;
+                combatSpellPlugin.cast(source, target, this);
+                break;
         }
         return true;
     }

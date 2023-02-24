@@ -38,6 +38,168 @@ import java.util.concurrent.TimeUnit;
 public abstract class Actor extends WorldTile implements Entity {
 
     private static final long serialVersionUID = -3372926325008880753L;
+    /**
+     * The handler and container of poison
+     */
+    private final PoisonManager poisonManager;
+    /**
+     * The hitpoints of the actor
+     */
+    private int hitpoints;
+    /**
+     * The size of the map of the actor
+     */
+    private int mapSize;
+    /**
+     * If run mode is on, this is used for processing movement in a 2-tile-per-step fashion
+     */
+    private boolean runModeOn;
+    /**
+     * The index of the actor
+     */
+    private transient int index;
+    /**
+     * The faceDirection to face
+     */
+    private transient int faceDirection;
+    /**
+     * The id of the last region the actor was in
+     */
+    private transient int lastRegionId;
+    /**
+     * When {@link #loadMapRegions()} is called, this value is updated with a new instance of a world tile
+     */
+    private transient WorldTile lastLoadedMapRegionTile;
+    /**
+     * A list of all the region ids the actor is in
+     */
+    private transient CopyOnWriteArrayList<Integer> mapRegionsIds;
+    /**
+     * The last world tile this actor was at, in regards to walking
+     */
+    private transient WorldTile lastWorldTile;
+    /**
+     * The next world tile this actor will be at, in regards to teleporting
+     */
+    private transient WorldTile nextWorldTile;
+    /**
+     * The next direction in the walk block for the walk step
+     */
+    private transient int nextWalkDirection;
+    /**
+     * The next direction in the walk block for the run step
+     */
+    private transient int nextRunDirection;
+    /**
+     * The next tile we should face
+     */
+    private transient WorldTile nextFaceWorldTile;
+    /**
+     * The boolean used for synchronizing teleportation
+     */
+    private transient boolean teleported;
+    /**
+     * The temporary attributes of this actor
+     */
+    private transient ConcurrentHashMap<Object, Object> temporaryAttributes;
+    /**
+     * The manager for all actor-actor interactions
+     */
+    private transient InteractionManager interactionManager;
+    /**
+     * The action locks.
+     */
+    private transient ActionLocks locks;
+    /**
+     * The steps to walk to, these are called by more than 1 thread so they must be concurrently modifiable
+     */
+    private transient ConcurrentLinkedQueue<int[]> walkSteps;
+    /**
+     * The hits the actor has received, each time a hit is received, the hit is stored here
+     */
+    private transient ConcurrentLinkedQueue<Hit> receivedHits;
+    /**
+     * A collection of actors and the amount of damage they have done
+     */
+    private transient ConcurrentHashMap<Actor, Integer> receivedDamage;
+    /**
+     * If this actor has been finished, in regards to their existence in the game world
+     */
+    private transient boolean finished;
+    /**
+     * The next animation we should perform
+     */
+    private transient Animation nextAnimation;
+    /**
+     * One of the four next graphics to perform
+     */
+    private transient Graphics nextGraphics1, nextGraphics2, nextGraphics3, nextGraphics4;
+    /**
+     * The next hits to show in the player updating sequence, this is used for when there are too many hits on the
+     * player at the current moment and more should appear
+     */
+    private transient ArrayList<Hit> nextHits;
+    /**
+     * The next force movement mask
+     */
+    private transient ForceMovement nextForceMovement;
+    /**
+     * The force talk mask
+     */
+    private transient ForceTalk nextForceTalk;
+    /**
+     * The actor this actor should face next, -2 and -1 mean none
+     */
+    private transient int nextFaceEntity;
+    /**
+     * The actor this actor faced last
+     */
+    private transient int lastFaceEntity;
+    /**
+     * The actor who last attacked us
+     */
+    private transient Actor attackedBy;
+    /**
+     * The last time we were attacked is stored here, this is used to calculate when actions can next be done
+     */
+    private transient long attackedByDelay;
+    /**
+     * If this actor is in a multi area
+     */
+    private transient boolean inMultiArea;
+    /**
+     * If this actor is at a dynamic region
+     */
+    private transient boolean atDynamicRegion;
+    /**
+     * The time the last animation we performed should've ended at
+     */
+    private transient long lastAnimationEnd;
+    /**
+     * If we should force the current area we are at to appear as a multi area for us only
+     */
+    private transient boolean forceMultiArea;
+    /**
+     * How long the actor is frozen for
+     */
+    private transient long freezeDelay;
+    /**
+     * The time that we are not allowed to be frozen again, tihs is a gap between being frozen and the next time we can
+     * be frozen
+     */
+    private transient long frozenBlocked;
+    /**
+     * The delay until the actor [npc only] can find its next target
+     */
+    private transient long findTargetDelay;
+    private transient long teleblockDelay;
+    private transient long teleblockImmunity;
+
+    // creates Entity and saved classes
+    public Actor(WorldTile tile) {
+        super(tile);
+        poisonManager = new PoisonManager();
+    }
 
     public abstract void finish();
 
@@ -55,204 +217,6 @@ public abstract class Actor extends WorldTile implements Entity {
      * The prayer multiplier for melee combat
      */
     public abstract double getMeleePrayerMultiplier();
-
-    /**
-     * The hitpoints of the actor
-     */
-    private int hitpoints;
-
-    /**
-     * The size of the map of the actor
-     */
-    private int mapSize;
-
-    /**
-     * The handler and container of poison
-     */
-    private final PoisonManager poisonManager;
-
-    /**
-     * If run mode is on, this is used for processing movement in a 2-tile-per-step fashion
-     */
-    private boolean runModeOn;
-
-    /**
-     * The index of the actor
-     */
-    private transient int index;
-
-    /**
-     * The faceDirection to face
-     */
-    private transient int faceDirection;
-
-    /**
-     * The id of the last region the actor was in
-     */
-    private transient int lastRegionId;
-
-    /**
-     * When {@link #loadMapRegions()} is called, this value is updated with a new instance of a world tile
-     */
-    private transient WorldTile lastLoadedMapRegionTile;
-
-    /**
-     * A list of all the region ids the actor is in
-     */
-    private transient CopyOnWriteArrayList<Integer> mapRegionsIds;
-
-    /**
-     * The last world tile this actor was at, in regards to walking
-     */
-    private transient WorldTile lastWorldTile;
-
-    /**
-     * The next world tile this actor will be at, in regards to teleporting
-     */
-    private transient WorldTile nextWorldTile;
-
-    /**
-     * The next direction in the walk block for the walk step
-     */
-    private transient int nextWalkDirection;
-
-    /**
-     * The next direction in the walk block for the run step
-     */
-    private transient int nextRunDirection;
-
-    /**
-     * The next tile we should face
-     */
-    private transient WorldTile nextFaceWorldTile;
-
-    /**
-     * The boolean used for synchronizing teleportation
-     */
-    private transient boolean teleported;
-
-    /**
-     * The temporary attributes of this actor
-     */
-    private transient ConcurrentHashMap<Object, Object> temporaryAttributes;
-
-    /**
-     * The manager for all actor-actor interactions
-     */
-    private transient InteractionManager interactionManager;
-
-    /**
-     * The action locks.
-     */
-    private transient ActionLocks locks;
-
-    /**
-     * The steps to walk to, these are called by more than 1 thread so they must be concurrently modifiable
-     */
-    private transient ConcurrentLinkedQueue<int[]> walkSteps;
-
-    /**
-     * The hits the actor has received, each time a hit is received, the hit is stored here
-     */
-    private transient ConcurrentLinkedQueue<Hit> receivedHits;
-
-    /**
-     * A collection of actors and the amount of damage they have done
-     */
-    private transient ConcurrentHashMap<Actor, Integer> receivedDamage;
-
-    /**
-     * If this actor has been finished, in regards to their existence in the game world
-     */
-    private transient boolean finished;
-
-    /**
-     * The next animation we should perform
-     */
-    private transient Animation nextAnimation;
-
-    /**
-     * One of the four next graphics to perform
-     */
-    private transient Graphics nextGraphics1, nextGraphics2, nextGraphics3, nextGraphics4;
-
-    /**
-     * The next hits to show in the player updating sequence, this is used for when there are too many hits on the
-     * player at the current moment and more should appear
-     */
-    private transient ArrayList<Hit> nextHits;
-
-    /**
-     * The next force movement mask
-     */
-    private transient ForceMovement nextForceMovement;
-
-    /**
-     * The force talk mask
-     */
-    private transient ForceTalk nextForceTalk;
-
-    /**
-     * The actor this actor should face next, -2 and -1 mean none
-     */
-    private transient int nextFaceEntity;
-
-    /**
-     * The actor this actor faced last
-     */
-    private transient int lastFaceEntity;
-
-    /**
-     * The actor who last attacked us
-     */
-    private transient Actor attackedBy;
-
-    /**
-     * The last time we were attacked is stored here, this is used to calculate when actions can next be done
-     */
-    private transient long attackedByDelay;
-
-    /**
-     * If this actor is in a multi area
-     */
-    private transient boolean inMultiArea;
-
-    /**
-     * If this actor is at a dynamic region
-     */
-    private transient boolean atDynamicRegion;
-
-    /**
-     * The time the last animation we performed should've ended at
-     */
-    private transient long lastAnimationEnd;
-
-    /**
-     * If we should force the current area we are at to appear as a multi area for us only
-     */
-    private transient boolean forceMultiArea;
-
-    /**
-     * How long the actor is frozen for
-     */
-    private transient long freezeDelay;
-
-    /**
-     * The time that we are not allowed to be frozen again, tihs is a gap between being frozen and the next time we can
-     * be frozen
-     */
-    private transient long frozenBlocked;
-
-    /**
-     * The delay until the actor [npc only] can find its next target
-     */
-    private transient long findTargetDelay;
-
-    // creates Entity and saved classes
-    public Actor(WorldTile tile) {
-        super(tile);
-        poisonManager = new PoisonManager();
-    }
 
     public boolean isFamiliar() {
         return this instanceof Familiar;
@@ -995,13 +959,6 @@ public abstract class Actor extends WorldTile implements Entity {
         setNextAnimation(nextAnimation);
     }
 
-    public void setNextAnimation(Animation nextAnimation) {
-        if (nextAnimation != null && nextAnimation.getIds()[0] >= 0) {
-            lastAnimationEnd = Misc.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
-        }
-        this.nextAnimation = nextAnimation;
-    }
-
     public boolean hasTeleported() {
         return teleported;
     }
@@ -1068,9 +1025,6 @@ public abstract class Actor extends WorldTile implements Entity {
         }
     }
 
-    private transient long teleblockDelay;
-    private transient long teleblockImmunity;
-
     public boolean isTeleblocked() {
         return teleblockDelay >= Misc.currentTimeMillis();
     }
@@ -1136,11 +1090,6 @@ public abstract class Actor extends WorldTile implements Entity {
     public void faceObject(WorldObject object) {
         ObjectDefinitions objectDef = object.getDefinitions();
         setNextFaceWorldTile(new WorldTile(object.getCoordFaceX(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getCoordFaceY(objectDef.getSizeX(), objectDef.getSizeY(), object.getRotation()), object.getPlane()));
-    }
-
-    public void setForceMultiArea(boolean forceMultiArea) {
-        this.forceMultiArea = forceMultiArea;
-        checkMultiArea();
     }
 
     public void checkMultiArea() {
@@ -1268,8 +1217,16 @@ public abstract class Actor extends WorldTile implements Entity {
         return this.hitpoints;
     }
 
+    public void setHitpoints(int hitpoints) {
+        this.hitpoints = hitpoints;
+    }
+
     public int getMapSize() {
         return this.mapSize;
+    }
+
+    public void setMapSize(int mapSize) {
+        this.mapSize = mapSize;
     }
 
     public PoisonManager getPoisonManager() {
@@ -1280,24 +1237,48 @@ public abstract class Actor extends WorldTile implements Entity {
         return this.runModeOn;
     }
 
+    public void setRunModeOn(boolean runModeOn) {
+        this.runModeOn = runModeOn;
+    }
+
     public int getIndex() {
         return this.index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public int getFaceDirection() {
         return this.faceDirection;
     }
 
+    public void setFaceDirection(int faceDirection) {
+        this.faceDirection = faceDirection;
+    }
+
     public int getLastRegionId() {
         return this.lastRegionId;
+    }
+
+    public void setLastRegionId(int lastRegionId) {
+        this.lastRegionId = lastRegionId;
     }
 
     public int getNextWalkDirection() {
         return this.nextWalkDirection;
     }
 
+    public void setNextWalkDirection(int nextWalkDirection) {
+        this.nextWalkDirection = nextWalkDirection;
+    }
+
     public int getNextRunDirection() {
         return this.nextRunDirection;
+    }
+
+    public void setNextRunDirection(int nextRunDirection) {
+        this.nextRunDirection = nextRunDirection;
     }
 
     public ConcurrentHashMap<Object, Object> getTemporaryAttributes() {
@@ -1306,6 +1287,10 @@ public abstract class Actor extends WorldTile implements Entity {
 
     public InteractionManager getInteractionManager() {
         return this.interactionManager;
+    }
+
+    public void setInteractionManager(InteractionManager interactionManager) {
+        this.interactionManager = interactionManager;
     }
 
     public ActionLocks getLocks() {
@@ -1320,8 +1305,19 @@ public abstract class Actor extends WorldTile implements Entity {
         return this.finished;
     }
 
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
     public Animation getNextAnimation() {
         return this.nextAnimation;
+    }
+
+    public void setNextAnimation(Animation nextAnimation) {
+        if (nextAnimation != null && nextAnimation.getIds()[0] >= 0) {
+            lastAnimationEnd = Misc.currentTimeMillis() + AnimationDefinitions.getAnimationDefinitions(nextAnimation.getIds()[0]).getEmoteTime();
+        }
+        this.nextAnimation = nextAnimation;
     }
 
     public Graphics getNextGraphics1() {
@@ -1344,8 +1340,16 @@ public abstract class Actor extends WorldTile implements Entity {
         return this.nextForceMovement;
     }
 
+    public void setNextForceMovement(ForceMovement nextForceMovement) {
+        this.nextForceMovement = nextForceMovement;
+    }
+
     public ForceTalk getNextForceTalk() {
         return this.nextForceTalk;
+    }
+
+    public void setNextForceTalk(ForceTalk nextForceTalk) {
+        this.nextForceTalk = nextForceTalk;
     }
 
     public int getNextFaceEntity() {
@@ -1356,127 +1360,84 @@ public abstract class Actor extends WorldTile implements Entity {
         return this.lastFaceEntity;
     }
 
-    public Actor getAttackedBy() {
-        return this.attackedBy;
-    }
-
-    public long getAttackedByDelay() {
-        return this.attackedByDelay;
-    }
-
-    public boolean isInMultiArea() {
-        return this.inMultiArea;
-    }
-
-    public boolean isAtDynamicRegion() {
-        return this.atDynamicRegion;
-    }
-
-    public long getLastAnimationEnd() {
-        return this.lastAnimationEnd;
-    }
-
-    public boolean isForceMultiArea() {
-        return this.forceMultiArea;
-    }
-
-    public long getFreezeDelay() {
-        return this.freezeDelay;
-    }
-
-    public long getFrozenBlocked() {
-        return this.frozenBlocked;
-    }
-
-    public long getFindTargetDelay() {
-        return this.findTargetDelay;
-    }
-
-    public void setHitpoints(int hitpoints) {
-        this.hitpoints = hitpoints;
-    }
-
-    public void setMapSize(int mapSize) {
-        this.mapSize = mapSize;
-    }
-
-    public void setRunModeOn(boolean runModeOn) {
-        this.runModeOn = runModeOn;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public void setFaceDirection(int faceDirection) {
-        this.faceDirection = faceDirection;
-    }
-
-    public void setLastRegionId(int lastRegionId) {
-        this.lastRegionId = lastRegionId;
-    }
-
-    public void setNextWorldTile(WorldTile nextWorldTile) {
-        this.nextWorldTile = nextWorldTile;
-    }
-
-    public void setNextWalkDirection(int nextWalkDirection) {
-        this.nextWalkDirection = nextWalkDirection;
-    }
-
-    public void setNextRunDirection(int nextRunDirection) {
-        this.nextRunDirection = nextRunDirection;
-    }
-
-    public void setInteractionManager(InteractionManager interactionManager) {
-        this.interactionManager = interactionManager;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public void setNextForceMovement(ForceMovement nextForceMovement) {
-        this.nextForceMovement = nextForceMovement;
-    }
-
-    public void setNextForceTalk(ForceTalk nextForceTalk) {
-        this.nextForceTalk = nextForceTalk;
-    }
-
     public void setLastFaceEntity(int lastFaceEntity) {
         this.lastFaceEntity = lastFaceEntity;
+    }
+
+    public Actor getAttackedBy() {
+        return this.attackedBy;
     }
 
     public void setAttackedBy(Actor attackedBy) {
         this.attackedBy = attackedBy;
     }
 
+    public long getAttackedByDelay() {
+        return this.attackedByDelay;
+    }
+
     public void setAttackedByDelay(long attackedByDelay) {
         this.attackedByDelay = attackedByDelay;
+    }
+
+    public boolean isInMultiArea() {
+        return this.inMultiArea;
     }
 
     public void setInMultiArea(boolean inMultiArea) {
         this.inMultiArea = inMultiArea;
     }
 
+    public boolean isAtDynamicRegion() {
+        return this.atDynamicRegion;
+    }
+
     public void setAtDynamicRegion(boolean atDynamicRegion) {
         this.atDynamicRegion = atDynamicRegion;
+    }
+
+    public long getLastAnimationEnd() {
+        return this.lastAnimationEnd;
     }
 
     public void setLastAnimationEnd(long lastAnimationEnd) {
         this.lastAnimationEnd = lastAnimationEnd;
     }
 
+    public boolean isForceMultiArea() {
+        return this.forceMultiArea;
+    }
+
+    public void setForceMultiArea(boolean forceMultiArea) {
+        this.forceMultiArea = forceMultiArea;
+        checkMultiArea();
+    }
+
+    public long getFreezeDelay() {
+        return this.freezeDelay;
+    }
+
     public void setFreezeDelay(long freezeDelay) {
         this.freezeDelay = freezeDelay;
+    }
+
+    public long getFrozenBlocked() {
+        return this.frozenBlocked;
     }
 
     public void setFrozenBlocked(long frozenBlocked) {
         this.frozenBlocked = frozenBlocked;
     }
 
+    public long getFindTargetDelay() {
+        return this.findTargetDelay;
+    }
+
     public void setFindTargetDelay(long findTargetDelay) {
         this.findTargetDelay = findTargetDelay;
+    }
+
+    public void setNextWorldTile(WorldTile nextWorldTile) {
+        this.nextWorldTile = nextWorldTile;
     }
 }

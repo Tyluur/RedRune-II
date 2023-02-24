@@ -40,16 +40,14 @@ public final class Punishment {
      * The time the punishment was created, in simple date format
      */
     private final String overAt;
-
-    /**
-     * The event executed when the punishment is added
-     */
-    private transient Runnable additionEvent;
-
     /**
      * Additional parameters, used for storing things like mac address/ip address
      */
     private final Map<String, String> parameters = new HashMap<>();
+    /**
+     * The event executed when the punishment is added
+     */
+    private transient Runnable additionEvent;
 
     public Punishment(String punisher, String punished, PunishmentType type, long time) {
         this(punisher, punished, type, time, null);

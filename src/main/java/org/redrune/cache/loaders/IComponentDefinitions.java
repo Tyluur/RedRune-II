@@ -454,6 +454,18 @@ public class IComponentDefinitions {
         return icomponentsdefs[id];
     }
 
+    static final int method925(int i) {
+        return (i & 0x3fda8) >> 11;
+    }
+
+    public static Optional<IComponentDefinitions> getComponentByText(int interfaceId, String text) {
+        IComponentDefinitions[] iFace = getInterface(interfaceId);
+        if (iFace == null) {
+            return Optional.empty();
+        }
+        return Arrays.stream(iFace).filter(Objects::nonNull).filter(subIFace -> subIFace.text.equalsIgnoreCase(text)).findFirst();
+    }
+
     @SuppressWarnings("unchecked")
     final void decode(InputStream stream) {
         int newInt = stream.readUnsignedByte();
@@ -706,10 +718,6 @@ public class IComponentDefinitions {
         anIntArray4805 = method4150(stream);
     }
 
-    static final int method925(int i) {
-        return (i & 0x3fda8) >> 11;
-    }
-
     private final Object[] decodeScript(InputStream buffer) {
         int i = buffer.readUnsignedByte();
         if ((i ^ 0xffffffff) == -1) {
@@ -738,14 +746,6 @@ public class IComponentDefinitions {
             is[i_60_] = buffer.readInt();
         }
         return is;
-    }
-
-    public static Optional<IComponentDefinitions> getComponentByText(int interfaceId, String text) {
-        IComponentDefinitions[] iFace = getInterface(interfaceId);
-        if (iFace == null) {
-            return Optional.empty();
-        }
-        return Arrays.stream(iFace).filter(Objects::nonNull).filter(subIFace -> subIFace.text.equalsIgnoreCase(text)).findFirst();
     }
 
     public int getWidgetId() {

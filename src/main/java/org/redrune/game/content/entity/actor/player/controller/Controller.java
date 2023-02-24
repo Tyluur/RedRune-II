@@ -12,9 +12,9 @@ import org.redrune.utility.game.ClickOption;
 
 public abstract class Controller {
 
-    public abstract void start();
-
     protected Player player;
+
+    public abstract void start();
 
     public final Object[] getArguments() {
         return player.getControllerManager().getLastControllerArguments();

@@ -23,147 +23,118 @@ public class PlayerAttributes implements Serializable {
      * The map of saved attributes
      */
     private final ConcurrentHashMap<AttributeKey, Object> savedAttributes = new ConcurrentHashMap<>();
-
-    /**
-     * The owner of the current friend chat we're in
-     */
-    private String currentFriendChatOwner = "Tyluur";
-
-    /**
-     * The display name of the player
-     */
-    private String displayName;
-
-    /**
-     * The last ip address of the player
-     */
-    private String lastIP;
-
-    /**
-     * The last mac address of the player
-     */
-    private String lastMac;
-
-    /**
-     * The current slayer task
-     */
-    private SlayerTask slayerTask;
-
-    /**
-     * The run energy we have left
-     */
-    private byte runEnergy;
-
-    /**
-     * If the player is filtering profanity
-     */
-    private boolean filteringProfanity;
-
-    /**
-     * If we should allow chat effects in the game
-     */
-    private boolean allowChatEffects;
-
-    /**
-     * The amount of mouse buttons we should use, as a flag
-     */
-    private boolean mouseButtons;
-
-    /**
-     * The private chat setup option
-     */
-    private int privateChatSetup;
-
-    /**
-     * The time until our skull disappears
-     */
-    private int skullDelay;
-
-    /**
-     * The id of our skull
-     */
-    private int skullId;
-
-    /**
-     * If the next map should force load, used for encoding regions
-     */
-    private boolean forceNextMapLoadRefresh;
-
-    /**
-     * How long the player is immune to poison for
-     */
-    private long poisonImmune;
-
-    /**
-     * How long the player is immune to fire for
-     */
-    private long fireImmune;
-
     /**
      * The pouch data, used for runecrafting
      */
     private final int[] pouches;
-
-    /**
-     * If we are filtering the game
-     */
-    private boolean filterGame;
-
-    /**
-     * The customization information of the max cape
-     */
-    private int[] maxedCapeCustomized;
-
-    /**
-     * The customization information of the completionist cape
-     */
-    private int[] completionistCapeCustomized;
-
-    /**
-     * The delay until we can use an overload potion again
-     */
-    private int overloadDelay;
-
-    /**
-     * The option we're using for the summoning orb
-     */
-    private int summoningLeftClickOption;
-
-    /**
-     * The list of owned object manager keys
-     */
-    private List<String> ownedObjectsManagerKeys;
-
-    /**
-     * If our experience is locked
-     */
-    private boolean experienceLocked;
-
-    /**
-     * The temporary movement type flag for teleporting or walking types
-     */
-    private int temporaryMovementType;
-
-    /**
-     * The update movement ftype flag
-     */
-    private boolean updateMovementType;
-
-    /**
-     * The amount of earning potential we have
-     */
-    private double earningPotential = 25;
-
-    /**
-     * If the player has received a tutorial
-     */
-    private boolean receivedTutorial = false;
-
     /**
      * The exchange offers
      */
     private final ExchangeOffer[] offers = new ExchangeOffer[6];
-
+    /**
+     * The owner of the current friend chat we're in
+     */
+    private String currentFriendChatOwner = "Tyluur";
+    /**
+     * The display name of the player
+     */
+    private String displayName;
+    /**
+     * The last ip address of the player
+     */
+    private String lastIP;
+    /**
+     * The last mac address of the player
+     */
+    private String lastMac;
+    /**
+     * The current slayer task
+     */
+    private SlayerTask slayerTask;
+    /**
+     * The run energy we have left
+     */
+    private byte runEnergy;
+    /**
+     * If the player is filtering profanity
+     */
+    private boolean filteringProfanity;
+    /**
+     * If we should allow chat effects in the game
+     */
+    private boolean allowChatEffects;
+    /**
+     * The amount of mouse buttons we should use, as a flag
+     */
+    private boolean mouseButtons;
+    /**
+     * The private chat setup option
+     */
+    private int privateChatSetup;
+    /**
+     * The time until our skull disappears
+     */
+    private int skullDelay;
+    /**
+     * The id of our skull
+     */
+    private int skullId;
+    /**
+     * If the next map should force load, used for encoding regions
+     */
+    private boolean forceNextMapLoadRefresh;
+    /**
+     * How long the player is immune to poison for
+     */
+    private long poisonImmune;
+    /**
+     * How long the player is immune to fire for
+     */
+    private long fireImmune;
+    /**
+     * If we are filtering the game
+     */
+    private boolean filterGame;
+    /**
+     * The customization information of the max cape
+     */
+    private int[] maxedCapeCustomized;
+    /**
+     * The customization information of the completionist cape
+     */
+    private int[] completionistCapeCustomized;
+    /**
+     * The delay until we can use an overload potion again
+     */
+    private int overloadDelay;
+    /**
+     * The option we're using for the summoning orb
+     */
+    private int summoningLeftClickOption;
+    /**
+     * The list of owned object manager keys
+     */
+    private List<String> ownedObjectsManagerKeys;
+    /**
+     * If our experience is locked
+     */
+    private boolean experienceLocked;
+    /**
+     * The temporary movement type flag for teleporting or walking types
+     */
+    private int temporaryMovementType;
+    /**
+     * The update movement ftype flag
+     */
+    private boolean updateMovementType;
+    /**
+     * The amount of earning potential we have
+     */
+    private double earningPotential = 25;
+    /**
+     * If the player has received a tutorial
+     */
+    private boolean receivedTutorial = false;
     /**
      * The player whose attributes this is an instance for
      */
@@ -398,16 +369,6 @@ public class PlayerAttributes implements Serializable {
     }
 
     /**
-     * Sets the resting flag and refreshes the client configurations
-     *
-     * @param resting The resting flag
-     */
-    public void setResting(boolean resting) {
-        this.resting = resting;
-        player.getPackets().sendRunButtonConfig();
-    }
-
-    /**
      * Toggles the run flag
      */
     public void toggleRun(boolean update) {
@@ -429,14 +390,6 @@ public class PlayerAttributes implements Serializable {
             }
             player.getPackets().sendRunEnergy();
         }
-    }
-
-    /**
-     * Sets the run energy amount
-     */
-    public void setRunEnergy(int runEnergy) {
-        this.runEnergy = (byte) runEnergy;
-        player.getPackets().sendRunEnergy();
     }
 
     /**
@@ -484,19 +437,6 @@ public class PlayerAttributes implements Serializable {
     }
 
     /**
-     * Sets the display name with modifier checks
-     *
-     * @param displayName The display name to set
-     */
-    public void setDisplayName(String displayName) {
-        if (Misc.formatPlayerNameForDisplay(player.getUsername()).equals(displayName)) {
-            setDisplayNameString(null);
-        } else {
-            setDisplayNameString(displayName);
-        }
-    }
-
-    /**
      * This method sets the string form of the display name with no modifier checks
      *
      * @param displayName The display name
@@ -510,19 +450,6 @@ public class PlayerAttributes implements Serializable {
      */
     public boolean hasDisplayName() {
         return displayName != null;
-    }
-
-    /**
-     * Sets the attack options on or off, as well as a flag for each player's ability to be attacked in the current
-     * zone
-     *
-     * @param canPvp The flag
-     */
-    public void setCanPvp(boolean canPvp) {
-        this.canPvp = canPvp;
-        player.getAppearance().generateAppearanceData();
-        player.getPackets().sendPlayerOption(canPvp ? "Attack" : "null", 1, true);
-        player.getPackets().sendPlayerUnderNPCPriority(canPvp);
     }
 
     public long getTeleBlockDelay() {
@@ -546,60 +473,133 @@ public class PlayerAttributes implements Serializable {
         return this.currentFriendChatOwner;
     }
 
+    public void setCurrentFriendChatOwner(String currentFriendChatOwner) {
+        this.currentFriendChatOwner = currentFriendChatOwner;
+    }
+
     public String getDisplayName() {
         return this.displayName;
+    }
+
+    /**
+     * Sets the display name with modifier checks
+     *
+     * @param displayName The display name to set
+     */
+    public void setDisplayName(String displayName) {
+        if (Misc.formatPlayerNameForDisplay(player.getUsername()).equals(displayName)) {
+            setDisplayNameString(null);
+        } else {
+            setDisplayNameString(displayName);
+        }
     }
 
     public String getLastIP() {
         return this.lastIP;
     }
 
+    public void setLastIP(String lastIP) {
+        this.lastIP = lastIP;
+    }
+
     public String getLastMac() {
         return this.lastMac;
+    }
+
+    public void setLastMac(String lastMac) {
+        this.lastMac = lastMac;
     }
 
     public SlayerTask getSlayerTask() {
         return this.slayerTask;
     }
 
+    public void setSlayerTask(SlayerTask slayerTask) {
+        this.slayerTask = slayerTask;
+    }
+
     public byte getRunEnergy() {
         return this.runEnergy;
+    }
+
+    /**
+     * Sets the run energy amount
+     */
+    public void setRunEnergy(int runEnergy) {
+        this.runEnergy = (byte) runEnergy;
+        player.getPackets().sendRunEnergy();
     }
 
     public boolean isFilteringProfanity() {
         return this.filteringProfanity;
     }
 
+    public void setFilteringProfanity(boolean filteringProfanity) {
+        this.filteringProfanity = filteringProfanity;
+    }
+
     public boolean isAllowChatEffects() {
         return this.allowChatEffects;
+    }
+
+    public void setAllowChatEffects(boolean allowChatEffects) {
+        this.allowChatEffects = allowChatEffects;
     }
 
     public boolean isMouseButtons() {
         return this.mouseButtons;
     }
 
+    public void setMouseButtons(boolean mouseButtons) {
+        this.mouseButtons = mouseButtons;
+    }
+
     public int getPrivateChatSetup() {
         return this.privateChatSetup;
+    }
+
+    public void setPrivateChatSetup(int privateChatSetup) {
+        this.privateChatSetup = privateChatSetup;
     }
 
     public int getSkullDelay() {
         return this.skullDelay;
     }
 
+    public void setSkullDelay(int skullDelay) {
+        this.skullDelay = skullDelay;
+    }
+
     public int getSkullId() {
         return this.skullId;
+    }
+
+    public void setSkullId(int skullId) {
+        this.skullId = skullId;
     }
 
     public boolean isForceNextMapLoadRefresh() {
         return this.forceNextMapLoadRefresh;
     }
 
+    public void setForceNextMapLoadRefresh(boolean forceNextMapLoadRefresh) {
+        this.forceNextMapLoadRefresh = forceNextMapLoadRefresh;
+    }
+
     public long getPoisonImmune() {
         return this.poisonImmune;
     }
 
+    public void setPoisonImmune(long poisonImmune) {
+        this.poisonImmune = poisonImmune;
+    }
+
     public long getFireImmune() {
         return this.fireImmune;
+    }
+
+    public void setFireImmune(long fireImmune) {
+        this.fireImmune = fireImmune;
     }
 
     public int[] getPouches() {
@@ -610,200 +610,171 @@ public class PlayerAttributes implements Serializable {
         return this.filterGame;
     }
 
-    public int[] getMaxedCapeCustomized() {
-        return this.maxedCapeCustomized;
-    }
-
-    public int[] getCompletionistCapeCustomized() {
-        return this.completionistCapeCustomized;
-    }
-
-    public int getOverloadDelay() {
-        return this.overloadDelay;
-    }
-
-    public int getSummoningLeftClickOption() {
-        return this.summoningLeftClickOption;
-    }
-
-    public boolean isExperienceLocked() {
-        return this.experienceLocked;
-    }
-
-    public int getTemporaryMovementType() {
-        return this.temporaryMovementType;
-    }
-
-    public boolean isUpdateMovementType() {
-        return this.updateMovementType;
-    }
-
-    public List<Integer[]> getSwitchItemCache() {
-        return this.switchItemCache;
-    }
-
-    public int getTrapAmount() {
-        return this.trapAmount;
-    }
-
-    public long getPacketsDecoderPing() {
-        return this.packetsDecoderPing;
-    }
-
-    public boolean isResting() {
-        return this.resting;
-    }
-
-    public boolean isCanPvp() {
-        return this.canPvp;
-    }
-
-    public long getFoodDelay() {
-        return this.foodDelay;
-    }
-
-    public long getPotDelay() {
-        return this.potDelay;
-    }
-
-    public long getBoneDelay() {
-        return this.boneDelay;
-    }
-
-    public long getLastPublicMessage() {
-        return this.lastPublicMessage;
-    }
-
-    public long getPolDelay() {
-        return this.polDelay;
-    }
-
-    public boolean isEquipDisabled() {
-        return this.equipDisabled;
-    }
-
-    public void setCurrentFriendChatOwner(String currentFriendChatOwner) {
-        this.currentFriendChatOwner = currentFriendChatOwner;
-    }
-
-    public void setLastIP(String lastIP) {
-        this.lastIP = lastIP;
-    }
-
-    public void setLastMac(String lastMac) {
-        this.lastMac = lastMac;
-    }
-
-    public void setSlayerTask(SlayerTask slayerTask) {
-        this.slayerTask = slayerTask;
-    }
-
-    public void setFilteringProfanity(boolean filteringProfanity) {
-        this.filteringProfanity = filteringProfanity;
-    }
-
-    public void setAllowChatEffects(boolean allowChatEffects) {
-        this.allowChatEffects = allowChatEffects;
-    }
-
-    public void setMouseButtons(boolean mouseButtons) {
-        this.mouseButtons = mouseButtons;
-    }
-
-    public void setPrivateChatSetup(int privateChatSetup) {
-        this.privateChatSetup = privateChatSetup;
-    }
-
-    public void setSkullDelay(int skullDelay) {
-        this.skullDelay = skullDelay;
-    }
-
-    public void setSkullId(int skullId) {
-        this.skullId = skullId;
-    }
-
-    public void setForceNextMapLoadRefresh(boolean forceNextMapLoadRefresh) {
-        this.forceNextMapLoadRefresh = forceNextMapLoadRefresh;
-    }
-
-    public void setPoisonImmune(long poisonImmune) {
-        this.poisonImmune = poisonImmune;
-    }
-
-    public void setFireImmune(long fireImmune) {
-        this.fireImmune = fireImmune;
-    }
-
     public void setFilterGame(boolean filterGame) {
         this.filterGame = filterGame;
+    }
+
+    public int[] getMaxedCapeCustomized() {
+        return this.maxedCapeCustomized;
     }
 
     public void setMaxedCapeCustomized(int[] maxedCapeCustomized) {
         this.maxedCapeCustomized = maxedCapeCustomized;
     }
 
+    public int[] getCompletionistCapeCustomized() {
+        return this.completionistCapeCustomized;
+    }
+
     public void setCompletionistCapeCustomized(int[] completionistCapeCustomized) {
         this.completionistCapeCustomized = completionistCapeCustomized;
+    }
+
+    public int getOverloadDelay() {
+        return this.overloadDelay;
     }
 
     public void setOverloadDelay(int overloadDelay) {
         this.overloadDelay = overloadDelay;
     }
 
+    public int getSummoningLeftClickOption() {
+        return this.summoningLeftClickOption;
+    }
+
     public void setSummoningLeftClickOption(int summoningLeftClickOption) {
         this.summoningLeftClickOption = summoningLeftClickOption;
+    }
+
+    public boolean isExperienceLocked() {
+        return this.experienceLocked;
     }
 
     public void setExperienceLocked(boolean experienceLocked) {
         this.experienceLocked = experienceLocked;
     }
 
+    public int getTemporaryMovementType() {
+        return this.temporaryMovementType;
+    }
+
     public void setTemporaryMovementType(int temporaryMovementType) {
         this.temporaryMovementType = temporaryMovementType;
+    }
+
+    public boolean isUpdateMovementType() {
+        return this.updateMovementType;
     }
 
     public void setUpdateMovementType(boolean updateMovementType) {
         this.updateMovementType = updateMovementType;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public List<Integer[]> getSwitchItemCache() {
+        return this.switchItemCache;
     }
 
     public void setSwitchItemCache(List<Integer[]> switchItemCache) {
         this.switchItemCache = switchItemCache;
     }
 
+    public int getTrapAmount() {
+        return this.trapAmount;
+    }
+
     public void setTrapAmount(int trapAmount) {
         this.trapAmount = trapAmount;
+    }
+
+    public long getPacketsDecoderPing() {
+        return this.packetsDecoderPing;
     }
 
     public void setPacketsDecoderPing(long packetsDecoderPing) {
         this.packetsDecoderPing = packetsDecoderPing;
     }
 
+    public boolean isResting() {
+        return this.resting;
+    }
+
+    /**
+     * Sets the resting flag and refreshes the client configurations
+     *
+     * @param resting The resting flag
+     */
+    public void setResting(boolean resting) {
+        this.resting = resting;
+        player.getPackets().sendRunButtonConfig();
+    }
+
+    public boolean isCanPvp() {
+        return this.canPvp;
+    }
+
+    /**
+     * Sets the attack options on or off, as well as a flag for each player's ability to be attacked in the current
+     * zone
+     *
+     * @param canPvp The flag
+     */
+    public void setCanPvp(boolean canPvp) {
+        this.canPvp = canPvp;
+        player.getAppearance().generateAppearanceData();
+        player.getPackets().sendPlayerOption(canPvp ? "Attack" : "null", 1, true);
+        player.getPackets().sendPlayerUnderNPCPriority(canPvp);
+    }
+
+    public long getFoodDelay() {
+        return this.foodDelay;
+    }
+
     public void setFoodDelay(long foodDelay) {
         this.foodDelay = foodDelay;
+    }
+
+    public long getPotDelay() {
+        return this.potDelay;
     }
 
     public void setPotDelay(long potDelay) {
         this.potDelay = potDelay;
     }
 
+    public long getBoneDelay() {
+        return this.boneDelay;
+    }
+
     public void setBoneDelay(long boneDelay) {
         this.boneDelay = boneDelay;
+    }
+
+    public long getLastPublicMessage() {
+        return this.lastPublicMessage;
     }
 
     public void setLastPublicMessage(long lastPublicMessage) {
         this.lastPublicMessage = lastPublicMessage;
     }
 
+    public long getPolDelay() {
+        return this.polDelay;
+    }
+
     public void setPolDelay(long polDelay) {
         this.polDelay = polDelay;
     }
 
+    public boolean isEquipDisabled() {
+        return this.equipDisabled;
+    }
+
     public void setEquipDisabled(boolean equipDisabled) {
         this.equipDisabled = equipDisabled;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public double getEarningPotential() {

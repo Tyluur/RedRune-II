@@ -16,14 +16,10 @@ import java.util.Map;
  */
 public class Smithing extends Action {
 
-    public static int HAMMER = 2347;
-
     private static final int SMITHING_INTERFACE = 300;
-
-    private ForgingBar bar;
-
+    public static int HAMMER = 2347;
     private final int index;
-
+    private ForgingBar bar;
     private int ticks;
 
     public Smithing(int ticks, int index) {

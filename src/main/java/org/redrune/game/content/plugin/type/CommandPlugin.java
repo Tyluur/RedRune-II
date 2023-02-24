@@ -197,12 +197,12 @@ public abstract class CommandPlugin implements Plugin {
         return this.rightRequired;
     }
 
-    public CommandManifest getManifest() {
-        return this.manifest;
-    }
-
     public void setRightRequired(PlayerRight rightRequired) {
         this.rightRequired = rightRequired;
+    }
+
+    public CommandManifest getManifest() {
+        return this.manifest;
     }
 
     public void setManifest(CommandManifest manifest) {

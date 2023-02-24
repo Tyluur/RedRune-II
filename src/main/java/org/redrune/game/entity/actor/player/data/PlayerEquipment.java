@@ -154,6 +154,27 @@ public final class PlayerEquipment implements Serializable {
         return true;
     }
 
+    public static void refreshEquipBonuses(Player player) {
+        player.getPackets().sendIComponentText(667, 31, "Stab: +" + player.getCombatDefinitions().getBonuses()[0]);
+        player.getPackets().sendIComponentText(667, 32, "Slash: +" + player.getCombatDefinitions().getBonuses()[1]);
+        player.getPackets().sendIComponentText(667, 33, "Crush: +" + player.getCombatDefinitions().getBonuses()[2]);
+        player.getPackets().sendIComponentText(667, 34, "Magic: +" + player.getCombatDefinitions().getBonuses()[3]);
+        player.getPackets().sendIComponentText(667, 35, "Range: +" + player.getCombatDefinitions().getBonuses()[4]);
+        player.getPackets().sendIComponentText(667, 36, "Stab: +" + player.getCombatDefinitions().getBonuses()[5]);
+        player.getPackets().sendIComponentText(667, 37, "Slash: +" + player.getCombatDefinitions().getBonuses()[6]);
+        player.getPackets().sendIComponentText(667, 38, "Crush: +" + player.getCombatDefinitions().getBonuses()[7]);
+        player.getPackets().sendIComponentText(667, 39, "Magic: +" + player.getCombatDefinitions().getBonuses()[8]);
+        player.getPackets().sendIComponentText(667, 40, "Range: +" + player.getCombatDefinitions().getBonuses()[9]);
+        player.getPackets().sendIComponentText(667, 41, "Summoning: +" + player.getCombatDefinitions().getBonuses()[10]);
+        player.getPackets().sendIComponentText(667, 42, "Absorve Melee: " + player.getCombatDefinitions().getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] + "%");
+        player.getPackets().sendIComponentText(667, 43, "Absorve Magic: +" + player.getCombatDefinitions().getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] + "%");
+        player.getPackets().sendIComponentText(667, 44, "Absorve Ranged: +" + player.getCombatDefinitions().getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] + "%");
+        player.getPackets().sendIComponentText(667, 45, "Strength: " + player.getCombatDefinitions().getBonuses()[14]);
+        player.getPackets().sendIComponentText(667, 46, "Ranged Str: " + player.getCombatDefinitions().getBonuses()[15]);
+        player.getPackets().sendIComponentText(667, 47, "Prayer: +" + player.getCombatDefinitions().getBonuses()[16]);
+        player.getPackets().sendIComponentText(667, 48, "Magic Damage: +" + player.getCombatDefinitions().getBonuses()[17] + "%");
+    }
+
     public boolean hasShield() {
         return items.get(5) != null;
     }
@@ -217,27 +238,6 @@ public final class PlayerEquipment implements Serializable {
                 player.refreshHitPoints();
             }
         }
-    }
-
-    public static void refreshEquipBonuses(Player player) {
-        player.getPackets().sendIComponentText(667, 31, "Stab: +" + player.getCombatDefinitions().getBonuses()[0]);
-        player.getPackets().sendIComponentText(667, 32, "Slash: +" + player.getCombatDefinitions().getBonuses()[1]);
-        player.getPackets().sendIComponentText(667, 33, "Crush: +" + player.getCombatDefinitions().getBonuses()[2]);
-        player.getPackets().sendIComponentText(667, 34, "Magic: +" + player.getCombatDefinitions().getBonuses()[3]);
-        player.getPackets().sendIComponentText(667, 35, "Range: +" + player.getCombatDefinitions().getBonuses()[4]);
-        player.getPackets().sendIComponentText(667, 36, "Stab: +" + player.getCombatDefinitions().getBonuses()[5]);
-        player.getPackets().sendIComponentText(667, 37, "Slash: +" + player.getCombatDefinitions().getBonuses()[6]);
-        player.getPackets().sendIComponentText(667, 38, "Crush: +" + player.getCombatDefinitions().getBonuses()[7]);
-        player.getPackets().sendIComponentText(667, 39, "Magic: +" + player.getCombatDefinitions().getBonuses()[8]);
-        player.getPackets().sendIComponentText(667, 40, "Range: +" + player.getCombatDefinitions().getBonuses()[9]);
-        player.getPackets().sendIComponentText(667, 41, "Summoning: +" + player.getCombatDefinitions().getBonuses()[10]);
-        player.getPackets().sendIComponentText(667, 42, "Absorve Melee: " + player.getCombatDefinitions().getBonuses()[CombatDefinitions.ABSORVE_MELEE_BONUS] + "%");
-        player.getPackets().sendIComponentText(667, 43, "Absorve Magic: +" + player.getCombatDefinitions().getBonuses()[CombatDefinitions.ABSORVE_MAGE_BONUS] + "%");
-        player.getPackets().sendIComponentText(667, 44, "Absorve Ranged: +" + player.getCombatDefinitions().getBonuses()[CombatDefinitions.ABSORVE_RANGE_BONUS] + "%");
-        player.getPackets().sendIComponentText(667, 45, "Strength: " + player.getCombatDefinitions().getBonuses()[14]);
-        player.getPackets().sendIComponentText(667, 46, "Ranged Str: " + player.getCombatDefinitions().getBonuses()[15]);
-        player.getPackets().sendIComponentText(667, 47, "Prayer: +" + player.getCombatDefinitions().getBonuses()[16]);
-        player.getPackets().sendIComponentText(667, 48, "Magic Damage: +" + player.getCombatDefinitions().getBonuses()[17] + "%");
     }
 
     public void reset() {

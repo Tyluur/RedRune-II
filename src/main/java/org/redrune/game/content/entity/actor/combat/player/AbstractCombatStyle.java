@@ -16,6 +16,18 @@ import org.redrune.utility.functions.Misc;
 public abstract class AbstractCombatStyle implements SkillConstants {
 
     /**
+     * The combat style calculator
+     */
+    protected final AbstractCombatCalculator calculator;
+
+    /**
+     * Constructs a new combat style enumeration instance
+     */
+    protected AbstractCombatStyle(AbstractCombatCalculator calculator) {
+        this.calculator = calculator;
+    }
+
+    /**
      * This method handles the swing of a combat style
      */
     public abstract boolean fireSwing(Player source, Actor target);
@@ -36,18 +48,6 @@ public abstract class AbstractCombatStyle implements SkillConstants {
      * Sends the hit to the target
      */
     public abstract CombatSwingDetail sendHit(Player source, Actor target, int maxHit, int damage, int delay);
-
-    /**
-     * The combat style calculator
-     */
-    protected final AbstractCombatCalculator calculator;
-
-    /**
-     * Constructs a new combat style enumeration instance
-     */
-    protected AbstractCombatStyle(AbstractCombatCalculator calculator) {
-        this.calculator = calculator;
-    }
 
     /**
      * Plays a sound to a single player

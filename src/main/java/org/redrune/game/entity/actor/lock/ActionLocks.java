@@ -34,16 +34,14 @@ public final class ActionLocks {
      * The interaction lock.
      */
     private final Lock interactionLock = new Lock();
-
-    /**
-     * The equipment lock.
-     */
-    private Lock equipmentLock = new Lock();
-
     /**
      * A mapping of custom locks (used for eg. food delay).
      */
     private final Map<String, Lock> customLocks;
+    /**
+     * The equipment lock.
+     */
+    private Lock equipmentLock = new Lock();
 
     /**
      * Constructs a new {@code ActionLocks} {@code Object}.

@@ -23,6 +23,47 @@ import static org.redrune.utility.game.ClickOption.*;
  */
 public class NPCInteractionPacketReader implements IncomingPacketReader {
 
+    /**
+     * Decodes the npc stream and passes the npc to the correct handler
+     *
+     * @param player The player
+     * @param stream The stream
+     * @param option The option clicked, used for handler identification
+     */
+    private static PacketContext decodeNPCStream(final Player player, Packet stream, ClickOption option) {
+        boolean running = stream.readByte128() == 1;
+        int npcIndex = stream.readUnsignedShort128();
+        final NPC npc = World.getNPCs().get(npcIndex);
+        if (npc == null || npc.isCantInteract() || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
+            return null;
+        }
+        return new NPCInteractionPacketContext(npc, option, running);
+    }
+
+    /**
+     * Decodes the examine packet
+     *
+     * @param player The player
+     * @param stream The stream
+     */
+    private static void decodeNPCExamine(Player player, Packet stream) {
+        boolean running = stream.readByte128() == 1;
+        int npcIndex = stream.readUnsignedShort128();
+        final NPC npc = World.getNPCs().get(npcIndex);
+        if (npc == null || npc.isCantInteract() || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
+            return;
+        }
+        if (player.getTemporaryAttribute("removing_npcs", false)) {
+            NPCSpawnRepository.removeSpawn(npc);
+            npc.finish();
+            return;
+        }
+        player.getPackets().sendNPCMessage(0, npc, NPCCharacteristicRepository.getExamine(npc.getId()));
+        if (GameFlags.debugMode) {
+            player.getPackets().sendMessage(npc.toString());
+        }
+    }
+
     @Override
     public int[] bindings() {
         return arguments(NPC_CLICK1_PACKET, NPC_CLICK2_PACKET, NPC_CLICK3_PACKET, NPC_CLICK4_PACKET, NPC_EXAMINE_PACKET, ATTACK_NPC, INTERFACE_ON_NPC);
@@ -107,47 +148,6 @@ public class NPCInteractionPacketReader implements IncomingPacketReader {
             }
         }
         return null;
-    }
-
-    /**
-     * Decodes the npc stream and passes the npc to the correct handler
-     *
-     * @param player The player
-     * @param stream The stream
-     * @param option The option clicked, used for handler identification
-     */
-    private static PacketContext decodeNPCStream(final Player player, Packet stream, ClickOption option) {
-        boolean running = stream.readByte128() == 1;
-        int npcIndex = stream.readUnsignedShort128();
-        final NPC npc = World.getNPCs().get(npcIndex);
-        if (npc == null || npc.isCantInteract() || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
-            return null;
-        }
-        return new NPCInteractionPacketContext(npc, option, running);
-    }
-
-    /**
-     * Decodes the examine packet
-     *
-     * @param player The player
-     * @param stream The stream
-     */
-    private static void decodeNPCExamine(Player player, Packet stream) {
-        boolean running = stream.readByte128() == 1;
-        int npcIndex = stream.readUnsignedShort128();
-        final NPC npc = World.getNPCs().get(npcIndex);
-        if (npc == null || npc.isCantInteract() || npc.isDead() || npc.isFinished() || !player.getMapRegionsIds().contains(npc.getRegionId()) || player.getLocks().isInteractionLocked()) {
-            return;
-        }
-        if (player.getTemporaryAttribute("removing_npcs", false)) {
-            NPCSpawnRepository.removeSpawn(npc);
-            npc.finish();
-            return;
-        }
-        player.getPackets().sendNPCMessage(0, npc, NPCCharacteristicRepository.getExamine(npc.getId()));
-        if (GameFlags.debugMode) {
-            player.getPackets().sendMessage(npc.toString());
-        }
     }
 
 }

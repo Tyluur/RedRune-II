@@ -12,47 +12,6 @@ public final class LevelUp extends Dialogue {
 
     private int skill;
 
-    @Override
-    public void start() {
-        skill = (Integer) parameters[0];
-        int level = player.getSkills().getLevel(skill);
-        String name = SkillConstants.SKILL_NAME[skill];
-        player.putTemporaryAttribute("leveledUp", skill);
-        player.putTemporaryAttribute("leveledUp[" + skill + "]", Boolean.TRUE);
-
-        player.setNextGraphics(new Graphics(199));
-        sendChatbox(level, name);
-        playMusic();
-        sendAnnouncement(level, name);
-        switchFlash(player, skill, true);
-    }
-
-    private void sendChatbox(int level, String name) {
-        player.getInterfaceManager().sendChatBoxInterface(740);
-        player.getPackets().sendIComponentText(740, 0, "Congratulations, you have just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level!");
-        player.getPackets().sendIComponentText(740, 1, "You have now reached level " + level + ".");
-        player.getPackets().sendMessage("You've just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level! You have reached level " + level + ".");
-        player.getPackets().sendConfigByFile(4757, getIconValue(skill));
-    }
-
-    private void playMusic() {
-        int musicEffect = SKILL_LEVEL_UP_MUSIC_EFFECTS[skill];
-        if (musicEffect != -1) {
-            player.getPackets().sendMusicEffect(musicEffect);
-        }
-    }
-
-    private void sendAnnouncement(int level, String name) {
-        if (level == 99 || level == 120) {
-            World.sendWorldMessage("<col=F20505>News: " + player.getDisplayName() + " has achieved " + level + " " + SkillConstants.SKILL_NAME[skill] + ".", false);
-        }
-        if (player.getSkills().getXp(skill) == 200_000_000) {
-            for (Player p : World.getPlayers()) {
-                p.getPackets().sendMessage("<col=F20505>News: " + player.getDisplayName() + " has just achieved 200 million experience in " + name + ".");
-            }
-        }
-    }
-
     public static void switchFlash(Player player, int skill, boolean on) {
         int id;
         switch (skill) {
@@ -185,6 +144,47 @@ public final class LevelUp extends Dialogue {
                 return 24;
         }
         return 25;
+    }
+
+    @Override
+    public void start() {
+        skill = (Integer) parameters[0];
+        int level = player.getSkills().getLevel(skill);
+        String name = SkillConstants.SKILL_NAME[skill];
+        player.putTemporaryAttribute("leveledUp", skill);
+        player.putTemporaryAttribute("leveledUp[" + skill + "]", Boolean.TRUE);
+
+        player.setNextGraphics(new Graphics(199));
+        sendChatbox(level, name);
+        playMusic();
+        sendAnnouncement(level, name);
+        switchFlash(player, skill, true);
+    }
+
+    private void sendChatbox(int level, String name) {
+        player.getInterfaceManager().sendChatBoxInterface(740);
+        player.getPackets().sendIComponentText(740, 0, "Congratulations, you have just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level!");
+        player.getPackets().sendIComponentText(740, 1, "You have now reached level " + level + ".");
+        player.getPackets().sendMessage("You've just advanced a" + (name.startsWith("A") ? "n" : "") + " " + name + " level! You have reached level " + level + ".");
+        player.getPackets().sendConfigByFile(4757, getIconValue(skill));
+    }
+
+    private void playMusic() {
+        int musicEffect = SKILL_LEVEL_UP_MUSIC_EFFECTS[skill];
+        if (musicEffect != -1) {
+            player.getPackets().sendMusicEffect(musicEffect);
+        }
+    }
+
+    private void sendAnnouncement(int level, String name) {
+        if (level == 99 || level == 120) {
+            World.sendWorldMessage("<col=F20505>News: " + player.getDisplayName() + " has achieved " + level + " " + SkillConstants.SKILL_NAME[skill] + ".", false);
+        }
+        if (player.getSkills().getXp(skill) == 200_000_000) {
+            for (Player p : World.getPlayers()) {
+                p.getPackets().sendMessage("<col=F20505>News: " + player.getDisplayName() + " has just achieved 200 million experience in " + name + ".");
+            }
+        }
     }
 
     @Override

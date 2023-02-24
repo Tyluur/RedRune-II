@@ -54,11 +54,8 @@ public class PlayerPrayer implements Serializable {
     }};
 
     private final static int[] prayerSlotValues = {1, 2, 4, 262144, 524288, 8, 16, 32, 64, 128, 256, 1048576, 2097152, 512, 1024, 2048, 16777216, 4096, 8192, 16384, 4194304, 8388608, 32768, 65536, 131072, 33554432, 134217728, 67108864, 268435456 * 2, 268435456};
-
-    public int hitpoints;
-
     private final boolean[][] quickPrayers;
-
+    public int hitpoints;
     private int prayerpoints;
 
     private boolean ancientcurses;
@@ -340,6 +337,13 @@ public class PlayerPrayer implements Serializable {
         return !ancientcurses ? 0 : 1;
     }
 
+    public void setPrayerBook(boolean ancientcurses) {
+        closeAllPrayers();
+        this.ancientcurses = ancientcurses;
+        player.getInterfaceManager().sendPrayerBook();
+        refresh();
+    }
+
     private boolean usePrayer(int prayerId) {
         if (prayerId < 0 || prayerId >= prayerLvls[getPrayerBook()].length) {
             return false;
@@ -619,13 +623,6 @@ public class PlayerPrayer implements Serializable {
 
     public void adjustStat(int stat, int percentage) {
         player.getPackets().sendConfigByFile(6857 + stat, 30 + percentage);
-    }
-
-    public void setPrayerBook(boolean ancientcurses) {
-        closeAllPrayers();
-        this.ancientcurses = ancientcurses;
-        player.getInterfaceManager().sendPrayerBook();
-        refresh();
     }
 
     public void refresh() {
@@ -1182,6 +1179,10 @@ public class PlayerPrayer implements Serializable {
         return boostedLeech;
     }
 
+    public void setBoostedLeech(boolean boostedLeech) {
+        this.boostedLeech = boostedLeech;
+    }
+
     public void increaseTurmoilBonus(Player p2) {
         leechBonuses[8] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.ATTACK))) / p2.getSkills().getLevelForXp(SkillConstants.ATTACK));
         leechBonuses[9] = (int) ((100 * Math.floor(0.15 * p2.getSkills().getLevelForXp(SkillConstants.DEFENCE))) / p2.getSkills().getLevelForXp(SkillConstants.DEFENCE));
@@ -1222,9 +1223,5 @@ public class PlayerPrayer implements Serializable {
         } else if (bonus == 7) {
             adjustStat(1, leechBonuses[bonus]);
         }
-    }
-
-    public void setBoostedLeech(boolean boostedLeech) {
-        this.boostedLeech = boostedLeech;
     }
 }

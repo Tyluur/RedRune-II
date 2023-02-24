@@ -42,6 +42,10 @@ public final class TormentedDemon extends NPC {
         switchPrayers(0);
     }
 
+    public static boolean atTD(WorldTile tile) {
+        return (tile.getX() >= 2560 && tile.getX() <= 2630) && (tile.getY() >= 5710 && tile.getY() <= 5753);
+    }
+
     public void switchPrayers(int type) {
         transformIntoNPC(8349 + type);
         demonPrayer[type] = true;
@@ -197,10 +201,6 @@ public final class TormentedDemon extends NPC {
                 }
             }
         }
-    }
-
-    public static boolean atTD(WorldTile tile) {
-        return (tile.getX() >= 2560 && tile.getX() <= 2630) && (tile.getY() >= 5710 && tile.getY() <= 5753);
     }
 
     public int getFixedCombatType() {

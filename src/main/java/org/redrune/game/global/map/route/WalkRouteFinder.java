@@ -14,29 +14,17 @@ public class WalkRouteFinder {
     private static final int GRAPH_SIZE = 128;
 
     private static final int QUEUE_SIZE = (GRAPH_SIZE * GRAPH_SIZE) / 2; // we do /4 because each tile can only be accessed from single direction
-
-    private static final int ALTERNATIVE_ROUTE_MAX_DISTANCE = 100;
-
-    private static final int ALTERNATIVE_ROUTE_RANGE = 10;
-
-    private static final int DIR_NORTH = 0x1;
-
-    private static final int DIR_EAST = 0x2;
-
-    private static final int DIR_SOUTH = 0x4;
-
-    private static final int DIR_WEST = 0x8;
-
-    private static final int[][] directions = new int[GRAPH_SIZE][GRAPH_SIZE];
-
-    private static final int[][] distances = new int[GRAPH_SIZE][GRAPH_SIZE];
-
-    private static final int[][] clip = new int[GRAPH_SIZE][GRAPH_SIZE];
-
     private static final int[] bufferX = new int[QUEUE_SIZE];
-
     private static final int[] bufferY = new int[QUEUE_SIZE];
-
+    private static final int ALTERNATIVE_ROUTE_MAX_DISTANCE = 100;
+    private static final int ALTERNATIVE_ROUTE_RANGE = 10;
+    private static final int DIR_NORTH = 0x1;
+    private static final int DIR_EAST = 0x2;
+    private static final int DIR_SOUTH = 0x4;
+    private static final int DIR_WEST = 0x8;
+    private static final int[][] directions = new int[GRAPH_SIZE][GRAPH_SIZE];
+    private static final int[][] distances = new int[GRAPH_SIZE][GRAPH_SIZE];
+    private static final int[][] clip = new int[GRAPH_SIZE][GRAPH_SIZE];
     public static boolean debug = true;
 
     public static long debug_transmittime = 0;

@@ -269,10 +269,6 @@ public final class CombatDefinitions implements Serializable {
         }
     }
 
-    public MagicBook getMagicBook() {
-        return MagicBook.getMagicBook(getSpellBook()).orElse(MagicBook.REGULAR);
-    }
-
     public void setSpellBook(int id) {
         if (id == 3) {
             dungeonneringSpellBook = true;
@@ -281,6 +277,10 @@ public final class CombatDefinitions implements Serializable {
         }
         refreshSpellBookScrollBar_DefCast();
         player.getInterfaceManager().sendMagicBook();
+    }
+
+    public MagicBook getMagicBook() {
+        return MagicBook.getMagicBook(getSpellBook()).orElse(MagicBook.REGULAR);
     }
 
     public void refreshSpellBookScrollBar_DefCast() {
@@ -590,11 +590,6 @@ public final class CombatDefinitions implements Serializable {
         refreshUsingSpecialAttack();
     }
 
-    public void setUsingSpecialAttack(boolean usingSpecialAttack) {
-        this.usingSpecialAttack = usingSpecialAttack;
-        refreshUsingSpecialAttack();
-    }
-
     public boolean hasRingOfVigour() {
         return player.getEquipment().getRingId() == 19669;
     }
@@ -610,6 +605,11 @@ public final class CombatDefinitions implements Serializable {
 
     public boolean isUsingSpecialAttack() {
         return usingSpecialAttack;
+    }
+
+    public void setUsingSpecialAttack(boolean usingSpecialAttack) {
+        this.usingSpecialAttack = usingSpecialAttack;
+        refreshUsingSpecialAttack();
     }
 
     public int getAttackStyle() {

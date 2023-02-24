@@ -16,11 +16,9 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("serial")
 public final class Nomad extends NPC {
 
+    private final int[] cachedDamage;
     // private boolean[] demonPrayer;
     private int fixedCombatType;
-
-    private final int[] cachedDamage;
-
     // private int shieldTimer;
     private int fixedAmount;
 
@@ -123,6 +121,10 @@ public final class Nomad extends NPC {
     // }
     // }
 
+    public static boolean atTD(WorldTile tile) {
+        return (tile.getX() >= 2560 && tile.getX() <= 2630) && (tile.getY() >= 5710 && tile.getY() <= 5753);
+    }
+
     @Override
     public void sendDeath(Actor source) {
         final NPCCombatDefinitions defs = getCombatDefinitions();
@@ -169,10 +171,6 @@ public final class Nomad extends NPC {
             fixedCombatType = 0;
             fixedAmount = 0;
         }, getCombatDefinitions().getRespawnDelay() * 400L, TimeUnit.MILLISECONDS);
-    }
-
-    public static boolean atTD(WorldTile tile) {
-        return (tile.getX() >= 2560 && tile.getX() <= 2630) && (tile.getY() >= 5710 && tile.getY() <= 5753);
     }
 
     public int getFixedCombatType() {

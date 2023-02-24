@@ -67,11 +67,11 @@ public class FloorItem extends Item {
         return this.invisible;
     }
 
-    public boolean isGrave() {
-        return this.grave;
-    }
-
     public void setInvisible(boolean invisible) {
         this.invisible = invisible;
+    }
+
+    public boolean isGrave() {
+        return this.grave;
     }
 }

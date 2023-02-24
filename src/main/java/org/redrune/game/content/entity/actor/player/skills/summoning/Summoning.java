@@ -365,12 +365,9 @@ public class Summoning {
         private final double useExp;
 
         private final double creationExp;
-
-        private int configId;
-
         private final long time;
-
         private final int scrollId;
+        private int configId;
 
         Pouches(int npcId, int configId, int pouchId, int level, double useExp, double creationExp, long time, int spawnCost, int scrollId) {
             this.npcId = npcId;

@@ -12,17 +12,12 @@ import java.util.Arrays;
 
 public final class Store {
 
-    private Index[] indexes;
-
     private final MainFile index255;
-
     private final String path;
-
     private final RandomAccessFile data;
-
     private final byte[] readCachedBuffer;
-
     private final boolean newProtocol;
+    private Index[] indexes;
 
     public Store(String path) throws IOException {
         this(path, Constants.CLIENT_BUILD >= 704);

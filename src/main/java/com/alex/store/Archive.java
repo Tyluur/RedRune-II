@@ -29,6 +29,13 @@ public class Archive {
 
     }
 
+    public Archive(int id, int compression, int revision, byte[] data) {
+        this.id = id;
+        this.compression = compression;
+        this.revision = revision;
+        this.data = data;
+    }
+
     private void decompress(byte[] archive) {
         InputStream stream = new InputStream(archive);
         if (keys != null && keys.length == 4) {
@@ -81,13 +88,6 @@ public class Archive {
             revision = -1;
         }
 
-    }
-
-    public Archive(int id, int compression, int revision, byte[] data) {
-        this.id = id;
-        this.compression = compression;
-        this.revision = revision;
-        this.data = data;
     }
 
     public Object[] editNoRevision(byte[] data, MainFile mainFile) {
