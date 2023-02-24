@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel
 import kotlin.experimental.and
 
 /**
- * @author Tyluur <itstyluur    @icloud.com>
+ * @author Tyluur <itstyluur@icloud.com>
  * @since 8/30/2017
  */
 object MapArchiveKeys {
@@ -22,7 +22,7 @@ object MapArchiveKeys {
     /**
      * The path to unpacked exteas
      */
-    const val UNPACKED_FILE_PATH = "data/repository/map/634xteas/"
+    const val UNPACKED_FILE_PATH = "data/repository/map/containersXteas/output 667/"
 
     /**
      * MapKeys.
