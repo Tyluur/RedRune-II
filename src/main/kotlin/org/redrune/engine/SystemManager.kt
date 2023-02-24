@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit
  * @since 5/21/2017
  */
 object SystemManager {
+
     /**
      * Gets the amount of processors on the computer
      */
