@@ -81,7 +81,7 @@ object PluginRepository {
     /**
      * The map of spell plugins
      */
-    private val SPELL_PLUGINS: MutableMap<MagicBook, MutableMap<Int, SpellPlugin>> = HashMap()
+    private val SPELL_PLUGINS: MutableMap<MagicBook, MutableMap<Int, SpellPlugin>> = EnumMap(MagicBook::class.java)
 
     /**
      * The list of all plugins
@@ -113,7 +113,7 @@ object PluginRepository {
      * Gets the amount of spells registered
      */
     private val spellCount: Int
-        private get() {
+        get() {
             var count = 0
             for ((_, value) in SPELL_PLUGINS) {
                 for ((key, value1) in value) {
@@ -196,8 +196,7 @@ object PluginRepository {
     @JvmStatic
     fun registerOptionPlugin(plugin: Plugin?, key: Int, vararg options: String) {
         if (plugin is NPCPlugin) {
-            val pluginMap: MutableMap<String, NPCPlugin>
-            pluginMap = if (NPC_PLUGINS.containsKey(key)) {
+            val pluginMap: MutableMap<String, NPCPlugin> = if (NPC_PLUGINS.containsKey(key)) {
                 NPC_PLUGINS[key]!!
             } else {
                 HashMap()
@@ -208,8 +207,7 @@ object PluginRepository {
             NPC_PLUGINS[key] = pluginMap
         }
         if (plugin is ObjectPlugin) {
-            val pluginMap: MutableMap<String, ObjectPlugin>
-            pluginMap = if (OBJECT_PLUGINS.containsKey(key)) {
+            val pluginMap: MutableMap<String, ObjectPlugin> = if (OBJECT_PLUGINS.containsKey(key)) {
                 OBJECT_PLUGINS[key]!!
             } else {
                 HashMap()
@@ -220,8 +218,7 @@ object PluginRepository {
             OBJECT_PLUGINS[key] = pluginMap
         }
         if (plugin is ItemPlugin) {
-            val pluginMap: MutableMap<String, ItemPlugin>
-            pluginMap = if (ITEM_PLUGINS.containsKey(key)) {
+            val pluginMap: MutableMap<String, ItemPlugin> = if (ITEM_PLUGINS.containsKey(key)) {
                 ITEM_PLUGINS[key]!!
             } else {
                 HashMap()
@@ -500,7 +497,7 @@ object PluginRepository {
             return
         }
         // verifying parameters
-        val manifest: CommandManifest? = command.manifest
+        val manifest = command.manifest
         if (command.clientCommandOnly() && !clientCommand) {
             CommandPlugin.sendResponse(player, "Unexpected command entry type, please report this on forums.", false)
             return
