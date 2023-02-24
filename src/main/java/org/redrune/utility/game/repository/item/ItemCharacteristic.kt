@@ -1,54 +1,50 @@
-package org.redrune.utility.game.repository.item;
-
-import java.util.HashMap;
-import java.util.Map;
+package org.redrune.utility.game.repository.item
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 9/1/2017
  */
-public final class ItemCharacteristic {
+class ItemCharacteristic {
 
     /**
      * The map of bonuses
      */
-    private final Map<Integer, int[]> bonusMap = new HashMap<>();
+    private val bonusMap: MutableMap<Int, IntArray> = HashMap()
 
     /**
      * The map of examines
      */
-    private final Map<Integer, String> examineMap = new HashMap<>();
+    private val examineMap: MutableMap<Int, String> = HashMap()
 
     /**
      * Adds the bonuses of an item
      */
-    public void addBonuses(int itemId, int[] bonuses) {
-        bonusMap.put(itemId, bonuses);
+    fun addBonuses(itemId: Int, bonuses: IntArray) {
+        bonusMap[itemId] = bonuses
     }
 
     /**
      * Gets the bonuses of an item
      */
-    public int[] getBonuses(int itemId) {
-        return bonusMap.get(itemId);
+    fun getBonuses(itemId: Int): IntArray? {
+        return bonusMap[itemId]
     }
 
     /**
      * Adds the examine of an item
      */
-    public void addExamine(int itemId, String examine) {
-        examineMap.put(itemId, examine);
+    fun addExamine(itemId: Int, examine: String) {
+        examineMap[itemId] = examine
     }
 
     /**
      * Gets the examine of an item
      */
-    public String getExamine(int itemId) {
-        return examineMap.get(itemId);
+    fun getExamine(itemId: Int): String? {
+        return examineMap[itemId]
     }
 
-    @Override
-    public String toString() {
-        return "ItemCharacteristic{" + "bonusMap=" + bonusMap.size() + ", examineMap=" + examineMap.size() + '}';
+    override fun toString(): String {
+        return "ItemCharacteristic{" + "bonusMap=" + bonusMap.size + ", examineMap=" + examineMap.size + '}'
     }
 }
