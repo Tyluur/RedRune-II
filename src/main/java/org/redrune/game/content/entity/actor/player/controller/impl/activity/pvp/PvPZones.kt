@@ -1,7 +1,6 @@
 package org.redrune.game.content.entity.actor.player.controller.impl.activity.pvp
 
 import org.redrune.game.global.WorldTile
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

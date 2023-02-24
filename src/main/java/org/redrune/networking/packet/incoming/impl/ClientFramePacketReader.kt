@@ -27,6 +27,7 @@ class ClientFramePacketReader : IncomingPacketReader {
         when (packetId) {
             PacketConstants.MOVE_MOUSE_PACKET -> {
             }
+
             PacketConstants.KEY_TYPED_PACKET -> {
                 val keyCode = packet.readByte().toInt()
                 when (keyCode) {
@@ -41,6 +42,7 @@ class ClientFramePacketReader : IncomingPacketReader {
                             )
                         }
                     }
+
                     17 -> {
                         // 2
                         val optionComponent =
@@ -52,6 +54,7 @@ class ClientFramePacketReader : IncomingPacketReader {
                             )
                         }
                     }
+
                     18 -> {
                         // 3
                         val optionComponent =
@@ -63,6 +66,7 @@ class ClientFramePacketReader : IncomingPacketReader {
                             )
                         }
                     }
+
                     19 -> {
                         // 4
                         val optionComponent =
@@ -74,6 +78,7 @@ class ClientFramePacketReader : IncomingPacketReader {
                             )
                         }
                     }
+
                     20 -> {
                         // 5
                         val optionComponent =
@@ -85,6 +90,7 @@ class ClientFramePacketReader : IncomingPacketReader {
                             )
                         }
                     }
+
                     13 -> player.closeInterfaces()
                     83 -> {
                         val continueComponent =
@@ -98,8 +104,10 @@ class ClientFramePacketReader : IncomingPacketReader {
                     }
                 }
             }
+
             PacketConstants.MOVE_CAMERA_PACKET -> {
             }
+
             PacketConstants.CLICK_PACKET -> {
                 val mouseHash = packet.readShortLE128()
                 val mouseButton = mouseHash shr 15

@@ -17,9 +17,9 @@ class LobbyConfigurationPacketBuilder(
     /**
      * The player that the packet is being sent to
      */
-    private val player: Player
+    private val player: Player,
 
-) : OutgoingPacketBuilder(PacketBuilder(2, PacketType.VAR_BYTE)) {
+    ) : OutgoingPacketBuilder(PacketBuilder(2, PacketType.VAR_BYTE)) {
 
     override fun build(): Packet {
         // leave the cast because of json boxing.

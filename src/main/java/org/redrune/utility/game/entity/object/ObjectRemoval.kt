@@ -1,12 +1,11 @@
 package org.redrune.utility.game.entity.`object`
 
 import com.github.michaelbull.logging.InlineLogger
-import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.global.WorldTile
 import java.io.BufferedReader
 import java.io.FileReader
-import java.util.*
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -38,7 +37,7 @@ object ObjectRemoval {
     private fun populateList() {
         try {
             val reader = BufferedReader(FileReader(NONSPAWNING_OBJECTS_FILE))
-            while(true) {
+            while (true) {
                 val line = reader.readLine() ?: break
                 if (line.startsWith("//") || line.trim { it <= ' ' }.equals("", ignoreCase = true)) {
                     continue

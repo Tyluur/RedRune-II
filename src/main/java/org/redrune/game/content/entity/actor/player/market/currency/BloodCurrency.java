@@ -32,9 +32,8 @@ public class BloodCurrency implements ShopCurrency {
 
     @Override
     public int stockAmount(int itemId) {
-        switch (itemId) {
-            case 15273:
-                return 10;
+        if (itemId == 15273) {
+            return 10;
         }
         return 1;
     }

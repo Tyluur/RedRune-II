@@ -6,18 +6,18 @@ import org.redrune.game.entity.actor.npc.NPC;
 
 public class BarricadeCombat extends CombatScript {
 
-	@Override
-	public Object[] getKeys() {
-		// TODO Auto-generated method stub
-		return new Object[] { "Barricade" };
-	}
+    @Override
+    public Object[] getKeys() {
+        // TODO Auto-generated method stub
+        return new Object[]{"Barricade"};
+    }
 
-	/*
-	 * empty
-	 */
-	@Override
-	public int attack(NPC npc, Actor target) {
-		return 0;
-	}
+    /*
+     * empty
+     */
+    @Override
+    public int attack(NPC npc, Actor target) {
+        return 0;
+    }
 
 }

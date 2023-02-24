@@ -5,5 +5,5 @@ package org.redrune.networking.packet.outgoing.impl;
  * @since 2019-02-06
  */
 public class ContainerPacketBuilder {
-	
+
 }

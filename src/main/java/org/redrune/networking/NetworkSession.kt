@@ -17,7 +17,7 @@ class NetworkSession(
     /**
      * The channel instance.
      */
-    var channel: Channel
+    var channel: Channel,
 ) {
     /**
      * The player affiliated with this network session

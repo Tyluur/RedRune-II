@@ -19,91 +19,91 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("serial")
 public class Slayer extends NPC {
-	
-	final Player p = this.getMostDamageReceivedSourcePlayer();
-	
-	final NPC n = this;
-	
-	public Slayer(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, boolean spawned) {
-		super(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
-		if (n.getName().contains("hand") || n.getName().contains("Hand") || n.getName().contains("Crawling Hand")) {
-			n.getCombatDefinitions().setHitpoints(n.getCombatLevel() * 10);
-			n.getCombatDefinitions().setMaxHit((n.getCombatLevel() * (3 / 4)) * 10);
-		}
-	}
-	
-	@Override
-	public ArrayList<Actor> getPossibleTargets(boolean checkNPCs, boolean checkPlayers) {
-		ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
-		for (int regionId : getMapRegionsIds()) {
-			List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
-			if (playerIndexes != null) {
-				for (int npcIndex : playerIndexes) {
-					Player player = World.getPlayers().get(npcIndex);
-					if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || !player.withinDistance(this, 64) || ((!isInMultiArea() || !player.isInMultiArea()) && player.getAttackedBy() != this && player.getAttackedByDelay() > Misc.currentTimeMillis()) || !clipedProjectile(player, false)) {
-						continue;
-					}
-					possibleTarget.add(player);
-				}
-			}
-		}
-		return possibleTarget;
-	}
-	
-	/*
-	 * gotta override else setRespawnTask override doesnt work
-	 */
-	@Override
-	public void sendDeath(Actor source) {
-		final NPCCombatDefinitions defs = getCombatDefinitions();
-		resetWalkSteps();
-		getCombat().removeTarget();
-		setNextAnimation(null);
-		WorldTasksManager.schedule(new WorldTask() {
-			int loop;
-			
-			@Override
-			public void run() {
-				if (loop == 0) {
-					setNextAnimation(new Animation(defs.getDeathAnim()));
-				} else if (loop >= defs.getDeathDelay()) {
-					drop();
-					reset();
-					setLocation(getRespawnTile());
-					finish();
-					setRespawnTask();
-					stop();
-				}
-				loop++;
-			}
-		}, 0, 1);
-	}
-	
-	@Override
-	public void setRespawnTask() {
-		if (!isFinished()) {
-			reset();
-			setLocation(getRespawnTile());
-			finish();
-		}
-		SystemManager.SLOW_EXECUTOR.schedule(() -> {
-			try {
-				respawn();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} catch (Error e) {
-				e.printStackTrace();
-			}
-		}, getCombatDefinitions().getRespawnDelay() * 600, TimeUnit.MILLISECONDS);
-	}
-	
-	public void respawn() {
-		setFinished(false);
-		World.addNPC(this);
-		setLastRegionId(0);
-		RegionManager.updateActorRegion(this);
-		loadMapRegions();
-		checkMultiArea();
-	}
-	
+
+    final Player p = this.getMostDamageReceivedSourcePlayer();
+
+    final NPC n = this;
+
+    public Slayer(int id, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea, boolean spawned) {
+        super(id, tile, mapAreaNameHash, canBeAttackFromOutOfArea, spawned);
+        if (n.getName().contains("hand") || n.getName().contains("Hand") || n.getName().contains("Crawling Hand")) {
+            n.getCombatDefinitions().setHitpoints(n.getCombatLevel() * 10);
+            n.getCombatDefinitions().setMaxHit((0) * 10);
+        }
+    }
+
+    @Override
+    public ArrayList<Actor> getPossibleTargets(boolean checkNPCs, boolean checkPlayers) {
+        ArrayList<Actor> possibleTarget = new ArrayList<Actor>();
+        for (int regionId : getMapRegionsIds()) {
+            List<Integer> playerIndexes = RegionManager.getRegion(regionId).getPlayerIndexes();
+            if (playerIndexes != null) {
+                for (int npcIndex : playerIndexes) {
+                    Player player = World.getPlayers().get(npcIndex);
+                    if (player == null || player.isDead() || player.isFinished() || !player.isRunning() || !player.withinDistance(this, 64) || ((!isInMultiArea() || !player.isInMultiArea()) && player.getAttackedBy() != this && player.getAttackedByDelay() > Misc.currentTimeMillis()) || !clipedProjectile(player, false)) {
+                        continue;
+                    }
+                    possibleTarget.add(player);
+                }
+            }
+        }
+        return possibleTarget;
+    }
+
+    /*
+     * gotta override else setRespawnTask override doesnt work
+     */
+    @Override
+    public void sendDeath(Actor source) {
+        final NPCCombatDefinitions defs = getCombatDefinitions();
+        resetWalkSteps();
+        getCombat().removeTarget();
+        setNextAnimation(null);
+        WorldTasksManager.schedule(new WorldTask() {
+            int loop;
+
+            @Override
+            public void run() {
+                if (loop == 0) {
+                    setNextAnimation(new Animation(defs.getDeathAnim()));
+                } else if (loop >= defs.getDeathDelay()) {
+                    drop();
+                    reset();
+                    setLocation(getRespawnTile());
+                    finish();
+                    setRespawnTask();
+                    stop();
+                }
+                loop++;
+            }
+        }, 0, 1);
+    }
+
+    @Override
+    public void setRespawnTask() {
+        if (!isFinished()) {
+            reset();
+            setLocation(getRespawnTile());
+            finish();
+        }
+        SystemManager.SLOW_EXECUTOR.schedule(() -> {
+            try {
+                respawn();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } catch (Error e) {
+                e.printStackTrace();
+            }
+        }, getCombatDefinitions().getRespawnDelay() * 600L, TimeUnit.MILLISECONDS);
+    }
+
+    public void respawn() {
+        setFinished(false);
+        World.addNPC(this);
+        setLastRegionId(0);
+        RegionManager.updateActorRegion(this);
+        loadMapRegions();
+        checkMultiArea();
+    }
+
 }

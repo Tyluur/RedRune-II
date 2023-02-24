@@ -63,6 +63,7 @@ class UpdateServerDecoder : ByteToMessageDecoder() {
                     )
                 )
             })
+
             2, 3 -> requests.clear()
         }
         while (requests.size > 0) {

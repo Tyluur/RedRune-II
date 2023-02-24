@@ -15,7 +15,7 @@ enum class MapMerger {
 
             val ratio = 4
 
-           // RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio);
+            // RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio);
 //            RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio);
 
 //            RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio) // top-left

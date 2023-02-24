@@ -9,7 +9,6 @@ import org.redrune.utility.file.JsonFileManager
 import org.redrune.utility.functions.Misc
 import java.io.File
 import java.sql.SQLException
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -77,7 +76,8 @@ object DoorRepository {
             config.jdbcUrl = "jdbc:mysql://localhost/arios"
             config.username = "debug"
             config.password = "debug"
-            config.driverClassName = "com.mysql.cj.jdbc.Driver" //alternative is Class.forName("com.mysql.cj.jdbc.Driver")
+            config.driverClassName =
+                "com.mysql.cj.jdbc.Driver" //alternative is Class.forName("com.mysql.cj.jdbc.Driver")
             config.addDataSourceProperty("cachePrepStmts", "true")
             config.addDataSourceProperty("prepStmtCacheSize", "250")
             config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")

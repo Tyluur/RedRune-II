@@ -9,7 +9,7 @@ import org.redrune.game.entity.actor.player.Player
  * @since April 02, 2021
  */
 class GuideNPCPlugin : NPCPlugin {
-    
+
     override fun register() {
         registerNPC(945, "Talk-to")
     }

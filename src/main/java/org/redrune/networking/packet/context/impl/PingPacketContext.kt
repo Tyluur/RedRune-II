@@ -11,7 +11,7 @@ class PingPacketContext(
     /**
      * The latency between client and server
      */
-    private val ping: Int
+    private val ping: Int,
 ) : PacketContext() {
     override fun handle(player: Player) {}
 }

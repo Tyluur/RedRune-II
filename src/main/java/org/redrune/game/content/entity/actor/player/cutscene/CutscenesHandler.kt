@@ -2,7 +2,6 @@ package org.redrune.game.content.entity.actor.player.cutscene
 
 import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.content.entity.actor.player.cutscene.impl.*
-import java.util.*
 
 object CutscenesHandler {
     private val HANDLED_CUTSCENES = HashMap<Any, Class<Cutscene>>()

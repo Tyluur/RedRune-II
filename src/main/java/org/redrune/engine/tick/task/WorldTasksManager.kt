@@ -38,7 +38,7 @@ object WorldTasksManager {
     }
 
     @JvmStatic
-	@JvmOverloads
+    @JvmOverloads
     fun schedule(task: WorldTask?, delayCount: Int = 0, periodCount: Int = -1) {
         if (task == null || delayCount < 0) {
             return

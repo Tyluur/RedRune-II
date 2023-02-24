@@ -6,43 +6,43 @@ import org.redrune.game.global.WorldTile;
 
 public class Giantchinchompa extends Familiar {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -7708802901929527088L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7708802901929527088L;
 
-	public Giantchinchompa(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
-		super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
-	}
+    public Giantchinchompa(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
+        super(owner, pouch, tile, mapAreaNameHash, canBeAttackFromOutOfArea);
+    }
 
-	@Override
-	public boolean submitSpecial(Object object) {
-		return false;
-	}
+    @Override
+    public boolean submitSpecial(Object object) {
+        return false;
+    }
 
-	@Override
-	public int getBOBSize() {
-		return 0;
-	}
+    @Override
+    public int getBOBSize() {
+        return 0;
+    }
 
-	@Override
-	public int getSpecialAmount() {
-		return 3;
-	}
+    @Override
+    public int getSpecialAmount() {
+        return 3;
+    }
 
-	@Override
-	public String getSpecialName() {
-		return "Explode";
-	}
+    @Override
+    public String getSpecialName() {
+        return "Explode";
+    }
 
-	@Override
-	public String getSpecialDescription() {
-		return "Explodes, damaging nearby enemies.";
-	}
+    @Override
+    public String getSpecialDescription() {
+        return "Explodes, damaging nearby enemies.";
+    }
 
-	@Override
-	public SpecialAttack getSpecialAttack() {
-		return SpecialAttack.ENTITY;
-	}
+    @Override
+    public SpecialAttack getSpecialAttack() {
+        return SpecialAttack.ENTITY;
+    }
 
 }

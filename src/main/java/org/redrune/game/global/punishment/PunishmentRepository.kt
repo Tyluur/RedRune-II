@@ -111,15 +111,18 @@ object PunishmentRepository {
                 PunishmentType.PLAYER_MUTE -> if (punishment.punished == player.username) {
                     return true
                 }
+
                 PunishmentType.PLAYER_BAN -> if (punishment.punished == player.username) {
                     return true
                 }
+
                 PunishmentType.ADDRESS_MUTE -> if (punishment.ip.orElse("n/a") == player.session.iPAddress || punishment.mac.orElse(
                         "n/a"
                     ) == player.session.macAddress
                 ) {
                     return true
                 }
+
                 PunishmentType.ADDRESS_BAN -> if (punishment.ip.orElse("n/a") == player.session.iPAddress || punishment.mac.orElse(
                         "n/a"
                     ) == player.session.macAddress
@@ -153,12 +156,14 @@ object PunishmentRepository {
                 PunishmentType.PLAYER_MUTE, PunishmentType.PLAYER_BAN -> if (punishment.punished == name) {
                     punishments.add(punishment)
                 }
+
                 PunishmentType.ADDRESS_MUTE -> if (target != null && (target.session.iPAddress == punishment.ip.orElse("n/a") || target.session.macAddress == punishment.mac.orElse(
                         "n/a"
                     ))
                 ) {
                     punishments.add(punishment)
                 }
+
                 PunishmentType.ADDRESS_BAN -> {
                     target = fromFile(name)
                     if (target != null && (target.attributes.lastIP == punishment.ip.orElse("n/a") || target.attributes.lastMac == punishment.mac.orElse(

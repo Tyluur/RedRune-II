@@ -28,5 +28,5 @@ class WorldEntry internal constructor(
     /**
      * If the country is members only
      */
-    val isMembers: Boolean
+    val isMembers: Boolean,
 )

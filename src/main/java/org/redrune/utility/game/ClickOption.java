@@ -7,17 +7,17 @@ package org.redrune.utility.game;
  * @since 8/31/2017
  */
 public enum ClickOption {
-	
-	FIRST,
-	SECOND,
-	THIRD,
-	FOURTH,
-	FIFTH,
-	SIXTH,
-	SEVENTH,
-	EIGHTH,
-	ATTACK,
-	TRADE,
-	FOLLOW,
-	EXAMINE
+
+    FIRST,
+    SECOND,
+    THIRD,
+    FOURTH,
+    FIFTH,
+    SIXTH,
+    SEVENTH,
+    EIGHTH,
+    ATTACK,
+    TRADE,
+    FOLLOW,
+    EXAMINE
 }

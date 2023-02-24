@@ -12,7 +12,7 @@ class WorldListRequestContext(
     /**
      * The type of update that is being requested
      */
-    private val updateType: Int
+    private val updateType: Int,
 ) : PacketContext() {
     override fun handle(player: Player) {
         player.session.write(WorldListPacketBuilder(updateType == 0))

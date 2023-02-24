@@ -11,7 +11,6 @@ import org.redrune.utility.functions.Misc.FaceDirection
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import java.util.*
 import java.util.function.Consumer
 
 /**

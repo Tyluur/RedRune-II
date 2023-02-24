@@ -15,30 +15,36 @@ class ZarosAltar : Dialogue() {
                     sendOptions("Select an Option", "Modern", "Ancient", "Lunar")
                     stage = 0
                 }
+
                 SECOND -> {
                     sendOptions("Select an Option", "Holy", "Cursed")
                     stage = 1
                 }
             }
+
             0 -> {
                 when (componentId) {
                     FIRST -> {
                         player.combatDefinitions.spellBook = -1
                     }
+
                     SECOND -> {
                         player.combatDefinitions.spellBook = 0
                     }
+
                     THIRD -> {
                         player.combatDefinitions.spellBook = 2
                     }
                 }
                 sendPlayerDialogue(UNSURE, "Wtf just happened to my magic dude?....")
             }
+
             1 -> {
-                when(componentId) {
+                when (componentId) {
                     FIRST -> {
                         player.prayer.setPrayerBook(false)
                     }
+
                     SECOND -> {
                         player.prayer.setPrayerBook(true)
                     }

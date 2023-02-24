@@ -33,6 +33,7 @@ class MandrithDialogue : Dialogue() {
                 )
                 stage = 0
             }
+
             0 -> {
                 when (componentId) {
                     first -> {
@@ -41,6 +42,7 @@ class MandrithDialogue : Dialogue() {
                     }
                 }
             }
+
             10 -> {
                 ShopRepository.open(player, 1)
                 end()

@@ -19,6 +19,7 @@ class TeleportationWizardNPCPlugin : NPCPlugin {
                 displaySelectionInterface(player, true)
                 return true
             }
+
             "Previous" -> {
                 val last =
                     player.attributes.getAttribute<TransportationLocation>(AttributeKey.LAST_TRANSPORTATION_LOCATION)

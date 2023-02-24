@@ -16,6 +16,7 @@ class MakeoverMageNPCPlugin : NPCPlugin {
                 player.dialogueManager.startDialogue("MakeOverMage", npc.id, 0)
                 return true
             }
+
             "Makeover" -> {
                 PlayerDesign.open(player)
                 return true

@@ -15,31 +15,28 @@ import java.io.Writer;
  * @since 6/16/2017
  */
 public interface JsonReadable<K> {
-	
-	/**
-	 * Handles the loading from a file
-	 *
-	 * @param file
-	 * 		The file
-	 */
-	K load(File file);
-	
-	/**
-	 * Saves the object
-	 *
-	 * @param file
-	 * 		The file to save to
-	 * @param k
-	 * 		The object to save
-	 */
-	default void save(File file, K k) {
-		try (Writer writer = new FileWriter(file.getAbsolutePath())) {
-			GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping();
-			Gson gson = builder.create();
-			gson.toJson(k, writer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
+
+    /**
+     * Handles the loading from a file
+     *
+     * @param file The file
+     */
+    K load(File file);
+
+    /**
+     * Saves the object
+     *
+     * @param file The file to save to
+     * @param k    The object to save
+     */
+    default void save(File file, K k) {
+        try (Writer writer = new FileWriter(file.getAbsolutePath())) {
+            GsonBuilder builder = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping();
+            Gson gson = builder.create();
+            gson.toJson(k, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

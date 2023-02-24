@@ -78,9 +78,9 @@ public abstract class AbstractCombatStyle implements SkillConstants {
         }
     }
 
-	/**
-	 * Handles effects like protection prayers, soulsplit, spirit shields etc.
-	 */
+    /**
+     * Handles effects like protection prayers, soulsplit, spirit shields etc.
+     */
     public void handleEffects(Player source, Actor target, Hit hit) {
         if (target.isPlayer()) {
             Player p2 = (Player) target;

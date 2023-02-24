@@ -13,27 +13,24 @@ import org.redrune.utility.functions.Misc;
 public interface IncomingPacketReader extends PacketConstants {
 
     /**
-	 * The packet ids that are bound to this reader
-	 */
-	int[] bindings();
+     * The packet ids that are bound to this reader
+     */
+    int[] bindings();
 
     /**
-	 * Reads a packet
-	 *
-	 * @param player
-	 * 		The player
-	 * @param packet
-	 * 		The packet
-	 */
-	PacketContext read(Player player, Packet packet);
+     * Reads a packet
+     *
+     * @param player The player
+     * @param packet The packet
+     */
+    PacketContext read(Player player, Packet packet);
 
     /**
-	 * Converts a varargs parameter over to an integer array
-	 *
-	 * @param arguments
-	 * 		The arguments
-	 */
-	default int[] arguments(int... arguments) {
-		return Misc.arguments(arguments);
-	}
+     * Converts a varargs parameter over to an integer array
+     *
+     * @param arguments The arguments
+     */
+    default int[] arguments(int... arguments) {
+        return Misc.arguments(arguments);
+    }
 }

@@ -10,20 +10,21 @@ import org.redrune.utility.constants.SkillConstants;
  * @since 9/4/2017
  */
 public abstract class AbstractCombatCalculator implements SkillConstants, EquipmentConstants, BonusConstants {
-	
-	/**
-	 * Gets the attack bonus of an actor
-	 * @param actor
-	 */
-	public abstract double getAttackBonus(Actor actor);
-	
-	/**
-	 * Gets the defence bonus of an actor
-	 */
-	public abstract double getDefenceBonus(Actor actor, int weaponId, int attackStyle);
-	
-	/**
-	 * Gets the maximum hit of an
-	 */
-	public abstract int getMaximumHit(Actor actor, double multiplier);
+
+    /**
+     * Gets the attack bonus of an actor
+     *
+     * @param actor
+     */
+    public abstract double getAttackBonus(Actor actor);
+
+    /**
+     * Gets the defence bonus of an actor
+     */
+    public abstract double getDefenceBonus(Actor actor, int weaponId, int attackStyle);
+
+    /**
+     * Gets the maximum hit of an
+     */
+    public abstract int getMaximumHit(Actor actor, double multiplier);
 }

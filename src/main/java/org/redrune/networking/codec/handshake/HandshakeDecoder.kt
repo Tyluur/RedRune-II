@@ -41,6 +41,7 @@ class HandshakeDecoder : ByteToMessageDecoder() {
                     builder.writeByte(6.toByte())
                 }
             }
+
             NetworkConstants.LOGIN_REQUEST -> {
                 builder.writeByte(0)
                 pipeline.addBefore("handler", "decoder", RS2LoginDecoder())

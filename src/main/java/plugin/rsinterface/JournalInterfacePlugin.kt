@@ -14,7 +14,7 @@ class JournalInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         return false
     }

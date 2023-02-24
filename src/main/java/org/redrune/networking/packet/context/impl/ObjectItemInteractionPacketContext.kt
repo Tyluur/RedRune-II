@@ -1,9 +1,9 @@
 package org.redrune.networking.packet.context.impl
 
 import org.redrune.game.content.entity.actor.player.event.`object`.ObjectInterfaceInteractionEvent
-import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
+import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.networking.packet.context.PacketContext
 
 /**
@@ -17,7 +17,7 @@ class ObjectItemInteractionPacketContext(
     private val itemSlot: Int,
     private val interfaceId: Int,
     private val itemId: Int,
-    private val item: Item
+    private val item: Item,
 ) : PacketContext() {
 
     override fun handle(player: Player) {

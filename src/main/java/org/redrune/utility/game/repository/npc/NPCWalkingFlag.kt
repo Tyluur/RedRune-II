@@ -2,7 +2,6 @@ package org.redrune.utility.game.repository.npc
 
 import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.entity.actor.npc.NPC
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

@@ -16,18 +16,18 @@ class DebugCommandPlugin : CommandPlugin() {
         player.packets.sendMessage(
             "test"
         )
-/*        val fromX = 422
-        val fromY = 408
+        /*        val fromX = 422
+                val fromY = 408
 
-        val toX = 385
-        val toY = 437
+                val toX = 385
+                val toY = 437
 
-        val ratio = intParam(args, 1)
+                val ratio = intParam(args, 1)
 
-        RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio)
-        RegionBuilder.copyAllPlanesMap(400, 1160, toX, toY, ratio)
+                RegionBuilder.copyAllPlanesMap(fromX, fromY, toX, toY, ratio)
+                RegionBuilder.copyAllPlanesMap(400, 1160, toX, toY, ratio)
 
-        player.packets.sendMapRegion(false)*/
+                player.packets.sendMapRegion(false)*/
     }
 
     override fun identifiers(): Array<String> {

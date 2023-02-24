@@ -96,6 +96,7 @@ class ExchangeTask : ScheduledTask(6, -1) {
                             sellOffer.notifyUpdated()
                         }
                     }
+
                     ExchangeType.SELL -> {
                         if (sortedBarters.isNotEmpty()) {
                             sortedBarters.forEach(Consumer { offer: ExchangeOffer? -> queue(offer) })

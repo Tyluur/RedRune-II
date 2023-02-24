@@ -5,21 +5,21 @@ package org.redrune.engine.worker.boot;
  * @since 3/25/2016
  */
 class BootTask {
-	
-	/**
-	 * The task to run
-	 */
-	private final Runnable task;
-	
-	/**
-	 * The identification number of the task
-	 */
-	private int taskNumber;
 
-	BootTask(Runnable task, int taskNumber) {
-		this.task = task;
-		this.taskNumber = taskNumber;
-	}
+    /**
+     * The task to run
+     */
+    private final Runnable task;
+
+    /**
+     * The identification number of the task
+     */
+    private int taskNumber;
+
+    BootTask(Runnable task, int taskNumber) {
+        this.task = task;
+        this.taskNumber = taskNumber;
+    }
 
     public Runnable getTask() {
         return this.task;

@@ -16,5 +16,5 @@ class UpdateServerRequest(
     /**
      * If this request should be prioritized
      */
-    val isPriority: Boolean
+    val isPriority: Boolean,
 )

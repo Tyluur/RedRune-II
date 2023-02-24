@@ -133,6 +133,7 @@ object ExchangeManager {
                         offer.amountRequested
                     )
                 }
+
                 ExchangeType.SELL -> if (!offer.aborted) {
                     player.packets.sendGrandExchangeBar(
                         offer.slot,

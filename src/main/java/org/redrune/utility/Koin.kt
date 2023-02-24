@@ -12,7 +12,7 @@ import org.koin.java.KoinJavaComponent.getKoin
 
 inline fun <reified T : Any> get(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ): T = getKoin().get(qualifier, parameters)
 
 fun getBoolProperty(key: String): Boolean = getKoin().getProperty<String>(key)!!.toString().toLowerCase() == "true"
@@ -28,9 +28,9 @@ fun getIntProperty(key: String, defaultValue: Int): Int =
 
 inline fun <reified T : Any> inject(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ): Lazy<T> = getKoin().inject(qualifier, parameters = parameters)
 
 inline fun <reified S, reified P> bind(
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ): S = getKoin().bind<S, P>(parameters)

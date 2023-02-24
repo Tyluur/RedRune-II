@@ -15,7 +15,7 @@ class MagicSpellbookInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         if (interfaceId == 192) {
             if (componentId == 2) {

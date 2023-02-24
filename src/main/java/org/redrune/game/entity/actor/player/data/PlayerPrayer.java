@@ -337,7 +337,7 @@ public class PlayerPrayer implements Serializable {
     }
 
     private int getPrayerBook() {
-        return ancientcurses == false ? 0 : 1;
+        return !ancientcurses ? 0 : 1;
     }
 
     private boolean usePrayer(int prayerId) {
@@ -1141,7 +1141,7 @@ public class PlayerPrayer implements Serializable {
                         player.setNextGraphics(new Graphics(2223));
                         player.getPrayer().setBoostedLeech(true);
                         if (target instanceof Player) {
-                            Player p2 = (Player) target; 
+                            Player p2 = (Player) target;
                             if (p2.getCombatDefinitions().getSpecialAttackPercentage() <= 0) {
                                 player.getPackets().sendMessage("Your opponent has been weakened so much that your sap curse has no effect.", true);
                             } else {

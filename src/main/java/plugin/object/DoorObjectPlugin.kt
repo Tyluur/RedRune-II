@@ -2,8 +2,8 @@ package plugin.`object`
 
 import org.redrune.game.content.entity.`object`.DoorFunctionality
 import org.redrune.game.content.plugin.type.ObjectPlugin
-import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.utility.game.repository.`object`.door.DoorRepository
 
 /**

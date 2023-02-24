@@ -12,7 +12,7 @@ class CapeColorCustomizationPacketContext(
     /**
      * The id of the color to use
      */
-    private val colorId: Int
+    private val colorId: Int,
 ) : PacketContext() {
     override fun handle(player: Player) {
         if (player.temporaryAttributes["SkillcapeCustomize"] != null) {

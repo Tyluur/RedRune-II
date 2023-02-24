@@ -39,7 +39,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         when (interfaceId) {
             COLLECTION_INTERFACE -> {
@@ -101,6 +101,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                 }
 
             }
+
             MAIN_INTERFACE -> {
                 val slot = getSlot(componentId)
 
@@ -168,6 +169,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                                 ExchangeTask.queue(offer)
                                 return true
                             }
+
                             ExchangeType.SELL -> {
                                 var noteId = -1
                                 var sellId = -1
@@ -361,6 +363,7 @@ class GrandExchangeInterfacePlugin : InterfacePlugin {
                     }
                 }
             }
+
             SELL_INTERFACE -> {
                 if (!ItemConstants.isTradeable(Item(itemId)) || itemId == 995) {
                     player.packets.sendMessage("That item cannot be sold on the grand exchange.")

@@ -424,7 +424,7 @@ public final class NPCDefinitions {
         }
     }
 
-    public static final void clearNPCDefinitions() {
+    public static void clearNPCDefinitions() {
         npcDefinitions.clear();
     }
 

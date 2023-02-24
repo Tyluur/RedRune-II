@@ -9,15 +9,13 @@ import org.redrune.game.entity.actor.Actor;
  * @author Tyluur <itstyluur@icloud.com>
  */
 public interface LockElapse {
-	
-	/**
-	 * Called when a custom action lock has elapsed.
-	 *
-	 * @param actor
-	 * 		The actor.
-	 * @param lock
-	 * 		The custom action lock.
-	 */
-	void elapse(Actor actor, Lock lock);
-	
+
+    /**
+     * Called when a custom action lock has elapsed.
+     *
+     * @param actor The actor.
+     * @param lock  The custom action lock.
+     */
+    void elapse(Actor actor, Lock lock);
+
 }

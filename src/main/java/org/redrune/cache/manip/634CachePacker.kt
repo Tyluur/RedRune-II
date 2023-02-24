@@ -64,7 +64,7 @@ private fun pack634ObjectDefinitions(srcCache: Store) {
 
 private fun pack634Maps(
     xteas: HashMap<Int, IntArray>,
-    fromCache: Store
+    fromCache: Store,
 ) {
     MapArchiveKeys.mapKeys.entries.forEach { entry ->
         xteas[entry.key] = entry.value

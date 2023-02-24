@@ -6,7 +6,7 @@ import org.redrune.utility.functions.Misc;
 
 public class FightCaveNPC extends NPC {
 
-	public FightCaveNPC(int id, WorldTile tile) {
-		super(id, tile, Misc.getNameHash("FightCaves"), false, true);
-	}
+    public FightCaveNPC(int id, WorldTile tile) {
+        super(id, tile, Misc.getNameHash("FightCaves"), false, true);
+    }
 }

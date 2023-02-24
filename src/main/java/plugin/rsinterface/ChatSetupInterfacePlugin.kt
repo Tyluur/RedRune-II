@@ -14,15 +14,17 @@ class ChatSetupInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         when (componentId) {
             5 -> {
                 player.interfaceManager.sendSettings()
             }
+
             42 -> {
                 player.attributes.privateChatSetup = if (player.attributes.privateChatSetup == 0) 1 else 0
             }
+
             in 49..61 -> {
                 player.attributes.privateChatSetup = componentId - 48
             }

@@ -15,7 +15,7 @@ class ForgingInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         ForgingInterface.handleIComponents(player, componentId)
         return true
