@@ -33,8 +33,8 @@ import org.redrune.utility.game.entity.`object`.ObjectRemoval
 import org.redrune.utility.game.entity.`object`.ObjectSpawning
 import org.redrune.utility.game.map.MapArchiveKeys
 import org.redrune.utility.game.repository.npc.NPCWalkingFlag
-import org.redrune.utility.game.repository.`object`.climbable.ClimbableObjectRepository
-import org.redrune.utility.game.repository.`object`.door.DoorRepository
+import org.redrune.utility.game.repository.climbable.ClimbableObjectRepository
+import org.redrune.utility.game.repository.door.DoorRepository
 import org.redrune.utility.getBoolProperty
 import org.redrune.utility.getIntProperty
 import org.redrune.utility.getProperty

@@ -4,7 +4,7 @@ import org.redrune.game.content.entity.`object`.ClimbActionHandler
 import org.redrune.game.content.plugin.type.ObjectPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.`object`.WorldObject
-import org.redrune.utility.game.repository.`object`.climbable.ClimbableObjectRepository
+import org.redrune.utility.game.repository.climbable.ClimbableObjectRepository
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
