@@ -4,7 +4,7 @@ import com.github.michaelbull.logging.InlineLogger
 import org.redrune.game.GameFlags
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.networking.packet.Packet
-import org.redrune.utility.functions.Misc
+import org.redrune.utility.ReflectionUtils
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @since 2019-02-04
  */
 object IncomingPacketRepository {
+
     /**
      * The map of `IncomingPacketDecoder`s
      */
@@ -22,9 +23,7 @@ object IncomingPacketRepository {
      * Initializes all decoders
      */
     fun initialize() {
-        Misc.getClasses(IncomingPacketRepository::class.java.getPackage().name + ".impl").stream()
-            .filter { obj: Any? -> IncomingPacketReader::class.java.isInstance(obj) }
-            .forEach { clazz: Any -> include(clazz as IncomingPacketReader) }
+        ReflectionUtils.findImplementations<IncomingPacketReader>().forEach(IncomingPacketRepository::include)
         logger.info { "Initialized " + PACKET_MAP.size + " incoming packet decoders" }
     }
 
