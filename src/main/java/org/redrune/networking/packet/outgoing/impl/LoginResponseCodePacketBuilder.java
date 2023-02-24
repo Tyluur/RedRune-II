@@ -20,7 +20,7 @@ public class LoginResponseCodePacketBuilder extends OutgoingPacketBuilder {
      * Constructs a new login response packet with a {@code LoginReturnCode} {@code Object}
      */
     public LoginResponseCodePacketBuilder(LoginReturnCode code) {
-        this(code.getValue());
+        this(code.value);
     }
 
     /**
