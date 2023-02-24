@@ -113,7 +113,7 @@ public class ClimbActionHandler {
     private static WorldTile getDestination(WorldObject object, int sizeX, int sizeY, Direction dir, int count) {
         WorldTile loc = object.getWorldTile();
         if (dir.toInteger() % 2 != 0) {
-            int x = dir.getStepX();
+            int x = dir.stepX;
             if (x > 0) {
                 x *= sizeX;
             }
@@ -124,7 +124,7 @@ public class ClimbActionHandler {
                 }
             }
         } else {
-            int y = dir.getStepY();
+            int y = dir.stepY;
             if (y > 0) {
                 y *= sizeY;
             }
