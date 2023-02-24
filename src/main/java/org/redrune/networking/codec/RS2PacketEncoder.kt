@@ -1,64 +1,65 @@
-package org.redrune.networking.codec;
+package org.redrune.networking.codec
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
-import org.redrune.networking.NetworkSession;
-import org.redrune.networking.packet.Packet;
-import org.redrune.networking.packet.PacketType;
-import org.redrune.utility.constants.NetworkConstants;
+import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
+import io.netty.channel.ChannelHandler.Sharable
+import io.netty.channel.ChannelHandlerContext
+import io.netty.handler.codec.MessageToByteEncoder
+import org.redrune.networking.packet.Packet
+import org.redrune.networking.packet.PacketType
+import org.redrune.utility.constants.NetworkConstants
 
 /**
  * This encodes a packet going to the rs client. All packets have a specific header and data is encoded differently
+ *
+ *
  * based on the type of packet being encoded. This class handles all said operations.
  *
  * @author Tyluur <itstyluur@icloud.com>
  * @since 5/18/2017
  */
 @Sharable
-public final class RS2PacketEncoder extends MessageToByteEncoder<Packet> {
+class RS2PacketEncoder : MessageToByteEncoder<Packet>() {
 
-    @Override
-    protected void encode(ChannelHandlerContext ctx, Packet packet, ByteBuf out) throws Exception {
+    @Throws(Exception::class)
+    override fun encode(ctx: ChannelHandlerContext, packet: Packet, out: ByteBuf) {
         try {
             // the session
-            NetworkSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
+            val session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get()
             // the encoded response
-            ByteBuf response;
-            if (packet.isRaw()) {
-                response = packet.getBuffer();
+            val response: ByteBuf
+            if (packet.isRaw) {
+                response = packet.buffer
             } else {
                 // the length of the packet
-                final int length = packet.getBuffer().readableBytes();
+                val length = packet.buffer.readableBytes()
                 // create the buffer
-                response = Unpooled.buffer(length + 3);
+                response = Unpooled.buffer(length + 3)
                 // the id of the packet
-                int opcode = packet.getOpcode();
+                val opcode = packet.opcode
                 // the packet type
-                PacketType type = packet.getType();
+                val type = packet.type
                 // if there was no cipher
                 if (opcode >= 128) {
-                    response.writeByte((opcode >> 8) + 128);
+                    response.writeByte((opcode shr 8) + 128)
                 }
-                response.writeByte(opcode);
+                response.writeByte(opcode)
                 if (type == PacketType.VAR_BYTE) {
-                    if (length > 255) { // Stack overflow.
-                        throw new IllegalStateException("Could not send a packet with " + length + " bytes within 8 bits.");
+                    check(length <= 255) {  // Stack overflow.
+                        "Could not send a packet with $length bytes within 8 bits."
                     }
-                    response.writeByte(length);
+                    response.writeByte(length)
                 } else if (type == PacketType.VAR_SHORT) {
-                    if (length > 65535) { // Stack overflow.
-                        throw new IllegalStateException("Could not send a packet with " + length + " bytes within 16 bits.");
+                    check(length <= 65535) {  // Stack overflow.
+                        "Could not send a packet with $length bytes within 16 bits."
                     }
-                    response.writeShort(length);
+                    response.writeShort(length)
                 }
-                response.writeBytes(packet.getBuffer());
+                response.writeBytes(packet.buffer)
             }
-            out.writeBytes(response);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
+            out.writeBytes(response)
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
         }
     }
 
@@ -68,11 +69,10 @@ public final class RS2PacketEncoder extends MessageToByteEncoder<Packet> {
      * @param buffer The buffer
      * @param value  The value to write
      */
-    private void writeSmart(ByteBuf buffer, int value) {
+    private fun writeSmart(buffer: ByteBuf, value: Int) {
         if (value >= 128) {
-            buffer.writeByte(128);
+            buffer.writeByte(128)
         }
-        buffer.writeByte(value);
+        buffer.writeByte(value)
     }
-
 }
