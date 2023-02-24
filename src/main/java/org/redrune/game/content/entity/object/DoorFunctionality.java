@@ -9,8 +9,8 @@ import org.redrune.game.global.WorldTile;
 import org.redrune.game.global.map.region.RegionManager;
 import org.redrune.utility.game.map.Direction;
 import org.redrune.utility.game.map.Point;
-import org.redrune.utility.game.repository.object.door.Door;
-import org.redrune.utility.game.repository.object.door.DoorRepository;
+import org.redrune.utility.game.repository.door.Door;
+import org.redrune.utility.game.repository.door.DoorRepository;
 
 /**
  * Handles door actions.
@@ -50,7 +50,7 @@ public class DoorFunctionality {
             }
             int firstDir = (object.getRotation() + 3) % 4;
             Point p = getCloseRotation(object);
-            WorldTile firstLoc = object.getWorldTile().transform(p.getX(), p.getY(), 0);
+            WorldTile firstLoc = object.getWorldTile().transform(p.x, p.y, 0);
             WorldObject replaced = new WorldObject(d.replaceId, object.getType(), firstDir, firstLoc);
             RegionManager.replaceObject(object, replaced);
             return;
@@ -174,7 +174,7 @@ public class DoorFunctionality {
         int mod = object.getType() == 9 ? -1 : 1;
         int firstDir = (object.getRotation() + ((mod + 4) % 4)) % 4;
         Point p = getRotationPoint(object.getRotation());
-        WorldTile firstLoc = object.getWorldTile().transform(p.getX() * mod, p.getY() * mod, 0);
+        WorldTile firstLoc = object.getWorldTile().transform(p.x * mod, p.y * mod, 0);
         if (second == null) {
             if (replaceId == 4577) {
                 replaceId = 4578;
@@ -203,7 +203,7 @@ public class DoorFunctionality {
         if (firstDir == secondDir) {
             secondDir = (secondDir + 2) % 4;
         }
-        WorldTile secondLoc = second.getWorldTile().transform(p.getX(), p.getY(), 0);
+        WorldTile secondLoc = second.getWorldTile().transform(p.x, p.y, 0);
         RegionManager.replaceObject(object, object.transform(replaceId, firstDir, firstLoc), restoreTicks * 600L);
         RegionManager.replaceObject(second, second.transform(secondReplaceId, secondDir, secondLoc), restoreTicks * 600L);
     }
@@ -243,18 +243,18 @@ public class DoorFunctionality {
         WorldTile firstLoc = null;
         int secondDir = (second.getRotation() + 3) % 4;
         if (offset == Direction.WEST || offset == Direction.SOUTH) {
-            firstLoc = second.getWorldTile().transform(p.getX(), p.getY(), 0);
+            firstLoc = second.getWorldTile().transform(p.x, p.y, 0);
             int s = replaceId;
             replaceId = secondReplaceId;
             secondReplaceId = s;
         } else {
-            firstLoc = object.getWorldTile().transform(p.getX(), p.getY(), 0);
+            firstLoc = object.getWorldTile().transform(p.x, p.y, 0);
         }
         if (object.getRotation() == 3 || object.getRotation() == 2) {
             firstDir = (firstDir + 2) % 4;
             secondDir = (secondDir + 2) % 4;
         }
-        WorldTile secondLoc = firstLoc.transform(p.getX(), p.getY(), 0);
+        WorldTile secondLoc = firstLoc.transform(p.x, p.y, 0);
         RegionManager.replaceObject(object, object.transform(replaceId, firstDir, firstLoc), restoreTicks * 600L);
         RegionManager.replaceObject(second, second.transform(secondReplaceId, secondDir, secondLoc), restoreTicks * 600L);
     }
