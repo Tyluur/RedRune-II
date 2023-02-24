@@ -23,6 +23,7 @@ import java.util.regex.Pattern
  * @since 8/30/2017
  */
 object PluginRepository {
+
     /**
      * The map of interface plugins
      */
