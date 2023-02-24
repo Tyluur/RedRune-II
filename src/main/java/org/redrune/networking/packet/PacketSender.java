@@ -1347,7 +1347,7 @@ public class PacketSender {
     }
 
     public void requestClientInput(InputEvent event) {
-        sendRunScript(event.getType().getScriptId(), event.getText());
+        sendRunScript(event.type.scriptId, event.text);
         player.putTemporaryAttribute("input_event", event);
     }
 
