@@ -15,6 +15,7 @@ import java.sql.SQLException
  * @since 2019-02-20
  */
 object DoorRepository {
+
     /**
      * The doors mapping.
      */

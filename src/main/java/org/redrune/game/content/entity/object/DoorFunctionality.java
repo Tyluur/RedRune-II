@@ -51,7 +51,7 @@ public class DoorFunctionality {
             int firstDir = (object.getRotation() + 3) % 4;
             Point p = getCloseRotation(object);
             WorldTile firstLoc = object.getWorldTile().transform(p.getX(), p.getY(), 0);
-            WorldObject replaced = new WorldObject(d.getReplaceId(), object.getType(), firstDir, firstLoc);
+            WorldObject replaced = new WorldObject(d.replaceId, object.getType(), firstDir, firstLoc);
             RegionManager.replaceObject(object, replaced);
             return;
         }
@@ -68,10 +68,10 @@ public class DoorFunctionality {
         boolean isFence = isFence(object);
         if (second != null) {
             Door s = DoorRepository.forId(second.getId());
-            open(object, second, d.getReplaceId(), s == null ? second.getId() : s.getReplaceId(), 500, isFence);
+            open(object, second, d.replaceId, s == null ? second.getId() : s.replaceId, 500, isFence);
             return;
         }
-        open(object, null, d.getReplaceId(), -1, 500, isFence);
+        open(object, null, d.replaceId, -1, 500, isFence);
     }
 
     /**
