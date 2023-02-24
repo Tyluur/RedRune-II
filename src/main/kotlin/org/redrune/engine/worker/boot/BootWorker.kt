@@ -48,7 +48,7 @@ class BootWorker internal constructor(number: Int) : Thread() {
      * @param index
      * The index of the work
      */
-    fun addToWorkLoad(work: Runnable?, index: Int) {
+    fun addToWorkLoad(work: Runnable, index: Int) {
         workLoad.add(BootTask(work, index))
     }
 
