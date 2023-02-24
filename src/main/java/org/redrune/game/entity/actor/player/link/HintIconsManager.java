@@ -88,7 +88,7 @@ public class HintIconsManager {
         if (loadedIcons[index] == null) {
             return false;
         }
-        loadedIcons[index].setTargetType(0);
+        loadedIcons[index].targetType = 0;
         player.getPackets().sendHintIcon(loadedIcons[index]);
         loadedIcons[index] = null;
         return true;
@@ -101,7 +101,7 @@ public class HintIconsManager {
     public void removeAll() {
         for (int index = 0; index < loadedIcons.length; index++) {
             if (loadedIcons[index] != null) {
-                loadedIcons[index].setTargetType(0);
+                loadedIcons[index].targetType = 0;
                 player.getPackets().sendHintIcon(loadedIcons[index]);
                 loadedIcons[index] = null;
             }
