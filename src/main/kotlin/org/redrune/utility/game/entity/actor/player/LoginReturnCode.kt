@@ -1,5 +1,4 @@
-package org.redrune.utility.game.entity.actor.player;
-
+package org.redrune.utility.game.entity.actor.player
 
 /**
  * Holds the return codes that can be sent to the client when attempting to login.
@@ -7,7 +6,7 @@ package org.redrune.utility.game.entity.actor.player;
  * @author Emperor
  * @author Tyluur <itstyluur@icloud.com>
  */
-public enum LoginReturnCode {
+enum class LoginReturnCode(value: Int) {
 
     /**
      * An unexpected server response occured.
@@ -90,7 +89,7 @@ public enum LoginReturnCode {
     TOO_MANY_INCORRECT_LOGINS(16),
 
     /**
-     * We requested an account that was not created. <br> This return code opens the account creation screen
+     * We requested an account that was not created. <br></br> This return code opens the account creation screen
      */
     INVALID_ACCOUNT_REQUESTED(17),
 
@@ -103,11 +102,9 @@ public enum LoginReturnCode {
      * When trying to use fullscreen to login on a free world.
      */
     FULLSCREEN_MEMBERS_ONLY(19),
-
     /**
      * The login server connected to is invalid.
      */
-
     /**
      * The username logged out recently
      */
@@ -136,19 +133,15 @@ public enum LoginReturnCode {
     /**
      * The value.
      */
-
-    private final byte value;
+    @JvmField
+    val value: Byte
 
     /**
-     * Constructs a new {@code ReturnCodes} {@code Object}.
+     * Constructs a new `ReturnCodes` `Object`.
      *
      * @param value The value.
      */
-    LoginReturnCode(int value) {
-        this.value = (byte) value;
-    }
-
-    public byte getValue() {
-        return value;
+    init {
+        this.value = value.toByte()
     }
 }

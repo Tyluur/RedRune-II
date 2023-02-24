@@ -1,5 +1,4 @@
-package org.redrune.utility.game.entity.actor.player;
-
+package org.redrune.utility.game.entity.actor.player
 
 /**
  * Holds the return codes that can be sent to the client when attempting to login.
@@ -7,7 +6,7 @@ package org.redrune.utility.game.entity.actor.player;
  * @author Emperor
  * @author Tyluur <itstyluur@icloud.com>
  */
-public enum ReturnCode {
+enum class ReturnCode(value: Int) {
 
     /**
      * An unexpected server response occured.
@@ -137,16 +136,14 @@ public enum ReturnCode {
     /**
      * The value.
      */
-
-    private final byte value;
+    private val value: Byte
 
     /**
-     * Constructs a new {@code ReturnCodes} {@code Object}.
+     * Constructs a new `ReturnCodes` `Object`.
      *
      * @param value The value.
      */
-    ReturnCode(int value) {
-        this.value = (byte) value;
+    init {
+        this.value = value.toByte()
     }
-
 }
