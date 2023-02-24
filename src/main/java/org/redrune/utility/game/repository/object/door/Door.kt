@@ -1,53 +1,31 @@
-package org.redrune.utility.game.repository.object.door;
+package org.redrune.utility.game.repository.`object`.door
 
 /**
  * Represents a door.
  *
  * @author Emperor
+ * @author Tyluur<itstyluur@icloud.com>
  */
-public class Door {
-
+class Door
+    (
     /**
      * The door's object id.
      */
-    private final int id;
+    val id: Int,
+) {
 
     /**
      * The door's replace object id.
      */
-    private int replaceId;
+    @JvmField
+    var replaceId = 0
 
     /**
      * If the player should automaticly walk through it.
      */
-    private boolean autoWalk;
+    val isAutoWalk = false
 
-    /**
-     * Constructs a new {@code DoorManager} {@code Object}.
-     */
-    public Door(int id) {
-        this.id = id;
+    override fun toString(): String {
+        return "Door{" + "id=" + id + ", replaceId=" + replaceId + ", autoWalk=" + isAutoWalk + '}'
     }
-
-    @Override
-    public String toString() {
-        return "Door{" + "id=" + id + ", replaceId=" + replaceId + ", autoWalk=" + autoWalk + '}';
-    }
-
-    public boolean isAutoWalk() {
-        return autoWalk;
-    }
-
-    public int getReplaceId() {
-        return replaceId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setReplaceId(int replaceId) {
-        this.replaceId = replaceId;
-    }
-
 }
