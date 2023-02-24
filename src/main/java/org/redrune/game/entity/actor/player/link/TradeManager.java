@@ -15,13 +15,11 @@ public class TradeManager {
      * The important player objects in this class. Us and the recipient of our items
      */
     private final Player player;
-    private Player target;
-
     /**
      * The items we are offering
      */
     private final ItemsContainer<Item> items;
-
+    private Player target;
     /**
      * If the item we're lending is lent until logout
      */

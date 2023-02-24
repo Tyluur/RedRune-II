@@ -9,10 +9,8 @@ import org.redrune.utility.constants.SkillConstants;
 
 public final class Runecrafting {
 
-    private final static int[] LEVEL_REQ = {1, 25, 50, 75};
-
     public final static int RUNE_ESSENCE = 1436, PURE_ESSENCE = 7936, AIR_TIARA = 5527, MIND_TIARA = 5529, WATER_TIARA = 5531, BODY_TIARA = 5533, EARTH_TIARA = 5535, FIRE_TIARA = 5537, COSMIC_TIARA = 5539, NATURE_TIARA = 5541, CHAOS_TIARA = 5543, LAW_TIARA = 5545, DEATH_TIARA = 5547, BLOOD_TIARA = 5549, SOUL_TIARA = 5551, ASTRAL_TIARA = 9106, OMNI_TIARA = 13655;
-
+    private final static int[] LEVEL_REQ = {1, 25, 50, 75};
     private static final int[] POUCH_SIZE = {3, 6, 9, 12};
 
     private Runecrafting() {

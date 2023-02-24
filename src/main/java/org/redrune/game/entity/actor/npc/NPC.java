@@ -38,50 +38,28 @@ public class NPC extends Actor implements Serializable {
     private static final long serialVersionUID = -4794678936277614443L;
 
     public static int NO_WALK = 0x0, NORMAL_WALK = 0x2, WATER_WALK = 0x4, FLY_WALK = 0x8;
-
-    private int id;
-
-    private String name;
-
-    private int combatLevel;
-
     private final WorldTile respawnTile;
-
     private final int mapAreaNameHash;
-
     private final boolean canBeAttackFromOutOfArea;
-
-    private int[] bonuses; // 0 stab, 1 slash, 2 crush,3 mage, 4 range, 5 stab
-
     // def, blahblah till 9
     private final boolean spawned;
-
-    private WorldTile forceWalk;
-
-    private long lastAttackedByTarget;
-
-    private boolean cantInteract;
-
-    private int capDamage;
-
-    private int lureDelay;
-
-    private int flinchDelay;
-
-    private boolean cantFollowUnderCombat;
-
-    private boolean forceAgressive;
-
-    private int forceTargetDistance;
-
-    private boolean forceFollowClose;
-
-    private boolean forceMultiAttacked;
-
-    private int walkType;
-
     private final List<NPCExtension> extensions = new ArrayList<>();
-
+    private int id;
+    private String name;
+    private int combatLevel;
+    private int[] bonuses; // 0 stab, 1 slash, 2 crush,3 mage, 4 range, 5 stab
+    private WorldTile forceWalk;
+    private long lastAttackedByTarget;
+    private boolean cantInteract;
+    private int capDamage;
+    private int lureDelay;
+    private int flinchDelay;
+    private boolean cantFollowUnderCombat;
+    private boolean forceAgressive;
+    private int forceTargetDistance;
+    private boolean forceFollowClose;
+    private boolean forceMultiAttacked;
+    private int walkType;
     private transient NPCCombat combat;
 
     // npc masks
@@ -122,16 +100,16 @@ public class NPC extends Actor implements Serializable {
         checkMultiArea();
     }
 
+    public static void main(String[] args) throws IOException {
+        Cache.initialize();
+    }
+
     public NPCDefinitions getDefinitions() {
         return NPCDefinitions.getNPCDefinitions(id);
     }
 
     public NPCCombatDefinitions getCombatDefinitions() {
         return NPCCharacteristicRepository.getCombatDefinitions(id, false);
-    }
-
-    public static void main(String[] args) throws IOException {
-        Cache.initialize();
     }
 
     @Override
@@ -751,16 +729,16 @@ public class NPC extends Actor implements Serializable {
         return lureDelay;
     }
 
+    public void setLureDelay(int lureDelay) {
+        this.lureDelay = lureDelay;
+    }
+
     public int getFlinchDelay() {
         return flinchDelay;
     }
 
     public void setFlinchDelay(int flinchDelay) {
         this.flinchDelay = flinchDelay;
-    }
-
-    public void setLureDelay(int lureDelay) {
-        this.lureDelay = lureDelay;
     }
 
     public boolean isCantFollowUnderCombat() {
@@ -803,12 +781,12 @@ public class NPC extends Actor implements Serializable {
         return forceMultiAttacked;
     }
 
-    public boolean isMelee() {
-        return getCombatDefinitions().getAttackStyle() == BonusConstants.STAB_ATTACK || getCombatDefinitions().getAttackStyle() == BonusConstants.SLASH_ATTACK || getCombatDefinitions().getAttackStyle() == BonusConstants.CRUSH_ATTACK;
-    }
-
     public void setForceMultiAttacked(boolean forceMultiAttacked) {
         this.forceMultiAttacked = forceMultiAttacked;
+    }
+
+    public boolean isMelee() {
+        return getCombatDefinitions().getAttackStyle() == BonusConstants.STAB_ATTACK || getCombatDefinitions().getAttackStyle() == BonusConstants.SLASH_ATTACK || getCombatDefinitions().getAttackStyle() == BonusConstants.CRUSH_ATTACK;
     }
 
     public String getCustomName() {

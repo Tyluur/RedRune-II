@@ -2,12 +2,10 @@ package org.redrune.game.entity.actor.npc;
 
 public class Drop {
 
-    private int itemId, minAmount, maxAmount;
-
-    private double rate;
-
     @SuppressWarnings("unused")
     private final boolean rare;
+    private int itemId, minAmount, maxAmount;
+    private double rate;
 
     public Drop(int itemId, double rate, int minAmount, int maxAmount, boolean rare) {
         this.itemId = itemId;

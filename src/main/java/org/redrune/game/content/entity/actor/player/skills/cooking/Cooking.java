@@ -14,20 +14,20 @@ import java.util.Map;
 
 public class Cooking extends Action {
 
-    private int amount;
-
-    private Cookables cook;
-
     private final Item item;
-
     private final WorldObject object;
-
     private final Animation COOKING = new Animation(883);
+    private int amount;
+    private Cookables cook;
 
     public Cooking(WorldObject object, Item item, int amount) {
         this.amount = amount;
         this.item = item;
         this.object = object;
+    }
+
+    public static Cookables isCookingSkill(Item item) {
+        return Cookables.forId((short) item.getId());
     }
 
     @Override
@@ -99,10 +99,6 @@ public class Cooking extends Action {
     @Override
     public void stop(Player player) {
         this.setActionDelay(player, 3);
-    }
-
-    public static Cookables isCookingSkill(Item item) {
-        return Cookables.forId((short) item.getId());
     }
 
     public enum Cookables {

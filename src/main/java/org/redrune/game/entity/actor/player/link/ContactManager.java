@@ -18,29 +18,19 @@ public class ContactManager implements Serializable {
      *
      */
     private static final long serialVersionUID = 39693097250367467L;
-
-    // friends chat
-    private String chatName;
-
-    private HashMap<String, Integer> friendsChatRanks;
-
-    private byte whoCanEnterChat;
-
-    private byte whoCanTalkOnChat;
-
-    private byte whoCanKickOnChat;
-
-    private byte whoCanShareloot;
-
-    @SuppressWarnings("unused")
-    private boolean coinshare;
-
     // friends list
     private final ArrayList<String> friends;
-
     @SuppressWarnings("unused")
     private final ArrayList<String> ignores;
-
+    // friends chat
+    private String chatName;
+    private HashMap<String, Integer> friendsChatRanks;
+    private byte whoCanEnterChat;
+    private byte whoCanTalkOnChat;
+    private byte whoCanKickOnChat;
+    private byte whoCanShareloot;
+    @SuppressWarnings("unused")
+    private boolean coinshare;
     private byte privateStatus;
 
     private transient Player player;

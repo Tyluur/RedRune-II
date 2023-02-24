@@ -11,14 +11,6 @@ import org.redrune.networking.packet.PacketBuilder;
 public abstract class OutgoingPacketBuilder {
 
     /**
-     * The building of the packet is handled in this method. The {@code PacketBuilder} is converted to a {@code Packet}
-     * via {@link PacketBuilder#toPacket()}
-     *
-     * @return A newly constructed packet
-     */
-    public abstract Packet build();
-
-    /**
      * The packet builder instance
      */
 
@@ -30,4 +22,12 @@ public abstract class OutgoingPacketBuilder {
     public OutgoingPacketBuilder(PacketBuilder packetBuilder) {
         this.bldr = packetBuilder;
     }
+
+    /**
+     * The building of the packet is handled in this method. The {@code PacketBuilder} is converted to a {@code Packet}
+     * via {@link PacketBuilder#toPacket()}
+     *
+     * @return A newly constructed packet
+     */
+    public abstract Packet build();
 }

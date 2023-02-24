@@ -14,11 +14,8 @@ public final class Woodcutting extends Action {
     private final WorldObject tree;
 
     private final TreeDefinitions definitions;
-
-    private int emoteId;
-
     private final boolean usingBeaver = false;
-
+    private int emoteId;
     private int axeTime;
 
     private boolean usedDeplateAurora;

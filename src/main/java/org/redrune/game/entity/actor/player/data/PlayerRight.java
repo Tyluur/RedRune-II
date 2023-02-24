@@ -80,6 +80,24 @@ public enum PlayerRight {
     }
 
     /**
+     * Finds the right optional by the {@link PlayerRight#name}.
+     *
+     * @param name The name to look for.
+     */
+    public static Optional<PlayerRight> getRightByName(String name) {
+        return Arrays.stream(values()).filter(right -> right.name().equalsIgnoreCase(name)).findFirst();
+    }
+
+    /**
+     * Finds the right by the group id
+     *
+     * @param memberGroupId The group id to look for
+     */
+    public static Optional<PlayerRight> getRightByGroupId(int memberGroupId) {
+        return Arrays.stream(values()).filter(right -> right.getMemberGroupId() == memberGroupId).findFirst();
+    }
+
+    /**
      * Called on the creation of a right, due to enums not being able to call other values below them while
      * constructing
      */
@@ -99,24 +117,6 @@ public enum PlayerRight {
      */
     public String getFormattedName() {
         return Misc.formatPlayerNameForDisplay(name());
-    }
-
-    /**
-     * Finds the right optional by the {@link PlayerRight#name}.
-     *
-     * @param name The name to look for.
-     */
-    public static Optional<PlayerRight> getRightByName(String name) {
-        return Arrays.stream(values()).filter(right -> right.name().equalsIgnoreCase(name)).findFirst();
-    }
-
-    /**
-     * Finds the right by the group id
-     *
-     * @param memberGroupId The group id to look for
-     */
-    public static Optional<PlayerRight> getRightByGroupId(int memberGroupId) {
-        return Arrays.stream(values()).filter(right -> right.getMemberGroupId() == memberGroupId).findFirst();
     }
 
     /**

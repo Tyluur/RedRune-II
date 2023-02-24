@@ -13,98 +13,39 @@ import java.util.List;
 
 public abstract class Dialogue implements ChatAnimations, ColorConstants {
 
-    protected int first, second, third, fourth, fifth;
-
     public static final int FIRST = 1, SECOND = 2, THIRD = 3, FOURTH = 4, FIFTH = 5, YES = 1, NO = 2;
-
     public static final int OPTION_1 = 11, OPTION_2 = 13, OPTION_3 = 14, OPTION_4 = 15, OPTION_5 = 16;
-
     protected static final short SEND_1_TEXT_INFO = 210;
-
     protected static final short SEND_2_TEXT_INFO = 211;
-
     protected static final short SEND_3_TEXT_INFO = 212;
-
     protected static final short SEND_4_TEXT_INFO = 213;
-
     protected static final String DEFAULT_OPTION = "Select an Option";
-
     protected static final short SEND_2_OPTIONS = 236;
-
     protected static final short SEND_3_OPTIONS = 235;
-
     protected static final short SEND_4_OPTIONS = 237;
-
     protected static final short SEND_5_OPTIONS = 238;
-
     protected static final short SEND_2_LARGE_OPTIONS = 229;
-
     protected static final short SEND_3_LARGE_OPTIONS = 231;
-
     protected static final short SEND_1_TEXT_CHAT = 241;
-
     protected static final short SEND_2_TEXT_CHAT = 242;
-
     protected static final short SEND_3_TEXT_CHAT = 243;
-
     protected static final short SEND_4_TEXT_CHAT = 244;
-
     protected static final short SEND_NO_CONTINUE_1_TEXT_CHAT = 245;
-
     protected static final short SEND_NO_CONTINUE_2_TEXT_CHAT = 246;
-
     protected static final short SEND_NO_CONTINUE_3_TEXT_CHAT = 247;
-
     protected static final short SEND_NO_CONTINUE_4_TEXT_CHAT = 248;
-
     protected static final short SEND_NO_EMOTE = -1;
-
     protected static final byte IS_NOTHING = -1;
-
     protected static final byte IS_PLAYER = 0;
-
     protected static final byte IS_NPC = 1;
-
     protected static final byte IS_ITEM = 2;
-
-    public abstract void start();
-
-    public abstract void run(int interfaceId, int componentId);
-
-    public abstract void finish();
-
     public Object[] parameters;
-
+    protected int first, second, third, fourth, fifth;
     protected Player player;
-
     protected byte stage = -1;
 
     public Dialogue() {
 
-    }
-
-    public void sendNPCDialogue(int npcId, int animation, String... message) {
-        sendEntityDialogue(true, npcId, animation, message);
-    }
-
-    public void sendPlayerDialogue(int animation, String... message) {
-        sendEntityDialogue(false, player.getIndex(), animation, message);
-    }
-
-    public void sendItemDialogue(int itemId, int itemAmount, String... messages) {
-        int l = messages.length;
-        short interfaceId = (l == 1 ? SEND_1_TEXT_CHAT : l == 2 ? SEND_2_TEXT_CHAT : l == 3 ? SEND_3_TEXT_CHAT : SEND_4_TEXT_CHAT);
-        List<String> text = new ArrayList<>();
-        text.add("");
-        Collections.addAll(text, messages);
-        String[] message = text.toArray(new String[text.size()]);
-        sendEntityDialogue(interfaceId, message, IS_ITEM, itemId, itemAmount);
-    }
-
-    public void sendDialogue(String... text) {
-        int l = text.length;
-        short interfaceId = (l == 4 ? SEND_4_TEXT_INFO : l == 3 ? SEND_3_TEXT_INFO : l == 2 ? SEND_2_TEXT_INFO : SEND_1_TEXT_INFO);
-        sendDialogue(interfaceId, text);
     }
 
     public static boolean sendNPCDialogueNoContinue(Player player, int npcId, int animationId, String... text) {
@@ -154,33 +95,6 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
 
     public static void closeNoContinueDialogue(Player player) {
         player.getInterfaceManager().closeReplacedRealChatBoxInterface();
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    protected final void end() {
-        player.getDialogueManager().finishDialogue();
-    }
-
-    public boolean sendDialogue(short interId, String... talkDefinitons) {
-        int[] componentOptions = getIComponentsIds(interId);
-        if (componentOptions == null) {
-            return false;
-        }
-        if (player == null) {
-            return false;
-        }
-        player.getInterfaceManager().sendChatBoxInterface(interId);
-        int properLength = (interId > 213 ? talkDefinitons.length - 1 : talkDefinitons.length);
-        if (properLength != componentOptions.length) {
-            return false;
-        }
-        for (int childOptionId = 0; childOptionId < componentOptions.length; childOptionId++) {
-            player.getPackets().sendIComponentText(interId, componentOptions[childOptionId], talkDefinitons[childOptionId]);
-        }
-        return true;
     }
 
     private static int[] getIComponentsIds(short interId) {
@@ -366,6 +280,70 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
         return childOptions;
     }
 
+    private static String[] getMessages(String title, String[] message) {
+        List<String> textList = new ArrayList<>();
+        textList.add(title);
+        Collections.addAll(textList, message);
+        return textList.toArray(new String[textList.size()]);
+    }
+
+    public abstract void start();
+
+    public abstract void run(int interfaceId, int componentId);
+
+    public abstract void finish();
+
+    public void sendNPCDialogue(int npcId, int animation, String... message) {
+        sendEntityDialogue(true, npcId, animation, message);
+    }
+
+    public void sendPlayerDialogue(int animation, String... message) {
+        sendEntityDialogue(false, player.getIndex(), animation, message);
+    }
+
+    public void sendItemDialogue(int itemId, int itemAmount, String... messages) {
+        int l = messages.length;
+        short interfaceId = (l == 1 ? SEND_1_TEXT_CHAT : l == 2 ? SEND_2_TEXT_CHAT : l == 3 ? SEND_3_TEXT_CHAT : SEND_4_TEXT_CHAT);
+        List<String> text = new ArrayList<>();
+        text.add("");
+        Collections.addAll(text, messages);
+        String[] message = text.toArray(new String[text.size()]);
+        sendEntityDialogue(interfaceId, message, IS_ITEM, itemId, itemAmount);
+    }
+
+    public void sendDialogue(String... text) {
+        int l = text.length;
+        short interfaceId = (l == 4 ? SEND_4_TEXT_INFO : l == 3 ? SEND_3_TEXT_INFO : l == 2 ? SEND_2_TEXT_INFO : SEND_1_TEXT_INFO);
+        sendDialogue(interfaceId, text);
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    protected final void end() {
+        player.getDialogueManager().finishDialogue();
+    }
+
+    public boolean sendDialogue(short interId, String... talkDefinitons) {
+        int[] componentOptions = getIComponentsIds(interId);
+        if (componentOptions == null) {
+            return false;
+        }
+        if (player == null) {
+            return false;
+        }
+        player.getInterfaceManager().sendChatBoxInterface(interId);
+        int properLength = (interId > 213 ? talkDefinitons.length - 1 : talkDefinitons.length);
+        if (properLength != componentOptions.length) {
+            return false;
+        }
+        for (int childOptionId = 0; childOptionId < componentOptions.length; childOptionId++) {
+            player.getPackets().sendIComponentText(interId, componentOptions[childOptionId], talkDefinitons[childOptionId]);
+        }
+        return true;
+    }
+
     public boolean sendEntityDialogue(short interId, String[] talkDefinitons, byte type, int entityId, int animationId) {
         int[] componentOptions = getIComponentsIds(interId);
         if (componentOptions == null) {
@@ -387,13 +365,6 @@ public abstract class Dialogue implements ChatAnimations, ColorConstants {
             player.getPackets().sendItemOnIComponent(interId, 2, entityId, animationId);
         }
         return true;
-    }
-
-    private static String[] getMessages(String title, String[] message) {
-        List<String> textList = new ArrayList<>();
-        textList.add(title);
-        Collections.addAll(textList, message);
-        return textList.toArray(new String[textList.size()]);
     }
 
     private void sendEntityDialogue(boolean npc, int entityId, int animationId, String... message) {

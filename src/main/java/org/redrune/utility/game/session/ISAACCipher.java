@@ -24,22 +24,18 @@ public class ISAACCipher {
      * For pseudorandom lookup.
      */
     public static final int MASK = (SIZE - 1) << 2;
-
-    /**
-     * The count through the results.
-     */
-    private int count = 0;
-
     /**
      * The results.
      */
     private final int[] results = new int[SIZE];
-
     /**
      * The internal memory state.
      */
     private final int[] memory = new int[SIZE];
-
+    /**
+     * The count through the results.
+     */
+    private int count = 0;
     /**
      * The accumulator.
      */

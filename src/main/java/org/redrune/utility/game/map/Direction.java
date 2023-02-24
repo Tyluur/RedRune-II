@@ -179,15 +179,6 @@ public enum Direction {
     }
 
     /**
-     * Gets the opposite dir.
-     *
-     * @return the direction.
-     */
-    public Direction getOpposite() {
-        return Direction.get(toInteger() + 2 & 3);
-    }
-
-    /**
      * Gets the most logical direction.
      *
      * @param location The start location.
@@ -207,6 +198,15 @@ public enum Direction {
             return Direction.SOUTH;
         }
         return Direction.NORTH;
+    }
+
+    /**
+     * Gets the opposite dir.
+     *
+     * @return the direction.
+     */
+    public Direction getOpposite() {
+        return Direction.get(toInteger() + 2 & 3);
     }
 
     /**

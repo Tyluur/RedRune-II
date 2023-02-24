@@ -125,16 +125,16 @@ public class ArchiveReference {
         return validFileIds;
     }
 
+    public void setValidFileIds(int[] validFileIds) {
+        this.validFileIds = validFileIds;
+    }
+
     public FileReference[] getFiles() {
         return files;
     }
 
     public void setFiles(FileReference[] files) {
         this.files = files;
-    }
-
-    public void setValidFileIds(int[] validFileIds) {
-        this.validFileIds = validFileIds;
     }
 
 }

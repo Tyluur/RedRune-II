@@ -28,9 +28,7 @@ public abstract class Familiar extends NPC implements Serializable {
      *
      */
     private static final long serialVersionUID = -3255206534594320406L;
-
-    public abstract boolean submitSpecial(Object object);
-
+    private final Pouches pouch;
     private int ticks;
 
     private int trackTimer;
@@ -40,15 +38,9 @@ public abstract class Familiar extends NPC implements Serializable {
     private boolean trackDrain;
 
     private BeastOfBurden bob;
-
-    private final Pouches pouch;
-
     private transient Player owner;
-
     private transient int[][] checkNearDirs;
-
     private transient boolean sentRequestMoveMessage;
-
     private transient boolean dead;
 
     public Familiar(Player owner, Pouches pouch, WorldTile tile, int mapAreaNameHash, boolean canBeAttackFromOutOfArea) {
@@ -63,6 +55,34 @@ public abstract class Familiar extends NPC implements Serializable {
         }
         call(true);
     }
+
+    public static void sendLeftClickOption(Player player) {
+        player.getPackets().sendConfig(1493, player.getAttributes().getSummoningLeftClickOption());
+        player.getPackets().sendConfig(1494, player.getAttributes().getSummoningLeftClickOption());
+    }
+
+    public static void selectLeftOption(Player player) {
+        boolean res = player.getInterfaceManager().hasRezizableScreen();
+        player.getPackets().sendInterface(true, res ? 746 : 548, res ? 98 : 212, 880);
+        sendLeftClickOption(player);
+        player.getPackets().sendGlobalConfig(168, 8);// tab id
+    }
+
+    public static void confirmLeftOption(Player player) {
+        player.getPackets().sendGlobalConfig(168, 4);// inv tab id
+        boolean res = player.getInterfaceManager().hasRezizableScreen();
+        player.getPackets().closeInterface(res ? 98 : 212);
+    }
+
+    public static void setLeftclickOption(Player player, int summoningLeftClickOption) {
+        if (summoningLeftClickOption == player.getAttributes().getSummoningLeftClickOption()) {
+            return;
+        }
+        player.getAttributes().setSummoningLeftClickOption(summoningLeftClickOption);
+        sendLeftClickOption(player);
+    }
+
+    public abstract boolean submitSpecial(Object object);
 
     public void resetTickets() {
         ticks = (int) (pouch.getTime() / 1000 / 30);
@@ -175,11 +195,6 @@ public abstract class Familiar extends NPC implements Serializable {
         owner.getPackets().sendHideIComponent(747, 8, true);
     }
 
-    public static void sendLeftClickOption(Player player) {
-        player.getPackets().sendConfig(1493, player.getAttributes().getSummoningLeftClickOption());
-        player.getPackets().sendConfig(1494, player.getAttributes().getSummoningLeftClickOption());
-    }
-
     @Override
     public void processNPC() {
         if (isDead()) {
@@ -263,27 +278,6 @@ public abstract class Familiar extends NPC implements Serializable {
             // bob.dropBob(); // can cause a dup method?
         }
         finish();
-    }
-
-    public static void selectLeftOption(Player player) {
-        boolean res = player.getInterfaceManager().hasRezizableScreen();
-        player.getPackets().sendInterface(true, res ? 746 : 548, res ? 98 : 212, 880);
-        sendLeftClickOption(player);
-        player.getPackets().sendGlobalConfig(168, 8);// tab id
-    }
-
-    public static void confirmLeftOption(Player player) {
-        player.getPackets().sendGlobalConfig(168, 4);// inv tab id
-        boolean res = player.getInterfaceManager().hasRezizableScreen();
-        player.getPackets().closeInterface(res ? 98 : 212);
-    }
-
-    public static void setLeftclickOption(Player player, int summoningLeftClickOption) {
-        if (summoningLeftClickOption == player.getAttributes().getSummoningLeftClickOption()) {
-            return;
-        }
-        player.getAttributes().setSummoningLeftClickOption(summoningLeftClickOption);
-        sendLeftClickOption(player);
     }
 
     public void store() {

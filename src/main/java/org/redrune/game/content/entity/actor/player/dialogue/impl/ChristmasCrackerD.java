@@ -16,6 +16,14 @@ public class ChristmasCrackerD extends Dialogue {
 
     private Player usedOn;
 
+    static Item getPartyhats() {
+        return PARTYHATS[(int) (Math.random() * PARTYHATS.length)];
+    }
+
+    static Item getExtraItems() {
+        return EXTRA_ITEMS[(int) (Math.random() * EXTRA_ITEMS.length)];
+    }
+
     @Override
     public void start() {
         usedOn = (Player) parameters[0];
@@ -46,14 +54,6 @@ public class ChristmasCrackerD extends Dialogue {
         } else {
             end();
         }
-    }
-
-    static Item getPartyhats() {
-        return PARTYHATS[(int) (Math.random() * PARTYHATS.length)];
-    }
-
-    static Item getExtraItems() {
-        return EXTRA_ITEMS[(int) (Math.random() * EXTRA_ITEMS.length)];
     }
 
     @Override

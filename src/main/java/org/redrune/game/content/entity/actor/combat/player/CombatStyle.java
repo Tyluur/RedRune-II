@@ -120,14 +120,14 @@ public enum CombatStyle {
      */
     private final AbstractCombatStyle style;
 
+    CombatStyle(AbstractCombatStyle style) {
+        this.style = style;
+    }
+
     /**
      * Gets the delay for the player to swing this style
      */
     public abstract int getDelay(Player player);
-
-    CombatStyle(AbstractCombatStyle style) {
-        this.style = style;
-    }
 
     public AbstractCombatStyle getStyle() {
         return this.style;

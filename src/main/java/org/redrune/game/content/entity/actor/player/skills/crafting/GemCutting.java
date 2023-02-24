@@ -18,6 +18,16 @@ public class GemCutting extends Action {
         this.quantity = quantity;
     }
 
+    public static void cut(Player player, Gem gem) {
+        if (player.getInventory().getItems().getNumberOf(new Item(gem.getUncut(), 1)) <= 1) // contains just
+        // 1 lets start
+        {
+            player.getActionManager().setAction(new GemCutting(gem, 1));
+        } else {
+            player.getDialogueManager().startDialogue("GemCuttingD", gem);
+        }
+    }
+
     @Override
     public boolean start(Player player) {
         if (checkAll(player)) {
@@ -64,16 +74,6 @@ public class GemCutting extends Action {
     @Override
     public void stop(Player player) {
         setActionDelay(player, 3);
-    }
-
-    public static void cut(Player player, Gem gem) {
-        if (player.getInventory().getItems().getNumberOf(new Item(gem.getUncut(), 1)) <= 1) // contains just
-        // 1 lets start
-        {
-            player.getActionManager().setAction(new GemCutting(gem, 1));
-        } else {
-            player.getDialogueManager().startDialogue("GemCuttingD", gem);
-        }
     }
 
     /**

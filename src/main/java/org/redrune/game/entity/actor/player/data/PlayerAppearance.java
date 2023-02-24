@@ -316,10 +316,6 @@ public class PlayerAppearance implements Serializable {
         colors[index] = (byte) value;
     }
 
-    public void setMale(boolean male) {
-        this.male = male;
-    }
-
     public void setHairStyle(int value) {
         looks[0] = value;
     }
@@ -405,6 +401,10 @@ public class PlayerAppearance implements Serializable {
 
     public boolean isMale() {
         return this.male;
+    }
+
+    public void setMale(boolean male) {
+        this.male = male;
     }
 
     public byte[] getAppearanceData() {

@@ -134,51 +134,6 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
         init();
     }
 
-    public int read() throws IOException {
-        if (this.in != null) {
-            return read0();
-        } else {
-            throw new IOException("stream closed");
-        }
-    }
-
-    public int read(final byte[] dest, final int offs, final int len) throws IOException {
-        if (offs < 0) {
-            throw new IndexOutOfBoundsException("offs(" + offs + ") < 0.");
-        }
-        if (len < 0) {
-            throw new IndexOutOfBoundsException("len(" + len + ") < 0.");
-        }
-        if (offs + len > dest.length) {
-            throw new IndexOutOfBoundsException("offs(" + offs + ") + len(" + len + ") > dest.length(" + dest.length + ").");
-        }
-        if (this.in == null) {
-            throw new IOException("stream closed");
-        }
-
-        final int hi = offs + len;
-        int destOffs = offs;
-        for (int b; (destOffs < hi) && ((b = read0()) >= 0); ) {
-            dest[destOffs++] = (byte) b;
-        }
-
-        return (destOffs == offs) ? -1 : (destOffs - offs);
-    }
-
-    public void close() throws IOException {
-        InputStream inShadow = this.in;
-        if (inShadow != null) {
-            try {
-                if (inShadow != System.in) {
-                    inShadow.close();
-                }
-            } finally {
-                this.data = null;
-                this.in = null;
-            }
-        }
-    }
-
     private static void reportCRCError() throws IOException {
         // The clean way would be to throw an exception.
         throw new IOException("crc error");
@@ -223,6 +178,51 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 
         for (int i = minLen + 1; i <= maxLen; i++) {
             base[i] = ((limit[i - 1] + 1) << 1) - base[i];
+        }
+    }
+
+    public int read() throws IOException {
+        if (this.in != null) {
+            return read0();
+        } else {
+            throw new IOException("stream closed");
+        }
+    }
+
+    public int read(final byte[] dest, final int offs, final int len) throws IOException {
+        if (offs < 0) {
+            throw new IndexOutOfBoundsException("offs(" + offs + ") < 0.");
+        }
+        if (len < 0) {
+            throw new IndexOutOfBoundsException("len(" + len + ") < 0.");
+        }
+        if (offs + len > dest.length) {
+            throw new IndexOutOfBoundsException("offs(" + offs + ") + len(" + len + ") > dest.length(" + dest.length + ").");
+        }
+        if (this.in == null) {
+            throw new IOException("stream closed");
+        }
+
+        final int hi = offs + len;
+        int destOffs = offs;
+        for (int b; (destOffs < hi) && ((b = read0()) >= 0); ) {
+            dest[destOffs++] = (byte) b;
+        }
+
+        return (destOffs == offs) ? -1 : (destOffs - offs);
+    }
+
+    public void close() throws IOException {
+        InputStream inShadow = this.in;
+        if (inShadow != null) {
+            try {
+                if (inShadow != System.in) {
+                    inShadow.close();
+                }
+            } finally {
+                this.data = null;
+                this.in = null;
+            }
         }
     }
 

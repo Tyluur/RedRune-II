@@ -15,18 +15,12 @@ public class OwnedObjectManager {
     public static final AtomicLong keyMaker = new AtomicLong();
 
     private static final Map<String, OwnedObjectManager> ownedObjects = new ConcurrentHashMap<String, OwnedObjectManager>();
-
-    private Player player;
-
     private final WorldObject[] objects;
-
-    private int count;
-
     private final long cycleTime;
-
-    private long lifeTime;
-
     private final String managerKey;
+    private Player player;
+    private int count;
+    private long lifeTime;
 
     private OwnedObjectManager(Player player, WorldObject[] objects, long cycleTime) {
         managerKey = player.getUsername() + "_" + keyMaker.getAndIncrement();
@@ -42,6 +36,63 @@ public class OwnedObjectManager {
         for (OwnedObjectManager object : ownedObjects.values()) {
             object.process();
         }
+    }
+
+    public static boolean isPlayerObject(Player player, WorldObject object) {
+        for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
+            OwnedObjectManager manager = ownedObjects.get(it.next());
+            if (manager == null) {
+                it.remove();
+                continue;
+            }
+            if (manager.getCurrentObject().getX() == object.getX() && manager.getCurrentObject().getY() == object.getY() && manager.getCurrentObject().getPlane() == object.getPlane() && manager.getCurrentObject().getId() == object.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean convertIntoObject(WorldObject object, WorldObject toObject, ConvertEvent event) {
+        for (OwnedObjectManager manager : ownedObjects.values()) {
+            if (manager.getCurrentObject().getX() == toObject.getX() && manager.getCurrentObject().getY() == toObject.getY() && manager.getCurrentObject().getPlane() == toObject.getPlane() && manager.getCurrentObject().getId() == object.getId()) {
+                if (event != null && !event.canConvert(manager.player)) {
+                    return false;
+                }
+                manager.convertIntoObject(toObject);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean removeObject(Player player, WorldObject object) {
+        for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
+            OwnedObjectManager manager = ownedObjects.get(it.next());
+            if (manager == null) {
+                it.remove();
+                continue;
+            }
+            if (manager.getCurrentObject().getX() == object.getX() && manager.getCurrentObject().getY() == object.getY() && manager.getCurrentObject().getPlane() == object.getPlane() && manager.getCurrentObject().getId() == object.getId()) {
+                manager.delete();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void linkKeys(Player player) {
+        for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
+            OwnedObjectManager manager = ownedObjects.get(it.next());
+            if (manager == null) {
+                it.remove();
+                continue;
+            }
+            manager.player = player;
+        }
+    }
+
+    public static void addOwnedObjectManager(Player player, WorldObject[] objects, long cycleTime) {
+        new OwnedObjectManager(player, objects, cycleTime);
     }
 
     public void process() {
@@ -83,35 +134,8 @@ public class OwnedObjectManager {
         this.lifeTime = Misc.currentTimeMillis() + cycleTime;
     }
 
-    public static boolean isPlayerObject(Player player, WorldObject object) {
-        for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
-            OwnedObjectManager manager = ownedObjects.get(it.next());
-            if (manager == null) {
-                it.remove();
-                continue;
-            }
-            if (manager.getCurrentObject().getX() == object.getX() && manager.getCurrentObject().getY() == object.getY() && manager.getCurrentObject().getPlane() == object.getPlane() && manager.getCurrentObject().getId() == object.getId()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public WorldObject getCurrentObject() {
         return objects[count];
-    }
-
-    public static boolean convertIntoObject(WorldObject object, WorldObject toObject, ConvertEvent event) {
-        for (OwnedObjectManager manager : ownedObjects.values()) {
-            if (manager.getCurrentObject().getX() == toObject.getX() && manager.getCurrentObject().getY() == toObject.getY() && manager.getCurrentObject().getPlane() == toObject.getPlane() && manager.getCurrentObject().getId() == object.getId()) {
-                if (event != null && !event.canConvert(manager.player)) {
-                    return false;
-                }
-                manager.convertIntoObject(toObject);
-                return true;
-            }
-        }
-        return false;
     }
 
     public void convertIntoObject(WorldObject object) {
@@ -120,39 +144,9 @@ public class OwnedObjectManager {
         spawnObject();
     }
 
-    public static boolean removeObject(Player player, WorldObject object) {
-        for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
-            OwnedObjectManager manager = ownedObjects.get(it.next());
-            if (manager == null) {
-                it.remove();
-                continue;
-            }
-            if (manager.getCurrentObject().getX() == object.getX() && manager.getCurrentObject().getY() == object.getY() && manager.getCurrentObject().getPlane() == object.getPlane() && manager.getCurrentObject().getId() == object.getId()) {
-                manager.delete();
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void delete() {
         destroyObject(objects[count]);
         remove();
-    }
-
-    public static void linkKeys(Player player) {
-        for (Iterator<String> it = player.getAttributes().getOwnedObjectManagerKeys().iterator(); it.hasNext(); ) {
-            OwnedObjectManager manager = ownedObjects.get(it.next());
-            if (manager == null) {
-                it.remove();
-                continue;
-            }
-            manager.player = player;
-        }
-    }
-
-    public static void addOwnedObjectManager(Player player, WorldObject[] objects, long cycleTime) {
-        new OwnedObjectManager(player, objects, cycleTime);
     }
 
     public void reset() {

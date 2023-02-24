@@ -32,6 +32,23 @@ public class Fletching extends Action {
         this.ticks = ticks;
     }
 
+    // fixed by dragonkk as always
+    public static boolean maxMakeQuantityTen(Fletch fletch) {
+        return fletch.getProduct()[0] == 52 || fletch.getSelected() == 52 || fletch.getSelected() == 53 || fletch.getSelected() == 314 || ItemDefinitions.getItemDefinitions(fletch.getSelected()).getName().toLowerCase().contains("dart");
+    }
+
+    public static Fletch isFletching(Item first, Item second) {
+        Fletch fletch = Fletch.forId(first.getId());
+        int selected;
+        if (fletch != null) {
+            selected = second.getId();
+        } else {
+            fletch = Fletch.forId(second.getId());
+            selected = first.getId();
+        }
+        return fletch != null && fletch.getSelected() == selected ? fletch : null;
+    }
+
     @Override
     public boolean start(Player player) {
         if (option >= fletch.getProduct().length) {
@@ -75,26 +92,9 @@ public class Fletching extends Action {
         return 1;
     }
 
-    // fixed by dragonkk as always
-    public static boolean maxMakeQuantityTen(Fletch fletch) {
-        return fletch.getProduct()[0] == 52 || fletch.getSelected() == 52 || fletch.getSelected() == 53 || fletch.getSelected() == 314 || ItemDefinitions.getItemDefinitions(fletch.getSelected()).getName().toLowerCase().contains("dart");
-    }
-
     @Override
     public void stop(final Player player) {
         setActionDelay(player, 3);
-    }
-
-    public static Fletch isFletching(Item first, Item second) {
-        Fletch fletch = Fletch.forId(first.getId());
-        int selected;
-        if (fletch != null) {
-            selected = second.getId();
-        } else {
-            fletch = Fletch.forId(second.getId());
-            selected = first.getId();
-        }
-        return fletch != null && fletch.getSelected() == selected ? fletch : null;
     }
 
     public enum Fletch {

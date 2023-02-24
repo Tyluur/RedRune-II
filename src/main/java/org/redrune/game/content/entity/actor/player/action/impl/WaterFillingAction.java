@@ -20,6 +20,27 @@ public class WaterFillingAction extends Action {
         this.quantity = quantity;
     }
 
+    public static boolean isFilling(Player player, int empty, boolean isSpot) {
+        for (Fill fill : Fill.values()) {
+            if (fill.empty == empty) {
+                if (isSpot && fill.ordinal() <= 4) {
+                    return false;
+                }
+                fill(player, fill);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void fill(Player player, Fill fill) {
+        if (player.getInventory().getItems().getNumberOf(new Item(fill.empty, 1)) <= 1) {
+            player.getActionManager().setAction(new WaterFillingAction(fill, 1));
+        } else {
+            player.getDialogueManager().startDialogue("WaterFillingD", fill);
+        }
+    }
+
     @Override
     public boolean start(Player player) {
         if (checkAll(player)) {
@@ -59,27 +80,6 @@ public class WaterFillingAction extends Action {
     @Override
     public void stop(final Player player) {
         setActionDelay(player, 3);
-    }
-
-    public static boolean isFilling(Player player, int empty, boolean isSpot) {
-        for (Fill fill : Fill.values()) {
-            if (fill.empty == empty) {
-                if (isSpot && fill.ordinal() <= 4) {
-                    return false;
-                }
-                fill(player, fill);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static void fill(Player player, Fill fill) {
-        if (player.getInventory().getItems().getNumberOf(new Item(fill.empty, 1)) <= 1) {
-            player.getActionManager().setAction(new WaterFillingAction(fill, 1));
-        } else {
-            player.getDialogueManager().startDialogue("WaterFillingD", fill);
-        }
     }
 
     public enum Fill {

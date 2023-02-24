@@ -168,6 +168,42 @@ public final class ItemDefinitions {
         loadItemDefinitions();
     }
 
+    public static ItemDefinitions getItemDefinitions(int itemId) {
+        if (itemId < 0 || itemId >= itemsDefinitions.length) {
+            itemId = 0;
+        }
+        ItemDefinitions def = itemsDefinitions[itemId];
+        if (def == null) {
+            itemsDefinitions[itemId] = def = new ItemDefinitions(itemId);
+        }
+        return def;
+
+    }
+
+    public static void clearItemsDefinitions() {
+        for (int i = 0; i < itemsDefinitions.length; i++) {
+            itemsDefinitions[i] = null;
+        }
+    }
+
+    public static boolean isInteger(String i) {
+        try {
+            Integer.parseInt(i);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+    public static ItemDefinitions forName(String name) {
+        for (ItemDefinitions definition : itemsDefinitions) {
+            if (definition.getName().equalsIgnoreCase(name)) {
+                return definition;
+            }
+        }
+        return null;
+    }
+
     private void setDefaultsVariableValues() {
         setMaleEquip1(-1);
         unknownInt24 = -1;
@@ -478,44 +514,12 @@ public final class ItemDefinitions {
         }
     }
 
-    public static ItemDefinitions getItemDefinitions(int itemId) {
-        if (itemId < 0 || itemId >= itemsDefinitions.length) {
-            itemId = 0;
-        }
-        ItemDefinitions def = itemsDefinitions[itemId];
-        if (def == null) {
-            itemsDefinitions[itemId] = def = new ItemDefinitions(itemId);
-        }
-        return def;
-
-    }
-
-    public static void clearItemsDefinitions() {
-        for (int i = 0; i < itemsDefinitions.length; i++) {
-            itemsDefinitions[i] = null;
-        }
-    }
-
-    public static boolean isInteger(String i) {
-        try {
-            Integer.parseInt(i);
-            return true;
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-    }
-
-    public static ItemDefinitions forName(String name) {
-        for (ItemDefinitions definition : itemsDefinitions) {
-            if (definition.getName().equalsIgnoreCase(name)) {
-                return definition;
-            }
-        }
-        return null;
-    }
-
     public int getValue() {
         return value <= 0 ? 1 : value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public boolean isDestroyItem() {
@@ -574,17 +578,6 @@ public final class ItemDefinitions {
         return getFemaleEquip1();
     }
 
-    public boolean hasSpecialBar() {
-        if (getClientScriptData() == null) {
-            return false;
-        }
-        Object specialBar = getClientScriptData().get(686);
-        if (specialBar != null && specialBar instanceof Integer) {
-            return (Integer) specialBar == 1;
-        }
-        return false;
-    }
-
     /*
      * public HashMap<Integer, Integer> getWearingSkillRequiriments() { if
      * (clientScriptData == null) return null; HashMap<Integer, Integer> skills
@@ -600,6 +593,17 @@ public final class ItemDefinitions {
      *
      * } return skills; }
      */
+
+    public boolean hasSpecialBar() {
+        if (getClientScriptData() == null) {
+            return false;
+        }
+        Object specialBar = getClientScriptData().get(686);
+        if (specialBar != null && specialBar instanceof Integer) {
+            return (Integer) specialBar == 1;
+        }
+        return false;
+    }
 
     public int getRenderAnimId() {
         if (getClientScriptData() == null) {
@@ -1016,392 +1020,388 @@ public final class ItemDefinitions {
         return this.id;
     }
 
-    public int getModelId() {
-        return this.modelId;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String[] getInventoryOptions() {
-        return this.inventoryOptions;
-    }
-
-    public int[] getOriginalModelColors() {
-        return this.originalModelColors;
-    }
-
-    public int[] getModifiedModelColors() {
-        return this.modifiedModelColors;
-    }
-
-    public short[] getOriginalTextureColors() {
-        return this.originalTextureColors;
-    }
-
-    public boolean isLoaded() {
-        return this.loaded;
-    }
-
-    public int getModelZoom() {
-        return this.modelZoom;
-    }
-
-    public int getModelRotation1() {
-        return this.modelRotation1;
-    }
-
-    public int getModelRotation2() {
-        return this.modelRotation2;
-    }
-
-    public int getModelOffset1() {
-        return this.modelOffset1;
-    }
-
-    public int getModelOffset2() {
-        return this.modelOffset2;
-    }
-
-    public int getStackable() {
-        return this.stackable;
-    }
-
-    public boolean isMembersOnly() {
-        return this.membersOnly;
-    }
-
-    public int getMaleEquip1() {
-        return this.maleEquip1;
-    }
-
-    public int getFemaleEquip1() {
-        return this.femaleEquip1;
-    }
-
-    public int getMaleEquip2() {
-        return this.maleEquip2;
-    }
-
-    public int getFemaleEquip2() {
-        return this.femaleEquip2;
-    }
-
-    public String[] getGroundOptions() {
-        return this.groundOptions;
-    }
-
-    public short[] getModifiedTextureColors() {
-        return this.modifiedTextureColors;
-    }
-
-    public byte[] getRecolourPallete() {
-        return this.recolourPallete;
-    }
-
-    public int[] getUnknownArray2() {
-        return this.unknownArray2;
-    }
-
-    public int getMaleEquipModelId3() {
-        return this.maleEquipModelId3;
-    }
-
-    public int getFemaleEquipModelId3() {
-        return this.femaleEquipModelId3;
-    }
-
-    public int getCertId() {
-        return this.certId;
-    }
-
-    public int getCertTemplateId() {
-        return this.certTemplateId;
-    }
-
-    public int[] getStackIds() {
-        return this.stackIds;
-    }
-
-    public int[] getStackAmounts() {
-        return this.stackAmounts;
-    }
-
-    public int getModelShadowing() {
-        return this.modelShadowing;
-    }
-
-    public int getTeamId() {
-        return this.teamId;
-    }
-
-    public int getLendId() {
-        return this.lendId;
-    }
-
-    public int getLendTemplateId() {
-        return this.lendTemplateId;
-    }
-
-    public int getMaleDialogueModel() {
-        return this.maleDialogueModel;
-    }
-
-    public int getFemaleDialogueModel() {
-        return this.femaleDialogueModel;
-    }
-
-    public int getMaleDialogueHat() {
-        return this.maleDialogueHat;
-    }
-
-    public int getFemaleDialogueHat() {
-        return this.femaleDialogueHat;
-    }
-
-    public int getRotationZoom() {
-        return this.rotationZoom;
-    }
-
-    public int getDummyItem() {
-        return this.dummyItem;
-    }
-
-    public int getModelVerticesX() {
-        return this.modelVerticesX;
-    }
-
-    public int getModelVerticesY() {
-        return this.modelVerticesY;
-    }
-
-    public int getModelVerticesZ() {
-        return this.modelVerticesZ;
-    }
-
-    public int getModelLighting() {
-        return this.modelLighting;
-    }
-
-    public boolean isNoted() {
-        return this.noted;
-    }
-
-    public boolean isLended() {
-        return this.lended;
-    }
-
-    public boolean isTradeable() {
-        return this.isTradeable;
-    }
-
-    public boolean isExchangeable() {
-        return this.isExchangeable;
-    }
-
-    public HashMap<Integer, Object> getClientScriptData() {
-        return this.clientScriptData;
-    }
-
-    public HashMap<Integer, Integer> getItemRequirements() {
-        return this.itemRequirements;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getModelId() {
+        return this.modelId;
     }
 
     public void setModelId(int modelId) {
         this.modelId = modelId;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String[] getInventoryOptions() {
+        return this.inventoryOptions;
     }
 
     public void setInventoryOptions(String[] inventoryOptions) {
         this.inventoryOptions = inventoryOptions;
     }
 
+    public int[] getOriginalModelColors() {
+        return this.originalModelColors;
+    }
+
     public void setOriginalModelColors(int[] originalModelColors) {
         this.originalModelColors = originalModelColors;
+    }
+
+    public int[] getModifiedModelColors() {
+        return this.modifiedModelColors;
     }
 
     public void setModifiedModelColors(int[] modifiedModelColors) {
         this.modifiedModelColors = modifiedModelColors;
     }
 
+    public short[] getOriginalTextureColors() {
+        return this.originalTextureColors;
+    }
+
     public void setOriginalTextureColors(short[] originalTextureColors) {
         this.originalTextureColors = originalTextureColors;
+    }
+
+    public boolean isLoaded() {
+        return this.loaded;
     }
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
 
+    public int getModelZoom() {
+        return this.modelZoom;
+    }
+
     public void setModelZoom(int modelZoom) {
         this.modelZoom = modelZoom;
+    }
+
+    public int getModelRotation1() {
+        return this.modelRotation1;
     }
 
     public void setModelRotation1(int modelRotation1) {
         this.modelRotation1 = modelRotation1;
     }
 
+    public int getModelRotation2() {
+        return this.modelRotation2;
+    }
+
     public void setModelRotation2(int modelRotation2) {
         this.modelRotation2 = modelRotation2;
+    }
+
+    public int getModelOffset1() {
+        return this.modelOffset1;
     }
 
     public void setModelOffset1(int modelOffset1) {
         this.modelOffset1 = modelOffset1;
     }
 
+    public int getModelOffset2() {
+        return this.modelOffset2;
+    }
+
     public void setModelOffset2(int modelOffset2) {
         this.modelOffset2 = modelOffset2;
+    }
+
+    public int getStackable() {
+        return this.stackable;
     }
 
     public void setStackable(int stackable) {
         this.stackable = stackable;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public boolean isMembersOnly() {
+        return this.membersOnly;
     }
 
     public void setMembersOnly(boolean membersOnly) {
         this.membersOnly = membersOnly;
     }
 
+    public int getMaleEquip1() {
+        return this.maleEquip1;
+    }
+
     public void setMaleEquip1(int maleEquip1) {
         this.maleEquip1 = maleEquip1;
+    }
+
+    public int getFemaleEquip1() {
+        return this.femaleEquip1;
     }
 
     public void setFemaleEquip1(int femaleEquip1) {
         this.femaleEquip1 = femaleEquip1;
     }
 
+    public int getMaleEquip2() {
+        return this.maleEquip2;
+    }
+
     public void setMaleEquip2(int maleEquip2) {
         this.maleEquip2 = maleEquip2;
+    }
+
+    public int getFemaleEquip2() {
+        return this.femaleEquip2;
     }
 
     public void setFemaleEquip2(int femaleEquip2) {
         this.femaleEquip2 = femaleEquip2;
     }
 
+    public String[] getGroundOptions() {
+        return this.groundOptions;
+    }
+
     public void setGroundOptions(String[] groundOptions) {
         this.groundOptions = groundOptions;
+    }
+
+    public short[] getModifiedTextureColors() {
+        return this.modifiedTextureColors;
     }
 
     public void setModifiedTextureColors(short[] modifiedTextureColors) {
         this.modifiedTextureColors = modifiedTextureColors;
     }
 
+    public byte[] getRecolourPallete() {
+        return this.recolourPallete;
+    }
+
     public void setRecolourPallete(byte[] recolourPallete) {
         this.recolourPallete = recolourPallete;
+    }
+
+    public int[] getUnknownArray2() {
+        return this.unknownArray2;
     }
 
     public void setUnknownArray2(int[] unknownArray2) {
         this.unknownArray2 = unknownArray2;
     }
 
+    public int getMaleEquipModelId3() {
+        return this.maleEquipModelId3;
+    }
+
     public void setMaleEquipModelId3(int maleEquipModelId3) {
         this.maleEquipModelId3 = maleEquipModelId3;
+    }
+
+    public int getFemaleEquipModelId3() {
+        return this.femaleEquipModelId3;
     }
 
     public void setFemaleEquipModelId3(int femaleEquipModelId3) {
         this.femaleEquipModelId3 = femaleEquipModelId3;
     }
 
+    public int getCertId() {
+        return this.certId;
+    }
+
     public void setCertId(int certId) {
         this.certId = certId;
+    }
+
+    public int getCertTemplateId() {
+        return this.certTemplateId;
     }
 
     public void setCertTemplateId(int certTemplateId) {
         this.certTemplateId = certTemplateId;
     }
 
+    public int[] getStackIds() {
+        return this.stackIds;
+    }
+
     public void setStackIds(int[] stackIds) {
         this.stackIds = stackIds;
+    }
+
+    public int[] getStackAmounts() {
+        return this.stackAmounts;
     }
 
     public void setStackAmounts(int[] stackAmounts) {
         this.stackAmounts = stackAmounts;
     }
 
+    public int getModelShadowing() {
+        return this.modelShadowing;
+    }
+
     public void setModelShadowing(int modelShadowing) {
         this.modelShadowing = modelShadowing;
+    }
+
+    public int getTeamId() {
+        return this.teamId;
     }
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
     }
 
+    public int getLendId() {
+        return this.lendId;
+    }
+
     public void setLendId(int lendId) {
         this.lendId = lendId;
+    }
+
+    public int getLendTemplateId() {
+        return this.lendTemplateId;
     }
 
     public void setLendTemplateId(int lendTemplateId) {
         this.lendTemplateId = lendTemplateId;
     }
 
+    public int getMaleDialogueModel() {
+        return this.maleDialogueModel;
+    }
+
     public void setMaleDialogueModel(int maleDialogueModel) {
         this.maleDialogueModel = maleDialogueModel;
+    }
+
+    public int getFemaleDialogueModel() {
+        return this.femaleDialogueModel;
     }
 
     public void setFemaleDialogueModel(int femaleDialogueModel) {
         this.femaleDialogueModel = femaleDialogueModel;
     }
 
+    public int getMaleDialogueHat() {
+        return this.maleDialogueHat;
+    }
+
     public void setMaleDialogueHat(int maleDialogueHat) {
         this.maleDialogueHat = maleDialogueHat;
+    }
+
+    public int getFemaleDialogueHat() {
+        return this.femaleDialogueHat;
     }
 
     public void setFemaleDialogueHat(int femaleDialogueHat) {
         this.femaleDialogueHat = femaleDialogueHat;
     }
 
+    public int getRotationZoom() {
+        return this.rotationZoom;
+    }
+
     public void setRotationZoom(int rotationZoom) {
         this.rotationZoom = rotationZoom;
+    }
+
+    public int getDummyItem() {
+        return this.dummyItem;
     }
 
     public void setDummyItem(int dummyItem) {
         this.dummyItem = dummyItem;
     }
 
+    public int getModelVerticesX() {
+        return this.modelVerticesX;
+    }
+
     public void setModelVerticesX(int modelVerticesX) {
         this.modelVerticesX = modelVerticesX;
+    }
+
+    public int getModelVerticesY() {
+        return this.modelVerticesY;
     }
 
     public void setModelVerticesY(int modelVerticesY) {
         this.modelVerticesY = modelVerticesY;
     }
 
+    public int getModelVerticesZ() {
+        return this.modelVerticesZ;
+    }
+
     public void setModelVerticesZ(int modelVerticesZ) {
         this.modelVerticesZ = modelVerticesZ;
+    }
+
+    public int getModelLighting() {
+        return this.modelLighting;
     }
 
     public void setModelLighting(int modelLighting) {
         this.modelLighting = modelLighting;
     }
 
+    public boolean isNoted() {
+        return this.noted;
+    }
+
     public void setNoted(boolean noted) {
         this.noted = noted;
+    }
+
+    public boolean isLended() {
+        return this.lended;
     }
 
     public void setLended(boolean lended) {
         this.lended = lended;
     }
 
+    public boolean isTradeable() {
+        return this.isTradeable;
+    }
+
     public void setTradeable(boolean isTradeable) {
         this.isTradeable = isTradeable;
+    }
+
+    public boolean isExchangeable() {
+        return this.isExchangeable;
     }
 
     public void setExchangeable(boolean isExchangeable) {
         this.isExchangeable = isExchangeable;
     }
 
+    public HashMap<Integer, Object> getClientScriptData() {
+        return this.clientScriptData;
+    }
+
     public void setClientScriptData(HashMap<Integer, Object> clientScriptData) {
         this.clientScriptData = clientScriptData;
+    }
+
+    public HashMap<Integer, Integer> getItemRequirements() {
+        return this.itemRequirements;
     }
 
     public void setItemRequirements(HashMap<Integer, Integer> itemRequirements) {

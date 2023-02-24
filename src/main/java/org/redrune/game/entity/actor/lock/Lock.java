@@ -80,12 +80,12 @@ public class Lock {
         return this.elapse;
     }
 
-    public String getMessage() {
-        return this.message;
-    }
-
     public void setElapse(LockElapse elapse) {
         this.elapse = elapse;
+    }
+
+    public String getMessage() {
+        return this.message;
     }
 
     public void setMessage(String message) {

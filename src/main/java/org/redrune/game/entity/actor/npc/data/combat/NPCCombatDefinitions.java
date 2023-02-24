@@ -9,115 +9,93 @@ import java.util.List;
 public class NPCCombatDefinitions {
 
     /**
+     * The areas from which the npc may be found
+     */
+    private final List<String> areas = new ArrayList<>();
+    /**
      * The hitpoints of the npc
      */
     private int hitpoints;
-
     /**
      * The attack level of the npc
      */
     private int attackLevel;
-
     /**
      * The strength level of the npc
      */
     private int strengthLevel;
-
     /**
      * The defence level of the npc
      */
     private int defenceLevel;
-
     /**
      * The range level of the npc
      */
     private int rangeLevel;
-
     /**
      * The magic level of the npc
      */
     private int magicLevel;
-
     /**
      * The bonuses of the npc
      */
     private int[] bonuses;
-
     /**
      * The attack animation of the npc
      */
     private int attackAnim;
-
     /**
      * The defend animation of the npc
      */
     private int defenceAnim;
-
     /**
      * The dying animation of the npc
      */
     private int deathAnim;
-
     /**
      * The delay between combat attacks of the npc
      */
     private int attackDelay;
-
     /**
      * The delay until death of the npc
      */
     private int deathDelay;
-
     /**
      * The respawn delay of the npc
      */
     private int respawnDelay;
-
     /**
      * The max hit of the npc
      */
     private int maxHit;
-
     /**
      * The attack style of the npc
      */
     private int attackStyle;
-
     /**
      * The graphics sent on a combat swing of the npc
      */
     private int attackGfx;
-
     /**
      * The projectile id sent on a combat swing of the npc
      */
     private int attackProjectile;
-
     /**
      * The type of aggressiveness the npc has
      */
     private int aggressivenessType;
-
     /**
      * The required slayer level to attack this npc
      */
     private int requiredSlayerLevel;
-
     /**
      * The slayer category to which the npc belongs
      */
     private String slayerCategory = "null";
-
     /**
      * The slayer experience received from killing the npc
      */
     private double experienceReceived = 0;
-
-    /**
-     * The areas from which the npc may be found
-     */
-    private final List<String> areas = new ArrayList<>();
-
     /**
      * If the npc is a poisonous npc
      */
@@ -172,84 +150,168 @@ public class NPCCombatDefinitions {
         return this.hitpoints;
     }
 
+    public void setHitpoints(int hitpoints) {
+        this.hitpoints = hitpoints;
+    }
+
     public int getAttackLevel() {
         return this.attackLevel;
+    }
+
+    public void setAttackLevel(int attackLevel) {
+        this.attackLevel = attackLevel;
     }
 
     public int getStrengthLevel() {
         return this.strengthLevel;
     }
 
+    public void setStrengthLevel(int strengthLevel) {
+        this.strengthLevel = strengthLevel;
+    }
+
     public int getDefenceLevel() {
         return this.defenceLevel;
+    }
+
+    public void setDefenceLevel(int defenceLevel) {
+        this.defenceLevel = defenceLevel;
     }
 
     public int getRangeLevel() {
         return this.rangeLevel;
     }
 
+    public void setRangeLevel(int rangeLevel) {
+        this.rangeLevel = rangeLevel;
+    }
+
     public int getMagicLevel() {
         return this.magicLevel;
+    }
+
+    public void setMagicLevel(int magicLevel) {
+        this.magicLevel = magicLevel;
     }
 
     public int[] getBonuses() {
         return this.bonuses;
     }
 
+    public void setBonuses(int[] bonuses) {
+        this.bonuses = bonuses;
+    }
+
     public int getAttackAnim() {
         return this.attackAnim;
+    }
+
+    public void setAttackAnim(int attackAnim) {
+        this.attackAnim = attackAnim;
     }
 
     public int getDefenceAnim() {
         return this.defenceAnim;
     }
 
+    public void setDefenceAnim(int defenceAnim) {
+        this.defenceAnim = defenceAnim;
+    }
+
     public int getDeathAnim() {
         return this.deathAnim;
+    }
+
+    public void setDeathAnim(int deathAnim) {
+        this.deathAnim = deathAnim;
     }
 
     public int getAttackDelay() {
         return this.attackDelay;
     }
 
+    public void setAttackDelay(int attackDelay) {
+        this.attackDelay = attackDelay;
+    }
+
     public int getDeathDelay() {
         return this.deathDelay;
+    }
+
+    public void setDeathDelay(int deathDelay) {
+        this.deathDelay = deathDelay;
     }
 
     public int getRespawnDelay() {
         return this.respawnDelay;
     }
 
+    public void setRespawnDelay(int respawnDelay) {
+        this.respawnDelay = respawnDelay;
+    }
+
     public int getMaxHit() {
         return this.maxHit;
+    }
+
+    public void setMaxHit(int maxHit) {
+        this.maxHit = maxHit;
     }
 
     public int getAttackStyle() {
         return this.attackStyle;
     }
 
+    public void setAttackStyle(int attackStyle) {
+        this.attackStyle = attackStyle;
+    }
+
     public int getAttackGfx() {
         return this.attackGfx;
+    }
+
+    public void setAttackGfx(int attackGfx) {
+        this.attackGfx = attackGfx;
     }
 
     public int getAttackProjectile() {
         return this.attackProjectile;
     }
 
+    public void setAttackProjectile(int attackProjectile) {
+        this.attackProjectile = attackProjectile;
+    }
+
     public int getAggressivenessType() {
         return this.aggressivenessType;
+    }
+
+    public void setAggressivenessType(int aggressivenessType) {
+        this.aggressivenessType = aggressivenessType;
     }
 
     public int getRequiredSlayerLevel() {
         return this.requiredSlayerLevel;
     }
 
+    public void setRequiredSlayerLevel(int requiredSlayerLevel) {
+        this.requiredSlayerLevel = requiredSlayerLevel;
+    }
+
     public String getSlayerCategory() {
         return this.slayerCategory;
     }
 
+    public void setSlayerCategory(String slayerCategory) {
+        this.slayerCategory = slayerCategory;
+    }
+
     public double getExperienceReceived() {
         return this.experienceReceived;
+    }
+
+    public void setExperienceReceived(double experienceReceived) {
+        this.experienceReceived = experienceReceived;
     }
 
     public List<String> getAreas() {
@@ -258,90 +320,6 @@ public class NPCCombatDefinitions {
 
     public boolean isPoisonous() {
         return this.poisonous;
-    }
-
-    public void setHitpoints(int hitpoints) {
-        this.hitpoints = hitpoints;
-    }
-
-    public void setAttackLevel(int attackLevel) {
-        this.attackLevel = attackLevel;
-    }
-
-    public void setStrengthLevel(int strengthLevel) {
-        this.strengthLevel = strengthLevel;
-    }
-
-    public void setDefenceLevel(int defenceLevel) {
-        this.defenceLevel = defenceLevel;
-    }
-
-    public void setRangeLevel(int rangeLevel) {
-        this.rangeLevel = rangeLevel;
-    }
-
-    public void setMagicLevel(int magicLevel) {
-        this.magicLevel = magicLevel;
-    }
-
-    public void setBonuses(int[] bonuses) {
-        this.bonuses = bonuses;
-    }
-
-    public void setAttackAnim(int attackAnim) {
-        this.attackAnim = attackAnim;
-    }
-
-    public void setDefenceAnim(int defenceAnim) {
-        this.defenceAnim = defenceAnim;
-    }
-
-    public void setDeathAnim(int deathAnim) {
-        this.deathAnim = deathAnim;
-    }
-
-    public void setAttackDelay(int attackDelay) {
-        this.attackDelay = attackDelay;
-    }
-
-    public void setDeathDelay(int deathDelay) {
-        this.deathDelay = deathDelay;
-    }
-
-    public void setRespawnDelay(int respawnDelay) {
-        this.respawnDelay = respawnDelay;
-    }
-
-    public void setMaxHit(int maxHit) {
-        this.maxHit = maxHit;
-    }
-
-    public void setAttackStyle(int attackStyle) {
-        this.attackStyle = attackStyle;
-    }
-
-    public void setAttackGfx(int attackGfx) {
-        this.attackGfx = attackGfx;
-    }
-
-    public void setAttackProjectile(int attackProjectile) {
-        this.attackProjectile = attackProjectile;
-    }
-
-    public void setAggressivenessType(int aggressivenessType) {
-        this.aggressivenessType = aggressivenessType;
-    }
-
-    public void setRequiredSlayerLevel(int requiredSlayerLevel) {
-        this.requiredSlayerLevel = requiredSlayerLevel;
-    }
-
-    public void setSlayerCategory(String slayerCategory) {
-        this.slayerCategory = slayerCategory;
-    }
-
-    public void setExperienceReceived(double experienceReceived) {
-        this.experienceReceived = experienceReceived;
     }
 
     public void setPoisonous(boolean poisonous) {

@@ -20,10 +20,6 @@ public final class OutputStream extends Stream {
         setBuffer(new byte[capacity]);
     }
 
-    public void setBuffer(byte[] buffer) {
-        this.buffer = buffer;
-    }
-
     public OutputStream() {
         setBuffer(new byte[16]);
     }
@@ -39,6 +35,10 @@ public final class OutputStream extends Stream {
         for (int value : buffer) {
             writeByte(value);
         }
+    }
+
+    public void setBuffer(byte[] buffer) {
+        this.buffer = buffer;
     }
 
     public void writeByte(int i) {

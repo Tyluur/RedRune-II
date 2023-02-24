@@ -16,39 +16,33 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WorldObject extends WorldTile implements Entity {
 
     /**
+     * The temporary attributes of this actor
+     */
+    private final transient ConcurrentHashMap<Object, Object> temporaryAttributes = new ConcurrentHashMap<>();
+    /**
      * The id of the object
      */
     private int id;
-
     /**
      * The type of the object
      */
     private int type;
-
     /**
      * The rotation of the object
      */
     private int rotation;
-
     /**
      * The life of the object, only used for trees/ore
      */
     private int life;
-
     /**
      * If the object is spawned
      */
     private boolean spawned;
-
     /**
      * The object that this object replaced when spawned
      */
     private WorldObject replaced;
-
-    /**
-     * The temporary attributes of this actor
-     */
-    private final transient ConcurrentHashMap<Object, Object> temporaryAttributes = new ConcurrentHashMap<>();
 
     public WorldObject(int id, int type, int rotation, WorldTile tile) {
         super(tile.getX(), tile.getY(), tile.getPlane());
@@ -198,44 +192,44 @@ public class WorldObject extends WorldTile implements Entity {
         return this.id;
     }
 
-    public int getType() {
-        return this.type;
-    }
-
-    public int getRotation() {
-        return this.rotation;
-    }
-
-    public int getLife() {
-        return this.life;
-    }
-
-    public boolean isSpawned() {
-        return this.spawned;
-    }
-
-    public WorldObject getReplaced() {
-        return this.replaced;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getType() {
+        return this.type;
     }
 
     public void setType(int type) {
         this.type = type;
     }
 
+    public int getRotation() {
+        return this.rotation;
+    }
+
     public void setRotation(int rotation) {
         this.rotation = rotation;
+    }
+
+    public int getLife() {
+        return this.life;
     }
 
     public void setLife(int life) {
         this.life = life;
     }
 
+    public boolean isSpawned() {
+        return this.spawned;
+    }
+
     public void setSpawned(boolean spawned) {
         this.spawned = spawned;
+    }
+
+    public WorldObject getReplaced() {
+        return this.replaced;
     }
 
     public void setReplaced(WorldObject replaced) {

@@ -140,6 +140,78 @@ public final class NPCDefinitions implements Cloneable {
         }
     }
 
+    public NPCDefinitions(int id) {
+        this.id = id;
+        unknownInt9 = -1;
+        unknownInt4 = -1;
+        unknownInt15 = -1;
+        unknownInt7 = -1;
+        unknownInt3 = 32;
+        combatLevel = -1;
+        unknownInt6 = -1;
+        name = "null";
+        unknownInt1 = 0;
+        walkMask = (byte) 0;
+        unknownInt20 = 255;
+        unknownInt11 = -1;
+        unknownBoolean3 = true;
+        unknownShort1 = (short) 0;
+        unknownInt8 = -1;
+        unknownByte1 = (byte) -96;
+        unknownInt12 = 0;
+        unknownInt17 = -1;
+        renderEmote = -1;
+        respawnDirection = (byte) 7;
+        unknownBoolean4 = true;
+        unknownInt21 = -1;
+        unknownInt14 = -1;
+        unknownInt13 = -1;
+        npcHeight = 128;
+        headIcons = -1;
+        unknownBoolean6 = false;
+        unknownInt5 = -1;
+        unknownByte2 = (byte) -16;
+        unknownBoolean1 = false;
+        isVisibleOnMap = true;
+        unknownInt16 = -1;
+        unknownInt10 = -1;
+        unknownBoolean2 = true;
+        unknownInt19 = -1;
+        npcWidth = 128;
+        unknownShort2 = (short) 0;
+        options = new String[5];
+        unknownInt2 = 0;
+        unknownInt18 = -1;
+    }
+
+    public static NPCDefinitions getNPCDefinitions(int id, Store store) {
+        NPCDefinitions def = npcDefinitions.get(id);
+        if (def == null) {
+            def = new NPCDefinitions(id);
+            def.method694();
+            byte[] data = store.getIndexes()[18].getFile(id >>> 134238215, id & 0x7f);
+            if (data == null) {
+                // System.out.println("Failed loading NPC " + id + ".");
+            } else {
+                def.readValueLoop(new InputStream(data));
+            }
+            npcDefinitions.put(id, def);
+        }
+        return def;
+    }
+
+    public static NPCDefinitions getNPCDefinition(Store cache, int npcId) {
+        return getNPCDefinition(cache, npcId, true);
+    }
+
+    public static NPCDefinitions getNPCDefinition(Store cache, int npcId, boolean load) {
+        return new NPCDefinitions(cache, npcId, load);
+    }
+
+    public static void clearNPCDefinitions() {
+        npcDefinitions.clear();
+    }
+
     private void setDefaultVariableValues() {
         name = "null";
         combatLevel = 0;
@@ -219,50 +291,6 @@ public final class NPCDefinitions implements Cloneable {
         }
     }
 
-    public NPCDefinitions(int id) {
-        this.id = id;
-        unknownInt9 = -1;
-        unknownInt4 = -1;
-        unknownInt15 = -1;
-        unknownInt7 = -1;
-        unknownInt3 = 32;
-        combatLevel = -1;
-        unknownInt6 = -1;
-        name = "null";
-        unknownInt1 = 0;
-        walkMask = (byte) 0;
-        unknownInt20 = 255;
-        unknownInt11 = -1;
-        unknownBoolean3 = true;
-        unknownShort1 = (short) 0;
-        unknownInt8 = -1;
-        unknownByte1 = (byte) -96;
-        unknownInt12 = 0;
-        unknownInt17 = -1;
-        renderEmote = -1;
-        respawnDirection = (byte) 7;
-        unknownBoolean4 = true;
-        unknownInt21 = -1;
-        unknownInt14 = -1;
-        unknownInt13 = -1;
-        npcHeight = 128;
-        headIcons = -1;
-        unknownBoolean6 = false;
-        unknownInt5 = -1;
-        unknownByte2 = (byte) -16;
-        unknownBoolean1 = false;
-        isVisibleOnMap = true;
-        unknownInt16 = -1;
-        unknownInt10 = -1;
-        unknownBoolean2 = true;
-        unknownInt19 = -1;
-        npcWidth = 128;
-        unknownShort2 = (short) 0;
-        options = new String[5];
-        unknownInt2 = 0;
-        unknownInt18 = -1;
-    }
-
     public Object clone() {
         try {
             return super.clone();
@@ -274,22 +302,6 @@ public final class NPCDefinitions implements Cloneable {
 
     public String toString() {
         return id + " - " + name;
-    }
-
-    public static NPCDefinitions getNPCDefinitions(int id, Store store) {
-        NPCDefinitions def = npcDefinitions.get(id);
-        if (def == null) {
-            def = new NPCDefinitions(id);
-            def.method694();
-            byte[] data = store.getIndexes()[18].getFile(id >>> 134238215, id & 0x7f);
-            if (data == null) {
-                // System.out.println("Failed loading NPC " + id + ".");
-            } else {
-                def.readValueLoop(new InputStream(data));
-            }
-            npcDefinitions.put(id, def);
-        }
-        return def;
     }
 
     public void method694() {
@@ -536,18 +548,6 @@ public final class NPCDefinitions implements Cloneable {
                 parameters.put(key, value);
             }
         }
-    }
-
-    public static NPCDefinitions getNPCDefinition(Store cache, int npcId) {
-        return getNPCDefinition(cache, npcId, true);
-    }
-
-    public static NPCDefinitions getNPCDefinition(Store cache, int npcId, boolean load) {
-        return new NPCDefinitions(cache, npcId, load);
-    }
-
-    public static void clearNPCDefinitions() {
-        npcDefinitions.clear();
     }
 
     public void write(Store store) {

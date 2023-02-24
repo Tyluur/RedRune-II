@@ -16,12 +16,6 @@ public class Wilderness extends Controller {
 
     private boolean showingSkull;
 
-    @Override
-    public void start() {
-        checkBoosts(player);
-        moved();
-    }
-
     public static void checkBoosts(Player player) {
         boolean changed = false;
         int level = player.getSkills().getLevelForXp(SkillConstants.ATTACK);
@@ -61,6 +55,16 @@ public class Wilderness extends Controller {
 
     public static boolean isAtWild(WorldTile tile) {
         return (tile.getX() >= 2940 && tile.getX() <= 3395 && tile.getY() >= 3525 && tile.getY() <= 4000) || (tile.getX() >= 3264 && tile.getX() <= 3279 && tile.getY() >= 3279 && tile.getY() <= 3672) || (tile.getX() >= 2756 && tile.getX() <= 2875 && tile.getY() >= 5512 && tile.getY() <= 5627) || (tile.getX() >= 3158 && tile.getX() <= 3181 && tile.getY() >= 3679 && tile.getY() <= 3697) || (tile.getX() >= 3280 && tile.getX() <= 3183 && tile.getY() >= 3883 && tile.getY() <= 3888);
+    }
+
+    public static boolean isDitch(int id) {
+        return id >= 1440 && id <= 1444 || id >= 65076 && id <= 65087;
+    }
+
+    @Override
+    public void start() {
+        checkBoosts(player);
+        moved();
     }
 
     public boolean isAtWildSafe() {
@@ -218,10 +222,6 @@ public class Wilderness extends Controller {
             return false;
         }
         return super.canEntityClick(entity, option);
-    }
-
-    public static boolean isDitch(int id) {
-        return id >= 1440 && id <= 1444 || id >= 65076 && id <= 65087;
     }
 
     public int getWildLevel() {

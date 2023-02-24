@@ -53,6 +53,31 @@ public class Herblore extends Action {
         }
     }
 
+    public static int isHerbloreSkill(Item first, Item other) {
+        Item swap = first;
+        Ingredients ingredient = Ingredients.forId(first.getId());
+        if (ingredient == null) {
+            ingredient = Ingredients.forId(other.getId());
+            first = other;
+            other = swap;
+        }
+        if (ingredient != null) {
+            int slot = ingredient.getSlot(other.getId());
+            return slot > -1 ? ingredient.getRewards()[slot] : -1;
+        }
+        swap = first;
+        RawIngredient raw = RawIngredient.forId(first.getId());
+        if (raw == null) {
+            raw = RawIngredient.forId(other.getId());
+            first = other;
+            other = swap;
+        }
+        if (raw != null) {
+            return other.getId() == PESTLE_AND_MORTAR ? raw.getCrushedItem().getId() : -1;
+        }
+        return -1;
+    }
+
     @Override
     public boolean start(Player player) {
         if (player == null || node == null) {
@@ -118,31 +143,6 @@ public class Herblore extends Action {
     @Override
     public void stop(Player player) {
         this.setActionDelay(player, 3);
-    }
-
-    public static int isHerbloreSkill(Item first, Item other) {
-        Item swap = first;
-        Ingredients ingredient = Ingredients.forId(first.getId());
-        if (ingredient == null) {
-            ingredient = Ingredients.forId(other.getId());
-            first = other;
-            other = swap;
-        }
-        if (ingredient != null) {
-            int slot = ingredient.getSlot(other.getId());
-            return slot > -1 ? ingredient.getRewards()[slot] : -1;
-        }
-        swap = first;
-        RawIngredient raw = RawIngredient.forId(first.getId());
-        if (raw == null) {
-            raw = RawIngredient.forId(other.getId());
-            first = other;
-            other = swap;
-        }
-        if (raw != null) {
-            return other.getId() == PESTLE_AND_MORTAR ? raw.getCrushedItem().getId() : -1;
-        }
-        return -1;
     }
 
     public enum Ingredients {

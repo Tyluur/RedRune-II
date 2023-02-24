@@ -98,6 +98,10 @@ public class Region {
         return loadMapStage;
     }
 
+    public void setLoadMapStage(int loadMapStage) {
+        this.loadMapStage = loadMapStage;
+    }
+
     public void loadRegionMap() {
         int regionX = (regionId >> 8) * 64;
         int regionY = (regionId & 0xff) * 64;
@@ -400,22 +404,6 @@ public class Region {
             }
         }
         return null;
-    }
-
-    public void setLoadedItemSpawns(boolean loadedItemSpawns) {
-        this.loadedItemSpawns = loadedItemSpawns;
-    }
-
-    public void setLoadedNPCSpawns(boolean loadedNPCSpawns) {
-        this.loadedNPCSpawns = loadedNPCSpawns;
-    }
-
-    public void setLoadedObjectSpawns(boolean loadedObjectSpawns) {
-        this.loadedObjectSpawns = loadedObjectSpawns;
-    }
-
-    public void setLoadMapStage(int loadMapStage) {
-        this.loadMapStage = loadMapStage;
     }
 
     /**
@@ -863,12 +851,24 @@ public class Region {
         return this.loadedNPCSpawns;
     }
 
+    public void setLoadedNPCSpawns(boolean loadedNPCSpawns) {
+        this.loadedNPCSpawns = loadedNPCSpawns;
+    }
+
     public boolean isLoadedObjectSpawns() {
         return this.loadedObjectSpawns;
     }
 
+    public void setLoadedObjectSpawns(boolean loadedObjectSpawns) {
+        this.loadedObjectSpawns = loadedObjectSpawns;
+    }
+
     public boolean isLoadedItemSpawns() {
         return this.loadedItemSpawns;
+    }
+
+    public void setLoadedItemSpawns(boolean loadedItemSpawns) {
+        this.loadedItemSpawns = loadedItemSpawns;
     }
 
     public void setMusicIds(int[] musicIds) {

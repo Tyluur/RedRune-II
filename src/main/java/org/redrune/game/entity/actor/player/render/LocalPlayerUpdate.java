@@ -18,17 +18,11 @@ public final class LocalPlayerUpdate {
     private final Player[] localPlayers;
 
     private final int[] localPlayersIndexes;
-
-    private int localPlayersIndexesCount;
-
     private final int[] outPlayersIndexes;
-
-    private int outPlayersIndexesCount;
-
     private final int[] regionHashes;
-
     private final byte[][] cachedAppearencesHashes;
-
+    private int localPlayersIndexesCount;
+    private int outPlayersIndexesCount;
     private int totalRenderDataSentLength;
 
     public LocalPlayerUpdate(Player player) {

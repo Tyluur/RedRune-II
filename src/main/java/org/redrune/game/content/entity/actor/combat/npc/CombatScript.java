@@ -18,16 +18,6 @@ import org.redrune.utility.functions.Misc;
 
 public abstract class CombatScript {
 
-    /*
-     * Returns ids and names
-     */
-    public abstract Object[] getKeys();
-
-    /*
-     * Returns Move Delay
-     */
-    public abstract int attack(NPC npc, Actor target);
-
     public static void delayHit(NPC npc, int delay, final Actor target, final Hit... hits) {
         npc.getCombat().addAttackedByDelay(target);
         WorldTasksManager.schedule(new WorldTask() {
@@ -127,5 +117,15 @@ public abstract class CombatScript {
         }
         return Misc.getRandom(maxHit);
     }
+
+    /*
+     * Returns ids and names
+     */
+    public abstract Object[] getKeys();
+
+    /*
+     * Returns Move Delay
+     */
+    public abstract int attack(NPC npc, Actor target);
 
 }
