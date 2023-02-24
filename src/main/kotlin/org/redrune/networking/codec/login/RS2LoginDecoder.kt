@@ -169,7 +169,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         session!!.write(LobbyConfigurationPacketBuilder(player))
 
         // change decoders
-        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session))
+        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session!!))
     }
 
     /**
@@ -317,7 +317,7 @@ class RS2LoginDecoder : ByteToMessageDecoder() {
         player.start()
 
         // change decoders
-        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session))
+        ctx.pipeline().replace("decoder", "decoder", RS2PacketDecoder(session!!))
     }
 
     /**
