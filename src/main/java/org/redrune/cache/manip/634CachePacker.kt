@@ -2,7 +2,7 @@ package org.redrune.cache.manip
 
 import com.alex.store.Store
 import org.redrune.cache.Cache
-import org.redrune.utility.map.MapArchiveKeys
+import org.redrune.utility.game.map.MapArchiveKeys
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
