@@ -126,6 +126,7 @@ object Bootstrap {
         val hostMode = getBoolProperty("host_mode")
         val debugMode = getBoolProperty("debug_mode")
 
+        GameFlags.SERVER_NAME = name
         GameFlags.debugMode = debugMode
         GameFlags.hostMode = hostMode
         GameFlags.pvpWorld = pvpWorld

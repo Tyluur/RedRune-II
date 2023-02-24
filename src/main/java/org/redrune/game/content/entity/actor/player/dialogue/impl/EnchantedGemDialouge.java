@@ -1,10 +1,10 @@
 package org.redrune.game.content.entity.actor.player.dialogue.impl;
 
 import org.redrune.cache.loaders.NPCDefinitions;
+import org.redrune.game.GameFlags;
 import org.redrune.game.content.entity.actor.player.dialogue.Dialogue;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.Master;
 import org.redrune.game.content.entity.actor.player.skills.slayer.Slayer.SlayerTask;
-import org.redrune.utility.constants.GameConstants;
 
 public class EnchantedGemDialouge extends Dialogue {
 
@@ -23,7 +23,7 @@ public class EnchantedGemDialouge extends Dialogue {
         Master master = (Master) player.getTemporaryAttributes().get("SlayerMaster");
         if (stage == -1) {
             stage = 0;
-            sendEntityDialogue(SEND_4_OPTIONS, new String[]{DEFAULT_OPTION, "How many monsters do I have left?", "Where are you located in the land of " + GameConstants.SERVER_NAME + "?", "Give me a tip.", "Nothing, Nevermind."}, IS_PLAYER, player.getIndex(), 9827);
+            sendEntityDialogue(SEND_4_OPTIONS, new String[]{DEFAULT_OPTION, "How many monsters do I have left?", "Where are you located in the land of " + GameFlags.SERVER_NAME + "?", "Give me a tip.", "Nothing, Nevermind."}, IS_PLAYER, player.getIndex(), 9827);
         } else if (stage == 0) {
             if (componentId == 1) {
                 SlayerTask task = (SlayerTask) player.getTemporaryAttributes().get("SlayerTask");

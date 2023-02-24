@@ -2,9 +2,9 @@ package org.redrune.game.entity.actor.player.link
 
 import com.alex.io.OutputStream
 import com.github.michaelbull.logging.InlineLogger
+import org.redrune.game.GameFlags
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.global.World
-import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.entity.actor.player.ChatMessage
 import org.redrune.utility.game.entity.actor.player.JacksonFactory.fromFile
@@ -62,7 +62,7 @@ class FriendChatsManager private constructor(player: Player) {
                 stream.writeShort(1)
                 val rank = getRank(player.username)
                 stream.writeByte(rank)
-                stream.writeString(GameConstants.SERVER_NAME)
+                stream.writeString(GameFlags.SERVER_NAME)
             }
             dataBlock = ByteArray(stream.offset)
             stream.offset = 0

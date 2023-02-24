@@ -1,9 +1,9 @@
 package org.redrune.engine.tick.schedule.impl
 
 import org.redrune.engine.tick.schedule.ScheduledTask
+import org.redrune.game.GameFlags
 import org.redrune.game.global.World
 import org.redrune.utility.constants.ColorConstants
-import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.functions.Misc
 
 /**
@@ -15,7 +15,7 @@ class InformationTabTick : ScheduledTask(10, -1) {
         World.playerStream().forEach { player ->
             val bldr = StringBuilder()
 
-            bldr.append("<col=FF0000>" + GameConstants.SERVER_NAME + " <br><br>")
+            bldr.append("<col=FF0000>${GameFlags.SERVER_NAME} <br><br>")
             bldr.append("Online: <col=" + ColorConstants.WHITE + ">").append(World.getPlayers().size).append("<br>")
 
             bldr.append("<br><col=FF0000>Player<br><br>")

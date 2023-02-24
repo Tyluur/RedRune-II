@@ -7,6 +7,12 @@ package org.redrune.game
 object GameFlags {
 
     /**
+     * The name of the server
+     */
+    @JvmField
+    var SERVER_NAME = ""
+
+    /**
      * If the server was launched in debug mode
      */
     @JvmField

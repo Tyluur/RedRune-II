@@ -1,11 +1,11 @@
 package org.redrune.game.entity.actor.player.link
 
 import org.redrune.cache.loaders.IComponentDefinitions
+import org.redrune.game.GameFlags
 import org.redrune.game.content.entity.actor.player.skills.PresetHandler
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.actor.player.data.PlayerInventory
 import org.redrune.utility.constants.ColorConstants
-import org.redrune.utility.constants.GameConstants
 import java.util.concurrent.ConcurrentHashMap
 
 class InterfaceManager(private val player: Player) {
@@ -294,7 +294,7 @@ class InterfaceManager(private val player: Player) {
         player.packets.sendIComponentText(
             interfaceId,
             0,
-            "Report any game/website bug you have found on " + GameConstants.SERVER_NAME + ""
+            "Report any game/website bug you have found on " + GameFlags.SERVER_NAME + ""
         )
         player.packets.sendIComponentText(interfaceId, 8, "Submit help-request ticket to online staff member ")
     }

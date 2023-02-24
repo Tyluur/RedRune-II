@@ -1,11 +1,11 @@
 package plugin.command.player
 
+import org.redrune.game.GameFlags
 import org.redrune.game.content.plugin.type.CommandPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.actor.player.data.PlayerRight
 import org.redrune.game.global.World
 import org.redrune.utility.constants.ColorConstants
-import org.redrune.utility.constants.GameConstants
 import org.redrune.utility.functions.Misc
 import plugin.command.CommandManifest
 
@@ -50,7 +50,7 @@ class YellCommandPlugin : CommandPlugin() {
             var message = message
             message = Misc.fixChatMessage(message.replace("<".toRegex(), "")).trim { it <= ' ' }
             val tag = StringBuilder()
-            tag.append("[<col=" + ColorConstants.BLUE + ">${GameConstants.SERVER_NAME}</col>] ")
+            tag.append("[<col=" + ColorConstants.BLUE + ">${GameFlags.SERVER_NAME}</col>] ")
             tag.append(player.displayName).append(": ").append(message)
             for (pl in World.getPlayers()) {
                 if (pl == null) {
