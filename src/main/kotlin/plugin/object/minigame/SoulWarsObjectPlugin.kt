@@ -1,4 +1,4 @@
-package plugin.minigame
+package plugin.`object`.minigame
 
 import org.redrune.game.content.plugin.type.ObjectPlugin
 import org.redrune.game.entity.actor.player.Player
