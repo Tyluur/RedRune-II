@@ -1,4 +1,4 @@
-package org.redrune.utility.game.repository.`object`.climbable
+package org.redrune.utility.game.repository.climbable
 
 import com.github.michaelbull.logging.InlineLogger
 import com.google.gson.GsonBuilder
