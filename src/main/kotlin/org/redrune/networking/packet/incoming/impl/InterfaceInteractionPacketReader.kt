@@ -1,19 +1,20 @@
 package org.redrune.networking.packet.incoming.impl
 
 import org.redrune.game.entity.actor.player.Player
-import org.redrune.networking.packet.incoming.IncomingPacketReader
-import org.redrune.utility.constants.PacketConstants
-import org.redrune.networking.packet.context.PacketContext
-import org.redrune.utility.functions.Misc
-import org.redrune.networking.packet.context.impl.InterfaceInteractionPacketContext
 import org.redrune.game.entity.actor.player.data.PlayerInventory
+import org.redrune.networking.packet.incoming.IncomingPacketReader
 import org.redrune.networking.packet.Packet
+import org.redrune.networking.packet.context.PacketContext
+import org.redrune.networking.packet.context.impl.InterfaceInteractionPacketContext
+import org.redrune.utility.constants.PacketConstants
+import org.redrune.utility.functions.Misc
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-04
  */
 class InterfaceInteractionPacketReader : IncomingPacketReader {
+
     override fun bindings(): IntArray {
         return arguments(
             PacketConstants.INTERFACE_ON_GROUND_ITEM_PACKET,
@@ -35,8 +36,7 @@ class InterfaceInteractionPacketReader : IncomingPacketReader {
     }
 
     override fun read(player: Player, stream: Packet): PacketContext? {
-        val packetId = stream.opcode
-        when (packetId) {
+        when (val packetId = stream.opcode) {
             PacketConstants.INTERFACE_ON_GROUND_ITEM_PACKET -> {
                 val inventoryInter = stream.readInt() shr 16
                 val itemId = stream.readShort()
