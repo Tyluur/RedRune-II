@@ -1,52 +1,54 @@
-package org.redrune.utility.file;
+package org.redrune.utility.file
 
-import org.redrune.game.entity.actor.player.Player;
+import org.redrune.game.entity.actor.player.Player
+import java.io.*
 
-import java.io.*;
+object SerializableFilesManager {
 
-public final class SerializableFilesManager {
+    /**
+     * The path to where player files are stored
+     */
+    private const val PATH = "data/saves/characters/"
 
-    private static final String PATH = "data/saves/characters/";
-
-    private SerializableFilesManager() {
-
+    @Synchronized
+    fun containsPlayer(username: String): Boolean {
+        return File(PATH + username + ".p").exists()
     }
 
-    public synchronized static boolean containsPlayer(String username) {
-        return new File(PATH + username + ".p").exists();
-    }
-
-    public synchronized static Player loadPlayer(String username) {
+    @Synchronized
+    fun loadPlayer(username: String): Player? {
         try {
-            return (Player) loadSerializedFile(new File(PATH + username + ".p"));
-        } catch (Throwable e) {
-            e.printStackTrace();
+            return loadSerializedFile(File(PATH + username + ".p")) as Player?
+        } catch (e: Throwable) {
+            e.printStackTrace()
         }
-        return null;
+        return null
     }
 
-    public static Object loadSerializedFile(File f) throws IOException, ClassNotFoundException {
+    @Throws(IOException::class, ClassNotFoundException::class)
+    fun loadSerializedFile(f: File): Any? {
         if (!f.exists()) {
-            return null;
+            return null
         }
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-        Object object = in.readObject();
-        in.close();
-        return object;
+        val `in` = ObjectInputStream(FileInputStream(f))
+        val `object` = `in`.readObject()
+        `in`.close()
+        return `object`
     }
 
-    public synchronized static void savePlayer(Player player) {
+    @Synchronized
+    fun savePlayer(player: Player) {
         try {
-            storeSerializableClass(player, new File(PATH + player.getUsername() + ".p"));
-        } catch (IOException e) {
-            e.printStackTrace();
+            storeSerializableClass(player, File(PATH + player.username + ".p"))
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
-    public static void storeSerializableClass(Serializable o, File f) throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
-        out.writeObject(o);
-        out.close();
+    @Throws(IOException::class)
+    fun storeSerializableClass(o: Serializable?, f: File?) {
+        val out = ObjectOutputStream(FileOutputStream(f))
+        out.writeObject(o)
+        out.close()
     }
-
 }
