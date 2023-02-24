@@ -211,23 +211,23 @@ public class PacketSender {
 
     public void sendHintIcon(HintIcon icon) {
         PacketBuilder stream = new PacketBuilder(81);
-        stream.writeByte((icon.getTargetType() & 0x1f) | (icon.getIndex() << 5));
-        if (icon.getTargetType() == 0) {
+        stream.writeByte((icon.targetType & 0x1f) | (icon.index << 5));
+        if (icon.targetType == 0) {
             stream.skip(11);
         } else {
-            stream.writeByte(icon.getArrowType());
-            if (icon.getTargetType() == 1 || icon.getTargetType() == 10) {
-                stream.writeShort(icon.getTargetIndex());
+            stream.writeByte(icon.arrowType);
+            if (icon.targetType == 1 || icon.targetType == 10) {
+                stream.writeShort(icon.targetIndex);
                 stream.writeShort(0); // unknown
                 stream.skip(4);
-            } else if ((icon.getTargetType() >= 2 && icon.getTargetType() <= 6)) { // directions
+            } else if ((icon.targetType >= 2 && icon.targetType <= 6)) { // directions
                 stream.writeByte(0); // unknown
-                stream.writeShort(icon.getCoordX());
-                stream.writeShort(icon.getCoordY());
-                stream.writeByte(icon.getDistanceFromFloor() * 4 >> 2);
+                stream.writeShort(icon.coordX);
+                stream.writeShort(icon.coordY);
+                stream.writeByte(icon.distanceFromFloor * 4 >> 2);
                 stream.writeShort(0); // unknown
             }
-            stream.writeShort(icon.getModelId());
+            stream.writeShort(icon.modelId);
         }
         session.write(stream);
 
@@ -744,9 +744,9 @@ public class PacketSender {
             stream.writeByte(Misc.getRandom(255));
         }
         stream.writeByte(rights);
-        stream.writeShort(message.getFileId());
-        if (message.getMessage() != null) {
-            stream.writeBytes(message.getMessage().getBytes());
+        stream.writeShort(message.fileId);
+        if (message.message != null) {
+            stream.writeBytes(message.message.getBytes());
         }
         session.write(stream);
     }
@@ -754,9 +754,9 @@ public class PacketSender {
     public void sendPrivateQuickMessageMessage(String username, QuickChatMessage message) {
         PacketBuilder stream = new PacketBuilder(97, PacketType.VAR_BYTE);
         stream.writeString(username);
-        stream.writeShort(message.getFileId());
-        if (message.getMessage() != null) {
-            stream.writeBytes(message.getMessage().getBytes());
+        stream.writeShort(message.fileId);
+        if (message.message != null) {
+            stream.writeBytes(message.message.getBytes());
         }
         session.write(stream);
     }
@@ -796,9 +796,9 @@ public class PacketSender {
             stream.writeByte(Misc.getRandom(255));
         }
         stream.writeByte(rights);
-        stream.writeShort(message.getFileId());
-        if (message.getMessage() != null) {
-            stream.writeBytes(message.getMessage().getBytes());
+        stream.writeShort(message.fileId);
+        if (message.message != null) {
+            stream.writeBytes(message.message.getBytes());
         }
         session.write(stream);
     }
@@ -959,11 +959,11 @@ public class PacketSender {
     public void sendPublicMessage(Player p, PublicChatMessage message) {
         PacketBuilder stream = new PacketBuilder(91, PacketType.VAR_BYTE);
         stream.writeShort(p.getIndex());
-        stream.writeShort(message.getEffects());
+        stream.writeShort(message.effects);
         stream.writeByte(p.getMessageIcon());
         if (message instanceof QuickChatMessage) {
             QuickChatMessage qcMessage = (QuickChatMessage) message;
-            stream.writeShort(qcMessage.getFileId());
+            stream.writeShort(qcMessage.fileId);
             if (qcMessage.getMessage(false) != null) {
                 stream.writeBytes(message.getMessage(false).getBytes());
             }
