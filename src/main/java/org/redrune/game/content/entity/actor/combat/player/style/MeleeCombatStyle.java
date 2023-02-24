@@ -16,7 +16,6 @@ import org.redrune.game.entity.actor.mask.Animation;
 import org.redrune.game.entity.actor.mask.Hit;
 import org.redrune.game.entity.actor.mask.HitSplat;
 import org.redrune.game.entity.actor.player.Player;
-import org.redrune.utility.functions.Misc;
 
 import java.util.Optional;
 

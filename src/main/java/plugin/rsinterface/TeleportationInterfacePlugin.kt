@@ -14,7 +14,6 @@ import org.redrune.utility.constants.MagicConstants
 import org.redrune.utility.constants.key.AttributeKey
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.map.Coordinates
-import plugin.rsinterface.TeleportationInterfacePlugin.TravelLocations
 import java.io.Serializable
 import java.util.*
 
@@ -29,7 +28,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         if (!player.getTemporaryAttribute("quest_selection_interface", "null")
                 .equals("teleportation", ignoreCase = true)
@@ -94,7 +93,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
         /**
          * The title of the teleport
          */
-        val title: String
+        val title: String,
     ) : Coordinates {
         PVP("PvP") {
             override fun populateDestinations() {
@@ -412,7 +411,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
          * @param showLastUncollapsed
          * If the last `TravelLocations` `Object` the player viewed should be shown
          */
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun displaySelectionInterface(player: Player, showLastUncollapsed: Boolean) {
             val interfaceId = 156
             var start = 7
@@ -466,7 +465,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
             player: Player,
             destination: WorldTile,
             travelLocations: TravelLocations,
-            optionIndex: Int
+            optionIndex: Int,
         ) {
             if (Wilderness.isAtWild(destination)) {
                 player.dialogueManager.startDialogue(object : Dialogue() {
@@ -489,6 +488,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
                                 )
                                 stage = 0
                             }
+
                             0 -> {
                                 if (option == FIRST) {
                                     teleportPlayer(
@@ -543,7 +543,7 @@ class TeleportationInterfacePlugin : InterfacePlugin {
          * @param task
          * The task to be performed once the teleport is done
          */
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun teleportPlayer(player: Player, destination: WorldTile?, task: Runnable?) {
             player.closeInterfaces()
             val wizard = Misc.findLocalNPC(player, 9434)

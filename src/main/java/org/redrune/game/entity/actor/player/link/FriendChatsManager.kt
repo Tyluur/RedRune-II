@@ -236,7 +236,7 @@ class FriendChatsManager private constructor(player: Player) {
             }
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun linkSettings(player: Player) {
             synchronized(cachedFriendChats!!) {
                 val chat = cachedFriendChats!![player.username] ?: return
@@ -244,7 +244,7 @@ class FriendChatsManager private constructor(player: Player) {
             }
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun refreshChat(player: Player) {
             synchronized(cachedFriendChats!!) {
                 val chat = cachedFriendChats!![player.username] ?: return

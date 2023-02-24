@@ -2,7 +2,6 @@ package org.redrune.game.content.entity.actor.player.dialogue
 
 import com.github.michaelbull.logging.InlineLogger
 import org.redrune.utility.functions.Misc
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

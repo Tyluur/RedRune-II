@@ -11,7 +11,7 @@ import org.redrune.networking.packet.context.PacketContext
 class CommandPacketContext(
     private val clientCommand: Boolean,
     private val unknown: Boolean,
-    private val command: String
+    private val command: String,
 ) : PacketContext() {
     override fun handle(player: Player) {
         handleCommand(

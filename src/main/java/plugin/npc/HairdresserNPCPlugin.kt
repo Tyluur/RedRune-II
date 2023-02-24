@@ -16,6 +16,7 @@ class HairdresserNPCPlugin : NPCPlugin {
                 player.dialogueManager.startDialogue("Hairdresser", npc.id)
                 return true
             }
+
             "Hair-cut" -> {
                 PlayerLook.openHairdresserSalon(player)
                 return true

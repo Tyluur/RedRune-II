@@ -9,8 +9,8 @@ object GameFlags {
     /**
      * If the server was launched in debug mode
      */
-	@JvmField
-	var debugMode = false
+    @JvmField
+    var debugMode = false
 
     /**
      * If the server was launched in host mode
@@ -20,6 +20,6 @@ object GameFlags {
     /**
      * If the world is a pvp world
      */
-	@JvmField
-	var pvpWorld = false
+    @JvmField
+    var pvpWorld = false
 }

@@ -22,7 +22,7 @@ class SkillInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         when (packetId) {
             PacketConstants.ACTION_BUTTON1_PACKET -> if (interfaceId == 320) {
@@ -39,6 +39,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 10)
                         }
                     }
+
                     11 -> {
                         skillMenu = 2
                         if (player.temporaryAttributes.remove("leveledUp[2]") !== java.lang.Boolean.TRUE) {
@@ -48,6 +49,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 20)
                         }
                     }
+
                     28 -> {
                         skillMenu = 5
                         if (player.temporaryAttributes.remove("leveledUp[1]") !== java.lang.Boolean.TRUE) {
@@ -57,6 +59,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 40)
                         }
                     }
+
                     52 -> {
                         skillMenu = 3
                         if (player.temporaryAttributes.remove("leveledUp[4]") !== java.lang.Boolean.TRUE) {
@@ -66,6 +69,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 30)
                         }
                     }
+
                     76 -> if (player.temporaryAttributes.remove("leveledUp[5]") !== java.lang.Boolean.TRUE) {
                         skillMenu = 7
                         player.packets.sendConfig(965, 7)
@@ -73,6 +77,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                         lvlupSkill = 5
                         player.packets.sendConfig(1230, 60)
                     }
+
                     93 -> if (player.temporaryAttributes.remove("leveledUp[6]") !== java.lang.Boolean.TRUE) {
                         skillMenu = 4
                         player.packets.sendConfig(965, 4)
@@ -80,6 +85,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                         lvlupSkill = 6
                         player.packets.sendConfig(1230, 33)
                     }
+
                     110 -> if (player.temporaryAttributes.remove("leveledUp[20]") !== java.lang.Boolean.TRUE) {
                         skillMenu = 12
                         player.packets.sendConfig(965, 12)
@@ -87,6 +93,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                         lvlupSkill = 20
                         player.packets.sendConfig(1230, 100)
                     }
+
                     134 -> {
                         skillMenu = 22
                         if (player.temporaryAttributes.remove("leveledUp[21]") !== java.lang.Boolean.TRUE) {
@@ -96,6 +103,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 698)
                         }
                     }
+
                     193 -> {
                         skillMenu = 6
                         if (player.temporaryAttributes.remove("leveledUp[3]") !== java.lang.Boolean.TRUE) {
@@ -105,6 +113,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 50)
                         }
                     }
+
                     19 -> {
                         skillMenu = 8
                         if (player.temporaryAttributes.remove("leveledUp[16]") !== java.lang.Boolean.TRUE) {
@@ -114,6 +123,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 65)
                         }
                     }
+
                     36 -> {
                         skillMenu = 9
                         if (player.temporaryAttributes.remove("leveledUp[15]") !== java.lang.Boolean.TRUE) {
@@ -123,6 +133,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 75)
                         }
                     }
+
                     60 -> {
                         skillMenu = 10
                         if (player.temporaryAttributes.remove("leveledUp[17]") !== java.lang.Boolean.TRUE) {
@@ -132,6 +143,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 80)
                         }
                     }
+
                     84 -> {
                         skillMenu = 11
                         if (player.temporaryAttributes.remove("leveledUp[12]") !== java.lang.Boolean.TRUE) {
@@ -141,6 +153,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 90)
                         }
                     }
+
                     101 -> {
                         skillMenu = 19
                         if (player.temporaryAttributes.remove("leveledUp[9]") !== java.lang.Boolean.TRUE) {
@@ -150,6 +163,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 665)
                         }
                     }
+
                     118 -> {
                         skillMenu = 20
                         if (player.temporaryAttributes.remove("leveledUp[18]") !== java.lang.Boolean.TRUE) {
@@ -159,6 +173,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 673)
                         }
                     }
+
                     142 -> {
                         skillMenu = 23
                         if (player.temporaryAttributes.remove("leveledUp[22]") !== java.lang.Boolean.TRUE) {
@@ -168,6 +183,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 689)
                         }
                     }
+
                     186 -> {
                         skillMenu = 13
                         if (player.temporaryAttributes.remove("leveledUp[14]") !== java.lang.Boolean.TRUE) {
@@ -177,6 +193,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 110)
                         }
                     }
+
                     179 -> {
                         skillMenu = 14
                         if (player.temporaryAttributes.remove("leveledUp[13]") !== java.lang.Boolean.TRUE) {
@@ -186,6 +203,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 115)
                         }
                     }
+
                     44 -> {
                         skillMenu = 15
                         if (player.temporaryAttributes.remove("leveledUp[10]") !== java.lang.Boolean.TRUE) {
@@ -195,6 +213,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 120)
                         }
                     }
+
                     68 -> {
                         skillMenu = 16
                         if (player.temporaryAttributes.remove("leveledUp[7]") !== java.lang.Boolean.TRUE) {
@@ -204,6 +223,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 641)
                         }
                     }
+
                     172 -> {
                         skillMenu = 17
                         if (player.temporaryAttributes.remove("leveledUp[11]") !== java.lang.Boolean.TRUE) {
@@ -213,6 +233,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 649)
                         }
                     }
+
                     165 -> {
                         skillMenu = 18
                         if (player.temporaryAttributes.remove("leveledUp[8]") !== java.lang.Boolean.TRUE) {
@@ -222,6 +243,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 660)
                         }
                     }
+
                     126 -> {
                         skillMenu = 21
                         if (player.temporaryAttributes.remove("leveledUp[19]") !== java.lang.Boolean.TRUE) {
@@ -231,6 +253,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 681)
                         }
                     }
+
                     150 -> {
                         skillMenu = 24
                         if (player.temporaryAttributes.remove("leveledUp[23]") !== java.lang.Boolean.TRUE) {
@@ -240,6 +263,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                             player.packets.sendConfig(1230, 705)
                         }
                     }
+
                     158 -> {
                         skillMenu = 25
                         if (player.temporaryAttributes.remove("leveledUp[24]") !== java.lang.Boolean.TRUE) {
@@ -332,6 +356,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                     29 -> player.stopAll()
                 }
             }
+
             PacketConstants.ACTION_BUTTON2_PACKET, PacketConstants.ACTION_BUTTON3_PACKET -> if (interfaceId == 320) {
                 // set xp target
                 val skillId = player.skills.getTargetIdByComponentId(componentId)
@@ -370,6 +395,7 @@ class SkillInterfacePlugin : InterfacePlugin {
                     }
                 })
             }
+
             PacketConstants.ACTION_BUTTON4_PACKET -> {
                 val skillId = player.skills.getTargetIdByComponentId(componentId)
                 player.skills.setSkillTargetEnabled(skillId, false)
@@ -401,6 +427,7 @@ class SkillInterfacePlugin : InterfacePlugin {
             200, 11, 28, 52, 93, 193 -> {
                 true
             }
+
             else -> {
                 false
             }

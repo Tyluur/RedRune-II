@@ -42,7 +42,6 @@ public class ItemInteractionPacketReader implements IncomingPacketReader {
                         //TODO remove item correctly from ground
                         if (Firemaking.isFiremakingCapable(id)) {
                             Firemaking.startFiremaking(player, id);
-                            return;
                         }
                     }
                 };

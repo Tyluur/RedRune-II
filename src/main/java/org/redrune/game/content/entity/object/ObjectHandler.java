@@ -445,7 +445,6 @@ public class ObjectHandler {
             }
             player.setNextFaceWorldTile(object);
             if (PluginRepository.handleObject(player, object, option)) {
-                return;
             } else if (object.getDefinitions().getName().toLowerCase().contains("bank")) {
                 ExchangeManager.INSTANCE.openCollectionBox(player);
             } else {

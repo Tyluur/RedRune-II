@@ -21,42 +21,50 @@ class DiceGameItemPlugin : ItemPlugin {
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2075))
                 }
+
                 15086 -> {
                     DiceGame.rollDice2(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2072))
                 }
+
                 15088 -> {
                     DiceGame.rollDice3(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2074))
                 }
+
                 15090 -> {
                     DiceGame.rollDice4(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2071))
                 }
+
                 15092 -> {
                     DiceGame.rollDice5(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2070))
                 }
+
                 15094 -> {
                     DiceGame.rollDice5(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2073))
                 }
+
                 15096 -> {
                     DiceGame.rollDice7(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2068))
                 }
+
                 15100 -> {
                     DiceGame.rollDice1(player)
                     player.nextAnimation = Animation(11900)
                     player.setNextGraphics(Graphics(2069))
                 }
             }
+
             else -> return true
         }
         return true

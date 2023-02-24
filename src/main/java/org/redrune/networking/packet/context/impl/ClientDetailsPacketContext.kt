@@ -11,7 +11,7 @@ class ClientDetailsPacketContext(
     /**
      * The count variable, purpose unknown
      */
-    private val count: Int
+    private val count: Int,
 ) : PacketContext() {
     override fun handle(player: Player) {}
 }

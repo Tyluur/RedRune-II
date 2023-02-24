@@ -16,7 +16,7 @@ class AppearanceCustomizationInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         if (interfaceId == 1028) {
             PlayerDesign.handle(player, componentId, slotId)

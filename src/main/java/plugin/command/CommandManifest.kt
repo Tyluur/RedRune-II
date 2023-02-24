@@ -16,5 +16,5 @@ annotation class CommandManifest(
     /**
      * The parameter types of the command
      */
-    val types: Array<KClass<*>> = []
+    val types: Array<KClass<*>> = [],
 )

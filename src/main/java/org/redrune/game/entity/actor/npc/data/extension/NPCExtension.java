@@ -7,10 +7,10 @@ import org.redrune.game.entity.actor.npc.NPC;
  * @since 9/13/2017
  */
 public abstract class NPCExtension {
-	
-	/**
-	 * Handles the processing of this extension
-	 */
-	public abstract void process(NPC npc);
-	
+
+    /**
+     * Handles the processing of this extension
+     */
+    public abstract void process(NPC npc);
+
 }

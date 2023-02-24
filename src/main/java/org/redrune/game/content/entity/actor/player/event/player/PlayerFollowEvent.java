@@ -9,23 +9,23 @@ import org.redrune.game.entity.actor.player.Player;
  * @since 2019-01-25
  */
 public class PlayerFollowEvent extends Event {
-	
-	/**
-	 * The target player we want to follow
-	 */
-	private final Player target;
-	
-	public PlayerFollowEvent(Player target) {
-		this.target = target;
-	}
-	
-	@Override
-	public void run(Player player) {
-		player.getActionManager().setAction(new PlayerFollowAction(target));
-	}
-	
-	@Override
-	public EventPolicy[] policies() {
-		return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK);
-	}
+
+    /**
+     * The target player we want to follow
+     */
+    private final Player target;
+
+    public PlayerFollowEvent(Player target) {
+        this.target = target;
+    }
+
+    @Override
+    public void run(Player player) {
+        player.getActionManager().setAction(new PlayerFollowAction(target));
+    }
+
+    @Override
+    public EventPolicy[] policies() {
+        return arguments(EventPolicy.CLOSE_INTERFACE, EventPolicy.STOP_WALK);
+    }
 }

@@ -27,26 +27,31 @@ class GuideDialogue : Dialogue() {
                 )
                 stage = 0
             }
+
             0 -> {
                 when (componentId) {
                     first -> {
                         sendPlayerDialogue(NORMAL, "How do I get money here?")
                         stage = 1
                     }
+
                     second -> {
                         sendPlayerDialogue(NORMAL, "How do I travel around the world?")
                         stage = 2
                     }
+
                     third -> {
                         sendPlayerDialogue(NORMAL, "Where do I buy items?")
                         stage = 3
                     }
+
                     fourth -> {
                         sendPlayerDialogue(UNSURE, "Nothing, never mind.")
                         stage = 4
                     }
                 }
             }
+
             1 -> {
                 sendNPCDialogue(
                     npcId,
@@ -57,6 +62,7 @@ class GuideDialogue : Dialogue() {
                 )
                 stage = 5
             }
+
             5 -> {
                 sendNPCDialogue(
                     npcId,
@@ -66,6 +72,7 @@ class GuideDialogue : Dialogue() {
                 )
                 stage = 6
             }
+
             6 -> {
                 sendPlayerDialogue(LAUGHING, "Oh, that's pretty simple!", "Thanks!")
                 stage = -2

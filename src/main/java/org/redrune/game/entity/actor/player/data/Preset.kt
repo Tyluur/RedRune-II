@@ -11,7 +11,7 @@ class Preset(
     val equipment: Array<Item?> = arrayOf(),
     val isAncientCurses: Boolean = false,
     val spellBook: Int = 0,
-    val levels: DoubleArray = DoubleArray(SkillConstants.SKILL_NAME.size)
+    val levels: DoubleArray = DoubleArray(SkillConstants.SKILL_NAME.size),
 ) : Serializable {
 
     fun getId(player: Player): Int {

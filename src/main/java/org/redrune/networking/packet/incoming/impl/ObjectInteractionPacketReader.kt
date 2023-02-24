@@ -1,8 +1,8 @@
 package org.redrune.networking.packet.incoming.impl
 
 import org.redrune.game.content.entity.`object`.ObjectHandler
-import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.global.WorldTile
 import org.redrune.game.global.map.region.RegionManager
 import org.redrune.networking.packet.Packet
@@ -61,6 +61,7 @@ class ObjectInteractionPacketReader : IncomingPacketReader {
                     ObjectClickInteractionPacketContext(`object`, clickOption!!)
                 }
             }
+
             PacketConstants.ITEM_ON_OBJECT_PACKET -> {
                 stream.readUnsignedByteC()
                 val y = stream.readUnsignedShortLE()

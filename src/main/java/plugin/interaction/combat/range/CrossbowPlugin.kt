@@ -76,7 +76,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
         /**
          * The height of the graphics
          */
-        val graphicsHeight: Int = 0
+        val graphicsHeight: Int = 0,
     ) {
         JADE_BOLT(9237, 755) {
             override fun getDamageModifier(): Double {
@@ -87,7 +87,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
                 source: Player,
                 target: Actor,
                 style: AbstractCombatStyle,
-                weaponId: Int
+                weaponId: Int,
             ): CombatSwingDetail {
                 if (target.isNPC) {
                     target.toNPC().combat.target = null
@@ -106,7 +106,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
                 source: Player,
                 target: Actor,
                 style: AbstractCombatStyle,
-                weaponId: Int
+                weaponId: Int,
             ): CombatSwingDetail {
                 target.setNextGraphics(Graphics(graphicsId, graphicsHeight, 0))
                 source.applyHit(
@@ -152,7 +152,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
                 source: Player,
                 target: Actor,
                 style: AbstractCombatStyle,
-                weaponId: Int
+                weaponId: Int,
             ): CombatSwingDetail {
                 return super.fire(source, target, style, weaponId).consume { detail: CombatSwingDetail ->
                     source.putTemporaryAttribute("onyx-effect", ticksPassed + 12)

@@ -14,7 +14,7 @@ class ItemOnItemPacketContext(
     private val fromSlot: Int,
     private val interfaceId2: Int,
     private val itemUsedWithId: Int,
-    private val toSlot: Int
+    private val toSlot: Int,
 ) : PacketContext() {
     override fun handle(player: Player) {
         player.eventManager.start(

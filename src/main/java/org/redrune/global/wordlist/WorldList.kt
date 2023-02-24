@@ -1,7 +1,6 @@
 package org.redrune.global.wordlist
 
 import com.github.michaelbull.logging.InlineLogger
-import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>

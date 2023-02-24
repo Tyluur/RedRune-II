@@ -8,10 +8,10 @@ import com.google.gson.GsonBuilder;
  * @since 2019-01-31
  */
 public class GsonFunctions {
-	
-	/**
-	 * The gson instance
-	 */
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	
+
+    /**
+     * The gson instance
+     */
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
 }

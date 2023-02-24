@@ -3,10 +3,10 @@ package plugin.`object`
 import org.redrune.engine.tick.task.WorldTask
 import org.redrune.engine.tick.task.WorldTasksManager
 import org.redrune.game.content.plugin.type.ObjectPlugin
-import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.entity.actor.mask.Animation
 import org.redrune.game.entity.actor.mask.ForceMovement
 import org.redrune.game.entity.actor.player.Player
+import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.global.WorldTile
 import org.redrune.utility.game.ClickOption
 

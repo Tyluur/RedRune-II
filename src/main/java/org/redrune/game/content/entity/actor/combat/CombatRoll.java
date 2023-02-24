@@ -10,80 +10,71 @@ import org.redrune.utility.functions.RandomFunction;
  * @since 9/4/2017
  */
 public final class CombatRoll {
-	
-	/**
-	 * Calculates a random hit
-	 *
-	 * @param maxHit
-	 * 		The max hit
-	 * @param attackBonus
-	 * 		The attack bonus
-	 * @param defenceBonus
-	 * 		The defence bonus
-	 */
-	public static int randomizeHit(double maxHit, double attackBonus, double defenceBonus) {
-		if (!rollHit(attackBonus, defenceBonus)) {
-			//System.out.println("rolled a miss [" + maxHit + ", " + attackBonus + ", " + defenceBonus + "]");
-			return 0;
-		}
-		// the random hit
-		int random = RandomFunction.random((int) maxHit);
-		// the count index used for re-rolls
-		int count = 0;
-		// we dont want too low too often, so we reroll
-		while (random <= (maxHit * 0.25) && count < 3) {
-			random = RandomFunction.random((int) maxHit);
-			//System.out.println("rerolled a " + random + " and we got " + random + "[#" + count + "]");
-			count++;
-		}
-		if (random == 0) {
-			//System.out.println("Rerolled " + count + " times and got a " + random);
-		}
-		return random;
-	}
-	
-	/**
-	 * Calculates a random hit
-	 *
-	 * @param minimumHit
-	 * 		The minimum damage
-	 * @param maxHit
-	 * 		The max hit
-	 * @param attackBonus
-	 * 		The attack bonus
-	 * @param defenceBonus
-	 * 		The defence bonus
-	 */
-	public static int randomizeHit(double minimumHit, double maxHit, double attackBonus, double defenceBonus, boolean roll) {
-		if (roll && !rollHit(attackBonus, defenceBonus)) {
-			//System.out.println("rolled a miss [" + maxHit + ", " + attackBonus + ", " + defenceBonus + "]");
-			return 0;
-		}
-		// the random hit
-		int random = (int) RandomFunction.random(minimumHit, maxHit);
-		// the count index used for re-rolls
-		int count = 0;
-		// we dont want too low too often, so we reroll
-		while (random <= (maxHit * 0.25) && count < 3) {
-			random = (int) RandomFunction.random(minimumHit, maxHit);
-			//System.out.println("rerolled a " + random + " and we got " + random + "[#" + count + "]");
-			count++;
-		}
-		if (random == 0) {
-			//System.out.println("Rerolled " + count + " times and got a " + random);
-		}
-		return random;
-	}
-	
-	/**
-	 * Calculates the two modifiers and checks if the hit should randomly miss
-	 *
-	 * @param attackBonus
-	 * 		The attack bonus
-	 * @param defenceBonus
-	 * 		The defence bonus
-	 */
-	private static boolean rollHit(double attackBonus, double defenceBonus) {
+
+    /**
+     * Calculates a random hit
+     *
+     * @param maxHit       The max hit
+     * @param attackBonus  The attack bonus
+     * @param defenceBonus The defence bonus
+     */
+    public static int randomizeHit(double maxHit, double attackBonus, double defenceBonus) {
+        if (!rollHit(attackBonus, defenceBonus)) {
+            //System.out.println("rolled a miss [" + maxHit + ", " + attackBonus + ", " + defenceBonus + "]");
+            return 0;
+        }
+        // the random hit
+        int random = RandomFunction.random((int) maxHit);
+        // the count index used for re-rolls
+        int count = 0;
+        // we dont want too low too often, so we reroll
+        while (random <= (maxHit * 0.25) && count < 3) {
+            random = RandomFunction.random((int) maxHit);
+            //System.out.println("rerolled a " + random + " and we got " + random + "[#" + count + "]");
+            count++;
+        }
+        if (random == 0) {
+            //System.out.println("Rerolled " + count + " times and got a " + random);
+        }
+        return random;
+    }
+
+    /**
+     * Calculates a random hit
+     *
+     * @param minimumHit   The minimum damage
+     * @param maxHit       The max hit
+     * @param attackBonus  The attack bonus
+     * @param defenceBonus The defence bonus
+     */
+    public static int randomizeHit(double minimumHit, double maxHit, double attackBonus, double defenceBonus, boolean roll) {
+        if (roll && !rollHit(attackBonus, defenceBonus)) {
+            //System.out.println("rolled a miss [" + maxHit + ", " + attackBonus + ", " + defenceBonus + "]");
+            return 0;
+        }
+        // the random hit
+        int random = (int) RandomFunction.random(minimumHit, maxHit);
+        // the count index used for re-rolls
+        int count = 0;
+        // we dont want too low too often, so we reroll
+        while (random <= (maxHit * 0.25) && count < 3) {
+            random = (int) RandomFunction.random(minimumHit, maxHit);
+            //System.out.println("rerolled a " + random + " and we got " + random + "[#" + count + "]");
+            count++;
+        }
+        if (random == 0) {
+            //System.out.println("Rerolled " + count + " times and got a " + random);
+        }
+        return random;
+    }
+
+    /**
+     * Calculates the two modifiers and checks if the hit should randomly miss
+     *
+     * @param attackBonus  The attack bonus
+     * @param defenceBonus The defence bonus
+     */
+    private static boolean rollHit(double attackBonus, double defenceBonus) {
 /*		System.out.println("attackBonus = [" + attackBonus + "], defenceBonus = [" + defenceBonus + "]");
 		final boolean hasAttack = attackBonus >= 0;
 		return hasAttack && (defenceBonus < 0 || RandomFunction.getRandomDouble((attackBonus + defenceBonus)) > defenceBonus);*/
@@ -112,30 +103,30 @@ public final class CombatRoll {
 		double acc = Math.random() * accuracy;
 		double def = Math.random() * block;
 		return acc > def;*/
-		
-		double attack = attackBonus * 1.33;
-		double defence = defenceBonus * 1.0D;
-		
-		double chance;
-		if (attack < defence) {
-			chance = (attack - 1) / (defence * 2);
-		} else {
-			chance = 1 - ((defence + 1) / (attack * 2));
-		}
-		double ratio = Math.floor(chance * 100);
-		double block = Math.floor(101 - ratio);
-		double acc = RandomFunction.getRandomDouble(ratio);
-		double def = RandomFunction.getRandomDouble(block);
-		int count = 0;
-		if (acc < def) {
-			do {
-				acc = RandomFunction.getRandomDouble(ratio);
-				def = RandomFunction.getRandomDouble(block);
-				//				System.out.println("low random roll {" + acc + ", " + def + "} #" + count);
-				count++;
-			} while ((acc > def) && count < 10);
-		}
-		//		System.out.println("attackBonus = [" + attackBonus + "], defenceBonus = [" + defenceBonus + "], chance=" + chance + ", ratio=" + ratio + ", block=" + block + ", attack=" + attack + ", defence=" + def + ", acc = { " + acc + "}, def = { " + def + "}");
-		return acc >= def;
-	}
+
+        double attack = attackBonus * 1.33;
+        double defence = defenceBonus;
+
+        double chance;
+        if (attack < defence) {
+            chance = (attack - 1) / (defence * 2);
+        } else {
+            chance = 1 - ((defence + 1) / (attack * 2));
+        }
+        double ratio = Math.floor(chance * 100);
+        double block = Math.floor(101 - ratio);
+        double acc = RandomFunction.getRandomDouble(ratio);
+        double def = RandomFunction.getRandomDouble(block);
+        int count = 0;
+        if (acc < def) {
+            do {
+                acc = RandomFunction.getRandomDouble(ratio);
+                def = RandomFunction.getRandomDouble(block);
+                //				System.out.println("low random roll {" + acc + ", " + def + "} #" + count);
+                count++;
+            } while ((acc > def) && count < 10);
+        }
+        //		System.out.println("attackBonus = [" + attackBonus + "], defenceBonus = [" + defenceBonus + "], chance=" + chance + ", ratio=" + ratio + ", block=" + block + ", attack=" + attack + ", defence=" + def + ", acc = { " + acc + "}, def = { " + def + "}");
+        return acc >= def;
+    }
 }

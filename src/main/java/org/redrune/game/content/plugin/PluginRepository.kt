@@ -6,10 +6,10 @@ import org.redrune.game.content.plugin.combat.RangeWeaponPlugin
 import org.redrune.game.content.plugin.combat.SpecialAttackPlugin
 import org.redrune.game.content.plugin.combat.spell.SpellPlugin
 import org.redrune.game.content.plugin.type.*
-import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.game.entity.actor.npc.NPC
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
+import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.utility.constants.MagicConstants.MagicBook
 import org.redrune.utility.functions.Misc
 import plugin.command.CommandManifest
@@ -304,7 +304,7 @@ object PluginRepository {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): InterfacePlugin? {
         val interfacePlugins = INTERFACE_PLUGINS[interfaceId]
             ?: return null

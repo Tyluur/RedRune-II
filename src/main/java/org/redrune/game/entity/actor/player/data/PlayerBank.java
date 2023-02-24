@@ -189,7 +189,6 @@ public class PlayerBank implements Serializable {
         }
         if (space < familiar.getBob().getBeastItems().getSize()) {
             player.getPackets().sendMessage("Not enough space in your bank.");
-            return;
         }
     }
 
@@ -204,7 +203,6 @@ public class PlayerBank implements Serializable {
         }
         if (space < player.getEquipment().getItems().getSize()) {
             player.getPackets().sendMessage("Not enough space in your bank.");
-            return;
         }
     }
 

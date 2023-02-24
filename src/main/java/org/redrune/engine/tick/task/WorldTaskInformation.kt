@@ -16,7 +16,7 @@ internal class WorldTaskInformation(
     /**
      * The delay, in ticks, that the task waits after it has ran once.
      */
-    var repeatTickDelay: Int
+    var repeatTickDelay: Int,
 ) {
 
     init {

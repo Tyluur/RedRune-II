@@ -26,6 +26,7 @@ class ExchangeClerkNPCPlugin : NPCPlugin {
             "Talk-to", "Exchange" -> {
                 ExchangeManager.open(player)
             }
+
             else -> {
                 player.packets.sendMessage("This has not yet been added.")
             }

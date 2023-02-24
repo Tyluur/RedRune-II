@@ -20,7 +20,7 @@ class WalkPacketContext(
     /**
      * If the player should be forced to run
      */
-    private val forceRun: Boolean
+    private val forceRun: Boolean,
 ) : PacketContext() {
     override fun handle(player: Player) {
         player.eventManager.start(PlayerWalkEvent(destX, destY, forceRun))

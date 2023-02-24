@@ -21,6 +21,7 @@ import org.redrune.utility.functions.Misc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -480,36 +481,28 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                 return CRUSH_ATTACK;
             }
             if (weaponName.contains("godsword") || weaponName.contains("greataxe") || weaponName.contains("2h sword") || weaponName.equals("saradomin sword")) {
-                switch (attackStyle) {
-                    case 2:
-                        return CRUSH_ATTACK;
-                    default:
-                        return SLASH_ATTACK;
+                if (attackStyle == 2) {
+                    return CRUSH_ATTACK;
                 }
+                return SLASH_ATTACK;
             }
             if (weaponName.contains("scimitar") || weaponName.contains("hatchet") || weaponName.contains("claws") || weaponName.contains(" sword") || weaponName.contains("longsword")) {
-                switch (attackStyle) {
-                    case 2:
-                        return STAB_ATTACK;
-                    default:
-                        return SLASH_ATTACK;
+                if (attackStyle == 2) {
+                    return STAB_ATTACK;
                 }
+                return SLASH_ATTACK;
             }
             if (weaponName.contains("mace") || weaponName.contains("anchor")) {
-                switch (attackStyle) {
-                    case 2:
-                        return STAB_ATTACK;
-                    default:
-                        return CRUSH_ATTACK;
+                if (attackStyle == 2) {
+                    return STAB_ATTACK;
                 }
+                return CRUSH_ATTACK;
             }
             if (weaponName.contains("halberd")) {
-                switch (attackStyle) {
-                    case 1:
-                        return SLASH_ATTACK;
-                    default:
-                        return STAB_ATTACK;
+                if (attackStyle == 1) {
+                    return SLASH_ATTACK;
                 }
+                return STAB_ATTACK;
             }
             if (weaponName.contains("spear")) {
                 switch (attackStyle) {
@@ -522,28 +515,21 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                 }
             }
             if (weaponName.contains("pickaxe")) {
-                switch (attackStyle) {
-                    case 2:
-                        return CRUSH_ATTACK;
-                    default:
-                        return STAB_ATTACK;
+                if (attackStyle == 2) {
+                    return CRUSH_ATTACK;
                 }
+                return STAB_ATTACK;
             }
 
             if (weaponName.contains("dagger") || weaponName.contains("rapier")) {
-                switch (attackStyle) {
-                    case 2:
-                        return SLASH_ATTACK;
-                    default:
-                        return STAB_ATTACK;
+                if (attackStyle == 2) {
+                    return SLASH_ATTACK;
                 }
+                return STAB_ATTACK;
             }
 
         }
-        switch (weaponId) {
-            default:
-                return CRUSH_ATTACK;
-        }
+        return CRUSH_ATTACK;
     }
 
     /**
@@ -565,12 +551,10 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
     }
 
     public static double getSpecialMaxModifier(int itemId) {
-        switch (itemId) {
-            case 11694:
-                return 1.375;
-            default:
-                return 1;
+        if (itemId == 11694) {
+            return 1.375;
         }
+        return 1;
     }
 
     /**
@@ -833,34 +817,32 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
         final int weaponId = player.getEquipment().getIdInSlot(SLOT_WEAPON);
         final int attackStyle = player.getCombatDefinitions().getAttackStyle();
         final String name = weaponId == -1 ? "null" : ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
-        switch (style) {
-            // melee must be right next to the player, unless its a halberd
-            case MELEE:
-                if (name.contains("halberd")) {
-                    return 1;
-                }
-                return 0;
-            default:
-                if (name.contains("dart")) {
-                    return attackStyle != 2 ? 3 : 5;
-                }
-                if (name.contains("knife") || name.contains("throwaxe") || name.contains("sling")) {
-                    return attackStyle != 2 ? 4 : 6;
-                }
-                if (name.contains("javelin")) {
-                    return attackStyle != 2 ? 5 : 7;
-                }
-                if (name.contains("dorgeshuun")) {
-                    return attackStyle != 2 ? 6 : 8;
-                }
-                if (name.contains("longbow") || name.contains("dark") || name.contains("chinchompa")) {
-                    return attackStyle != 2 ? 9 : 10;
-                }
-                if (name.contains("zaryte") || name.contains("crystal")) {
-                    return 10;
-                }
-                return attackStyle != 2 ? 7 : 9;
+        // melee must be right next to the player, unless its a halberd
+        if (Objects.requireNonNull(style) == CombatStyle.MELEE) {
+            if (name.contains("halberd")) {
+                return 1;
+            }
+            return 0;
         }
+        if (name.contains("dart")) {
+            return attackStyle != 2 ? 3 : 5;
+        }
+        if (name.contains("knife") || name.contains("throwaxe") || name.contains("sling")) {
+            return attackStyle != 2 ? 4 : 6;
+        }
+        if (name.contains("javelin")) {
+            return attackStyle != 2 ? 5 : 7;
+        }
+        if (name.contains("dorgeshuun")) {
+            return attackStyle != 2 ? 6 : 8;
+        }
+        if (name.contains("longbow") || name.contains("dark") || name.contains("chinchompa")) {
+            return attackStyle != 2 ? 9 : 10;
+        }
+        if (name.contains("zaryte") || name.contains("crystal")) {
+            return 10;
+        }
+        return attackStyle != 2 ? 7 : 9;
     }
 
     /**
@@ -888,12 +870,10 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
         if (weaponId != -1) {
             if (weaponId == -2) {
                 // punch/block:14393 kick:14307 spec:14417
-                switch (attackStyle) {
-                    case 1:
-                        return 14307;
-                    default:
-                        return 14393;
+                if (attackStyle == 1) {
+                    return 14307;
                 }
+                return 14393;
             }
             String weaponName = ItemDefinitions.getItemDefinitions(weaponId).getName().toLowerCase();
             if (!weaponName.equals("null")) {
@@ -929,45 +909,34 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                     return 9055;
                 }
                 if (weaponName.contains("scimitar") || weaponName.contains("korasi's sword")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 15072;
-                        default:
-                            return 15071;
+                    if (attackStyle == 2) {
+                        return 15072;
                     }
+                    return 15071;
                 }
                 if (weaponName.contains("granite mace")) {
                     return 400;
                 }
                 if (weaponName.contains("mace")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 400;
-                        default:
-                            return 401;
+                    if (attackStyle == 2) {
+                        return 400;
                     }
+                    return 401;
                 }
                 if (weaponName.contains("hatchet") || weaponName.contains("battleaxe")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 401;
-                        default:
-                            return 395;
+                    if (attackStyle == 2) {
+                        return 401;
                     }
+                    return 395;
                 }
                 if (weaponName.contains("warhammer")) {
-                    switch (attackStyle) {
-                        default:
-                            return 401;
-                    }
+                    return 401;
                 }
                 if (weaponName.contains("claws")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 1067;
-                        default:
-                            return 393;
+                    if (attackStyle == 2) {
+                        return 1067;
                     }
+                    return 393;
                 }
                 if (weaponName.contains("whip")) {
                     switch (attackStyle) {
@@ -980,30 +949,19 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                     }
                 }
                 if (weaponName.contains("anchor")) {
-                    switch (attackStyle) {
-                        default:
-                            return 5865;
-                    }
+                    return 5865;
                 }
                 if (weaponName.contains("tzhaar-ket-em")) {
-                    switch (attackStyle) {
-                        default:
-                            return 401;
-                    }
+                    return 401;
                 }
                 if (weaponId == 20084 || weaponName.contains("tzhaar-ket-om")) {
-                    switch (attackStyle) {
-                        default:
-                            return 13691;
-                    }
+                    return 13691;
                 }
                 if (weaponName.contains("halberd")) {
-                    switch (attackStyle) {
-                        case 1:
-                            return 440;
-                        default:
-                            return 428;
+                    if (attackStyle == 1) {
+                        return 440;
                     }
+                    return 428;
                 }
                 if (weaponName.contains("zamorakian spear")) {
                     switch (attackStyle) {
@@ -1044,20 +1002,16 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                     return 10504;
                 }
                 if (weaponName.contains("pickaxe")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 400;
-                        default:
-                            return 401;
+                    if (attackStyle == 2) {
+                        return 400;
                     }
+                    return 401;
                 }
                 if (weaponName.contains("dagger")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 377;
-                        default:
-                            return 376;
+                    if (attackStyle == 2) {
+                        return 377;
                     }
+                    return 376;
                 }
                 if (weaponName.contains("2h sword") || weaponName.equals("dominion sword") || weaponName.equals("thok's sword") || weaponName.equals("saradomin sword")) {
                     switch (attackStyle) {
@@ -1070,28 +1024,22 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                     }
                 }
                 if (weaponName.contains(" sword") || weaponName.contains("saber") || weaponName.contains("longsword") || weaponName.contains("light") || weaponName.contains("excalibur")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 12310;
-                        default:
-                            return 12311;
+                    if (attackStyle == 2) {
+                        return 12310;
                     }
+                    return 12311;
                 }
                 if (weaponName.contains("rapier") || weaponName.contains("brackish")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 13048;
-                        default:
-                            return 13049;
+                    if (attackStyle == 2) {
+                        return 13048;
                     }
+                    return 13049;
                 }
                 if (weaponName.contains("katana")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 1882;
-                        default:
-                            return 1884;
+                    if (attackStyle == 2) {
+                        return 1882;
                     }
+                    return 1884;
                 }
                 if (weaponName.contains("godsword")) {
                     switch (attackStyle) {
@@ -1104,18 +1052,13 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
                     }
                 }
                 if (weaponName.contains("greataxe")) {
-                    switch (attackStyle) {
-                        case 2:
-                            return 12003;
-                        default:
-                            return 12002;
+                    if (attackStyle == 2) {
+                        return 12003;
                     }
+                    return 12002;
                 }
                 if (weaponName.contains("granite maul")) {
-                    switch (attackStyle) {
-                        default:
-                            return 1665;
-                    }
+                    return 1665;
                 }
 
             }
@@ -1140,12 +1083,10 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
             case 15241:
                 return 12174;
             default:
-                switch (attackStyle) {
-                    case 1:
-                        return 423;
-                    default:
-                        return 422;
+                if (attackStyle == 1) {
+                    return 423;
                 }
+                return 422;
         }
     }
 
@@ -1232,10 +1173,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
             if (shieldName.contains("defender")) {
                 return 4177;
             }
-            switch (shieldId) {
-                default:
-                    return 424;
-            }
+            return 424;
         } else if (actor.isNPC()) {
             return actor.toNPC().getCombatDefinitions().getDefenceAnim();
         } else {
@@ -1247,7 +1185,7 @@ public final class CombatAlgorithm implements BonusConstants, EquipmentConstants
     /*
      * 0 not ranging, 1 invalid ammo so stops att, 2 can range, 3 no ammo
      */
-    public static final int isRanging(Player player) {
+    public static int isRanging(Player player) {
         int weaponId = player.getEquipment().getWeaponId();
         if (weaponId == -1) {
             return 0;

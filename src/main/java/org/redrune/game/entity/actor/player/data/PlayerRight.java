@@ -15,142 +15,136 @@ import java.util.Set;
  * @since 5/18/2017
  */
 public enum PlayerRight {
-	
-	OWNER(2, 19) {
-		@Override
-		public int getMessageIcon() {
-			return 2;
-		}
-	},
-	ADMINISTRATOR(2, 14) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, ADMINISTRATOR);
-		}
-	},
-	SERVER_MODERATOR(1, 7) {
-		@Override
-		public void create() {
-			addOtherRights(OWNER, ADMINISTRATOR);
-		}
-	},
-	DONATOR(9),
-	YOUTUBER(18),
-	VETERAN(13),
-	RESPECTED_MEMBER(15),
-	BETA_TESTER(21),
-	PLAYER(3);
-	
-	/**
-	 * The rights the player has in the client
-	 */
-	private final byte clientRight;
-	
-	/**
-	 * The member group id of the right
-	 */
-	private final byte memberGroupId;
-	
-	/**
-	 * The rights that can also access this right
-	 */
-	private final Set<PlayerRight> rightsWithAccess;
-	
-	/**
-	 * Constructs a right with a client right of 0
-	 *
-	 * @param memberGroupId
-	 * 		The id of the member group for the forum
-	 */
-	PlayerRight(int memberGroupId) {
-		this(0, memberGroupId);
-	}
-	
-	/**
-	 * Constructs a right
-	 *
-	 * @param clientRight
-	 * 		The client right
-	 * @param memberGroupId
-	 * 		The id of the member group for the forum
-	 */
-	PlayerRight(int clientRight, int memberGroupId) {
-		this.clientRight = (byte) clientRight;
-		this.memberGroupId = (byte) memberGroupId;
-		this.rightsWithAccess = new LinkedHashSet<>();
-		this.rightsWithAccess.add(this);
-		this.create();
-	}
-	
-	/**
-	 * Called on the creation of a right, due to enums not being able to call other values below them while
-	 * constructing
-	 */
-	public void create() {
-	
-	}
-	
-	/**
-	 * Gets the icon that is displayed on messages
-	 */
-	public int getMessageIcon() {
-		return 0;
-	}
-	
-	/**
-	 * Gets the formatted name of the right
-	 */
-	public String getFormattedName() {
-		return Misc.formatPlayerNameForDisplay(name());
-	}
-	
-	/**
-	 * Finds the right optional by the {@link PlayerRight#name}.
-	 *
-	 * @param name
-	 * 		The name to look for.
-	 */
-	public static Optional<PlayerRight> getRightByName(String name) {
-		return Arrays.stream(values()).filter(right -> right.name().equalsIgnoreCase(name)).findFirst();
-	}
-	
-	/**
-	 * Finds the right by the group id
-	 *
-	 * @param memberGroupId
-	 * 		The group id to look for
-	 */
-	public static Optional<PlayerRight> getRightByGroupId(int memberGroupId) {
-		return Arrays.stream(values()).filter(right -> right.getMemberGroupId() == memberGroupId).findFirst();
-	}
-	
-	/**
-	 * Adds other rights that can access this right
-	 */
-	public void addOtherRights(PlayerRight... rights) {
-		this.rightsWithAccess.addAll(Arrays.asList(rights));
-	}
-	
-	/**
-	 * Checking that the player has access to this right
-	 *
-	 * @param player
-	 * 		The player
-	 */
-	public final boolean playerHasRights(Player player) {
-		for (PlayerRight right : rightsWithAccess) {
-			if (player.rightsContains(right)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
-	public byte getClientRight() {
-		return this.clientRight;
-	}
+    OWNER(2, 19) {
+        @Override
+        public int getMessageIcon() {
+            return 2;
+        }
+    },
+    ADMINISTRATOR(2, 14) {
+        @Override
+        public void create() {
+            addOtherRights(OWNER, ADMINISTRATOR);
+        }
+    },
+    SERVER_MODERATOR(1, 7) {
+        @Override
+        public void create() {
+            addOtherRights(OWNER, ADMINISTRATOR);
+        }
+    },
+    DONATOR(9),
+    YOUTUBER(18),
+    VETERAN(13),
+    RESPECTED_MEMBER(15),
+    BETA_TESTER(21),
+    PLAYER(3);
 
-	public byte getMemberGroupId() {
-		return this.memberGroupId;
-	}
+    /**
+     * The rights the player has in the client
+     */
+    private final byte clientRight;
+
+    /**
+     * The member group id of the right
+     */
+    private final byte memberGroupId;
+
+    /**
+     * The rights that can also access this right
+     */
+    private final Set<PlayerRight> rightsWithAccess;
+
+    /**
+     * Constructs a right with a client right of 0
+     *
+     * @param memberGroupId The id of the member group for the forum
+     */
+    PlayerRight(int memberGroupId) {
+        this(0, memberGroupId);
+    }
+
+    /**
+     * Constructs a right
+     *
+     * @param clientRight   The client right
+     * @param memberGroupId The id of the member group for the forum
+     */
+    PlayerRight(int clientRight, int memberGroupId) {
+        this.clientRight = (byte) clientRight;
+        this.memberGroupId = (byte) memberGroupId;
+        this.rightsWithAccess = new LinkedHashSet<>();
+        this.rightsWithAccess.add(this);
+        this.create();
+    }
+
+    /**
+     * Called on the creation of a right, due to enums not being able to call other values below them while
+     * constructing
+     */
+    public void create() {
+
+    }
+
+    /**
+     * Gets the icon that is displayed on messages
+     */
+    public int getMessageIcon() {
+        return 0;
+    }
+
+    /**
+     * Gets the formatted name of the right
+     */
+    public String getFormattedName() {
+        return Misc.formatPlayerNameForDisplay(name());
+    }
+
+    /**
+     * Finds the right optional by the {@link PlayerRight#name}.
+     *
+     * @param name The name to look for.
+     */
+    public static Optional<PlayerRight> getRightByName(String name) {
+        return Arrays.stream(values()).filter(right -> right.name().equalsIgnoreCase(name)).findFirst();
+    }
+
+    /**
+     * Finds the right by the group id
+     *
+     * @param memberGroupId The group id to look for
+     */
+    public static Optional<PlayerRight> getRightByGroupId(int memberGroupId) {
+        return Arrays.stream(values()).filter(right -> right.getMemberGroupId() == memberGroupId).findFirst();
+    }
+
+    /**
+     * Adds other rights that can access this right
+     */
+    public void addOtherRights(PlayerRight... rights) {
+        this.rightsWithAccess.addAll(Arrays.asList(rights));
+    }
+
+    /**
+     * Checking that the player has access to this right
+     *
+     * @param player The player
+     */
+    public final boolean playerHasRights(Player player) {
+        for (PlayerRight right : rightsWithAccess) {
+            if (player.rightsContains(right)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public byte getClientRight() {
+        return this.clientRight;
+    }
+
+    public byte getMemberGroupId() {
+        return this.memberGroupId;
+    }
 }

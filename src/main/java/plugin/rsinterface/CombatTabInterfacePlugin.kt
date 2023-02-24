@@ -15,16 +15,18 @@ class CombatTabInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         when (componentId) {
             4 -> {
                 player.putTemporaryAttribute("special_attack_toggled", true)
                 CombatAlgorithm.checkSpecialToggle(player, 0)
             }
+
             in 11..14 -> {
                 player.combatDefinitions.attackStyle = componentId - 11
             }
+
             15 -> {
                 player.combatDefinitions.switchAutoRelatie()
             }

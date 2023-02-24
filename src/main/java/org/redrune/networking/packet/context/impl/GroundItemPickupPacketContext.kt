@@ -14,7 +14,7 @@ class GroundItemPickupPacketContext(
     private val regionId: Int,
     private val forceRun: Boolean,
     private val item: FloorItem,
-    private val tile: WorldTile
+    private val tile: WorldTile,
 ) : PacketContext() {
     override fun handle(player: Player) {
         player.eventManager.start(ItemFloorPickupEvent(regionId, forceRun, item, tile))

@@ -21,7 +21,7 @@ class QuestTabInterfacePlugin : InterfacePlugin {
         componentId: Int,
         itemId: Int,
         slotId: Int,
-        packetId: Int
+        packetId: Int,
     ): Boolean {
         val presets = PresetHandler.presets
         val index = slotId

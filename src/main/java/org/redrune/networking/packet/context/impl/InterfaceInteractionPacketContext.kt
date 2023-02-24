@@ -14,7 +14,7 @@ class InterfaceInteractionPacketContext(
     private val componentId: Int,
     private val itemId: Int,
     private val slotId: Int,
-    private val packetId: Int
+    private val packetId: Int,
 ) : PacketContext() {
 
     override fun handle(player: Player) {

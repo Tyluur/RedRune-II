@@ -3,7 +3,7 @@
               value="[%level] : %msg%n"/>
     <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
 
-    <logger name="org.apache.catalina.core" level="OFF" />
+    <logger name="org.apache.catalina.core" level="OFF"/>
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${ENCODER_PATTERN}</pattern>

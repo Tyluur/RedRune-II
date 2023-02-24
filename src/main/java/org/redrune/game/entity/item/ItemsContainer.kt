@@ -69,7 +69,7 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
 
     fun remove(item: T): Int {
         var removed = 0
-        var toRemove = item!!.getAmount()
+        var toRemove = item.getAmount()
         for (i in items.indices) {
             if (items[i] != null) {
                 if (items[i]!!.id == item.id) {
@@ -94,7 +94,7 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     fun removeAll(item: T) {
         for (i in items.indices) {
             if (items[i] != null) {
-                if (items[i]!!.id == item!!.id) {
+                if (items[i]!!.id == item.id) {
                     items[i] = null
                 }
             }
@@ -104,7 +104,7 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     fun containsOne(item: T): Boolean {
         for (aData in items) {
             if (aData != null) {
-                if (aData.id == item!!.id) {
+                if (aData.id == item.id) {
                     return true
                 }
             }
@@ -116,12 +116,12 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
         var amtOf = 0
         for (aData in items) {
             if (aData != null) {
-                if (aData.id == item!!.id) {
+                if (aData.id == item.id) {
                     amtOf += aData.getAmount()
                 }
             }
         }
-        return amtOf >= item!!.getAmount()
+        return amtOf >= item.getAmount()
     }
 
     fun clear() {
@@ -183,7 +183,7 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     fun getThisItemSlot(item: T): Int {
         for (i in items.indices) {
             if (items[i] != null) {
-                if (items[i]!!.id == item!!.id) {
+                if (items[i]!!.id == item.id) {
                     return i
                 }
             }
@@ -299,10 +299,10 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     }
 
     fun add(item: T): Boolean {
-        if (alwaysStackable || item!!.definitions.isStackable || item.definitions.isNoted) {
+        if (alwaysStackable || item.definitions.isStackable || item.definitions.isNoted) {
             for (i in items.indices) {
                 if (items[i] != null) {
-                    if (items[i]!!.id == item!!.id) {
+                    if (items[i]!!.id == item.id) {
                         items[i] = Item(
                             items[i]!!.id, items[i]!!.getAmount() + item.getAmount()
                         )
@@ -367,10 +367,10 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     }
 
     fun hasSpaceForItem(item: T): Boolean {
-        if (alwaysStackable || item!!.definitions.isStackable || item.definitions.isNoted) {
+        if (alwaysStackable || item.definitions.isStackable || item.definitions.isNoted) {
             for (aData in items) {
                 if (aData != null) {
-                    if (aData.id == item!!.id) {
+                    if (aData.id == item.id) {
                         return true
                     }
                 }
@@ -389,10 +389,10 @@ class ItemsContainer<T : Item>(size: Int, alwaysStackable: Boolean) : Serializab
     }
 
     fun canAdd(item: T): Boolean {
-        if (alwaysStackable || item!!.definitions.isStackable || item.definitions.isNoted) {
+        if (alwaysStackable || item.definitions.isStackable || item.definitions.isNoted) {
             for (aData in items) {
                 if (aData != null) {
-                    if (aData.id == item!!.id) {
+                    if (aData.id == item.id) {
                         return true
                     }
                 }

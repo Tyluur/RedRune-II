@@ -6,5 +6,5 @@ package org.redrune.game.content.entity.actor.player.skills.slayer;
  * @author Emperial
  */
 public enum TaskSet {
-	TURAEL // Very Easy
+    TURAEL // Very Easy
 }

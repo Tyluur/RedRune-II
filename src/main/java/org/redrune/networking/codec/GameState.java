@@ -5,6 +5,6 @@ package org.redrune.networking.codec;
  * @since 2019-02-05
  */
 public enum GameState {
-	
-	VERSION, PAYLOAD_LENGTH, PAYLOAD
+
+    VERSION, PAYLOAD_LENGTH, PAYLOAD
 }

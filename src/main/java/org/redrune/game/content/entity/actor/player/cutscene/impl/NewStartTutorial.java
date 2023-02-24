@@ -10,19 +10,19 @@ import java.util.ArrayList;
 
 public class NewStartTutorial extends Cutscene {
 
-	private static final int Ozan = 1;
+    private static final int Ozan = 1;
 
-	@Override
-	public boolean hiddenMinimap() {
-		return true;
-	}
+    @Override
+    public boolean hiddenMinimap() {
+        return true;
+    }
 
-	@Override
-	public CutsceneAction[] getActions(Player player) {
-		ArrayList<CutsceneAction> actionsList = new ArrayList<CutsceneAction>();
-		actionsList.add(new MovePlayerAction(10, 0, 0, MagicConstants.WALK_MOVE_TYPE, 0)); // out
-		
-		return actionsList.toArray(new CutsceneAction[actionsList.size()]);
-	}
+    @Override
+    public CutsceneAction[] getActions(Player player) {
+        ArrayList<CutsceneAction> actionsList = new ArrayList<CutsceneAction>();
+        actionsList.add(new MovePlayerAction(10, 0, 0, MagicConstants.WALK_MOVE_TYPE, 0)); // out
+
+        return actionsList.toArray(new CutsceneAction[actionsList.size()]);
+    }
 
 }

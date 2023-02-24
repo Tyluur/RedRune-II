@@ -10,10 +10,10 @@ import java.io.IOException;
  */
 public class IndexPacker {
 
-	public static void main(String[] args) throws IOException {
-		Store toPackTo = new Store("C:\\Users\\Tyler\\Desktop\\cache\\", false);
-		Store toPackFrom = new Store("E:\\3.5.16 - Muth backup\\Me\\Programming\\- SERVERS -\\600+\\Alotic\\update_server\\cache\\", false);
+    public static void main(String[] args) throws IOException {
+        Store toPackTo = new Store("C:\\Users\\Tyler\\Desktop\\cache\\", false);
+        Store toPackFrom = new Store("E:\\3.5.16 - Muth backup\\Me\\Programming\\- SERVERS -\\600+\\Alotic\\update_server\\cache\\", false);
 
-	}
+    }
 
 }
