@@ -13,6 +13,7 @@ import plugin.command.CommandManifest
  */
 @CommandManifest(description = "Bans a players address", types = [String::class])
 class PlayerAddressBanCommandPlugin : CommandPlugin() {
+
     override fun handle(player: Player, args: Array<String>, console: Boolean, clientCommand: Boolean) {
         val name = getCompleted(args, 1)
         player.packets.requestClientInput(object :
@@ -21,6 +22,7 @@ class PlayerAddressBanCommandPlugin : CommandPlugin() {
                 PunishmentHandler.addPunishment(player, name, getInput(), PunishmentType.ADDRESS_BAN)
             }
         })
+
     }
 
     override fun identifiers(): Array<String> {
