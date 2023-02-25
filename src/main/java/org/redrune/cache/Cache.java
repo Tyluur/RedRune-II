@@ -47,7 +47,7 @@ public final class Cache {
             if (packet == null) {
                 throw new IllegalStateException("Unable to send cache archive [" + indexId + ", " + archiveId + ", " + priority + "]");
             }
-            return packet.getBuffer();
+            return packet.buffer;
         }
     }
 
