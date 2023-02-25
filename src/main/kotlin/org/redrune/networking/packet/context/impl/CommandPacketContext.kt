@@ -3,6 +3,7 @@ package org.redrune.networking.packet.context.impl
 import org.redrune.game.content.plugin.PluginRepository.handleCommand
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.networking.packet.context.PacketContext
+import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -16,7 +17,7 @@ class CommandPacketContext(
     override fun handle(player: Player) {
         handleCommand(
             player,
-            command.toLowerCase().replaceFirst("::".toRegex(), "").split(" ").toTypedArray(),
+            command.lowercase(Locale.getDefault()).replaceFirst("::".toRegex(), "").split(" ").toTypedArray(),
             true,
             clientCommand
         )

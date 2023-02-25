@@ -27,7 +27,7 @@ class CrossbowPlugin : RangeWeaponPlugin() {
     override fun fire(source: Player, target: Actor, style: AbstractCombatStyle) {
         val weaponId = source.equipment.weaponId
         val ammoId = source.equipment.ammoId
-        val name = ItemDefinitions.getItemDefinitions(weaponId).name.toLowerCase()
+        val name = ItemDefinitions.getItemDefinitions(weaponId).name.lowercase(Locale.getDefault())
         ProjectileManager.sendProjectile(
             ProjectileManager.createSpeedDefinedProjectile(
                 source,

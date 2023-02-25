@@ -5,6 +5,7 @@ import org.redrune.game.content.plugin.type.ObjectPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.utility.game.repository.climbable.ClimbableObjectRepository
+import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -12,7 +13,7 @@ import org.redrune.utility.game.repository.climbable.ClimbableObjectRepository
  */
 class ClimbableObjectPlugin : ObjectPlugin {
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        ClimbActionHandler.climbLadder(player, `object`, option.toLowerCase())
+        ClimbActionHandler.climbLadder(player, `object`, option.lowercase(Locale.getDefault()))
         return true
     }
 

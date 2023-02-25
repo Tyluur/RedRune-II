@@ -31,7 +31,7 @@ class FindItemByNameCommandPlugin : CommandPlugin() {
                 continue
             }
             // the name of the item
-            val name = definition.name.toLowerCase()
+            val name = definition.name.lowercase(Locale.getDefault())
             var added = false
             // the name has the identifier we want
             if (name.contains(identifier)) {

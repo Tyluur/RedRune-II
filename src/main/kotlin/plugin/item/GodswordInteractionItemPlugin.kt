@@ -20,8 +20,9 @@ import java.util.*
  * @since 2019-02-08
  */
 class GodswordInteractionItemPlugin : ItemPlugin, ItemOnItemPlugin, ItemOnObjectPlugin {
+
     override fun handleItemOnItem(player: Player, used: Item, with: Item): Boolean {
-        val usedName = used.name.toLowerCase()
+        val usedName = used.name.lowercase(Locale.getDefault())
         val hilt = if (usedName.contains("hilt")) used else with
         val swordId = getSwordByHilt(hilt.id)
         if (swordId == -1) {
@@ -33,8 +34,8 @@ class GodswordInteractionItemPlugin : ItemPlugin, ItemOnItemPlugin, ItemOnObject
         val name = ItemDefinitions.getItemDefinitions(swordId).name
         player.dialogueManager.startDialogue(
             SimpleMessage::class.java,
-            "You attach the hilt to the blade and make a" + (if (name.toLowerCase()
-                    .startsWith("a")
+            "You attach the hilt to the blade and make a" + (if (name.lowercase(Locale.getDefault())
+                        .startsWith("a")
             ) "n" else "") + " " + name + "."
         )
         return true

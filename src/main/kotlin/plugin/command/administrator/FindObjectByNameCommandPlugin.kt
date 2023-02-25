@@ -38,7 +38,7 @@ class FindObjectByNameCommandPlugin : CommandPlugin() {
         val found: MutableList<String> = ArrayList()
         for (id in 0 until Misc.getObjectDefinitionsSize()) {
             val def: ObjectDefinitions = ObjectDefinitions.getObjectDefinitions(id) ?: continue
-            val objectName: String = def.name.toLowerCase()
+            val objectName: String = def.name.lowercase(Locale.getDefault())
             if (!objectName.contains(identifier)) {
                 continue
             }

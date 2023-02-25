@@ -15,6 +15,7 @@ import org.redrune.networking.packet.incoming.IncomingPacketReader
 import org.redrune.utility.constants.PacketConstants
 import org.redrune.utility.functions.Misc
 import org.redrune.utility.game.entity.actor.player.QuickChatMessage
+import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -204,7 +205,8 @@ class SocialInteractionPacketReader : IncomingPacketReader {
                     CommandPacketContext(
                         false,
                         false,
-                        message.replaceFirst("::".toRegex(), "").replaceFirst(";;".toRegex(), "").toLowerCase()
+                        message.replaceFirst("::".toRegex(), "").replaceFirst(";;".toRegex(), "")
+                                .lowercase(Locale.getDefault())
                     )
                 } else ChatPacketContext(colorEffect, moveEffect, message)
             }

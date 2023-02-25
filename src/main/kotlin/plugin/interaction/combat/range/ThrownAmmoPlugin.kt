@@ -9,6 +9,7 @@ import org.redrune.game.entity.actor.mask.Graphics
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.projectile.Projectile
 import org.redrune.game.entity.projectile.ProjectileManager
+import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
@@ -21,7 +22,7 @@ class ThrownAmmoPlugin : RangeWeaponPlugin() {
 
     override fun fire(source: Player, target: Actor, style: AbstractCombatStyle) {
         val weaponId = source.equipment.weaponId
-        val name = ItemDefinitions.getItemDefinitions(weaponId).name.toLowerCase()
+        val name = ItemDefinitions.getItemDefinitions(weaponId).name.lowercase(Locale.getDefault())
         if (!name.contains("javelin") && !name.contains("throwing axe") && !name.contains("thrownaxe") && !name.contains(
                 "toktz"
             )
