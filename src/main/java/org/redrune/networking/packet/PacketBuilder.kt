@@ -1,211 +1,199 @@
-package org.redrune.networking.packet;
+package org.redrune.networking.packet
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import org.redrune.utility.functions.BufferUtils;
+import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
+import org.redrune.utility.functions.BufferUtils
 
 /**
  * @author 'Mystic Flow
  */
-public final class PacketBuilder {
+class PacketBuilder @JvmOverloads constructor(
+    private val opcode: Int = -1,
+    private val type: PacketType = PacketType.STANDARD
+) {
 
-    public static final int[] BIT_MASK_OUT = new int[32];
+    @JvmField
+    val buffer = Unpooled.buffer()
+    private var bitPosition = 0
+    fun writeBytes(other: ByteBuf?): PacketBuilder {
+        buffer.writeBytes(other)
+        return this
+    }
 
-    static {
-        for (int i = 0; i < BIT_MASK_OUT.length; i++) {
-            BIT_MASK_OUT[i] = (1 << i) - 1;
+    fun writeLong(l: Long): PacketBuilder {
+        buffer.writeLong(l)
+        return this
+    }
+
+    fun toPacket(): Packet {
+        return Packet(opcode, type, Unpooled.copiedBuffer(buffer))
+    }
+
+    fun writeString(string: String): PacketBuilder {
+        buffer.writeBytes(string.toByteArray())
+        buffer.writeByte(0.toByte().toInt())
+        return this
+    }
+
+    fun writeShort128(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        buffer.writeByte((`val` + 128).toByte().toInt())
+        return this
+    }
+
+    fun writeByteA(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` + 128).toByte().toInt())
+        return this
+    }
+
+    fun writeShortLE128(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` + 128).toByte().toInt())
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        return this
+    }
+
+    fun startBitAccess(): PacketBuilder {
+        bitPosition = buffer.writerIndex() * 8
+        return this
+    }
+
+    fun finishBitAccess(): PacketBuilder {
+        buffer.writerIndex((bitPosition + 7) / 8)
+        return this
+    }
+
+    fun writeBits(numBits: Int, value: Int): PacketBuilder {
+        var numBits = numBits
+        var bytePos = bitPosition shr 3
+        var bitOffset = 8 - (bitPosition and 7)
+        bitPosition += numBits
+        val pos = (bitPosition + 7) / 8
+        buffer.ensureWritable(pos + 1) //pos + 1
+        buffer.writerIndex(pos)
+        var b: Byte
+        while (numBits > bitOffset) {
+            b = buffer.getByte(bytePos)
+            buffer.setByte(bytePos, (b.toInt() and BIT_MASK_OUT[bitOffset].inv()).toByte().toInt())
+            buffer.setByte(
+                bytePos++, (b.toInt() or (value shr numBits - bitOffset and BIT_MASK_OUT[bitOffset])).toByte()
+                    .toInt()
+            )
+            numBits -= bitOffset
+            bitOffset = 8
         }
-    }
-
-    private final int opcode;
-
-    private final PacketType type;
-
-    private final ByteBuf buffer = Unpooled.buffer();
-
-    private int bitPosition;
-
-    public PacketBuilder() {
-        this(-1);
-    }
-
-    public PacketBuilder(int opcode) {
-        this(opcode, PacketType.STANDARD);
-    }
-
-    public PacketBuilder(int opcode, PacketType type) {
-        this.opcode = opcode;
-        this.type = type;
-    }
-
-    public PacketBuilder writeBytes(ByteBuf other) {
-        buffer.writeBytes(other);
-        return this;
-    }
-
-    public PacketBuilder writeLong(long l) {
-        buffer.writeLong(l);
-        return this;
-    }
-
-    public Packet toPacket() {
-        return new Packet(opcode, type, Unpooled.copiedBuffer(buffer));
-    }
-
-    public PacketBuilder writeString(String string) {
-        buffer.writeBytes(string.getBytes());
-        buffer.writeByte((byte) 0);
-        return this;
-    }
-
-    public PacketBuilder writeShort128(int val) {
-        buffer.writeByte((byte) (val >> 8));
-        buffer.writeByte((byte) (val + 128));
-        return this;
-    }
-
-    public PacketBuilder writeByteA(int val) {
-        buffer.writeByte((byte) (val + 128));
-        return this;
-    }
-
-    public PacketBuilder writeShortLE128(int val) {
-        buffer.writeByte((byte) (val + 128));
-        buffer.writeByte((byte) (val >> 8));
-        return this;
-    }
-
-    public PacketBuilder startBitAccess() {
-        bitPosition = buffer.writerIndex() * 8;
-        return this;
-    }
-
-    public PacketBuilder finishBitAccess() {
-        buffer.writerIndex((bitPosition + 7) / 8);
-        return this;
-    }
-
-    public PacketBuilder writeBits(int numBits, int value) {
-        int bytePos = bitPosition >> 3;
-        int bitOffset = 8 - (bitPosition & 7);
-        bitPosition += numBits;
-        int pos = (bitPosition + 7) / 8;
-        buffer.ensureWritable(pos + 1); //pos + 1
-        buffer.writerIndex(pos);
-        byte b;
-        for (; numBits > bitOffset; bitOffset = 8) {
-            b = buffer.getByte(bytePos);
-            buffer.setByte(bytePos, (byte) (b & ~BIT_MASK_OUT[bitOffset]));
-            buffer.setByte(bytePos++, (byte) (b | (value >> (numBits - bitOffset)) & BIT_MASK_OUT[bitOffset]));
-            numBits -= bitOffset;
-        }
-        b = buffer.getByte(bytePos);
+        b = buffer.getByte(bytePos)
         if (numBits == bitOffset) {
-            buffer.setByte(bytePos, (byte) (b & ~BIT_MASK_OUT[bitOffset]));
-            buffer.setByte(bytePos, (byte) (b | value & BIT_MASK_OUT[bitOffset]));
+            buffer.setByte(bytePos, (b.toInt() and BIT_MASK_OUT[bitOffset].inv()).toByte().toInt())
+            buffer.setByte(bytePos, (b.toInt() or (value and BIT_MASK_OUT[bitOffset])).toByte().toInt())
         } else {
-            buffer.setByte(bytePos, (byte) (b & ~(BIT_MASK_OUT[numBits] << (bitOffset - numBits))));
-            buffer.setByte(bytePos, (byte) (b | (value & BIT_MASK_OUT[numBits]) << (bitOffset - numBits)));
+            buffer.setByte(
+                bytePos, (b.toInt() and (BIT_MASK_OUT[numBits] shl bitOffset - numBits).inv()).toByte()
+                    .toInt()
+            )
+            buffer.setByte(
+                bytePos, (b.toInt() or (value and BIT_MASK_OUT[numBits] shl bitOffset - numBits)).toByte()
+                    .toInt()
+            )
         }
-        return this;
+        return this
     }
 
-    public PacketBuilder writeByteC(int val) {
-        writeByte((byte) (-val));
-        return this;
+    fun writeByteC(`val`: Int): PacketBuilder {
+        writeByte((-`val`).toByte())
+        return this
     }
 
-    public PacketBuilder writeByte(byte b) {
-        buffer.writeByte(b);
-        return this;
+    fun writeByte(b: Byte): PacketBuilder {
+        buffer.writeByte(b.toInt())
+        return this
     }
 
-    public PacketBuilder writeShortLE(int val) {
-        buffer.writeByte((byte) (val));
-        buffer.writeByte((byte) (val >> 8));
-        return this;
+    fun writeShortLE(`val`: Int): PacketBuilder {
+        buffer.writeByte(`val`.toByte().toInt())
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeIntV1(int val) {
-        buffer.writeByte((byte) (val >> 8));
-        buffer.writeByte((byte) val);
-        buffer.writeByte((byte) (val >> 24));
-        buffer.writeByte((byte) (val >> 16));
-        return this;
+    fun writeIntV1(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        buffer.writeByte(`val`.toByte().toInt())
+        buffer.writeByte((`val` shr 24).toByte().toInt())
+        buffer.writeByte((`val` shr 16).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeIntV2(int val) {
-        buffer.writeByte((byte) (val >> 16));
-        buffer.writeByte((byte) (val >> 24));
-        buffer.writeByte((byte) val);
-        buffer.writeByte((byte) (val >> 8));
-        return this;
+    fun writeIntV2(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` shr 16).toByte().toInt())
+        buffer.writeByte((`val` shr 24).toByte().toInt())
+        buffer.writeByte(`val`.toByte().toInt())
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeIntLE(int val) {
-        buffer.writeByte((byte) (val));
-        buffer.writeByte((byte) (val >> 8));
-        buffer.writeByte((byte) (val >> 16));
-        buffer.writeByte((byte) (val >> 24));
-        return this;
+    fun writeIntLE(`val`: Int): PacketBuilder {
+        buffer.writeByte(`val`.toByte().toInt())
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        buffer.writeByte((`val` shr 16).toByte().toInt())
+        buffer.writeByte((`val` shr 24).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeSomeInt(int val) {
-        buffer.writeByte((byte) (val));
-        buffer.writeByte((byte) (val >> 16));
-        buffer.writeByte((byte) (val >> 24));
-        buffer.writeByte((byte) (val >> 8));
-        return this;
+    fun writeSomeInt(`val`: Int): PacketBuilder {
+        buffer.writeByte(`val`.toByte().toInt())
+        buffer.writeByte((`val` shr 16).toByte().toInt())
+        buffer.writeByte((`val` shr 24).toByte().toInt())
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeByteC(byte val) {
-        buffer.writeByte((byte) (-val));
-        return this;
+    fun writeByteC(`val`: Byte): PacketBuilder {
+        buffer.writeByte((-`val`).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder write128Byte(int val) {
-        buffer.writeByte((byte) (128 - val));
-        return this;
+    fun write128Byte(`val`: Int): PacketBuilder {
+        buffer.writeByte((128 - `val`).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeReverse(byte[] is, int offset, int length) {
-        for (int i = (offset + length - 1); i >= offset; i--) {
-            buffer.writeByte(is[i]);
+    fun writeReverse(`is`: ByteArray, offset: Int, length: Int): PacketBuilder {
+        for (i in offset + length - 1 downTo offset) {
+            buffer.writeByte(`is`[i].toInt())
         }
-        return this;
+        return this
     }
 
-    public PacketBuilder writeReverseA(byte[] is, int offset, int length) {
-        for (int i = (offset + length - 1); i >= offset; i--) {
-            writeByte128(is[i]);
+    fun writeReverseA(`is`: ByteArray, offset: Int, length: Int): PacketBuilder {
+        for (i in offset + length - 1 downTo offset) {
+            writeByte128(`is`[i].toInt())
         }
-        return this;
+        return this
     }
 
-    public PacketBuilder writeByte128(int val) {
-        buffer.writeByte((byte) (val + 128));
-        return this;
+    fun writeByte128(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` + 128).toByte().toInt())
+        return this
     }
 
-    public PacketBuilder write24BitInteger(int val) {
-        buffer.writeByte((byte) (val >> 16));
-        buffer.writeByte((byte) (val >> 8));
-        buffer.writeByte((byte) val);
-        return this;
+    fun write24BitInteger(`val`: Int): PacketBuilder {
+        buffer.writeByte((`val` shr 16).toByte().toInt())
+        buffer.writeByte((`val` shr 8).toByte().toInt())
+        buffer.writeByte(`val`.toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeSmart(int val) {
-        if (val >= 128) {
-            writeShort((val + 32768));
+    fun writeSmart(`val`: Int): PacketBuilder {
+        if (`val` >= 128) {
+            writeShort(`val` + 32768)
         } else {
-            writeByte((byte) val);
+            writeByte(`val`.toByte())
         }
-        return this;
+        return this
     }
 
-    public PacketBuilder writeShort(int s) {
-        buffer.writeShort((short) s);
-        return this;
+    fun writeShort(s: Int): PacketBuilder {
+        buffer.writeShort(s.toShort().toInt())
+        return this
     }
 
     /**
@@ -214,55 +202,55 @@ public final class PacketBuilder {
      * @param val The value.
      * @return This instance for chaining.
      */
-    public PacketBuilder writeIntSmart(int val) {
-        if (val >= 32768) {
-            writeInt(val + 32768);
+    fun writeIntSmart(`val`: Int): PacketBuilder {
+        if (`val` >= 32768) {
+            writeInt(`val` + 32768)
         } else {
-            writeShort(val);
+            writeShort(`val`)
         }
-        return this;
+        return this
     }
 
-    public PacketBuilder writeInt(int i) {
-        buffer.writeInt(i);
-        return this;
+    fun writeInt(i: Int): PacketBuilder {
+        buffer.writeInt(i)
+        return this
     }
 
-    public PacketBuilder writeMediumInt(int i) {
-        buffer.writeByte((byte) ((i << 16) & 0xFF));
-        buffer.writeByte((byte) ((i << 8) & 0xFF));
-        buffer.writeByte((byte) i);
-        return this;
+    fun writeMediumInt(i: Int): PacketBuilder {
+        buffer.writeByte((i shl 16 and 0xFF).toByte().toInt())
+        buffer.writeByte((i shl 8 and 0xFF).toByte().toInt())
+        buffer.writeByte(i.toByte().toInt())
+        return this
     }
 
-    public PacketBuilder writeLEMedium(int i) {
-        buffer.writeByte((byte) i);
-        buffer.writeByte((byte) (i >> 8));
-        buffer.writeByte((byte) (i >> 16));
-        return this;
+    fun writeLEMedium(i: Int): PacketBuilder {
+        buffer.writeByte(i.toByte().toInt())
+        buffer.writeByte((i shr 8).toByte().toInt())
+        buffer.writeByte((i shr 16).toByte().toInt())
+        return this
     }
 
-    public void skip(int skip) {
-        for (int i = 0; i < skip; i++) {
-            buffer.writeByte((byte) 0);
+    fun skip(skip: Int) {
+        for (i in 0 until skip) {
+            buffer.writeByte(0.toByte().toInt())
         }
     }
 
-    public PacketBuilder writeGJString2(String string) {
-        byte[] packed = new byte[256];
-        int length = BufferUtils.packGJString2(0, packed, string);
-        writeByte(0).writeBytes(packed, 0, length).writeByte(0);
-        return this;
+    fun writeGJString2(string: String?): PacketBuilder {
+        val packed = ByteArray(256)
+        val length = BufferUtils.packGJString2(0, packed, string)
+        writeByte(0).writeBytes(packed, 0, length).writeByte(0)
+        return this
     }
 
-    public PacketBuilder writeByte(int i) {
-        writeByte((byte) i);
-        return this;
+    fun writeByte(i: Int): PacketBuilder {
+        writeByte(i.toByte())
+        return this
     }
 
-    public PacketBuilder writeBytes(byte[] data, int offset, int length) {
-        buffer.writeBytes(data, offset, length);
-        return this;
+    fun writeBytes(data: ByteArray?, offset: Int, length: Int): PacketBuilder {
+        buffer.writeBytes(data, offset, length)
+        return this
     }
 
     /**
@@ -271,16 +259,16 @@ public final class PacketBuilder {
      * @param string The value.
      * @return This OutgoingPacket instance, for chaining.
      */
-    public PacketBuilder writeGJString(String string) {
-        writeByte(0);
-        writeBytes(string.getBytes());
-        writeByte(0);
-        return this;
+    fun writeGJString(string: String): PacketBuilder {
+        writeByte(0)
+        writeBytes(string.toByteArray())
+        writeByte(0)
+        return this
     }
 
-    public PacketBuilder writeBytes(byte[] b) {
-        buffer.writeBytes(b);
-        return this;
+    fun writeBytes(b: ByteArray?): PacketBuilder {
+        buffer.writeBytes(b)
+        return this
     }
 
     /**
@@ -291,29 +279,36 @@ public final class PacketBuilder {
      * @param len    The length.
      * @return This OutgoingPacket instance, for chaining.
      */
-    public PacketBuilder writeBytesA(byte[] data, int offset, int len) {
-        for (int k = offset; k < len; k++) {
-            buffer.writeByte((byte) (data[k] + 128));
+    fun writeBytesA(data: ByteArray, offset: Int, len: Int): PacketBuilder {
+        for (k in offset until len) {
+            buffer.writeByte((data[k] + 128).toByte().toInt())
         }
-        return this;
+        return this
     }
 
-    public int position() {
-        return buffer.writerIndex();
+    fun position(): Int {
+        return buffer.writerIndex()
     }
 
-    public ByteBuf getBuffer() {
-        return buffer;
-    }
-
-    public void addBytes128(ByteBuf buffer) {
-        for (int k = 0; k < buffer.writerIndex(); k++) {
-            writeByte((byte) (buffer.readByte() + 128));
+    fun addBytes128(buffer: ByteBuf) {
+        for (k in 0 until buffer.writerIndex()) {
+            writeByte((buffer.readByte() + 128).toByte())
         }
     }
 
-    public void writeByte5(long value) {
-        writeByte((byte) (value >> 32));
-        writeInt((int) (value));
+    fun writeByte5(value: Long) {
+        writeByte((value shr 32).toByte())
+        writeInt(value.toInt())
+    }
+
+    companion object {
+
+        val BIT_MASK_OUT = IntArray(32)
+
+        init {
+            for (i in BIT_MASK_OUT.indices) {
+                BIT_MASK_OUT[i] = (1 shl i) - 1
+            }
+        }
     }
 }
