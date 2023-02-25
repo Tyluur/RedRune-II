@@ -487,7 +487,7 @@ public final class LocalPlayerUpdate {
         PacketBuilder updateBlockData = new PacketBuilder();
         processLocalPlayers(stream, updateBlockData);
         processOutsidePlayers(stream, updateBlockData);
-        stream.writeBytes(updateBlockData.getBuffer());
+        stream.writeBytes(updateBlockData.buffer);
         totalRenderDataSentLength = 0;
         localPlayersIndexesCount = 0;
         outPlayersIndexesCount = 0;

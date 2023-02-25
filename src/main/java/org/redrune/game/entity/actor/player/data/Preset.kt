@@ -4,6 +4,7 @@ import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.item.Item
 import org.redrune.utility.constants.SkillConstants
 import java.io.Serializable
+import java.util.*
 
 class Preset(
     val name: String = "",
@@ -17,7 +18,7 @@ class Preset(
     fun getId(player: Player): Int {
         var i = 0
         for ((key) in player.presetManager.setups) {
-            if (key.toLowerCase() == name) {
+            if (key.lowercase(Locale.getDefault()) == name) {
                 return i
             }
             i++
