@@ -1,321 +1,320 @@
-package com.alex.io;
+package com.alex.io
 
-import com.alex.utils.Constants;
+import com.alex.utils.Constants
+import java.math.BigInteger
 
-import java.math.BigInteger;
+class OutputStream : Stream {
 
-public final class OutputStream extends Stream {
+    private var opcodeStart = 0
 
-    private static final int[] BIT_MASK = new int[32];
+    constructor(capacity: Int) {
+        buffer = ByteArray(capacity)
+    }
 
-    static {
-        for (int i = 0; i < 32; i++) {
-            BIT_MASK[i] = (1 << i) - 1;
+    constructor() {
+        buffer = ByteArray(16)
+    }
+
+    constructor(buffer: ByteArray) {
+        this.buffer = buffer
+        offset = buffer.size
+        length = buffer.size
+    }
+
+    constructor(buffer: IntArray) {
+        this.buffer = ByteArray(buffer.size)
+        for (value in buffer) {
+            writeByte(value)
         }
     }
 
-    private int opcodeStart = 0;
+    override var buffer: ByteArray
+        get() = super.buffer
 
-    public OutputStream(int capacity) {
-        setBuffer(new byte[capacity]);
+    @JvmOverloads
+    fun writeByte(i: Int, position: Int = offset++) {
+        checkCapacityPosition(position)
+        buffer[position] = i.toByte()
     }
 
-    public OutputStream() {
-        setBuffer(new byte[16]);
-    }
-
-    public OutputStream(byte[] buffer) {
-        this.setBuffer(buffer);
-        this.offset = buffer.length;
-        length = buffer.length;
-    }
-
-    public OutputStream(int[] buffer) {
-        setBuffer(new byte[buffer.length]);
-        for (int value : buffer) {
-            writeByte(value);
+    fun checkCapacityPosition(position: Int) {
+        if (position >= buffer!!.size) {
+            val newBuffer = ByteArray(position + 16)
+            System.arraycopy(buffer, 0, newBuffer, 0, buffer.size)
+            buffer = newBuffer
         }
     }
 
-    public void setBuffer(byte[] buffer) {
-        this.buffer = buffer;
+    override fun writeInt(i: Int) {
+        writeByte(i shr 24)
+        writeByte(i shr 16)
+        writeByte(i shr 8)
+        writeByte(i)
     }
 
-    public void writeByte(int i) {
-        writeByte(i, offset++);
+    fun skip(length: Int) {
+        offset = offset + length
     }
 
-    public void writeByte(int i, int position) {
-        checkCapacityPosition(position);
-        getBuffer()[position] = (byte) i;
+    override var offset: Int = 0
+        get() = super.offset
+
+    fun writeBytes(b: ByteArray) {
+        val offset = 0
+        val length = b.size
+        checkCapacityPosition(this.offset + length - offset)
+        System.arraycopy(b, offset, buffer, this.offset, length)
+        this.offset = this.offset + (length - offset)
     }
 
-    public void checkCapacityPosition(int position) {
-        if (position >= getBuffer().length) {
-            byte[] newBuffer = new byte[position + 16];
-            System.arraycopy(getBuffer(), 0, newBuffer, 0, getBuffer().length);
-            setBuffer(newBuffer);
+    fun addBytes128(data: ByteArray, offset: Int, len: Int) {
+        for (k in offset until len) {
+            writeByte((data[k] + 128).toByte().toInt())
         }
     }
 
-    @Override
-    public void writeInt(int i) {
-        writeByte(i >> 24);
-        writeByte(i >> 16);
-        writeByte(i >> 8);
-        writeByte(i);
-    }
-
-    public void skip(int length) {
-        setOffset(getOffset() + length);
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public void writeBytes(byte[] b) {
-        int offset = 0;
-        int length = b.length;
-        checkCapacityPosition(this.getOffset() + length - offset);
-        System.arraycopy(b, offset, getBuffer(), this.getOffset(), length);
-        this.setOffset(this.getOffset() + (length - offset));
-    }
-
-    public void addBytes128(byte[] data, int offset, int len) {
-        for (int k = offset; k < len; k++) {
-            writeByte((byte) (data[k] + 128));
+    fun addBytesS(data: ByteArray, offset: Int, len: Int) {
+        for (k in offset until len) {
+            writeByte((-128 + data[k]).toByte().toInt())
         }
     }
 
-    public void addBytesS(byte[] data, int offset, int len) {
-        for (int k = offset; k < len; k++) {
-            writeByte((byte) (-128 + data[k]));
+    fun addBytes_Reverse(data: ByteArray, offset: Int, len: Int) {
+        for (i in len - 1 downTo 0) {
+            writeByte(data[i].toInt())
         }
     }
 
-    public void addBytes_Reverse(byte[] data, int offset, int len) {
-        for (int i = len - 1; i >= 0; i--) {
-            writeByte(data[i]);
+    fun addBytes_Reverse128(data: ByteArray, offset: Int, len: Int) {
+        for (i in len - 1 downTo 0) {
+            writeByte((data[i] + 128).toByte().toInt())
         }
     }
 
-    public void addBytes_Reverse128(byte[] data, int offset, int len) {
-        for (int i = len - 1; i >= 0; i--) {
-            writeByte((byte) (data[i] + 128));
-        }
+    fun writeNegativeByte(i: Int) {
+        writeByte(-i, offset++)
     }
 
-    public void writeNegativeByte(int i) {
-        writeByte(-i, offset++);
+    fun writeByte128(i: Int) {
+        writeByte(i + 128)
     }
 
-    public void writeByte128(int i) {
-        writeByte(i + 128);
+    fun writeByteC(i: Int) {
+        writeByte(-i)
     }
 
-    public void writeByteC(int i) {
-        writeByte(-i);
+    fun write3Byte(i: Int) {
+        writeByte(i shr 16)
+        writeByte(i shr 8)
+        writeByte(i)
     }
 
-    public void write3Byte(int i) {
-        writeByte(i >> 16);
-        writeByte(i >> 8);
-        writeByte(i);
+    fun write128Byte(i: Int) {
+        writeByte(128 - i)
     }
 
-    public void write128Byte(int i) {
-        writeByte(128 - i);
+    fun writeShortLE128(i: Int) {
+        writeByte(i + 128)
+        writeByte(i shr 8)
     }
 
-    public void writeShortLE128(int i) {
-        writeByte(i + 128);
-        writeByte(i >> 8);
+    fun writeShort128(i: Int) {
+        writeByte(i shr 8)
+        writeByte(i + 128)
     }
 
-    public void writeShort128(int i) {
-        writeByte(i >> 8);
-        writeByte(i + 128);
-    }
-
-    @SuppressWarnings("unused")
-    public void writeBigSmart(int i) {
+    @Suppress("unused")
+    fun writeBigSmart(i: Int) {
         if (Constants.CLIENT_BUILD < 670) {
-            writeShort(i);
-            return;
+            writeShort(i)
+            return
         }
         if (i >= Short.MAX_VALUE && i >= 0) {
-            writeInt(i - Integer.MAX_VALUE - 1);
+            writeInt(i - Int.MAX_VALUE - 1)
         } else {
-            writeShort(i >= 0 ? i : 32767);
+            writeShort(if (i >= 0) i else 32767)
         }
     }
 
-    public void writeSmart(int i) {
+    fun writeSmart(i: Int) {
         if (i >= 128) {
-            writeShort(i + 32768);
+            writeShort(i + 32768)
         } else {
-            writeByte(i);
+            writeByte(i)
         }
     }
 
-    public void writeShort(int i) {
-        writeByte(i >> 8);
-        writeByte(i);
+    fun writeShort(i: Int) {
+        writeByte(i shr 8)
+        writeByte(i)
     }
 
-    public void writeShortLE(int i) {
-        writeByte(i);
-        writeByte(i >> 8);
+    fun writeShortLE(i: Int) {
+        writeByte(i)
+        writeByte(i shr 8)
     }
 
-    public void write24BitInt(int i) {
-        writeByte(i >> 16);
-        writeByte(i >> 8);
-        writeByte(i);
+    fun write24BitInt(i: Int) {
+        writeByte(i shr 16)
+        writeByte(i shr 8)
+        writeByte(i)
     }
 
-    public void writeIntV1(int i) {
-        writeByte(i >> 8);
-        writeByte(i);
-        writeByte(i >> 24);
-        writeByte(i >> 16);
+    fun writeIntV1(i: Int) {
+        writeByte(i shr 8)
+        writeByte(i)
+        writeByte(i shr 24)
+        writeByte(i shr 16)
     }
 
-    public void writeIntV2(int i) {
-        writeByte(i >> 16);
-        writeByte(i >> 24);
-        writeByte(i);
-        writeByte(i >> 8);
+    fun writeIntV2(i: Int) {
+        writeByte(i shr 16)
+        writeByte(i shr 24)
+        writeByte(i)
+        writeByte(i shr 8)
     }
 
-    public void writeIntLE(int i) {
-        writeByte(i);
-        writeByte(i >> 8);
-        writeByte(i >> 16);
-        writeByte(i >> 24);
+    fun writeIntLE(i: Int) {
+        writeByte(i)
+        writeByte(i shr 8)
+        writeByte(i shr 16)
+        writeByte(i shr 24)
     }
 
-    public void writeLong(long l) {
-        writeByte((int) (l >> 56));
-        writeByte((int) (l >> 48));
-        writeByte((int) (l >> 40));
-        writeByte((int) (l >> 32));
-        writeByte((int) (l >> 24));
-        writeByte((int) (l >> 16));
-        writeByte((int) (l >> 8));
-        writeByte((int) l);
+    fun writeLong(l: Long) {
+        writeByte((l shr 56).toInt())
+        writeByte((l shr 48).toInt())
+        writeByte((l shr 40).toInt())
+        writeByte((l shr 32).toInt())
+        writeByte((l shr 24).toInt())
+        writeByte((l shr 16).toInt())
+        writeByte((l shr 8).toInt())
+        writeByte(l.toInt())
     }
 
-    public void writePSmarts(int i) {
+    fun writePSmarts(i: Int) {
         if (i < 128) {
-            writeByte(i);
-            return;
+            writeByte(i)
+            return
         }
         if (i < 32768) {
-            writeShort(32768 + i);
+            writeShort(32768 + i)
         } else {
-            System.out.println("Error psmarts out of range:");
+            println("Error psmarts out of range:")
         }
     }
 
-    public void writeString(String s) {
-        checkCapacityPosition(getOffset() + s.length() + 1);
-        System.arraycopy(s.getBytes(), 0, getBuffer(), getOffset(), s.length());
-        setOffset(getOffset() + s.length());
-        writeByte(0);
+    fun writeString(s: String) {
+        checkCapacityPosition(offset + s.length + 1)
+        System.arraycopy(s.toByteArray(), 0, buffer, offset, s.length)
+        offset = offset + s.length
+        writeByte(0)
     }
 
-    public void writeGJString(String s) {
-        writeByte(0);
-        writeString(s);
+    fun writeGJString(s: String) {
+        writeByte(0)
+        writeString(s)
     }
 
-    public void putGJString3(String s) {
-        writeByte(0);
-        writeString(s);
-        writeByte(0);
+    fun putGJString3(s: String) {
+        writeByte(0)
+        writeString(s)
+        writeByte(0)
     }
 
-    public void writePacket(int id) {
-        writeByte(id);
+    fun writePacket(id: Int) {
+        writeByte(id)
     }
 
-    public void writePacketVarByte(int id) {
-        writePacket(id);
-        writeByte(0);
-        opcodeStart = getOffset() - 1;
+    fun writePacketVarByte(id: Int) {
+        writePacket(id)
+        writeByte(0)
+        opcodeStart = offset - 1
     }
 
-    public void writePacketVarShort(int id) {
-        writePacket(id);
-        writeShort(0);
-        opcodeStart = getOffset() - 2;
+    fun writePacketVarShort(id: Int) {
+        writePacket(id)
+        writeShort(0)
+        opcodeStart = offset - 2
     }
 
     /*
      * public void writePacketShort(int id) { writeByte(id); writeShort(0);
      * opcodeStart = getOffset() - 2; }
      */
-
-    public void endPacketVarByte() {
-        writeByte(getOffset() - (opcodeStart + 2) + 1, opcodeStart);
+    fun endPacketVarByte() {
+        writeByte(offset - (opcodeStart + 2) + 1, opcodeStart)
     }
 
-    public void endPacketVarShort() {
-        int size = getOffset() - (opcodeStart + 2);
-        writeByte(size >> 8, opcodeStart++);
-        writeByte(size, opcodeStart);
+    fun endPacketVarShort() {
+        val size = offset - (opcodeStart + 2)
+        writeByte(size shr 8, opcodeStart++)
+        writeByte(size, opcodeStart)
     }
 
-    public void initBitAccess() {
-        bitPosition = getOffset() * 8;
+    fun initBitAccess() {
+        bitPosition = offset * 8
     }
 
-    public void finishBitAccess() {
-        setOffset((bitPosition + 7) / 8);
+    fun finishBitAccess() {
+        offset = (bitPosition + 7) / 8
     }
 
-    public int getBitPos(int i) {
-        return 8 * i - bitPosition;
+    fun getBitPos(i: Int): Int {
+        return 8 * i - bitPosition
     }
 
-    public void writeBits(int numBits, int value) {
-        int bytePos = bitPosition >> 3;
-        int bitOffset = 8 - (bitPosition & 7);
-        bitPosition += numBits;
-        for (; numBits > bitOffset; bitOffset = 8) {
-            checkCapacityPosition(bytePos);
-            getBuffer()[bytePos] &= ~BIT_MASK[bitOffset];
-            getBuffer()[bytePos++] |= value >> numBits - bitOffset & BIT_MASK[bitOffset];
-            numBits -= bitOffset;
+    fun writeBits(numBits: Int, value: Int) {
+        var numBits = numBits
+        var bytePos = bitPosition shr 3
+        var bitOffset = 8 - (bitPosition and 7)
+        bitPosition += numBits
+        while (numBits > bitOffset) {
+            checkCapacityPosition(bytePos)
+            buffer!![bytePos] = (buffer!![bytePos].toInt() and BIT_MASK[bitOffset].inv()).toByte()
+            buffer!![bytePos++] = (buffer!![bytePos++]
+                .toInt() or (value shr numBits - bitOffset and BIT_MASK[bitOffset])).toByte()
+            numBits -= bitOffset
+            bitOffset = 8
         }
-        checkCapacityPosition(bytePos);
+        checkCapacityPosition(bytePos)
         if (numBits == bitOffset) {
-            getBuffer()[bytePos] &= ~BIT_MASK[bitOffset];
-            getBuffer()[bytePos] |= value & BIT_MASK[bitOffset];
+            buffer!![bytePos] = (buffer!![bytePos].toInt() and BIT_MASK[bitOffset].inv()).toByte()
+            buffer!![bytePos] = (buffer!![bytePos].toInt() or (value and BIT_MASK[bitOffset])).toByte()
         } else {
-            getBuffer()[bytePos] &= ~(BIT_MASK[numBits] << bitOffset - numBits);
-            getBuffer()[bytePos] |= (value & BIT_MASK[numBits]) << bitOffset - numBits;
+            buffer!![bytePos] = (buffer!![bytePos]
+                .toInt() and (BIT_MASK[numBits] shl bitOffset - numBits).inv()).toByte()
+            buffer!![bytePos] = (buffer!![bytePos]
+                .toInt() or (value and BIT_MASK[numBits] shl bitOffset - numBits)).toByte()
         }
     }
 
-    public void rsaEncode(BigInteger key, BigInteger modulus) {
-        int length = offset;
-        offset = 0;
-        byte[] data = new byte[length];
-        getBytes(data, 0, length);
-        BigInteger biginteger2 = new BigInteger(data);
-        BigInteger biginteger3 = biginteger2.modPow(key, modulus);
-        byte[] out = biginteger3.toByteArray();
-        offset = 0;
-        writeBytes(out, 0, out.length);
+    fun rsaEncode(key: BigInteger?, modulus: BigInteger?) {
+        val length = offset
+        offset = 0
+        val data = ByteArray(length)
+        getBytes(data, 0, length)
+        val biginteger2 = BigInteger(data)
+        val biginteger3 = biginteger2.modPow(key, modulus)
+        val out = biginteger3.toByteArray()
+        offset = 0
+        writeBytes(out, 0, out.size)
     }
 
-    public void writeBytes(byte[] b, int offset, int length) {
-        checkCapacityPosition(this.getOffset() + length - offset);
-        System.arraycopy(b, offset, getBuffer(), this.getOffset(), length);
-        this.setOffset(this.getOffset() + (length - offset));
+    fun writeBytes(b: ByteArray?, offset: Int, length: Int) {
+        checkCapacityPosition(this.offset + length - offset)
+        System.arraycopy(b, offset, buffer, this.offset, length)
+        this.offset = this.offset + (length - offset)
     }
 
+    companion object {
+
+        private val BIT_MASK = IntArray(32)
+
+        init {
+            for (i in 0..31) {
+                BIT_MASK[i] = (1 shl i) - 1
+            }
+        }
+    }
 }
