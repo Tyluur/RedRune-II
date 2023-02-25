@@ -82,6 +82,9 @@ dependencies {
     // Network
     implementation("io.netty:netty-all:4.1.86.Final")
 
+    // Swing
+    implementation("com.sun.activation:javax.activation:1.2.0")
+
     //Testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
