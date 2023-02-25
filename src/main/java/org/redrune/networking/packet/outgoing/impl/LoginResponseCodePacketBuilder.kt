@@ -1,40 +1,32 @@
-package org.redrune.networking.packet.outgoing.impl;
+package org.redrune.networking.packet.outgoing.impl
 
-import org.redrune.networking.packet.Packet;
-import org.redrune.networking.packet.PacketBuilder;
-import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder;
-import org.redrune.utility.game.entity.actor.player.LoginReturnCode;
+import org.redrune.networking.packet.Packet
+import org.redrune.networking.packet.PacketBuilder
+import org.redrune.networking.packet.outgoing.OutgoingPacketBuilder
+import org.redrune.utility.game.entity.actor.player.LoginReturnCode
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-02-02
  */
-public class LoginResponseCodePacketBuilder extends OutgoingPacketBuilder {
+class LoginResponseCodePacketBuilder
+/**
+ * Constructs a new login response packet with the numerical value of the response code. See [LoginReturnCode]
+ * for the possible values
+ */(
+        /**
+         * The byte value of the response code
+         */
+        private val responseCode: Int
+) : OutgoingPacketBuilder(PacketBuilder()) {
 
     /**
-     * The byte value of the response code
+     * Constructs a new login response packet with a `LoginReturnCode` `Object`
      */
-    private final int responseCode;
+    constructor(code: LoginReturnCode) : this(code.value.toInt())
 
-    /**
-     * Constructs a new login response packet with a {@code LoginReturnCode} {@code Object}
-     */
-    public LoginResponseCodePacketBuilder(LoginReturnCode code) {
-        this(code.value);
-    }
-
-    /**
-     * Constructs a new login response packet with the numerical value of the response code. See {@link LoginReturnCode}
-     * for the possible values
-     */
-    public LoginResponseCodePacketBuilder(int responseCode) {
-        super(new PacketBuilder());
-        this.responseCode = responseCode;
-    }
-
-    @Override
-    public Packet build() {
-        bldr.writeByte(responseCode);
-        return bldr.toPacket();
+    override fun build(): Packet {
+        bldr.writeByte(responseCode)
+        return bldr.toPacket()
     }
 }
