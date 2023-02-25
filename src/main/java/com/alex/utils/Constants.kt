@@ -1,40 +1,20 @@
-package com.alex.utils;
+package com.alex.utils
 
-public final class Constants {
-
-    public static final int NO_COMPRESSION = 0;
-
-    public static final int BZIP2_COMPRESSION = 1;
-
-    public static final int GZIP_COMPRESSION = 2;
-
-    public static final int MAX_VALID_ARCHIVE_LENGTH = 1000000;
-
-    public static final int INTERFACE_DEFINITIONS_INDEX = 3;
-
-    public static final int MAPS_INDEX = 5;
-
-    public static final int MODELS_INDEX = 7;
-
-    public static final int SPRITES_INDEX = 8;
-
-    public static final int INDEXED_IMAGES_INDEX = 8;
-
-    public static final int OBJECTS_DEFINITIONS_INDEX = 18;
-
-    public static final int NPC_DEFINITIONS_INDEX = 18;
-
-    public static final int ITEM_DEFINITIONS_INDEX = 19;
-
-    public static final int LOADER_IMAGES_INDEX = 32;
-
-    public static final int LOADER_INDEXED_IMAGES_INDEX = 34;
-
-    public static final int CLIENT_BUILD = 667;
-
-    public static final boolean ENCRYPTED_CACHE = false;
-
-    private Constants() {
-
-    }
+object Constants {
+    const val NO_COMPRESSION = 0
+    const val BZIP2_COMPRESSION = 1
+    const val GZIP_COMPRESSION = 2
+    const val MAX_VALID_ARCHIVE_LENGTH = 1000000
+    const val INTERFACE_DEFINITIONS_INDEX = 3
+    const val MAPS_INDEX = 5
+    const val MODELS_INDEX = 7
+    const val SPRITES_INDEX = 8
+    const val INDEXED_IMAGES_INDEX = 8
+    const val OBJECTS_DEFINITIONS_INDEX = 18
+    const val NPC_DEFINITIONS_INDEX = 18
+    const val ITEM_DEFINITIONS_INDEX = 19
+    const val LOADER_IMAGES_INDEX = 32
+    const val LOADER_INDEXED_IMAGES_INDEX = 34
+    const val CLIENT_BUILD = 667
+    const val ENCRYPTED_CACHE = false
 }

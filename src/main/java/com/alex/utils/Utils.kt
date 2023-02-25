@@ -1,56 +1,52 @@
-package com.alex.utils;
+package com.alex.utils
 
-import com.alex.io.OutputStream;
-import com.alex.store.Store;
+import com.alex.io.OutputStream
+import com.alex.store.Store
+import java.math.BigInteger
+import java.util.*
 
-import java.math.BigInteger;
-
-public final class Utils {
-
-    private Utils() {
-
+object Utils {
+    @JvmStatic
+    fun cryptRSA(data: ByteArray?, exponent: BigInteger?, modulus: BigInteger?): ByteArray {
+        return BigInteger(data).modPow(exponent, modulus).toByteArray()
     }
 
-    public static byte[] cryptRSA(byte[] data, BigInteger exponent, BigInteger modulus) {
-        return new BigInteger(data).modPow(exponent, modulus).toByteArray();
-    }
-
-    public static byte[] getArchivePacketData(int indexId, int archiveId, byte[] archive) {
-        OutputStream stream = new OutputStream(archive.length + 4);
-        stream.writeByte(indexId);
-        stream.writeShort(archiveId);
-        stream.writeByte(0); // priority, no compression
-        stream.writeInt(archive.length);
-        int offset = 8;
-        for (int index = 0; index < archive.length; index++) {
+    fun getArchivePacketData(indexId: Int, archiveId: Int, archive: ByteArray): ByteArray {
+        val stream = OutputStream(archive.size + 4)
+        stream.writeByte(indexId)
+        stream.writeShort(archiveId)
+        stream.writeByte(0) // priority, no compression
+        stream.writeInt(archive.size)
+        var offset = 8
+        for (index in archive.indices) {
             if (offset == 512) {
-                stream.writeByte(-1);
-                offset = 1;
+                stream.writeByte(-1)
+                offset = 1
             }
-            stream.writeByte(archive[index]);
-            offset++;
+            stream.writeByte(archive[index].toInt())
+            offset++
         }
-        byte[] packet = new byte[stream.getOffset()];
-        stream.setOffset(0);
-        stream.getBytes(packet, 0, packet.length);
-        return packet;
+        val packet = ByteArray(stream.offset)
+        stream.offset = 0
+        stream.getBytes(packet, 0, packet.size)
+        return packet
     }
 
-    public static int getNameHash(String name) {
-        return name.toLowerCase().hashCode();
+    @JvmStatic
+    fun getNameHash(name: String): Int {
+        return name.lowercase(Locale.getDefault()).hashCode()
     }
 
-    public static int getInterfaceDefinitionsSize(Store store) {
-        return store.getIndexes()[3].getLastArchiveId();
+    fun getInterfaceDefinitionsSize(store: Store): Int {
+        return store.indexes[3].lastArchiveId
     }
 
-    public static int getInterfaceDefinitionsComponentsSize(Store store, int interfaceId) {
-        return store.getIndexes()[3].getLastFileId(interfaceId);
+    fun getInterfaceDefinitionsComponentsSize(store: Store, interfaceId: Int): Int {
+        return store.indexes[3].getLastFileId(interfaceId)
     }
 
-    public static int getItemDefinitionsSize(Store store) {
-        int lastArchiveId = store.getIndexes()[19].getLastArchiveId();
-        return lastArchiveId * 256 + store.getIndexes()[19].getValidFilesCount(lastArchiveId);
+    fun getItemDefinitionsSize(store: Store): Int {
+        val lastArchiveId = store.indexes[19].lastArchiveId
+        return lastArchiveId * 256 + store.indexes[19].getValidFilesCount(lastArchiveId)
     }
-
 }
