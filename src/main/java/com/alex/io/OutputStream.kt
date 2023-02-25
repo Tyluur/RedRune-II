@@ -5,6 +5,8 @@ import java.math.BigInteger
 
 class OutputStream : Stream {
 
+
+
     private var opcodeStart = 0
 
     constructor(capacity: Int) {
@@ -27,9 +29,6 @@ class OutputStream : Stream {
             writeByte(value)
         }
     }
-
-    override var buffer: ByteArray
-        get() = super.buffer
 
     @JvmOverloads
     fun writeByte(i: Int, position: Int = offset++) {
@@ -55,9 +54,6 @@ class OutputStream : Stream {
     fun skip(length: Int) {
         offset = offset + length
     }
-
-    override var offset: Int = 0
-        get() = super.offset
 
     fun writeBytes(b: ByteArray) {
         val offset = 0

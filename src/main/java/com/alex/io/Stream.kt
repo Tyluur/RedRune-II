@@ -2,15 +2,10 @@ package com.alex.io
 
 abstract class Stream {
 
-    open var offset = 0
-        set
-    open var length = 0
-        set
-    open var buffer: ByteArray = byteArrayOf()
-        set
-
-    @JvmField
-    var bitPosition = 0
+    open var offset: Int = 0
+    open var length: Int = 0
+    open var bitPosition: Int = 0
+    open var buffer: ByteArray = ByteArray(length)
 
     @JvmOverloads
     fun decodeXTEA(keys: IntArray, start: Int = 5, end: Int = length) {

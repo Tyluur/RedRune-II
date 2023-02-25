@@ -1,6 +1,7 @@
 package com.alex.io
 
 class InputStream : Stream {
+
     constructor(capacity: Int) {
         buffer = ByteArray(capacity)
     }
@@ -40,11 +41,6 @@ class InputStream : Stream {
     fun skip(length: Int) {
         offset += length
     }
-
-    override var length: Int = 0
-        get() = super.length
-    override var offset: Int = 0
-        get() = super.offset
 
     fun addBytes(b: ByteArray?, offset: Int, length: Int) {
         checkCapacity(length - offset)
