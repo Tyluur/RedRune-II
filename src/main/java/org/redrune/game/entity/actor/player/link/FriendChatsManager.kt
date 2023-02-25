@@ -66,7 +66,7 @@ class FriendChatsManager private constructor(player: Player) {
             }
             dataBlock = ByteArray(stream.offset)
             stream.offset = 0
-            stream.getBytes(dataBlock, 0, dataBlock!!.size)
+            stream.getBytes(dataBlock!!, 0, dataBlock!!.size)
             for (player in players) {
                 dataBlock!![kickOffset] = (if (player.username == this.ownerName) 0 else whoCanKickOnChat).toByte()
                 player.packets.sendFriendsChatChannel()
