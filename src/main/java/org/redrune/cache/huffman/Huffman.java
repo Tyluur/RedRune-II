@@ -86,7 +86,7 @@ public final class Huffman {
 
     public static int sendEncryptMessage(PacketBuilder bldr, String message) {
         try {
-            OutputStream stream = new OutputStream(bldr.getBuffer().array());
+            OutputStream stream = new OutputStream(bldr.buffer.array());
 
             int startOffset = stream.getOffset();
             byte[] messageData = Misc.getFormatedMessage(message);
