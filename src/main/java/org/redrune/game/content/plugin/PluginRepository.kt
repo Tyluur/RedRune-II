@@ -327,7 +327,8 @@ object PluginRepository {
      */
     @JvmStatic
     fun getRangeWeapon(weaponId: Int): Optional<RangeWeaponPlugin> {
-        val name = if (weaponId == -1) "unarmed" else ItemDefinitions.getItemDefinitions(weaponId).name.toLowerCase()
+        val name =
+            if (weaponId == -1) "unarmed" else ItemDefinitions.getItemDefinitions(weaponId).name.lowercase(Locale.getDefault())
         for ((specialName, value) in RANGE_PLUGINS) {
             val regex = specialName.replace("\\*".toRegex(), ".*")
             val pattern = Pattern.compile(regex)
