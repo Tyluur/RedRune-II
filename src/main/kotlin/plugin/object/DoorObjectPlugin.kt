@@ -5,14 +5,16 @@ import org.redrune.game.content.plugin.type.ObjectPlugin
 import org.redrune.game.entity.actor.player.Player
 import org.redrune.game.entity.`object`.WorldObject
 import org.redrune.utility.game.repository.door.DoorRepository
+import java.util.*
 
 /**
  * @author Tyluur <itstyluur@icloud.com>
  * @since 2019-01-31
  */
 class DoorObjectPlugin : ObjectPlugin {
+
     override fun handle(player: Player, `object`: WorldObject, option: String): Boolean {
-        val name: String = `object`.definitions.name.toLowerCase()
+        val name: String = `object`.definitions.name.lowercase(Locale.getDefault())
         if (name.contains("trapdoor") || name.contains("trap door")) {
             player.packets.sendMessage("This doesn't seem to go anywhere.")
             return true

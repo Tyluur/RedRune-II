@@ -92,7 +92,7 @@ object Censor {
     @JvmStatic
     fun getFilteredMessage(message: String): String {
         var message = message
-        message = message.toLowerCase()
+        message = message.lowercase(Locale.getDefault())
         for (word in CENSORED_WORDS) {
             if (message.contains(word)) {
                 val sb = StringBuilder()
