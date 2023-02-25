@@ -49,7 +49,7 @@ dependencies {
     implementation("io.github.classgraph", "classgraph", "4.8.78")
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:1.2.3") {
+    implementation("ch.qos.logback:logback-classic:1.2.9") {
         exclude("org.slf4j", "slf4j-jdk14")
     }
     implementation("com.michael-bull.kotlin-inline-logger", "kotlin-inline-logger-jvm", "1.0.2")
@@ -58,30 +58,29 @@ dependencies {
     implementation("com.displee", "rs-cache-library", "6.7")
     implementation("com.github.michaelbull", "rs-api", "1.1.1")
 
-    //Utilities
-    implementation("com.google.guava:guava:29.0-jre")
+    // Utilities
+    implementation("com.google.guava:guava:30.0-android")
     implementation("org.apache.commons:commons-lang3:3.10")
     implementation("commons-cli", "commons-cli", "1.4")
-
-    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-paranamer:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-
-    implementation("org.postgresql:postgresql:42.2.12")
-    implementation("com.zaxxer:HikariCP:3.4.5")
     implementation("it.unimi.dsi:fastutil:8.3.1")
-    implementation("com.zaxxer", "HikariCP", "2.3.2")
     implementation("org.yaml", "snakeyaml", "1.26")
-    implementation("com.sun.activation:javax.activation:1.2.0")
 
-    implementation("io.cryptoapis", "cryptoapis-java-client", "1.3.0")
+    // File IO
+    implementation("com.fasterxml.jackson.core", "jackson-core", jacksonVersion)
+    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
+    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
+    implementation("com.fasterxml.jackson.module", "jackson-module-paranamer", jacksonVersion)
+    implementation("com.fasterxml.jackson.module", "jackson-module-parameter-names", jacksonVersion)
+    implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jdk8", jacksonVersion)
+    implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jsr310", jacksonVersion)
+
+    // Database Management
+    implementation("org.postgresql:postgresql:42.2.27")
+    implementation("com.zaxxer:HikariCP:3.4.5")
+    implementation("com.zaxxer", "HikariCP", "2.3.2")
 
     // Network
-    implementation("io.netty:netty-all:4.1.44.Final")
+    implementation("io.netty:netty-all:4.1.86.Final")
 
     //Testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
