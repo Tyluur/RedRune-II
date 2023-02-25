@@ -1,30 +1,28 @@
-package com.alex.util.gzip;
+package com.alex.util.gzip
 
-import com.alex.io.Stream;
+import com.alex.io.Stream
+import java.util.zip.Inflater
 
-import java.util.zip.Inflater;
+object GZipDecompressor {
 
-public class GZipDecompressor {
-
-    private static final Inflater inflaterInstance = new Inflater(true);
-
-    public static final boolean decompress(Stream stream, byte[] data) {
-        synchronized (inflaterInstance) {
-            if (stream.getBuffer()[stream.getOffset()] != 31 || stream.getBuffer()[stream.getOffset() + 1] != -117) {
-                return false;
+    private val inflaterInstance = Inflater(true)
+    @JvmStatic
+    fun decompress(stream: Stream, data: ByteArray?): Boolean {
+        synchronized(inflaterInstance) {
+            if (stream.buffer[stream.offset].toInt() != 31 || stream.buffer[stream.offset + 1].toInt() != -117) {
+                return false
             }
             //throw new RuntimeException("Invalid GZIP header!");
             try {
-                inflaterInstance.setInput(stream.getBuffer(), stream.getOffset() + 10, -stream.getOffset() - 18 + stream.getBuffer().length);
-                inflaterInstance.inflate(data);
-            } catch (Exception e) {
-                inflaterInstance.reset();
-                return false;
+                inflaterInstance.setInput(stream.buffer, stream.offset + 10, -stream.offset - 18 + stream.buffer.size)
+                inflaterInstance.inflate(data)
+            } catch (e: Exception) {
+                inflaterInstance.reset()
+                return false
                 //throw new RuntimeException("Invalid GZIP compressed data!");
             }
-            inflaterInstance.reset();
-            return true;
+            inflaterInstance.reset()
+            return true
         }
     }
-
 }
