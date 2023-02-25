@@ -1,66 +1,59 @@
-package org.redrune.networking.packet;
+package org.redrune.networking.packet
 
-import io.netty.buffer.ByteBuf;
-import org.redrune.utility.functions.BufferUtils;
+import io.netty.buffer.ByteBuf
+import org.redrune.utility.functions.BufferUtils
 
 /**
- * Contains all the data inside of a packet. Netty 4 usage only.
+ * Contains all the data inside a packet. Netty 4 usage only.
  *
  * @author 'Mystic Flow
  * @author Tyluur <itstyluur@icloud.com>
  * @since 7/19/2017
  */
-public class Packet {
-
+class Packet(
     /**
      * The opcode of the packet
      */
-    private final int opcode;
-
+    val opcode: Int,
     /**
      * The type of packet this is
      */
-    private final PacketType type;
-
+    val type: PacketType,
     /**
      * The buffer of the packet
      */
-    private final ByteBuf buffer;
+    @JvmField val buffer: ByteBuf
+) {
 
     /**
      * The length of the packet
      */
-    private final int length;
+    val length: Int
 
     /**
      * Constructs a new packet
      */
-    public Packet(int opcode, PacketType type, ByteBuf buffer) {
-        this.opcode = opcode;
-        this.type = type;
-        this.buffer = buffer;
-        this.length = buffer.readableBytes();
+    init {
+        length = buffer.readableBytes()
     }
 
-    @Override
-    public String toString() {
-        return "Packet{" + "opcode=" + opcode + ", type=" + type + ", length=" + length + '}';
+    override fun toString(): String {
+        return "Packet{opcode=$opcode, type=$type, length=$length}"
     }
 
-    /**
-     * If the packet is raw, meaning it was built with no opcode
-     */
-    public boolean isRaw() {
-        return opcode == -1;
-    }
+    val isRaw: Boolean
+        /**
+         * If the packet is raw, meaning it was built with no opcode
+         */
+        get() = opcode == -1
 
     /**
      * Reads an integer.
      *
      * @return An integer.
      */
-    public int readInt() {
-        return buffer.readInt();
+    fun readInt(): Int {
+        return buffer.readInt()
     }
 
     /**
@@ -68,8 +61,8 @@ public class Packet {
      *
      * @return A long.
      */
-    public long readLong() {
-        return buffer.readLong();
+    fun readLong(): Long {
+        return buffer.readLong()
     }
 
     /**
@@ -77,40 +70,40 @@ public class Packet {
      *
      * @return A type C byte.
      */
-    public byte readByteC() {
-        return (byte) (-readByte());
+    fun readByteC(): Byte {
+        return (-readByte()).toByte()
     }
 
-    public byte readByte() {
-        return buffer.readByte();
+    fun readByte(): Byte {
+        return buffer.readByte()
     }
 
-    public int readUnsignedByteC() {
-        return -readUnsignedByte() & 0xff;
+    fun readUnsignedByteC(): Int {
+        return -readUnsignedByte() and 0xff
     }
 
-    public int readUnsignedByte() {
-        return buffer.readUnsignedByte();
+    fun readUnsignedByte(): Int {
+        return buffer.readUnsignedByte().toInt()
     }
 
-    public int readIntLE() {
-        return readUnsignedByte() + (readUnsignedByte() << 8) + (readUnsignedByte() << 16) + (readUnsignedByte() << 24);
+    fun readIntLE(): Int {
+        return readUnsignedByte() + (readUnsignedByte() shl 8) + (readUnsignedByte() shl 16) + (readUnsignedByte() shl 24)
     }
 
-    public int readByte128() {
-        return (byte) (readByte() - 128);
+    fun readByte128(): Int {
+        return (readByte() - 128).toByte().toInt()
     }
 
-    public int read128Byte() {
-        return (byte) (128 - readByte());
+    fun read128Byte(): Int {
+        return (128 - readByte()).toByte().toInt()
     }
 
-    public int readUnsignedByte128() {
-        return readUnsignedByte() - 128 & 0xff;
+    fun readUnsignedByte128(): Int {
+        return readUnsignedByte() - 128 and 0xff
     }
 
-    public int readUnsignedShort128() {
-        return (readUnsignedByte() << 8) + (readByte() - 128 & 0xff);
+    fun readUnsignedShort128(): Int {
+        return (readUnsignedByte() shl 8) + (readByte() - 128 and 0xff)
     }
 
     /**
@@ -118,9 +111,8 @@ public class Packet {
      *
      * @return A little-endian type A short.
      */
-    public int readShortLE128() {
-        int i = (buffer.readByte() - 128 & 0xFF) | ((buffer.readByte() & 0xFF) << 8);
-        return i;
+    fun readShortLE128(): Int {
+        return buffer.readByte() - 128 and 0xFF or (buffer.readByte().toInt() and 0xFF shl 8)
     }
 
     /**
@@ -128,8 +120,8 @@ public class Packet {
      *
      * @return A little-endian short.
      */
-    public int readLEShort() {
-        return (buffer.readByte() & 0xFF) | ((buffer.readByte() & 0xFF) << 8);
+    fun readLEShort(): Int {
+        return buffer.readByte().toInt() and 0xFF or (buffer.readByte().toInt() and 0xFF shl 8)
     }
 
     /**
@@ -137,8 +129,9 @@ public class Packet {
      *
      * @return A V1 integer.
      */
-    public int readIntV1() {
-        return (buffer.readUnsignedByte() << 8) + buffer.readUnsignedByte() + (buffer.readUnsignedByte() << 24) + (buffer.readUnsignedByte() << 16);
+    fun readIntV1(): Int {
+        return (buffer.readUnsignedByte().toInt() shl 8) + buffer.readUnsignedByte() + (buffer.readUnsignedByte()
+            .toInt() shl 24) + (buffer.readUnsignedByte().toInt() shl 16)
     }
 
     /**
@@ -146,16 +139,16 @@ public class Packet {
      *
      * @return A V2 integer.
      */
-    public int readInt2() {
-        int b1 = buffer.readByte() & 0xFF;
-        int b2 = buffer.readByte() & 0xFF;
-        int b3 = buffer.readByte() & 0xFF;
-        int b4 = buffer.readByte() & 0xFF;
-        return (b2 << 24 | b1 << 16 | b4 << 8 | b3);
+    fun readInt2(): Int {
+        val b1 = buffer.readByte().toInt() and 0xFF
+        val b2 = buffer.readByte().toInt() and 0xFF
+        val b3 = buffer.readByte().toInt() and 0xFF
+        val b4 = buffer.readByte().toInt() and 0xFF
+        return b2 shl 24 or (b1 shl 16) or (b4 shl 8) or b3
     }
 
-    public int readIntV2() {
-        return (readUnsignedByte() << 16) + (readUnsignedByte() << 24) + readUnsignedByte() + (readUnsignedByte() << 8);
+    fun readIntV2(): Int {
+        return (readUnsignedByte() shl 16) + (readUnsignedByte() shl 24) + readUnsignedByte() + (readUnsignedByte() shl 8)
     }
 
     /**
@@ -163,8 +156,9 @@ public class Packet {
      *
      * @return The 3-byte integer.
      */
-    public int readTriByte() {
-        return ((buffer.readByte() << 16) & 0xFF) | ((buffer.readByte() << 8) & 0xFF) | (buffer.readByte() & 0xFF);
+    fun readTriByte(): Int {
+        return buffer.readByte().toInt() shl 16 and 0xFF or (buffer.readByte()
+            .toInt() shl 8 and 0xFF) or (buffer.readByte().toInt() and 0xFF)
     }
 
     /**
@@ -172,8 +166,8 @@ public class Packet {
      *
      * @return A type A short.
      */
-    public int readShortA() {
-        return ((buffer.readByte() & 0xFF) << 8) | (buffer.readByte() - 128 & 0xFF);
+    fun readShortA(): Int {
+        return buffer.readByte().toInt() and 0xFF shl 8 or (buffer.readByte() - 128 and 0xFF)
     }
 
     /**
@@ -183,9 +177,9 @@ public class Packet {
      * @param offset The offset.
      * @param length The length.
      */
-    public void readReverse(byte[] bytes, int offset, int length) {
-        for (int i = (offset + length - 1); i >= offset; i--) {
-            bytes[i] = buffer.readByte();
+    fun readReverse(bytes: ByteArray, offset: Int, length: Int) {
+        for (i in offset + length - 1 downTo offset) {
+            bytes[i] = buffer.readByte()
         }
     }
 
@@ -196,9 +190,9 @@ public class Packet {
      * @param offset The offset.
      * @param length The length.
      */
-    public void readReverseA(byte[] bytes, int offset, int length) {
-        for (int i = (offset + length - 1); i >= offset; i--) {
-            bytes[i] = readByteA();
+    fun readReverseA(bytes: ByteArray, offset: Int, length: Int) {
+        for (i in offset + length - 1 downTo offset) {
+            bytes[i] = readByteA()
         }
     }
 
@@ -207,8 +201,8 @@ public class Packet {
      *
      * @return A type A byte.
      */
-    public byte readByteA() {
-        return (byte) (readByte() - 128);
+    fun readByteA(): Byte {
+        return (readByte() - 128).toByte()
     }
 
     /**
@@ -218,9 +212,9 @@ public class Packet {
      * @param offset The offset.
      * @param length The length.
      */
-    public void read(byte[] bytes, int offset, int length) {
-        for (int i = 0; i < length; i++) {
-            bytes[offset + i] = buffer.readByte();
+    fun read(bytes: ByteArray, offset: Int, length: Int) {
+        for (i in 0 until length) {
+            bytes[offset + i] = buffer.readByte()
         }
     }
 
@@ -229,21 +223,21 @@ public class Packet {
      *
      * @return The smart.
      */
-    public int readSmart() {
-        int peek = buffer.getByte(buffer.readerIndex());
-        if (peek < 128) {
-            return (readByte() & 0xFF);
+    fun readSmart(): Int {
+        val peek = buffer.getByte(buffer.readerIndex()).toInt()
+        return if (peek < 128) {
+            readByte().toInt() and 0xFF
         } else {
-            return (readShort() & 0xFFFF) - 32768;
+            (readShort() and 0xFFFF) - 32768
         }
     }
 
-    public int readShortLE() {
-        int i = readUnsignedByte() + (readUnsignedByte() << 8);
+    fun readShortLE(): Int {
+        var i = readUnsignedByte() + (readUnsignedByte() shl 8)
         if (i > 32767) {
-            i -= 0x10000;
+            i -= 0x10000
         }
-        return i;
+        return i
     }
 
     /**
@@ -251,25 +245,25 @@ public class Packet {
      *
      * @return A short.
      */
-    public int readShort() {
-        return buffer.readShort();
+    fun readShort(): Int {
+        return buffer.readShort().toInt()
     }
 
-    public int remaining() {
-        return buffer.readableBytes();
+    fun remaining(): Int {
+        return buffer.readableBytes()
     }
 
-    public void readBytes(byte[] textBuffer, int length) {
-        buffer.readBytes(textBuffer, 0, length);
+    fun readBytes(textBuffer: ByteArray?, length: Int) {
+        buffer.readBytes(textBuffer, 0, length)
     }
 
-    public void readBytes(byte[] textBuffer) {
-        buffer.readBytes(textBuffer);
+    fun readBytes(textBuffer: ByteArray?) {
+        buffer.readBytes(textBuffer)
     }
 
-    public String readJagString() {
-        readByte();
-        return readRS2String();
+    fun readJagString(): String {
+        readByte()
+        return readRS2String()
     }
 
     /**
@@ -277,20 +271,19 @@ public class Packet {
      *
      * @return The string.
      */
-    public String readRS2String() {
-        return BufferUtils.readRS2String(buffer);
+    fun readRS2String(): String {
+        return BufferUtils.readRS2String(buffer)
     }
 
-    public int readLEInt() {
-        return readUnsignedByte() + (readUnsignedByte() << 8) + (readUnsignedByte() << 16) + (readUnsignedByte() << 24);
+    fun readLEInt(): Int {
+        return readUnsignedByte() + (readUnsignedByte() shl 8) + (readUnsignedByte() shl 16) + (readUnsignedByte() shl 24)
     }
 
-    public int readUnsignedSmart() {
-        int i = 0xff & buffer.arrayOffset();
-        if (i >= 128) {
-            return -32768 + readUnsignedShort();
-        }
-        return readUnsignedByte();
+    fun readUnsignedSmart(): Int {
+        val i = 0xff and buffer.arrayOffset()
+        return if (i >= 128) {
+            -32768 + readUnsignedShort()
+        } else readUnsignedByte()
     }
 
     /**
@@ -298,40 +291,23 @@ public class Packet {
      *
      * @return An unsigned short.
      */
-    public int readUnsignedShort() {
-        return buffer.readUnsignedShort();
+    fun readUnsignedShort(): Int {
+        return buffer.readUnsignedShort()
     }
 
-    public int readUnsignedShortLE128() {
-        return (buffer.readByte() - 128 & 0xff) + (buffer.readUnsignedByte() << 8);
+    fun readUnsignedShortLE128(): Int {
+        return (buffer.readByte() - 128 and 0xff) + (buffer.readUnsignedByte().toInt() shl 8)
     }
 
-    public int readUnsignedShortLE() {
-        return readUnsignedByte() + (readUnsignedByte() << 8);
+    fun readUnsignedShortLE(): Int {
+        return readUnsignedByte() + (readUnsignedByte() shl 8)
     }
 
-    public int readShort128() {
-        int i = (readUnsignedByte() << 8) + (readByte() - 128 & 0xff);
+    fun readShort128(): Int {
+        var i = (readUnsignedByte() shl 8) + (readByte() - 128 and 0xff)
         if (i > 32767) {
-            i -= 0x10000;
+            i -= 0x10000
         }
-        return i;
+        return i
     }
-
-    public int getOpcode() {
-        return opcode;
-    }
-
-    public PacketType getType() {
-        return type;
-    }
-
-    public ByteBuf getBuffer() {
-        return buffer;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
 }
