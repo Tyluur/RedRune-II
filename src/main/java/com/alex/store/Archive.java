@@ -141,7 +141,7 @@ public class Archive {
     }
 
     public byte[] getData() {
-        return data;
+            return data;
     }
 
     public int getDecompressedLength() {
