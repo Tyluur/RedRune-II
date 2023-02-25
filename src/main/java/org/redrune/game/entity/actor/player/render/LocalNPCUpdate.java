@@ -33,7 +33,7 @@ public final class LocalNPCUpdate {
         PacketBuilder stream = new PacketBuilder(6, PacketType.VAR_SHORT);
         PacketBuilder updateBlockData = new PacketBuilder();
         processLocalNPCsInform(stream, updateBlockData);
-        stream.writeBytes(updateBlockData.getBuffer());
+        stream.writeBytes(updateBlockData.buffer);
         return stream;
     }
 
