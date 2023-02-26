@@ -61,11 +61,12 @@ dependencies {
     // Utilities
     implementation("com.google.guava:guava:30.0-android")
     implementation("org.apache.commons:commons-lang3:3.10")
-    implementation("commons-cli", "commons-cli", "1.4")
+    implementation("commons-cli:commons-cli:1.4")
     implementation("it.unimi.dsi:fastutil:8.3.1")
-    implementation("org.yaml", "snakeyaml", "1.26")
+    implementation("org.yaml:snakeyaml:1.26")
 
     // File IO
+    val jacksonVersion = "2.13.0"
     implementation("com.fasterxml.jackson.core", "jackson-core", jacksonVersion)
     implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
     implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
@@ -77,7 +78,7 @@ dependencies {
     // Database Management
     implementation("org.postgresql:postgresql:42.2.27")
     implementation("com.zaxxer:HikariCP:3.4.5")
-    implementation("com.zaxxer", "HikariCP", "2.3.2")
+    implementation("com.zaxxer:HikariCP:2.3.2")
 
     // Network
     implementation("io.netty:netty-all:4.1.86.Final")
@@ -85,11 +86,13 @@ dependencies {
     // Swing
     implementation("com.sun.activation:javax.activation:1.2.0")
 
-    //Testing
+    // Testing
+    val junitVersion = "5.8.1"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testImplementation(group = "org.koin", name = "koin-test", version = koinVersion)
-    testImplementation(group = "io.mockk", name = "mockk", version = "1.10.0")
+    testImplementation("org.koin:koin-test:$koinVersion")
+    testImplementation("io.mockk:mockk:1.10.0")
+
 }
 
 tasks {
@@ -106,10 +109,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         jvmTarget = "1.8"
     }
 }
-
-/*
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        useIR = true
-    }
-}*/
