@@ -2,8 +2,8 @@
 
 <h1>RedRune-II</h1>
 
-<a href="https://github.com/your-org/redrune-ii">
-  <img src="https://i.imgur.com/X0OdMTf.png" alt="RedRune-II Logo">
+<a href="https://github.com/Tyluur/RedRune-II">
+  <img src="https://img.tyluur.com/2025/05/646/2025-05-16_06-47-42.png" alt="RedRune-II Logo">
 </a>
 
 [![Revision](https://img.shields.io/badge/revision-667-important)](https://oldschool.runescape.wiki/w/Update:God_Wars_Instancing_and_Soul_Wars_Improvements)
@@ -13,15 +13,7 @@
 
 <h3>Modern, modular RuneScape 667 emulator written in Kotlin & Java</h3>
 
-<a href="#features">Features</a> &nbsp;&bull;&nbsp;
-<a href="#quickstart">Quickstart</a> &nbsp;&bull;&nbsp;
-<a href="#development">Development</a> &nbsp;&bull;&nbsp;
-<a href="#architecture">Architecture</a> &nbsp;&bull;&nbsp;
-<a href="#resources">Resources</a> &nbsp;&bull;&nbsp;
-<a href="#credits">Credits</a>
-
 <br><br>
-<img src="https://i.imgur.com/OZ317on.png" alt="RedRune In-Game Preview">
 
 </div>
 
@@ -44,10 +36,17 @@
 
 ## 🚀 Quickstart
 
-> Ensure Java 8+ and Gradle are installed.
-
-### 1. Clone the repository
+> Requires Java 8+ and Gradle 8.x
 
 ```bash
-git clone https://github.com/your-org/redrune-ii.git
-cd redrune-ii
+git clone https://github.com/Tyluur/RedRune-II.git
+cd RedRune-II
+./gradlew run
+```
+
+### 🔗 Downloads
+
+- [667 Cache (v3) – displee.com](https://displee.com/archive/rs2/667/667v3%20cache.rar)
+- [667 Client (Preconfigured) – MEGA.nz](https://mega.nz/file/NNhHSKhb#k6i0yWFX1tYKWSR3Ad7xTlk4uCPFXOk6L7Pr92Mb4wY)
+
+> Extract the cache to your preferred directory and configure your client to load it from there.
