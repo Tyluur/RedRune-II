@@ -21,7 +21,12 @@ fun getBoolProperty(key: String): Boolean =
 
 fun getIntProperty(key: String): Int = getKoin().getProperty<String>(key)!!.toInt()
 
-fun getProperty(key: String): String = getKoin().getProperty(key)!!
+fun getProperty(key: String, default: String = ""): String =
+    getKoin().getProperty(key) ?: run {
+        println("⚠️ Missing property: $key")
+        default
+    }
+
 
 fun getFloatProperty(key: String): Float = getKoin().getProperty(key)!!
 
@@ -32,7 +37,3 @@ inline fun <reified T : Any> inject(
         qualifier: Qualifier? = null,
         noinline parameters: ParametersDefinition? = null,
 ): Lazy<T> = getKoin().inject(qualifier, parameters = parameters)
-
-inline fun <reified S, reified P> bind(
-        noinline parameters: ParametersDefinition? = null,
-): S = getKoin().bind<S, P>(parameters)

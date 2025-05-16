@@ -2,6 +2,7 @@ package org.redrune
 
 import com.github.michaelbull.logging.InlineLogger
 import kotlinx.coroutines.runBlocking
+import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.redrune.cache.Cache
 import org.redrune.cache.huffman.Huffman
@@ -38,7 +39,9 @@ import org.redrune.utility.game.repository.door.DoorRepository
 import org.redrune.utility.getBoolProperty
 import org.redrune.utility.getIntProperty
 import org.redrune.utility.getProperty
+import java.io.File
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -58,7 +61,7 @@ object Bootstrap {
     }
 
     /**
-     * This method uses [BfootHandler] to prepare all requirements for the game to start efficiently. All tasksfd
+     * This method uses [BootHandler] to prepare all requirements for the game to start efficiently. All tasksfd
      * that require each other are performed in the same parallel instance, other ones can be performed
      * individually.
      *
@@ -66,9 +69,9 @@ object Bootstrap {
      */
     private fun boot() {
         startKoin {
-            fileProperties("/game.properties")
-            fileProperties("/parameters.properties")
-            fileProperties("/world.properties")
+            val gameProperties = fileProperties("./game.properties")
+            fileProperties("./parameters.properties")
+            fileProperties("./world.properties")
 
             modules(priceLoaderModule)
         }
@@ -145,4 +148,19 @@ object Bootstrap {
     }
 
     private val logger = InlineLogger()
+}
+
+
+fun KoinApplication.fileProperties(path: String) {
+    val file = File(path)
+    if (file.exists()) {
+        val props = Properties().apply {
+            load(file.inputStream())
+        }
+        props.forEach { key, value ->
+            this.koin.setProperty(key.toString(), value.toString())
+        }
+    } else {
+        println("⚠️ Could not find property file at path: $path")
+    }
 }

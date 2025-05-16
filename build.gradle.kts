@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version "1.8.0"
 }
 
-val koinVersion = "2.1.5"
+val koinVersion = "3.4.3"
 val junitVersion = "5.6.2"
 val jacksonVersion = "2.12.2"
 
@@ -20,11 +20,9 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
-        jcenter()
-        maven(url = "https://repo.maven.apache.org/maven2")
         maven(url = "https://jitpack.io")
-        maven(url = "https://dl.bintray.com/michaelbull/maven")
     }
+
 
 }
 
@@ -42,8 +40,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
 
     // Dependency Injection
-    implementation("org.koin", "koin-core", koinVersion)
-    implementation("org.koin", "koin-logger-slf4j", koinVersion)
+//    implementation("org.koin", "koin-core", koinVersion)
+//    implementation("org.koin", "koin-logger-slf4j", koinVersion)
+
+
+    implementation("io.insert-koin:koin-core:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+
 
     // Reflection
     implementation("io.github.classgraph", "classgraph", "4.8.78")
@@ -88,7 +91,8 @@ dependencies {
     //Testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testImplementation(group = "org.koin", name = "koin-test", version = koinVersion)
+//    testImplementation(group = "org.koin", name = "koin-test", version = koinVersion)
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
     testImplementation(group = "io.mockk", name = "mockk", version = "1.10.0")
 }
 
